@@ -1,0 +1,273 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v5/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ca": "https://oaa-ontology.org/v5/competitive-analysis/"
+  },
+  "@id": "https://oaa-ontology.org/v5/ca/schema",
+  "@type": "owl:Ontology",
+  "name": "Competitive Analysis Ontology",
+  "description": "Generalized ontology for analyzing competitors across any market domain. Configurable for specific organizations, sectors, and competitive contexts. Enables AI agents to reason about competitive positioning, market opportunities, and strategic intelligence.",
+  "oaa:schemaVersion": "5.0.0",
+  "oaa:moduleVersion": "2.0.0",
+  "oaa:previousVersion": "1.0.0",
+  "oaa:domain": "Competitive Intelligence & Strategic Analysis",
+  "oaa:status": "Production",
+  "dateCreated": "2025-10-08",
+  "dateModified": "2026-02-01",
+  "creator": {
+    "@type": "Organization",
+    "name": "Platform Framework Architecture Team"
+  },
+
+  "entities": [
+    {
+      "@id": "ca:TargetOrganization",
+      "@type": "rdfs:Class",
+      "name": "TargetOrganization",
+      "rdfs:subClassOf": "schema:Organization",
+      "description": "The client organization for whom competitive analysis is being conducted. Extended with competitive context attributes.",
+      "oaa:properties": [
+        {"name": "organizationId", "type": "xsd:string", "required": true, "description": "Unique identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "organizationMaturity", "type": "xsd:string", "required": false, "description": "Organizational maturity level"},
+        {"name": "marketPosition", "type": "xsd:string", "required": false, "description": "Current market position"},
+        {"name": "domainReadiness", "type": "xsd:string", "required": false, "description": "Readiness for market domain"},
+        {"name": "strategicObjectives", "type": "xsd:string", "required": false, "description": "Key strategic objectives"},
+        {"name": "competitiveAdvantages", "type": "xsd:string", "required": false, "description": "Key competitive advantages"}
+      ]
+    },
+    {
+      "@id": "ca:CompetitorOrganization",
+      "@type": "rdfs:Class",
+      "name": "CompetitorOrganization",
+      "rdfs:subClassOf": "schema:Organization",
+      "description": "Organizations that compete in the same market space. Includes competitive intelligence attributes.",
+      "oaa:properties": [
+        {"name": "competitorId", "type": "xsd:string", "required": true, "description": "Unique competitor identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "competitorType", "type": "xsd:string", "required": true, "enum": ["Direct", "Indirect", "Emerging"], "description": "Type of competitive relationship"},
+        {"name": "marketShare", "type": "xsd:decimal", "required": false, "description": "Estimated market share percentage"},
+        {"name": "competitiveStrength", "type": "xsd:string", "required": false, "enum": ["Strong", "Moderate", "Weak"], "description": "Overall competitive strength"},
+        {"name": "threatLevel", "type": "xsd:string", "required": true, "enum": ["High", "Medium", "Low"], "description": "Threat level to target organization"},
+        {"name": "domainCapabilities", "type": "xsd:string", "required": false, "description": "Key domain capabilities"}
+      ]
+    },
+    {
+      "@id": "ca:MarketOffering",
+      "@type": "rdfs:Class",
+      "name": "MarketOffering",
+      "rdfs:subClassOf": "schema:Product",
+      "description": "Products and services offered in the market by competitors or target organization.",
+      "oaa:properties": [
+        {"name": "offeringId", "type": "xsd:string", "required": true, "description": "Unique offering identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "offeringCategory", "type": "xsd:string", "required": true, "description": "Product/service category"},
+        {"name": "targetAudience", "type": "xsd:string", "required": false, "description": "Target customer segment"},
+        {"name": "pricingModel", "type": "xsd:string", "required": false, "description": "Pricing model"},
+        {"name": "uniqueValueProposition", "type": "xsd:string", "required": false, "description": "Key differentiator"}
+      ]
+    },
+    {
+      "@id": "ca:MarketSegment",
+      "@type": "rdfs:Class",
+      "name": "MarketSegment",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Distinct segments within the target market.",
+      "oaa:properties": [
+        {"name": "segmentId", "type": "xsd:string", "required": true, "description": "Unique segment identifier"},
+        {"name": "segmentName", "type": "xsd:string", "required": true, "description": "Segment name"},
+        {"name": "segmentSize", "type": "xsd:string", "required": false, "description": "Estimated segment size"},
+        {"name": "growthRate", "type": "xsd:decimal", "required": false, "description": "Annual growth rate"},
+        {"name": "maturityLevel", "type": "xsd:string", "required": false, "enum": ["Emerging", "Growing", "Mature", "Declining"]},
+        {"name": "competitiveIntensity", "type": "xsd:string", "required": false, "enum": ["High", "Medium", "Low"]}
+      ]
+    },
+    {
+      "@id": "ca:CompetitivePosition",
+      "@type": "rdfs:Class",
+      "name": "CompetitivePosition",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "An organization's position relative to competitors in the market.",
+      "oaa:properties": [
+        {"name": "positionId", "type": "xsd:string", "required": true, "description": "Position identifier"},
+        {"name": "marketLeadershipStatus", "type": "xsd:string", "required": true, "enum": ["Leader", "Challenger", "Follower", "Niche"]},
+        {"name": "marketShare", "type": "xsd:decimal", "required": false, "description": "Market share percentage"},
+        {"name": "brandStrength", "type": "xsd:string", "required": false, "enum": ["Strong", "Moderate", "Weak"]},
+        {"name": "innovationCapability", "type": "xsd:string", "required": false, "description": "Innovation rating"}
+      ]
+    },
+    {
+      "@id": "ca:CompetitiveAnalysis",
+      "@type": "rdfs:Class",
+      "name": "CompetitiveAnalysis",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "Analytical report or assessment of competitive landscape.",
+      "oaa:properties": [
+        {"name": "analysisId", "type": "xsd:string", "required": true, "description": "Analysis identifier"},
+        {"name": "analysisType", "type": "xsd:string", "required": true, "enum": ["Full", "Quick", "Deep-Dive"]},
+        {"name": "analysisDate", "type": "xsd:date", "required": true, "schemaOrgMapping": "schema:dateCreated"},
+        {"name": "keyFindings", "type": "xsd:string", "required": false, "description": "Summary of key findings"},
+        {"name": "recommendations", "type": "xsd:string", "required": false, "description": "Strategic recommendations"},
+        {"name": "confidenceLevel", "type": "xsd:string", "required": false, "enum": ["High", "Medium", "Low"]}
+      ]
+    },
+    {
+      "@id": "ca:BlueOceanOpportunity",
+      "@type": "rdfs:Class",
+      "name": "BlueOceanOpportunity",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Market opportunities with minimal direct competition.",
+      "oaa:properties": [
+        {"name": "opportunityId", "type": "xsd:string", "required": true, "description": "Opportunity identifier"},
+        {"name": "opportunityName", "type": "xsd:string", "required": true, "description": "Opportunity name"},
+        {"name": "marketSize", "type": "xsd:string", "required": false, "description": "Estimated market size"},
+        {"name": "competitiveBarriers", "type": "xsd:string", "required": true, "enum": ["None", "Low", "Medium", "High"]},
+        {"name": "accessibilityLevel", "type": "xsd:string", "required": false, "enum": ["Easy", "Moderate", "Difficult"]},
+        {"name": "strategicValue", "type": "xsd:string", "required": false, "enum": ["High", "Medium", "Low"]}
+      ]
+    }
+  ],
+
+  "relationships": [
+    {
+      "@id": "ca:competesWith",
+      "@type": "owl:ObjectProperty",
+      "name": "Competes With",
+      "description": "Direct competitive relationship between target and competitor organizations",
+      "domainIncludes": ["ca:TargetOrganization"],
+      "rangeIncludes": ["ca:CompetitorOrganization"],
+      "oaa:cardinality": {"min": 3, "max": 5}
+    },
+    {
+      "@id": "ca:offersSolution",
+      "@type": "owl:ObjectProperty",
+      "name": "Offers Solution",
+      "description": "Organization offers specific market solutions",
+      "domainIncludes": ["ca:CompetitorOrganization", "ca:TargetOrganization"],
+      "rangeIncludes": ["ca:MarketOffering"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "ca:operatesInSegment",
+      "@type": "owl:ObjectProperty",
+      "name": "Operates In Segment",
+      "description": "Organization operates within specific market segments",
+      "domainIncludes": ["ca:CompetitorOrganization", "ca:TargetOrganization"],
+      "rangeIncludes": ["ca:MarketSegment"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "ca:hasPosition",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Position",
+      "description": "Organization's current competitive positioning",
+      "domainIncludes": ["ca:CompetitorOrganization", "ca:TargetOrganization"],
+      "rangeIncludes": ["ca:CompetitivePosition"],
+      "oaa:cardinality": {"min": 1, "max": 1}
+    },
+    {
+      "@id": "ca:analyzesCompetitor",
+      "@type": "owl:ObjectProperty",
+      "name": "Analyzes Competitor",
+      "description": "Analysis focuses on specific competitors",
+      "domainIncludes": ["ca:CompetitiveAnalysis"],
+      "rangeIncludes": ["ca:CompetitorOrganization"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "ca:identifiesOpportunity",
+      "@type": "owl:ObjectProperty",
+      "name": "Identifies Opportunity",
+      "description": "Analysis identifies blue ocean opportunities",
+      "domainIncludes": ["ca:CompetitiveAnalysis"],
+      "rangeIncludes": ["ca:BlueOceanOpportunity"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "ca:targetsSegment",
+      "@type": "owl:ObjectProperty",
+      "name": "Targets Segment",
+      "description": "Offering targets specific market segments",
+      "domainIncludes": ["ca:MarketOffering"],
+      "rangeIncludes": ["ca:MarketSegment"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "ca:analysisFor",
+      "@type": "owl:ObjectProperty",
+      "name": "Analysis For",
+      "description": "Analysis conducted for target organization",
+      "domainIncludes": ["ca:CompetitiveAnalysis"],
+      "rangeIncludes": ["ca:TargetOrganization"],
+      "oaa:cardinality": {"min": 1, "max": 1}
+    }
+  ],
+
+  "businessRules": [
+    {
+      "@id": "ca:BR-CA-001",
+      "name": "Minimum Competitors Required",
+      "description": "Every target organization must identify 3-5 direct competitors",
+      "condition": "IF a TargetOrganization is defined for competitive analysis",
+      "action": "THEN it MUST have between 3 and 5 competesWith relationships to CompetitorOrganizations",
+      "severity": "warning",
+      "appliesTo": ["ca:TargetOrganization"]
+    },
+    {
+      "@id": "ca:BR-CA-002",
+      "name": "Blue Ocean Qualification",
+      "description": "Blue ocean opportunities must have low competitive barriers",
+      "condition": "IF a BlueOceanOpportunity is classified as true blue ocean",
+      "action": "THEN competitiveBarriers MUST be 'Low' or 'None'",
+      "severity": "error",
+      "appliesTo": ["ca:BlueOceanOpportunity"]
+    },
+    {
+      "@id": "ca:BR-CA-003",
+      "name": "Competitor Segment Requirement",
+      "description": "Competitors must operate in at least one market segment",
+      "condition": "IF a CompetitorOrganization is defined",
+      "action": "THEN it MUST have at least one operatesInSegment relationship",
+      "severity": "error",
+      "appliesTo": ["ca:CompetitorOrganization"]
+    },
+    {
+      "@id": "ca:BR-CA-004",
+      "name": "Threat Level Required",
+      "description": "Direct competitors must have threat level for prioritization",
+      "condition": "IF a CompetitorOrganization is marked as Direct competitor type",
+      "action": "THEN threatLevel MUST be specified",
+      "severity": "error",
+      "appliesTo": ["ca:CompetitorOrganization"]
+    },
+    {
+      "@id": "ca:BR-CA-005",
+      "name": "Analysis Must Reference Target",
+      "description": "Every competitive analysis must be for a target organization",
+      "condition": "IF a CompetitiveAnalysis is created",
+      "action": "THEN it MUST have exactly one analysisFor relationship to a TargetOrganization",
+      "severity": "error",
+      "appliesTo": ["ca:CompetitiveAnalysis"]
+    }
+  ],
+
+  "changeControl": {
+    "currentVersion": "2.0.0",
+    "oaaSchemaVersion": "5.0.0",
+    "lastModified": "2026-02-01",
+    "modifiedBy": "OAA v6.1.0 Migration",
+    "changeNotes": "Upgraded from legacy format to OAA v5.0.0 JSON-LD compliance. Converted entities from object to array format.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2025-10-08",
+        "notes": "Initial creation in legacy format",
+        "archivedPath": "archive/competitive-analysis-v1.0.0-legacy.json"
+      }
+    ]
+  }
+}

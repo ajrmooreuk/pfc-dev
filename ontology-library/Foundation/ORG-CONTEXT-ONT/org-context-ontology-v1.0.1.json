@@ -1,0 +1,1579 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "org-ctx": "https://platformcore.io/ontology/org-context/",
+    "org": "https://platformcore.io/ontology/org/",
+    "vsom": "https://platformcore.io/ontology/vsom/",
+    "ca": "https://platformcore.io/ontology/ca/",
+    "cl": "https://platformcore.io/ontology/cl/",
+    "ctx": "https://baiv.co.uk/ontology/",
+    "rcsg-fw": "https://platformcore.io/ontology/rcsg-fw/",
+    "ds": "https://platformcore.io/ontology/ds/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "oaa": "https://platformcore.io/ontology/oaa/"
+  },
+  "@id": "org-ctx:OrganizationContextOntology",
+  "@type": "DefinedTermSet",
+  "name": "Organization Context Ontology",
+  "description": "Rich organizational context hub linking products, brands, competitive landscape, market segments, and maturity levels. Foundation layer bridge connecting ORG entities to domain-specific ontologies via the context hub pattern.",
+  "version": "3.1.0",
+  "oaa:version": "6.1.0",
+  "dateCreated": "2026-01-20",
+  "dateModified": "2026-02-16",
+  "creator": {
+    "@type": "Organization",
+    "@id": "org-ctx:PlatformCore"
+  },
+  "hasDefinedTerm": [
+    {
+      "@id": "org-ctx:OrganizationContext",
+      "@type": "DefinedTerm",
+      "name": "Organization Context",
+      "description": "Rich context container for an organization linking to all contextual sub-entities including products, brands, competitive landscape, market context, and maturity assessment",
+      "rdfs:subClassOf": "schema:Organization",
+      "skos:note": "Central hub entity — all other ORG-CONTEXT entities connect through this",
+      "org-ctx:properties": [
+        {
+          "@id": "org-ctx:contextId",
+          "@type": "PropertyValue",
+          "name": "Context ID",
+          "description": "Unique identifier for this organizational context instance",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:organizationRef",
+          "@type": "PropertyValue",
+          "name": "Organization Reference",
+          "description": "Reference to the core organization entity in the ORG ontology",
+          "valueReference": "org:Organization"
+        },
+        {
+          "@id": "org-ctx:products",
+          "@type": "PropertyValue",
+          "name": "Products",
+          "description": "Organization's products or services offered to market",
+          "valueReference": "org-ctx:Product"
+        },
+        {
+          "@id": "org-ctx:brands",
+          "@type": "PropertyValue",
+          "name": "Brands",
+          "description": "Organization's brand portfolio",
+          "valueReference": "org-ctx:Brand"
+        },
+        {
+          "@id": "org-ctx:valuePropositionRefs",
+          "@type": "PropertyValue",
+          "name": "Value Proposition References",
+          "description": "References to value propositions defined in VSOM ontology — details live there, not here",
+          "valueReference": "vsom:ValueProposition"
+        },
+        {
+          "@id": "org-ctx:productPortfolio",
+          "@type": "PropertyValue",
+          "name": "Product Portfolio",
+          "description": "Full product or service portfolio structure",
+          "valueReference": "org-ctx:ProductPortfolio"
+        },
+        {
+          "@id": "org-ctx:competitiveLandscape",
+          "@type": "PropertyValue",
+          "name": "Competitive Landscape",
+          "description": "Competitive environment context for the organization",
+          "valueReference": "org-ctx:CompetitiveLandscape"
+        },
+        {
+          "@id": "org-ctx:marketContext",
+          "@type": "PropertyValue",
+          "name": "Market Context",
+          "description": "Market segments, geography, and localization context",
+          "valueReference": "org-ctx:MarketContext"
+        },
+        {
+          "@id": "org-ctx:maturity",
+          "@type": "PropertyValue",
+          "name": "Maturity",
+          "description": "Organization maturity assessment across multiple dimensions",
+          "valueReference": "org-ctx:OrganizationMaturity"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:Product",
+      "@type": "DefinedTerm",
+      "name": "Product",
+      "description": "Product or service offered by the organization to its target market segments",
+      "rdfs:subClassOf": "schema:Product",
+      "org-ctx:properties": [
+        {
+          "@id": "org-ctx:productId",
+          "@type": "PropertyValue",
+          "name": "Product ID",
+          "description": "Unique identifier for this product",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:productName",
+          "@type": "PropertyValue",
+          "name": "Product Name",
+          "description": "Display name of the product or service",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:productDescription",
+          "@type": "PropertyValue",
+          "name": "Product Description",
+          "description": "Brief description of the product's purpose and offering",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:productCategory",
+          "@type": "PropertyValue",
+          "name": "Category",
+          "description": "Product category classification",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:productSegment",
+          "@type": "PropertyValue",
+          "name": "Product Segment",
+          "description": "Product segment within the portfolio",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:productStatus",
+          "@type": "PropertyValue",
+          "name": "Product Status",
+          "description": "Current lifecycle status: active, discontinued, or planned",
+          "valueReference": "org-ctx:ProductStatusEnum"
+        },
+        {
+          "@id": "org-ctx:productValuePropositionRef",
+          "@type": "PropertyValue",
+          "name": "Product Value Proposition",
+          "description": "Reference to product-level value proposition in VSOM ontology if different from brand-level",
+          "valueReference": "vsom:ValueProposition"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:Brand",
+      "@type": "DefinedTerm",
+      "name": "Brand",
+      "description": "Brand owned by the organization, carrying its own market identity and value proposition",
+      "rdfs:subClassOf": "schema:Brand",
+      "org-ctx:properties": [
+        {
+          "@id": "org-ctx:brandId",
+          "@type": "PropertyValue",
+          "name": "Brand ID",
+          "description": "Unique identifier for this brand",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:brandName",
+          "@type": "PropertyValue",
+          "name": "Brand Name",
+          "description": "Display name of the brand",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:brandDescription",
+          "@type": "PropertyValue",
+          "name": "Brand Description",
+          "description": "Brief description of the brand's identity and positioning",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:isPrimaryBrand",
+          "@type": "PropertyValue",
+          "name": "Is Primary Brand",
+          "description": "Whether this is the organization's primary brand",
+          "valueReference": "xsd:boolean"
+        },
+        {
+          "@id": "org-ctx:brandValuePropositionRef",
+          "@type": "PropertyValue",
+          "name": "Brand Value Proposition",
+          "description": "Reference to brand-level value proposition in VSOM ontology",
+          "valueReference": "vsom:ValueProposition"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:ProductPortfolio",
+      "@type": "DefinedTerm",
+      "name": "Product Portfolio",
+      "description": "Structured view of the organization's complete product and service offerings across segments",
+      "org-ctx:properties": [
+        {
+          "@id": "org-ctx:portfolioType",
+          "@type": "PropertyValue",
+          "name": "Portfolio Type",
+          "description": "Classification of portfolio structure: single_product, multi_product, ecommerce, service, or hybrid",
+          "valueReference": "org-ctx:PortfolioTypeEnum"
+        },
+        {
+          "@id": "org-ctx:productCount",
+          "@type": "QuantitativeValue",
+          "name": "Product Count",
+          "description": "Approximate number of products in the portfolio"
+        },
+        {
+          "@id": "org-ctx:portfolioSegments",
+          "@type": "PropertyValue",
+          "name": "Portfolio Segments",
+          "description": "Product segments within the portfolio",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:CompetitiveLandscape",
+      "@type": "DefinedTerm",
+      "name": "Competitive Landscape",
+      "description": "Competitive environment context encompassing named competitors, Porter-style forces, and macro trends affecting the organization's market position",
+      "skos:note": "Competitors can exist at multiple levels: platform, client org, client's client",
+      "org-ctx:properties": [
+        {
+          "@id": "org-ctx:competitors",
+          "@type": "PropertyValue",
+          "name": "Competitors",
+          "description": "Named competitors with strengths, weaknesses, and strategic posture analysis",
+          "valueReference": "org-ctx:Competitor"
+        },
+        {
+          "@id": "org-ctx:competitiveForces",
+          "@type": "PropertyValue",
+          "name": "Competitive Forces",
+          "description": "Porter-style forces: threat of entry, substitutes, buyer power, supplier power, rivalry",
+          "valueReference": "org-ctx:CompetitiveForce"
+        },
+        {
+          "@id": "org-ctx:trends",
+          "@type": "PropertyValue",
+          "name": "Trends",
+          "description": "Macro trends affecting the competitive landscape: regulatory, technological, economic, social",
+          "valueReference": "org-ctx:Trend"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:Competitor",
+      "@type": "DefinedTerm",
+      "name": "Competitor",
+      "description": "Named competitor organization with competitive analysis including type, priority, strengths, weaknesses, and strategic posture",
+      "org-ctx:properties": [
+        {
+          "@id": "org-ctx:competitorOrganizationRef",
+          "@type": "PropertyValue",
+          "name": "Organization Reference",
+          "description": "Reference to the competitor's entry in the ORG ontology",
+          "valueReference": "org:Organization"
+        },
+        {
+          "@id": "org-ctx:competitorType",
+          "@type": "PropertyValue",
+          "name": "Competitor Type",
+          "description": "Classification: direct, indirect, aspirational, or substitute",
+          "valueReference": "org-ctx:CompetitorTypeEnum"
+        },
+        {
+          "@id": "org-ctx:competitorPriority",
+          "@type": "QuantitativeValue",
+          "name": "Priority Ranking",
+          "description": "Threat priority ranking from 1 (highest) to 5 (lowest)"
+        },
+        {
+          "@id": "org-ctx:strengths",
+          "@type": "PropertyValue",
+          "name": "Strengths",
+          "description": "Competitor's key competitive strengths",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:weaknesses",
+          "@type": "PropertyValue",
+          "name": "Weaknesses",
+          "description": "Competitor's key competitive weaknesses",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:strategicPosture",
+          "@type": "PropertyValue",
+          "name": "Strategic Posture",
+          "description": "Current strategic stance: aggressive, defensive, expanding, contracting, or stable",
+          "valueReference": "org-ctx:StrategicPostureEnum"
+        },
+        {
+          "@id": "org-ctx:trackCitations",
+          "@type": "PropertyValue",
+          "name": "Track Citations",
+          "description": "Whether to track AI platform citations for this competitor",
+          "valueReference": "xsd:boolean"
+        },
+        {
+          "@id": "org-ctx:trackRankings",
+          "@type": "PropertyValue",
+          "name": "Track Rankings",
+          "description": "Whether to track search rankings for this competitor",
+          "valueReference": "xsd:boolean"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:CompetitiveForce",
+      "@type": "DefinedTerm",
+      "name": "Competitive Force",
+      "description": "Porter-style competitive force analysing structural market pressure including threat of entry, substitutes, buyer and supplier power, and competitive rivalry",
+      "org-ctx:properties": [
+        {
+          "@id": "org-ctx:forceType",
+          "@type": "PropertyValue",
+          "name": "Force Type",
+          "description": "Porter force classification: threat_of_new_entrants, threat_of_substitutes, bargaining_power_buyers, bargaining_power_suppliers, competitive_rivalry",
+          "valueReference": "org-ctx:CompetitiveForceTypeEnum"
+        },
+        {
+          "@id": "org-ctx:forceIntensity",
+          "@type": "PropertyValue",
+          "name": "Intensity",
+          "description": "Force intensity level: low, medium, or high",
+          "valueReference": "org-ctx:IntensityEnum"
+        },
+        {
+          "@id": "org-ctx:forceDescription",
+          "@type": "PropertyValue",
+          "name": "Description",
+          "description": "Narrative description of this competitive force's impact",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:keyFactors",
+          "@type": "PropertyValue",
+          "name": "Key Factors",
+          "description": "Specific factors driving this competitive force",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:Trend",
+      "@type": "DefinedTerm",
+      "name": "Trend",
+      "description": "Macro trend affecting the market landscape including regulatory, technological, economic, social, environmental, and political forces",
+      "org-ctx:properties": [
+        {
+          "@id": "org-ctx:trendType",
+          "@type": "PropertyValue",
+          "name": "Trend Type",
+          "description": "PESTEL classification: regulatory, technological, economic, social, environmental, political",
+          "valueReference": "org-ctx:TrendTypeEnum"
+        },
+        {
+          "@id": "org-ctx:trendName",
+          "@type": "PropertyValue",
+          "name": "Trend Name",
+          "description": "Descriptive name for the macro trend",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:trendDescription",
+          "@type": "PropertyValue",
+          "name": "Trend Description",
+          "description": "Narrative description of the trend and its implications",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:trendImpact",
+          "@type": "PropertyValue",
+          "name": "Impact",
+          "description": "Direction of impact: positive, negative, neutral, or uncertain",
+          "valueReference": "org-ctx:ImpactEnum"
+        },
+        {
+          "@id": "org-ctx:trendTimeframe",
+          "@type": "PropertyValue",
+          "name": "Timeframe",
+          "description": "Expected impact horizon: immediate, short_term, medium_term, long_term",
+          "valueReference": "org-ctx:TimeframeEnum"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:MarketContext",
+      "@type": "DefinedTerm",
+      "name": "Market Context",
+      "description": "Market segments, geographic scope, customer needs, and localization context defining the organization's addressable market",
+      "org-ctx:properties": [
+        {
+          "@id": "org-ctx:marketSegments",
+          "@type": "PropertyValue",
+          "name": "Market Segments",
+          "description": "Target industries, geographies, and customer segments",
+          "valueReference": "org-ctx:MarketSegment"
+        },
+        {
+          "@id": "org-ctx:customerNeeds",
+          "@type": "PropertyValue",
+          "name": "Customer Needs",
+          "description": "High-level jobs-to-be-done and pain points — detailed analysis lives in VSOM ontology",
+          "valueReference": "org-ctx:CustomerNeed"
+        },
+        {
+          "@id": "org-ctx:geographicScope",
+          "@type": "PropertyValue",
+          "name": "Geographic Scope",
+          "description": "Operating regions and geographic markets served",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:localization",
+          "@type": "PropertyValue",
+          "name": "Localization",
+          "description": "Localization requirements including base currency, geography, and supported languages",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:MarketSegment",
+      "@type": "DefinedTerm",
+      "name": "Market Segment",
+      "description": "Target market segment defined by industry, geography, size, and strategic priority for the organization",
+      "org-ctx:properties": [
+        {
+          "@id": "org-ctx:segmentId",
+          "@type": "PropertyValue",
+          "name": "Segment ID",
+          "description": "Unique identifier for this market segment",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:segmentName",
+          "@type": "PropertyValue",
+          "name": "Segment Name",
+          "description": "Descriptive name for the market segment",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:industry",
+          "@type": "PropertyValue",
+          "name": "Industry",
+          "description": "Industry vertical this segment belongs to",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:geography",
+          "@type": "PropertyValue",
+          "name": "Geography",
+          "description": "Geographic region for this segment",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:segmentSize",
+          "@type": "PropertyValue",
+          "name": "Segment Size",
+          "description": "Estimated addressable market size for this segment",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:segmentPriority",
+          "@type": "PropertyValue",
+          "name": "Priority",
+          "description": "Strategic priority: primary, secondary, or emerging",
+          "valueReference": "org-ctx:SegmentPriorityEnum"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:CustomerNeed",
+      "@type": "DefinedTerm",
+      "name": "Customer Need",
+      "description": "High-level customer need identifier for jobs-to-be-done, pain points, and value drivers — detailed pains and gains analysis lives in VSOM ontology",
+      "org-ctx:properties": [
+        {
+          "@id": "org-ctx:needId",
+          "@type": "PropertyValue",
+          "name": "Need ID",
+          "description": "Unique identifier for this customer need",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:needType",
+          "@type": "PropertyValue",
+          "name": "Need Type",
+          "description": "Classification: job_to_be_done, pain_point, value_driver, or unmet_need",
+          "valueReference": "org-ctx:NeedTypeEnum"
+        },
+        {
+          "@id": "org-ctx:needDescription",
+          "@type": "PropertyValue",
+          "name": "Need Description",
+          "description": "Description of the customer need and its business impact",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:needPriority",
+          "@type": "PropertyValue",
+          "name": "Priority",
+          "description": "Urgency and importance: critical, high, medium, or low",
+          "valueReference": "org-ctx:NeedPriorityEnum"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:OrganizationMaturity",
+      "@type": "DefinedTerm",
+      "name": "Organization Maturity",
+      "description": "Multi-dimensional maturity assessment covering size, value delivery, marketing, technology, complexity management, and AI readiness",
+      "org-ctx:properties": [
+        {
+          "@id": "org-ctx:sizeMaturity",
+          "@type": "QuantitativeValue",
+          "name": "Size Maturity",
+          "description": "Size maturity level (1-5) based on financial scale and headcount"
+        },
+        {
+          "@id": "org-ctx:valueMaturity",
+          "@type": "QuantitativeValue",
+          "name": "Value Maturity",
+          "description": "Value delivery maturity level (1-5)"
+        },
+        {
+          "@id": "org-ctx:marketingMaturity",
+          "@type": "QuantitativeValue",
+          "name": "Marketing Maturity",
+          "description": "Marketing capability maturity level (1-5) including team structure and functional roles"
+        },
+        {
+          "@id": "org-ctx:technologyMaturity",
+          "@type": "QuantitativeValue",
+          "name": "Technology Maturity",
+          "description": "Technology and digital maturity level (1-5)"
+        },
+        {
+          "@id": "org-ctx:complexityMaturity",
+          "@type": "QuantitativeValue",
+          "name": "Complexity Maturity",
+          "description": "Complexity management maturity level (1-5)"
+        },
+        {
+          "@id": "org-ctx:aiMaturity",
+          "@type": "PropertyValue",
+          "name": "AI Maturity",
+          "description": "AI-specific maturity assessment: unaware, exploring, experimenting, implementing, optimizing",
+          "valueReference": "org-ctx:AIMaturityEnum"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:CompetitorProfile",
+      "@type": "rdfs:Class",
+      "name": "CompetitorProfile",
+      "description": "Detailed profile of a competitor within the landscape, capturing market position, strengths, vulnerabilities, and strategic intent. Absorbed from CL-ONT v2.0.0.",
+      "rdfs:subClassOf": "org-ctx:Competitor",
+      "skos:note": "Extends Competitor with analytical depth — market share estimates, key differentiators, and threat assessment",
+      "additionalProperty": [
+        {
+          "@id": "org-ctx:profileId",
+          "@type": "PropertyValue",
+          "name": "Profile ID",
+          "description": "Unique identifier for this competitor profile"
+        },
+        {
+          "@id": "org-ctx:marketPosition",
+          "@type": "PropertyValue",
+          "name": "Market Position",
+          "description": "Current market position: leader, challenger, follower, nicher"
+        },
+        {
+          "@id": "org-ctx:estimatedMarketShare",
+          "@type": "PropertyValue",
+          "name": "Estimated Market Share",
+          "description": "Estimated market share percentage (0-100)"
+        },
+        {
+          "@id": "org-ctx:strategicIntent",
+          "@type": "PropertyValue",
+          "name": "Strategic Intent",
+          "description": "Observed strategic direction: expand, defend, harvest, divest"
+        },
+        {
+          "@id": "org-ctx:keyDifferentiators",
+          "@type": "PropertyValue",
+          "name": "Key Differentiators",
+          "description": "Primary competitive differentiators (array of strings)"
+        },
+        {
+          "@id": "org-ctx:vulnerabilities",
+          "@type": "PropertyValue",
+          "name": "Vulnerabilities",
+          "description": "Known competitor vulnerabilities or exploitable weaknesses"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:MarketDynamic",
+      "@type": "rdfs:Class",
+      "name": "MarketDynamic",
+      "description": "A significant trend, force, or dynamic shaping the competitive landscape. Complements Trend with competitive-specific dynamics. Absorbed from CL-ONT v2.0.0.",
+      "rdfs:subClassOf": "org-ctx:CompetitiveLandscape",
+      "additionalProperty": [
+        {
+          "@id": "org-ctx:dynamicId",
+          "@type": "PropertyValue",
+          "name": "Dynamic ID",
+          "description": "Unique identifier for this market dynamic"
+        },
+        {
+          "@id": "org-ctx:dynamicType",
+          "@type": "PropertyValue",
+          "name": "Dynamic Type",
+          "description": "Type: Technology-Shift, Regulatory-Change, Consumer-Behavior, Economic-Factor, Competitive-Move, Supply-Chain, ESG-Pressure"
+        },
+        {
+          "@id": "org-ctx:impactLevel",
+          "@type": "PropertyValue",
+          "name": "Impact Level",
+          "description": "Impact on landscape: low, medium, high, transformative"
+        },
+        {
+          "@id": "org-ctx:timeHorizon",
+          "@type": "PropertyValue",
+          "name": "Time Horizon",
+          "description": "Expected time horizon: immediate, short-term, medium-term, long-term"
+        },
+        {
+          "@id": "org-ctx:strategicImplication",
+          "@type": "PropertyValue",
+          "name": "Strategic Implication",
+          "description": "Interpretation of the dynamic's strategic significance"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:CompetitiveAdvantage",
+      "@type": "rdfs:Class",
+      "name": "CompetitiveAdvantage",
+      "description": "A specific competitive advantage held or sought by the organization within the landscape. Absorbed from CL-ONT v2.0.0.",
+      "rdfs:subClassOf": "org-ctx:CompetitiveLandscape",
+      "additionalProperty": [
+        {
+          "@id": "org-ctx:advantageId",
+          "@type": "PropertyValue",
+          "name": "Advantage ID",
+          "description": "Unique identifier for this competitive advantage"
+        },
+        {
+          "@id": "org-ctx:advantageType",
+          "@type": "PropertyValue",
+          "name": "Advantage Type",
+          "description": "Type: cost-leadership, differentiation, focus, innovation, network-effect, brand-equity"
+        },
+        {
+          "@id": "org-ctx:sustainabilityLevel",
+          "@type": "PropertyValue",
+          "name": "Sustainability Level",
+          "description": "How sustainable this advantage is: temporary, durable, structural"
+        },
+        {
+          "@id": "org-ctx:imitabilityRisk",
+          "@type": "PropertyValue",
+          "name": "Imitability Risk",
+          "description": "Risk of competitors replicating this advantage: low, medium, high"
+        },
+        {
+          "@id": "org-ctx:currentStatus",
+          "@type": "PropertyValue",
+          "name": "Current Status",
+          "description": "Status: emerging, established, declining, lost"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:StrategicOpportunity",
+      "@type": "rdfs:Class",
+      "name": "StrategicOpportunity",
+      "description": "An identified opportunity within the competitive landscape, including blue ocean opportunities. Absorbed from CL-ONT v2.0.0.",
+      "rdfs:subClassOf": "org-ctx:CompetitiveLandscape",
+      "additionalProperty": [
+        {
+          "@id": "org-ctx:opportunityId",
+          "@type": "PropertyValue",
+          "name": "Opportunity ID",
+          "description": "Unique identifier for this strategic opportunity"
+        },
+        {
+          "@id": "org-ctx:opportunityType",
+          "@type": "PropertyValue",
+          "name": "Opportunity Type",
+          "description": "Type: market-expansion, product-innovation, acquisition, partnership, blue-ocean, digital-transformation"
+        },
+        {
+          "@id": "org-ctx:estimatedValue",
+          "@type": "PropertyValue",
+          "name": "Estimated Value",
+          "description": "Estimated commercial value or revenue impact"
+        },
+        {
+          "@id": "org-ctx:competitiveBarriers",
+          "@type": "PropertyValue",
+          "name": "Competitive Barriers",
+          "description": "Barriers to capturing this opportunity"
+        },
+        {
+          "@id": "org-ctx:fitScore",
+          "@type": "PropertyValue",
+          "name": "Fit Score",
+          "description": "Alignment with organizational capabilities (1-5)"
+        },
+        {
+          "@id": "org-ctx:riskLevel",
+          "@type": "PropertyValue",
+          "name": "Risk Level",
+          "description": "Risk assessment: low, medium, high, very-high"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:CompetitiveAnalysis",
+      "@type": "rdfs:Class",
+      "name": "CompetitiveAnalysis",
+      "description": "Analytical report or assessment of competitive landscape. Links competitors to structured analysis with findings and recommendations. Absorbed from CA-ONT v3.0.0.",
+      "rdfs:subClassOf": "org-ctx:CompetitiveLandscape",
+      "additionalProperty": [
+        {
+          "@id": "org-ctx:analysisId",
+          "@type": "PropertyValue",
+          "name": "Analysis ID",
+          "description": "Unique identifier for this competitive analysis"
+        },
+        {
+          "@id": "org-ctx:analysisType",
+          "@type": "PropertyValue",
+          "name": "Analysis Type",
+          "description": "Type: swot, porters-five-forces, value-chain, benchmarking, strategic-group, blue-ocean"
+        },
+        {
+          "@id": "org-ctx:analysisDate",
+          "@type": "PropertyValue",
+          "name": "Analysis Date",
+          "description": "Date the analysis was conducted (ISO 8601)"
+        },
+        {
+          "@id": "org-ctx:keyFindings",
+          "@type": "PropertyValue",
+          "name": "Key Findings",
+          "description": "Summary of key findings from the analysis (array of strings)"
+        },
+        {
+          "@id": "org-ctx:recommendations",
+          "@type": "PropertyValue",
+          "name": "Recommendations",
+          "description": "Strategic recommendations derived from the analysis (array of strings)"
+        },
+        {
+          "@id": "org-ctx:confidenceLevel",
+          "@type": "PropertyValue",
+          "name": "Confidence Level",
+          "description": "Confidence in findings: low, medium, high, very-high"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:CompetitorAssessment",
+      "@type": "rdfs:Class",
+      "name": "CompetitorAssessment",
+      "description": "Assessment of a specific competitor within a competitive analysis. Links a Competitor entity to analytical results. Absorbed from CA-ONT v3.0.0.",
+      "rdfs:subClassOf": "org-ctx:Competitor",
+      "additionalProperty": [
+        {
+          "@id": "org-ctx:assessmentId",
+          "@type": "PropertyValue",
+          "name": "Assessment ID",
+          "description": "Unique identifier for this competitor assessment"
+        },
+        {
+          "@id": "org-ctx:assessmentThreatLevel",
+          "@type": "PropertyValue",
+          "name": "Threat Level",
+          "description": "Assessed threat level: minimal, low, moderate, high, critical"
+        },
+        {
+          "@id": "org-ctx:domainCapabilities",
+          "@type": "PropertyValue",
+          "name": "Domain Capabilities",
+          "description": "Competitor's domain-specific capabilities and strengths (array of strings)"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:MarketOffering",
+      "@type": "rdfs:Class",
+      "name": "MarketOffering",
+      "description": "Products and services offered in the market by competitors or the target organization. Complements Product with competitive positioning. Absorbed from CA-ONT v3.0.0.",
+      "rdfs:subClassOf": "org-ctx:Product",
+      "additionalProperty": [
+        {
+          "@id": "org-ctx:offeringId",
+          "@type": "PropertyValue",
+          "name": "Offering ID",
+          "description": "Unique identifier for this market offering"
+        },
+        {
+          "@id": "org-ctx:offeringCategory",
+          "@type": "PropertyValue",
+          "name": "Offering Category",
+          "description": "Category: SaaS, PaaS, IaaS, Professional-Services, Managed-Services, Consulting, Hardware, Hybrid"
+        },
+        {
+          "@id": "org-ctx:targetAudience",
+          "@type": "PropertyValue",
+          "name": "Target Audience",
+          "description": "Primary audience: enterprise, mid-market, SMB, consumer, developer, government"
+        },
+        {
+          "@id": "org-ctx:pricingModel",
+          "@type": "PropertyValue",
+          "name": "Pricing Model",
+          "description": "Pricing approach: subscription, consumption, perpetual, freemium, tiered, custom"
+        },
+        {
+          "@id": "org-ctx:uniqueValueProposition",
+          "@type": "PropertyValue",
+          "name": "Unique Value Proposition",
+          "description": "What differentiates this offering from competitors"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:CompetitivePosition",
+      "@type": "rdfs:Class",
+      "name": "CompetitivePosition",
+      "description": "An organization's position relative to competitors in the market. Tracks leadership status, brand strength, and innovation capability. Absorbed from CA-ONT v3.0.0.",
+      "rdfs:subClassOf": "org-ctx:CompetitiveLandscape",
+      "additionalProperty": [
+        {
+          "@id": "org-ctx:positionId",
+          "@type": "PropertyValue",
+          "name": "Position ID",
+          "description": "Unique identifier for this competitive position"
+        },
+        {
+          "@id": "org-ctx:marketLeadershipStatus",
+          "@type": "PropertyValue",
+          "name": "Market Leadership Status",
+          "description": "Status: market-leader, strong-challenger, established-player, emerging-player, niche-specialist"
+        },
+        {
+          "@id": "org-ctx:brandStrength",
+          "@type": "PropertyValue",
+          "name": "Brand Strength",
+          "description": "Brand strength assessment: weak, developing, established, strong, dominant"
+        },
+        {
+          "@id": "org-ctx:innovationCapability",
+          "@type": "PropertyValue",
+          "name": "Innovation Capability",
+          "description": "Innovation capability level: laggard, follower, fast-follower, innovator, pioneer"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:BlueOceanOpportunity",
+      "@type": "rdfs:Class",
+      "name": "BlueOceanOpportunity",
+      "description": "Market opportunities with minimal direct competition — uncontested market spaces. Absorbed from CA-ONT v3.0.0.",
+      "rdfs:subClassOf": "org-ctx:StrategicOpportunity",
+      "additionalProperty": [
+        {
+          "@id": "org-ctx:blueOceanId",
+          "@type": "PropertyValue",
+          "name": "Blue Ocean ID",
+          "description": "Unique identifier for this blue ocean opportunity"
+        },
+        {
+          "@id": "org-ctx:marketSize",
+          "@type": "PropertyValue",
+          "name": "Market Size",
+          "description": "Estimated addressable market size"
+        },
+        {
+          "@id": "org-ctx:accessibilityLevel",
+          "@type": "PropertyValue",
+          "name": "Accessibility Level",
+          "description": "How accessible the opportunity is given current capabilities: low, medium, high"
+        },
+        {
+          "@id": "org-ctx:strategicValue",
+          "@type": "PropertyValue",
+          "name": "Strategic Value",
+          "description": "Overall strategic value assessment: low, medium, high, transformative"
+        }
+      ]
+    },
+    {
+      "@id": "org-ctx:AuthorityDomain",
+      "@type": "rdfs:Class",
+      "name": "AuthorityDomain",
+      "description": "Classification of a domain authority's area of expertise and jurisdiction. Links organizations of type StandardsBody, GovernmentAgency, or InternationalOrg to their governance, regulatory, or standards domain. Added v3.1.0 for CG-ONT domain authority modelling.",
+      "rdfs:subClassOf": "org-ctx:OrganizationContext",
+      "skos:note": "Domain authorities publish governance codes, standards, and guides that are modelled in CG-ONT. This entity classifies what domain each authority operates in.",
+      "additionalProperty": [
+        {
+          "@id": "org-ctx:authorityDomainId",
+          "@type": "PropertyValue",
+          "name": "Authority Domain ID",
+          "description": "Unique identifier for this authority domain classification",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:domainName",
+          "@type": "PropertyValue",
+          "name": "Domain Name",
+          "description": "Name of the domain: CyberSecurity, DataProtection, RiskManagement, InformationSecurity, CloudSecurity, CorporateGovernance, ITGovernance, FinancialRegulation, GlobalRisk",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:domainDescription",
+          "@type": "PropertyValue",
+          "name": "Domain Description",
+          "description": "Description of the authority's domain of expertise and influence",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "org-ctx:jurisdictionScope",
+          "@type": "PropertyValue",
+          "name": "Jurisdiction Scope",
+          "description": "Geographic scope of authority: Global, Regional, National, Sub-National",
+          "valueReference": "org-ctx:JurisdictionScopeEnum"
+        },
+        {
+          "@id": "org-ctx:authorityType",
+          "@type": "PropertyValue",
+          "name": "Authority Type",
+          "description": "Classification of authority: NationalAgency, StandardsBody, IndustryBody, Regulator, InternationalOrg, ProfessionalAssociation",
+          "valueReference": "org-ctx:AuthorityTypeEnum"
+        },
+        {
+          "@id": "org-ctx:authorityOrganizationRef",
+          "@type": "PropertyValue",
+          "name": "Authority Organization Reference",
+          "description": "Reference to the authority's entry in the ORG ontology (org:Organization with type StandardsBody/GovernmentAgency/InternationalOrg)",
+          "valueReference": "org:Organization"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasProducts",
+      "name": "hasProducts",
+      "description": "An OrganizationContext contains the organization's products and services",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "org-ctx:Product",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasBrands",
+      "name": "hasBrands",
+      "description": "An OrganizationContext contains the organization's brand portfolio",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "org-ctx:Brand",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasPortfolio",
+      "name": "hasPortfolio",
+      "description": "An OrganizationContext has one ProductPortfolio structuring its offerings",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "org-ctx:ProductPortfolio",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasCompetitiveLandscape",
+      "name": "hasCompetitiveLandscape",
+      "description": "An OrganizationContext has one CompetitiveLandscape defining its competitive environment",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "org-ctx:CompetitiveLandscape",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasMarketContext",
+      "name": "hasMarketContext",
+      "description": "An OrganizationContext has one MarketContext defining its addressable market",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "org-ctx:MarketContext",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasMaturity",
+      "name": "hasMaturity",
+      "description": "An OrganizationContext has one maturity assessment across all dimensions",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "org-ctx:OrganizationMaturity",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:brandHasProduct",
+      "name": "brandHasProduct",
+      "description": "A Brand encompasses one or more Products in its market identity",
+      "domainIncludes": "org-ctx:Brand",
+      "rangeIncludes": "org-ctx:Product",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:productInPortfolio",
+      "name": "productInPortfolio",
+      "description": "A Product belongs to the organization's ProductPortfolio",
+      "domainIncludes": "org-ctx:Product",
+      "rangeIncludes": "org-ctx:ProductPortfolio",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasCompetitors",
+      "name": "hasCompetitors",
+      "description": "A CompetitiveLandscape contains named Competitor entries for analysis",
+      "domainIncludes": "org-ctx:CompetitiveLandscape",
+      "rangeIncludes": "org-ctx:Competitor",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasForces",
+      "name": "hasForces",
+      "description": "A CompetitiveLandscape contains Porter-style CompetitiveForce analyses",
+      "domainIncludes": "org-ctx:CompetitiveLandscape",
+      "rangeIncludes": "org-ctx:CompetitiveForce",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasTrends",
+      "name": "hasTrends",
+      "description": "A CompetitiveLandscape contains macro Trend observations",
+      "domainIncludes": "org-ctx:CompetitiveLandscape",
+      "rangeIncludes": "org-ctx:Trend",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasSegments",
+      "name": "hasSegments",
+      "description": "A MarketContext contains target MarketSegments",
+      "domainIncludes": "org-ctx:MarketContext",
+      "rangeIncludes": "org-ctx:MarketSegment",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasCustomerNeeds",
+      "name": "hasCustomerNeeds",
+      "description": "A MarketContext identifies high-level CustomerNeeds across all segments",
+      "domainIncludes": "org-ctx:MarketContext",
+      "rangeIncludes": "org-ctx:CustomerNeed",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:segmentHasNeed",
+      "name": "segmentHasNeed",
+      "description": "A MarketSegment has specific CustomerNeeds driving demand in that segment",
+      "domainIncludes": "org-ctx:MarketSegment",
+      "rangeIncludes": "org-ctx:CustomerNeed",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:segmentShapedBy",
+      "name": "segmentShapedBy",
+      "description": "A MarketSegment is shaped by CompetitiveForces that constrain or enable opportunity",
+      "domainIncludes": "org-ctx:MarketSegment",
+      "rangeIncludes": "org-ctx:CompetitiveForce",
+      "cardinality": "n:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:competitorTargets",
+      "name": "competitorTargets",
+      "description": "A Competitor targets one or more MarketSegments in its strategy",
+      "domainIncludes": "org-ctx:Competitor",
+      "rangeIncludes": "org-ctx:MarketSegment",
+      "cardinality": "n:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:trendImpacts",
+      "name": "trendImpacts",
+      "description": "A Trend impacts one or more MarketSegments, altering competitive dynamics",
+      "domainIncludes": "org-ctx:Trend",
+      "rangeIncludes": "org-ctx:MarketSegment",
+      "cardinality": "n:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasMarketDynamics",
+      "name": "hasMarketDynamics",
+      "description": "A CompetitiveLandscape tracks MarketDynamics — shifts, disruptions, and emerging patterns in the market",
+      "domainIncludes": "org-ctx:CompetitiveLandscape",
+      "rangeIncludes": "org-ctx:MarketDynamic",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasCompetitiveAdvantages",
+      "name": "hasCompetitiveAdvantages",
+      "description": "A CompetitiveLandscape identifies CompetitiveAdvantages held by the organization or its competitors",
+      "domainIncludes": "org-ctx:CompetitiveLandscape",
+      "rangeIncludes": "org-ctx:CompetitiveAdvantage",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasStrategicOpportunities",
+      "name": "hasStrategicOpportunities",
+      "description": "A CompetitiveLandscape reveals StrategicOpportunities arising from market gaps and competitive positioning",
+      "domainIncludes": "org-ctx:CompetitiveLandscape",
+      "rangeIncludes": "org-ctx:StrategicOpportunity",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasCompetitiveAnalyses",
+      "name": "hasCompetitiveAnalyses",
+      "description": "A CompetitiveLandscape contains formal CompetitiveAnalysis records (SWOT, Porter's, benchmarking, etc.)",
+      "domainIncludes": "org-ctx:CompetitiveLandscape",
+      "rangeIncludes": "org-ctx:CompetitiveAnalysis",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasCompetitivePosition",
+      "name": "hasCompetitivePosition",
+      "description": "A CompetitiveLandscape has a CompetitivePosition summarising the organization's market standing",
+      "domainIncludes": "org-ctx:CompetitiveLandscape",
+      "rangeIncludes": "org-ctx:CompetitivePosition",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasCompetitorProfile",
+      "name": "hasCompetitorProfile",
+      "description": "A Competitor has a CompetitorProfile providing detailed competitive intelligence",
+      "domainIncludes": "org-ctx:Competitor",
+      "rangeIncludes": "org-ctx:CompetitorProfile",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasCompetitorAssessments",
+      "name": "hasCompetitorAssessments",
+      "description": "A CompetitiveAnalysis includes CompetitorAssessments evaluating individual competitors",
+      "domainIncludes": "org-ctx:CompetitiveAnalysis",
+      "rangeIncludes": "org-ctx:CompetitorAssessment",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:competitorHasOfferings",
+      "name": "competitorHasOfferings",
+      "description": "A Competitor offers MarketOfferings — products and services competing in the same market space",
+      "domainIncludes": "org-ctx:Competitor",
+      "rangeIncludes": "org-ctx:MarketOffering",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:contextForOrganization",
+      "name": "contextForOrganization",
+      "description": "An ORG Organization has a rich context defined in this ontology via the bridge pattern",
+      "domainIncludes": "org:Organization",
+      "rangeIncludes": "org-ctx:OrganizationContext",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasValueProposition",
+      "name": "hasValueProposition",
+      "description": "OrganizationContext references value propositions defined in the VSOM ontology",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "vsom:ValueProposition",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:brandValueProposition",
+      "name": "brandValueProposition",
+      "description": "A Brand has a value proposition defined in the VSOM ontology",
+      "domainIncludes": "org-ctx:Brand",
+      "rangeIncludes": "vsom:ValueProposition",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:productValueProposition",
+      "name": "productValueProposition",
+      "description": "A Product may have a product-level value proposition in the VSOM ontology",
+      "domainIncludes": "org-ctx:Product",
+      "rangeIncludes": "vsom:ValueProposition",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasContextAssignments",
+      "name": "hasContextAssignments",
+      "description": "An OrganizationContext has context type assignments linking it to typed context dimensions from the ContextTypes ontology",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "ctx:ContextAssignment",
+      "cardinality": "1:n",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-TYPES"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:maturityClassifiedByFunction",
+      "name": "maturityClassifiedByFunction",
+      "description": "An OrganizationMaturity maps to per-function FunctionalMaturity assessments in ContextTypes for marketing, sales, operations, and other business functions",
+      "domainIncludes": "org-ctx:OrganizationMaturity",
+      "rangeIncludes": "ctx:FunctionalMaturity",
+      "cardinality": "n:n",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-TYPES"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:maturityClassifiedByTech",
+      "name": "maturityClassifiedByTech",
+      "description": "The technology maturity dimension of OrganizationMaturity maps to TechnologyMaturity in ContextTypes for cloud, digital transformation, and automation assessment",
+      "domainIncludes": "org-ctx:OrganizationMaturity",
+      "rangeIncludes": "ctx:TechnologyMaturity",
+      "cardinality": "n:1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-TYPES"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:maturityClassifiedByAI",
+      "name": "maturityClassifiedByAI",
+      "description": "The AI maturity dimension of OrganizationMaturity maps to AIReadiness in ContextTypes for data readiness, talent, and deployment assessment",
+      "domainIncludes": "org-ctx:OrganizationMaturity",
+      "rangeIncludes": "ctx:AIReadiness",
+      "cardinality": "n:1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-TYPES"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:sizedByContext",
+      "name": "sizedByContext",
+      "description": "An OrganizationContext maps to OrganisationSize in ContextTypes providing multi-dimensional size classification via headcount, customers, revenue, and KPI-linked metrics",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "ctx:OrganisationSize",
+      "cardinality": "1:1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-TYPES"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:marketClassifiedBy",
+      "name": "marketClassifiedBy",
+      "description": "A MarketContext is classified by MarketClassification entries from ContextTypes using standard industry schemes (SIC, NAICS, GICS) with sub-sector hierarchy",
+      "domainIncludes": "org-ctx:MarketContext",
+      "rangeIncludes": "ctx:MarketClassification",
+      "cardinality": "1:n",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-TYPES"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:segmentTypedBy",
+      "name": "segmentTypedBy",
+      "description": "A MarketSegment in ORG-CONTEXT is typed by a MarketSegment classification in ContextTypes providing segmentation taxonomy, addressable market sizing, and growth metrics",
+      "domainIncludes": "org-ctx:MarketSegment",
+      "rangeIncludes": "ctx:MarketSegment",
+      "cardinality": "n:1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-TYPES"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasCultureContext",
+      "name": "hasCultureContext",
+      "description": "An OrganizationContext has a CultureContext from ContextTypes capturing innovation orientation, risk tolerance, collaboration style, and decision-making patterns",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "ctx:CultureContext",
+      "cardinality": "1:1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-TYPES"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasGeoContext",
+      "name": "hasGeoContext",
+      "description": "An OrganizationContext has a GeoContext from ContextTypes capturing headquarters location, operating regions, market reach, and regulatory jurisdictions",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "ctx:GeoContext",
+      "cardinality": "1:1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-TYPES"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasMarketPositioning",
+      "name": "hasMarketPositioning",
+      "description": "An OrganizationContext has MarketPositioning from ContextTypes capturing competitive position, market share, brand strength, and differentiation strategy",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "ctx:MarketPositioning",
+      "cardinality": "1:n",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-TYPES"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:competitorBridgedByContext",
+      "name": "competitorBridgedByContext",
+      "description": "A Competitor in ORG-CONTEXT is bridged to CompetitorContext in ContextTypes for threat assessment, recommended responses, and context-aware watch-list management",
+      "domainIncludes": "org-ctx:Competitor",
+      "rangeIncludes": "ctx:CompetitorContext",
+      "cardinality": "1:1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-TYPES"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasRCSGContext",
+      "name": "hasRCSGContext",
+      "description": "An OrganizationContext has an RCSGContext from RCSG-FW defining which regulatory, compliance, security, and governance requirements apply to the organisation",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "rcsg-fw:RCSGContext",
+      "cardinality": "1:1",
+      "oaa:crossOntologyRef": "RCSG-FW"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasLocalizationContext",
+      "name": "hasLocalizationContext",
+      "description": "An OrganizationContext has LocalizationContext from ContextTypes providing currency, tax jurisdiction, data residency, and content localization variables per operating region",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "ctx:LocalizationContext",
+      "cardinality": "1:n",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-TYPES"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:brandHasDesignSystem",
+      "name": "brandHasDesignSystem",
+      "description": "A Brand has one or more Design Systems governing its visual identity, token cascades, and Figma source bindings",
+      "domainIncludes": "org-ctx:Brand",
+      "rangeIncludes": "ds:DesignSystem",
+      "cardinality": "1:n",
+      "oaa:crossOntologyRef": "DS-ONT"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "org-ctx:hasAuthorityDomains",
+      "name": "hasAuthorityDomains",
+      "description": "An OrganizationContext has AuthorityDomain classifications linking the organization to its governance, regulatory, or standards domains. Applicable to organizations of type StandardsBody, GovernmentAgency, or InternationalOrg.",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "org-ctx:AuthorityDomain",
+      "cardinality": "0:n"
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "org-ctx:rule-context-requires-organization",
+      "name": "ContextRequiresOrganization",
+      "description": "Every OrganizationContext must reference a valid organization from the ORG ontology",
+      "condition": "IF org-ctx:OrganizationContext exists",
+      "action": "THEN org-ctx:organizationRef IS NOT NULL",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "org-ctx:rule-competitor-limit",
+      "name": "CompetitorLimit",
+      "description": "A CompetitiveLandscape should have no more than 10 tracked competitors for focus",
+      "condition": "IF org-ctx:CompetitiveLandscape exists",
+      "action": "THEN COUNT(org-ctx:hasCompetitors) <= 10",
+      "priority": 2,
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "@id": "org-ctx:rule-maturity-scores-range",
+      "name": "MaturityScoresRange",
+      "description": "All maturity dimension scores must be integers between 1 and 5",
+      "condition": "IF org-ctx:OrganizationMaturity exists",
+      "action": "THEN all maturity levels BETWEEN 1 AND 5",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "org-ctx:rule-value-proposition-reference-only",
+      "name": "ValuePropositionReferenceOnly",
+      "description": "OrganizationContext only references value propositions — detailed pains, gains, solution, and ICP data lives in the VSOM ontology",
+      "condition": "IF org-ctx:hasValueProposition exists",
+      "action": "THEN vsom:ValueProposition reference IS valid AND NOT inline definition",
+      "priority": 2,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "org-ctx:rule-brand-must-be-named",
+      "name": "BrandMustBeNamed",
+      "description": "Every Brand must have a name for identification and market recognition",
+      "condition": "IF org-ctx:Brand exists",
+      "action": "THEN org-ctx:brandName IS NOT NULL",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "org-ctx:rule-segment-should-have-needs",
+      "name": "SegmentShouldHaveNeeds",
+      "description": "Market segments should identify at least one customer need to justify targeting",
+      "condition": "IF org-ctx:MarketSegment exists",
+      "action": "THEN COUNT(org-ctx:segmentHasNeed) >= 1",
+      "priority": 3,
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    }
+  ],
+  "crossOntologyReferences": {
+    "foundationSeries": [
+      "org:",
+      "ctx:"
+    ],
+    "rcsgSeries": [
+      "rcsg-fw:"
+    ],
+    "veSeries": [
+      "vsom:"
+    ],
+    "competitiveSeries": [
+      "ca:",
+      "cl:"
+    ],
+    "peSeries": [
+      "ds:"
+    ],
+    "description": "ORG-CONTEXT is a Foundation layer hub bridging ORG entities to domain-specific ontologies. It receives organizational identity from ORG, references value propositions in VSOM, and connects to ContextTypes for extensible multi-dimensional context classification spanning market, size, maturity (functional/tech/IT/AI), culture, geography, positioning, competitor, RCSG (regulatory/compliance/security/governance), and localization dimensions. Competitive analysis entities align with CA and CL ontologies.",
+    "lineageAlignment": {
+      "org:Organization": "ORG provides the core organization entity that ORG-CONTEXT enriches with market context",
+      "vsom:ValueProposition": "VSOM holds detailed value proposition definitions referenced by ORG-CONTEXT brands and products",
+      "ca:CompetitiveAnalysis": "CA provides competitive analysis frameworks that complement ORG-CONTEXT competitor tracking",
+      "cl:CompetitiveLandscape": "CL provides landscape models that ORG-CONTEXT competitive data feeds into",
+      "ctx:ContextType": "ContextTypes provides an extensible taxonomy of context dimensions assignable to organisations via ContextAssignment",
+      "ctx:MarketClassification": "ContextTypes MarketClassification provides industry and market classification with hierarchical sub-sector support",
+      "ctx:OrganisationSize": "ContextTypes OrganisationSize provides multi-dimensional size metrics (headcount, customers, revenue, KPI-linked)",
+      "ctx:FunctionalMaturity": "ContextTypes FunctionalMaturity provides per-function maturity assessment (marketing, sales, ops, etc.)",
+      "ctx:TechnologyMaturity": "ContextTypes TechnologyMaturity provides cloud, digital transformation, and automation maturity with IT and AI sub-types",
+      "ctx:CultureContext": "ContextTypes CultureContext provides innovation orientation, risk tolerance, collaboration, and decision-making culture dimensions",
+      "ctx:GeoContext": "ContextTypes GeoContext provides HQ location, operating regions, market reach, and regulatory jurisdictions",
+      "ctx:MarketPositioning": "ContextTypes MarketPositioning provides competitive position, market share, brand strength, and extensible positioning criteria",
+      "ctx:CompetitorContext": "ContextTypes CompetitorContext bridges to competitor analysis with threat assessment and strategic recommendations",
+      "rcsg-fw:RCSGContext": "RCSG-FW RCSGContext defines which regulatory, compliance, security, and governance requirements apply to the organisation — bridges to RCSG-Series implementation ontologies (GDPR, PII, MCSB)",
+      "ctx:LocalizationContext": "ContextTypes LocalizationContext provides currency, tax jurisdiction, data residency, and content localization variables per operating region",
+      "ds:DesignSystem": "DS-ONT DesignSystem provides the brand's visual identity system including token cascades, Figma source bindings, and theme mode support"
+    },
+    "keyBridges": [
+      {
+        "from": "org:Organization",
+        "to": "org-ctx:OrganizationContext",
+        "relationship": "contextForOrganization"
+      },
+      {
+        "from": "org-ctx:OrganizationContext",
+        "to": "vsom:ValueProposition",
+        "relationship": "hasValueProposition"
+      },
+      {
+        "from": "org-ctx:Brand",
+        "to": "vsom:ValueProposition",
+        "relationship": "brandValueProposition"
+      },
+      {
+        "from": "org-ctx:Product",
+        "to": "vsom:ValueProposition",
+        "relationship": "productValueProposition"
+      },
+      {
+        "from": "org-ctx:OrganizationContext",
+        "to": "ctx:ContextAssignment",
+        "relationship": "hasContextAssignments"
+      },
+      {
+        "from": "org-ctx:OrganizationContext",
+        "to": "ctx:OrganisationSize",
+        "relationship": "sizedByContext"
+      },
+      {
+        "from": "org-ctx:OrganizationContext",
+        "to": "ctx:CultureContext",
+        "relationship": "hasCultureContext"
+      },
+      {
+        "from": "org-ctx:OrganizationContext",
+        "to": "ctx:GeoContext",
+        "relationship": "hasGeoContext"
+      },
+      {
+        "from": "org-ctx:OrganizationContext",
+        "to": "ctx:MarketPositioning",
+        "relationship": "hasMarketPositioning"
+      },
+      {
+        "from": "org-ctx:OrganizationMaturity",
+        "to": "ctx:FunctionalMaturity",
+        "relationship": "maturityClassifiedByFunction"
+      },
+      {
+        "from": "org-ctx:OrganizationMaturity",
+        "to": "ctx:TechnologyMaturity",
+        "relationship": "maturityClassifiedByTech"
+      },
+      {
+        "from": "org-ctx:OrganizationMaturity",
+        "to": "ctx:AIReadiness",
+        "relationship": "maturityClassifiedByAI"
+      },
+      {
+        "from": "org-ctx:MarketContext",
+        "to": "ctx:MarketClassification",
+        "relationship": "marketClassifiedBy"
+      },
+      {
+        "from": "org-ctx:MarketSegment",
+        "to": "ctx:MarketSegment",
+        "relationship": "segmentTypedBy"
+      },
+      {
+        "from": "org-ctx:Competitor",
+        "to": "ctx:CompetitorContext",
+        "relationship": "competitorBridgedByContext"
+      },
+      {
+        "from": "org-ctx:OrganizationContext",
+        "to": "rcsg-fw:RCSGContext",
+        "relationship": "hasRCSGContext"
+      },
+      {
+        "from": "org-ctx:OrganizationContext",
+        "to": "ctx:LocalizationContext",
+        "relationship": "hasLocalizationContext"
+      },
+      {
+        "from": "org-ctx:Brand",
+        "to": "ds:DesignSystem",
+        "relationship": "brandHasDesignSystem"
+      }
+    ]
+  },
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "ORG-CTX-ONT",
+  "oaa:series": "FOUNDATION LAYER"
+}

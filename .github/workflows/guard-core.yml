@@ -1,0 +1,42 @@
+name: Guard PFC-Core
+
+# Blocks PRs that modify pfc-core/ unless authored by the PFC release bot.
+# pfc-core/ is the sealed distribution path — only pfc-release.yml (via
+# github-actions[bot]) may write to it. PFI teams can read and execute
+# sealed skills but cannot modify them.
+
+on:
+  pull_request:
+    paths:
+      - 'pfc-core/**'
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR author
+        env:
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+        run: |
+          # Allow the GitHub Actions bot (used by pfc-release.yml)
+          if [[ "$PR_AUTHOR" == "github-actions[bot]" ]]; then
+            echo "✅ PR authored by github-actions[bot] — allowed"
+            exit 0
+          fi
+
+          # Allow PRs labelled pfc-core-release (created by pfc-release.yml)
+          if echo "$PR_LABELS" | grep -q "pfc-core-release"; then
+            echo "✅ PR has pfc-core-release label — allowed"
+            exit 0
+          fi
+
+          # Block all other authors
+          echo "::error::❌ pfc-core/ is sealed. Only the PFC release pipeline (github-actions[bot]) can modify files in pfc-core/."
+          echo ""
+          echo "pfc-core/ contains sealed artifacts distributed from the PFC-Core hub (Azlan-EA-AAA)."
+          echo "Any manual changes will be overwritten on the next PFC release."
+          echo ""
+          echo "If you need to modify a sealed skill, submit a PR to the hub repository:"
+          echo "  https://github.com/ajrmooreuk/Azlan-EA-AAA"
+          exit 1

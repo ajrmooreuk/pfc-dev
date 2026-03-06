@@ -1,0 +1,144 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-EA-001",
+  "name": "EA Ontology (Enterprise Architecture Portfolio) — DEPRECATED",
+  "description": "DEPRECATED: Instance data absorbed into PPM-ONT/instance-data/ea-portfolio/. EA architecture modelling now provided by EA-CORE-ONT (hub), EA-TOGAF-ONT, EA-MSFT-ONT in PE-Series/EA/ sub-series. Original PPM portfolio extension for initiative tracking, dependency management, strategic pillar alignment.",
+  "version": "2.1.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/ea/",
+  "prefix": "ea:",
+  "status": "deprecated",
+  "supersededBy": ["Entry-ONT-EA-CORE-001", "Entry-ONT-PPM-001"],
+  "deprecatedDate": "2026-03-04",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-07",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./ea-portfolio-roadmaps-ppm-schema-oaa-v5.jsonld",
+    "documentation": "./README.md",
+    "instanceData": [
+      "./ea-portfolio-roadmaps-strategic-framework.jsonld",
+      "./ea-portfolio-roadmaps-advisory-portfolio.jsonld",
+      "./ea-portfolio-roadmaps-dependencies-graph.jsonld",
+      "./ea-portfolio-roadmaps-graph-edges.jsonld",
+      "./ea-portfolio-roadmaps-initiatives-batch-001.jsonld",
+      "./ea-portfolio-roadmaps-initiatives-batch-002.jsonld",
+      "./ea-portfolio-roadmaps-initiatives-batch-003.jsonld",
+      "./ea-portfolio-roadmaps-initiatives-batch-004.jsonld",
+      "./ea-portfolio-roadmaps-initiatives-foundation-strategic.jsonld"
+    ],
+    "glossary": "../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "Portfolio": "Collection of programmes delivering strategic vision within an investment envelope",
+    "Programme": "Coherent set of initiatives delivering benefits aligned to a strategic pillar",
+    "Initiative": "Discrete transformation initiative with defined outcomes and dependencies",
+    "Workstream": "Sub-component of initiative for complex delivery management",
+    "Dependency": "Typed relationship between initiatives for sequencing and enablement",
+    "Milestone": "Significant achievement point with success criteria and target date",
+    "PracticeArea": "Business unit or advisory practice contributing to transformation",
+    "BenefitMetric": "Quantified benefit measurement with baseline, target, and actual values",
+    "EffortMetric": "Resource consumption measurement for capacity planning",
+    "Risk": "Identified risk to initiative delivery with probability and impact"
+  },
+  "relationships": {
+    "internal": 16,
+    "crossOntology": [
+      {
+        "name": "alignsToVision",
+        "from": "ppm:Portfolio",
+        "to": "vsom:StrategicVision",
+        "cardinality": "1:1",
+        "purpose": "EA \u2192 VSOM: Portfolio-to-strategic vision alignment"
+      },
+      {
+        "name": "alignsToStrategicPillar",
+        "from": "ppm:Programme",
+        "to": "vsom:StrategyComponent",
+        "cardinality": "n:1",
+        "purpose": "EA \u2192 VSOM: Programme-to-strategy pillar traceability"
+      },
+      {
+        "name": "spawnsFromRecommendation",
+        "from": "ga:Recommendation",
+        "to": "ppm:Initiative",
+        "cardinality": "1:n",
+        "purpose": "GA \u2192 EA: Gap analysis recommendations spawn initiatives"
+      },
+      {
+        "name": "decomposesToEpic",
+        "from": "ppm:Initiative",
+        "to": "efs:Epic",
+        "cardinality": "1:n",
+        "purpose": "EA \u2192 EFS: Initiatives decompose into Epics for agile execution"
+      },
+      {
+        "name": "addressesObligation",
+        "from": "ppm:Initiative",
+        "to": "gdpr:ComplianceObligation",
+        "cardinality": "n:m",
+        "purpose": "EA \u2192 GDPR: Initiatives address regulatory compliance obligations"
+      },
+      {
+        "name": "mitigatedByControl",
+        "from": "ppm:Initiative",
+        "to": "mcsb:SecurityControl",
+        "cardinality": "n:m",
+        "purpose": "EA \u2192 MCSB: Initiatives implement security controls for risk mitigation"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-GA-001",
+    "Entry-ONT-EFS-001",
+    "Entry-ONT-ORG-001",
+    "Entry-ONT-GDPR-001",
+    "Entry-ONT-ALZ-001"
+  ],
+  "dependents": [
+    "Entry-ONT-PE-001",
+    "Entry-ONT-EMC-001"
+  ],
+  "layer": "EXECUTION LAYER (PE-Series)",
+  "domain": "Enterprise Architecture",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-01",
+  "lastModified": "2026-02-07",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-02",
+      "changes": "Initial EA ontology consolidating PPM schema extension with strategic framework, advisory portfolio, and initiative data"
+    },
+    {
+      "version": "2.0.0",
+      "date": "2026-02-07",
+      "changes": "OAA v6.1.0 upgrade: 18 relationships (14 internal + 4 cross-ontology) forming single connected component, 8 business rules with IF-THEN format, 10 entities as DefinedTerm with properties, 5 enumerations, crossOntologyReferences with keyBridges for VSOM/GA/EFS bridges"
+    },
+    {
+      "version": "2.1.0",
+      "date": "2026-02-07",
+      "changes": "RCSG integration: added gdpr:ComplianceObligation and mcsb:SecurityControl cross-ref stubs, addressesObligation and mitigatedByControl relationships connecting EA initiatives to GDPR/MCSB"
+    },
+    {
+      "version": "2.1.0-deprecated",
+      "date": "2026-03-04",
+      "changes": "DEPRECATED: EA-ONT absorbed into PPM-ONT (instance data) and EA sub-series (architecture modelling). Instance data copied to PPM-ONT/instance-data/ea-portfolio/. EA architecture now served by EA-CORE-ONT (hub), EA-TOGAF-ONT (methodology), EA-MSFT-ONT (vendor). See BRIEFING-EA-Sub-Series-Restructure-VE-Skill-Chain.md."
+    }
+  ],
+  "notes": "DEPRECATED — EA-ONT instance data has been absorbed into PPM-ONT/instance-data/ea-portfolio/. Enterprise architecture modelling is now provided by the EA sub-series under PE-Series/EA/: EA-CORE-ONT (platform-agnostic hub), EA-TOGAF-ONT (methodology spoke), EA-MSFT-ONT (vendor spoke). This entry is retained for historical reference only."
+}

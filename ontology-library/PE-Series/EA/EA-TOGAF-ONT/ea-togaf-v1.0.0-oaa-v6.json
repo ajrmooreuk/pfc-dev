@@ -1,0 +1,717 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ea-togaf": "https://oaa-ontology.org/v6/ea-togaf/",
+    "ea-core": "https://oaa-ontology.org/v6/ea-core/"
+  },
+  "@id": "https://oaa-ontology.org/v6/ea-togaf/schema",
+  "@type": "owl:Ontology",
+  "name": "TOGAF Architecture Development Method Ontology",
+  "description": "TOGAF ADM methodology ontology covering the complete Architecture Development Method lifecycle: ADM phases (Preliminary through Phase H plus Requirements Management), architecture artifact types (Catalogs, Matrices, Diagrams, Deliverables), building blocks (ABB/SBB), requirements, stakeholders, transition architectures, and work packages. Provides the enterprise architecture methodology framework used alongside EA-CORE-ONT domain entities.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "Enterprise Architecture Methodology",
+  "oaa:status": "Production",
+  "dateCreated": "2026-02-09",
+  "dateModified": "2026-02-09",
+  "creator": {
+    "@type": "Organization",
+    "name": "Azlan EA-AAA"
+  },
+  "oaa:imports": [
+    {
+      "@id": "ea-core:schema",
+      "name": "EA-CORE-ONT",
+      "version": "1.0.0",
+      "description": "Platform-agnostic EA core providing base entity types and architecture domains",
+      "importedEntities": [
+        "ea-core:EAEntity",
+        "ea-core:BusinessArchitecture",
+        "ea-core:DataArchitecture",
+        "ea-core:ApplicationArchitecture",
+        "ea-core:TechnologyArchitecture"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-EA-TOGAF-001",
+      "name": "Phase-to-Domain Mapping",
+      "description": "TOGAF ADM phases refine EA-CORE architecture domains through structured development",
+      "joinPath": "ea-togaf:ADMPhase → ea-togaf:refinesCoreDomain → ea-core:BusinessArchitecture|DataArchitecture|ApplicationArchitecture|TechnologyArchitecture",
+      "useCase": "Architecture development progress tracking across domains"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "ea-togaf:ADMPhase",
+      "@type": "rdfs:Class",
+      "name": "ADMPhase",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A phase in the TOGAF Architecture Development Method cycle. The ADM consists of Preliminary Phase, Phases A through H, and Requirements Management, forming an iterative cycle for enterprise architecture development.",
+      "oaa:properties": [
+        {
+          "name": "phaseCode",
+          "type": "ea-togaf:ADMPhaseCode",
+          "required": true,
+          "description": "Standard TOGAF phase identifier"
+        },
+        {
+          "name": "objective",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Primary objective of this ADM phase"
+        },
+        {
+          "name": "keyActivities",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Key activities performed during this phase"
+        }
+      ]
+    },
+    {
+      "@id": "ea-togaf:ArchitectureDomain",
+      "@type": "rdfs:Class",
+      "name": "ArchitectureDomain",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "description": "One of the four TOGAF architecture domains (Business, Data, Application, Technology) that structure the enterprise architecture into complementary views, each containing specific catalogs, matrices, and diagrams."
+    },
+    {
+      "@id": "ea-togaf:ArchitectureArtifact",
+      "@type": "rdfs:Class",
+      "name": "ArchitectureArtifact",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "A work product produced during architecture development. Artifacts include catalogs, matrices, diagrams, and deliverables that document the architecture at various levels of abstraction and from different viewpoints."
+    },
+    {
+      "@id": "ea-togaf:Catalog",
+      "@type": "rdfs:Class",
+      "name": "Catalog",
+      "rdfs:subClassOf": "ea-togaf:ArchitectureArtifact",
+      "description": "A list of building blocks of a specific type, providing an inventory of elements within an architecture domain (e.g., Business Capability Catalog, Application Portfolio Catalog, Technology Standards Catalog)."
+    },
+    {
+      "@id": "ea-togaf:Matrix",
+      "@type": "rdfs:Class",
+      "name": "Matrix",
+      "rdfs:subClassOf": "ea-togaf:ArchitectureArtifact",
+      "description": "A grid showing relationships between building blocks across different domains or within a domain (e.g., Application/Data Matrix, Stakeholder Map Matrix, Application/Technology Matrix)."
+    },
+    {
+      "@id": "ea-togaf:Diagram",
+      "@type": "rdfs:Class",
+      "name": "Diagram",
+      "rdfs:subClassOf": "ea-togaf:ArchitectureArtifact",
+      "description": "A visual representation of building blocks and their relationships, providing graphical views of the architecture (e.g., Business Capability Map, Application Communication Diagram, Platform Decomposition Diagram)."
+    },
+    {
+      "@id": "ea-togaf:Deliverable",
+      "@type": "rdfs:Class",
+      "name": "Deliverable",
+      "rdfs:subClassOf": "ea-togaf:ArchitectureArtifact",
+      "description": "A contractually specified work product that is formally reviewed, agreed, and signed off by stakeholders. Deliverables are produced by ADM phases and consumed by subsequent phases.",
+      "oaa:properties": [
+        {
+          "name": "signOffRequired",
+          "type": "xsd:boolean",
+          "required": false,
+          "description": "Whether formal sign-off is required",
+          "default": true
+        }
+      ]
+    },
+    {
+      "@id": "ea-togaf:BuildingBlock",
+      "@type": "rdfs:Class",
+      "name": "BuildingBlock",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A potentially reusable component of enterprise capability that can be combined with other building blocks to deliver architectures and solutions. Includes Architecture Building Blocks (ABBs) and Solution Building Blocks (SBBs).",
+      "oaa:properties": [
+        {
+          "name": "buildingBlockType",
+          "type": "ea-togaf:BuildingBlockType",
+          "required": true,
+          "description": "Whether this is an ABB or SBB"
+        }
+      ]
+    },
+    {
+      "@id": "ea-togaf:Requirement",
+      "@type": "rdfs:Class",
+      "name": "Requirement",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "description": "A statement of need that must be met by the architecture. Requirements are managed throughout the ADM cycle via Requirements Management and traced to architecture artifacts and building blocks.",
+      "oaa:properties": [
+        {
+          "name": "priority",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Requirement priority: MoSCoW (Must, Should, Could, Won't)"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Requirement status: Draft, Approved, Implemented, Verified"
+        }
+      ]
+    },
+    {
+      "@id": "ea-togaf:Stakeholder",
+      "@type": "rdfs:Class",
+      "name": "Stakeholder",
+      "rdfs:subClassOf": "schema:Person",
+      "description": "An individual, team, or organisation with interests in or concerns about the architecture. Stakeholders are mapped to concerns and addressed by specific ADM phases.",
+      "oaa:properties": [
+        {
+          "name": "concern",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Primary concern or interest of this stakeholder"
+        },
+        {
+          "name": "influence",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Level of influence: Low, Medium, High"
+        }
+      ]
+    },
+    {
+      "@id": "ea-togaf:TransitionArchitecture",
+      "@type": "rdfs:Class",
+      "name": "TransitionArchitecture",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "description": "An intermediate architecture state between baseline and target that defines a stable, achievable checkpoint during architecture transformation. Multiple transitions may exist on the roadmap.",
+      "oaa:properties": [
+        {
+          "name": "baselineRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to the baseline architecture state"
+        },
+        {
+          "name": "targetRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to the target architecture state"
+        },
+        {
+          "name": "sequenceOrder",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Order in the transition sequence"
+        }
+      ]
+    },
+    {
+      "@id": "ea-togaf:WorkPackage",
+      "@type": "rdfs:Class",
+      "name": "WorkPackage",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A set of activities and deliverables for implementing architecture changes. Work packages are the implementation units that bridge architecture planning to project execution.",
+      "oaa:properties": [
+        {
+          "name": "estimatedEffort",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Estimated effort for the work package"
+        },
+        {
+          "name": "priority",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Implementation priority"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "ea-togaf:precedes",
+      "@type": "owl:ObjectProperty",
+      "name": "precedes",
+      "description": "An ADM phase precedes another phase in the development cycle, establishing the sequential flow of the ADM iteration",
+      "domainIncludes": [
+        "ea-togaf:ADMPhase"
+      ],
+      "rangeIncludes": [
+        "ea-togaf:ADMPhase"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:inverseOf": "ea-togaf:follows"
+    },
+    {
+      "@id": "ea-togaf:follows",
+      "@type": "owl:ObjectProperty",
+      "name": "follows",
+      "description": "An ADM phase follows another phase in the development cycle, the inverse of precedes",
+      "domainIncludes": [
+        "ea-togaf:ADMPhase"
+      ],
+      "rangeIncludes": [
+        "ea-togaf:ADMPhase"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:inverseOf": "ea-togaf:precedes"
+    },
+    {
+      "@id": "ea-togaf:produces",
+      "@type": "owl:ObjectProperty",
+      "name": "produces",
+      "description": "An ADM phase produces architecture artifacts as outputs, establishing the deliverable chain through the ADM cycle",
+      "domainIncludes": [
+        "ea-togaf:ADMPhase"
+      ],
+      "rangeIncludes": [
+        "ea-togaf:ArchitectureArtifact"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ea-togaf:consumes",
+      "@type": "owl:ObjectProperty",
+      "name": "consumes",
+      "description": "An ADM phase consumes architecture artifacts as inputs from previous phases or the architecture repository",
+      "domainIncludes": [
+        "ea-togaf:ADMPhase"
+      ],
+      "rangeIncludes": [
+        "ea-togaf:ArchitectureArtifact"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-togaf:governsPhase",
+      "@type": "owl:ObjectProperty",
+      "name": "governsPhase",
+      "description": "An architecture artifact provides governance over ADM phases, constraining and guiding phase execution",
+      "domainIncludes": [
+        "ea-togaf:ArchitectureArtifact"
+      ],
+      "rangeIncludes": [
+        "ea-togaf:ADMPhase"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-togaf:validates",
+      "@type": "owl:ObjectProperty",
+      "name": "validates",
+      "description": "An ADM phase validates architecture artifacts to confirm conformance and fitness for purpose",
+      "domainIncludes": [
+        "ea-togaf:ADMPhase"
+      ],
+      "rangeIncludes": [
+        "ea-togaf:ArchitectureArtifact"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-togaf:informs",
+      "@type": "owl:ObjectProperty",
+      "name": "informs",
+      "description": "An architecture domain informs another domain, establishing the information flow between Business, Data, Application, and Technology domains",
+      "domainIncludes": [
+        "ea-togaf:ArchitectureDomain"
+      ],
+      "rangeIncludes": [
+        "ea-togaf:ArchitectureDomain"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-togaf:refines",
+      "@type": "owl:ObjectProperty",
+      "name": "refines",
+      "description": "An architecture artifact refines another artifact, providing more detail or a more specific version",
+      "domainIncludes": [
+        "ea-togaf:ArchitectureArtifact"
+      ],
+      "rangeIncludes": [
+        "ea-togaf:ArchitectureArtifact"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-togaf:contains",
+      "@type": "owl:ObjectProperty",
+      "name": "contains",
+      "description": "An architecture artifact or domain contains other artifacts, establishing compositional hierarchies",
+      "domainIncludes": [
+        "ea-togaf:ArchitectureArtifact",
+        "ea-togaf:ArchitectureDomain"
+      ],
+      "rangeIncludes": [
+        "ea-togaf:ArchitectureArtifact"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-togaf:realizesRequirement",
+      "@type": "owl:ObjectProperty",
+      "name": "realizesRequirement",
+      "description": "A building block realises one or more architecture requirements, providing the capability that satisfies the stated need",
+      "domainIncludes": [
+        "ea-togaf:BuildingBlock"
+      ],
+      "rangeIncludes": [
+        "ea-togaf:Requirement"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-togaf:addresses",
+      "@type": "owl:ObjectProperty",
+      "name": "addresses",
+      "description": "An ADM phase addresses stakeholder concerns, ensuring stakeholder needs are considered during architecture development",
+      "domainIncludes": [
+        "ea-togaf:ADMPhase"
+      ],
+      "rangeIncludes": [
+        "ea-togaf:Stakeholder"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-togaf:tracesTo",
+      "@type": "owl:ObjectProperty",
+      "name": "tracesTo",
+      "description": "An architecture artifact traces to requirements for traceability from design decisions to stated needs",
+      "domainIncludes": [
+        "ea-togaf:ArchitectureArtifact"
+      ],
+      "rangeIncludes": [
+        "ea-togaf:Requirement"
+      ],
+      "oaa:cardinality": "0..*"
+    }
+  ],
+  "enumerations": [
+    {
+      "@id": "ea-togaf:ADMPhaseCode",
+      "@type": "DefinedTermSet",
+      "name": "ADMPhaseCode",
+      "description": "Standard TOGAF ADM phase identifiers covering the full development cycle",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-togaf:phase/preliminary",
+          "name": "Preliminary",
+          "description": "Framework and principles establishment"
+        },
+        {
+          "@id": "ea-togaf:phase/A",
+          "name": "A",
+          "description": "Architecture Vision"
+        },
+        {
+          "@id": "ea-togaf:phase/B",
+          "name": "B",
+          "description": "Business Architecture"
+        },
+        {
+          "@id": "ea-togaf:phase/C",
+          "name": "C",
+          "description": "Information Systems Architectures (Data + Application)"
+        },
+        {
+          "@id": "ea-togaf:phase/D",
+          "name": "D",
+          "description": "Technology Architecture"
+        },
+        {
+          "@id": "ea-togaf:phase/E",
+          "name": "E",
+          "description": "Opportunities and Solutions"
+        },
+        {
+          "@id": "ea-togaf:phase/F",
+          "name": "F",
+          "description": "Migration Planning"
+        },
+        {
+          "@id": "ea-togaf:phase/G",
+          "name": "G",
+          "description": "Implementation Governance"
+        },
+        {
+          "@id": "ea-togaf:phase/H",
+          "name": "H",
+          "description": "Architecture Change Management"
+        },
+        {
+          "@id": "ea-togaf:phase/RM",
+          "name": "RM",
+          "description": "Requirements Management (continuous)"
+        }
+      ]
+    },
+    {
+      "@id": "ea-togaf:ArtifactType",
+      "@type": "DefinedTermSet",
+      "name": "ArtifactType",
+      "description": "Classification of TOGAF architecture artifact types",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-togaf:artifact-type/catalog",
+          "name": "Catalog",
+          "description": "Inventory list of building blocks"
+        },
+        {
+          "@id": "ea-togaf:artifact-type/matrix",
+          "name": "Matrix",
+          "description": "Relationship grid between building blocks"
+        },
+        {
+          "@id": "ea-togaf:artifact-type/diagram",
+          "name": "Diagram",
+          "description": "Visual representation of architecture"
+        },
+        {
+          "@id": "ea-togaf:artifact-type/deliverable",
+          "name": "Deliverable",
+          "description": "Formal work product requiring sign-off"
+        }
+      ]
+    },
+    {
+      "@id": "ea-togaf:BuildingBlockType",
+      "@type": "DefinedTermSet",
+      "name": "BuildingBlockType",
+      "description": "Classification of TOGAF building block types",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-togaf:bb-type/abb",
+          "name": "ArchitectureBuildingBlock",
+          "description": "Describes required capability at architecture level"
+        },
+        {
+          "@id": "ea-togaf:bb-type/sbb",
+          "name": "SolutionBuildingBlock",
+          "description": "Implements an ABB with specific products/technologies"
+        }
+      ]
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "ea-togaf:BR-TOGAF-001",
+      "name": "ADMPhaseSequencing",
+      "description": "Each ADM phase must establish sequential flow by having a precedes relationship or being the cycle endpoint",
+      "condition": "IF ea-togaf:ADMPhase exists and phaseCode is not 'H'",
+      "action": "THEN it MUST have exactly one ea-togaf:precedes relationship to the next phase",
+      "severity": "error",
+      "appliesTo": [
+        "ea-togaf:ADMPhase"
+      ]
+    },
+    {
+      "@id": "ea-togaf:BR-TOGAF-002",
+      "name": "PhaseProducesArtifacts",
+      "description": "Every ADM phase must produce at least one architecture artifact as its output",
+      "condition": "IF ea-togaf:ADMPhase exists",
+      "action": "THEN it MUST have at least one ea-togaf:produces relationship to an ea-togaf:ArchitectureArtifact",
+      "severity": "error",
+      "appliesTo": [
+        "ea-togaf:ADMPhase"
+      ]
+    },
+    {
+      "@id": "ea-togaf:BR-TOGAF-003",
+      "name": "CatalogDomainContainment",
+      "description": "Catalogs must be contained within an architecture domain for proper classification",
+      "condition": "IF ea-togaf:Catalog exists",
+      "action": "THEN it MUST be referenced by an ea-togaf:ArchitectureDomain via ea-togaf:contains",
+      "severity": "warning",
+      "appliesTo": [
+        "ea-togaf:Catalog"
+      ]
+    },
+    {
+      "@id": "ea-togaf:BR-TOGAF-004",
+      "name": "SBBRealizesABB",
+      "description": "Solution Building Blocks must realise at least one Architecture Building Block",
+      "condition": "IF ea-togaf:BuildingBlock has buildingBlockType 'SolutionBuildingBlock'",
+      "action": "THEN it MUST have at least one ea-togaf:realizesRequirement relationship",
+      "severity": "error",
+      "appliesTo": [
+        "ea-togaf:BuildingBlock"
+      ]
+    },
+    {
+      "@id": "ea-togaf:BR-TOGAF-005",
+      "name": "TransitionArchitectureStates",
+      "description": "Transition architectures must reference both baseline and target states for gap clarity",
+      "condition": "IF ea-togaf:TransitionArchitecture exists",
+      "action": "THEN it MUST have non-empty baselineRef and targetRef properties",
+      "severity": "error",
+      "appliesTo": [
+        "ea-togaf:TransitionArchitecture"
+      ]
+    },
+    {
+      "@id": "ea-togaf:BR-TOGAF-006",
+      "name": "DeliverablePhaseProduction",
+      "description": "Deliverables must be produced by exactly one ADM phase for clear accountability",
+      "condition": "IF ea-togaf:Deliverable exists",
+      "action": "THEN it MUST be referenced by exactly one ea-togaf:ADMPhase via ea-togaf:produces",
+      "severity": "error",
+      "appliesTo": [
+        "ea-togaf:Deliverable"
+      ]
+    },
+    {
+      "@id": "ea-togaf:BR-TOGAF-007",
+      "name": "WorkPackageDeliverableAssociation",
+      "description": "Work packages must contain at least one deliverable to define their scope",
+      "condition": "IF ea-togaf:WorkPackage exists",
+      "action": "THEN it MUST have at least one ea-togaf:contains relationship to an ea-togaf:Deliverable",
+      "severity": "warning",
+      "appliesTo": [
+        "ea-togaf:WorkPackage"
+      ]
+    },
+    {
+      "@id": "ea-togaf:BR-TOGAF-008",
+      "name": "RequirementPhaseTraceability",
+      "description": "Requirements must be traceable to at least one ADM phase that consumes them",
+      "condition": "IF ea-togaf:Requirement exists",
+      "action": "THEN it MUST be referenced by at least one ea-togaf:ADMPhase via ea-togaf:consumes",
+      "severity": "warning",
+      "appliesTo": [
+        "ea-togaf:Requirement"
+      ]
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-09",
+    "modifiedBy": "Azlan EA-AAA",
+    "changeNotes": "Initial creation from EA-ONT V3 source consolidation. TOGAF ADM methodology extracted from togaf-adm-extension-v2-pre-oaav5, covering 10 ADM phases, artifact taxonomy, building blocks, and governance lifecycle. Core entity types retained; individual deliverable instances available as separate instance data.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-02-09",
+        "notes": "Initial release: TOGAF ADM ontology from V3 source consolidation"
+      }
+    ]
+  },
+  "oaa:ontologyId": "EA-TOGAF-ONT",
+  "oaa:series": "PE-Series",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of ADMPhase within this ontology?",
+      "targetEntities": [
+        "ea-togaf:ADMPhase"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of ArchitectureDomain within this ontology?",
+      "targetEntities": [
+        "ea-togaf:ArchitectureDomain"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of ArchitectureArtifact within this ontology?",
+      "targetEntities": [
+        "ea-togaf:ArchitectureArtifact"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of Catalog within this ontology?",
+      "targetEntities": [
+        "ea-togaf:Catalog"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of Matrix within this ontology?",
+      "targetEntities": [
+        "ea-togaf:Matrix"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of Diagram within this ontology?",
+      "targetEntities": [
+        "ea-togaf:Diagram"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of Deliverable within this ontology?",
+      "targetEntities": [
+        "ea-togaf:Deliverable"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of BuildingBlock within this ontology?",
+      "targetEntities": [
+        "ea-togaf:BuildingBlock"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of Requirement within this ontology?",
+      "targetEntities": [
+        "ea-togaf:Requirement"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of Stakeholder within this ontology?",
+      "targetEntities": [
+        "ea-togaf:Stakeholder"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the role and purpose of TransitionArchitecture within this ontology?",
+      "targetEntities": [
+        "ea-togaf:TransitionArchitecture"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-012",
+      "question": "What is the role and purpose of WorkPackage within this ontology?",
+      "targetEntities": [
+        "ea-togaf:WorkPackage"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

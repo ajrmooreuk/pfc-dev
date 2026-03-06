@@ -1,0 +1,219 @@
+{
+  "@context": {
+    "ppm": "https://oaa-ontology.org/v6/ppm/",
+    "vsom": "https://pbs.azlan.me/ontology/vsom#",
+    "org": "https://pbs.azlan.me/ontology/org#",
+    "pe": "https://oaa-ontology.org/v6/process-engineering/",
+    "efs": "https://pbs.azlan.me/ontology/efs#",
+    "schema": "https://schema.org/",
+    "oaa": "https://pbs.azlan.me/oaa#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "ppm:ins-advisory-instance-001",
+  "@type": "oaa:OntologyInstance",
+  "oaa:instanceOf": "ppm:ins-advisory-template",
+  "oaa:schemaVersion": "4.0.0",
+  "oaa:instanceVersion": "1.0.0",
+  "oaa:vertical": "insurance",
+  "oaa:clientRef": "org:ctx-ins-exemplar",
+  "oaa:created": "2026-02-12",
+  "oaa:createdBy": "PFI Instance Generator",
+  "oaa:description": "Exemplar INS PPM instance — demonstrates a fully populated Insurance Advisory engagement with realistic project data, timelines, budgets, and resource allocation.",
+
+  "entities": [
+    {
+      "@id": "ppm:ins-org-001",
+      "@type": "ppm:Organisation",
+      "org_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "org_name": "Insurance Advisory Practice — Azlan",
+      "legal_name": "Azlan Consulting Ltd",
+      "org_type": "platform_owner",
+      "industry_sector": "Insurance Advisory, Financial Services Consulting",
+      "description": "Insurance Advisory Practice delivering digital transformation services to insurance sector clients across UK and EU markets",
+      "employee_count": 45,
+      "ppm_maturity_level": 3,
+      "governance_framework": "PRINCE2 Agile + MSP",
+      "status": "active"
+    },
+
+    {
+      "@id": "ppm:ins-portfolio-001",
+      "@type": "ppm:Portfolio",
+      "portfolio_id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+      "portfolio_name": "Insurance Advisory Practice Portfolio FY2026",
+      "org_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "description": "FY2026 Insurance Advisory portfolio covering 4 active engagements and 3 pipeline opportunities. Strategic focus: regulatory compliance acceleration, AI readiness, and Azure platform migration for mid-market insurers.",
+      "strategic_objectives": [
+        "Deliver 4 insurance digital transformation engagements in FY2026",
+        "Achieve 85%+ client satisfaction score across all engagements",
+        "Build reusable insurance vertical IP reducing delivery time by 30%",
+        "Establish RCS compliance expertise as market differentiator in insurance",
+        "Pipeline 3 new insurance engagements for FY2027"
+      ],
+      "budget_usd": 3500000,
+      "status": "active"
+    },
+
+    {
+      "@id": "ppm:ins-programme-001",
+      "@type": "ppm:Programme",
+      "programme_id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "programme_name": "INS-DTP-001: Exemplar Insurance Digital Transformation Programme",
+      "portfolio_id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+      "description": "Digital transformation programme for exemplar mid-market insurer. Four coordinated workstreams: EA Assessment, Regulatory Compliance, AI Readiness, and Azure Platform Migration. 10-month programme with staggered workstream launches.",
+      "programme_type": "transformation",
+      "budget_usd": 1200000,
+      "start_date": "2026-03-01",
+      "target_end_date": "2026-12-31",
+      "status": "planning",
+      "governance_model": "Programme Board (monthly) + Workstream Leads (weekly) + Client Steering Committee (fortnightly)",
+      "key_stakeholders": [
+        { "role": "Programme Director", "name": "TBD — Azlan Lead", "responsibility": "Overall programme delivery" },
+        { "role": "Client Sponsor", "name": "TBD — Client CTO", "responsibility": "Strategic direction and budget authority" },
+        { "role": "EA Workstream Lead", "name": "TBD", "responsibility": "Architecture assessment and design" },
+        { "role": "Compliance Workstream Lead", "name": "TBD", "responsibility": "RCSG compliance uplift" },
+        { "role": "AI Workstream Lead", "name": "TBD", "responsibility": "AIRL readiness assessment" },
+        { "role": "Migration Workstream Lead", "name": "TBD", "responsibility": "Azure platform migration" }
+      ]
+    },
+
+    {
+      "@id": "ppm:ins-proj-ea-001",
+      "@type": "ppm:Project",
+      "project_id": "d4e5f6a7-b8c9-0123-defa-234567890123",
+      "project_name": "INS-EA-001: Insurance EA Assessment",
+      "programme_id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "description": "Enterprise Architecture assessment for exemplar insurer — current state analysis across business, data, application, and technology domains with insurance regulatory overlay.",
+      "project_type": "assessment",
+      "methodology": "TOGAF ADM + Insurance Vertical Extensions",
+      "budget_usd": 180000,
+      "start_date": "2026-03-01",
+      "target_end_date": "2026-05-23",
+      "estimated_duration": "P12W",
+      "team_size": 4,
+      "status": "planning",
+      "risk_level": "medium",
+      "deliverables": [
+        { "id": "DEL-EA-001", "name": "Current State Architecture Blueprint", "format": "ArchiMate + Document", "due": "2026-04-11" },
+        { "id": "DEL-EA-002", "name": "Target State Architecture Blueprint", "format": "ArchiMate + Document", "due": "2026-05-02" },
+        { "id": "DEL-EA-003", "name": "Gap Analysis Report", "format": "Document + Spreadsheet", "due": "2026-05-16" },
+        { "id": "DEL-EA-004", "name": "Transformation Roadmap", "format": "Document + Gantt", "due": "2026-05-23" },
+        { "id": "DEL-EA-005", "name": "Insurance Regulatory Architecture Overlay", "format": "Document", "due": "2026-05-23" }
+      ]
+    },
+    {
+      "@id": "ppm:ins-proj-comp-001",
+      "@type": "ppm:Project",
+      "project_id": "e5f6a7b8-c9d0-1234-efab-345678901234",
+      "project_name": "INS-COMP-001: Insurance Compliance Uplift",
+      "programme_id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "description": "Multi-framework regulatory compliance uplift using RCS platform — covering MCSB, GDPR, PII, Solvency II, IDD, and DORA requirements for insurance operations.",
+      "project_type": "compliance",
+      "methodology": "RCS Unified Compliance Assessment",
+      "budget_usd": 350000,
+      "start_date": "2026-04-14",
+      "target_end_date": "2026-08-01",
+      "estimated_duration": "P16W",
+      "team_size": 5,
+      "status": "planning",
+      "risk_level": "high",
+      "deliverables": [
+        { "id": "DEL-COMP-001", "name": "Compliance Baseline Assessment", "format": "RCS Dashboard + Report", "due": "2026-05-09" },
+        { "id": "DEL-COMP-002", "name": "Cross-Framework Gap Analysis", "format": "RCS Report", "due": "2026-05-30" },
+        { "id": "DEL-COMP-003", "name": "Remediation Roadmap", "format": "Document + Tracker", "due": "2026-06-20" },
+        { "id": "DEL-COMP-004", "name": "Insurance Regulatory Mapping (Solvency II, IDD, DORA)", "format": "Ontology Instance + Report", "due": "2026-07-11" },
+        { "id": "DEL-COMP-005", "name": "Continuous Monitoring Configuration", "format": "Azure Config + Dashboard", "due": "2026-08-01" }
+      ]
+    },
+    {
+      "@id": "ppm:ins-proj-air-001",
+      "@type": "ppm:Project",
+      "project_id": "f6a7b8c9-d0e1-2345-fabc-456789012345",
+      "project_name": "INS-AIR-001: Insurance AI Readiness Assessment",
+      "programme_id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "description": "AI Readiness assessment using AIRL platform with insurance vertical calibration — underwriting automation, claims processing AI, risk modelling, and customer service chatbot readiness.",
+      "project_type": "assessment",
+      "methodology": "AIRL AI Readiness Assessment",
+      "budget_usd": 120000,
+      "start_date": "2026-04-14",
+      "target_end_date": "2026-06-06",
+      "estimated_duration": "P8W",
+      "team_size": 3,
+      "status": "planning",
+      "risk_level": "medium",
+      "deliverables": [
+        { "id": "DEL-AIR-001", "name": "AI Maturity Baseline (5 dimensions)", "format": "AIRL Dashboard + Report", "due": "2026-05-02" },
+        { "id": "DEL-AIR-002", "name": "Insurance AI Use Case Prioritisation", "format": "Document + Matrix", "due": "2026-05-16" },
+        { "id": "DEL-AIR-003", "name": "AI Gap Analysis", "format": "Report", "due": "2026-05-23" },
+        { "id": "DEL-AIR-004", "name": "AI Transformation Roadmap", "format": "Document + Gantt", "due": "2026-06-06" },
+        { "id": "DEL-AIR-005", "name": "AI Governance Framework Recommendations", "format": "Document", "due": "2026-06-06" }
+      ]
+    },
+    {
+      "@id": "ppm:ins-proj-mig-001",
+      "@type": "ppm:Project",
+      "project_id": "a7b8c9d0-e1f2-3456-abcd-567890123456",
+      "project_name": "INS-MIG-001: Insurance Platform Migration to Azure",
+      "programme_id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "description": "Azure platform migration for insurance workloads — data estate, application modernisation, and insurance-specific compliance controls. Aligned with EA target state and compliance requirements.",
+      "project_type": "migration",
+      "methodology": "Azure CAF + Insurance Regulatory Overlay",
+      "budget_usd": 550000,
+      "start_date": "2026-06-15",
+      "target_end_date": "2026-12-05",
+      "estimated_duration": "P24W",
+      "team_size": 8,
+      "status": "planning",
+      "risk_level": "high",
+      "deliverables": [
+        { "id": "DEL-MIG-001", "name": "Migration Discovery & Assessment", "format": "Azure Migrate Report", "due": "2026-07-10" },
+        { "id": "DEL-MIG-002", "name": "Azure Landing Zone Design (Insurance-compliant)", "format": "IaC + Design Doc", "due": "2026-08-07" },
+        { "id": "DEL-MIG-003", "name": "Data Migration Plan", "format": "Document + Scripts", "due": "2026-08-28" },
+        { "id": "DEL-MIG-004", "name": "Application Modernisation Roadmap", "format": "Document + Matrix", "due": "2026-09-18" },
+        { "id": "DEL-MIG-005", "name": "Insurance Compliance Controls Deployment", "format": "Azure Policy + Config", "due": "2026-11-06" },
+        { "id": "DEL-MIG-006", "name": "Post-Migration Validation Report", "format": "Report + Test Results", "due": "2026-12-05" }
+      ]
+    }
+  ],
+
+  "relationships": [
+    { "@type": "ppm:belongsTo", "from": "ppm:ins-portfolio-001", "to": "ppm:ins-org-001" },
+    { "@type": "ppm:contains", "from": "ppm:ins-portfolio-001", "to": "ppm:ins-programme-001" },
+    { "@type": "ppm:contains", "from": "ppm:ins-programme-001", "to": "ppm:ins-proj-ea-001" },
+    { "@type": "ppm:contains", "from": "ppm:ins-programme-001", "to": "ppm:ins-proj-comp-001" },
+    { "@type": "ppm:contains", "from": "ppm:ins-programme-001", "to": "ppm:ins-proj-air-001" },
+    { "@type": "ppm:contains", "from": "ppm:ins-programme-001", "to": "ppm:ins-proj-mig-001" },
+
+    { "@type": "ppm:dependsOn", "from": "ppm:ins-proj-comp-001", "to": "ppm:ins-proj-ea-001", "dependency_type": "finish-to-start", "lag": "P2W" },
+    { "@type": "ppm:dependsOn", "from": "ppm:ins-proj-air-001", "to": "ppm:ins-proj-ea-001", "dependency_type": "finish-to-start", "lag": "P2W" },
+    { "@type": "ppm:dependsOn", "from": "ppm:ins-proj-mig-001", "to": "ppm:ins-proj-ea-001", "dependency_type": "finish-to-start" },
+    { "@type": "ppm:dependsOn", "from": "ppm:ins-proj-mig-001", "to": "ppm:ins-proj-comp-001", "dependency_type": "start-to-start", "lag": "P8W" },
+
+    { "@type": "ppm:alignsToObjective", "from": "ppm:ins-portfolio-001", "to": "vsom:obj-insurance-transformation" },
+    { "@type": "ppm:alignsToObjective", "from": "ppm:ins-proj-comp-001", "to": "vsom:obj-regulatory-compliance" },
+    { "@type": "ppm:alignsToObjective", "from": "ppm:ins-proj-air-001", "to": "vsom:obj-ai-transformation" }
+  ],
+
+  "oaa:emcComposition": {
+    "category": "PPM",
+    "ontologiesComposed": ["PPM-ONT", "EFS-ONT", "PE-ONT"],
+    "instanceVertical": "insurance"
+  },
+
+  "oaa:programmeMetrics": {
+    "totalBudget": 1200000,
+    "totalDuration": "P40W",
+    "teamSize": 20,
+    "projectCount": 4,
+    "criticalPath": ["INS-EA-001", "INS-COMP-001", "INS-MIG-001"],
+    "milestones": [
+      { "id": "M1", "name": "EA Assessment Complete", "date": "2026-05-23", "gate": "G1" },
+      { "id": "M2", "name": "Compliance Baseline Established", "date": "2026-05-09", "gate": "G1" },
+      { "id": "M3", "name": "AI Readiness Assessed", "date": "2026-06-06", "gate": "G2" },
+      { "id": "M4", "name": "Remediation Plan Approved", "date": "2026-06-20", "gate": "G2" },
+      { "id": "M5", "name": "Landing Zone Deployed", "date": "2026-08-07", "gate": "G3" },
+      { "id": "M6", "name": "Migration Complete", "date": "2026-12-05", "gate": "G4" },
+      { "id": "M7", "name": "Programme Close-Out", "date": "2026-12-31", "gate": "G4" }
+    ]
+  }
+}

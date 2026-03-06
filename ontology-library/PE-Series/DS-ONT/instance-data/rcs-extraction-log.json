@@ -1,0 +1,130 @@
+{
+  "extractionMetadata": {
+    "date": "2026-02-10",
+    "method": "Figma MCP (Claude Code — PE Process PE-DS-EXTRACT-001)",
+    "figmaFileKey": "JowntVHgYzfuZmaLHNRVTZ",
+    "figmaFileName": "RCS-Design-System-v1",
+    "figmaFileUrl": "https://www.figma.com/design/JowntVHgYzfuZmaLHNRVTZ/RCS-Design-System-v1",
+    "toolsUsed": ["get_metadata", "get_design_context"],
+    "targetOntology": "DS-ONT v1.1.0 (Azlan-EA-AAA)",
+    "peProcessRef": "PE-DS-EXTRACT-001 (ds-token-extraction-process-v1.0.0.json)",
+    "agentModel": "claude-opus-4-6",
+    "phasesExecuted": {
+      "PHASE-1-EXTRACT": "pass",
+      "PHASE-2-CLASSIFY": "pass",
+      "PHASE-3-VALIDATE": "pass",
+      "PHASE-4-POPULATE": "pass"
+    },
+    "gateResults": {
+      "GATE-1-EXTRACTION-COMPLETE": "pass — 88 colour primitives (8 scales x 11), 7 spacing, 6 radius extracted",
+      "GATE-2-CLASSIFICATION-VALID": "pass — 118 primitives, 75 semantics, 0 components classified",
+      "GATE-3-SCHEMA-VALID": "pass — BR-DS-001 through BR-DS-008 zero blocking errors",
+      "GATE-4-OUTPUT-VALID": "pass — valid JSONLD with @context, @graph, all required entity types present"
+    },
+    "notes": "RCS Figma file uses visual colour swatches (fills) and CSS variable references for semantic tokens. get_variable_defs returned 'nothing selected' on root node 0:1 — used get_metadata to discover page structure, then get_design_context on specific frame/section nodes. 8 colour scales extracted with 11 shades each. Font family: Jura (Bold headings, Regular body). Component tokens added 2026-03-04: 56 tokens covering Button (14), Input (8), Checkbox (3), Card (5), Badge (9), Table (5), Sidebar (4), TopBar (2), Alert (6) — modelled on BAIV component tier pattern, mapped to RCS semantic tokens. Prompt reference: PROMPT-Brand-RCS-Design-Tokens.md"
+  },
+  "extractedNodes": {
+    "Primary / Purple (6004:42)": {
+      "figmaNodeId": "6004:42",
+      "tier": "Primitive",
+      "group": "colors",
+      "scaleName": "Purple",
+      "50": "#f3e2fd", "100": "#e9cafb", "200": "#d696f7", "300": "#c75ef3", "400": "#b220e3",
+      "500": "#8314ab", "600": "#641280", "700": "#4d0e62", "800": "#380a47", "900": "#25062f", "950": "#18041e"
+    },
+    "Secondary / PurplePink (6004:68)": {
+      "figmaNodeId": "6004:68",
+      "tier": "Primitive",
+      "group": "colors",
+      "scaleName": "PurplePink",
+      "50": "#f9eff9", "100": "#f1dff4", "200": "#e5c1e9", "300": "#dba6df", "400": "#cf87d4",
+      "500": "#c574d3", "600": "#a04ba6", "700": "#74377a", "800": "#4b244f", "900": "#2c142e", "950": "#1e0e1f"
+    },
+    "Accent / DBlue (6004:93)": {
+      "figmaNodeId": "6004:93",
+      "tier": "Primitive",
+      "group": "colors",
+      "scaleName": "DBlue",
+      "50": "#dde0fb", "100": "#bdc1f6", "200": "#7c88ec", "300": "#3b53e0", "400": "#132e9b",
+      "500": "#09134f", "600": "#07123d", "700": "#061035", "800": "#060d2b", "900": "#04081e", "950": "#030615"
+    },
+    "Success / Green (6004:118)": {
+      "figmaNodeId": "6004:118",
+      "tier": "Primitive",
+      "group": "colors",
+      "scaleName": "Green",
+      "50": "#d6fee4", "100": "#a7fec8", "200": "#14fd92", "300": "#00e881", "400": "#00d275",
+      "500": "#33c872", "600": "#009151", "700": "#00693b", "800": "#004527", "900": "#002515", "950": "#00190e"
+    },
+    "Warning / Yellow (6004:143)": {
+      "figmaNodeId": "6004:143",
+      "tier": "Primitive",
+      "group": "colors",
+      "scaleName": "Yellow",
+      "50": "#fff5da", "100": "#ffebaf", "200": "#ffdb4c", "300": "#eac846", "400": "#d8b940",
+      "500": "#c8b133", "600": "#96802c", "700": "#6a5b1f", "800": "#463c14", "900": "#26210b", "950": "#191507"
+    },
+    "Error / Red (6004:168)": {
+      "figmaNodeId": "6004:168",
+      "tier": "Primitive",
+      "group": "colors",
+      "scaleName": "Red",
+      "50": "#ffe6e9", "100": "#ffc9d0", "200": "#ff95a6", "300": "#ff5779", "400": "#eb1e56",
+      "500": "#ab1545", "600": "#871231", "700": "#660d25", "800": "#4a0a1b", "900": "#2f0611", "950": "#23040d"
+    },
+    "Information / BrightBlue (6004:193)": {
+      "figmaNodeId": "6004:193",
+      "tier": "Primitive",
+      "group": "colors",
+      "scaleName": "BrightBlue",
+      "50": "#eaeefc", "100": "#d8e1fa", "200": "#b1c4f5", "300": "#89a9f1", "400": "#5d8fec",
+      "500": "#3980ed", "600": "#175cb3", "700": "#104383", "800": "#0b2e59", "900": "#071b35", "950": "#031123"
+    },
+    "Neutral (6004:219)": {
+      "figmaNodeId": "6004:219",
+      "tier": "Primitive",
+      "group": "colors",
+      "scaleName": "Neutral",
+      "50": "#eceaec", "100": "#d9d7db", "200": "#b7b1b9", "300": "#968d9b", "400": "#786e7c",
+      "500": "#645c68", "600": "#474049", "700": "#363037", "800": "#252227", "900": "#181719", "950": "#110f12"
+    },
+    "Primary Semantic (32:128)": {
+      "figmaNodeId": "32:128",
+      "tier": "Semantic",
+      "group": "primary",
+      "surface/subtle": "#f3e2fd", "surface/lighter": "#c75ef3", "surface/default": "#8314ab", "surface/darker": "#4d0e62",
+      "border/subtle": "#e9cafb", "border/lighter": "#c75ef3", "border/default": "#8314ab", "border/darker": "#4d0e62",
+      "text/label": "#380a47"
+    },
+    "Neutral Semantic Tokens (36:59)": {
+      "figmaNodeId": "36:59",
+      "tier": "Semantic",
+      "group": "neutral",
+      "surface/subtle": "#eceaec", "surface/default": "#b7b1b9", "surface/disabled": "#b7b1b9",
+      "border/default": "#786e7c", "border/disabled": "#968d9b", "border/darker": "#474049",
+      "text/title": "#181719", "text/body": "#252227", "text/footnote": "#363037", "text/caption": "#363037",
+      "text/negative": "#eceaec", "text/disabled": "#645c68"
+    }
+  },
+  "instanceSummary": {
+    "brand": "rcs",
+    "pfiInstanceName": "RCS",
+    "designSystemVersion": "1.0.0",
+    "schemaVersion": "DS-ONT v1.1.0",
+    "entityCounts": {
+      "DesignSystem": 1,
+      "TokenCategory": 8,
+      "PrimitiveToken": 118,
+      "SemanticToken": 76,
+      "ComponentToken": 56,
+      "BrandVariant": 1,
+      "FigmaSource": 1,
+      "ThemeMode": 1,
+      "DesignPattern": 3
+    },
+    "totalTokens": 250,
+    "colourScales": ["Purple", "PurplePink", "DBlue", "Green", "Yellow", "Red", "BrightBlue", "Neutral"],
+    "fontFamily": "Jura",
+    "themeModeSupport": false
+  }
+}

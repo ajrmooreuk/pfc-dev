@@ -1,0 +1,528 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ds": "https://platformcore.io/ontology/ds/",
+    "emc": "https://platformcore.io/ontology/emc/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "ds:dice-app-skeleton-v1.0.0",
+  "@type": "ds:AppSkeletonInstance",
+  "ds:version": "1.0.0",
+  "ds:dateCreated": "2026-02-24",
+  "ds:generatedFrom": "pfi-app-skeleton-template-v1.0.0.jsonld",
+  "ds:sourceVSOM": "PBS/STRATEGY/VSOM-FloodGraph-AI-FRA.md",
+  "@graph": [
+
+    {
+      "@id": "ds:dice-app-skeleton-v1.0.0",
+      "@type": "ds:Application",
+      "ds:appId": "dice-app",
+      "ds:appName": "FloodGraph AI — PFI-PC-DICE",
+      "ds:version": "1.0.0",
+      "ds:dateCreated": "2026-02-24",
+      "ds:description": "Democratise expert-level flood risk assessment for UK construction by fusing regulatory knowledge graphs, real-time environmental data, and AI reasoning — reducing FRA turnaround from weeks to hours while eliminating compliance blind spots.",
+      "ds:appType": "SPA",
+      "ds:rootRoute": "/",
+      "ds:cascadeTier": "PFI",
+      "ds:extendsApp": { "@id": "ds:pfc-app-skeleton-v1.0.0" },
+      "ds:configuredByApp": { "@id": "emc:InstanceConfiguration-PFI-PC-DICE" }
+    },
+
+
+    {
+      "@id": "ds:zone-Z-DICE-100",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-DICE-100",
+      "ds:zoneName": "FloodGraph AI Identity",
+      "ds:zoneType": "Conditional",
+      "ds:position": "top",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 97
+    },
+
+    {
+      "@id": "ds:zone-Z-DICE-101",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-DICE-101",
+      "ds:zoneName": "Agent Dashboard",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 60,
+      "ds:zoneDescription": "Overview of all 11 agents — 7 inherited PE-RMF agents (Intake, Data-Gathering, Compliance, Report, Project-Manager, Regulatory-Watch, Archive) plus 4 domain agents (FRA-Assessment, SuDS-Mitigation, Climate-Projection, FRA-Narrative)"
+    },
+
+    {
+      "@id": "ds:zone-Z-DICE-102",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-DICE-102",
+      "ds:zoneName": "FRA Assessment Agent Panel",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 60,
+      "ds:zoneDescription": "FRA-Assessment-Agent — maps to PE-RMF Hazard-Assessment slot. Composes flood knowledge graph via EMC scope rules, identifies hazards (depth x velocity x return period), evaluates risk (hazard rating x vulnerability x consequence). Governed by grc:NPPF-Framework."
+    },
+
+    {
+      "@id": "ds:zone-Z-DICE-103",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-DICE-103",
+      "ds:zoneName": "SuDS Mitigation Agent Panel",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 60,
+      "ds:zoneDescription": "SuDS-Mitigation-Agent — maps to PE-RMF Mitigation slot. Designs SuDS treatment trains per CIRIA C753, calculates attenuation volumes, recommends resilience measures per BS 85500. Governed by grc:CIRIA-C753."
+    },
+
+    {
+      "@id": "ds:zone-Z-DICE-104",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-DICE-104",
+      "ds:zoneName": "Climate Projection Agent Panel",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 60,
+      "ds:zoneDescription": "Climate-Projection-Agent — maps to PE-RMF Scenario slot. Calculates epoch allowances for model runs using UKCP18 scenarios (RCP 2.6/4.5/8.5). Governed by grc:EA-ClimateGuidance."
+    },
+
+    {
+      "@id": "ds:zone-Z-DICE-105",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-DICE-105",
+      "ds:zoneName": "FRA Narrative Agent Panel",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 60,
+      "ds:zoneDescription": "FRA-Narrative-Agent — maps to PE-RMF Narrative slot. Generates FRA sections with flood-specific terminology, attaches graph provenance and evidence citations. Governed by grc:FRA-ReportStandard."
+    },
+
+    {
+      "@id": "ds:zone-Z-DICE-200",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-DICE-200",
+      "ds:zoneName": "Developer View",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE' && state.activeStakeholderRole === 'Developer'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 60,
+      "ds:zoneDescription": "Property developer portal — site selection, cost estimation, risk summary dashboard. Key actions: submit site, compare alternatives, view Sequential Test."
+    },
+
+    {
+      "@id": "ds:zone-Z-DICE-201",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-DICE-201",
+      "ds:zoneName": "Consultant View",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE' && state.activeStakeholderRole === 'Consultant'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 60,
+      "ds:zoneDescription": "Planning consultant workspace — full FRA workspace, ontology browser, evidence attachment. Key actions: author assessment, commission surveys, generate report."
+    },
+
+    {
+      "@id": "ds:zone-Z-DICE-202",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-DICE-202",
+      "ds:zoneName": "LPA View",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE' && state.activeStakeholderRole === 'LPA'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 60,
+      "ds:zoneDescription": "Local Planning Authority view — compliance checklist, test verification, cross-application comparison. Key actions: verify Sequential/Exception Test, approve/reject FRA."
+    },
+
+    {
+      "@id": "ds:zone-Z-DICE-203",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-DICE-203",
+      "ds:zoneName": "Insurer View",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE' && state.activeStakeholderRole === 'Insurer'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 60,
+      "ds:zoneDescription": "Insurance underwriter view — risk scoring, portfolio aggregation, claims correlation. Key actions: score risk, aggregate portfolio, price premium."
+    },
+
+    {
+      "@id": "ds:zone-Z-DICE-300",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-DICE-300",
+      "ds:zoneName": "Compliance Dashboard",
+      "ds:zoneType": "Sliding",
+      "ds:position": "left",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 60,
+      "ds:zoneDescription": "GRC-FW compliance dashboard — NPPF Sequential/Exception Test status, BS 85500 resilience checklist, CIRIA C753 SuDS compliance, EA Standing Advice decision tree verification, EA Climate Change Allowance currency."
+    },
+
+    {
+      "@id": "ds:zone-Z-DICE-301",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-DICE-301",
+      "ds:zoneName": "Analytics Dashboard",
+      "ds:zoneType": "Sliding",
+      "ds:position": "left",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 60,
+      "ds:zoneDescription": "KPI metrics and BSC objective tracking — Financial (ARR, cost per assessment), Customer (turnaround, NPS, LPA acceptance), Process (AI concordance, graph latency, Sequential Test automation), Learning (training corpus, climate currency)."
+    },
+
+    {
+      "@id": "ds:zone-Z-DICE-302",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-DICE-302",
+      "ds:zoneName": "Project Management",
+      "ds:zoneType": "Sliding",
+      "ds:position": "left",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE' && state.ppmActive === true",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 60,
+      "ds:zoneDescription": "PPM lifecycle for Level 2+ FRAs — survey commission → hydraulic modelling → assessment → SuDS design → report phases. Manages LSC supplier engagements (surveyors, modellers). Activates when fra:assessmentLevel >= Level2."
+    },
+
+
+    {
+      "@id": "ds:nav-L4-dice-agents",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-dice-agents",
+      "ds:label": "AI Agents",
+      "ds:itemType": "Button",
+      "ds:action": "toggleDICEAgents",
+      "ds:icon": "bot",
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI",
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+    },
+
+    {
+      "@id": "ds:nav-L4-dice-fra-assessment",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-dice-fra-assessment",
+      "ds:label": "FRA Assessment",
+      "ds:itemType": "Button",
+      "ds:action": "toggleDICEFRAAssessment",
+      "ds:icon": "file-search",
+      "ds:renderOrder": 2,
+      "ds:cascadeTier": "PFI",
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+    },
+
+    {
+      "@id": "ds:nav-L4-dice-suds",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-dice-suds",
+      "ds:label": "SuDS Design",
+      "ds:itemType": "Button",
+      "ds:action": "toggleDICESuDS",
+      "ds:icon": "droplets",
+      "ds:renderOrder": 3,
+      "ds:cascadeTier": "PFI",
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+    },
+
+    {
+      "@id": "ds:nav-L4-dice-climate",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-dice-climate",
+      "ds:label": "Climate",
+      "ds:itemType": "Button",
+      "ds:action": "toggleDICEClimate",
+      "ds:icon": "thermometer",
+      "ds:renderOrder": 4,
+      "ds:cascadeTier": "PFI",
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+    },
+
+    {
+      "@id": "ds:nav-L4-dice-narrative",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-dice-narrative",
+      "ds:label": "FRA Report",
+      "ds:itemType": "Button",
+      "ds:action": "toggleDICENarrative",
+      "ds:icon": "file-text",
+      "ds:renderOrder": 5,
+      "ds:cascadeTier": "PFI",
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+    },
+
+    {
+      "@id": "ds:nav-L4-dice-stakeholders",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-dice-stakeholders",
+      "ds:label": "Views",
+      "ds:itemType": "Dropdown",
+      "ds:action": "toggleDICEStakeholderMenu",
+      "ds:icon": "users",
+      "ds:renderOrder": 6,
+      "ds:cascadeTier": "PFI",
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+    },
+
+    {
+      "@id": "ds:nav-L4-dice-compose",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-dice-compose",
+      "ds:label": "Compose Graph",
+      "ds:itemType": "Button",
+      "ds:action": "composeDICEGraph",
+      "ds:icon": "git-merge",
+      "ds:renderOrder": 7,
+      "ds:cascadeTier": "PFI",
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+    },
+
+    {
+      "@id": "ds:nav-L4-dice-freeze",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-dice-freeze",
+      "ds:label": "Freeze Snapshot",
+      "ds:itemType": "Button",
+      "ds:action": "freezeDICESnapshot",
+      "ds:icon": "snowflake",
+      "ds:renderOrder": 8,
+      "ds:cascadeTier": "PFI",
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE' && state.composedPFIGraph",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+    },
+
+    {
+      "@id": "ds:nav-L4-dice-compliance",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-dice-compliance",
+      "ds:label": "Compliance",
+      "ds:itemType": "Button",
+      "ds:action": "toggleDICECompliance",
+      "ds:icon": "shield-check",
+      "ds:renderOrder": 9,
+      "ds:cascadeTier": "PFI",
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+    },
+
+    {
+      "@id": "ds:nav-L4-dice-analytics",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-dice-analytics",
+      "ds:label": "Analytics",
+      "ds:itemType": "Button",
+      "ds:action": "toggleDICEAnalytics",
+      "ds:icon": "bar-chart-3",
+      "ds:renderOrder": 10,
+      "ds:cascadeTier": "PFI",
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+    },
+
+    {
+      "@id": "ds:nav-L4-dice-ppm",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-dice-ppm",
+      "ds:label": "Projects",
+      "ds:itemType": "Button",
+      "ds:action": "toggleDICEPPM",
+      "ds:icon": "gantt-chart",
+      "ds:renderOrder": 11,
+      "ds:cascadeTier": "PFI",
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE' && state.ppmActive === true",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+    },
+
+
+    {
+      "@id": "ds:cmp-dice-identity",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-dice-identity",
+      "ds:slotName": "identity-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z-DICE-100" },
+      "ds:placesComponent": { "@id": "ds:dc-pfi-identity" },
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI"
+    },
+
+    {
+      "@id": "ds:cmp-dice-agent-dashboard",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-dice-agent-dashboard",
+      "ds:slotName": "agent-dashboard-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z-DICE-101" },
+      "ds:placesComponent": { "@id": "ds:dc-agent-dashboard" },
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI"
+    },
+
+    {
+      "@id": "ds:cmp-dice-fra-assessment",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-dice-fra-assessment",
+      "ds:slotName": "fra-assessment-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z-DICE-102" },
+      "ds:placesComponent": { "@id": "ds:dc-agent-panel" },
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI"
+    },
+
+    {
+      "@id": "ds:cmp-dice-suds-mitigation",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-dice-suds-mitigation",
+      "ds:slotName": "suds-mitigation-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z-DICE-103" },
+      "ds:placesComponent": { "@id": "ds:dc-agent-panel" },
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI"
+    },
+
+    {
+      "@id": "ds:cmp-dice-climate-projection",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-dice-climate-projection",
+      "ds:slotName": "climate-projection-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z-DICE-104" },
+      "ds:placesComponent": { "@id": "ds:dc-agent-panel" },
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI"
+    },
+
+    {
+      "@id": "ds:cmp-dice-fra-narrative",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-dice-fra-narrative",
+      "ds:slotName": "fra-narrative-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z-DICE-105" },
+      "ds:placesComponent": { "@id": "ds:dc-agent-panel" },
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI"
+    },
+
+    {
+      "@id": "ds:cmp-dice-developer-view",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-dice-developer-view",
+      "ds:slotName": "developer-view-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z-DICE-200" },
+      "ds:placesComponent": { "@id": "ds:dc-stakeholder-view" },
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI"
+    },
+
+    {
+      "@id": "ds:cmp-dice-consultant-view",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-dice-consultant-view",
+      "ds:slotName": "consultant-view-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z-DICE-201" },
+      "ds:placesComponent": { "@id": "ds:dc-stakeholder-view" },
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI"
+    },
+
+    {
+      "@id": "ds:cmp-dice-lpa-view",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-dice-lpa-view",
+      "ds:slotName": "lpa-view-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z-DICE-202" },
+      "ds:placesComponent": { "@id": "ds:dc-stakeholder-view" },
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI"
+    },
+
+    {
+      "@id": "ds:cmp-dice-insurer-view",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-dice-insurer-view",
+      "ds:slotName": "insurer-view-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z-DICE-203" },
+      "ds:placesComponent": { "@id": "ds:dc-stakeholder-view" },
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI"
+    },
+
+    {
+      "@id": "ds:cmp-dice-compliance",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-dice-compliance",
+      "ds:slotName": "compliance-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z-DICE-300" },
+      "ds:placesComponent": { "@id": "ds:dc-compliance-dashboard" },
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI"
+    },
+
+    {
+      "@id": "ds:cmp-dice-analytics",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-dice-analytics",
+      "ds:slotName": "analytics-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z-DICE-301" },
+      "ds:placesComponent": { "@id": "ds:dc-analytics-dashboard" },
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI"
+    },
+
+    {
+      "@id": "ds:cmp-dice-ppm",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-dice-ppm",
+      "ds:slotName": "ppm-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z-DICE-302" },
+      "ds:placesComponent": { "@id": "ds:dc-ppm-dashboard" },
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI"
+    },
+
+    {
+      "@id": "ds:cmp-pfi-context-bar",
+      "@type": "ds:ZoneComponent",
+      "ds:cascadeTier": "PFI",
+      "ds:placementId": "cmp-pfi-context-bar",
+      "ds:slotName": "context-bar-content",
+      "ds:placedInZone": { "@id": "ds:zone-Z3" },
+      "ds:placesComponent": { "@id": "ds:dc-context-bar" },
+      "ds:renderOrder": 1,
+      "ds:tokenOverrides": {
+        "--viz-accent": "#2563EB",
+        "--viz-accent-active": "#1D4ED8"
+      },
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-PC-DICE'"
+    }
+  ]
+}

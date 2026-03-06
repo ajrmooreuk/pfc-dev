@@ -1,0 +1,80 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-EMC-001",
+  "name": "EMC Ontology (Enterprise Model Composition)",
+  "description": "Orchestration hub that maps requirement scopes to ontology compositions across all 5 series (VE, PE, RCSG, Foundation, Orchestration), enabling filtered enterprise model assembly based on PFC/PFI/Product/ORG context with two-path competition (market-level + org-specific), agent-role bridge pattern, and CRT customer role taxonomy",
+  "version": "5.2.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/emc/",
+  "prefix": "emc:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "./pf-EMC-ONT-v5.2.0.jsonld",
+    "previousVersions": ["./pf-EMC-ONT-v5.1.0.jsonld", "./pf-EMC-ONT-v5.0.0.jsonld", "./pf-EMC-ONT-v4.0.0.jsonld", "./pf-EMC-ONT-v3.0.0.jsonld", "./pf-EMC-ONT-v1.0.0.jsonld"],
+    "documentation": null,
+    "glossary": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "entities": "ScopingDimension, ContextLevel, RequirementCategory (9 incl FULFILMENT), OntologySeries, OntologyComposition, CompositionRule (8), GraphPattern (6), InstanceConfiguration (4 incl IMP-MEAT-UK), GraphScopeRule, ScopeCondition, ScopeAction, ComposedGraphSpec, CanonicalSnapshot, ProductEntityBinding, BindingType",
+    "relationships": "32 relationships including 14 cross-series orchestration bridges, 3 agent bridges, 8 graph-scope rule relationships, 1 product-entity binding, 1 fulfilment bridge",
+    "businessRules": "17 rules (14 mandatory, 3 advisory) in IF-THEN format — 8 composition rules + 7 graph-scope rules + 1 binding confidence + 1 fulfilment bridge required",
+    "crossSeriesBridges": "VE (VSOM, OKR, CRT), PE (PPM, EA, AIAgent, OFM, LSC), RCSG (MCSB, GDPR via GRC-FW hub), Foundation (ORG, ORG-CONTEXT competitive), Market (INDUSTRY)"
+  },
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-OKR-001",
+    "Entry-ONT-PPM-001",
+    "Entry-ONT-EA-001",
+    "Entry-ONT-PE-001",
+    "Entry-ONT-ALZ-001",
+    "Entry-ONT-GDPR-001",
+    "Entry-ONT-GRC-FW-001",
+    "Entry-ONT-ORG-001",
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-IND-001",
+    "Entry-ONT-RRR-001",
+    "Entry-ONT-CRT-001",
+    "Entry-ONT-OFM-001",
+    "Entry-ONT-LSC-001"
+  ],
+  "dependents": [
+    "Entry-ONT-DS-001"
+  ],
+  "relationships": {
+    "crossOntology": [
+      { "target": "Entry-ONT-VSOM-001", "type": "orchestratesVESeries", "direction": "outgoing" },
+      { "target": "Entry-ONT-OKR-001", "type": "orchestratesOKR", "direction": "outgoing" },
+      { "target": "Entry-ONT-CRT-001", "type": "orchestratesCustomerRoles", "direction": "outgoing" },
+      { "target": "Entry-ONT-PPM-001", "type": "orchestratesPESeries", "direction": "outgoing" },
+      { "target": "Entry-ONT-EA-001", "type": "orchestratesEAInitiatives", "direction": "outgoing" },
+      { "target": "Entry-ONT-ALZ-001", "type": "orchestratesRCSGSeries", "direction": "outgoing" },
+      { "target": "Entry-ONT-GDPR-001", "type": "orchestratesCompliance", "direction": "outgoing" },
+      { "target": "Entry-ONT-ORG-001", "type": "orchestratesFoundation", "direction": "outgoing" },
+      { "target": "Entry-ONT-ORG-CTX-001", "type": "orchestratesOrgContext", "direction": "outgoing", "competitionPath": "org-specific" },
+      { "target": "Entry-ONT-IND-001", "type": "orchestratesMarketContext", "direction": "outgoing", "competitionPath": "market-level" },
+      { "target": "Entry-ONT-PE-001", "type": "agentActsAs", "direction": "outgoing", "bridgeType": "agent-role" },
+      { "target": "Entry-ONT-RRR-001", "type": "agentGovernedBy", "direction": "outgoing", "bridgeType": "agent-rbac" },
+      { "target": "Entry-ONT-OFM-001", "type": "orchestratesFulfilment", "direction": "outgoing", "bridgeType": "fulfilment" },
+      { "target": "Entry-ONT-LSC-001", "type": "orchestratesFulfilment", "direction": "outgoing", "bridgeType": "fulfilment" }
+    ]
+  },
+  "layer": "ORCHESTRATION",
+  "domain": "Enterprise Model Composition",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-02",
+  "lastModified": "2026-03-03",
+  "notes": "v5.2.0 (F41.5): FULFILMENT category + IMP-MEAT-UK InstanceConfig — RequirementCategory-Fulfilment, OFM-ONT+LSC-ONT to PE-Series (10→12), CompositionRule-FulfilmentBridge (p8), GraphPattern-FulfilmentBridge, orchestratesFulfilment relationship, BR-FulfilmentBridgeRequired. v5.1.0 (F19.5): ProductEntityBinding with confidence scoring. v5.0.0 (F19.1): Graph-Scope Rule Ontology Modelling — 5 entity types, 8 relationships, 7 rules. v4.0.0: Two-path competition, agent-role bridge, CRT-ONT, VHF/ANTQ."
+}

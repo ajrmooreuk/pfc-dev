@@ -1,0 +1,174 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "emc": "https://oaa-ontology.org/v5/emc/",
+    "vp": "https://oaa-ontology.org/v5/vp/",
+    "rrr": "https://oaa-ontology.org/v5/rrr/",
+    "org": "https://oaa-ontology.org/v5/organization/",
+    "org-ctx": "https://platformcore.io/ontology/org-context/",
+    "kpi": "https://oaa-ontology.org/v5/kpi/",
+    "nut": "https://oaa-ontology.org/v6/nutrition/",
+    "ind": "https://oaa-ontology.org/v6/industry/",
+    "crt": "https://oaa-ontology.org/v6/constraint/"
+  },
+  "@type": "InstanceDataSet",
+  "@id": "emc:vhf-emc-instance-v1.0.0",
+  "metadata": {
+    "title": "VHF EMC InstanceConfiguration -- B2C Nutrition Coaching Graph",
+    "version": "1.0.0",
+    "created": "2026-02-26",
+    "author": "PF-Core Platform Team",
+    "owningInstance": "PFI-VHF",
+    "sourceOntology": "EMC-ONT v5.0.0",
+    "oaaVersion": "7.0.0",
+    "description": "EMC InstanceConfiguration for VHF Nutrition App -- a B2C HealthTech PFI instance proving the EMC pattern for personalised nutrition coaching. Models AI-driven meal plan generation with multi-constraint resolution (30 diet types x 14 allergens), macro targeting, and coaching protocols. Coach James Kerby's methodology digitised as graph-driven nutrition intelligence. Smallest PFI instance (6 ontologies + EMC), maturity level 1 (PoC).",
+    "designDirectorPipeline": {
+      "sourceOntologies": ["VP-ONT", "RRR-ONT", "NUT-ONT", "KPI-ONT"],
+      "compositionTarget": "emc:ComposedGraphSpec-VHF",
+      "instanceConfigRef": "emc:InstanceConfiguration-VHF"
+    }
+  },
+  "examples": [
+
+    {"_section": "=== INSTANCE CONFIGURATION ==="},
+
+    {
+      "@type": "emc:InstanceConfiguration",
+      "@id": "emc:InstanceConfiguration-VHF",
+      "productCode": "PFI-VHF",
+      "productName": "VHF Nutrition App",
+      "description": "VHF Nutrition App -- B2C personalised nutrition coaching platform built around Coach James Kerby's methodology. AI-generated meal plans with multi-constraint resolution (30 diet types x 14 allergens), macro-first targeting, variety enforcement, and 30-day automated generation. Smallest PFI instance, proving EMC pattern for direct-to-consumer HealthTech.",
+      "contextLevel": "PFI",
+      "requirementScopes": [
+        "PRODUCT"
+      ],
+      "maturityLevel": 1,
+      "verticalMarket": "HealthTech / Nutrition Coaching",
+      "jurisdictions": ["UK"],
+      "requiredOntologies": [
+        "ORG-ONT",
+        "ORG-CONTEXT-ONT",
+        "VP-ONT",
+        "RRR-ONT",
+        "CRT-ONT",
+        "INDUSTRY-ONT",
+        "NUT-ONT",
+        "KPI-ONT",
+        "EMC-ONT"
+      ],
+      "recommendedOntologies": [],
+      "pendingOntologies": [],
+      "appSkeletonConfig": {
+        "baseApp": "pfc-skeleton-patterns",
+        "pfiOverrides": "pfi-vhf-nutrition-app-dev/application/vhf-app-skeleton-v1.0.0.jsonld",
+        "productOverrides": null,
+        "appOverrides": null,
+        "_note": "VHF is a standalone app consuming PFC toolkit outputs (80% leverage). pfiOverrides defines 8 zones, 6 L4 nav items, 12 actions, Viridian brand tokens."
+      },
+      "instanceDataRefs": [
+        {
+          "ontology": "VP-ONT",
+          "file": "VE-Series/VP-ONT/instance-data/vhf/vhf-vp-instances-v1.0.0.jsonld",
+          "description": "4 VP canvases (Weight Management, Dietary Compliance, Coach Efficiency, Nutritional Quality), VP-RRR alignment"
+        },
+        {
+          "ontology": "RRR-ONT",
+          "file": "VE-Series/RRR-ONT/instance-data/vhf/vhf-rrr-instances-v1.0.0.jsonld",
+          "description": "3 functional roles (Coach, AI Agent, Client), 4 risks, 4 requirements, 4 results, RACI assignments"
+        }
+      ],
+
+      "scopeRules": [
+        {
+          "_note": "No scope rules defined yet -- placeholder for future maturity. VHF at maturity level 1 (PoC) uses requirementScopes-only filtering via PRODUCT scope. Scope rules will be added as the instance matures to level 2+."
+        }
+      ],
+
+      "composedGraphSpec": {
+        "@type": "emc:ComposedGraphSpec",
+        "@id": "emc:ComposedGraphSpec-VHF",
+        "specId": "VHF-Graph-Spec",
+        "specName": "VHF Nutrition Coaching Composed Graph Specification",
+        "description": "Single-layer composed graph for B2C nutrition coaching. Value propositions and roles feed into nutrition constraint resolution and meal plan generation. No supply chain or fulfilment layers -- pure product graph.",
+        "componentOntologies": ["VP-ONT", "RRR-ONT", "NUT-ONT", "KPI-ONT", "ORG-ONT", "ORG-CONTEXT-ONT", "CRT-ONT", "INDUSTRY-ONT"],
+        "layers": [
+          {
+            "layerId": "L1-Product",
+            "layerName": "Product -- Nutrition Coaching Platform (VP + RRR + NUT + KPI)",
+            "status": "active",
+            "ontologies": ["VP-ONT", "RRR-ONT", "NUT-ONT", "KPI-ONT", "CRT-ONT"],
+            "description": "Single product layer: 4 value proposition canvases define the problem-solution-benefit structure. RRR roles (Coach, AI Agent, Client) drive RACI assignments. NUT-ONT models meal plans, dietary constraints, macro targets, and variety rules. KPI-ONT tracks coaching outcomes.",
+            "entityCount": {
+              "valuePropositions": 4,
+              "problems": 4,
+              "solutions": 4,
+              "benefits": 4,
+              "functionalRoles": 3,
+              "raciAssignments": 8,
+              "risks": 4,
+              "requirements": 4,
+              "results": 4
+            }
+          }
+        ],
+        "dataSliceRefs": [
+          {"ontology": "VP-ONT", "slice": "VHF value proposition -- 4 canvases (Weight Management, Dietary Compliance, Coach Efficiency, Nutritional Quality)"},
+          {"ontology": "RRR-ONT", "slice": "VHF 3 functional roles (Coach, AI Agent, Client), 4 risks, 4 requirements, 4 results"},
+          {"ontology": "NUT-ONT", "slice": "Planned -- meal plan structures, dietary constraints (30 types x 14 allergens), macro targets, variety rules"},
+          {"ontology": "KPI-ONT", "slice": "Planned -- coaching outcome KPIs (allergen compliance, macro variance, variety score, coach throughput)"},
+          {"ontology": "ORG-CONTEXT-ONT", "slice": "VHF organisation profile, HealthTech market context"}
+        ],
+        "joinPoints": [
+          {
+            "joinId": "JP-VHF-001",
+            "from": "vp:Problem",
+            "to": "rrr:Risk",
+            "relationship": "problemIsRisk",
+            "description": "VP problems map directly to RRR risks per JP-VP-RRR-001 standing alignment convention",
+            "status": "active"
+          },
+          {
+            "joinId": "JP-VHF-002",
+            "from": "vp:Solution",
+            "to": "rrr:Requirement",
+            "relationship": "solutionIsRequirement",
+            "description": "VP solutions map directly to RRR requirements per JP-VP-RRR-001 standing alignment convention",
+            "status": "active"
+          },
+          {
+            "joinId": "JP-VHF-003",
+            "from": "vp:Benefit",
+            "to": "rrr:Result",
+            "relationship": "benefitIsResult",
+            "description": "VP benefits map directly to RRR results per JP-VP-RRR-001 standing alignment convention",
+            "status": "active"
+          },
+          {
+            "joinId": "JP-VHF-004",
+            "from": "rrr:FunctionalRole",
+            "to": "kpi:KPI",
+            "relationship": "roleOwnsMeasurement",
+            "description": "Functional roles own KPI measurements -- Coach owns client outcomes, AI Agent owns plan quality metrics",
+            "status": "planned"
+          }
+        ],
+        "cascadeRules": [],
+        "rootAnchorEntity": "emc:InstanceConfiguration-VHF",
+        "frozenVersion": "1.0.0"
+      },
+
+      "canonicalSnapshot": {
+        "@type": "emc:CanonicalSnapshot",
+        "@id": "emc:CanonicalSnapshot-VHF-v1",
+        "snapshotId": "VHF-Snapshot-v1.0.0",
+        "snapshotVersion": "1.0.0",
+        "sourceComposedGraphSpec": "emc:ComposedGraphSpec-VHF",
+        "frozenAt": "2026-02-26T00:00:00Z",
+        "frozenBy": "PF-Core Platform Team",
+        "changeControlStatus": "locked",
+        "parentSnapshot": null,
+        "coverageNote": "Single-layer product coverage: L1 Product (4 VP canvases, 3 roles, VP-RRR alignment). 4 join points (3 active, 1 planned). No cascade rules at maturity level 1."
+      }
+    }
+  ]
+}

@@ -1,0 +1,318 @@
+{
+  "@context": "https://platformcore.io/ontology/glossary/",
+  "@type": "UnifiedGlossary",
+  "@id": "azlan-unified-glossary",
+  "name": "Azlan Ontology Unified Glossary",
+  "version": "3.0.0",
+  "oaaVersion": "7.0.0",
+  "lastUpdated": "2026-02-27",
+  "description": "Unified glossary of all terms across the Azlan EA-AAA ontology ecosystem, including entity archetypes, graph visualisation concepts, edge semantics, and cross-ontology resolution",
+
+  "orchestrationLayer": {
+    "EMC-ONT": {
+      "EnterpriseModelComposition": "Orchestration ontology that maps requirement scopes to ontology compositions based on context filtering",
+      "ScopingDimension": "Filter criteria for selecting applicable ontology data (contextLevel, instanceId, productContext, orgRolesGovernance, orgContext)",
+      "RequirementCategory": "Classification of enterprise requirements (STRATEGIC, PRODUCT, PPM, COMPETITIVE, ORG-DESIGN, PROCESS, ENTERPRISE, AGENTIC, FULFILMENT, SECURITY, COMPLIANCE, GOVERNANCE, COMMUNICATION, ANALYTICS)",
+      "CompositionRule": "Pattern for assembling ontology graphs (Hub-Spoke, Lineage Chain, Bridge-Join)",
+      "AgenticBuildSupport": "Capability for AI-augmented solution development using ontologies as technology-agnostic layer"
+    }
+  },
+
+  "foundationLayer": {
+    "ORG-ONT": {
+      "Organization": "Core organizational entity representing a company, division, or business unit",
+      "OrganizationContext": "Bridge entity connecting an organization to domain-specific contexts",
+      "OrganizationStructure": "Hierarchical arrangement of organizational units and reporting relationships"
+    },
+    "ORG-CONTEXT": {
+      "ContextHub": "Central connection point linking organizations to all domain contexts via bridge pattern",
+      "hasStrategicContext": "Bridge relationship connecting to VE-VSOM-ONT strategic planning",
+      "hasCompetitiveLandscape": "Bridge relationship connecting to CL-ONT market intelligence",
+      "hasMaturityProfile": "Bridge relationship connecting to ORG-MAT-ONT assessment",
+      "hasGapAnalysis": "Bridge relationship connecting to GA-ONT analysis",
+      "hasProcessContext": "Bridge relationship connecting to PE-Process-Engr-ONT",
+      "hasRoleContext": "Bridge relationship connecting to VE-RRR-ONT roles and governance"
+    },
+    "ORG-MAT-ONT": {
+      "MaturityProfile": "Overall maturity assessment container for an organization",
+      "SizeProfile": "Organization size classification (startup, SMB, enterprise, etc.)",
+      "SectorProfile": "Industry sector classification and characteristics",
+      "TechAIMaturity": "Assessment of technology and AI capability maturity",
+      "DigitalMaturity": "Assessment of digital transformation progress"
+    }
+  },
+
+  "competitiveLayer": {
+    "CL-ONT": {
+      "CompetitiveLandscape": "Market environment including competitors, segments, and dynamics",
+      "MarketSegment": "Defined portion of the market with common characteristics",
+      "CompetitorProfile": "Detailed information about a competitor organization",
+      "MarketDynamic": "Trend or force affecting the market environment",
+      "CompetitiveAdvantage": "Sustainable differentiator providing market position benefit",
+      "StrategicOpportunity": "Identified market opportunity for strategic action"
+    },
+    "CA-ONT": {
+      "CompetitiveAnalysis": "Structured analysis comparing organization against competitors",
+      "TargetOrganization": "The organization being analyzed (typically the client)",
+      "CompetitorOrganization": "Organization being compared against the target"
+    },
+    "GA-ONT": {
+      "GapAnalysis": "Assessment identifying gaps between current and desired state",
+      "IdentifiedGap": "Specific gap or deficiency identified through analysis",
+      "ThreatAssessment": "Evaluation of external threats to the organization",
+      "OpportunityAssessment": "Evaluation of opportunities for improvement",
+      "PriorityMatrix": "Framework for ranking and prioritizing identified items",
+      "Recommendation": "Actionable suggestion derived from gap analysis"
+    }
+  },
+
+  "veSeriesLayer": {
+    "VE-VSOM-ONT": {
+      "VSOMFramework": "Vision-Strategy-Objectives-Metrics framework for strategic planning",
+      "VisionComponent": "Long-term aspirational statement of organizational purpose",
+      "StrategyComponent": "High-level approach to achieving the vision",
+      "ObjectivesComponent": "Measurable goals aligned to strategy",
+      "MetricsComponent": "Quantitative measures tracking objective progress",
+      "StrategicReviewCycle": "Periodic review process updating strategy based on metrics and market changes"
+    },
+    "VE-OKR-ONT": {
+      "Objective": "Qualitative description of a desired outcome",
+      "KeyResult": "Measurable outcome indicating objective achievement",
+      "OKRCycle": "Time-bounded period for OKR execution (typically quarterly)",
+      "OKRAlignment": "Hierarchical connection between OKRs at different organizational levels"
+    },
+    "VE-VP-ONT": {
+      "ValueProposition": "Statement of value delivered to customers",
+      "IdealCustomerProfile": "Description of the target customer persona",
+      "Problem": "Customer pain point or challenge addressed",
+      "PainPoint": "Specific frustration or difficulty experienced by customers",
+      "Gain": "Benefit or outcome desired by customers",
+      "Solution": "Product or service addressing customer problems",
+      "Benefit": "Value delivered by the solution",
+      "Differentiator": "Unique aspect distinguishing from competitors",
+      "MessagingFramework": "Structured approach to communicating value proposition"
+    },
+    "VE-RRR-ONT": {
+      "Role": "Functional position within an organization with defined responsibilities",
+      "RoleTaxonomy": "Hierarchical classification of roles (L0-L4)",
+      "L0EnterpriseGovernance": "Board-level governance roles (Board of Directors, Chairman, Shareholders)",
+      "L1CoreCSuite": "Primary C-Suite executives (CEO, COO, CFO, CTO, CMO, CHRO)",
+      "L1ExtendedCSuite": "Specialized C-Suite roles (CDO, CAIO, CPO, CIO, CSO-SEC, CSO-STR, CRO, CCO, CLO, CISO)",
+      "L2ArchitectureTrack": "Enterprise architecture roles (EA, BA, DA, SA, Solutions, Technical, Integration)",
+      "L2L3AzureMicrosoftPlatform": "Microsoft/Azure platform architect roles",
+      "L4ApplicationTemplate": "Product team roles (Product Owner, Tech Lead, UX Lead, Data Engineer, AI Developer, QA Lead)",
+      "RACI": "Responsibility assignment matrix (Responsible, Accountable, Consulted, Informed)",
+      "RBAC": "Role-Based Access Control permission model",
+      "VSOMAccountability": "Mapping of C-Suite roles to VSOM component accountability",
+      "RoleApplicabilityFiltering": "Context-based filtering of applicable roles (PFC/PFI/Product/ORG)"
+    },
+    "VE-PMF-ONT": {
+      "ProductMarketFit": "Alignment between product offering and market demand",
+      "MarketValidation": "Evidence of market acceptance and demand",
+      "CustomerSegmentFit": "Alignment with target customer segment needs",
+      "CompetitivePositioning": "Product position relative to competitors"
+    },
+    "VE-KPI-ONT": {
+      "KPI": "Key Performance Indicator measuring critical success factors",
+      "KPITarget": "Desired value or threshold for KPI achievement",
+      "KPIMeasurement": "Actual recorded value of a KPI at a point in time"
+    }
+  },
+
+  "peSeriesLayer": {
+    "PE-PPM-ONT": {
+      "Portfolio": "Collection of programmes and projects aligned to strategic objectives",
+      "Programme": "Group of related projects managed together for benefits",
+      "Project": "Temporary endeavor to create a unique product or service",
+      "Milestone": "Significant point or event in a project timeline",
+      "Deliverable": "Tangible output produced by project activities"
+    },
+    "PE-Process-Engr-ONT": {
+      "Process": "Defined sequence of activities producing an outcome",
+      "Workflow": "Automated or semi-automated process execution",
+      "Activity": "Single unit of work within a process",
+      "ProcessModel": "Visual or formal representation of a process"
+    },
+    "PE-EFS-ONT": {
+      "Epic": "Large body of work that can be broken down into features",
+      "Feature": "Functionality that delivers business value",
+      "UserStory": "Description of desired functionality from user perspective",
+      "Persona": "Fictional character representing a user type",
+      "AcceptanceCriteria": "Conditions that must be met for story completion"
+    },
+    "PE-LSC-ONT": {
+      "SupplyChain": "End-to-end logistics corridor connecting origin to destination, defining trade route, commodity type, regulatory regime, and chain characteristics",
+      "ChainNode": "Physical or logical waypoint in the supply chain (port, warehouse, customs facility, distribution centre, abattoir, etc.)",
+      "ShipmentLeg": "Single transport segment between two chain nodes with mode, carrier, duration, and container details",
+      "Shipment": "Physical consignment travelling the supply chain, tracking current location, status, and cold chain events",
+      "ComplianceGate": "Regulatory or procedural checkpoint that must be cleared before cargo can proceed (customs, SPS inspection, phytosanitary, etc.)",
+      "TradeDocument": "Official document required at compliance gates (bill of lading, health certificate, customs declaration, etc.)",
+      "ColdChainEvent": "Temperature monitoring event recording conditions at a node or during a leg for cold chain integrity verification",
+      "Party": "Organisation or actor participating in the supply chain (shipper, carrier, customs broker, port authority, etc.)",
+      "Bottleneck": "Identified constraint or tight spot in the chain that may cause delay, cost increase, or compliance risk",
+      "RiskAssessment": "Five-dimension risk scoring (likelihood, impact, velocity, detectability, controllability) attached to nodes, legs, or bottlenecks",
+      "RiskMitigation": "Action or control that reduces the likelihood or impact of a bottleneck or risk",
+      "ImpactAssessment": "Net financial, time, reputational, compliance, and safety impact calculation with insurance/recovery offsets",
+      "Incident": "Actual disruption event affecting shipments, nodes, or legs with severity classification",
+      "Escalation": "Escalation pathway (L0-L4) triggered by incidents, with time windows and responsible parties at each level",
+      "Hypothesis": "Testable proposition about supply chain behaviour (e.g. 'Suez transit adds 3 days to baseline during Q4 congestion')",
+      "Scenario": "What-if model exploring potential disruptions, route changes, or policy impacts with quantified probability and impact",
+      "CascadeEffect": "Downstream domino-chain consequence of a bottleneck, incident, or scenario across the supply chain",
+      "PredictivePattern": "Historical data pattern enabling forecasting of bottlenecks, incidents, or demand spikes"
+    }
+  },
+
+  "entityArchetypes": {
+    "_description": "Entity archetypes define the semantic role of an entity within an ontology. Each archetype carries a distinct visual encoding (colour, shape, size) on the graph canvas. Archetypes are assigned via the @type field in entity definitions.",
+    "core": {
+      "definition": "Foundational, architecturally central entity serving as a semantic hub within its ontology. Core entities are the primary building blocks that other entities reference, depend upon, or extend. They represent the essential concepts without which the ontology cannot function.",
+      "examples": "Organization (ORG-ONT), VSOMFramework (VSOM-ONT), SupplyChain (LSC-ONT), GRCFramework (GRC-FW-ONT)",
+      "visualEncoding": { "shape": "hexagon", "colour": "#4CAF50", "size": 30 },
+      "guideline": "Use for entities that serve as the primary hub or anchor of the ontology. A typical ontology has 1-3 core entities. If an entity is referenced by most other entities in the ontology, it is likely core."
+    },
+    "class": {
+      "definition": "Standard entity type representing a well-defined, reusable, declarative domain concept. Class entities are the most common archetype and represent the concrete nouns of the ontology — the things that exist, can be instantiated, and carry properties.",
+      "examples": "Role (RRR-ONT), KPI (KPI-ONT), Project (PPM-ONT), Shipment (LSC-ONT), Recipe (NUT-ONT)",
+      "visualEncoding": { "shape": "dot", "colour": "#4CAF50", "size": 20 },
+      "guideline": "Default archetype for most entities. Use when the entity represents a concrete domain object that can have instances. If unsure which archetype to assign, class is the safe default."
+    },
+    "framework": {
+      "definition": "Reference architecture, methodology, standard, or structural pattern entity. Framework entities define how other entities are organised, governed, or measured. They represent meta-level structures that provide templates, rules, or reference models for the domain.",
+      "examples": "RACI (RRR-ONT), ProcessModel (PE-ONT), OKRCycle (OKR-ONT), BSCPerspective (BSC-ONT), CompositionRule (EMC-ONT)",
+      "visualEncoding": { "shape": "box", "colour": "#2196F3", "size": 22 },
+      "guideline": "Use for entities that define a methodology, pattern, or reference model. Frameworks are not directly instantiated as domain data — they structure how domain data is organised."
+    },
+    "supporting": {
+      "definition": "Auxiliary, helper, or enabling entity that provides supporting functionality to core and class entities. Supporting entities enrich the graph with additional context, configuration, or utility without being central to the ontology's primary purpose.",
+      "examples": "KPITarget (KPI-ONT), AcceptanceCriteria (EFS-ONT), RiskMitigation (LSC-ONT), Escalation (LSC-ONT)",
+      "visualEncoding": { "shape": "triangle", "colour": "#FF9800", "size": 18 },
+      "guideline": "Use for entities that exist to support or qualify other entities. Supporting entities are typically referenced by class or core entities but rarely serve as primary graph hubs themselves."
+    },
+    "agent": {
+      "definition": "Autonomous agent, AI system, or automated capability entity. Agent entities represent actors that can perform actions, make decisions, or execute processes without continuous human intervention. This includes AI agents, bots, automated workflows, and intelligent services.",
+      "examples": "AIAgent (PE-ONT), AgenticBuildSupport (EMC-ONT), Coach (NUT-ONT where coach acts as guided agent)",
+      "visualEncoding": { "shape": "star", "colour": "#E91E63", "size": 25 },
+      "guideline": "Use for entities that represent autonomous or semi-autonomous actors. The star shape and prominent pink colour make agents immediately identifiable on the graph, reflecting their special operational role."
+    },
+    "external": {
+      "definition": "External, third-party, or out-of-scope entity referenced by the ontology but not defined within it. External entities represent concepts from standards bodies, regulatory frameworks, competitor systems, or other domains that the ontology needs to reference without owning their definition.",
+      "examples": "ISO27005 (RMF-ONT), TOGAF (EA-TOGAF-ONT), AzureLandingZone (AZALZ-ONT), COBIT2019 (GRC-FW-ONT)",
+      "visualEncoding": { "shape": "diamond", "colour": "#9E9E9E", "size": 16 },
+      "guideline": "Use for entities that originate outside the Azlan ontology ecosystem. External entities appear smaller and greyed to indicate they are referenced but not owned. Do not create full property schemas for external entities — they serve as reference anchors."
+    },
+    "layer": {
+      "definition": "Logical layer, tier, or horizontal abstraction entity in a hierarchical model. Layer entities represent named strata in an architecture, governance model, or process hierarchy that other entities are classified within.",
+      "examples": "L0EnterpriseGovernance (RRR-ONT), L1CoreCSuite (RRR-ONT), RoleTaxonomy (RRR-ONT), ArchitectureLayer (EA-CORE-ONT)",
+      "visualEncoding": { "shape": "square", "colour": "#00BCD4", "size": 22 },
+      "guideline": "Use for entities that represent a named level in a hierarchical classification. Layers group other entities by elevation or tier rather than by domain function."
+    },
+    "concept": {
+      "definition": "Abstract concept, principle, or category entity that represents a high-level idea without direct operational instances. Concepts are used to classify, group, or qualify other entities at a theoretical or strategic level.",
+      "examples": "CompetitiveAdvantage (CL-ONT), ProductMarketFit (PMF-ONT), DigitalMaturity (ORG-MAT-ONT), StrategicOpportunity (CL-ONT)",
+      "visualEncoding": { "shape": "ellipse", "colour": "#AB47BC", "size": 18 },
+      "guideline": "Use for entities that represent abstract ideas, principles, or theoretical constructs. If an entity cannot be directly instantiated as a concrete record in a database, it is likely a concept."
+    }
+  },
+
+  "graphTiers": {
+    "_description": "The visualiser uses a 3-tier progressive disclosure model for navigating the ontology ecosystem. Each tier provides a different level of abstraction.",
+    "Tier0_SeriesRollup": "Highest level of abstraction. Displays one super-node per ontology series (VE, PE, Foundation, RCSG, Orchestration, Competitive). Cross-series edges show aggregate reference counts between series. Entry point when Load Registry is clicked.",
+    "Tier1_SeriesDrillDown": "Mid-level view showing all ontologies within a selected series. Active ontologies appear at full opacity with series colour. Context series (other series) appear faded at 55% opacity. Placeholder ontologies render as dashed-border diamonds. Sub-series grouping nodes (e.g., VSOM-SA, VSOM-SC) cluster related ontologies.",
+    "Tier2_EntityGraph": "Lowest level showing individual entities within a single ontology. Each entity is rendered with its archetype encoding (shape, colour, size). Edges show intra-ontology relationships with semantic category styling. This is the same renderer used in single-ontology mode."
+  },
+
+  "edgeSemanticCategories": {
+    "_description": "Relationship labels on edges are classified into 5 semantic categories (DR-SEMANTIC-002). The category determines the edge visual style and overrides the base edge type. This helps users understand the nature of relationships at a glance.",
+    "structural": {
+      "definition": "Composition and containment relationships where one entity structurally owns, contains, or scopes another. Structural edges form the backbone of an ontology's hierarchy.",
+      "exampleLabels": ["contains", "composedOf", "hasScope", "hasPart"],
+      "visualEncoding": { "colour": "#7E57C2", "dashPattern": "solid", "width": 2.5 }
+    },
+    "taxonomy": {
+      "definition": "Classification and inheritance relationships where one entity is a specialisation, subclass, or type of another. Taxonomy edges define the is-a hierarchy.",
+      "exampleLabels": ["subClassOf", "extends", "instanceOf", "specialises"],
+      "visualEncoding": { "colour": "#888888", "dashPattern": "dashed [5,5]", "width": 1.5 }
+    },
+    "dependency": {
+      "definition": "Dependency and requirement relationships where one entity depends on, requires, or is blocked by another. Dependency edges reveal critical path and coupling.",
+      "exampleLabels": ["dependsOn", "requires", "blockedBy", "prerequisiteOf"],
+      "visualEncoding": { "colour": "#EF5350", "dashPattern": "solid", "width": 2.0 }
+    },
+    "informational": {
+      "definition": "Knowledge, measurement, and definitional relationships where one entity informs, defines, measures, or monitors another. Informational edges show data flow and observability.",
+      "exampleLabels": ["informs", "defines", "measuredBy", "monitors", "reportsTo"],
+      "visualEncoding": { "colour": "#42A5F5", "dashPattern": "dot-dash [3,3,8,3]", "width": 1.5 }
+    },
+    "operational": {
+      "definition": "Process and enablement relationships where one entity produces, supports, enables, or executes another. Operational edges reveal workflow and capability chains.",
+      "exampleLabels": ["produces", "supports", "enables", "executes", "triggers"],
+      "visualEncoding": { "colour": "#66BB6A", "dashPattern": "solid", "width": 1.5 }
+    }
+  },
+
+  "edgeTypes": {
+    "_description": "Base edge types used when a relationship label is not mapped to a semantic category, or for special graph modes (cross-ontology, lineage). These provide fallback styling.",
+    "relationship": "Standard intra-ontology relationship. Green solid line (#4CAF50, 1.5px). The default edge type for most entity-to-entity connections within a single ontology.",
+    "binding": "Strong coupling relationship where one entity is bound to or configured by another. Orange solid line (#FF9800, 2.5px). Higher visual priority than standard relationships.",
+    "value_chain": "Value flow relationship indicating a strategic or operational value transfer between entities. Blue solid line (#2196F3, 2px).",
+    "inheritance": "Type hierarchy relationship (alias for subClassOf). Grey dashed line (#888, 1.5px, [5,5]). Indicates specialisation or extension.",
+    "crossOntology": "Cross-ontology reference detected between entities in different ontologies. Gold dashed line (#eab839, 2.5px, [8,4]). Only visible in multi-ontology mode. Clickable to navigate to the target ontology.",
+    "crossSeries": "Cross-series aggregate edge at Tier 0 showing the total count of cross-ontology references between two series. Gold dashed line (#eab839, 2px, [8,4]). Label shows reference count.",
+    "lineageVE": "VE lineage chain edge connecting consecutive VE-Series ontologies (VSOM->OKR->VP->PMF->EFS). Gold solid line (#cec528, 3.5px). Visible when VE series is highlighted.",
+    "lineagePE": "PE lineage chain edge connecting consecutive PE-Series ontologies (PPM->PE->EFS->EA). Copper solid line (#b87333, 3.5px). Visible when PE series is highlighted.",
+    "lineageConvergence": "Convergence edge where VE and PE chains meet at EFS ontology. Orange-red solid line (#FF6B35, 4px). Only visible when both VE and PE are highlighted simultaneously.",
+    "lineageDimmed": "Non-matching edge style applied to edges outside the highlighted series. Dark grey dashed (#444, 1px, [8,4]). Provides visual contrast to emphasise highlighted chains.",
+    "subSeriesLink": "Link from a sub-series grouping node to its parent series node at Tier 1. Light blue dashed (#90CAF9, 2px, [6,3])."
+  },
+
+  "crossOntologyResolution": {
+    "_description": "How the visualiser handles entities with the same name or related names appearing across different ontologies. This is critical for maintaining graph integrity and enabling cross-ontology navigation.",
+    "entityAliasIndex": "Registry-backed lookup table built during graph merge. Maps canonical prefix:localName to fully qualified node IDs (e.g., 'kpi:Vision' -> 'kpi::pfc:Vision'). Resolves prefix mismatches where one ontology references an entity using a different namespace prefix.",
+    "resolveNodeInMergedGraph": "Three-step resolution function: (1) direct match via double-colon prefixed ID, (2) original reference lookup in nodeIndex, (3) entityAliasIndex fallback for mismatched prefixes. Enables cross-ontology edges to connect correctly even when prefixes differ.",
+    "prefixAliasMap": "Migration map for superseded namespace prefixes (e.g., 'rcsg-fw' -> 'grc-fw'). Built from registry previousPrefix fields. Ensures backward compatibility when ontologies are renamed.",
+    "bridgeNode": "An entity referenced by 3 or more ontologies, indicating it serves as a semantic bridge across the graph. Bridge nodes are highlighted with a gold border in multi-ontology views."
+  },
+
+  "contextFiltering": {
+    "contextLevel": "Primary filter: PFC (Platform Core - generic/reusable) or PFI (Platform Instance - specific deployment)",
+    "instanceId": "PFI instance identifier (e.g., 'BAIV' for Brand AI Visibility)",
+    "productContext": "Product-specific filter (e.g., 'AIV' for AI Visibility product)",
+    "orgRolesGovernance": "Client-specific role governance rules determining which roles apply",
+    "orgContext": "Client organization identifier for org-specific filtering"
+  },
+
+  "graphPatterns": {
+    "HubSpokePattern": "Central hub ontology (ORG-CONTEXT) connecting to multiple domain ontologies via bridge relationships",
+    "LineageChainPattern": "Sequential flow through ontologies (VSOM->OKR->VP->PMF->EFS) representing value chain",
+    "BridgeJoinPattern": "Cross-ontology relationship connecting entities from different ontologies via declared join patterns (JP-*)"
+  },
+
+  "graphModes": {
+    "_description": "The visualiser operates in several modes that affect how edges and nodes are rendered. Modes can be combined.",
+    "singleOntologyMode": "One ontology loaded. All entities rendered at Tier 2 with archetype encoding. All edges use semantic category styling.",
+    "multiOntologyMode": "Registry loaded. 3-tier navigation active (Tier 0 -> Tier 1 -> Tier 2). Cross-ontology edges visible.",
+    "seriesHighlighting": "One or more series toggles active. Matching edges glow in series colour. Non-matching edges dimmed. VE/PE chains shown with lineage styling.",
+    "crossRefsOnlyFilter": "Only cross-ontology edges displayed. Intra-ontology edges hidden. Useful for understanding inter-ontology dependencies.",
+    "componentColouring": "Each connected component assigned a distinct colour from ColorBrewer Set2 palette (12 colours). Activated from audit panel.",
+    "layerFiltering": "6-layer semantic filter (Strategic, Operational, Compliance, Foundation, Orchestration, Cross-Ref) with OR/AND modes. Non-matching nodes dimmed to 15% opacity.",
+    "bridgeTypeFiltering": "DS bridge pattern toggles (JP-DS-001 through JP-DS-004). Each pattern can be independently shown/hidden."
+  },
+
+  "oaaCompliance": {
+    "Gate1": "Schema Structure - JSON-LD format with proper @context and @type",
+    "Gate2": "Relationship Cardinality - All relationships properly defined with domain/range",
+    "Gate2b": "Entity Connectivity - Every entity participates in at least one relationship",
+    "Gate2c": "Graph Connectivity - Single connected component (no isolated subgraphs)",
+    "Gate3": "Business Rules - IF-THEN rules with correct format and severity levels",
+    "Gate4": "Semantic Consistency - Naming conventions, description quality",
+    "Gate5": "Completeness - Test data with required distribution",
+    "Gate6": "Registry Entry - Proper registration in unified-registry",
+    "Gate7": "Schema Properties - Required entity/relationship props, @id uniqueness",
+    "Gate8": "Naming + Style Guide - PascalCase entities, camelCase relationships, prefix consistency",
+    "Gate20": "Competency Coverage - Every entity, relationship, and rule exercised by at least one CQ",
+    "Gate21": "Semantic Duplication - Detects near-duplicate entity descriptions (Jaccard similarity)",
+    "Gate22": "Cross-Ontology Rules - Cross-ontology references use known/non-deprecated prefixes",
+    "Gate23": "Lineage Chain Integrity - Upstream/downstream references valid in VE, PE, GRC chains",
+    "Gate24": "Instance Data Quality - Schema conformance, distribution analysis, CQ-test linkage"
+  }
+}

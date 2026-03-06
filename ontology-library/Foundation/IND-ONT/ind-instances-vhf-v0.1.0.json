@@ -1,0 +1,344 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ind": "https://oaa-ontology.org/v6/individual-types/",
+    "rrr": "https://oaa-ontology.org/v5/rrr/",
+    "org": "https://oaa-ontology.org/v5/organization/",
+    "vp": "https://oaa-ontology.org/v5/value-proposition/"
+  },
+  "@type": "InstanceDataSet",
+  "@id": "ind:instances:vhf-nutrition-v0.1",
+  "metadata": {
+    "name": "VHF Nutrition Individual Types — Instance Data",
+    "version": "0.1.0",
+    "status": "prototype",
+    "parentSchema": "ind-v1.0.0-oaa-v6.json",
+    "owningInstance": "PFI-VHF",
+    "domain": "Health, Fitness & Nutrition — D2C Supplements",
+    "description": "Individual type instances for VHF Nutrition platform. Primarily B2C consumers with one B2B2C intermediary (Dietitian). Standalone individuals — no org hierarchy for B2C. Cross-refs: CRT-ONT customer roles, VP-ONT stakeholders.",
+    "dateCreated": "2026-02-20",
+    "individualCount": 6
+  },
+  "examples": [
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:vhf-fitness-enthusiast",
+      "indTypeId": "ind:vhf-fitness-enthusiast",
+      "name": "Fitness Enthusiast",
+      "channel": "B2C",
+      "typeCategory": "B2C_Enthusiast",
+      "description": "Passionate fitness consumer who actively researches and experiments with nutrition products to optimise training, recovery, and body composition. Regular gym-goer, CrossFit, or endurance sport participant. Early adopter of new formulations. Influential within their fitness peer group. Standalone individual — no org affiliation.",
+      "motivations": "Performance optimisation, body composition improvement, training recovery, community status, staying ahead of nutrition science, brand loyalty where quality proven",
+      "painSummary": "Information overload from conflicting nutrition advice, supplement quality uncertainty, budget vs premium ingredient trade-off, finding products that actually deliver measurable results",
+      "decisionStyle": "Analytical",
+      "budgetAuthority": "Owner",
+      "typicalEngagement": "Relational",
+      "vpStakeholderType": "DecisionMaker",
+      "rrrSubclass": null, "rrrSeniorityLevel": null,
+      "relationships": {
+        "hasQualifier": ["ind:q-vhf-fe-behavioral-01", "ind:q-vhf-fe-psychographic-01", "ind:q-vhf-fe-financial-01"],
+        "hasIndustryProfile": ["ind:ip-vhf-fe-nutrition"],
+        "hasPurchaseBehaviour": "ind:pb-vhf-fe-nutrition",
+        "populatesICP": ["vp:icp-vhf-active-consumer"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-fe-behavioral-01",
+      "qualifierId": "ind:q-vhf-fe-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "trainingFrequency", "operator": "greaterThan", "value": "4 sessions per week", "weight": 0.9
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-fe-psychographic-01",
+      "qualifierId": "ind:q-vhf-fe-psychographic-01", "criteriaType": "Psychographic",
+      "criteriaName": "nutritionEngagement", "operator": "equals", "value": "Actively tracks macros or follows structured nutrition plan", "weight": 0.8
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-fe-financial-01",
+      "qualifierId": "ind:q-vhf-fe-financial-01", "criteriaType": "Financial",
+      "criteriaName": "monthlySupplementBudget", "operator": "greaterThan", "value": "60", "weight": 0.7
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-vhf-fe-nutrition",
+      "profileId": "ind:ip-vhf-fe-nutrition", "industry": "Health & Nutrition Supplements",
+      "industrySegment": "Sports Nutrition / Active Lifestyle", "owningInstance": "PFI-VHF",
+      "typicalBudgetRange": "GBP 60-150/month on supplements",
+      "purchaseFrequency": "Regular",
+      "seasonality": "January spike (New Year), September (return to routine), pre-competition peaks",
+      "regulatoryContext": "EFSA health claims regulation, Novel Foods, Informed Sport certification",
+      "industrySpecificTraits": "Brand-loyal once trust established. Values third-party testing. Follows fitness influencers. Shares product reviews in gym communities."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-vhf-fe-nutrition",
+      "behaviourId": "ind:pb-vhf-fe-nutrition", "buyerJourneyType": "Researched",
+      "decisionTimeframe": "1-2 weeks (initial trial); instant (repeat purchase)",
+      "influencers": "Fitness influencers, gym peers, YouTube reviewers, Reddit r/supplements, personal trainer",
+      "trustSignals": "Third-party batch testing (Informed Sport), transparent ingredient lists, clinical dosing, peer reviews",
+      "priceElasticity": "Low", "channelPreference": "D2C website, Amazon, gym shop, subscription box"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:vhf-nutrition-conscious",
+      "indTypeId": "ind:vhf-nutrition-conscious",
+      "name": "Nutrition-Conscious Consumer",
+      "channel": "B2C",
+      "typeCategory": "B2C_Casual",
+      "description": "Health-aware everyday consumer making deliberate food and supplement choices for general wellbeing, energy, and long-term health. Not a serious athlete. Reads labels, avoids ultra-processed foods, and seeks clean-label products. Purchases driven by trusted recommendations and ingredient transparency. Standalone individual.",
+      "motivations": "General health maintenance, sustained daily energy, immune support, clean/natural ingredients, value for money, simple supplementation routine",
+      "painSummary": "Confusion over which supplements actually work, distrust of marketing claims, too many product choices, unclear dosage guidance, subscription fatigue",
+      "decisionStyle": "Advised",
+      "budgetAuthority": "Owner",
+      "typicalEngagement": "Transactional",
+      "vpStakeholderType": "PrimaryUser",
+      "rrrSubclass": null, "rrrSeniorityLevel": null,
+      "relationships": {
+        "hasQualifier": ["ind:q-vhf-nc-psychographic-01", "ind:q-vhf-nc-behavioral-01"],
+        "hasIndustryProfile": ["ind:ip-vhf-nc-nutrition"],
+        "hasPurchaseBehaviour": "ind:pb-vhf-nc-nutrition",
+        "populatesICP": ["vp:icp-vhf-wellness-consumer"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-nc-psychographic-01",
+      "qualifierId": "ind:q-vhf-nc-psychographic-01", "criteriaType": "Psychographic",
+      "criteriaName": "healthConsciousness", "operator": "equals", "value": "Actively reads nutrition labels and makes deliberate supplement choices", "weight": 0.8
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-nc-behavioral-01",
+      "qualifierId": "ind:q-vhf-nc-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "supplementUsage", "operator": "greaterThan", "value": "1 supplement product purchased in past 3 months", "weight": 0.6
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-vhf-nc-nutrition",
+      "profileId": "ind:ip-vhf-nc-nutrition", "industry": "Health & Nutrition Supplements",
+      "industrySegment": "General Wellness", "owningInstance": "PFI-VHF",
+      "typicalBudgetRange": "GBP 15-50/month on supplements",
+      "purchaseFrequency": "Regular",
+      "seasonality": "January wellness spike, autumn immune-prep, minimal summer dip",
+      "regulatoryContext": "EFSA health claims, food supplement regulations",
+      "industrySpecificTraits": "Influenced by GP/pharmacist recommendations. Values simplicity. Distrusts hype. Clean-label is a must. Supermarket availability is a plus."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-vhf-nc-nutrition",
+      "behaviourId": "ind:pb-vhf-nc-nutrition", "buyerJourneyType": "Advised",
+      "decisionTimeframe": "Days to weeks (initial); habitual (repeat)",
+      "influencers": "GP/pharmacist, friends/family, clean-eating blogs, newspaper health sections, Holland & Barrett staff",
+      "trustSignals": "Clean label, brand heritage, NHS Choices mention, transparent sourcing, no proprietary blends",
+      "priceElasticity": "Medium", "channelPreference": "Supermarket, Holland & Barrett, Amazon, pharmacy"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:vhf-athlete",
+      "indTypeId": "ind:vhf-athlete",
+      "name": "Competitive Athlete",
+      "channel": "B2C",
+      "typeCategory": "B2C_Professional",
+      "description": "Performance-driven individual using nutrition professionally as a training tool — competitive amateurs, semi-pros, and elite amateurs across endurance, strength, team, and aesthetic sports. Nutrition is systematic, periodised to training cycles, and often guided by a coach or sports nutritionist. Highest priority: efficacy, purity (doping-tested), and precision. Standalone individual.",
+      "motivations": "Competitive performance gains, training recovery, periodised body composition, anti-doping compliance, evidence-based formulations, sports-specific macro/micronutrient targeting",
+      "painSummary": "Doping risk from contaminated supplements, finding batch-tested products, periodisation complexity, cost of multiple sport-specific products, navigating conflicting sports nutrition science",
+      "decisionStyle": "Analytical",
+      "budgetAuthority": "Owner",
+      "typicalEngagement": "Relational",
+      "vpStakeholderType": "PrimaryUser",
+      "rrrSubclass": null, "rrrSeniorityLevel": null,
+      "relationships": {
+        "hasQualifier": ["ind:q-vhf-ath-behavioral-01", "ind:q-vhf-ath-behavioral-02", "ind:q-vhf-ath-psychographic-01"],
+        "hasIndustryProfile": ["ind:ip-vhf-ath-nutrition"],
+        "hasPurchaseBehaviour": "ind:pb-vhf-ath-nutrition",
+        "populatesICP": ["vp:icp-vhf-performance-athlete"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-ath-behavioral-01",
+      "qualifierId": "ind:q-vhf-ath-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "competitiveActivity", "operator": "equals", "value": "Competes in organised sport at competitive amateur level or above", "weight": 1.0
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-ath-behavioral-02",
+      "qualifierId": "ind:q-vhf-ath-behavioral-02", "criteriaType": "Behavioral",
+      "criteriaName": "trainingVolume", "operator": "greaterThan", "value": "10 hours per week structured training", "weight": 0.9
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-ath-psychographic-01",
+      "qualifierId": "ind:q-vhf-ath-psychographic-01", "criteriaType": "Psychographic",
+      "criteriaName": "nutritionProfessionalism", "operator": "equals", "value": "Follows periodised nutrition plan aligned to training phases", "weight": 0.8
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-vhf-ath-nutrition",
+      "profileId": "ind:ip-vhf-ath-nutrition", "industry": "Health & Nutrition Supplements",
+      "industrySegment": "Competitive Sports Nutrition", "owningInstance": "PFI-VHF",
+      "typicalBudgetRange": "GBP 100-300/month (multiple sport-specific products)",
+      "purchaseFrequency": "Regular",
+      "seasonality": "Pre-season peaks, competition season steady, off-season maintenance",
+      "regulatoryContext": "WADA anti-doping code, Informed Sport/Informed Choice, EFSA, Batch testing",
+      "industrySpecificTraits": "Non-negotiable on batch-testing certification. Periodisation-aware. Often coached. Values clinical dosing over marketing. Demands certificate of analysis."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-vhf-ath-nutrition",
+      "behaviourId": "ind:pb-vhf-ath-nutrition", "buyerJourneyType": "Researched",
+      "decisionTimeframe": "1-4 weeks (initial, via coach/nutritionist); instant (repeat)",
+      "influencers": "Coach, sports nutritionist, team-mates, Informed Sport database, PubMed, athlete forums",
+      "trustSignals": "Informed Sport certification, certificate of analysis, team endorsement, clinical trials, peer athlete use",
+      "priceElasticity": "Low", "channelPreference": "D2C website, specialist sports nutrition retailer, coach recommendation"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:vhf-dietitian",
+      "indTypeId": "ind:vhf-dietitian",
+      "name": "Registered Dietitian",
+      "channel": "B2B2C",
+      "typeCategory": "B2B2C_Intermediary",
+      "description": "Registered nutrition professional who advises clients on dietary plans and supplement protocols. B2B2C intermediary — their recommendations directly shape purchasing decisions of multiple downstream consumers. Quality of evidence and professional credibility are paramount. May receive professional pricing or sampling programmes.",
+      "motivations": "Clinical credibility of recommended products, evidence base, regulatory compliance, professional reputation protection, client outcomes, CPD content from brands",
+      "painSummary": "Time-consuming product vetting, keeping up with new formulations, navigating EFSA vs marketing claims, client affordability vs clinical ideal, professional liability concerns",
+      "decisionStyle": "Analytical",
+      "budgetAuthority": "Intermediary",
+      "typicalEngagement": "Relational",
+      "vpStakeholderType": "Influencer",
+      "rrrSubclass": null, "rrrSeniorityLevel": null,
+      "relationships": {
+        "hasQualifier": ["ind:q-vhf-dt-contextual-01", "ind:q-vhf-dt-behavioral-01"],
+        "hasIndustryProfile": ["ind:ip-vhf-dt-nutrition"],
+        "hasPurchaseBehaviour": "ind:pb-vhf-dt-nutrition",
+        "populatesICP": ["vp:icp-vhf-professional-intermediary"],
+        "influencedBy": ["ind:vhf-athlete"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-dt-contextual-01",
+      "qualifierId": "ind:q-vhf-dt-contextual-01", "criteriaType": "Contextual",
+      "criteriaName": "professionalRegistration", "operator": "contains", "value": "HCPC,AfN,BDA,equivalent-national-body", "weight": 1.0
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-dt-behavioral-01",
+      "qualifierId": "ind:q-vhf-dt-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "supplementRecommendationRate", "operator": "greaterThan", "value": "5 clients per month", "weight": 0.7
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-vhf-dt-nutrition",
+      "profileId": "ind:ip-vhf-dt-nutrition", "industry": "Health & Nutrition Supplements",
+      "industrySegment": "Clinical / Professional Nutrition", "owningInstance": "PFI-VHF",
+      "typicalBudgetRange": "N/A (client pays; may receive professional samples/pricing)",
+      "purchaseFrequency": "Continuous (ongoing client recommendations)",
+      "regulatoryContext": "HCPC Code of Conduct, BDA guidelines, EFSA health claims, Advertising Standards Authority",
+      "industrySpecificTraits": "Evidence-first. Distrusts marketing claims. Values peer-reviewed references. Professional samples programme is a strong channel. CPD content builds relationship."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-vhf-dt-nutrition",
+      "behaviourId": "ind:pb-vhf-dt-nutrition", "buyerJourneyType": "Researched",
+      "decisionTimeframe": "Ongoing (continuous assessment of product portfolio for clients)",
+      "influencers": "BDA guidelines, EFSA database, peer dietitians, CPD conferences, PubMed, brand professional teams",
+      "trustSignals": "Peer-reviewed evidence, professional body endorsement, transparent formulations, HCPC-aligned marketing, brand professional support team",
+      "priceElasticity": "N/A (recommender)", "channelPreference": "Professional programme, CPD events, BDA conference, brand rep visit"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:vhf-parent-carer",
+      "indTypeId": "ind:vhf-parent-carer",
+      "name": "Parent / Carer",
+      "channel": "B2C",
+      "typeCategory": "B2C_Casual",
+      "description": "Adult purchasing nutrition products primarily for family members — children, elderly relatives, or dependants with specific dietary needs. Safety-first, ingredient transparency, and age-appropriateness drive every decision. Highly price-sensitive across a household budget. Standalone individual.",
+      "motivations": "Family nutritional wellbeing, safety and ingredient transparency for children/dependants, age-appropriate formulations, household budget management, trusted brand credentials, convenient formats",
+      "painSummary": "Overwhelmed by product choice, unclear age-suitability guidance, conflicting advice on children's supplements, balancing quality vs household budget, sugar content in children's vitamins",
+      "decisionStyle": "Advised",
+      "budgetAuthority": "Owner",
+      "typicalEngagement": "Transactional",
+      "vpStakeholderType": "PrimaryUser",
+      "rrrSubclass": null, "rrrSeniorityLevel": null,
+      "relationships": {
+        "hasQualifier": ["ind:q-vhf-pc-demographic-01", "ind:q-vhf-pc-psychographic-01"],
+        "hasIndustryProfile": ["ind:ip-vhf-pc-nutrition"],
+        "hasPurchaseBehaviour": "ind:pb-vhf-pc-nutrition",
+        "populatesICP": ["vp:icp-vhf-family-buyer"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-pc-demographic-01",
+      "qualifierId": "ind:q-vhf-pc-demographic-01", "criteriaType": "Demographic",
+      "criteriaName": "householdResponsibility", "operator": "equals", "value": "Primary purchaser of food/health products for at least one dependant", "weight": 0.9
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-pc-psychographic-01",
+      "qualifierId": "ind:q-vhf-pc-psychographic-01", "criteriaType": "Psychographic",
+      "criteriaName": "safetyPriority", "operator": "equals", "value": "Places ingredient safety and age-suitability above performance claims", "weight": 1.0
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-vhf-pc-nutrition",
+      "profileId": "ind:ip-vhf-pc-nutrition", "industry": "Health & Nutrition Supplements",
+      "industrySegment": "Family & Children's Nutrition", "owningInstance": "PFI-VHF",
+      "typicalBudgetRange": "GBP 15-40/month (household supplement spend)",
+      "purchaseFrequency": "Regular",
+      "seasonality": "Back-to-school September, winter immune-prep October-December",
+      "regulatoryContext": "Food supplements directive, EFSA children's health claims restrictions, sugar/sweetener guidance",
+      "industrySpecificTraits": "Brand trust paramount. Paediatric endorsement valued. Sugar-free/low-sugar critical for children's products. Supermarket visibility essential."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-vhf-pc-nutrition",
+      "behaviourId": "ind:pb-vhf-pc-nutrition", "buyerJourneyType": "Advised",
+      "decisionTimeframe": "Days (GP/pharmacist trigger); habitual (repeat)",
+      "influencers": "GP, health visitor, school nurse, mum friends, Mumsnet/parenting forums, supermarket promotions",
+      "trustSignals": "NHS-aligned messaging, paediatric suitability label, sugar-free credentials, familiar brand, pharmacist recommendation",
+      "priceElasticity": "High", "channelPreference": "Supermarket, pharmacy, Amazon subscribe-and-save"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:vhf-health-investor",
+      "indTypeId": "ind:vhf-health-investor",
+      "name": "Health Investor / Biohacker",
+      "channel": "B2C",
+      "typeCategory": "B2C_Investor",
+      "description": "High-spending consumer treating personal health and longevity as a long-term investment. Embraces biohacking, quantified-self, longevity research, and premium supplementation stacks. Tracks biomarkers via blood testing or wearables. Motivated by measurable outcomes. Standalone individual.",
+      "motivations": "Longevity extension, healthspan optimisation, measurable biomarker improvement, cutting-edge evidence-based formulations, personalisation based on individual data, premium exclusivity",
+      "painSummary": "Information asymmetry on longevity claims, high cost of comprehensive stacks, supplement-drug interaction concerns, keeping up with rapidly evolving research, distinguishing evidence from hype",
+      "decisionStyle": "Analytical",
+      "budgetAuthority": "Owner",
+      "typicalEngagement": "Relational",
+      "vpStakeholderType": "EconomicBuyer",
+      "rrrSubclass": null, "rrrSeniorityLevel": null,
+      "relationships": {
+        "hasQualifier": ["ind:q-vhf-hi-financial-01", "ind:q-vhf-hi-behavioral-01", "ind:q-vhf-hi-psychographic-01"],
+        "hasIndustryProfile": ["ind:ip-vhf-hi-nutrition"],
+        "hasPurchaseBehaviour": "ind:pb-vhf-hi-nutrition",
+        "populatesICP": ["vp:icp-vhf-premium-longevity"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-hi-financial-01",
+      "qualifierId": "ind:q-vhf-hi-financial-01", "criteriaType": "Financial",
+      "criteriaName": "monthlyHealthInvestment", "operator": "greaterThan", "value": "150", "weight": 0.9
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-hi-behavioral-01",
+      "qualifierId": "ind:q-vhf-hi-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "biomarkerTracking", "operator": "equals", "value": "Actively tracks biomarkers via blood tests, wearables, or quantified-self platforms", "weight": 0.8
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-vhf-hi-psychographic-01",
+      "qualifierId": "ind:q-vhf-hi-psychographic-01", "criteriaType": "Psychographic",
+      "criteriaName": "longevityFocus", "operator": "equals", "value": "Primary health motivation is longevity/healthspan rather than athletic performance or general wellness", "weight": 0.9
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-vhf-hi-nutrition",
+      "profileId": "ind:ip-vhf-hi-nutrition", "industry": "Health & Nutrition Supplements",
+      "industrySegment": "Longevity / Biohacking / Premium Nutrition", "owningInstance": "PFI-VHF",
+      "typicalBudgetRange": "GBP 150-500+/month on supplements and health services",
+      "purchaseFrequency": "Regular",
+      "seasonality": "Minimal — continuous optimisation mindset",
+      "regulatoryContext": "EFSA, Novel Foods (for cutting-edge ingredients like NMN, NAD+), MHRA borderline products",
+      "industrySpecificTraits": "Early adopter. Data-driven purchasing (blood test results trigger stack changes). Premium price tolerance. Values clinical trials, COA, and personalised recommendations."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-vhf-hi-nutrition",
+      "behaviourId": "ind:pb-vhf-hi-nutrition", "buyerJourneyType": "Researched",
+      "decisionTimeframe": "1-4 weeks (initial research); ongoing (stack evolution)",
+      "influencers": "Andrew Huberman, Peter Attia, longevity podcasts, PubMed, blood test providers (Thriva, Medichecks), biohacking communities",
+      "trustSignals": "Clinical trials, certificate of analysis, bioavailability data, peer longevity community reviews, personalised recommendation engines",
+      "priceElasticity": "Low", "channelPreference": "Specialist D2C brands, subscription services, longevity clinics, biohacking conferences"
+    }
+  ]
+}

@@ -1,0 +1,370 @@
+{
+  "@context": {
+    "sp": "https://pf-ontology.com/strategic-patterns/",
+    "vsom": "https://pf-ontology.com/vsom/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#"
+  },
+  "@id": "sp:StrategicPatterns-AnalyticalReasoning",
+  "@type": "owl:Ontology",
+  "rdfs:label": "Strategic Patterns — Layer 4: Analytical Reasoning Frameworks",
+  "description": "MECE decomposition, Logic Trees, Hypothesis-Driven Strategy, and AI-augmented analysis patterns. This is the REASONING LAYER — how AI agents structure and validate strategic thinking. It provides the scaffolding that makes all other layers rigorous.",
+  "version": "0.1.0-sketch",
+
+  "_architecturalNote": "This is where the MAGIC happens for Gen AI agents. These patterns give agents structured reasoning templates to: (1) decompose complex strategic questions, (2) generate hypotheses from data, (3) validate assumptions against evidence, (4) synthesize multi-framework insights. The ontology graph becomes a REASONING SUBSTRATE, not just a data store.",
+
+  "entities": {
+    "StrategicQuestion": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Strategic Question",
+      "description": "A structured strategic question that drives analysis. Every strategic engagement starts with a question. Questions decompose into MECE trees, generate hypotheses, and connect to framework analyses.",
+      "properties": {
+        "questionId": { "type": "string", "required": true },
+        "question": { "type": "string", "required": true, "description": "E.g. 'How should we grow revenue 3x in 3 years?'" },
+        "questionType": {
+          "type": "string",
+          "enum": [
+            "where-to-play",
+            "how-to-win",
+            "what-capabilities",
+            "what-management-systems",
+            "growth-direction",
+            "competitive-positioning",
+            "resource-allocation",
+            "transformation-roadmap",
+            "risk-mitigation",
+            "value-creation"
+          ]
+        },
+        "vsomLayerTarget": {
+          "type": "string",
+          "enum": ["Vision", "Strategy", "Objectives", "Metrics"],
+          "description": "Which VSOM layer this question primarily addresses"
+        },
+        "contextRef": { "type": "string", "description": "→ orgctx:OrganizationContext" },
+        "sponsorRef": { "type": "string", "description": "→ rrr:ExecutiveRole who needs the answer" },
+        "decomposition": { "type": "string", "description": "→ sp:MECETree" },
+        "hypotheses": { "type": "array", "items": "string → sp:StrategicHypothesis" },
+        "frameworksApplied": {
+          "type": "array",
+          "items": {
+            "frameworkType": "string:enum[PESTEL,Porter5F,SWOT,BSC,Ansoff,ValueChain,GrowthShare,Scenarios]",
+            "analysisRef": "string → sp:*Analysis"
+          }
+        },
+        "conclusion": { "type": "string" },
+        "confidence": { "type": "number", "min": 0, "max": 1 },
+        "vsomActionRef": { "type": "string", "description": "→ vsom:StrategyComponent or vsom:ObjectivesComponent that results" }
+      }
+    },
+
+    "MECETree": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "MECE Decomposition Tree",
+      "description": "Mutually Exclusive, Collectively Exhaustive decomposition of a strategic question. This is the backbone of structured problem-solving. Each branch is independently analyzable and together they cover the full solution space.",
+      "properties": {
+        "treeId": { "type": "string", "required": true },
+        "questionRef": { "type": "string", "description": "→ sp:StrategicQuestion", "required": true },
+        "rootNode": { "type": "string", "description": "The top-level question being decomposed" },
+        "decompositionType": {
+          "type": "string",
+          "enum": [
+            "issue-tree",
+            "hypothesis-tree",
+            "decision-tree",
+            "driver-tree",
+            "profitability-tree",
+            "capability-tree"
+          ]
+        },
+        "branches": {
+          "type": "array",
+          "items": { "$ref": "#/entities/MECEBranch" }
+        },
+        "isMECE": {
+          "type": "boolean",
+          "description": "Validated as mutually exclusive and collectively exhaustive"
+        },
+        "depth": { "type": "integer", "description": "Tree depth (typically 3-5 levels)" },
+        "leafNodeCount": { "type": "integer" }
+      },
+      "_aiAgentPattern": {
+        "description": "An AI agent uses MECE trees to structure its analysis workflow",
+        "steps": [
+          "1. Receive strategic question",
+          "2. Generate MECE decomposition (parallel branches)",
+          "3. For each branch, select appropriate framework (PESTEL, Porter, SWOT, etc.)",
+          "4. Analyze each branch independently (parallelizable!)",
+          "5. Synthesize findings bottom-up",
+          "6. Generate strategic recommendation with evidence chain"
+        ]
+      }
+    },
+
+    "MECEBranch": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "MECE Branch",
+      "description": "A single branch in a MECE tree. Can contain sub-branches (recursive) or be a leaf node with analysis.",
+      "properties": {
+        "branchId": { "type": "string", "required": true },
+        "label": { "type": "string", "required": true },
+        "level": { "type": "integer" },
+        "parentBranchId": { "type": "string" },
+        "isLeaf": { "type": "boolean" },
+        "subBranches": { "type": "array", "items": "sp:MECEBranch" },
+        "analysisFramework": {
+          "type": "string",
+          "enum": ["PESTEL", "Porter5F", "SWOT", "BSC", "Ansoff", "ValueChain", "GrowthShare", "Scenarios", "VEAnalysis", "CapabilityAssessment", "Financial", "MarketSizing"],
+          "description": "Which framework to apply at this branch"
+        },
+        "analysisRef": { "type": "string", "description": "→ sp:*Analysis or kpi:VEAnalysis" },
+        "finding": { "type": "string" },
+        "evidenceStrength": { "type": "string", "enum": ["strong", "moderate", "weak", "assumption"] },
+        "dataSourceRefs": { "type": "array", "items": "string" },
+        "hypothesisRef": { "type": "string", "description": "→ sp:StrategicHypothesis tested at this branch" },
+        "valueImpact": { "type": "string", "enum": ["high", "medium", "low", "unknown"] }
+      }
+    },
+
+    "StrategicHypothesis": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Strategic Hypothesis",
+      "description": "A testable hypothesis about strategic direction. Hypothesis-driven strategy works by: (1) forming hypotheses from VSOM strategic options, (2) designing tests using data from framework analyses, (3) validating/invalidating with evidence, (4) updating strategy. This is the scientific method applied to strategy.",
+      "properties": {
+        "hypothesisId": { "type": "string", "required": true },
+        "statement": { "type": "string", "required": true, "description": "E.g. 'Entering the SME market segment will grow revenue by 40% within 18 months'" },
+        "questionRef": { "type": "string", "description": "→ sp:StrategicQuestion" },
+        "vsomStrategyRef": { "type": "string", "description": "→ vsom:StrategyComponent being hypothesized" },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "assumption": { "type": "string" },
+              "criticality": { "type": "string", "enum": ["must-be-true", "important", "nice-to-have"] },
+              "testable": { "type": "boolean" },
+              "testMethod": { "type": "string" },
+              "status": { "type": "string", "enum": ["untested", "testing", "validated", "invalidated"] },
+              "evidence": { "type": "string" }
+            }
+          }
+        },
+        "evidenceFor": {
+          "type": "array",
+          "items": {
+            "source": "string",
+            "frameworkRef": "string → sp:*Analysis",
+            "finding": "string",
+            "strength": "string:enum[strong,moderate,weak]"
+          }
+        },
+        "evidenceAgainst": {
+          "type": "array",
+          "items": {
+            "source": "string",
+            "frameworkRef": "string → sp:*Analysis",
+            "finding": "string",
+            "strength": "string:enum[strong,moderate,weak]"
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "testing", "validated", "invalidated", "pivoted"],
+          "required": true
+        },
+        "confidence": { "type": "number", "min": 0, "max": 1 },
+        "nextActions": {
+          "type": "array",
+          "items": "string",
+          "description": "If validated → vsom:ObjectivesComponent; if invalidated → revised hypothesis"
+        }
+      }
+    },
+
+    "LogicTree": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Logic Tree",
+      "description": "Profitability/driver tree for quantitative strategic decomposition. Decomposes a metric into its mathematical drivers. Connects to kpi:KPI and kpi:Metric for measurement.",
+      "properties": {
+        "treeId": { "type": "string", "required": true },
+        "treeType": {
+          "type": "string",
+          "enum": ["profitability", "revenue-driver", "cost-driver", "growth-driver", "value-driver", "efficiency-driver"]
+        },
+        "rootMetric": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string", "description": "E.g. 'Net Profit'" },
+            "kpiRef": { "type": "string", "description": "→ kpi:KPI" },
+            "currentValue": { "type": "number" },
+            "targetValue": { "type": "number" }
+          }
+        },
+        "decomposition": {
+          "type": "object",
+          "description": "Recursive tree — each node is either a sum/product of children or a leaf metric",
+          "properties": {
+            "operator": { "type": "string", "enum": ["add", "subtract", "multiply", "divide"] },
+            "children": {
+              "type": "array",
+              "items": {
+                "name": "string",
+                "kpiRef": "string → kpi:KPI",
+                "currentValue": "number",
+                "targetValue": "number",
+                "improvementLever": "string",
+                "operator": "string:enum[add,subtract,multiply,divide] (if not leaf)",
+                "children": "array (recursive, if not leaf)",
+                "isLeaf": "boolean"
+              }
+            }
+          }
+        },
+        "sensitivityAnalysis": {
+          "type": "array",
+          "items": {
+            "lever": "string",
+            "kpiRef": "string → kpi:KPI",
+            "currentValue": "number",
+            "change": "number:%",
+            "rootImpact": "number",
+            "rootImpactPct": "number:%",
+            "description": "If we improve {lever} by {change}%, root metric changes by {rootImpact}"
+          }
+        },
+        "topLevers": {
+          "type": "array",
+          "items": "string",
+          "description": "Highest-sensitivity levers → become vsom:ObjectivesComponent targets"
+        }
+      },
+      "_example": {
+        "profitabilityTree": {
+          "root": "Net Profit = Revenue - Costs",
+          "Revenue": "= Units × Price",
+          "Units": "= Market Size × Market Share × Conversion Rate",
+          "Price": "= Base Price × (1 + Premium %)",
+          "Costs": "= Fixed Costs + Variable Costs",
+          "VariableCosts": "= Units × Cost Per Unit"
+        },
+        "insight": "Each leaf node maps to a kpi:KPI. The sensitivity analysis identifies which levers have the highest impact. Those levers become strategic objectives in VSOM."
+      }
+    },
+
+    "AnalysisSynthesis": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Analysis Synthesis",
+      "description": "The synthesis layer where an AI agent combines findings from multiple frameworks into coherent strategic recommendations. This is the 'so what?' that translates analysis into VSOM strategy updates.",
+      "properties": {
+        "synthesisId": { "type": "string", "required": true },
+        "questionRef": { "type": "string", "description": "→ sp:StrategicQuestion" },
+        "inputAnalyses": {
+          "type": "array",
+          "items": {
+            "frameworkType": "string",
+            "analysisRef": "string → sp:*Analysis",
+            "keyFindings": "array:string",
+            "confidenceLevel": "string:enum[high,medium,low]"
+          }
+        },
+        "convergentFindings": {
+          "type": "array",
+          "items": "string",
+          "description": "Findings that multiple frameworks agree on (high confidence)"
+        },
+        "divergentFindings": {
+          "type": "array",
+          "items": {
+            "finding": "string",
+            "supportingFrameworks": "array:string",
+            "contradictingFrameworks": "array:string",
+            "resolution": "string"
+          }
+        },
+        "strategicRecommendations": {
+          "type": "array",
+          "items": {
+            "recommendation": "string",
+            "vsomLayer": "string:enum[Vision,Strategy,Objectives,Metrics]",
+            "vsomComponentRef": "string → vsom:*Component",
+            "confidenceLevel": "number:0-1",
+            "evidenceChain": "array:string → sp:*Analysis",
+            "riskLevel": "string:enum[high,medium,low]",
+            "timeHorizon": "string",
+            "ownerRef": "string → rrr:ExecutiveRole"
+          }
+        },
+        "strategicNarrative": {
+          "type": "string",
+          "description": "Coherent story connecting analysis to recommended strategic direction"
+        }
+      },
+      "_aiAgentOrchestration": {
+        "description": "This is the pattern an AI strategic analysis agent follows",
+        "workflow": [
+          "1. INTAKE: Receive StrategicQuestion + OrganizationContext",
+          "2. DECOMPOSE: Build MECETree to structure the analysis",
+          "3. HYPOTHESIZE: Generate StrategicHypotheses for each branch",
+          "4. ANALYZE: Run framework analyses (PESTEL, Porter, SWOT, BSC, etc.) in parallel per branch",
+          "5. QUANTIFY: Build LogicTrees for financial/metric decomposition",
+          "6. SYNTHESIZE: Combine findings into AnalysisSynthesis",
+          "7. RECOMMEND: Generate VSOM strategy updates with evidence chains",
+          "8. VALIDATE: Stress-test via ScenarioSet",
+          "9. OPERATIONALIZE: Cascade through BSC → OKR → Initiatives"
+        ],
+        "graphTraversal": "The agent traverses the ontology graph end-to-end: orgctx:OrganizationContext → sp:StrategicQuestion → sp:MECETree → [sp:PESTELAnalysis, sp:SWOTAnalysis, sp:PortersFiveForces, ...] → sp:AnalysisSynthesis → vsom:VSOMFramework → sp:BalancedScorecard → kpi:KPI → okr:Objective → okr:Initiative → ppm:Initiative"
+      }
+    }
+  },
+
+  "relationships": {
+    "decomposedBy": {
+      "domain": "sp:StrategicQuestion",
+      "range": "sp:MECETree",
+      "cardinality": "1:1"
+    },
+    "generatesHypothesis": {
+      "domain": "sp:MECEBranch",
+      "range": "sp:StrategicHypothesis",
+      "cardinality": "1:n"
+    },
+    "testedByFramework": {
+      "domain": "sp:StrategicHypothesis",
+      "range": ["sp:PESTELAnalysis", "sp:SWOTAnalysis", "sp:PortersFiveForces", "sp:AnsoffGrowthMatrix"],
+      "cardinality": "n:m"
+    },
+    "quantifiedByLogicTree": {
+      "domain": "sp:StrategicHypothesis",
+      "range": "sp:LogicTree",
+      "cardinality": "n:m"
+    },
+    "synthesizesInto": {
+      "domain": ["sp:MECETree", "sp:StrategicHypothesis"],
+      "range": "sp:AnalysisSynthesis",
+      "cardinality": "n:1"
+    },
+    "updatesStrategy": {
+      "domain": "sp:AnalysisSynthesis",
+      "range": "vsom:VSOMFramework",
+      "cardinality": "n:1"
+    }
+  },
+
+  "joinPatterns": {
+    "JP-SP-030": {
+      "name": "Question-to-Strategy Pipeline (AI Agent E2E)",
+      "path": "sp:StrategicQuestion → decomposedBy → sp:MECETree → branch.analysisFramework → sp:*Analysis → synthesizesInto → sp:AnalysisSynthesis → updatesStrategy → vsom:VSOMFramework",
+      "description": "Full AI agent strategic analysis pipeline from question to strategy update"
+    },
+    "JP-SP-031": {
+      "name": "Hypothesis Validation Chain",
+      "path": "sp:StrategicHypothesis → testedByFramework → sp:*Analysis → evidenceFor/Against → sp:StrategicHypothesis.status → nextActions → vsom:ObjectivesComponent",
+      "description": "Scientific method for strategy: hypothesize → test → validate → act"
+    },
+    "JP-SP-032": {
+      "name": "Metric Sensitivity to Strategy",
+      "path": "sp:LogicTree → sensitivityAnalysis → topLevers → kpi:KPI → trackedVia ← okr:KeyResult ← okr:Objective ← vsom:ObjectivesComponent",
+      "description": "Quantitative driver analysis identifies which metrics to optimize, linking back to strategic objectives"
+    }
+  }
+}

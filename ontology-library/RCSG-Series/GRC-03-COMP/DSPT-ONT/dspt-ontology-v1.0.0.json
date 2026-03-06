@@ -1,0 +1,1254 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dspt": "https://platformcore.io/ontology/dspt/",
+    "grc-fw": "https://platformcore.io/ontology/grc-fw/",
+    "ncsc-caf": "https://platformcore.io/ontology/ncsc-caf/",
+    "gdpr": "https://platformcore.io/ontology/gdpr/"
+  },
+  "@id": "https://platformcore.io/ontology/dspt/schema",
+  "@type": "owl:Ontology",
+  "name": "Data Security and Protection Toolkit (DSPT) Ontology",
+  "description": "Ontology representing the NHS Data Security and Protection Toolkit (DSPT), the UK health sector's mandatory self-assessment framework aligned to the 10 National Data Guardian (NDG) Data Security Standards. Models 10 standards, 44 assertions, 149 evidence items across 4 organisation categories (NHS Trusts, CCG/ALBs, Others, GP), with mandatory/optional classification. The DSPT is the primary compliance mechanism for NHS organisations and health/social care providers, bridging to NCSC CAF for cyber resilience and GDPR for data protection.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "UK Health Sector Data Security & Protection",
+  "oaa:status": "Production",
+  "version": "1.0.0",
+  "dateCreated": "2026-02-14",
+  "dateModified": "2026-02-14",
+  "creator": {
+    "@type": "Organization",
+    "name": "Azlan EA-AAA",
+    "description": "Enterprise Architecture Advisory & Automation"
+  },
+  "oaa:sourceFramework": {
+    "name": "Data Security and Protection Toolkit",
+    "version": "v4 (21-22 1.04)",
+    "publisher": "NHS Digital (now NHS England)",
+    "uri": "https://www.dsptoolkit.nhs.uk/",
+    "alignedTo": "National Data Guardian 10 Data Security Standards",
+    "applicability": [
+      "Category 1: NHS Trusts and CSUs",
+      "Category 2: CCGs and Arms-Length Bodies (ALBs)",
+      "Category 3: Other health and social care organisations",
+      "Category 4: GP practices"
+    ]
+  },
+  "oaa:imports": [
+    {
+      "@id": "grc-fw:schema",
+      "name": "GRC-FW-ONT",
+      "version": "1.0.0",
+      "description": "RCSG Framework providing ComplianceFramework for DSPT status tracking",
+      "importedEntities": [
+        "grc-fw:ComplianceFramework"
+      ]
+    },
+    {
+      "@id": "ncsc-caf:schema",
+      "name": "NCSC-CAF-ONT",
+      "version": "1.0.0",
+      "description": "NCSC CAF providing ContributingOutcome for cross-framework CAF-DSPT mapping",
+      "importedEntities": [
+        "ncsc-caf:ContributingOutcome",
+        "ncsc-caf:CAFPrinciple"
+      ]
+    },
+    {
+      "@id": "gdpr:schema",
+      "name": "GDPR-ONT",
+      "version": "1.0.0",
+      "description": "GDPR providing DataProtectionPrinciple and DataSubjectRight for DSPT Standards 1-2 alignment",
+      "importedEntities": [
+        "gdpr:DataProtectionPrinciple",
+        "gdpr:DataSubjectRight",
+        "gdpr:ComplianceObligation"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-DSPT-001",
+      "name": "DSPT to CAF Bridge",
+      "description": "DSPT standards map to NCSC CAF Contributing Outcomes for dual-framework compliance",
+      "joinPath": "dspt:DSPTStandard → dspt:mapsToCAFOutcome → ncsc-caf:ContributingOutcome",
+      "useCase": "NHS organisations meeting both DSPT and CAF requirements with shared evidence"
+    },
+    {
+      "patternId": "JP-DSPT-002",
+      "name": "DSPT to GDPR Bridge",
+      "description": "DSPT Standards 1-2 map to GDPR principles and data subject rights",
+      "joinPath": "dspt:DSPTAssertion → dspt:implementsGDPRPrinciple → gdpr:DataProtectionPrinciple",
+      "useCase": "Demonstrate GDPR compliance through DSPT evidence"
+    },
+    {
+      "patternId": "JP-DSPT-003",
+      "name": "DSPT Assessment to Standards Bridge",
+      "description": "DSPT assessments evaluate all 10 NDG standards and fulfil GDPR compliance obligations when Standards Met",
+      "joinPath": "dspt:DSPTAssessment → dspt:assessesStandard → dspt:DSPTStandard → dspt:alignsToPrinciple → ncsc-caf:CAFPrinciple",
+      "useCase": "Complete assessment traceability from submission through standards to CAF principle alignment"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "dspt:DSPTStandard",
+      "@type": "rdfs:Class",
+      "name": "DSPTStandard",
+      "description": "One of the 10 National Data Guardian Data Security Standards assessed by the DSPT. Standards are grouped into three themes: People (1-3), Process (4-7), and Technology (8-10).",
+      "oaa:properties": [
+        {
+          "name": "standardNumber",
+          "type": "xsd:integer",
+          "description": "Standard number (1-10)",
+          "required": true,
+          "constraints": {
+            "minimum": 1,
+            "maximum": 10
+          }
+        },
+        {
+          "name": "standardName",
+          "type": "xsd:string",
+          "description": "Full name of the NDG Data Security Standard",
+          "required": true
+        },
+        {
+          "name": "theme",
+          "type": "dspt:DSPTTheme",
+          "description": "Theme grouping: People, Process, or Technology",
+          "required": true
+        },
+        {
+          "name": "assertionCount",
+          "type": "xsd:integer",
+          "description": "Number of assertions within this standard",
+          "required": true
+        },
+        {
+          "name": "evidenceItemCount",
+          "type": "xsd:integer",
+          "description": "Total number of evidence items across all assertions",
+          "required": true
+        },
+        {
+          "name": "mandatoryEvidenceCount",
+          "type": "xsd:integer",
+          "description": "Number of mandatory evidence items for Category 1 (NHS Trusts)",
+          "required": true
+        }
+      ],
+      "oaa:instances": [
+        {
+          "@id": "dspt:standard-1",
+          "standardNumber": 1,
+          "standardName": "Personal Confidential Data",
+          "theme": "People",
+          "assertionCount": 4,
+          "evidenceItemCount": 29,
+          "mandatoryEvidenceCount": 20,
+          "oaa:ndgStandard": "All staff ensure that personal confidential data is handled, stored and transmitted securely, whether in electronic or paper form"
+        },
+        {
+          "@id": "dspt:standard-2",
+          "standardNumber": 2,
+          "standardName": "Staff Responsibilities",
+          "theme": "People",
+          "assertionCount": 1,
+          "evidenceItemCount": 3,
+          "mandatoryEvidenceCount": 2,
+          "oaa:ndgStandard": "All staff understand their responsibilities under the National Data Guardian's Data Security Standards"
+        },
+        {
+          "@id": "dspt:standard-3",
+          "standardNumber": 3,
+          "standardName": "Training",
+          "theme": "People",
+          "assertionCount": 4,
+          "evidenceItemCount": 7,
+          "mandatoryEvidenceCount": 7,
+          "oaa:ndgStandard": "All staff complete appropriate annual data security training and pass a mandatory test"
+        },
+        {
+          "@id": "dspt:standard-4",
+          "standardNumber": 4,
+          "standardName": "Managing Data Access",
+          "theme": "Process",
+          "assertionCount": 5,
+          "evidenceItemCount": 18,
+          "mandatoryEvidenceCount": 13,
+          "oaa:ndgStandard": "Personal confidential data is only accessible to staff who need it for their current role and access is removed when no longer required"
+        },
+        {
+          "@id": "dspt:standard-5",
+          "standardNumber": 5,
+          "standardName": "Process Reviews",
+          "theme": "Process",
+          "assertionCount": 3,
+          "evidenceItemCount": 4,
+          "mandatoryEvidenceCount": 1,
+          "oaa:ndgStandard": "Processes are reviewed at least annually to identify and improve processes which have caused breaches or near misses"
+        },
+        {
+          "@id": "dspt:standard-6",
+          "standardNumber": 6,
+          "standardName": "Responding to Incidents",
+          "theme": "Process",
+          "assertionCount": 3,
+          "evidenceItemCount": 16,
+          "mandatoryEvidenceCount": 14,
+          "oaa:ndgStandard": "Cyber attacks against services are identified and resisted and CareCERT security advice is responded to"
+        },
+        {
+          "@id": "dspt:standard-7",
+          "standardNumber": 7,
+          "standardName": "Continuity Planning",
+          "theme": "Process",
+          "assertionCount": 3,
+          "evidenceItemCount": 12,
+          "mandatoryEvidenceCount": 9,
+          "oaa:ndgStandard": "A continuity plan is in place to respond to threats to data security, including significant data breaches or near misses, and is regularly tested"
+        },
+        {
+          "@id": "dspt:standard-8",
+          "standardNumber": 8,
+          "standardName": "Unsupported Systems",
+          "theme": "Technology",
+          "assertionCount": 4,
+          "evidenceItemCount": 16,
+          "mandatoryEvidenceCount": 12,
+          "oaa:ndgStandard": "All unsupported software and hardware is identified, documented, and risk-assessed, with security risks managed"
+        },
+        {
+          "@id": "dspt:standard-9",
+          "standardNumber": 9,
+          "standardName": "IT Protection",
+          "theme": "Technology",
+          "assertionCount": 6,
+          "evidenceItemCount": 34,
+          "mandatoryEvidenceCount": 28,
+          "oaa:ndgStandard": "A strategy is in place for protecting IT systems from cyber threats which is based on a proven cyber security framework such as Cyber Essentials"
+        },
+        {
+          "@id": "dspt:standard-10",
+          "standardNumber": 10,
+          "standardName": "Accountable Suppliers",
+          "theme": "Technology",
+          "assertionCount": 5,
+          "evidenceItemCount": 10,
+          "mandatoryEvidenceCount": 3,
+          "oaa:ndgStandard": "IT suppliers are held accountable via contracts for protecting the personal confidential data they process and meeting the NDG Standards"
+        }
+      ]
+    },
+    {
+      "@id": "dspt:DSPTAssertion",
+      "@type": "rdfs:Class",
+      "name": "DSPTAssertion",
+      "description": "A high-level assertion within a DSPT Standard that an organisation must demonstrate through evidence items. Each assertion groups related evidence requirements under a common security or data protection theme.",
+      "oaa:properties": [
+        {
+          "name": "assertionRef",
+          "type": "xsd:string",
+          "description": "Assertion reference number (e.g., 1.1, 4.2, 9.5)",
+          "required": true,
+          "constraints": {
+            "pattern": "^\\d{1,2}\\.\\d{1,2}$"
+          }
+        },
+        {
+          "name": "assertionText",
+          "type": "xsd:string",
+          "description": "Full text of the assertion statement",
+          "required": true
+        },
+        {
+          "name": "evidenceItemCount",
+          "type": "xsd:integer",
+          "description": "Number of evidence items under this assertion",
+          "required": true
+        }
+      ],
+      "oaa:instances": [
+        {
+          "@id": "dspt:assertion-1-1",
+          "assertionRef": "1.1",
+          "assertionText": "The organisation has a framework in place to support Lawfulness, Fairness and Transparency"
+        },
+        {
+          "@id": "dspt:assertion-1-2",
+          "assertionRef": "1.2",
+          "assertionText": "Individuals' rights are respected and supported"
+        },
+        {
+          "@id": "dspt:assertion-1-3",
+          "assertionRef": "1.3",
+          "assertionText": "Accountability and Governance in place for data protection and data security"
+        },
+        {
+          "@id": "dspt:assertion-1-4",
+          "assertionRef": "1.4",
+          "assertionText": "Records are maintained appropriately"
+        },
+        {
+          "@id": "dspt:assertion-2-1",
+          "assertionRef": "2.1",
+          "assertionText": "Staff are supported in understanding their obligations under the NDG Data Security Standards"
+        },
+        {
+          "@id": "dspt:assertion-3-1",
+          "assertionRef": "3.1",
+          "assertionText": "There has been an assessment of data security and protection training needs across the organisation"
+        },
+        {
+          "@id": "dspt:assertion-3-2",
+          "assertionRef": "3.2",
+          "assertionText": "Staff pass the data security and protection mandatory test"
+        },
+        {
+          "@id": "dspt:assertion-3-3",
+          "assertionRef": "3.3",
+          "assertionText": "Staff with specialist roles receive data security and protection training suitable to their role"
+        },
+        {
+          "@id": "dspt:assertion-3-4",
+          "assertionRef": "3.4",
+          "assertionText": "Leaders and board members receive suitable data protection and security training"
+        },
+        {
+          "@id": "dspt:assertion-4-1",
+          "assertionRef": "4.1",
+          "assertionText": "The organisation maintains a current record of staff and their roles"
+        },
+        {
+          "@id": "dspt:assertion-4-2",
+          "assertionRef": "4.2",
+          "assertionText": "The organisation assures good management and maintenance of identity and access control for its networks and information systems"
+        },
+        {
+          "@id": "dspt:assertion-4-3",
+          "assertionRef": "4.3",
+          "assertionText": "All staff understand that their activities on IT systems will be monitored and recorded for security purposes"
+        },
+        {
+          "@id": "dspt:assertion-4-4",
+          "assertionRef": "4.4",
+          "assertionText": "You closely manage privileged user access to networks and information systems supporting the essential service"
+        },
+        {
+          "@id": "dspt:assertion-4-5",
+          "assertionRef": "4.5",
+          "assertionText": "You ensure your passwords are suitable for the information you are protecting"
+        },
+        {
+          "@id": "dspt:assertion-5-1",
+          "assertionRef": "5.1",
+          "assertionText": "Process reviews are held at least once per year where data security is put at risk and following data security incidents"
+        },
+        {
+          "@id": "dspt:assertion-5-2",
+          "assertionRef": "5.2",
+          "assertionText": "Participation in reviews is comprehensive, and clinicians are actively involved"
+        },
+        {
+          "@id": "dspt:assertion-5-3",
+          "assertionRef": "5.3",
+          "assertionText": "Action is taken to address problem processes as a result of feedback at meetings or in year"
+        },
+        {
+          "@id": "dspt:assertion-6-1",
+          "assertionRef": "6.1",
+          "assertionText": "A confidential system for reporting data security and protection breaches and near misses is in place and actively used"
+        },
+        {
+          "@id": "dspt:assertion-6-2",
+          "assertionRef": "6.2",
+          "assertionText": "All user devices are subject to anti-virus protections while email services benefit from spam filtering and protection"
+        },
+        {
+          "@id": "dspt:assertion-6-3",
+          "assertionRef": "6.3",
+          "assertionText": "Known vulnerabilities are acted on based on advice from NHS Digital, and lessons are learned from previous incidents"
+        },
+        {
+          "@id": "dspt:assertion-7-1",
+          "assertionRef": "7.1",
+          "assertionText": "Organisations have a defined, planned and communicated response to data security incidents"
+        },
+        {
+          "@id": "dspt:assertion-7-2",
+          "assertionRef": "7.2",
+          "assertionText": "There is an effective test of the continuity plan and disaster recovery plan for data security incidents"
+        },
+        {
+          "@id": "dspt:assertion-7-3",
+          "assertionRef": "7.3",
+          "assertionText": "You have the capability to enact your incident response plan, including effective limitation of impact"
+        },
+        {
+          "@id": "dspt:assertion-8-1",
+          "assertionRef": "8.1",
+          "assertionText": "All software and hardware has been surveyed to understand if it is supported and up to date"
+        },
+        {
+          "@id": "dspt:assertion-8-2",
+          "assertionRef": "8.2",
+          "assertionText": "Unsupported software and hardware is categorised and documented, and data security risks are managed"
+        },
+        {
+          "@id": "dspt:assertion-8-3",
+          "assertionRef": "8.3",
+          "assertionText": "Supported systems are kept up-to-date with the latest security patches"
+        },
+        {
+          "@id": "dspt:assertion-8-4",
+          "assertionRef": "8.4",
+          "assertionText": "You manage known vulnerabilities in your network and information systems to prevent disruption"
+        },
+        {
+          "@id": "dspt:assertion-9-1",
+          "assertionRef": "9.1",
+          "assertionText": "All networking components have had their default passwords changed"
+        },
+        {
+          "@id": "dspt:assertion-9-2",
+          "assertionRef": "9.2",
+          "assertionText": "A penetration test has been scoped and undertaken"
+        },
+        {
+          "@id": "dspt:assertion-9-3",
+          "assertionRef": "9.3",
+          "assertionText": "Systems which handle sensitive information or key services shall be protected from exploitation of known vulnerabilities"
+        },
+        {
+          "@id": "dspt:assertion-9-4",
+          "assertionRef": "9.4",
+          "assertionText": "You have demonstrable confidence in the effectiveness of the security of your technology, people, and processes"
+        },
+        {
+          "@id": "dspt:assertion-9-5",
+          "assertionRef": "9.5",
+          "assertionText": "You securely configure the network and information systems that support the delivery of essential services"
+        },
+        {
+          "@id": "dspt:assertion-9-6",
+          "assertionRef": "9.6",
+          "assertionText": "The organisation is protected by a well managed firewall"
+        },
+        {
+          "@id": "dspt:assertion-10-1",
+          "assertionRef": "10.1",
+          "assertionText": "The organisation can name its suppliers, the products and services they deliver and the contract durations"
+        },
+        {
+          "@id": "dspt:assertion-10-2",
+          "assertionRef": "10.2",
+          "assertionText": "Basic due diligence has been undertaken against each supplier that handles personal information"
+        },
+        {
+          "@id": "dspt:assertion-10-3",
+          "assertionRef": "10.3",
+          "assertionText": "All disputes between the organisation and its suppliers have been recorded with data security risks documented"
+        },
+        {
+          "@id": "dspt:assertion-10-4",
+          "assertionRef": "10.4",
+          "assertionText": "All instances where organisations cannot comply with NDG Standards because of supplier issues are recorded and discussed at board"
+        },
+        {
+          "@id": "dspt:assertion-10-5",
+          "assertionRef": "10.5",
+          "assertionText": "The organisation understands and manages security risks to networks and information systems from the supply chain"
+        }
+      ]
+    },
+    {
+      "@id": "dspt:EvidenceItem",
+      "@type": "rdfs:Class",
+      "name": "EvidenceItem",
+      "description": "An individual evidence requirement within a DSPT Assertion. Evidence items vary by organisation category and may be mandatory or optional. Input types include Text, Document, Date, URL, Yes/No, and Number.",
+      "oaa:properties": [
+        {
+          "name": "evidenceRef",
+          "type": "xsd:string",
+          "description": "Evidence reference number (e.g., 1.1.1, 4.2.3, 9.5.4)",
+          "required": true
+        },
+        {
+          "name": "evidenceText",
+          "type": "xsd:string",
+          "description": "The evidence requirement text as presented to the organisation",
+          "required": true
+        },
+        {
+          "name": "inputType",
+          "type": "dspt:InputType",
+          "description": "Type of input expected (Text, Document, Date, URL, Yes/No, Number)",
+          "required": true
+        },
+        {
+          "name": "mandatoryCategory1",
+          "type": "xsd:boolean",
+          "description": "Whether this evidence is mandatory for NHS Trusts and CSUs",
+          "required": true
+        },
+        {
+          "name": "mandatoryCategory2",
+          "type": "xsd:boolean",
+          "description": "Whether this evidence is mandatory for CCGs and ALBs",
+          "required": false
+        },
+        {
+          "name": "mandatoryCategory3",
+          "type": "xsd:boolean",
+          "description": "Whether this evidence is mandatory for other health/social care organisations",
+          "required": false
+        },
+        {
+          "name": "mandatoryCategory4",
+          "type": "xsd:boolean",
+          "description": "Whether this evidence is mandatory for GP practices",
+          "required": false
+        },
+        {
+          "name": "exemptCyberEssentialsPlus",
+          "type": "xsd:boolean",
+          "description": "Whether organisations with Cyber Essentials Plus are exempt from this item",
+          "required": false
+        },
+        {
+          "name": "exemptISO27001",
+          "type": "xsd:boolean",
+          "description": "Whether organisations with ISO 27001 are exempt from this item",
+          "required": false
+        },
+        {
+          "name": "approachingStandardsCategory",
+          "type": "xsd:string",
+          "description": "Category for 'Approaching Standards' status if applicable",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "dspt:DSPTAssessment",
+      "@type": "rdfs:Class",
+      "name": "DSPTAssessment",
+      "description": "An annual DSPT submission by an organisation, recording completion status for all mandatory evidence items and the overall assessment outcome (Standards Met, Approaching Standards, Standards Not Met).",
+      "oaa:properties": [
+        {
+          "name": "assessmentId",
+          "type": "xsd:string",
+          "description": "Unique identifier for this DSPT submission",
+          "required": true
+        },
+        {
+          "name": "organisationName",
+          "type": "xsd:string",
+          "description": "Name of the submitting organisation",
+          "required": true
+        },
+        {
+          "name": "odsCode",
+          "type": "xsd:string",
+          "description": "Organisation Data Service (ODS) code identifying the NHS organisation",
+          "required": false
+        },
+        {
+          "name": "organisationCategory",
+          "type": "dspt:OrganisationCategory",
+          "description": "DSPT organisation category (1-4)",
+          "required": true
+        },
+        {
+          "name": "submissionDate",
+          "type": "xsd:date",
+          "description": "Date of DSPT submission (annual deadline typically 30 June)",
+          "required": true
+        },
+        {
+          "name": "assessmentYear",
+          "type": "xsd:string",
+          "description": "Assessment year (e.g., 2024-25)",
+          "required": true
+        },
+        {
+          "name": "overallStatus",
+          "type": "dspt:DSPTStatus",
+          "description": "Overall DSPT assessment outcome",
+          "required": true
+        },
+        {
+          "name": "mandatoryItemsMet",
+          "type": "xsd:integer",
+          "description": "Number of mandatory evidence items satisfied",
+          "required": true
+        },
+        {
+          "name": "mandatoryItemsTotal",
+          "type": "xsd:integer",
+          "description": "Total mandatory evidence items for this organisation category",
+          "required": true
+        },
+        {
+          "name": "optionalItemsCompleted",
+          "type": "xsd:integer",
+          "description": "Number of optional evidence items completed",
+          "required": false
+        },
+        {
+          "name": "improvementPlanRequired",
+          "type": "xsd:boolean",
+          "description": "Whether an improvement plan is required for non-compliant items",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "dspt:CAFDSPTMapping",
+      "@type": "rdfs:Class",
+      "name": "CAFDSPTMapping",
+      "description": "Cross-framework mapping between DSPT Standards/Assertions and NCSC CAF Contributing Outcomes, enabling NHS organisations to demonstrate dual compliance with shared evidence artefacts.",
+      "oaa:properties": [
+        {
+          "name": "dsptStandardNumber",
+          "type": "xsd:integer",
+          "description": "DSPT Standard number being mapped",
+          "required": true
+        },
+        {
+          "name": "cafOutcomeCode",
+          "type": "xsd:string",
+          "description": "NCSC CAF Contributing Outcome code being mapped to",
+          "required": true
+        },
+        {
+          "name": "mappingStrength",
+          "type": "xsd:string",
+          "description": "Strength of the mapping: Direct, Partial, or Related",
+          "required": true
+        },
+        {
+          "name": "sharedEvidence",
+          "type": "xsd:string",
+          "description": "Description of evidence artefacts that satisfy both frameworks",
+          "required": false
+        }
+      ],
+      "oaa:instances": [
+        {
+          "@id": "dspt:map-1-A1",
+          "dsptStandardNumber": 1,
+          "cafOutcomeCode": "A1.a",
+          "mappingStrength": "Partial",
+          "sharedEvidence": "Board-level data protection governance and accountability"
+        },
+        {
+          "@id": "dspt:map-1-B3a",
+          "dsptStandardNumber": 1,
+          "cafOutcomeCode": "B3.a",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "Information asset registers, data flow mapping, ROPA"
+        },
+        {
+          "@id": "dspt:map-3-B6a",
+          "dsptStandardNumber": 3,
+          "cafOutcomeCode": "B6.a",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "Mandatory security awareness training completion records"
+        },
+        {
+          "@id": "dspt:map-3-B6b",
+          "dsptStandardNumber": 3,
+          "cafOutcomeCode": "B6.b",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "Specialist role-based security training and board-level training"
+        },
+        {
+          "@id": "dspt:map-4-B2a",
+          "dsptStandardNumber": 4,
+          "cafOutcomeCode": "B2.a",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "Identity verification, authentication, access management"
+        },
+        {
+          "@id": "dspt:map-4-B2c",
+          "dsptStandardNumber": 4,
+          "cafOutcomeCode": "B2.c",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "Privileged user access management and monitoring"
+        },
+        {
+          "@id": "dspt:map-4-B2d",
+          "dsptStandardNumber": 4,
+          "cafOutcomeCode": "B2.d",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "IdAM policies, JML processes, access reviews"
+        },
+        {
+          "@id": "dspt:map-5-D2a",
+          "dsptStandardNumber": 5,
+          "cafOutcomeCode": "D2.a",
+          "mappingStrength": "Partial",
+          "sharedEvidence": "Post-incident process reviews and lessons learned"
+        },
+        {
+          "@id": "dspt:map-6-C1a",
+          "dsptStandardNumber": 6,
+          "cafOutcomeCode": "C1.a",
+          "mappingStrength": "Partial",
+          "sharedEvidence": "Anti-virus, email filtering, vulnerability scanning"
+        },
+        {
+          "@id": "dspt:map-6-B4d",
+          "dsptStandardNumber": 6,
+          "cafOutcomeCode": "B4.d",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "Vulnerability management and patching from CareCERT advisories"
+        },
+        {
+          "@id": "dspt:map-7-D1a",
+          "dsptStandardNumber": 7,
+          "cafOutcomeCode": "D1.a",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "Incident response plans and communication procedures"
+        },
+        {
+          "@id": "dspt:map-7-D1b",
+          "dsptStandardNumber": 7,
+          "cafOutcomeCode": "D1.b",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "Response and recovery capability, BCP/DR plans"
+        },
+        {
+          "@id": "dspt:map-7-D1c",
+          "dsptStandardNumber": 7,
+          "cafOutcomeCode": "D1.c",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "Continuity and disaster recovery plan testing"
+        },
+        {
+          "@id": "dspt:map-8-A3a",
+          "dsptStandardNumber": 8,
+          "cafOutcomeCode": "A3.a",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "Hardware and software asset inventories and lifecycle management"
+        },
+        {
+          "@id": "dspt:map-8-B4d",
+          "dsptStandardNumber": 8,
+          "cafOutcomeCode": "B4.d",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "Vulnerability management for unsupported systems and patching"
+        },
+        {
+          "@id": "dspt:map-9-B4a",
+          "dsptStandardNumber": 9,
+          "cafOutcomeCode": "B4.a",
+          "mappingStrength": "Partial",
+          "sharedEvidence": "Secure by design principles and pen testing"
+        },
+        {
+          "@id": "dspt:map-9-B4b",
+          "dsptStandardNumber": 9,
+          "cafOutcomeCode": "B4.b",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "Secure configuration, default password changes, firewall management"
+        },
+        {
+          "@id": "dspt:map-9-A2c",
+          "dsptStandardNumber": 9,
+          "cafOutcomeCode": "A2.c",
+          "mappingStrength": "Partial",
+          "sharedEvidence": "Penetration testing and security assurance"
+        },
+        {
+          "@id": "dspt:map-10-A4a",
+          "dsptStandardNumber": 10,
+          "cafOutcomeCode": "A4.a",
+          "mappingStrength": "Direct",
+          "sharedEvidence": "Supplier inventory, due diligence, contract management, supply chain risk"
+        }
+      ]
+    },
+    {
+      "@id": "grc-fw:ComplianceFramework",
+      "@type": "rdfs:Class",
+      "name": "ComplianceFramework",
+      "description": "External GRC-FW entity for DSPT certification status tracking.",
+      "oaa:externalOntology": "grc-fw:GRCFrameworkOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@id": "ncsc-caf:ContributingOutcome",
+      "@type": "rdfs:Class",
+      "name": "ContributingOutcome",
+      "description": "External NCSC-CAF entity for cross-framework mapping.",
+      "oaa:externalOntology": "ncsc-caf:NCSCCAFOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@id": "ncsc-caf:CAFPrinciple",
+      "@type": "rdfs:Class",
+      "name": "CAFPrinciple",
+      "description": "External NCSC-CAF entity for principle-level mapping.",
+      "oaa:externalOntology": "ncsc-caf:NCSCCAFOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@id": "gdpr:DataProtectionPrinciple",
+      "@type": "rdfs:Class",
+      "name": "DataProtectionPrinciple",
+      "description": "External GDPR entity for data protection principle alignment.",
+      "oaa:externalOntology": "gdpr:GDPROntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@id": "gdpr:DataSubjectRight",
+      "@type": "rdfs:Class",
+      "name": "DataSubjectRight",
+      "description": "External GDPR entity for data subject rights alignment.",
+      "oaa:externalOntology": "gdpr:GDPROntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@id": "gdpr:ComplianceObligation",
+      "@type": "rdfs:Class",
+      "name": "ComplianceObligation",
+      "description": "External GDPR entity for compliance obligation alignment.",
+      "oaa:externalOntology": "gdpr:GDPROntology",
+      "oaa:stubEntity": true
+    }
+  ],
+  "oaa:enumerations": [
+    {
+      "@id": "dspt:DSPTTheme",
+      "@type": "rdfs:Datatype",
+      "name": "DSPT Theme",
+      "description": "The three themes grouping the 10 NDG Data Security Standards",
+      "values": [
+        {
+          "@id": "dspt:theme-people",
+          "name": "People",
+          "description": "Standards 1-3: Personal data handling, staff responsibilities, and training"
+        },
+        {
+          "@id": "dspt:theme-process",
+          "name": "Process",
+          "description": "Standards 4-7: Data access management, process reviews, incident response, and continuity planning"
+        },
+        {
+          "@id": "dspt:theme-technology",
+          "name": "Technology",
+          "description": "Standards 8-10: Unsupported systems, IT protection, and accountable suppliers"
+        }
+      ]
+    },
+    {
+      "@id": "dspt:DSPTStatus",
+      "@type": "rdfs:Datatype",
+      "name": "DSPT Status",
+      "description": "Possible outcomes of a DSPT annual assessment",
+      "values": [
+        {
+          "@id": "dspt:status-standards-exceeded",
+          "name": "Standards Exceeded",
+          "description": "All mandatory items met plus significant optional items completed"
+        },
+        {
+          "@id": "dspt:status-standards-met",
+          "name": "Standards Met",
+          "description": "All mandatory evidence items for the organisation's category have been satisfied"
+        },
+        {
+          "@id": "dspt:status-approaching-standards",
+          "name": "Approaching Standards",
+          "description": "Organisation is making progress but has not yet met all mandatory items — improvement plan required"
+        },
+        {
+          "@id": "dspt:status-standards-not-met",
+          "name": "Standards Not Met",
+          "description": "Significant mandatory items remain unsatisfied — action plan required"
+        },
+        {
+          "@id": "dspt:status-not-published",
+          "name": "Not Published",
+          "description": "Assessment has not been submitted by the annual deadline"
+        }
+      ]
+    },
+    {
+      "@id": "dspt:OrganisationCategory",
+      "@type": "rdfs:Datatype",
+      "name": "Organisation Category",
+      "description": "DSPT organisation categories determining which evidence items apply",
+      "values": [
+        {
+          "@id": "dspt:cat-1",
+          "name": "Category 1",
+          "description": "NHS Trusts and Commissioning Support Units (CSUs) — fullest set of mandatory requirements"
+        },
+        {
+          "@id": "dspt:cat-2",
+          "name": "Category 2",
+          "description": "CCGs and Arms-Length Bodies (ALBs)"
+        },
+        {
+          "@id": "dspt:cat-3",
+          "name": "Category 3",
+          "description": "Other health and social care organisations (care homes, pharmacies, opticians, dentists)"
+        },
+        {
+          "@id": "dspt:cat-4",
+          "name": "Category 4",
+          "description": "GP practices"
+        }
+      ]
+    },
+    {
+      "@id": "dspt:InputType",
+      "@type": "rdfs:Datatype",
+      "name": "Input Type",
+      "description": "Types of evidence input accepted by the DSPT",
+      "values": [
+        {
+          "@id": "dspt:input-text",
+          "name": "Text",
+          "description": "Free-text response"
+        },
+        {
+          "@id": "dspt:input-document",
+          "name": "Document",
+          "description": "Uploaded document or link to evidence"
+        },
+        {
+          "@id": "dspt:input-date",
+          "name": "Date",
+          "description": "Date value (e.g., last review date)"
+        },
+        {
+          "@id": "dspt:input-url",
+          "name": "URL",
+          "description": "Web link to evidence or system"
+        },
+        {
+          "@id": "dspt:input-yesno",
+          "name": "Yes/No",
+          "description": "Boolean confirmation"
+        },
+        {
+          "@id": "dspt:input-number",
+          "name": "Number",
+          "description": "Numeric value (e.g., percentage, count)"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "rdf:Property",
+      "@id": "dspt:hasAssertion",
+      "name": "hasAssertion",
+      "description": "A DSPTStandard contains one or more DSPTAssertions",
+      "domainIncludes": "dspt:DSPTStandard",
+      "rangeIncludes": "dspt:DSPTAssertion",
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "dspt:hasEvidenceItem",
+      "name": "hasEvidenceItem",
+      "description": "A DSPTAssertion requires one or more EvidenceItems to demonstrate compliance",
+      "domainIncludes": "dspt:DSPTAssertion",
+      "rangeIncludes": "dspt:EvidenceItem",
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "dspt:hasCAFMapping",
+      "name": "hasCAFMapping",
+      "description": "A DSPTStandard has mappings to NCSC CAF Contributing Outcomes for cross-framework compliance",
+      "domainIncludes": "dspt:DSPTStandard",
+      "rangeIncludes": "dspt:CAFDSPTMapping",
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "dspt:mapsToCAFOutcome",
+      "name": "mapsToCAFOutcome",
+      "description": "A CAFDSPTMapping links a DSPT standard to a specific NCSC CAF Contributing Outcome",
+      "domainIncludes": "dspt:CAFDSPTMapping",
+      "rangeIncludes": "ncsc-caf:ContributingOutcome",
+      "cardinality": "1..1",
+      "oaa:crossOntologyRef": "NCSC-CAF"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "dspt:implementsGDPRPrinciple",
+      "name": "implementsGDPRPrinciple",
+      "description": "DSPT Standards 1-2 assertions implement GDPR DataProtectionPrinciples",
+      "domainIncludes": "dspt:DSPTAssertion",
+      "rangeIncludes": "gdpr:DataProtectionPrinciple",
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "GDPR"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "dspt:supportsDataSubjectRight",
+      "name": "supportsDataSubjectRight",
+      "description": "DSPT Standard 1.2 assertions support GDPR DataSubjectRights",
+      "domainIncludes": "dspt:DSPTAssertion",
+      "rangeIncludes": "gdpr:DataSubjectRight",
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "GDPR"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "dspt:registeredAsFramework",
+      "name": "registeredAsFramework",
+      "description": "A DSPTAssessment registers as an GRC-FW ComplianceFramework for organisational compliance tracking",
+      "domainIncludes": "dspt:DSPTAssessment",
+      "rangeIncludes": "grc-fw:ComplianceFramework",
+      "cardinality": "0..1",
+      "oaa:crossOntologyRef": "GRC-FW"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "dspt:assessesStandard",
+      "name": "assessesStandard",
+      "description": "A DSPTAssessment evaluates one or more DSPTStandards, recording evidence completion for each standard's mandatory and optional items",
+      "domainIncludes": "dspt:DSPTAssessment",
+      "rangeIncludes": "dspt:DSPTStandard",
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "dspt:alignsToPrinciple",
+      "name": "alignsToPrinciple",
+      "description": "A DSPTStandard aligns to one or more NCSC CAF Principles at the principle level, complementing the finer-grained Contributing Outcome mappings via CAFDSPTMapping",
+      "domainIncludes": "dspt:DSPTStandard",
+      "rangeIncludes": "ncsc-caf:CAFPrinciple",
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "NCSC-CAF"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "dspt:fulfillsObligation",
+      "name": "fulfillsObligation",
+      "description": "A DSPTAssessment with Standards Met status fulfills specific GDPR ComplianceObligations, particularly around data security (Article 32) and accountability (Article 5(2))",
+      "domainIncludes": "dspt:DSPTAssessment",
+      "rangeIncludes": "gdpr:ComplianceObligation",
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "GDPR"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-DSPT-001",
+      "name": "Standards Met Requires All Mandatory Items",
+      "condition": "IF DSPTAssessment.overallStatus = 'Standards Met'",
+      "action": "THEN mandatoryItemsMet MUST equal mandatoryItemsTotal for the relevant OrganisationCategory",
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "ruleId": "BR-DSPT-002",
+      "name": "Annual Submission Required",
+      "condition": "IF organisation is an NHS-funded body or health/social care provider",
+      "action": "THEN DSPTAssessment MUST be submitted annually by the deadline (typically 30 June)",
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "ruleId": "BR-DSPT-003",
+      "name": "Approaching Standards Requires Improvement Plan",
+      "condition": "IF DSPTAssessment.overallStatus = 'Approaching Standards'",
+      "action": "THEN improvementPlanRequired MUST be true AND an improvement plan with target dates must be documented",
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "ruleId": "BR-DSPT-004",
+      "name": "Cyber Essentials Plus Exemptions Apply",
+      "condition": "IF organisation holds current Cyber Essentials Plus certification",
+      "action": "THEN EvidenceItems with exemptCyberEssentialsPlus=true may be marked as met without additional evidence",
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "ruleId": "BR-DSPT-005",
+      "name": "Category Determines Mandatory Scope",
+      "condition": "IF DSPTAssessment.organisationCategory is set",
+      "action": "THEN only EvidenceItems mandatory for that category are required for Standards Met status",
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "ruleId": "BR-DSPT-006",
+      "name": "DSPT Standards Met Enables NHS Data Sharing",
+      "condition": "IF organisation needs to access NHS patient data or connect to HSCN",
+      "action": "THEN DSPTAssessment.overallStatus MUST be 'Standards Met' or 'Standards Exceeded'",
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    }
+  ],
+  "crossOntologyReferences": {
+    "grcFramework": [
+      "grc-fw:"
+    ],
+    "cafAlignment": [
+      "ncsc-caf:"
+    ],
+    "gdprAlignment": [
+      "gdpr:"
+    ],
+    "description": "DSPT-ONT bridges NHS health sector data security requirements to the wider RCSG compliance ecosystem. DSPT Standards map to NCSC CAF Contributing Outcomes for organisations subject to both frameworks (e.g., NHS Trusts designated as OES under NIS Regulations). Standards 1-2 align to GDPR data protection principles and data subject rights. DSPT assessment status registers as an GRC-FW ComplianceFramework entry for organisational compliance landscape tracking.",
+    "lineageAlignment": {
+      "ncsc-caf:ContributingOutcome": "NCSC CAF outcomes provide the cyber security framework that DSPT technology standards (8-10) align to",
+      "ncsc-caf:CAFPrinciple": "NCSC CAF principles provide principle-level alignment for DSPT standards (e.g., Standard 9 aligns to CAF B4 System Security)",
+      "gdpr:DataProtectionPrinciple": "GDPR principles underpin DSPT Standards 1-2 (data protection, lawfulness, rights)",
+      "gdpr:DataSubjectRight": "GDPR data subject rights are implemented through DSPT Standard 1.2 assertions",
+      "gdpr:ComplianceObligation": "GDPR compliance obligations (Article 32 security, Article 5(2) accountability) are fulfilled by DSPT Standards Met status",
+      "grc-fw:ComplianceFramework": "GRC-FW tracks DSPT assessment status within organisational compliance posture"
+    },
+    "keyBridges": [
+      {
+        "from": "dspt:DSPTStandard",
+        "to": "ncsc-caf:ContributingOutcome",
+        "relationship": "mapsToCAFOutcome"
+      },
+      {
+        "from": "dspt:DSPTStandard",
+        "to": "ncsc-caf:CAFPrinciple",
+        "relationship": "alignsToPrinciple"
+      },
+      {
+        "from": "dspt:DSPTAssertion",
+        "to": "gdpr:DataProtectionPrinciple",
+        "relationship": "implementsGDPRPrinciple"
+      },
+      {
+        "from": "dspt:DSPTAssertion",
+        "to": "gdpr:DataSubjectRight",
+        "relationship": "supportsDataSubjectRight"
+      },
+      {
+        "from": "dspt:DSPTAssessment",
+        "to": "gdpr:ComplianceObligation",
+        "relationship": "fulfillsObligation"
+      },
+      {
+        "from": "dspt:DSPTAssessment",
+        "to": "grc-fw:ComplianceFramework",
+        "relationship": "registeredAsFramework"
+      }
+    ]
+  },
+  "oaa:ontologyId": "DSPT-ONT",
+  "oaa:series": "RCSG-SERIES",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of DSPTStandard within this ontology?",
+      "targetEntities": [
+        "dspt:DSPTStandard"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of DSPTAssertion within this ontology?",
+      "targetEntities": [
+        "dspt:DSPTAssertion"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of EvidenceItem within this ontology?",
+      "targetEntities": [
+        "dspt:EvidenceItem"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of DSPTAssessment within this ontology?",
+      "targetEntities": [
+        "dspt:DSPTAssessment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of CAFDSPTMapping within this ontology?",
+      "targetEntities": [
+        "dspt:CAFDSPTMapping"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of ComplianceFramework within this ontology?",
+      "targetEntities": [
+        "grc-fw:ComplianceFramework"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of ContributingOutcome within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:ContributingOutcome"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of CAFPrinciple within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:CAFPrinciple"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of DataProtectionPrinciple within this ontology?",
+      "targetEntities": [
+        "gdpr:DataProtectionPrinciple"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of DataSubjectRight within this ontology?",
+      "targetEntities": [
+        "gdpr:DataSubjectRight"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the role and purpose of ComplianceObligation within this ontology?",
+      "targetEntities": [
+        "gdpr:ComplianceObligation"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

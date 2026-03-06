@@ -1,0 +1,417 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v5/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "pe": "https://oaa-ontology.org/v5/process-engineering/"
+  },
+  "@id": "https://oaa-ontology.org/v5/pe/schema",
+  "@type": "owl:Ontology",
+  "name": "Process Engineering Ontology",
+  "description": "Comprehensive ontology for defining, orchestrating, and optimizing business processes with agentic AI augmentation. Supports cradle-to-grave process management from vision through execution and continuous improvement.",
+  "oaa:schemaVersion": "5.0.0",
+  "oaa:moduleVersion": "2.0.0",
+  "oaa:previousVersion": "1.0.0",
+  "oaa:domain": "Business Process Management, Process Engineering, Agentic Orchestration",
+  "oaa:status": "Production",
+  "dateCreated": "2026-01-18",
+  "dateModified": "2026-02-01",
+  "creator": {
+    "@type": "Organization",
+    "name": "Platform Foundation Core - Ontology Architect Agent"
+  },
+
+  "entities": [
+    {
+      "@id": "pe:Process",
+      "@type": "rdfs:Class",
+      "name": "Process",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A structured, repeatable sequence of activities and decision points that transforms inputs into outputs to achieve specific business outcomes, optimized through AI augmentation.",
+      "oaa:properties": [
+        {"name": "processId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "processName", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "processType", "type": "xsd:string", "required": true, "enum": ["development", "discovery", "analysis", "deployment", "optimization", "governance", "custom"]},
+        {"name": "description", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:description"},
+        {"name": "businessObjective", "type": "xsd:string", "required": true, "description": "Strategic business objective this process supports"},
+        {"name": "scope", "type": "xsd:string", "required": true, "description": "Boundaries and coverage of the process"},
+        {"name": "owner", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:agent"},
+        {"name": "status", "type": "xsd:string", "required": true, "enum": ["draft", "active", "deprecated", "archived"]},
+        {"name": "version", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:version"},
+        {"name": "estimatedDuration", "type": "xsd:duration", "required": false, "schemaOrgMapping": "schema:duration"},
+        {"name": "automationLevel", "type": "xsd:integer", "required": false, "description": "AI augmentation percentage (0-100)"}
+      ]
+    },
+    {
+      "@id": "pe:ProcessPhase",
+      "@type": "rdfs:Class",
+      "name": "ProcessPhase",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A distinct stage within a process that groups related activities, has specific deliverables, and includes quality gates for progression control.",
+      "oaa:properties": [
+        {"name": "phaseId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "phaseName", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "phaseNumber", "type": "xsd:integer", "required": true, "description": "Sequential position in process"},
+        {"name": "description", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:description"},
+        {"name": "entryConditions", "type": "xsd:string", "required": true, "description": "Prerequisites before phase can begin"},
+        {"name": "exitConditions", "type": "xsd:string", "required": true, "description": "Criteria to complete phase"},
+        {"name": "activities", "type": "xsd:string", "required": true, "description": "List of activities in this phase"},
+        {"name": "estimatedDuration", "type": "xsd:duration", "required": false},
+        {"name": "parallelExecution", "type": "xsd:boolean", "required": false, "default": false}
+      ]
+    },
+    {
+      "@id": "pe:ProcessArtifact",
+      "@type": "rdfs:Class",
+      "name": "ProcessArtifact",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "Tangible output or deliverable produced by a process phase, serving as evidence of completion and input to downstream activities.",
+      "oaa:properties": [
+        {"name": "artifactId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "artifactName", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "artifactType", "type": "xsd:string", "required": true, "enum": ["document", "code", "configuration", "schema", "test-suite", "deployment-package", "report", "other"]},
+        {"name": "description", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:description"},
+        {"name": "format", "type": "xsd:string", "required": false, "schemaOrgMapping": "schema:encodingFormat"},
+        {"name": "location", "type": "xsd:anyURI", "required": false, "schemaOrgMapping": "schema:url"},
+        {"name": "mandatory", "type": "xsd:boolean", "required": true, "default": true}
+      ]
+    },
+    {
+      "@id": "pe:ProcessGate",
+      "@type": "rdfs:Class",
+      "name": "ProcessGate",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "Decision point or quality checkpoint that controls progression between process phases, enforcing quality standards and completion criteria.",
+      "oaa:properties": [
+        {"name": "gateId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "gateName", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "gateType", "type": "xsd:string", "required": true, "enum": ["quality", "approval", "completeness", "compliance", "risk-assessment", "go-no-go"]},
+        {"name": "description", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:description"},
+        {"name": "criteria", "type": "xsd:string", "required": true, "description": "Criteria to pass the gate"},
+        {"name": "threshold", "type": "xsd:integer", "required": false, "description": "Percentage threshold (0-100)"},
+        {"name": "automated", "type": "xsd:boolean", "required": true, "default": false},
+        {"name": "blockingFactor", "type": "xsd:string", "required": true, "enum": ["blocking", "warning", "informational"]}
+      ]
+    },
+    {
+      "@id": "pe:ProcessMetric",
+      "@type": "rdfs:Class",
+      "name": "ProcessMetric",
+      "rdfs:subClassOf": "schema:PropertyValue",
+      "description": "Measurable indicator that tracks process performance, efficiency, quality, or business outcome achievement.",
+      "oaa:properties": [
+        {"name": "metricId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "metricName", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "metricType", "type": "xsd:string", "required": true, "enum": ["duration", "quality", "efficiency", "cost", "satisfaction", "outcome", "leading-indicator", "lagging-indicator"]},
+        {"name": "description", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:description"},
+        {"name": "formula", "type": "xsd:string", "required": false, "description": "Calculation formula"},
+        {"name": "unit", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:unitText"},
+        {"name": "target", "type": "xsd:decimal", "required": true, "schemaOrgMapping": "schema:value"},
+        {"name": "collectionMethod", "type": "xsd:string", "required": true, "enum": ["automated", "manual", "hybrid"]},
+        {"name": "frequency", "type": "xsd:string", "required": true, "description": "Measurement frequency"}
+      ]
+    },
+    {
+      "@id": "pe:AIAgent",
+      "@type": "rdfs:Class",
+      "name": "AIAgent",
+      "rdfs:subClassOf": "schema:SoftwareApplication",
+      "description": "Artificial intelligence agent that augments or automates process activities, with defined capabilities, autonomy levels, and coordination protocols.",
+      "oaa:properties": [
+        {"name": "agentId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "agentName", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "agentType", "type": "xsd:string", "required": true, "enum": ["analysis", "generation", "optimization", "orchestration", "validation", "monitoring", "custom"]},
+        {"name": "description", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:description"},
+        {"name": "capabilities", "type": "xsd:string", "required": true, "description": "List of agent capabilities"},
+        {"name": "autonomyLevel", "type": "xsd:string", "required": true, "enum": ["highly-autonomous", "supervised", "manual", "hybrid"]},
+        {"name": "model", "type": "xsd:string", "required": false, "description": "Underlying AI model"},
+        {"name": "qualityThreshold", "type": "xsd:integer", "required": false, "description": "Minimum quality score (0-100)"}
+      ]
+    },
+    {
+      "@id": "pe:ProcessInstance",
+      "@type": "rdfs:Class",
+      "name": "ProcessInstance",
+      "rdfs:subClassOf": "schema:Event",
+      "description": "Specific execution of a process definition, tracking actual progress, performance, and outcomes for a particular initiative.",
+      "oaa:properties": [
+        {"name": "instanceId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "instanceName", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "status", "type": "xsd:string", "required": true, "enum": ["initiated", "in-progress", "blocked", "completed", "failed", "cancelled"]},
+        {"name": "currentPhase", "type": "xsd:string", "required": false, "description": "Currently executing phase"},
+        {"name": "startDate", "type": "xsd:dateTime", "required": true, "schemaOrgMapping": "schema:startDate"},
+        {"name": "endDate", "type": "xsd:dateTime", "required": false, "schemaOrgMapping": "schema:endDate"},
+        {"name": "progress", "type": "xsd:integer", "required": false, "description": "Completion percentage (0-100)"}
+      ]
+    },
+    {
+      "@id": "pe:Hypothesis",
+      "@type": "rdfs:Class",
+      "name": "Hypothesis",
+      "rdfs:subClassOf": "schema:Claim",
+      "description": "Testable assumption about process improvement or outcome prediction, validated through systematic measurement during process execution.",
+      "oaa:properties": [
+        {"name": "hypothesisId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "statement", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:text", "description": "Clear hypothesis statement"},
+        {"name": "description", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:description"},
+        {"name": "measurementMethod", "type": "xsd:string", "required": true, "description": "How to validate"},
+        {"name": "target", "type": "xsd:string", "required": true, "description": "Target outcome"},
+        {"name": "status", "type": "xsd:string", "required": true, "enum": ["proposed", "active", "validated", "invalidated", "inconclusive"]},
+        {"name": "confidence", "type": "xsd:integer", "required": false, "description": "Confidence level (0-100)"}
+      ]
+    },
+    {
+      "@id": "pe:ValueChain",
+      "@type": "rdfs:Class",
+      "name": "ValueChain",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Sequence of value-adding activities that transform inputs through processes to create customer value and business outcomes.",
+      "oaa:properties": [
+        {"name": "valueChainId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "valueChainName", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "description", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:description"},
+        {"name": "customerValue", "type": "xsd:string", "required": true, "description": "Value delivered to customers"},
+        {"name": "inputs", "type": "xsd:string", "required": true, "description": "Required inputs"},
+        {"name": "outputs", "type": "xsd:string", "required": true, "description": "Outputs delivered"}
+      ]
+    },
+    {
+      "@id": "pe:ProcessPattern",
+      "@type": "rdfs:Class",
+      "name": "ProcessPattern",
+      "rdfs:subClassOf": "schema:HowTo",
+      "description": "Reusable process template or best practice pattern that can be adapted across different contexts.",
+      "oaa:properties": [
+        {"name": "patternId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "patternName", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "description", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:description"},
+        {"name": "context", "type": "xsd:string", "required": true, "description": "Applicability context"},
+        {"name": "problem", "type": "xsd:string", "required": true, "description": "Problem addressed"},
+        {"name": "solution", "type": "xsd:string", "required": true, "description": "Solution approach"},
+        {"name": "benefits", "type": "xsd:string", "required": true, "description": "Key benefits"}
+      ]
+    }
+  ],
+
+  "relationships": [
+    {
+      "@id": "pe:hasPhase",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Phase",
+      "description": "A process contains one or more ordered phases",
+      "domainIncludes": ["pe:Process"],
+      "rangeIncludes": ["pe:ProcessPhase"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "pe:produces",
+      "@type": "owl:ObjectProperty",
+      "name": "Produces",
+      "description": "A phase produces artifacts as deliverables",
+      "domainIncludes": ["pe:ProcessPhase"],
+      "rangeIncludes": ["pe:ProcessArtifact"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "pe:hasGate",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Gate",
+      "description": "A phase has quality gates controlling progression",
+      "domainIncludes": ["pe:ProcessPhase"],
+      "rangeIncludes": ["pe:ProcessGate"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "pe:measures",
+      "@type": "owl:ObjectProperty",
+      "name": "Measures",
+      "description": "A process tracks metrics for performance",
+      "domainIncludes": ["pe:Process"],
+      "rangeIncludes": ["pe:ProcessMetric"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "pe:augmentedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Augmented By",
+      "description": "A phase is augmented by AI agents",
+      "domainIncludes": ["pe:ProcessPhase"],
+      "rangeIncludes": ["pe:AIAgent"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "pe:dependsOn",
+      "@type": "owl:ObjectProperty",
+      "name": "Depends On",
+      "description": "A phase depends on other phases completing first",
+      "domainIncludes": ["pe:ProcessPhase"],
+      "rangeIncludes": ["pe:ProcessPhase"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "pe:instantiates",
+      "@type": "owl:ObjectProperty",
+      "name": "Instantiates",
+      "description": "A process definition creates execution instances",
+      "domainIncludes": ["pe:Process"],
+      "rangeIncludes": ["pe:ProcessInstance"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "pe:validates",
+      "@type": "owl:ObjectProperty",
+      "name": "Validates",
+      "description": "A process validates hypotheses through measurement",
+      "domainIncludes": ["pe:Process"],
+      "rangeIncludes": ["pe:Hypothesis"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "pe:measuredBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Measured By",
+      "description": "A hypothesis is measured by process metrics",
+      "domainIncludes": ["pe:Hypothesis"],
+      "rangeIncludes": ["pe:ProcessMetric"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "pe:partOfValueChain",
+      "@type": "owl:ObjectProperty",
+      "name": "Part Of Value Chain",
+      "description": "A process is part of a value chain",
+      "domainIncludes": ["pe:Process"],
+      "rangeIncludes": ["pe:ValueChain"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "pe:includes",
+      "@type": "owl:ObjectProperty",
+      "name": "Includes",
+      "description": "A value chain includes processes",
+      "domainIncludes": ["pe:ValueChain"],
+      "rangeIncludes": ["pe:Process"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "pe:implementsPattern",
+      "@type": "owl:ObjectProperty",
+      "name": "Implements Pattern",
+      "description": "A process implements reusable patterns",
+      "domainIncludes": ["pe:Process"],
+      "rangeIncludes": ["pe:ProcessPattern"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "pe:inputTo",
+      "@type": "owl:ObjectProperty",
+      "name": "Input To",
+      "description": "An artifact serves as input to downstream phases",
+      "domainIncludes": ["pe:ProcessArtifact"],
+      "rangeIncludes": ["pe:ProcessPhase"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "pe:coordinatesWith",
+      "@type": "owl:ObjectProperty",
+      "name": "Coordinates With",
+      "description": "An AI agent coordinates with other agents",
+      "domainIncludes": ["pe:AIAgent"],
+      "rangeIncludes": ["pe:AIAgent"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    }
+  ],
+
+  "businessRules": [
+    {
+      "@id": "pe:BR-001",
+      "name": "Phase Sequence Validation",
+      "description": "Dependency phases must complete before dependent phase begins",
+      "condition": "IF a ProcessPhase has dependsOn relationships",
+      "action": "THEN all dependency phases MUST be completed before this phase can begin",
+      "severity": "error",
+      "appliesTo": ["pe:ProcessPhase"]
+    },
+    {
+      "@id": "pe:BR-002",
+      "name": "Gate Enforcement",
+      "description": "Blocking gates must pass for phase completion",
+      "condition": "IF a ProcessPhase has blocking ProcessGates",
+      "action": "THEN all blocking gates MUST pass before phase can complete",
+      "severity": "error",
+      "appliesTo": ["pe:ProcessPhase", "pe:ProcessGate"]
+    },
+    {
+      "@id": "pe:BR-003",
+      "name": "Mandatory Artifact Production",
+      "description": "Mandatory artifacts must be produced before phase completion",
+      "condition": "IF a ProcessArtifact is marked as mandatory",
+      "action": "THEN the producing phase MUST NOT complete until artifact is produced and validated",
+      "severity": "error",
+      "appliesTo": ["pe:ProcessArtifact", "pe:ProcessPhase"]
+    },
+    {
+      "@id": "pe:BR-004",
+      "name": "Metric Threshold Monitoring",
+      "description": "Below-threshold metrics trigger alerts",
+      "condition": "IF actual ProcessMetric value falls below threshold",
+      "action": "THEN system MUST generate alert and trigger escalation path",
+      "severity": "warning",
+      "appliesTo": ["pe:ProcessMetric"]
+    },
+    {
+      "@id": "pe:BR-005",
+      "name": "Agent Autonomy Supervision",
+      "description": "Supervised agents require human review",
+      "condition": "IF AIAgent has autonomyLevel equals 'supervised'",
+      "action": "THEN agent outputs MUST require human review before downstream use",
+      "severity": "error",
+      "appliesTo": ["pe:AIAgent"]
+    },
+    {
+      "@id": "pe:BR-006",
+      "name": "Process Instance Blockers",
+      "description": "Instances with blockers must show blocked status",
+      "condition": "IF ProcessInstance has blockers",
+      "action": "THEN status MUST be 'blocked' until blockers are resolved",
+      "severity": "error",
+      "appliesTo": ["pe:ProcessInstance"]
+    },
+    {
+      "@id": "pe:BR-007",
+      "name": "Circular Dependency Prevention",
+      "description": "Prevent circular phase dependencies",
+      "condition": "IF phase A dependsOn phase B AND phase B dependsOn phase A",
+      "action": "THEN configuration MUST be rejected as circular dependency",
+      "severity": "error",
+      "appliesTo": ["pe:ProcessPhase"]
+    },
+    {
+      "@id": "pe:BR-008",
+      "name": "Value Chain Completeness",
+      "description": "Value chains must have complete process definitions",
+      "condition": "IF Process is partOfValueChain",
+      "action": "THEN all upstream processes in value chain MUST be defined",
+      "severity": "warning",
+      "appliesTo": ["pe:Process", "pe:ValueChain"]
+    }
+  ],
+
+  "changeControl": {
+    "currentVersion": "2.0.0",
+    "oaaSchemaVersion": "5.0.0",
+    "lastModified": "2026-02-01",
+    "modifiedBy": "OAA v6.1.0 Migration",
+    "changeNotes": "Upgraded from legacy format to OAA v5.0.0 JSON-LD compliance. Converted to array format with proper namespacing.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-01-18",
+        "notes": "Initial creation in legacy format",
+        "archivedPath": "archive/process-engineering-v1.0.0-legacy.json"
+      }
+    ]
+  }
+}

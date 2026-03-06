@@ -1,0 +1,1 @@
+manage  Product Development translating Product Value Proposition to Reality from VProp to EFS Epics Features and Stories to definition of for whom,why,what,how,when and definition of done and testing PMF to optimise delivery.

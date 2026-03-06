@@ -1,0 +1,820 @@
+{
+  "@context": {
+    "pe": "https://oaa-ontology.org/v6/process-engineering/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/",
+    "rsn": "https://oaa-ontology.org/v6/reason/",
+    "ind": "https://oaa-ontology.org/v6/industry/",
+    "bsc": "https://oaa-ontology.org/v6/bsc/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/",
+    "ga": "https://oaa-ontology.org/v6/gap-analysis/",
+    "orgctx": "https://oaa-ontology.org/v6/org-context/",
+    "nar": "https://oaa-ontology.org/v6/narrative/",
+    "okr": "https://oaa-ontology.org/v6/okr/",
+    "ppm": "https://oaa-ontology.org/v6/ppm/",
+    "efs": "https://oaa-ontology.org/v6/efs/",
+    "emc": "https://oaa-ontology.org/v6/enterprise-model-composition/",
+    "oaa": "https://pbs.azlan.me/oaa#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "pe:delta-discovery-gap-analysis-template",
+  "@type": "oaa:OntologyTemplate",
+  "oaa:templateOf": "pe:process-engineering-ontology",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:templateVersion": "1.0.0",
+  "oaa:created": "2026-02-26",
+  "oaa:description": "Universal PE-ONT process template for DELTA (Discover-Evaluate-Leverage-Transform-Adapt) — an industry-agnostic discovery and gap analysis process. Orchestrates VE-SA analysis tools (REASON, INDUSTRY, BSC, MACRO), VE-SC communication (NARRATIVE, CASCADE), and Foundation context (ORG-CONTEXT) into a repeatable 5-phase cycle. PFC-level: not scoped to any vertical. PFI instances layer in domain-specific discovery templates and sector ontologies. Scale parameter (narrow/functional/enterprise/market) controls which sub-skills are invoked. Product context: core engine of SaaS/AI platform targeting mid-market, starting with AI Visibility (PFI-BAIV).",
+
+  "entities": [
+
+    {
+      "@id": "pe:delta-process",
+      "@type": "pe:Process",
+      "processId": "pe:delta-proc-001",
+      "processName": "DELTA Discovery & Gap Analysis Process",
+      "processType": "discovery",
+      "description": "Structured 5-phase process for extracting context, assessing current vs desired state, quantifying the delta, executing highest-impact interventions, and adapting based on evidence. Industry-agnostic: the process governs HOW discovery and gap closure happen; WHAT is discovered is layered in by PFI context. Scale-agnostic: same phases work from narrow (single process) to market-wide (industry landscape).",
+      "businessObjective": "Deliver structured, evidence-backed discovery and measurable gap closure — regardless of industry, domain, or scale. Every gap claim links to evidence. Every recommendation traces to a hypothesis. Every intervention is measured against baseline.",
+      "scope": "Universal. Applicable to any domain requiring current-state assessment, future-state definition, and gap closure. Scale controlled by --scope parameter: narrow (1-2 weeks), functional (2-4 weeks), enterprise (4-12 weeks), market (8-16 weeks). PFI instances bring domain context via discoveryTemplates and instanceOntologies.",
+      "owner": "DELTA Process Lead / Discovery Analyst",
+      "status": "active",
+      "version": "1.0.0",
+      "estimatedDuration": "P4W",
+      "automationLevel": 65
+    },
+
+    {
+      "@id": "pe:delta-phase-discover",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:delta-ph-discover",
+      "phaseName": "Discover",
+      "phaseNumber": 1,
+      "description": "Extract and structure context. Map the territory. Surface raw evidence before analysis. Outputs: validated scoping frame, stakeholder map, driving question(s), context artefact, evidence inventory.",
+      "entryConditions": "Engagement initiated; domain identified (even if broad); at minimum one stakeholder available; PFI instance selected (determines which ontologies and discovery templates are available)",
+      "exitConditions": "Scoping frame defined (scope level, temporal boundaries, organisational boundaries); stakeholders mapped with roles and perspectives; minimum 3 evidence sources captured; driving strategic question(s) formulated as rsn:StrategicQuestion; context artefact validated (orgctx:OrganizationContext populated)",
+      "activities": "Scope definition (narrow/functional/enterprise/market); Stakeholder identification and perspective capture; Context gathering (org context, market context, regulatory context); Evidence collection (quantitative data, qualitative observations, documentation); Current-state artefact capture (processes, capabilities, metrics, pain points, opportunities); Driving question formulation",
+      "estimatedDuration": "P1W",
+      "parallelExecution": true
+    },
+    {
+      "@id": "pe:delta-phase-evaluate",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:delta-ph-evaluate",
+      "phaseName": "Evaluate",
+      "phaseNumber": 2,
+      "description": "Assess current state against desired future state. Decompose the gap using MECE discipline. This is where VE-SA analytical power is unleashed. Outputs: MECE tree, current-state baseline scores, future-state targets, quantified gap statements, evidence chains.",
+      "entryConditions": "G1 passed; scoping frame defined; stakeholders mapped; driving question(s) formulated; context artefact validated; evidence inventory populated",
+      "exitConditions": "MECE tree validated (rsn:MECETree.isMECE = true); minimum one gap formally quantified per branch; evidence chains documented with direction (supporting/contradicting/neutral); current-state baseline scored (per BSC perspective or domain framework); future-state targets defined as vsom:ObjectivesComponent; overall gap magnitude assessed",
+      "activities": "Current-state assessment (structured baseline using BSC perspectives or domain framework); Future-state definition (vision-aligned targets using VSOM components); MECE decomposition of the gap into analysable branches; Framework-driven analysis per branch (scope-dependent: Logic Trees at narrow, full SA stack at enterprise); Gap quantification — each gap gets magnitude, impact, urgency score; Evidence chain construction — every gap claim links to evidence; Contradicting evidence explicitly sought (BR-RSN-008)",
+      "estimatedDuration": "P1W",
+      "parallelExecution": false
+    },
+    {
+      "@id": "pe:delta-phase-leverage",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:delta-ph-leverage",
+      "phaseName": "Leverage",
+      "phaseNumber": 3,
+      "description": "Identify highest-impact levers for gap closure. Generate hypotheses. Test assumptions. Prioritise intervention candidates. Outputs: top-3 levers with sensitivity analysis, tested hypotheses, strategic recommendations with evidence chains, impact-effort prioritisation.",
+      "entryConditions": "G2 passed; MECE tree validated; gaps quantified; current-state baseline and future-state targets defined; evidence chains documented",
+      "exitConditions": "Top-3 levers identified with sensitivity analysis (rsn:LogicTreeNode.sensitivityRank <= 3); minimum one hypothesis per lever with MustBeTrue assumptions tested; strategic recommendations generated with evidence chains (rsn:StrategicRecommendation); contradicting evidence explicitly sought; impact-effort prioritisation complete; cross-gap dependency analysis completed",
+      "activities": "Sensitivity analysis on logic tree nodes — identify top-3 highest-impact levers; Hypothesis formation — testable statements about how to close each gap; Assumption identification — especially MustBeTrue assumptions (REASON-ONT discipline); Option generation — candidate interventions per lever; Impact-effort mapping — prioritise by ROI, feasibility, time-to-impact; Cross-gap dependency analysis — which closures enable others; Strategic recommendation synthesis; Value engineering analysis for high-cost interventions",
+      "estimatedDuration": "P1W",
+      "parallelExecution": false
+    },
+    {
+      "@id": "pe:delta-phase-transform",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:delta-ph-transform",
+      "phaseName": "Transform",
+      "phaseNumber": 4,
+      "description": "Plan and execute interventions. Translate strategic recommendations into operational delivery. Communicate the transformation story. Outputs: OKR cascade, BSC measures, KPI instrumentation, initiative plan, transformation narrative.",
+      "entryConditions": "G3 passed; top levers identified; hypotheses tested; recommendations generated; no invalidated MustBeTrue assumptions remaining (if any invalidated, must loop back to G2)",
+      "exitConditions": "Interventions planned with OKR cascade (okr:Objective + okr:KeyResult); BSC operationalised (bsc:BSCObjective + bsc:BSCMeasure linked to kpi:KPI); KPIs instrumented with baseline and target values; stakeholder communication completed (nar:StrategicNarrative); quick wins identified and captured where applicable",
+      "activities": "Intervention planning — initiatives, milestones, resource allocation; OKR definition — objectives and key results tied to gap closure; BSC operationalisation — measures linked to KPIs; Execution — deliver changes (process, capability, product, organisational); Quick wins — identify and execute rapid-value opportunities; Communication — stakeholder narrative, cascade translation, visual strategy",
+      "estimatedDuration": "P1W",
+      "parallelExecution": false
+    },
+    {
+      "@id": "pe:delta-phase-adapt",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:delta-ph-adapt",
+      "phaseName": "Adapt",
+      "phaseNumber": 5,
+      "description": "Close the feedback loop. Monitor intervention impact against gap baseline. Learn from outcomes. Adapt the approach. Feed insights back into the next DELTA cycle. Outputs: variance analysis, lesson capture, cycle determination (none/adjust/pivot/revise), next-cycle inputs.",
+      "entryConditions": "G4 passed; interventions delivered; OKRs baselined; KPIs instrumented; stakeholder communication completed",
+      "exitConditions": "Variance analysis completed (actual vs planned impact per KPI); lessons captured; cycle output determined (None / Minor-Adjustment / Major-Pivot / Full-Revision via vsom:StrategicReviewCycle); next-cycle inputs prepared if gap remains open; threshold breach re-entry rules activated if applicable",
+      "activities": "KPI monitoring against gap-closure targets; Variance analysis — actual vs planned impact; Feedback collection — stakeholder, process, market signals; Threshold breach detection — triggers re-evaluation; Lesson capture — what worked, what didn't, what was surprising; Cycle determination — minor adjustment, major pivot, or full revision; Input preparation for next DELTA cycle (if gap not fully closed)",
+      "estimatedDuration": "P1W",
+      "parallelExecution": false
+    },
+
+    {
+      "@id": "pe:delta-gate-g1-discover",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:delta-g1",
+      "gateName": "G1: Discovery Complete",
+      "gateType": "completeness",
+      "description": "Verify the territory is mapped before analysis begins — scope defined, stakeholders mapped, evidence captured, driving question formulated",
+      "criteria": "Scoping frame defined with scope level and boundaries; stakeholders mapped (minimum 2 perspectives); minimum 3 evidence sources captured; driving strategic question(s) formulated; orgctx:OrganizationContext populated and validated",
+      "threshold": 85,
+      "automated": false,
+      "blockingFactor": "blocking"
+    },
+    {
+      "@id": "pe:delta-gate-g2-evaluate",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:delta-g2",
+      "gateName": "G2: Evaluation Complete",
+      "gateType": "quality",
+      "description": "Verify gaps are quantified with evidence before lever identification — prevents solution-first bias",
+      "criteria": "MECE tree validated (isMECE = true); minimum one gap formally quantified per MECE branch; evidence chains documented with explicit direction (supporting/contradicting/neutral); current-state baseline scored; future-state targets defined; contradicting evidence explicitly sought (BR-RSN-008 compliance)",
+      "threshold": 85,
+      "automated": false,
+      "blockingFactor": "blocking"
+    },
+    {
+      "@id": "pe:delta-gate-g3-leverage",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:delta-g3",
+      "gateName": "G3: Leverage Complete",
+      "gateType": "quality",
+      "description": "Verify levers are evidence-backed and hypotheses tested before committing to interventions. DELTA-specific rule: if any MustBeTrue assumption was invalidated, MUST loop back to Phase 2 (Evaluate) to reframe the gap.",
+      "criteria": "Top-3 levers identified with sensitivity analysis; minimum one hypothesis per lever with MustBeTrue assumptions tested; no invalidated MustBeTrue assumptions remaining (BR-DELTA-001: invalidated MustBeTrue forces loop back to Evaluate); strategic recommendations generated with evidence chain references (BR-RSN-014); impact-effort prioritisation complete",
+      "threshold": 85,
+      "automated": false,
+      "blockingFactor": "blocking"
+    },
+    {
+      "@id": "pe:delta-gate-g4-transform",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:delta-g4",
+      "gateName": "G4: Transform Complete",
+      "gateType": "approval",
+      "description": "Verify interventions are planned and instrumented before entering the adaptation loop",
+      "criteria": "Interventions planned with OKR cascade; BSC operationalised with KPI linkage; KPIs instrumented with baseline and target values; stakeholder communication completed; quick wins captured with visual controls where applicable",
+      "threshold": 90,
+      "automated": false,
+      "blockingFactor": "blocking"
+    },
+    {
+      "@id": "pe:delta-gate-g5-adapt",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:delta-g5",
+      "gateName": "G5: Adaptation Complete",
+      "gateType": "completeness",
+      "description": "Verify cycle is complete and next-cycle inputs prepared. DELTA-specific rule: critical KPI threshold breach MUST trigger MetricBreach review cycle re-entering at Phase 2.",
+      "criteria": "Variance analysis completed; lessons captured; cycle output determined (None/Minor-Adjustment/Major-Pivot/Full-Revision); next-cycle inputs prepared if gap remains open; BR-DELTA-002: critical threshold breach triggers MetricBreach re-entry at Phase 2",
+      "threshold": 85,
+      "automated": false,
+      "blockingFactor": "blocking"
+    },
+
+    {
+      "@id": "pe:delta-artifact-scoping-frame",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:delta-art-scope",
+      "artifactName": "DELTA Scoping Frame",
+      "artifactType": "document",
+      "description": "Defines the discovery boundaries: scope level (narrow/functional/enterprise/market), temporal boundaries, organisational boundaries, stakeholder map, driving strategic question(s), and PFI instance context. The single source of truth for what the DELTA cycle will and will not address.",
+      "format": "JSON-LD + Markdown",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:delta-artifact-context-snapshot",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:delta-art-context",
+      "artifactName": "Context Snapshot",
+      "artifactType": "document",
+      "description": "Populated orgctx:OrganizationContext with market context, competitive landscape, and stakeholder perspectives. The organisational anchor for all subsequent analysis.",
+      "format": "JSON-LD",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:delta-artifact-evidence-inventory",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:delta-art-evidence",
+      "artifactName": "Evidence Inventory",
+      "artifactType": "report",
+      "description": "Catalogue of all evidence gathered during discovery: data sources, qualitative observations, documents, metrics. Each item tagged with reliability (Verified/Estimated/Assumed) and direction (Supporting/Contradicting/Neutral) following REASON-ONT rsn:EvidenceItem pattern.",
+      "format": "JSON-LD + Markdown",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:delta-artifact-gap-assessment",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:delta-art-gap",
+      "artifactName": "Gap Assessment Report",
+      "artifactType": "report",
+      "description": "MECE-structured gap analysis: current-state baseline scores, future-state targets, quantified gap statements per branch, evidence chains per gap. Uses rsn:MECETree, rsn:LogicTree, and ga:IdentifiedGap entities. Core deliverable of Phase 2.",
+      "format": "JSON-LD + Markdown + Diagrams",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:delta-artifact-lever-prioritisation",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:delta-art-levers",
+      "artifactName": "Lever Prioritisation Matrix",
+      "artifactType": "report",
+      "description": "Top-N levers ranked by sensitivity analysis (rsn:LogicTreeNode.sensitivityRank). Each lever has a tested hypothesis (rsn:StrategicHypothesis), MustBeTrue assumptions with test results, impact-effort score, and cross-gap dependency mapping. Core deliverable of Phase 3.",
+      "format": "JSON-LD + Markdown",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:delta-artifact-recommendations",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:delta-art-recs",
+      "artifactName": "Strategic Recommendations",
+      "artifactType": "report",
+      "description": "Evidence-backed recommendations (rsn:StrategicRecommendation) with full traceability: evidence → hypothesis → recommendation → VSOM objective. Includes adoption status and BSC perspective alignment.",
+      "format": "JSON-LD + Markdown",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:delta-artifact-transformation-plan",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:delta-art-plan",
+      "artifactName": "Transformation Plan",
+      "artifactType": "document",
+      "description": "Operational delivery plan: OKR cascade, BSC measures with KPI instrumentation, initiative timeline, resource allocation. At enterprise scope includes PPM portfolio/programme/project structure. The action blueprint from Phase 4.",
+      "format": "JSON-LD + Markdown",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:delta-artifact-narrative-brief",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:delta-art-narrative",
+      "artifactName": "Transformation Narrative Brief",
+      "artifactType": "document",
+      "description": "Stakeholder communication artefact following VE-SC patterns. Uses nar:StrategicNarrative 5-section arc (Context → Challenge → Choice → Commitment → Cadence). Traces claims back to SA evidence. Client-facing deliverable.",
+      "format": "Markdown + HTML",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:delta-artifact-adaptation-report",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:delta-art-adapt",
+      "artifactName": "Adaptation Report",
+      "artifactType": "report",
+      "description": "Cycle-close report: KPI variance analysis (actual vs planned), lesson capture, hypothesis outcomes (validated/invalidated/pivoted), cycle determination (None/Adjust/Pivot/Revise), and next-cycle input preparation. Feeds emc:CanonicalSnapshot.",
+      "format": "JSON-LD + Markdown",
+      "mandatory": true
+    },
+
+    {
+      "@id": "pe:delta-metric-gap-closure-rate",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:delta-met-gcr",
+      "metricName": "Gap Closure Rate",
+      "metricType": "outcome",
+      "description": "Percentage of identified gaps showing measurable improvement (kpi:KPI.trend = Improving) per DELTA cycle. Primary outcome metric.",
+      "formula": "(Gaps with KPI trend Improving / Total gaps identified) * 100",
+      "unit": "percentage",
+      "target": 60,
+      "collectionMethod": "automated",
+      "frequency": "per-cycle"
+    },
+    {
+      "@id": "pe:delta-metric-evidence-integrity",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:delta-met-ei",
+      "metricName": "Evidence Chain Integrity",
+      "metricType": "quality",
+      "description": "Percentage of recommendations that have complete evidence chain traceability back to source evidence (JP-DELTA-006 traversal completeness).",
+      "formula": "(Recommendations with complete evidence chain / Total recommendations) * 100",
+      "unit": "percentage",
+      "target": 100,
+      "collectionMethod": "automated",
+      "frequency": "per-cycle"
+    },
+    {
+      "@id": "pe:delta-metric-mece-compliance",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:delta-met-mece",
+      "metricName": "MECE Compliance Rate",
+      "metricType": "quality",
+      "description": "Percentage of decomposition trees validated as MECE (rsn:MECETree.isMECE = true). Ensures no gaps or overlaps in analysis.",
+      "formula": "(MECE trees with isMECE = true / Total MECE trees) * 100",
+      "unit": "percentage",
+      "target": 100,
+      "collectionMethod": "automated",
+      "frequency": "per-phase"
+    },
+    {
+      "@id": "pe:delta-metric-cycle-completion",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:delta-met-cc",
+      "metricName": "Cycle Completion Rate",
+      "metricType": "efficiency",
+      "description": "Percentage of initiated DELTA cycles reaching Phase 5 (Adapt). Measures process follow-through.",
+      "formula": "(Cycles reaching Phase 5 / Cycles initiated) * 100",
+      "unit": "percentage",
+      "target": 80,
+      "collectionMethod": "automated",
+      "frequency": "quarterly"
+    },
+    {
+      "@id": "pe:delta-metric-time-to-insight",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:delta-met-tti",
+      "metricName": "Time to First Gap Insight",
+      "metricType": "efficiency",
+      "description": "Elapsed time from Phase 1 start to first quantified gap (G2 gate). Target is scope-dependent: <1 hour narrow, <1 day functional, <1 week enterprise.",
+      "formula": "G2 gate timestamp - Phase 1 start timestamp",
+      "unit": "duration",
+      "target": 0,
+      "collectionMethod": "automated",
+      "frequency": "per-cycle"
+    },
+    {
+      "@id": "pe:delta-metric-hypothesis-hit-rate",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:delta-met-hhr",
+      "metricName": "Hypothesis Validation Rate",
+      "metricType": "quality",
+      "description": "Percentage of hypotheses validated vs invalidated in Phase 3 (Leverage). Tracks analytical accuracy over time.",
+      "formula": "(Hypotheses validated / Total hypotheses tested) * 100",
+      "unit": "percentage",
+      "target": 70,
+      "collectionMethod": "automated",
+      "frequency": "per-cycle"
+    },
+    {
+      "@id": "pe:delta-metric-recommendation-adoption",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:delta-met-ra",
+      "metricName": "Recommendation Adoption Rate",
+      "metricType": "outcome",
+      "description": "Percentage of strategic recommendations with adoptionStatus = Accepted or Implemented. Measures stakeholder buy-in and actionability.",
+      "formula": "(Recommendations Accepted or Implemented / Total recommendations) * 100",
+      "unit": "percentage",
+      "target": 75,
+      "collectionMethod": "automated",
+      "frequency": "per-cycle"
+    },
+
+    {
+      "@id": "pe:delta-hypothesis-gap-closure",
+      "@type": "pe:Hypothesis",
+      "hypothesisId": "pe:delta-hyp-001",
+      "statement": "The identified top-3 highest-sensitivity levers are the primary drivers of the current-to-future state gap, and targeted interventions on these levers will close at least 60% of the quantified gap within one DELTA cycle",
+      "description": "Central DELTA hypothesis formed in Evaluate (gap quantification), refined in Leverage (sensitivity analysis), tested in Transform (intervention execution), validated in Adapt (variance analysis). Links gap assessment to measurable outcome.",
+      "measurementMethod": "Before/after KPI comparison per gap-linked measure; gap closure percentage calculation against Phase 2 baseline; rsn:AnalysisSynthesis updated with post-intervention evidence",
+      "target": "60% gap closure against Phase 2 baseline within one DELTA cycle",
+      "status": "proposed",
+      "confidence": null
+    },
+
+    {
+      "@id": "pe:delta-agent-discovery",
+      "@type": "pe:AIAgent",
+      "agentId": "pe:delta-ai-discover",
+      "agentName": "DELTA Discovery Agent",
+      "agentType": "extraction",
+      "description": "AI agent that extracts organisational context, maps stakeholders, collects evidence, and formulates driving strategic questions. Invokes pfc-org-context and pfc-delta-scope skills. Handles structured onboarding questionnaires for SaaS product delivery.",
+      "autonomyLevel": "supervised",
+      "model": "Claude with org-context extraction prompts",
+      "qualityThreshold": 80
+    },
+    {
+      "@id": "pe:delta-agent-analysis",
+      "@type": "pe:AIAgent",
+      "agentId": "pe:delta-ai-analysis",
+      "agentName": "DELTA Analysis Agent",
+      "agentType": "analysis",
+      "description": "AI agent that performs MECE decomposition, gap quantification, logic tree sensitivity analysis, hypothesis testing, and cross-framework synthesis. Invokes pfc-reason, pfc-industry-analysis, pfc-macro-analysis, and pfc-delta-evaluate/leverage skills. Core analytical engine across Phases 2-3.",
+      "autonomyLevel": "supervised",
+      "model": "Claude with REASON-ONT prompts and SA framework knowledge",
+      "qualityThreshold": 85
+    },
+    {
+      "@id": "pe:delta-agent-adaptation",
+      "@type": "pe:AIAgent",
+      "agentId": "pe:delta-ai-adapt",
+      "agentName": "DELTA Adaptation Agent",
+      "agentType": "monitoring",
+      "description": "AI agent that monitors KPI trends, performs variance analysis, detects threshold breaches, synthesises feedback, and prepares next-cycle inputs. Invokes pfc-delta-adapt and pfc-kpi skills. Manages the Phase 5 feedback loop and StrategicReviewCycle triggers.",
+      "autonomyLevel": "highly-autonomous",
+      "model": "Claude with KPI monitoring and trend analysis prompts",
+      "qualityThreshold": 85
+    },
+
+    {
+      "@id": "pe:delta-pattern-delta-cycle",
+      "@type": "pe:ProcessPattern",
+      "patternId": "pe:delta-pat-001",
+      "patternName": "DELTA Discovery & Gap Analysis Cycle",
+      "description": "Universal pattern for structured discovery, gap quantification, lever identification, intervention execution, and evidence-based adaptation. Industry-agnostic meta-process that orchestrates domain-specific analytical tools at each phase.",
+      "context": "Any organisation, team, or individual requiring a structured approach to understanding current state, defining desired future state, quantifying the gap, and driving measurable closure. Scale ranges from a single process review (narrow) to an enterprise-wide transformation. PFI instances bring domain context.",
+      "problem": "Discovery efforts fail when they lack structure, skip evidence gathering, jump to solutions without quantifying gaps, fail to test assumptions, or lose momentum after initial analysis. Without MECE discipline, gaps and overlaps in analysis lead to blind spots and wasted effort.",
+      "solution": "Apply the 5-phase DELTA cycle: Discover context and formulate the question; Evaluate current vs future state with MECE decomposition and evidence chains; Leverage the highest-impact levers via hypothesis testing and sensitivity analysis; Transform through evidence-backed interventions with OKR/BSC/KPI operationalisation; Adapt via variance analysis and feedback loops. Each phase has a blocking gate. Evidence chains are mandatory. MECE compliance is enforced.",
+      "benefits": "Evidence-backed decisions eliminate guesswork; MECE discipline prevents gaps and overlaps; Hypothesis testing prevents premature commitment; Gates prevent phase-skipping; Adaptation loop prevents one-and-done analysis; Scale parameter makes same process applicable from narrow to enterprise; Domain-agnostic core enables multi-vertical reuse"
+    },
+    {
+      "@id": "pe:delta-pattern-adapt-subcycle",
+      "@type": "pe:ProcessPattern",
+      "patternId": "pe:delta-pat-002",
+      "patternName": "DELTA Adaptation Sub-Cycle (PDCA)",
+      "description": "Plan-Do-Check-Act sub-cycle activated within Phase 5 for ongoing gap monitoring and incremental adaptation between full DELTA cycles.",
+      "context": "Phase 5 of DELTA where interventions are deployed and require ongoing monitoring. Also applicable when a threshold breach triggers a targeted re-evaluation without running a full DELTA cycle.",
+      "problem": "DELTA cycles that end at Phase 4 (Transform) without a feedback mechanism lose momentum and fail to capture whether interventions actually closed the gap. Without adaptation, strategies drift from evidence.",
+      "solution": "Embed PDCA within Phase 5: Plan further adjustments based on KPI variance and stakeholder feedback; Do small-scale refinements; Check results against gap-closure targets; Act to standardise successful changes or trigger a new DELTA cycle. Critical threshold breaches trigger MetricBreach re-entry at Phase 2 (Evaluate) with updated evidence.",
+      "benefits": "Prevents analysis decay; Enables incremental optimisation; Maintains evidence chain continuity; Bridges DELTA cycle completion to ongoing operations; Threshold breach mechanism provides self-correcting behaviour"
+    },
+
+    {
+      "@id": "pe:delta-skill-context-extraction",
+      "@type": "pe:Skill",
+      "skillId": "pe:delta-sk-context",
+      "skillName": "Organisational Context Extraction",
+      "description": "Extracts structured organisational context from stakeholder inputs, documentation, and data sources. Populates orgctx:OrganizationContext with market context, competitive landscape, and stakeholder perspectives. Wraps pfc-org-context skill with DELTA-specific scoping.",
+      "version": "1.0.0",
+      "skillType": "extraction",
+      "inputs": [
+        { "name": "scopeLevel", "dataType": "string", "required": true, "description": "Scale: narrow, functional, enterprise, market" },
+        { "name": "pfiInstance", "dataType": "string", "required": true, "description": "PFI instance ID (e.g. PFI-BAIV, PFI-W4M-WWG)" },
+        { "name": "stakeholderInputs", "dataType": "array", "required": true, "description": "Stakeholder questionnaire responses or interview transcripts" }
+      ],
+      "outputs": [
+        { "name": "organizationContext", "dataType": "object", "description": "Populated orgctx:OrganizationContext" },
+        { "name": "stakeholderMap", "dataType": "array", "description": "Mapped stakeholders with roles and perspectives" },
+        { "name": "evidenceInventory", "dataType": "array", "description": "Catalogued evidence items with reliability tags" }
+      ],
+      "provider": "agent",
+      "qualityThreshold": 80,
+      "idempotent": true,
+      "owningOntology": "ORG-CONTEXT-ONT",
+      "status": "active"
+    },
+    {
+      "@id": "pe:delta-skill-mece-decomposition",
+      "@type": "pe:Skill",
+      "skillId": "pe:delta-sk-mece",
+      "skillName": "MECE Gap Decomposition",
+      "description": "Decomposes a strategic question into a MECE tree with analysable branches. Assigns frameworks per branch based on scope level. Validates MECE compliance. Core of Phase 2. Wraps REASON-ONT rsn:MECETree and rsn:MECEBranch entities.",
+      "version": "1.0.0",
+      "skillType": "analysis",
+      "inputs": [
+        { "name": "strategicQuestion", "dataType": "object", "required": true, "description": "rsn:StrategicQuestion with questionType and vsomLayerTarget" },
+        { "name": "scopeLevel", "dataType": "string", "required": true, "description": "Determines which frameworks are available per branch" },
+        { "name": "contextSnapshot", "dataType": "object", "required": false, "description": "orgctx:OrganizationContext for domain grounding" }
+      ],
+      "outputs": [
+        { "name": "meceTree", "dataType": "object", "description": "Validated rsn:MECETree with branches" },
+        { "name": "isMECE", "dataType": "boolean", "description": "MECE validation result" },
+        { "name": "frameworkAssignments", "dataType": "array", "description": "Framework assigned per branch based on scope" }
+      ],
+      "provider": "agent",
+      "qualityThreshold": 85,
+      "idempotent": true,
+      "owningOntology": "REASON-ONT",
+      "status": "active"
+    },
+    {
+      "@id": "pe:delta-skill-gap-quantification",
+      "@type": "pe:Skill",
+      "skillId": "pe:delta-sk-gap",
+      "skillName": "Current-vs-Future State Gap Quantification",
+      "description": "Scores current state against desired future state per MECE branch. Produces quantified gap statements with magnitude, impact, and urgency. Links each gap to evidence items. Core of Phase 2.",
+      "version": "1.0.0",
+      "skillType": "analysis",
+      "inputs": [
+        { "name": "meceTree", "dataType": "object", "required": true, "description": "MECE tree from decomposition skill" },
+        { "name": "currentStateData", "dataType": "array", "required": true, "description": "Baseline data per branch (metrics, scores, observations)" },
+        { "name": "futureStateTargets", "dataType": "array", "required": true, "description": "Target values per branch from VSOM objectives" },
+        { "name": "evidenceItems", "dataType": "array", "required": true, "description": "Supporting/contradicting/neutral evidence" }
+      ],
+      "outputs": [
+        { "name": "gapStatements", "dataType": "array", "description": "Quantified ga:IdentifiedGap per branch" },
+        { "name": "gapHeatMap", "dataType": "object", "description": "Prioritised gap visualisation by magnitude * impact * urgency" },
+        { "name": "evidenceChains", "dataType": "array", "description": "Evidence chain per gap claim" }
+      ],
+      "provider": "agent",
+      "qualityThreshold": 85,
+      "idempotent": true,
+      "owningOntology": "PE-ONT",
+      "status": "active"
+    },
+    {
+      "@id": "pe:delta-skill-lever-analysis",
+      "@type": "pe:Skill",
+      "skillId": "pe:delta-sk-levers",
+      "skillName": "Sensitivity Analysis and Lever Prioritisation",
+      "description": "Performs logic tree sensitivity analysis to identify top-N levers, generates hypotheses per lever, tests MustBeTrue assumptions, and produces impact-effort prioritisation. Core of Phase 3. Wraps REASON-ONT rsn:LogicTree, rsn:StrategicHypothesis, and rsn:HypothesisAssumption.",
+      "version": "1.0.0",
+      "skillType": "analysis",
+      "inputs": [
+        { "name": "gapStatements", "dataType": "array", "required": true, "description": "Quantified gaps from Phase 2" },
+        { "name": "logicTree", "dataType": "object", "required": false, "description": "Pre-built logic tree or auto-generated from gaps" },
+        { "name": "topN", "dataType": "integer", "required": false, "description": "Number of top levers to identify (default 3)" }
+      ],
+      "outputs": [
+        { "name": "topLevers", "dataType": "array", "description": "Top-N levers ranked by sensitivity" },
+        { "name": "hypotheses", "dataType": "array", "description": "rsn:StrategicHypothesis per lever" },
+        { "name": "assumptionResults", "dataType": "array", "description": "MustBeTrue assumption test outcomes" },
+        { "name": "impactEffortMatrix", "dataType": "object", "description": "Prioritisation by ROI, feasibility, time-to-impact" }
+      ],
+      "provider": "agent",
+      "qualityThreshold": 85,
+      "idempotent": true,
+      "owningOntology": "REASON-ONT",
+      "status": "active"
+    },
+    {
+      "@id": "pe:delta-skill-narrative-generation",
+      "@type": "pe:Skill",
+      "skillId": "pe:delta-sk-narrative",
+      "skillName": "Transformation Narrative Generation",
+      "description": "Generates client-facing stakeholder narrative following VE-SC patterns. Uses nar:StrategicNarrative 5-section arc (Context → Challenge → Choice → Commitment → Cadence). Traces claims back to SA evidence. Selects communication pattern based on audience and context.",
+      "version": "1.0.0",
+      "skillType": "generation",
+      "inputs": [
+        { "name": "recommendations", "dataType": "array", "required": true, "description": "rsn:StrategicRecommendation from Phase 3" },
+        { "name": "transformationPlan", "dataType": "object", "required": true, "description": "OKR/BSC/KPI plan from Phase 4" },
+        { "name": "audienceProfile", "dataType": "object", "required": false, "description": "Target audience for narrative (board, team, client)" }
+      ],
+      "outputs": [
+        { "name": "narrative", "dataType": "object", "description": "nar:StrategicNarrative with 5-section arc" },
+        { "name": "communicationPattern", "dataType": "string", "description": "Selected pattern (30-Second Answer, Rented Brain, etc.)" },
+        { "name": "evidenceTraceability", "dataType": "array", "description": "Narrative claims traced to source evidence" }
+      ],
+      "provider": "agent",
+      "qualityThreshold": 80,
+      "idempotent": true,
+      "owningOntology": "NARRATIVE-ONT",
+      "status": "active"
+    },
+    {
+      "@id": "pe:delta-skill-adaptation-analysis",
+      "@type": "pe:Skill",
+      "skillId": "pe:delta-sk-adapt",
+      "skillName": "Variance Analysis and Cycle Adaptation",
+      "description": "Performs KPI variance analysis (actual vs planned), detects threshold breaches, synthesises feedback, determines cycle output (None/Adjust/Pivot/Revise), and prepares next-cycle inputs. Triggers MetricBreach re-entry when critical thresholds are breached.",
+      "version": "1.0.0",
+      "skillType": "analysis",
+      "inputs": [
+        { "name": "kpiBaseline", "dataType": "array", "required": true, "description": "Baseline KPI values from Phase 4" },
+        { "name": "kpiCurrent", "dataType": "array", "required": true, "description": "Current KPI values post-intervention" },
+        { "name": "stakeholderFeedback", "dataType": "array", "required": false, "description": "Feedback from stakeholders and processes" }
+      ],
+      "outputs": [
+        { "name": "varianceReport", "dataType": "object", "description": "Per-KPI actual vs planned with trend" },
+        { "name": "cycleOutput", "dataType": "string", "description": "None / Minor-Adjustment / Major-Pivot / Full-Revision" },
+        { "name": "nextCycleInputs", "dataType": "object", "description": "Prepared inputs for next DELTA cycle if gap remains" },
+        { "name": "thresholdBreaches", "dataType": "array", "description": "Critical/Warning breaches triggering re-entry" }
+      ],
+      "provider": "agent",
+      "qualityThreshold": 85,
+      "idempotent": true,
+      "owningOntology": "PE-ONT",
+      "status": "active"
+    },
+
+    {
+      "@id": "pe:delta-plugin-discovery",
+      "@type": "pe:Plugin",
+      "pluginId": "pe:delta-plg-001",
+      "pluginName": "DELTA Discovery & Gap Analysis Plugin",
+      "description": "Extension bundle providing DELTA-specific skills for context extraction, MECE decomposition, gap quantification, lever analysis, narrative generation, and adaptation analysis. Deployable at PFC level for all instances.",
+      "version": "1.0.0",
+      "pluginType": "analytics",
+      "cascadeTier": "PFC",
+      "status": "active",
+      "entryPoint": "./plugins/delta-discovery/index.js"
+    },
+
+    {
+      "@id": "pe:delta-path-cycle-flow",
+      "@type": "pe:ProcessPath",
+      "pathId": "pe:delta-pth-001",
+      "pathName": "DELTA Cycle Process Flow",
+      "description": "DELTA 5-phase process path with feedback loop: Discover → Evaluate → Leverage → Transform → Adapt → (loop back to Evaluate if gap remains). Linear progression with mandatory gates. Phase 5 can trigger re-entry at Phase 2 via MetricBreach or cycle output Major-Pivot/Full-Revision.",
+      "version": "1.0.0",
+      "pathType": "pipeline",
+      "scope": "cross-series",
+      "seriesRefs": "PE-Series, VE-Series, VE-SA-SubSeries, VE-SC-SubSeries, Foundation",
+      "status": "active"
+    },
+
+    {
+      "@id": "pe:delta-step-discover",
+      "@type": "pe:PathStep",
+      "stepId": "pe:delta-stp-discover",
+      "stepName": "Discover Phase Step",
+      "description": "Entry point for DELTA. Maps to pe:delta-phase-discover. Extracts context, maps stakeholders, captures evidence, formulates driving question.",
+      "stepType": "required",
+      "entryPoint": true,
+      "estimatedDuration": "P1W",
+      "ontologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "pe:delta-step-evaluate",
+      "@type": "pe:PathStep",
+      "stepId": "pe:delta-stp-evaluate",
+      "stepName": "Evaluate Phase Step",
+      "description": "Maps to pe:delta-phase-evaluate. MECE decomposition, gap quantification, evidence chain construction. Also the re-entry point from Phase 5 adaptation loop.",
+      "stepType": "required",
+      "entryPoint": false,
+      "estimatedDuration": "P1W",
+      "ontologyRef": "REASON-ONT"
+    },
+    {
+      "@id": "pe:delta-step-leverage",
+      "@type": "pe:PathStep",
+      "stepId": "pe:delta-stp-leverage",
+      "stepName": "Leverage Phase Step",
+      "description": "Maps to pe:delta-phase-leverage. Sensitivity analysis, hypothesis testing, lever prioritisation, strategic recommendations.",
+      "stepType": "required",
+      "entryPoint": false,
+      "estimatedDuration": "P1W",
+      "ontologyRef": "REASON-ONT"
+    },
+    {
+      "@id": "pe:delta-step-transform",
+      "@type": "pe:PathStep",
+      "stepId": "pe:delta-stp-transform",
+      "stepName": "Transform Phase Step",
+      "description": "Maps to pe:delta-phase-transform. OKR cascade, BSC operationalisation, KPI instrumentation, stakeholder narrative.",
+      "stepType": "required",
+      "entryPoint": false,
+      "estimatedDuration": "P1W",
+      "ontologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "pe:delta-step-adapt",
+      "@type": "pe:PathStep",
+      "stepId": "pe:delta-stp-adapt",
+      "stepName": "Adapt Phase Step",
+      "description": "Maps to pe:delta-phase-adapt. Variance analysis, feedback synthesis, cycle determination, next-cycle input preparation. Can trigger loop back to Evaluate step.",
+      "stepType": "required",
+      "entryPoint": false,
+      "estimatedDuration": "P1W",
+      "ontologyRef": "PE-ONT"
+    },
+
+    {
+      "@id": "pe:delta-link-d-to-e",
+      "@type": "pe:PathLink",
+      "linkId": "pe:delta-lnk-d-e",
+      "bindingStrength": "mandatory",
+      "linkType": "sequential",
+      "weight": 0,
+      "description": "G1 passed — scope defined, stakeholders mapped, evidence captured, driving question formulated. Proceed to Evaluate."
+    },
+    {
+      "@id": "pe:delta-link-e-to-l",
+      "@type": "pe:PathLink",
+      "linkId": "pe:delta-lnk-e-l",
+      "bindingStrength": "mandatory",
+      "linkType": "sequential",
+      "weight": 0,
+      "description": "G2 passed — MECE tree validated, gaps quantified, evidence chains documented. Proceed to Leverage."
+    },
+    {
+      "@id": "pe:delta-link-l-to-t",
+      "@type": "pe:PathLink",
+      "linkId": "pe:delta-lnk-l-t",
+      "bindingStrength": "mandatory",
+      "linkType": "sequential",
+      "weight": 0,
+      "description": "G3 passed — top levers identified, hypotheses tested, no invalidated MustBeTrue assumptions, recommendations generated. Proceed to Transform."
+    },
+    {
+      "@id": "pe:delta-link-t-to-a",
+      "@type": "pe:PathLink",
+      "linkId": "pe:delta-lnk-t-a",
+      "bindingStrength": "mandatory",
+      "linkType": "sequential",
+      "weight": 0,
+      "description": "G4 passed — interventions planned, OKRs baselined, KPIs instrumented, narrative communicated. Proceed to Adapt."
+    },
+    {
+      "@id": "pe:delta-link-a-to-e-feedback",
+      "@type": "pe:PathLink",
+      "linkId": "pe:delta-lnk-a-e-loop",
+      "bindingStrength": "conditional",
+      "linkType": "feedback",
+      "weight": 0,
+      "description": "Adaptation feedback loop: triggered when cycle output is Major-Pivot or Full-Revision, or when critical KPI threshold breach detected. Re-enters at Evaluate (Phase 2) with updated evidence and revised driving question."
+    },
+
+    {
+      "@id": "pe:delta-valuechain-discovery",
+      "@type": "pe:ValueChain",
+      "valueChainId": "pe:delta-vc-001",
+      "valueChainName": "Discovery & Gap Closure Value Chain",
+      "description": "The value chain in which DELTA operates: identify discovery need, execute DELTA cycle (discover context, evaluate gaps, leverage insights, transform operations, adapt based on evidence), feed learnings back into the organisation and the adaptive graph for the next cycle.",
+      "customerValue": "Structured, evidence-backed understanding of current state; quantified gaps against desired future state; prioritised interventions with tested hypotheses; measurable gap closure; continuous adaptation based on real outcomes",
+      "inputs": "Stakeholder inputs and perspectives; organisational data and documentation; market and competitive intelligence; KPI baselines; PFI instance configuration (domain ontologies, discovery templates)",
+      "outputs": "Scoping frame; gap assessment with evidence chains; prioritised lever recommendations; OKR/BSC/KPI transformation plan; stakeholder narrative; adaptation report with cycle determination; emc:CanonicalSnapshot of gap closure state"
+    }
+  ],
+
+  "relationships": [
+
+    { "@type": "pe:hasPhase", "from": "pe:delta-process", "to": "pe:delta-phase-discover" },
+    { "@type": "pe:hasPhase", "from": "pe:delta-process", "to": "pe:delta-phase-evaluate" },
+    { "@type": "pe:hasPhase", "from": "pe:delta-process", "to": "pe:delta-phase-leverage" },
+    { "@type": "pe:hasPhase", "from": "pe:delta-process", "to": "pe:delta-phase-transform" },
+    { "@type": "pe:hasPhase", "from": "pe:delta-process", "to": "pe:delta-phase-adapt" },
+
+    { "@type": "pe:dependsOn", "from": "pe:delta-phase-evaluate", "to": "pe:delta-phase-discover" },
+    { "@type": "pe:dependsOn", "from": "pe:delta-phase-leverage", "to": "pe:delta-phase-evaluate" },
+    { "@type": "pe:dependsOn", "from": "pe:delta-phase-transform", "to": "pe:delta-phase-leverage" },
+    { "@type": "pe:dependsOn", "from": "pe:delta-phase-adapt", "to": "pe:delta-phase-transform" },
+
+    { "@type": "pe:hasGate", "from": "pe:delta-phase-discover", "to": "pe:delta-gate-g1-discover" },
+    { "@type": "pe:hasGate", "from": "pe:delta-phase-evaluate", "to": "pe:delta-gate-g2-evaluate" },
+    { "@type": "pe:hasGate", "from": "pe:delta-phase-leverage", "to": "pe:delta-gate-g3-leverage" },
+    { "@type": "pe:hasGate", "from": "pe:delta-phase-transform", "to": "pe:delta-gate-g4-transform" },
+    { "@type": "pe:hasGate", "from": "pe:delta-phase-adapt", "to": "pe:delta-gate-g5-adapt" },
+
+    { "@type": "pe:produces", "from": "pe:delta-phase-discover", "to": "pe:delta-artifact-scoping-frame" },
+    { "@type": "pe:produces", "from": "pe:delta-phase-discover", "to": "pe:delta-artifact-context-snapshot" },
+    { "@type": "pe:produces", "from": "pe:delta-phase-discover", "to": "pe:delta-artifact-evidence-inventory" },
+    { "@type": "pe:produces", "from": "pe:delta-phase-evaluate", "to": "pe:delta-artifact-gap-assessment" },
+    { "@type": "pe:produces", "from": "pe:delta-phase-leverage", "to": "pe:delta-artifact-lever-prioritisation" },
+    { "@type": "pe:produces", "from": "pe:delta-phase-leverage", "to": "pe:delta-artifact-recommendations" },
+    { "@type": "pe:produces", "from": "pe:delta-phase-transform", "to": "pe:delta-artifact-transformation-plan" },
+    { "@type": "pe:produces", "from": "pe:delta-phase-transform", "to": "pe:delta-artifact-narrative-brief" },
+    { "@type": "pe:produces", "from": "pe:delta-phase-adapt", "to": "pe:delta-artifact-adaptation-report" },
+
+    { "@type": "pe:measures", "from": "pe:delta-process", "to": "pe:delta-metric-gap-closure-rate" },
+    { "@type": "pe:measures", "from": "pe:delta-process", "to": "pe:delta-metric-evidence-integrity" },
+    { "@type": "pe:measures", "from": "pe:delta-process", "to": "pe:delta-metric-mece-compliance" },
+    { "@type": "pe:measures", "from": "pe:delta-process", "to": "pe:delta-metric-cycle-completion" },
+    { "@type": "pe:measures", "from": "pe:delta-process", "to": "pe:delta-metric-time-to-insight" },
+    { "@type": "pe:measures", "from": "pe:delta-process", "to": "pe:delta-metric-hypothesis-hit-rate" },
+    { "@type": "pe:measures", "from": "pe:delta-process", "to": "pe:delta-metric-recommendation-adoption" },
+
+    { "@type": "pe:validates", "from": "pe:delta-process", "to": "pe:delta-hypothesis-gap-closure" },
+    { "@type": "pe:measuredBy", "from": "pe:delta-hypothesis-gap-closure", "to": "pe:delta-metric-gap-closure-rate" },
+
+    { "@type": "pe:augmentedBy", "from": "pe:delta-phase-discover", "to": "pe:delta-agent-discovery" },
+    { "@type": "pe:augmentedBy", "from": "pe:delta-phase-evaluate", "to": "pe:delta-agent-analysis" },
+    { "@type": "pe:augmentedBy", "from": "pe:delta-phase-leverage", "to": "pe:delta-agent-analysis" },
+    { "@type": "pe:augmentedBy", "from": "pe:delta-phase-adapt", "to": "pe:delta-agent-adaptation" },
+
+    { "@type": "pe:implementsPattern", "from": "pe:delta-process", "to": "pe:delta-pattern-delta-cycle" },
+    { "@type": "pe:implementsPattern", "from": "pe:delta-process", "to": "pe:delta-pattern-adapt-subcycle" },
+
+    { "@type": "pe:partOfValueChain", "from": "pe:delta-process", "to": "pe:delta-valuechain-discovery" },
+    { "@type": "pe:includes", "from": "pe:delta-valuechain-discovery", "to": "pe:delta-process" },
+
+    { "@type": "pe:invokesSkill", "from": "pe:delta-phase-discover", "to": "pe:delta-skill-context-extraction" },
+    { "@type": "pe:invokesSkill", "from": "pe:delta-phase-evaluate", "to": "pe:delta-skill-mece-decomposition" },
+    { "@type": "pe:invokesSkill", "from": "pe:delta-phase-evaluate", "to": "pe:delta-skill-gap-quantification" },
+    { "@type": "pe:invokesSkill", "from": "pe:delta-phase-leverage", "to": "pe:delta-skill-lever-analysis" },
+    { "@type": "pe:invokesSkill", "from": "pe:delta-phase-transform", "to": "pe:delta-skill-narrative-generation" },
+    { "@type": "pe:invokesSkill", "from": "pe:delta-phase-adapt", "to": "pe:delta-skill-adaptation-analysis" },
+
+    { "@type": "pe:agentProvidesSkill", "from": "pe:delta-agent-discovery", "to": "pe:delta-skill-context-extraction" },
+    { "@type": "pe:agentProvidesSkill", "from": "pe:delta-agent-analysis", "to": "pe:delta-skill-mece-decomposition" },
+    { "@type": "pe:agentProvidesSkill", "from": "pe:delta-agent-analysis", "to": "pe:delta-skill-gap-quantification" },
+    { "@type": "pe:agentProvidesSkill", "from": "pe:delta-agent-analysis", "to": "pe:delta-skill-lever-analysis" },
+    { "@type": "pe:agentProvidesSkill", "from": "pe:delta-agent-adaptation", "to": "pe:delta-skill-adaptation-analysis" },
+
+    { "@type": "pe:skillDependsOn", "from": "pe:delta-skill-gap-quantification", "to": "pe:delta-skill-mece-decomposition" },
+    { "@type": "pe:skillDependsOn", "from": "pe:delta-skill-lever-analysis", "to": "pe:delta-skill-gap-quantification" },
+    { "@type": "pe:skillDependsOn", "from": "pe:delta-skill-narrative-generation", "to": "pe:delta-skill-lever-analysis" },
+    { "@type": "pe:skillDependsOn", "from": "pe:delta-skill-adaptation-analysis", "to": "pe:delta-skill-gap-quantification" },
+
+    { "@type": "pe:providesSkill", "from": "pe:delta-plugin-discovery", "to": "pe:delta-skill-context-extraction" },
+    { "@type": "pe:providesSkill", "from": "pe:delta-plugin-discovery", "to": "pe:delta-skill-mece-decomposition" },
+    { "@type": "pe:providesSkill", "from": "pe:delta-plugin-discovery", "to": "pe:delta-skill-gap-quantification" },
+    { "@type": "pe:providesSkill", "from": "pe:delta-plugin-discovery", "to": "pe:delta-skill-lever-analysis" },
+    { "@type": "pe:providesSkill", "from": "pe:delta-plugin-discovery", "to": "pe:delta-skill-narrative-generation" },
+    { "@type": "pe:providesSkill", "from": "pe:delta-plugin-discovery", "to": "pe:delta-skill-adaptation-analysis" },
+
+    { "@type": "pe:hasPathStep", "from": "pe:delta-path-cycle-flow", "to": "pe:delta-step-discover" },
+    { "@type": "pe:hasPathStep", "from": "pe:delta-path-cycle-flow", "to": "pe:delta-step-evaluate" },
+    { "@type": "pe:hasPathStep", "from": "pe:delta-path-cycle-flow", "to": "pe:delta-step-leverage" },
+    { "@type": "pe:hasPathStep", "from": "pe:delta-path-cycle-flow", "to": "pe:delta-step-transform" },
+    { "@type": "pe:hasPathStep", "from": "pe:delta-path-cycle-flow", "to": "pe:delta-step-adapt" },
+
+    { "@type": "pe:hasPathLink", "from": "pe:delta-path-cycle-flow", "to": "pe:delta-link-d-to-e" },
+    { "@type": "pe:hasPathLink", "from": "pe:delta-path-cycle-flow", "to": "pe:delta-link-e-to-l" },
+    { "@type": "pe:hasPathLink", "from": "pe:delta-path-cycle-flow", "to": "pe:delta-link-l-to-t" },
+    { "@type": "pe:hasPathLink", "from": "pe:delta-path-cycle-flow", "to": "pe:delta-link-t-to-a" },
+    { "@type": "pe:hasPathLink", "from": "pe:delta-path-cycle-flow", "to": "pe:delta-link-a-to-e-feedback" },
+
+    { "@type": "pe:stepRefersToProcess", "from": "pe:delta-step-discover", "to": "pe:delta-process" },
+    { "@type": "pe:stepRefersToProcess", "from": "pe:delta-step-evaluate", "to": "pe:delta-process" },
+    { "@type": "pe:stepRefersToProcess", "from": "pe:delta-step-leverage", "to": "pe:delta-process" },
+    { "@type": "pe:stepRefersToProcess", "from": "pe:delta-step-transform", "to": "pe:delta-process" },
+    { "@type": "pe:stepRefersToProcess", "from": "pe:delta-step-adapt", "to": "pe:delta-process" },
+
+    { "@type": "pe:linkFrom", "from": "pe:delta-link-d-to-e", "to": "pe:delta-step-discover" },
+    { "@type": "pe:linkTo", "from": "pe:delta-link-d-to-e", "to": "pe:delta-step-evaluate" },
+    { "@type": "pe:linkFrom", "from": "pe:delta-link-e-to-l", "to": "pe:delta-step-evaluate" },
+    { "@type": "pe:linkTo", "from": "pe:delta-link-e-to-l", "to": "pe:delta-step-leverage" },
+    { "@type": "pe:linkFrom", "from": "pe:delta-link-l-to-t", "to": "pe:delta-step-leverage" },
+    { "@type": "pe:linkTo", "from": "pe:delta-link-l-to-t", "to": "pe:delta-step-transform" },
+    { "@type": "pe:linkFrom", "from": "pe:delta-link-t-to-a", "to": "pe:delta-step-transform" },
+    { "@type": "pe:linkTo", "from": "pe:delta-link-t-to-a", "to": "pe:delta-step-adapt" },
+    { "@type": "pe:linkFrom", "from": "pe:delta-link-a-to-e-feedback", "to": "pe:delta-step-adapt" },
+    { "@type": "pe:linkTo", "from": "pe:delta-link-a-to-e-feedback", "to": "pe:delta-step-evaluate" },
+
+    { "@type": "pe:pathImplementsPattern", "from": "pe:delta-path-cycle-flow", "to": "pe:delta-pattern-delta-cycle" }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-MAC-001",
+  "name": "MACRO Ontology (PESTEL, Scenarios, Futures Funnel, Backcasting)",
+  "description": "Outermost strategic analysis layer: PESTEL environmental scanning, Scenario Planning with strategy stress-testing, Futures Funnel (cone of plausibility), and Backcasting (reverse-engineering from vision). PESTEL enriches existing orgctx:Trend entities. Scenarios stress-test VSOM strategies for robustness. Backcasting reverse-engineers from VSOM VisionComponent to executable milestones. Part of VE-Series VSOM-SA sub-series.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://oaa-ontology.org/v6/macro/",
+  "prefix": "mac:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate7": "pass"
+  },
+  "validationDate": "2026-02-12",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./macro-ontology-v1.0.0-oaa-v6.json",
+    "documentation": null,
+    "glossary": "../../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "PESTELAnalysis": "Structured environmental scan across six macro dimensions",
+    "PESTELFactor": "Individual factor with impact/probability scoring and trend enrichment",
+    "ScenarioSet": "Collection of 3-5 plausible futures on a 2x2 uncertainty matrix",
+    "Scenario": "Single plausible future with narrative, assumptions, early warning signals",
+    "ScenarioStrategyAssessment": "Strategy-scenario effectiveness assessment for robustness testing",
+    "FuturesFunnel": "Cone of plausibility: Possible to Plausible to Probable to Preferable",
+    "BackcastingPlan": "Reverse-engineered path from desired future to present milestones",
+    "BackcastMilestone": "Required state on the backcasting path with target year and dependencies"
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "enrichesTrend",
+        "from": "mac:PESTELFactor",
+        "to": "orgctx:Trend",
+        "purpose": "PESTEL enriches existing org-context trends"
+      },
+      {
+        "name": "stressTestsStrategy",
+        "from": "mac:ScenarioSet",
+        "to": "vsom:StrategyComponent",
+        "purpose": "Scenarios stress-test VSOM strategies"
+      },
+      {
+        "name": "backcastsFromVision",
+        "from": "mac:BackcastingPlan",
+        "to": "vsom:VisionComponent",
+        "purpose": "Backcasting works backward from VSOM vision"
+      },
+      {
+        "name": "feedsSWOTFactor",
+        "from": "mac:PESTELFactor",
+        "to": "ind:SWOTFactor",
+        "purpose": "PESTEL provides evidence for SWOT external factors"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-IND-001",
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-OKR-001"
+  ],
+  "dependents": [
+    "Entry-ONT-PFL-001"
+  ],
+  "layer": "STRATEGIC LAYER (VE-Series / VSOM-SA)",
+  "subSeries": "VSOM-SA",
+  "domain": "Strategic Foresight, Environmental Analysis",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-12",
+  "lastModified": "2026-02-12",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-12",
+      "changes": "Initial release — PESTEL, Scenario Planning, Futures Funnel, Backcasting"
+    }
+  ],
+  "notes": "Layer 1 (Macro) of VSOM Strategy Analysis. PESTEL enriches existing orgctx:Trend entities — no duplication. Feeds into VSOM VisionComponent and INDUSTRY-ONT SWOT external factors."
+}

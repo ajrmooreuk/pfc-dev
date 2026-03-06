@@ -1,0 +1,119 @@
+{
+  "@context": {
+    "pe": "https://oaa-ontology.org/v6/process-engineering/",
+    "l6s": "https://oaa-ontology.org/v6/l6s-pipeline/"
+  },
+  "@type": "l6s:AgentConfiguration",
+  "l6s:version": "1.0.0",
+  "l6s:configuredBy": "Epic 54: PE-L6S",
+  "l6s:dateCreated": "2026-03-04",
+
+  "l6s:agentRoles": [
+    {
+      "@id": "l6s:agent-l6s-facilitator",
+      "@type": "pe:AIAgent",
+      "pe:agentName": "L6S Facilitator",
+      "pe:agentType": "orchestration",
+      "pe:autonomyLevel": "supervised",
+      "pe:skillsProvided": [
+        "pfc-l6s-pipeline",
+        "pfc-dmaic",
+        "pfc-ppm-select"
+      ],
+      "l6s:humanCheckpoints": [
+        {
+          "checkpoint": "method-selection",
+          "phase": "L6S Pipeline Phase 5",
+          "reason": "Choosing DMAIC vs Kaizen has 8-24 week vs 3-5 day resource implications",
+          "escalationTarget": "Process Improvement Lead"
+        },
+        {
+          "checkpoint": "root-cause-validation",
+          "phase": "DMAIC Section 5 (Analyze)",
+          "reason": "Statistical validation (p<0.05) requires domain expert review",
+          "escalationTarget": "Black Belt / Subject Matter Expert"
+        },
+        {
+          "checkpoint": "control-plan-approval",
+          "phase": "DMAIC Section 7 (Control)",
+          "reason": "SPC parameters affect ongoing monitoring burden and operational cost",
+          "escalationTarget": "Process Owner"
+        },
+        {
+          "checkpoint": "project-closure",
+          "phase": "DMAIC Section 8 / Pipeline Phase 8",
+          "reason": "Improvement claims need stakeholder sign-off before reporting",
+          "escalationTarget": "Executive Sponsor"
+        },
+        {
+          "checkpoint": "portfolio-approval",
+          "phase": "PPM-SELECT Section 10",
+          "reason": "Portfolio selection requires executive approval for investment allocation",
+          "escalationTarget": "Portfolio Board"
+        }
+      ]
+    },
+    {
+      "@id": "l6s:agent-process-analyst",
+      "@type": "pe:AIAgent",
+      "pe:agentName": "Process Analyst",
+      "pe:agentType": "analysis",
+      "pe:autonomyLevel": "hybrid",
+      "pe:skillsProvided": [
+        "pfc-voc",
+        "pfc-procmap",
+        "pfc-vsm",
+        "pfc-vana"
+      ],
+      "l6s:humanCheckpoints": [
+        {
+          "checkpoint": "ctq-spec-approval",
+          "phase": "VoC Section 4 (CTQ Tree Generation)",
+          "reason": "Customer specifications must be validated by someone who knows the customer",
+          "escalationTarget": "Product Owner / Customer Success Manager"
+        },
+        {
+          "checkpoint": "sipoc-boundary-validation",
+          "phase": "PROCMAP Section 2 (SIPOC Definition)",
+          "reason": "Scope boundaries affect all downstream analysis — wrong boundary = wrong conclusions",
+          "escalationTarget": "Process Owner"
+        }
+      ]
+    },
+    {
+      "@id": "l6s:agent-spc-monitor",
+      "@type": "pe:AIAgent",
+      "pe:agentName": "SPC Monitor",
+      "pe:agentType": "monitoring",
+      "pe:autonomyLevel": "highly-autonomous",
+      "pe:skillsProvided": [
+        "pfc-spc"
+      ],
+      "l6s:humanCheckpoints": [
+        {
+          "checkpoint": "critical-alert-escalation",
+          "phase": "SPC Monitor Mode",
+          "reason": "Agent detects out-of-control signal; human decides investigation and reaction",
+          "escalationTarget": "Process Owner / Shift Supervisor"
+        },
+        {
+          "checkpoint": "dmaic-recharter",
+          "phase": "SPC Report Mode",
+          "reason": "Persistent instability suggests need for new DMAIC project — human judgement required",
+          "escalationTarget": "L6S Facilitator Agent → Process Improvement Lead"
+        }
+      ]
+    }
+  ],
+
+  "l6s:checkpointEscalationPolicy": {
+    "timeoutMinutes": 60,
+    "timeoutAction": "pause-pipeline",
+    "retryCount": 3,
+    "escalationChain": [
+      "Process Owner",
+      "Process Improvement Lead",
+      "Executive Sponsor"
+    ]
+  }
+}

@@ -1,0 +1,251 @@
+{
+  "@context": {
+    "ppm": "https://oaa-ontology.org/v6/ppm/",
+    "vsom": "https://pbs.azlan.me/ontology/vsom#",
+    "org": "https://pbs.azlan.me/ontology/org#",
+    "pe": "https://oaa-ontology.org/v6/process-engineering/",
+    "efs": "https://pbs.azlan.me/ontology/efs#",
+    "schema": "https://schema.org/",
+    "oaa": "https://pbs.azlan.me/oaa#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "ppm:ins-advisory-template",
+  "@type": "oaa:OntologyTemplate",
+  "oaa:templateOf": "ppm:ppm-module",
+  "oaa:schemaVersion": "4.0.0",
+  "oaa:templateVersion": "1.0.0",
+  "oaa:vertical": "insurance",
+  "oaa:verticalFullName": "Insurance Advisory Practice",
+  "oaa:created": "2026-02-12",
+  "oaa:createdBy": "PFI Template Generator",
+  "oaa:description": "Reusable PPM template for Insurance Advisory vertical — defines portfolio, programme, and project structure for insurance digital transformation engagements. Designed for instantiation per client engagement.",
+
+  "oaa:imports": [
+    { "@id": "vsom:vsom-ontology", "version": ">=2.0.0", "purpose": "Strategic objective alignment" },
+    { "@id": "org:org-ontology", "version": ">=3.0.0", "purpose": "Organisation context and client scoping" },
+    { "@id": "pe:pe-ontology", "version": ">=3.0.0", "purpose": "Process engineering lifecycle" },
+    { "@id": "efs:efs-ontology", "version": ">=3.0.0", "purpose": "Feature/story execution tracking" }
+  ],
+
+  "oaa:templateVariables": {
+    "{{CLIENT_NAME}}": "Client organisation name",
+    "{{CLIENT_ORG_ID}}": "Client org UUID from ORG-ONT",
+    "{{ENGAGEMENT_ID}}": "Unique engagement identifier",
+    "{{START_DATE}}": "Engagement start date (ISO 8601)",
+    "{{END_DATE}}": "Target engagement end date",
+    "{{PORTFOLIO_BUDGET}}": "Total portfolio budget in USD"
+  },
+
+  "entities": [
+    {
+      "@id": "ppm:ins-org-template",
+      "@type": "ppm:Organisation",
+      "org_name": "Insurance Advisory Practice",
+      "org_type": "platform_owner",
+      "industry_sector": "Insurance, Financial Services, Regulatory Advisory",
+      "description": "Azlan Insurance Advisory Practice — delivering EA assessment, compliance uplift, AI readiness, and platform migration services to insurance sector clients",
+      "governance_framework": "PRINCE2 + Agile Hybrid",
+      "status": "active"
+    },
+
+    {
+      "@id": "ppm:ins-portfolio-template",
+      "@type": "ppm:Portfolio",
+      "portfolio_name": "Insurance Advisory Practice Portfolio",
+      "description": "Strategic portfolio encompassing all Insurance Advisory engagements, aligning insurance sector digital transformation initiatives with organisational strategy. Covers EA Assessment, Compliance, AI Readiness, and Platform Migration workstreams.",
+      "strategic_objectives": [
+        "Deliver insurance sector digital transformation advisory services",
+        "Build reusable insurance vertical IP and templates",
+        "Establish insurance regulatory compliance expertise",
+        "Drive Azure-native platform migration for insurance clients"
+      ],
+      "status": "active"
+    },
+
+    {
+      "@id": "ppm:ins-programme-digital-transform",
+      "@type": "ppm:Programme",
+      "programme_name": "Insurance Digital Transformation Programme",
+      "description": "Coordinated programme delivering EA assessment, regulatory compliance uplift, AI readiness assessment, and cloud platform migration for insurance sector clients. Structured in 4 workstreams with shared governance and cross-workstream dependency management.",
+      "programme_type": "transformation",
+      "status": "active",
+      "governance_model": "Programme Board + Workstream Leads + Client Steering Committee"
+    },
+
+    {
+      "@id": "ppm:ins-proj-ea-assess",
+      "@type": "ppm:Project",
+      "project_name": "INS-EA-001: Insurance EA Assessment",
+      "description": "Enterprise Architecture assessment for insurance client — current state analysis, target state design, gap analysis, and transformation roadmap. Uses EA-ONT framework with insurance vertical extensions.",
+      "project_type": "assessment",
+      "methodology": "Structured Assessment + Architecture Modelling",
+      "estimated_duration": "P12W",
+      "deliverables": [
+        "Current State Architecture Blueprint",
+        "Target State Architecture Blueprint",
+        "Gap Analysis Report",
+        "Transformation Roadmap",
+        "Insurance Regulatory Architecture Overlay"
+      ],
+      "dependencies": [],
+      "status": "planning"
+    },
+    {
+      "@id": "ppm:ins-proj-compliance",
+      "@type": "ppm:Project",
+      "project_name": "INS-COMP-001: Insurance Compliance Uplift",
+      "description": "Multi-framework compliance uplift for insurance client — MCSB, GDPR, PII, and insurance-specific regulatory requirements (Solvency II, IDD, DORA). Uses RCSG-Series ontologies for cross-framework assessment.",
+      "project_type": "compliance",
+      "methodology": "RCS Unified Compliance Assessment",
+      "estimated_duration": "P16W",
+      "deliverables": [
+        "Compliance Baseline Assessment",
+        "Cross-Framework Gap Analysis",
+        "Remediation Roadmap (prioritised by cross-framework impact)",
+        "Insurance Regulatory Mapping (Solvency II, IDD, DORA)",
+        "Continuous Monitoring Configuration"
+      ],
+      "dependencies": ["ppm:ins-proj-ea-assess"],
+      "status": "planning"
+    },
+    {
+      "@id": "ppm:ins-proj-ai-readiness",
+      "@type": "ppm:Project",
+      "project_name": "INS-AIR-001: Insurance AI Readiness Assessment",
+      "description": "AI Readiness maturity assessment for insurance client — using AIRL AIR-ONT framework with insurance vertical calibration. Covers underwriting automation, claims processing AI, risk modelling, and customer service chatbot readiness.",
+      "project_type": "assessment",
+      "methodology": "AIRL AI Readiness Assessment",
+      "estimated_duration": "P8W",
+      "deliverables": [
+        "AI Maturity Baseline (5 dimensions)",
+        "Insurance AI Use Case Prioritisation",
+        "AI Readiness Gap Analysis",
+        "AI Transformation Roadmap",
+        "AI Governance Framework Recommendations"
+      ],
+      "dependencies": ["ppm:ins-proj-ea-assess"],
+      "status": "planning"
+    },
+    {
+      "@id": "ppm:ins-proj-platform-migration",
+      "@type": "ppm:Project",
+      "project_name": "INS-MIG-001: Insurance Platform Migration",
+      "description": "Azure platform migration for insurance workloads — including data estate migration, application modernisation, and insurance-specific compliance controls deployment. Uses AZALZ-ONT for Azure baseline alignment.",
+      "project_type": "migration",
+      "methodology": "Azure Cloud Adoption Framework + Insurance Overlay",
+      "estimated_duration": "P24W",
+      "deliverables": [
+        "Migration Assessment and Discovery",
+        "Azure Landing Zone Design (Insurance-compliant)",
+        "Data Migration Plan",
+        "Application Modernisation Roadmap",
+        "Insurance Compliance Controls Deployment",
+        "Post-Migration Validation Report"
+      ],
+      "dependencies": ["ppm:ins-proj-ea-assess", "ppm:ins-proj-compliance"],
+      "status": "planning"
+    },
+
+    {
+      "@id": "ppm:ins-pbs-root",
+      "@type": "ppm:PBS",
+      "pbs_name": "Insurance Advisory Deliverables",
+      "description": "Product Breakdown Structure for Insurance Advisory engagement — hierarchical decomposition of all deliverables across workstreams",
+      "pbs_items": [
+        {
+          "id": "PBS-INS-1.0",
+          "name": "EA Architecture Artefacts",
+          "children": [
+            { "id": "PBS-INS-1.1", "name": "Current State Blueprint" },
+            { "id": "PBS-INS-1.2", "name": "Target State Blueprint" },
+            { "id": "PBS-INS-1.3", "name": "Gap Analysis Report" },
+            { "id": "PBS-INS-1.4", "name": "Transformation Roadmap" },
+            { "id": "PBS-INS-1.5", "name": "Insurance Regulatory Overlay" }
+          ]
+        },
+        {
+          "id": "PBS-INS-2.0",
+          "name": "Compliance Artefacts",
+          "children": [
+            { "id": "PBS-INS-2.1", "name": "Compliance Baseline Report" },
+            { "id": "PBS-INS-2.2", "name": "Cross-Framework Gap Analysis" },
+            { "id": "PBS-INS-2.3", "name": "Remediation Roadmap" },
+            { "id": "PBS-INS-2.4", "name": "Insurance Regulatory Mapping" },
+            { "id": "PBS-INS-2.5", "name": "Monitoring Configuration" }
+          ]
+        },
+        {
+          "id": "PBS-INS-3.0",
+          "name": "AI Readiness Artefacts",
+          "children": [
+            { "id": "PBS-INS-3.1", "name": "AI Maturity Baseline" },
+            { "id": "PBS-INS-3.2", "name": "Use Case Prioritisation" },
+            { "id": "PBS-INS-3.3", "name": "AI Gap Analysis" },
+            { "id": "PBS-INS-3.4", "name": "AI Transformation Roadmap" },
+            { "id": "PBS-INS-3.5", "name": "AI Governance Framework" }
+          ]
+        },
+        {
+          "id": "PBS-INS-4.0",
+          "name": "Platform Migration Artefacts",
+          "children": [
+            { "id": "PBS-INS-4.1", "name": "Migration Discovery Report" },
+            { "id": "PBS-INS-4.2", "name": "Azure Landing Zone Design" },
+            { "id": "PBS-INS-4.3", "name": "Data Migration Plan" },
+            { "id": "PBS-INS-4.4", "name": "App Modernisation Roadmap" },
+            { "id": "PBS-INS-4.5", "name": "Compliance Controls Deployment" },
+            { "id": "PBS-INS-4.6", "name": "Post-Migration Validation" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "@id": "ppm:ins-wbs-root",
+      "@type": "ppm:WBS",
+      "wbs_name": "Insurance Advisory Work Breakdown",
+      "description": "Work Breakdown Structure — phase-based delivery across all workstreams with dependency-aware scheduling",
+      "wbs_phases": [
+        {
+          "id": "WBS-INS-P1",
+          "name": "Phase 1: Discovery & Assessment (Weeks 1-12)",
+          "workstreams": ["EA Assessment", "Compliance Baseline", "AI Readiness Baseline"],
+          "gate": "G1: Assessment Readiness Review"
+        },
+        {
+          "id": "WBS-INS-P2",
+          "name": "Phase 2: Analysis & Design (Weeks 8-20)",
+          "workstreams": ["Gap Analysis", "Target Architecture", "Remediation Planning", "AI Use Case Design"],
+          "gate": "G2: Design Approval Gate"
+        },
+        {
+          "id": "WBS-INS-P3",
+          "name": "Phase 3: Implementation (Weeks 16-36)",
+          "workstreams": ["Compliance Remediation", "Platform Migration", "AI Pilot Setup"],
+          "gate": "G3: Implementation Readiness"
+        },
+        {
+          "id": "WBS-INS-P4",
+          "name": "Phase 4: Governance & Handover (Weeks 32-40)",
+          "workstreams": ["Monitoring Setup", "Knowledge Transfer", "Continuous Improvement Plan"],
+          "gate": "G4: Programme Close-Out"
+        }
+      ]
+    }
+  ],
+
+  "relationships": [
+    { "@type": "ppm:belongsTo", "from": "ppm:ins-portfolio-template", "to": "ppm:ins-org-template" },
+    { "@type": "ppm:contains", "from": "ppm:ins-portfolio-template", "to": "ppm:ins-programme-digital-transform" },
+    { "@type": "ppm:contains", "from": "ppm:ins-programme-digital-transform", "to": "ppm:ins-proj-ea-assess" },
+    { "@type": "ppm:contains", "from": "ppm:ins-programme-digital-transform", "to": "ppm:ins-proj-compliance" },
+    { "@type": "ppm:contains", "from": "ppm:ins-programme-digital-transform", "to": "ppm:ins-proj-ai-readiness" },
+    { "@type": "ppm:contains", "from": "ppm:ins-programme-digital-transform", "to": "ppm:ins-proj-platform-migration" },
+    { "@type": "ppm:dependsOn", "from": "ppm:ins-proj-compliance", "to": "ppm:ins-proj-ea-assess" },
+    { "@type": "ppm:dependsOn", "from": "ppm:ins-proj-ai-readiness", "to": "ppm:ins-proj-ea-assess" },
+    { "@type": "ppm:dependsOn", "from": "ppm:ins-proj-platform-migration", "to": "ppm:ins-proj-ea-assess" },
+    { "@type": "ppm:dependsOn", "from": "ppm:ins-proj-platform-migration", "to": "ppm:ins-proj-compliance" },
+    { "@type": "ppm:hasPBS", "from": "ppm:ins-programme-digital-transform", "to": "ppm:ins-pbs-root" },
+    { "@type": "ppm:hasWBS", "from": "ppm:ins-programme-digital-transform", "to": "ppm:ins-wbs-root" }
+  ]
+}

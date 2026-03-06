@@ -1,0 +1,286 @@
+{
+  "@context": {
+    "sp": "https://pf-ontology.com/strategic-patterns/",
+    "vsom": "https://pf-ontology.com/vsom/",
+    "org": "https://pf-ontology.com/org/",
+    "orgctx": "https://pf-ontology.com/org-context/",
+    "mat": "https://pf-ontology.com/org-maturity/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "schema": "https://schema.org/"
+  },
+  "@id": "sp:StrategicPatterns-MacroAnalysis",
+  "@type": "owl:Ontology",
+  "rdfs:label": "Strategic Patterns — Layer 1: Macro/World Context Analysis",
+  "description": "Connects PESTEL, Scenario Planning, Futures Funnel, and Backcasting frameworks into the VSOM strategic spine. These lenses provide the external context that shapes and constrains strategic vision.",
+  "version": "0.1.0-sketch",
+
+  "entities": {
+    "PESTELAnalysis": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "PESTEL Analysis",
+      "description": "Structured environmental scan across six macro dimensions. Feeds macro-level signals into VSOM VisionComponent and StrategicReviewCycle.",
+      "properties": {
+        "analysisId": { "type": "string", "required": true },
+        "contextRef": { "type": "string", "description": "→ orgctx:OrganizationContext" },
+        "analysisDate": { "type": "date" },
+        "timeHorizon": { "type": "string", "enum": ["near-term-1y", "medium-3y", "long-5y", "strategic-10y"] },
+        "overallImpactScore": { "type": "number", "min": 1.0, "max": 5.0 },
+        "strategicImplications": { "type": "array", "items": "string" },
+        "reviewCycleRef": { "type": "string", "description": "→ vsom:StrategicReviewCycle that consumes this" }
+      }
+    },
+
+    "PESTELFactor": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "PESTEL Factor",
+      "description": "Individual factor within a PESTEL dimension with impact/probability scoring.",
+      "properties": {
+        "factorId": { "type": "string", "required": true },
+        "dimension": {
+          "type": "string",
+          "enum": ["Political", "Economic", "Social", "Technological", "Environmental", "Legal"],
+          "required": true
+        },
+        "name": { "type": "string", "required": true },
+        "description": { "type": "string" },
+        "impactLevel": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
+        "probability": { "type": "number", "min": 0.0, "max": 1.0 },
+        "timeToImpact": { "type": "string", "enum": ["imminent", "near-term", "medium-term", "long-term"] },
+        "trend": { "type": "string", "enum": ["accelerating", "stable", "decelerating", "emerging", "declining"] },
+        "strategicOpportunity": { "type": "boolean" },
+        "strategicThreat": { "type": "boolean" },
+        "affectedVSOMComponents": {
+          "type": "array",
+          "items": "string",
+          "description": "Which VSOM layers this factor impacts: Vision, Strategy, Objectives, Metrics"
+        },
+        "evidenceSources": { "type": "array", "items": "string" }
+      }
+    },
+
+    "ScenarioSet": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Scenario Planning Set",
+      "description": "A collection of 3-5 plausible future scenarios across two critical uncertainties. Each scenario informs VSOM strategy robustness testing.",
+      "properties": {
+        "scenarioSetId": { "type": "string", "required": true },
+        "contextRef": { "type": "string", "description": "→ orgctx:OrganizationContext" },
+        "uncertaintyAxisX": { "type": "string", "description": "Primary uncertainty dimension" },
+        "uncertaintyAxisY": { "type": "string", "description": "Secondary uncertainty dimension" },
+        "timeHorizon": { "type": "string" },
+        "scenarios": { "type": "array", "items": "sp:Scenario", "minItems": 3, "maxItems": 5 },
+        "strategicImplications": { "type": "array", "items": "string" },
+        "robustStrategies": {
+          "type": "array",
+          "items": "string",
+          "description": "→ vsom:StrategyComponent IDs that perform well across ALL scenarios"
+        },
+        "hedgingActions": {
+          "type": "array",
+          "items": "string",
+          "description": "Actions to take regardless of which scenario unfolds"
+        }
+      }
+    },
+
+    "Scenario": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Future Scenario",
+      "description": "A single plausible future with narrative, key assumptions, and strategic implications.",
+      "properties": {
+        "scenarioId": { "type": "string", "required": true },
+        "name": { "type": "string", "required": true },
+        "narrative": { "type": "string" },
+        "probability": { "type": "number", "min": 0.0, "max": 1.0 },
+        "quadrant": { "type": "string", "description": "Position on the 2x2 uncertainty matrix" },
+        "keyAssumptions": { "type": "array", "items": "string" },
+        "earlyWarningSignals": { "type": "array", "items": "string" },
+        "pestelFactorRefs": {
+          "type": "array",
+          "items": "string",
+          "description": "→ sp:PESTELFactor IDs that are amplified in this scenario"
+        },
+        "impactOnVision": {
+          "type": "object",
+          "properties": {
+            "visionRef": { "type": "string", "description": "→ vsom:VisionComponent" },
+            "viability": { "type": "string", "enum": ["reinforced", "challenged", "invalidated"] },
+            "adaptations": { "type": "array", "items": "string" }
+          }
+        },
+        "impactOnStrategy": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "strategyRef": { "type": "string", "description": "→ vsom:StrategyComponent" },
+              "effectiveness": { "type": "string", "enum": ["high", "moderate", "low", "counterproductive"] }
+            }
+          }
+        }
+      }
+    },
+
+    "FuturesFunnel": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Futures Funnel",
+      "description": "Cone of plausibility from possible → plausible → probable → preferable futures. Maps directly to VSOM vision time horizons.",
+      "properties": {
+        "funnelId": { "type": "string", "required": true },
+        "contextRef": { "type": "string" },
+        "timeHorizon": { "type": "string" },
+        "layers": {
+          "type": "object",
+          "properties": {
+            "possible": {
+              "description": "Wide cone — everything conceivable",
+              "type": "array", "items": "string"
+            },
+            "plausible": {
+              "description": "Could happen based on current knowledge",
+              "type": "array", "items": "string"
+            },
+            "probable": {
+              "description": "Likely based on current trends",
+              "type": "array", "items": "string"
+            },
+            "preferable": {
+              "description": "The desired future — aligns to vsom:VisionComponent",
+              "type": "array", "items": "string"
+            }
+          }
+        },
+        "preferredVisionRef": {
+          "type": "string",
+          "description": "→ vsom:VisionComponent — the preferable future IS the strategic vision"
+        }
+      }
+    },
+
+    "BackcastingPlan": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Backcasting Plan",
+      "description": "Works backward from a desired future state to identify milestones and actions needed. The desired state maps to VSOM Vision; milestones map to VSOM Objectives; actions map to OKR Initiatives.",
+      "properties": {
+        "planId": { "type": "string", "required": true },
+        "desiredFutureState": {
+          "type": "string",
+          "description": "→ vsom:VisionComponent — what we're backcasting FROM"
+        },
+        "targetYear": { "type": "integer" },
+        "milestones": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "year": { "type": "integer" },
+              "description": { "type": "string" },
+              "objectiveRef": { "type": "string", "description": "→ vsom:ObjectivesComponent" },
+              "requiredCapabilities": { "type": "array", "items": "string" },
+              "requiredConditions": { "type": "array", "items": "string" }
+            }
+          }
+        },
+        "criticalPathActions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "action": { "type": "string" },
+              "initiativeRef": { "type": "string", "description": "→ okr:Initiative or ppm:Initiative" },
+              "deadline": { "type": "date" },
+              "dependencies": { "type": "array", "items": "string" }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "relationships": {
+    "conductedFor": {
+      "@type": "owl:ObjectProperty",
+      "domain": "sp:PESTELAnalysis",
+      "range": "orgctx:OrganizationContext",
+      "cardinality": "n:1",
+      "description": "PESTEL is conducted within an organization's context"
+    },
+    "hasFactor": {
+      "@type": "owl:ObjectProperty",
+      "domain": "sp:PESTELAnalysis",
+      "range": "sp:PESTELFactor",
+      "cardinality": "1:n"
+    },
+    "informsVision": {
+      "@type": "owl:ObjectProperty",
+      "domain": "sp:PESTELAnalysis",
+      "range": "vsom:VisionComponent",
+      "cardinality": "n:m",
+      "description": "Macro factors shape and constrain strategic vision"
+    },
+    "triggersReview": {
+      "@type": "owl:ObjectProperty",
+      "domain": "sp:PESTELFactor",
+      "range": "vsom:StrategicReviewCycle",
+      "cardinality": "n:m",
+      "description": "High-impact PESTEL factors can trigger strategy review cycles"
+    },
+    "stressTestsStrategy": {
+      "@type": "owl:ObjectProperty",
+      "domain": "sp:ScenarioSet",
+      "range": "vsom:StrategyComponent",
+      "cardinality": "n:m",
+      "description": "Scenarios stress-test strategies for robustness"
+    },
+    "shapesVision": {
+      "@type": "owl:ObjectProperty",
+      "domain": "sp:FuturesFunnel",
+      "range": "vsom:VisionComponent",
+      "cardinality": "n:1",
+      "description": "The preferable future in the funnel IS the strategic vision"
+    },
+    "backcastsFrom": {
+      "@type": "owl:ObjectProperty",
+      "domain": "sp:BackcastingPlan",
+      "range": "vsom:VisionComponent",
+      "cardinality": "n:1",
+      "description": "Backcasting starts from the desired vision and works backward"
+    },
+    "backcastMilestoneAligns": {
+      "@type": "owl:ObjectProperty",
+      "domain": "sp:BackcastingPlan",
+      "range": "vsom:ObjectivesComponent",
+      "cardinality": "n:m",
+      "description": "Backcasting milestones align to strategic objectives"
+    }
+  },
+
+  "joinPatterns": {
+    "JP-SP-001": {
+      "name": "PESTEL-to-VSOM Bridge",
+      "path": "sp:PESTELAnalysis → conductedFor → orgctx:OrganizationContext → hasStrategicContext → vsom:VSOMFramework",
+      "description": "PESTEL analysis flows through org context into the full VSOM framework"
+    },
+    "JP-SP-002": {
+      "name": "Scenario-Strategy Robustness Test",
+      "path": "sp:ScenarioSet → stressTestsStrategy → vsom:StrategyComponent → hasIteration → vsom:StrategyIteration",
+      "description": "Scenarios test whether strategies hold across multiple futures, triggering strategy iterations"
+    },
+    "JP-SP-003": {
+      "name": "Futures-to-Vision Alignment",
+      "path": "sp:FuturesFunnel.preferable → shapesVision → vsom:VisionComponent → defines → vsom:StrategyComponent",
+      "description": "The preferable future becomes the vision that defines strategy"
+    },
+    "JP-SP-004": {
+      "name": "Backcasting-to-Execution Chain",
+      "path": "sp:BackcastingPlan → backcastsFrom → vsom:VisionComponent; sp:BackcastingPlan.milestones → objectiveRef → vsom:ObjectivesComponent → cascadesTo → okr:Objective → hasInitiative → okr:Initiative",
+      "description": "Backcasting creates a reverse-engineered path from vision through objectives to executable initiatives"
+    }
+  },
+
+  "_designNotes": {
+    "aiAgentUsage": "An AI agent performing strategic analysis would: (1) Populate PESTEL factors from market intelligence, (2) Generate scenario sets by combining high-impact uncertainties, (3) Build futures funnels to map the cone of plausibility, (4) Backcast from the chosen vision to create milestone-driven roadmaps, (5) Feed all of this into VSOM's StrategicReviewCycle to trigger strategy updates.",
+    "graphTraversal": "FROM external signals → THROUGH analytical frameworks → INTO strategic decisions → OUT to execution plans"
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "registry": "Azlan-EA-AAA Agent Registry",
+  "version": "1.0.0",
+  "created": "2026-01-26",
+  "schema_version": "pf-agent-v1.0",
+  "agents": [
+    {
+      "id": "azlan:agent:oaa-v1.0",
+      "code": "OAA",
+      "name": "Ontology Architect Agent",
+      "layer": "governance",
+      "purpose": "Domain model management, semantic consistency, ontology evolution",
+      "responsibilities": [
+        "Design and maintain domain ontologies",
+        "Ensure semantic alignment across domains",
+        "Manage ontology versioning",
+        "Define integration patterns",
+        "Validate new ontology additions"
+      ],
+      "inputs": ["domain_requirements", "existing_ontologies", "change_requests"],
+      "outputs": ["ontology_schemas", "semantic_mappings", "validation_reports"],
+      "dependencies": [],
+      "status": "active"
+    },
+    {
+      "id": "azlan:agent:ve-v1.0",
+      "code": "VE",
+      "name": "Value Engineer Agent",
+      "layer": "governance",
+      "purpose": "Benefits tracking, ROI analysis, cost optimisation",
+      "responsibilities": [
+        "Track value delivery against business case",
+        "Calculate ROI for proposed changes",
+        "Identify cost optimisation opportunities",
+        "Map features to business benefits",
+        "Generate value reports"
+      ],
+      "inputs": ["business_case", "cost_data", "benefit_metrics"],
+      "outputs": ["value_analysis", "roi_calculations", "cost_recommendations"],
+      "dependencies": ["oaa"],
+      "status": "active"
+    },
+    {
+      "id": "azlan:agent:ce-v1.0",
+      "code": "CE",
+      "name": "Context Engineer Agent",
+      "layer": "context",
+      "purpose": "Organisation and AI context management, knowledge curation",
+      "responsibilities": [
+        "Maintain organisational context",
+        "Curate AI knowledge bases",
+        "Manage context windows",
+        "Define context hierarchies",
+        "Optimise context retrieval"
+      ],
+      "inputs": ["org_context", "documents", "conversations"],
+      "outputs": ["context_packages", "knowledge_graphs", "context_summaries"],
+      "dependencies": ["oaa"],
+      "status": "active"
+    },
+    {
+      "id": "azlan:agent:ea-v1.0",
+      "code": "EA",
+      "name": "Enterprise Architect Agent",
+      "layer": "context",
+      "purpose": "Solution design, architecture patterns, enterprise alignment",
+      "responsibilities": [
+        "Design solution architectures",
+        "Apply architecture patterns",
+        "Ensure enterprise alignment",
+        "Review technical decisions",
+        "Define technology roadmaps"
+      ],
+      "inputs": ["requirements", "constraints", "standards"],
+      "outputs": ["architecture_designs", "pattern_recommendations", "decision_records"],
+      "dependencies": ["oaa", "ce"],
+      "status": "active"
+    },
+    {
+      "id": "azlan:agent:aaa-v1.0",
+      "code": "AAA",
+      "name": "Azure Assessments Architect Agent",
+      "layer": "execution",
+      "purpose": "Well-Architected, CAF, Landing Zone assessments",
+      "responsibilities": [
+        "Execute Well-Architected reviews",
+        "Assess CAF alignment",
+        "Design Landing Zones",
+        "Generate assessment reports",
+        "Recommend improvements"
+      ],
+      "inputs": ["azure_resources", "org_context", "assessment_scope"],
+      "outputs": ["assessment_reports", "recommendations", "remediation_plans"],
+      "dependencies": ["ea", "ce", "ve", "sa"],
+      "status": "active"
+    },
+    {
+      "id": "azlan:agent:aie-v1.0",
+      "code": "AIE",
+      "name": "AI Engineer Agent",
+      "layer": "execution",
+      "purpose": "AI/ML integration, Copilot patterns, intelligent features",
+      "responsibilities": [
+        "Design AI integrations",
+        "Implement Copilot patterns",
+        "Optimise AI workflows",
+        "Manage AI models",
+        "Ensure responsible AI"
+      ],
+      "inputs": ["ai_requirements", "model_specs", "integration_patterns"],
+      "outputs": ["ai_designs", "integration_code", "ai_governance_docs"],
+      "dependencies": ["ce", "oaa"],
+      "status": "active"
+    },
+    {
+      "id": "azlan:agent:sa-v1.0",
+      "code": "SA",
+      "name": "Security Architect Agent",
+      "layer": "governance",
+      "purpose": "MCSB compliance, Zero Trust, security governance",
+      "responsibilities": [
+        "Apply MCSB controls",
+        "Design Zero Trust architecture",
+        "Review security posture",
+        "Define security policies",
+        "Manage compliance"
+      ],
+      "inputs": ["security_requirements", "compliance_frameworks", "threat_models"],
+      "outputs": ["security_designs", "compliance_reports", "policy_definitions"],
+      "dependencies": ["oaa"],
+      "status": "active"
+    },
+    {
+      "id": "azlan:agent:de-v1.0",
+      "code": "DE",
+      "name": "Data Engineer Agent",
+      "layer": "execution",
+      "purpose": "Data architecture, governance, integration patterns",
+      "responsibilities": [
+        "Design data architectures",
+        "Implement data governance",
+        "Define integration patterns",
+        "Optimise data flows",
+        "Ensure data quality"
+      ],
+      "inputs": ["data_requirements", "source_systems", "governance_policies"],
+      "outputs": ["data_designs", "integration_specs", "quality_rules"],
+      "dependencies": ["ce", "oaa"],
+      "status": "active"
+    }
+  ],
+  "metadata": {
+    "total_agents": 8,
+    "by_layer": {
+      "governance": 3,
+      "context": 2,
+      "execution": 3
+    }
+  }
+}

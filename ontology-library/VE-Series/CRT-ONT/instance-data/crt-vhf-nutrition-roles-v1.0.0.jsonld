@@ -1,0 +1,298 @@
+{
+  "@context": {
+    "crt": "https://platformcore.io/ontology/crt/",
+    "vp": "https://pbs.azlan.me/ontology/vp#",
+    "rrr": "https://platform-foundation.io/ontology/v1/rrr/",
+    "org": "https://pbs.azlan.me/ontology/org#",
+    "oaa": "https://pbs.azlan.me/oaa#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "crt:vhf-nutrition-roles-instance",
+  "@type": "crt:InstanceDataSet",
+  "oaa:schemaRef": "pf-CRT-ONT-v1.0.0.jsonld",
+  "oaa:instanceVersion": "1.0.0",
+  "oaa:schemaVersion": "1.0.0",
+  "oaa:brand": "vhf",
+  "oaa:brandFullName": "VHF Nutrition",
+  "oaa:organizationContextRef": "org:ctx-vhf-nutrition",
+  "oaa:created": "2026-02-20",
+  "oaa:createdBy": "PFI Instance Generator",
+  "oaa:description": "VHF Nutrition B2C consumer role taxonomy — 6 customer role archetypes covering fitness enthusiasts, nutrition-conscious consumers, performance athletes, professional dietitians, parent/carer buyers, and health investors. Maps to VP-ONT stakeholder types and supports value proposition segmentation for VHF Nutrition product lines.",
+  "oaa:domainContext": "Health, fitness and nutrition supplements — direct-to-consumer (D2C) and B2B2C (via dietitians). UK/EU market. Product lines: protein, vitamins, functional nutrition, longevity supplements.",
+
+  "@graph": [
+
+    {
+      "@id": "crt:vhf-fitness-enthusiast",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:vhf-fitness-enthusiast",
+      "crt:name": "Fitness Enthusiast",
+      "crt:channel": "B2C",
+      "crt:category": "B2C_Enthusiast",
+      "crt:description": "Passionate fitness consumer who actively researches and experiments with nutrition products to optimise training, recovery, and body composition. Highly engaged with brands, early adopters of new formulations, and influential within their fitness community. Regular gym-goer or CrossFit/running/cycling participant with strong personal investment in physical performance.",
+      "crt:motivations": "Performance optimisation, body composition improvement, training recovery acceleration, community status within fitness peer group, staying ahead of nutrition science trends, brand loyalty where quality is demonstrated",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "DecisionMaker",
+      "crt:typicalEngagement": "High",
+      "crt:decisionStyle": "ResearchDriven",
+      "crt:buyerJourneyType": "Considered",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "Low",
+      "crt:purchaseFrequency": "Monthly",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Training Frequency",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "4 training sessions per week"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Psychographic",
+          "crt:criteriaName": "Nutrition Engagement",
+          "crt:operator": "equals",
+          "crt:value": "Actively tracks macros or follows a structured nutrition plan"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Spending",
+          "crt:criteriaName": "Monthly Supplement Budget",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "GBP 60 per month on supplements"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:vhf-nutrition-conscious",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:vhf-nutrition-conscious",
+      "crt:name": "Nutrition-Conscious Consumer",
+      "crt:channel": "B2C",
+      "crt:category": "B2C_Casual",
+      "crt:description": "Health-aware everyday consumer who makes deliberate food and supplement choices to support general wellbeing, energy, and long-term health. Not a competitive athlete or serious fitness devotee, but reads labels, avoids ultra-processed foods, and actively seeks out quality nutrition products. Purchases driven by trusted recommendations and clean-label credentials.",
+      "crt:motivations": "General health maintenance, sustained daily energy, immune system support, clean and natural ingredient sourcing, value for money, simplicity in supplementation routine",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "PrimaryUser",
+      "crt:typicalEngagement": "Moderate",
+      "crt:decisionStyle": "ValueDriven",
+      "crt:buyerJourneyType": "Habitual",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "Medium",
+      "crt:purchaseFrequency": "Monthly",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Psychographic",
+          "crt:criteriaName": "Health Consciousness",
+          "crt:operator": "equals",
+          "crt:value": "Actively reads nutrition labels and makes deliberate food/supplement choices"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Supplement Usage",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "At least 1 supplement product purchased in the past 3 months"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Spending",
+          "crt:criteriaName": "Monthly Supplement Budget",
+          "crt:operator": "between",
+          "crt:value": "GBP 15 to GBP 50 per month on supplements"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:vhf-athlete",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:vhf-athlete",
+      "crt:name": "Athlete",
+      "crt:channel": "B2C",
+      "crt:category": "B2C_Professional",
+      "crt:description": "Performance-driven individual who uses nutrition professionally as a training tool — including competitive amateur athletes, semi-professionals, and elite amateurs across endurance, strength, team, and aesthetic sports. Nutrition decisions are systematic, periodised to training cycles, and often guided by coaches or sports nutritionists. Places highest priority on efficacy, purity (doping-tested credentials), and precision.",
+      "crt:motivations": "Competitive performance gains, training load recovery, body composition periodisation, legal and certified purity of all supplements (anti-doping), sports-specific macro and micronutrient targeting, evidence-based formulations",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "PrimaryUser",
+      "crt:typicalEngagement": "High",
+      "crt:decisionStyle": "EvidenceBased",
+      "crt:buyerJourneyType": "Considered",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "Low",
+      "crt:purchaseFrequency": "Monthly",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Competitive Activity",
+          "crt:operator": "equals",
+          "crt:value": "Competes in organised sport or trains at competitive amateur level or above"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Training Volume",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "6 structured training sessions per week or 10+ hours per week"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Psychographic",
+          "crt:criteriaName": "Nutrition Professionalism",
+          "crt:operator": "equals",
+          "crt:value": "Follows periodised nutrition plan aligned to training phases"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:vhf-dietitian",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:vhf-dietitian",
+      "crt:name": "Dietitian",
+      "crt:channel": "B2B2C",
+      "crt:category": "B2B2C_Intermediary",
+      "crt:description": "Registered nutrition professional who advises individual clients on dietary plans, supplement protocols, and therapeutic nutrition interventions. As a B2B2C intermediary, their product recommendations directly shape the purchasing decisions of multiple downstream consumers. Quality of evidence, professional credibility of the brand, and compliance with regulatory nutrition standards are paramount considerations. May receive professional pricing or sampling programmes.",
+      "crt:motivations": "Clinical credibility of recommended products, evidence base behind formulations, regulatory compliance and labelling accuracy, professional reputation protection, ease of recommending and explaining to clients, professional support from the brand (CPD, samples, educational content)",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "Influencer",
+      "crt:typicalEngagement": "Moderate",
+      "crt:decisionStyle": "EvidenceBased",
+      "crt:buyerJourneyType": "Considered",
+      "crt:budgetAuthority": "None",
+      "crt:priceElasticity": "Low",
+      "crt:purchaseFrequency": "Quarterly",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Professional Registration",
+          "crt:operator": "equals",
+          "crt:value": "Registered Dietitian (RD) with HCPC or equivalent national professional body registration"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Client-Facing Practice",
+          "crt:operator": "equals",
+          "crt:value": "Provides individual nutrition consultations or dietary advice in clinical, private practice, or sports setting"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Supplement Recommendation Pattern",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "Recommends or discusses supplements with at least 5 clients per month"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:vhf-parent-carer",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:vhf-parent-carer",
+      "crt:name": "Parent / Carer",
+      "crt:channel": "B2C",
+      "crt:category": "B2C_Casual",
+      "crt:description": "Adult purchasing nutrition products primarily for family members — children, elderly relatives, or dependants with specific dietary needs. Purchase decisions are characterised by safety-first criteria, age-appropriateness, ingredient transparency, and value for money across a household budget. Highly responsive to trusted brand signals, paediatric or family-oriented credentials, and easy-to-understand labelling.",
+      "crt:motivations": "Family nutritional wellbeing, safety and ingredient transparency for children or dependants, age-appropriate formulations, household budget management, trusted and established brand credentials, convenient formats suitable for family use",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "PrimaryUser",
+      "crt:typicalEngagement": "Moderate",
+      "crt:decisionStyle": "SafetyDriven",
+      "crt:buyerJourneyType": "Habitual",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "High",
+      "crt:purchaseFrequency": "Monthly",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Demographic",
+          "crt:criteriaName": "Household Responsibility",
+          "crt:operator": "equals",
+          "crt:value": "Primary purchaser of food or health products for at least one dependant (child, elderly parent, or carer responsibility)"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Psychographic",
+          "crt:criteriaName": "Safety Priority",
+          "crt:operator": "equals",
+          "crt:value": "Places ingredient safety and age-suitability above performance claims when evaluating products"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Spending",
+          "crt:criteriaName": "Budget Sensitivity",
+          "crt:operator": "equals",
+          "crt:value": "Actively compares prices across brands or retailers before purchase"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:vhf-health-investor",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:vhf-health-investor",
+      "crt:name": "Health Investor",
+      "crt:channel": "B2C",
+      "crt:category": "B2C_Investor",
+      "crt:description": "High-spending consumer who treats personal health and longevity as a long-term investment, embracing biohacking, quantified-self practices, longevity research, and premium supplementation stacks. Economic buyer with high willingness to pay for clinically validated, cutting-edge, or precision-personalised nutrition products. Motivated by measurable outcomes and often tracks biomarkers via blood testing or wearable devices.",
+      "crt:motivations": "Longevity extension, healthspan optimisation, biologically measurable outcomes (biomarker improvement), access to the latest evidence-based or cutting-edge formulations, personalisation based on individual biomarker data, premium product exclusivity and brand prestige",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "EconomicBuyer",
+      "crt:typicalEngagement": "High",
+      "crt:decisionStyle": "DataDriven",
+      "crt:buyerJourneyType": "Considered",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "VeryLow",
+      "crt:purchaseFrequency": "Monthly",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Spending",
+          "crt:criteriaName": "Monthly Health Investment",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "GBP 150 per month on supplements, health services, or diagnostic testing"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Biomarker Tracking",
+          "crt:operator": "equals",
+          "crt:value": "Actively tracks health biomarkers via blood tests, wearables, or quantified-self platforms"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Psychographic",
+          "crt:criteriaName": "Longevity Focus",
+          "crt:operator": "equals",
+          "crt:value": "Primary health motivation is longevity, healthspan, or biohacking rather than athletic performance or general wellness"
+        }
+      ]
+    }
+
+  ],
+
+  "crt:instanceMetadata": {
+    "crt:totalRoles": 6,
+    "crt:channelBreakdown": {
+      "B2C": 5,
+      "B2B2C": 1,
+      "B2B": 0
+    },
+    "crt:categoryBreakdown": {
+      "B2C_Enthusiast": 1,
+      "B2C_Casual": 2,
+      "B2C_Professional": 1,
+      "B2B2C_Intermediary": 1,
+      "B2C_Investor": 1
+    },
+    "crt:vpStakeholderRoles": ["DecisionMaker", "PrimaryUser", "Influencer", "EconomicBuyer"],
+    "crt:industryContext": "Health and nutrition supplements — D2C and B2B2C",
+    "crt:geographicScope": "UK primary, EU secondary",
+    "crt:notes": "VHF Nutrition instance v1.0.0. Six B2C/B2B2C consumer archetypes. Dietitian role (B2B2C_Intermediary) connects downstream to multiple B2C consumer segments. Health Investor role reflects longevity/biohacking segment premium opportunity. Parent/Carer role captures family nutrition purchasing with budget-sensitive profile distinct from personal-use consumers."
+  }
+}

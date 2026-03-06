@@ -1,0 +1,134 @@
+{
+  "@context": {
+    "l6s": "https://oaa-ontology.org/v6/l6s-pipeline/",
+    "vp": "https://platformcore.io/ontology/vp/",
+    "vsom": "https://platformcore.io/ontology/vsom/",
+    "kano": "https://oaa-ontology.org/v6/kano/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/",
+    "bsc": "https://oaa-ontology.org/v6/bsc/",
+    "delta": "https://oaa-ontology.org/v6/delta/",
+    "voc": "https://oaa-ontology.org/v6/voice-of-customer/",
+    "procmap": "https://oaa-ontology.org/v6/process-mapping/",
+    "vsm": "https://oaa-ontology.org/v6/value-stream-mapping/",
+    "vana": "https://oaa-ontology.org/v6/value-add-analysis/",
+    "dmaic": "https://oaa-ontology.org/v6/six-sigma-dmaic/",
+    "ppm": "https://oaa-ontology.org/v6/ppm/"
+  },
+  "@type": "l6s:BridgeConfiguration",
+  "l6s:version": "1.0.0",
+  "l6s:configuredBy": "Epic 54: PE-L6S",
+  "l6s:dateCreated": "2026-03-04",
+
+  "l6s:entryPoints": {
+    "@type": "l6s:EntryPointRegistry",
+    "description": "Entry points from VE/DELTA pipelines into L6S pipeline",
+    "bridges": [
+      {
+        "bridgeId": "VE-L6S-ENTRY-001",
+        "name": "VP Problems → VoC Capture",
+        "from": "vp:Problem[]",
+        "fromSkill": "pfc-vp",
+        "to": "voc:VoiceOfCustomer",
+        "toSkill": "pfc-voc",
+        "trigger": "VP problems with severity ≥ Moderate identified",
+        "dataFlow": "VP problem descriptions, pain points, ICP profiles → VoC raw verbatim + translated needs",
+        "automation": "When pfc-vp completes with ≥3 problems above Moderate severity, suggest pfc-voc invocation"
+      },
+      {
+        "bridgeId": "VE-L6S-ENTRY-002",
+        "name": "Kano Classifications → VoC CTQ Priority",
+        "from": "kano:KanoClassification[]",
+        "fromSkill": "pfc-kano",
+        "to": "voc:NeedPrioritisation",
+        "toSkill": "pfc-voc",
+        "trigger": "Kano analysis identifies MustBe features not yet meeting baseline",
+        "dataFlow": "Kano category + confidence → VoC CTQ priority weighting (MustBe=critical, Performance=major, Attractive=minor)",
+        "automation": "Optional enrichment — VoC operates without Kano but improves with it"
+      },
+      {
+        "bridgeId": "VE-L6S-ENTRY-003",
+        "name": "KPI Baselines → DMAIC Measurement",
+        "from": "kpi:KPI[]",
+        "fromSkill": "pfc-kpi",
+        "to": "dmaic:MeasurementSystem",
+        "toSkill": "pfc-dmaic",
+        "trigger": "KPIs with baseline values identified but targets not met",
+        "dataFlow": "KPI measurement method, frequency, target, baseline → DMAIC measurement system and capability baseline",
+        "automation": "When KPI gap > 20%, suggest DMAIC project for that KPI domain"
+      },
+      {
+        "bridgeId": "DELTA-L6S-ENTRY-001",
+        "name": "DELTA Evaluate → L6S Pipeline",
+        "from": "delta:EvaluationResult",
+        "fromSkill": "pfc-delta-evaluate",
+        "to": "l6s:PipelineInvocation",
+        "toSkill": "pfc-l6s-pipeline",
+        "trigger": "DELTA evaluation identifies process improvement opportunity",
+        "dataFlow": "Evaluation findings with operational improvement recommendations → L6S pipeline with scope=standard",
+        "automation": "When DELTA evaluate recommends 'process-improvement', suggest pfc-l6s-pipeline invocation"
+      },
+      {
+        "bridgeId": "DELTA-L6S-ENTRY-002",
+        "name": "DELTA Adapt → Continuous L6S",
+        "from": "delta:AdaptationPlan",
+        "fromSkill": "pfc-delta-adapt",
+        "to": "l6s:PipelineInvocation",
+        "toSkill": "pfc-l6s-pipeline",
+        "trigger": "DELTA adaptation plan includes process change actions",
+        "dataFlow": "Adaptation actions → L6S pipeline with scope=full (continuous improvement)",
+        "automation": "When DELTA adapt produces ≥2 process change actions, suggest pfc-l6s-pipeline with scope=full"
+      }
+    ]
+  },
+
+  "l6s:exitPoints": {
+    "@type": "l6s:ExitPointRegistry",
+    "description": "Exit points from L6S pipeline back into VE/DELTA/PPM pipelines",
+    "bridges": [
+      {
+        "bridgeId": "L6S-VE-EXIT-001",
+        "name": "L6S Improvement → KPI Update",
+        "from": "dmaic:ProcessCapability (post-improvement)",
+        "fromSkill": "pfc-dmaic",
+        "to": "kpi:KPI (actuals update)",
+        "toSkill": "pfc-kpi --mode update",
+        "trigger": "DMAIC project closure with quantified improvement",
+        "dataFlow": "Post-improvement sigma, Cpk, lead time → KPI actual values update",
+        "automation": "On DMAIC closure, invoke pfc-kpi --mode update with new actuals"
+      },
+      {
+        "bridgeId": "L6S-VE-EXIT-002",
+        "name": "VoC Needs → VP Refresh",
+        "from": "voc:CustomerNeed[] (new or changed)",
+        "fromSkill": "pfc-voc",
+        "to": "vp:Problem[] + vp:Solution[]",
+        "toSkill": "pfc-vp",
+        "trigger": "VoC analysis discovers new customer needs not in current VP canvas",
+        "dataFlow": "New VoC needs → VP problem discovery refresh + solution redesign",
+        "automation": "When VoC identifies ≥2 needs not mapped to existing VP problems, suggest pfc-vp refresh"
+      },
+      {
+        "bridgeId": "L6S-PPM-EXIT-001",
+        "name": "L6S Metrics → Three Voices Scoring",
+        "from": "vsm:ValueStreamMap + vana:ProcessEfficiency + dmaic:ProcessCapability",
+        "fromSkill": "pfc-l6s-pipeline",
+        "to": "ppm:VoiceOfProcess",
+        "toSkill": "pfc-ppm-select",
+        "trigger": "L6S pipeline Phase 4 or 7 complete (analysis or verification)",
+        "dataFlow": "VA ratio, COPQ, sigma, process readiness → VoP assessment for portfolio scoring",
+        "automation": "On L6S analysis completion, auto-populate VoP assessment for affected initiatives"
+      },
+      {
+        "bridgeId": "L6S-DELTA-EXIT-001",
+        "name": "L6S Results → DELTA Narrate",
+        "from": "l6s:PipelineSummary",
+        "fromSkill": "pfc-l6s-pipeline",
+        "to": "delta:NarrativeInput",
+        "toSkill": "pfc-delta-narrate",
+        "trigger": "L6S pipeline closure (Phase 8)",
+        "dataFlow": "Improvement delta (before/after metrics) → DELTA narrative for stakeholder communication",
+        "automation": "On L6S pipeline closure, feed improvement metrics to pfc-delta-narrate for reporting"
+      }
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-CICD-001",
+  "name": "CICD Ontology (CI/CD Pipeline & Delivery)",
+  "description": "Semantic model for the PF-Core hub-and-spoke CI/CD architecture — topology, repository triads, release pipelines, promotion steps, version pinning, core protection layers, and series-filtered ontology distribution.",
+  "version": "1.1.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/cicd/",
+  "prefix": "cicd:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "./pfc-cicd-v1.1.0-oaa-v6.json",
+    "glossary": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "topology": "Hub-and-spoke CI/CD architecture",
+    "triad": "Dev/test/prod repository triads",
+    "pipeline": "Release, sync, and promotion pipelines",
+    "protection": "Core protection layers (private, guard, CODEOWNERS)"
+  },
+  "dependencies": [
+    "Entry-ONT-PE-001",
+    "Entry-ONT-PPM-001",
+    "Entry-ONT-EMC-001",
+    "Entry-ONT-ORG-001",
+    "Entry-ONT-GRC-FW-001",
+    "Entry-ONT-KPI-001",
+    "Entry-ONT-VSOM-001"
+  ],
+  "dependents": [],
+  "layer": "EXECUTION LAYER (PE-Series)",
+  "domain": "CI/CD Pipeline & Platform Delivery",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-19",
+  "lastModified": "2026-02-19",
+  "notes": "Models the PFC hub-and-spoke CI/CD architecture. Cross-references PE, PPM, EMC, ORG, GRC-FW, KPI, and VSOM ontologies via 7 cross-ontology relationships and 6 join patterns."
+}

@@ -1,0 +1,448 @@
+{
+    "@context": {
+        "@vocab": "https://schema.org/",
+        "oaa": "https://oaa-ontology.org/v5/",
+        "vsem": "https://oaa-ontology.org/v5/vsem/",
+        "ppm": "https://oaa-ontology.org/v5/ppm/",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "skos": "http://www.w3.org/2004/02/skos/core#",
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    },
+    "@id": "https://oaa-ontology.org/v5/ppm/schema",
+    "@type": "owl:Ontology",
+    "owl:versionInfo": "5.0.0",
+    "rdfs:label": "PPM Schema - OAA v5.0.0",
+    "rdfs:comment": "Portfolio-Programme-Project Management ontology for initiative tracking and value realisation",
+    "oaa:schemaVersion": "5.0.0",
+    "oaa:domain": "Portfolio Management",
+    "oaa:lastUpdated": "2026-02-01",
+    "oaa:complianceLevel": "OAA-v5.0.0-G4",
+    "entities": [
+        {
+            "@id": "ppm:Portfolio",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "oaa:GovernedEntity"},
+            "rdfs:label": "Portfolio",
+            "rdfs:comment": "Collection of programmes delivering strategic vision within investment envelope",
+            "oaa:description": "A portfolio represents the highest level of organisational investment management, grouping related programmes under a unified strategic vision and governance structure with defined investment boundaries."
+        },
+        {
+            "@id": "ppm:Programme",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "oaa:GovernedEntity"},
+            "rdfs:label": "Programme",
+            "rdfs:comment": "Coherent set of initiatives delivering programme benefits aligned to strategic pillar",
+            "oaa:description": "A programme coordinates multiple related initiatives to deliver transformational benefits that align with organisational strategic pillars, managing cross-initiative dependencies and shared resources."
+        },
+        {
+            "@id": "ppm:Initiative",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "oaa:GovernedEntity"},
+            "rdfs:label": "Initiative",
+            "rdfs:comment": "Discrete transformation initiative with defined outcomes and dependencies",
+            "oaa:description": "An initiative is an individual transformation effort with clearly defined scope, outcomes, timeline, and resource requirements that contributes to programme-level benefits realisation."
+        },
+        {
+            "@id": "ppm:Dependency",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "schema:Intangible"},
+            "rdfs:label": "Dependency",
+            "rdfs:comment": "Typed relationship between initiatives defining sequencing and enablement",
+            "oaa:description": "A dependency captures the logical or temporal relationship between initiatives, specifying how one initiative enables, blocks, or influences another within the delivery schedule."
+        },
+        {
+            "@id": "ppm:Milestone",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "vsem:StrategicObjective"},
+            "rdfs:label": "Milestone",
+            "rdfs:comment": "Significant achievement point within an initiative delivery timeline",
+            "oaa:description": "A milestone marks a significant checkpoint or deliverable within an initiative, used for progress tracking, governance reviews, and stakeholder communication."
+        },
+        {
+            "@id": "ppm:PracticeArea",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "schema:Organization"},
+            "rdfs:label": "Practice Area",
+            "rdfs:comment": "Business unit or advisory practice contributing to transformation",
+            "oaa:description": "A practice area represents an organisational unit, business function, or advisory domain that participates in or benefits from transformation initiatives."
+        },
+        {
+            "@id": "ppm:BenefitMetric",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "vsem:StrategicKPI"},
+            "rdfs:label": "Benefit Metric",
+            "rdfs:comment": "Quantified benefit measurement with baseline and target values",
+            "oaa:description": "A benefit metric defines a measurable indicator of value realisation, including baseline measurements, target values, measurement methodology, and tracking frequency."
+        },
+        {
+            "@id": "ppm:Risk",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "schema:Intangible"},
+            "rdfs:label": "Risk",
+            "rdfs:comment": "Identified risk to initiative delivery with probability and impact",
+            "oaa:description": "A risk captures a potential threat to initiative or programme success, including probability assessment, impact analysis, mitigation strategies, and ownership assignment."
+        },
+        {
+            "@id": "ppm:Phase",
+            "@type": "skos:ConceptScheme",
+            "rdfs:label": "Phase",
+            "rdfs:comment": "Temporal phases for initiative scheduling across planning horizon",
+            "oaa:description": "Phase provides a controlled vocabulary for temporal planning periods used to schedule initiatives across the strategic planning horizon."
+        },
+        {
+            "@id": "ppm:InitiativeStatus",
+            "@type": "skos:ConceptScheme",
+            "rdfs:label": "Initiative Status",
+            "rdfs:comment": "Lifecycle status values for tracking initiative progress",
+            "oaa:description": "Initiative Status defines the controlled vocabulary for lifecycle states an initiative progresses through from inception to closure."
+        },
+        {
+            "@id": "ppm:Priority",
+            "@type": "skos:ConceptScheme",
+            "rdfs:label": "Priority",
+            "rdfs:comment": "Priority classification levels for resource allocation decisions",
+            "oaa:description": "Priority provides a controlled vocabulary for classifying initiatives by importance to inform resource allocation and sequencing decisions."
+        },
+        {
+            "@id": "ppm:DependencyType",
+            "@type": "skos:ConceptScheme",
+            "rdfs:label": "Dependency Type",
+            "rdfs:comment": "Classification of inter-initiative dependency relationships",
+            "oaa:description": "Dependency Type defines the controlled vocabulary for categorising the nature of relationships between dependent initiatives."
+        }
+    ],
+    "relationships": [
+        {
+            "@id": "ppm:programmes",
+            "@type": "rdf:Property",
+            "rdfs:label": "programmes",
+            "rdfs:comment": "Programmes within this portfolio",
+            "oaa:description": "Links a portfolio to its constituent programmes that collectively deliver the portfolio's strategic objectives.",
+            "oaa:domainIncludes": [
+                "ppm:Portfolio"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Programme"
+            ],
+            "oaa:cardinality": "1..*",
+            "oaa:inverseOf": "ppm:parentPortfolio"
+        },
+        {
+            "@id": "ppm:initiatives",
+            "@type": "rdf:Property",
+            "rdfs:label": "initiatives",
+            "rdfs:comment": "Initiatives within this programme",
+            "oaa:description": "Links a programme to its constituent initiatives that collectively deliver the programme's benefits.",
+            "oaa:domainIncludes": [
+                "ppm:Programme"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Initiative"
+            ],
+            "oaa:cardinality": "1..*",
+            "oaa:inverseOf": "ppm:parentProgramme"
+        },
+        {
+            "@id": "ppm:parentPortfolio",
+            "@type": "rdf:Property",
+            "rdfs:label": "parentPortfolio",
+            "rdfs:comment": "Portfolio this programme belongs to",
+            "oaa:description": "Links a programme to its parent portfolio for governance and investment tracking.",
+            "oaa:domainIncludes": [
+                "ppm:Programme"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Portfolio"
+            ],
+            "oaa:cardinality": "1..1",
+            "oaa:inverseOf": "ppm:programmes"
+        },
+        {
+            "@id": "ppm:parentProgramme",
+            "@type": "rdf:Property",
+            "rdfs:label": "parentProgramme",
+            "rdfs:comment": "Programme this initiative belongs to",
+            "oaa:description": "Links an initiative to its parent programme for benefits alignment and coordination.",
+            "oaa:domainIncludes": [
+                "ppm:Initiative"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Programme"
+            ],
+            "oaa:cardinality": "1..1",
+            "oaa:inverseOf": "ppm:initiatives"
+        },
+        {
+            "@id": "ppm:dependencies",
+            "@type": "rdf:Property",
+            "rdfs:label": "dependencies",
+            "rdfs:comment": "Dependencies this initiative has on others",
+            "oaa:description": "Links an initiative to its dependency records that specify relationships with other initiatives.",
+            "oaa:domainIncludes": [
+                "ppm:Initiative"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Dependency"
+            ],
+            "oaa:cardinality": "0..*"
+        },
+        {
+            "@id": "ppm:fromInitiative",
+            "@type": "rdf:Property",
+            "rdfs:label": "fromInitiative",
+            "rdfs:comment": "Predecessor initiative in dependency relationship",
+            "oaa:description": "Identifies the source initiative that provides an input, enabler, or constraint in a dependency relationship.",
+            "oaa:domainIncludes": [
+                "ppm:Dependency"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Initiative"
+            ],
+            "oaa:cardinality": "1..1"
+        },
+        {
+            "@id": "ppm:toInitiative",
+            "@type": "rdf:Property",
+            "rdfs:label": "toInitiative",
+            "rdfs:comment": "Successor initiative in dependency relationship",
+            "oaa:description": "Identifies the target initiative that receives or depends on the output of the predecessor initiative.",
+            "oaa:domainIncludes": [
+                "ppm:Dependency"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Initiative"
+            ],
+            "oaa:cardinality": "1..1"
+        },
+        {
+            "@id": "ppm:milestones",
+            "@type": "rdf:Property",
+            "rdfs:label": "milestones",
+            "rdfs:comment": "Milestone achievements within this initiative",
+            "oaa:description": "Links an initiative to its key milestones for progress tracking and governance.",
+            "oaa:domainIncludes": [
+                "ppm:Initiative"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Milestone"
+            ],
+            "oaa:cardinality": "0..*",
+            "oaa:inverseOf": "ppm:parentInitiative"
+        },
+        {
+            "@id": "ppm:parentInitiative",
+            "@type": "rdf:Property",
+            "rdfs:label": "parentInitiative",
+            "rdfs:comment": "Initiative this milestone belongs to",
+            "oaa:description": "Links a milestone back to its parent initiative for context and ownership.",
+            "oaa:domainIncludes": [
+                "ppm:Milestone"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Initiative"
+            ],
+            "oaa:cardinality": "1..1",
+            "oaa:inverseOf": "ppm:milestones"
+        },
+        {
+            "@id": "ppm:practiceArea",
+            "@type": "rdf:Property",
+            "rdfs:label": "practiceArea",
+            "rdfs:comment": "Primary practice area benefiting from initiative",
+            "oaa:description": "Links an initiative to the primary business unit or practice that will benefit from its outcomes.",
+            "oaa:domainIncludes": [
+                "ppm:Initiative"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:PracticeArea"
+            ],
+            "oaa:cardinality": "0..1"
+        },
+        {
+            "@id": "ppm:initiativesServed",
+            "@type": "rdf:Property",
+            "rdfs:label": "initiativesServed",
+            "rdfs:comment": "Initiatives that benefit this practice area",
+            "oaa:description": "Links a practice area to the initiatives that deliver value or capability to it.",
+            "oaa:domainIncludes": [
+                "ppm:PracticeArea"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Initiative"
+            ],
+            "oaa:cardinality": "0..*"
+        },
+        {
+            "@id": "ppm:risks",
+            "@type": "rdf:Property",
+            "rdfs:label": "risks",
+            "rdfs:comment": "Identified risks threatening initiative delivery",
+            "oaa:description": "Links an initiative to its identified risks for proactive management and mitigation.",
+            "oaa:domainIncludes": [
+                "ppm:Initiative"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Risk"
+            ],
+            "oaa:cardinality": "0..*",
+            "oaa:inverseOf": "ppm:affectedInitiative"
+        },
+        {
+            "@id": "ppm:affectedInitiative",
+            "@type": "rdf:Property",
+            "rdfs:label": "affectedInitiative",
+            "rdfs:comment": "Initiative affected by this risk",
+            "oaa:description": "Links a risk back to the initiative it threatens for context and ownership.",
+            "oaa:domainIncludes": [
+                "ppm:Risk"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Initiative"
+            ],
+            "oaa:cardinality": "1..1",
+            "oaa:inverseOf": "ppm:risks"
+        },
+        {
+            "@id": "ppm:benefitMetrics",
+            "@type": "rdf:Property",
+            "rdfs:label": "benefitMetrics",
+            "rdfs:comment": "Benefit metrics tracked for this programme",
+            "oaa:description": "Links a programme to the quantified benefit metrics used to measure value realisation.",
+            "oaa:domainIncludes": [
+                "ppm:Programme"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:BenefitMetric"
+            ],
+            "oaa:cardinality": "0..*",
+            "oaa:inverseOf": "ppm:parentProgrammeMetric"
+        },
+        {
+            "@id": "ppm:parentProgrammeMetric",
+            "@type": "rdf:Property",
+            "rdfs:label": "parentProgrammeMetric",
+            "rdfs:comment": "Programme this benefit metric belongs to",
+            "oaa:description": "Links a benefit metric back to its parent programme for alignment and reporting.",
+            "oaa:domainIncludes": [
+                "ppm:BenefitMetric"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Programme"
+            ],
+            "oaa:cardinality": "1..1",
+            "oaa:inverseOf": "ppm:benefitMetrics"
+        },
+        {
+            "@id": "ppm:phase",
+            "@type": "rdf:Property",
+            "rdfs:label": "phase",
+            "rdfs:comment": "Target delivery phase for scheduling",
+            "oaa:description": "Links an initiative to its planned delivery phase within the strategic planning horizon.",
+            "oaa:domainIncludes": [
+                "ppm:Initiative"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Phase"
+            ],
+            "oaa:cardinality": "1..1"
+        },
+        {
+            "@id": "ppm:status",
+            "@type": "rdf:Property",
+            "rdfs:label": "status",
+            "rdfs:comment": "Current lifecycle status of entity",
+            "oaa:description": "Links an initiative or milestone to its current lifecycle status for progress tracking.",
+            "oaa:domainIncludes": [
+                "ppm:Initiative",
+                "ppm:Milestone"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:InitiativeStatus"
+            ],
+            "oaa:cardinality": "1..1"
+        },
+        {
+            "@id": "ppm:priority",
+            "@type": "rdf:Property",
+            "rdfs:label": "priority",
+            "rdfs:comment": "Priority level for resource allocation",
+            "oaa:description": "Links an initiative to its priority classification for resource allocation decisions.",
+            "oaa:domainIncludes": [
+                "ppm:Initiative"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:Priority"
+            ],
+            "oaa:cardinality": "0..1"
+        },
+        {
+            "@id": "ppm:dependencyType",
+            "@type": "rdf:Property",
+            "rdfs:label": "dependencyType",
+            "rdfs:comment": "Type of dependency relationship classification",
+            "oaa:description": "Links a dependency to its type classification from the controlled vocabulary.",
+            "oaa:domainIncludes": [
+                "ppm:Dependency"
+            ],
+            "oaa:rangeIncludes": [
+                "ppm:DependencyType"
+            ],
+            "oaa:cardinality": "1..1"
+        }
+    ],
+    "oaa:connectivityValidation": {
+        "allEntitiesConnected": true,
+        "entityConnections": {
+            "ppm:Portfolio": [
+                "ppm:programmes"
+            ],
+            "ppm:Programme": [
+                "ppm:parentPortfolio",
+                "ppm:initiatives",
+                "ppm:benefitMetrics"
+            ],
+            "ppm:Initiative": [
+                "ppm:parentProgramme",
+                "ppm:dependencies",
+                "ppm:milestones",
+                "ppm:practiceArea",
+                "ppm:risks",
+                "ppm:phase",
+                "ppm:status",
+                "ppm:priority"
+            ],
+            "ppm:Dependency": [
+                "ppm:fromInitiative",
+                "ppm:toInitiative",
+                "ppm:dependencyType"
+            ],
+            "ppm:Milestone": [
+                "ppm:parentInitiative",
+                "ppm:status"
+            ],
+            "ppm:PracticeArea": [
+                "ppm:initiativesServed"
+            ],
+            "ppm:BenefitMetric": [
+                "ppm:parentProgrammeMetric"
+            ],
+            "ppm:Risk": [
+                "ppm:affectedInitiative"
+            ],
+            "ppm:Phase": [
+                "ppm:phase"
+            ],
+            "ppm:InitiativeStatus": [
+                "ppm:status"
+            ],
+            "ppm:Priority": [
+                "ppm:priority"
+            ],
+            "ppm:DependencyType": [
+                "ppm:dependencyType"
+            ]
+        }
+    }
+}

@@ -1,0 +1,87 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-IND-001",
+  "name": "INDUSTRY Ontology (Porter's 5F, SWOT/TOWS, Ansoff Growth)",
+  "description": "Industry-level strategic analysis: Porter's Five Forces, SWOT/TOWS synthesis, Ansoff Growth Matrix, and Competitive Positioning. References existing orgctx:CompetitiveForce and orgctx:Trend entities — adds analytical framework layers without duplication. TOWS generates candidate strategies flowing into VSOM. Part of VE-Series VSOM-SA sub-series.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://oaa-ontology.org/v6/industry/",
+  "prefix": "ind:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate7": "pass"
+  },
+  "validationDate": "2026-02-12",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./industry-ontology-v1.0.0-oaa-v6.json",
+    "documentation": null,
+    "glossary": "../../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "PortersFiveForcesAnalysis": "Container for five competitive forces assessment",
+    "ForceAssessment": "Individual force rating with evidence and strategic implications",
+    "SWOTAnalysis": "Four-quadrant strategic analysis linked to org context",
+    "SWOTFactor": "Individual strength, weakness, opportunity, or threat with scoring",
+    "TOWSSynthesis": "TOWS matrix generating candidate strategies from SWOT factor pairs",
+    "TOWSStrategy": "Individual strategy from TOWS pairing with adoption tracking",
+    "AnsoffGrowthMatrix": "Growth strategy analysis across market/product dimensions",
+    "AnsoffQuadrant": "Individual quadrant with strategic options and risk profile",
+    "CompetitivePositioning": "Overall competitive position synthesis"
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "assessesForce",
+        "from": "ind:ForceAssessment",
+        "to": "orgctx:CompetitiveForce",
+        "purpose": "References existing competitive forces from ORG-CONTEXT"
+      },
+      {
+        "name": "towsGeneratesStrategy",
+        "from": "ind:TOWSStrategy",
+        "to": "vsom:StrategyComponent",
+        "purpose": "TOWS candidate strategies feed VSOM"
+      },
+      {
+        "name": "swotAddressesGap",
+        "from": "ind:SWOTFactor",
+        "to": "ga:IdentifiedGap",
+        "purpose": "SWOT weaknesses/threats map to gap analysis"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-GA-001"
+  ],
+  "dependents": [
+    "Entry-ONT-MAC-001",
+    "Entry-ONT-PFL-001"
+  ],
+  "layer": "STRATEGIC LAYER (VE-Series / VSOM-SA)",
+  "subSeries": "VSOM-SA",
+  "domain": "Industry Analysis, Competitive Strategy",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-12",
+  "lastModified": "2026-02-12",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-12",
+      "changes": "Initial release — Porter's 5F, SWOT/TOWS, Ansoff Growth, Competitive Positioning"
+    }
+  ],
+  "notes": "Layer 2 (Industry/Sector) of VSOM Strategy Analysis. References orgctx entities — no duplication. TOWS generates candidate strategies with adoption tracking flowing into vsom:StrategyComponent."
+}

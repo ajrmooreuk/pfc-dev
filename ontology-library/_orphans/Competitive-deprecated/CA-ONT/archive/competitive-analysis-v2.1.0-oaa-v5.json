@@ -1,0 +1,285 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v5/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ca": "https://oaa-ontology.org/v5/competitive-analysis/",
+    "org": "https://oaa-ontology.org/v5/organization/",
+    "cl": "https://oaa-ontology.org/v5/competitive-landscape/"
+  },
+  "@id": "https://oaa-ontology.org/v5/ca/schema",
+  "@type": "owl:Ontology",
+  "name": "Competitive Analysis Ontology",
+  "description": "Generalized ontology for analyzing competitors across any market domain. References ORG-ONT for organization entities and CL-ONT for competitive landscape context. Enables AI agents to reason about competitive positioning, market opportunities, and strategic intelligence.",
+  "oaa:schemaVersion": "5.0.0",
+  "oaa:moduleVersion": "2.1.0",
+  "oaa:previousVersion": "2.0.0",
+  "oaa:domain": "Competitive Intelligence & Strategic Analysis",
+  "oaa:status": "Production",
+  "dateCreated": "2025-10-08",
+  "dateModified": "2026-02-01",
+  "creator": {
+    "@type": "Organization",
+    "name": "Platform Framework Architecture Team"
+  },
+
+  "oaa:imports": [
+    {
+      "@id": "org:schema",
+      "name": "ORG-ONT",
+      "version": "2.1.0",
+      "description": "Organization entities - provides org:Organization for target and competitor references"
+    },
+    {
+      "@id": "cl:schema",
+      "name": "CL-ONT",
+      "version": "1.0.0",
+      "description": "Competitive Landscape - provides landscape context for analysis"
+    }
+  ],
+
+  "oaa:joinPatterns": [
+    {
+      "@id": "ca:JP-CA-001",
+      "name": "Analysis to Landscape",
+      "path": "CompetitiveAnalysis → analysisUsesLandscape → cl:CompetitiveLandscape",
+      "description": "Ground analysis in competitive landscape context"
+    },
+    {
+      "@id": "ca:JP-CA-002",
+      "name": "Landscape to Analysis",
+      "path": "cl:CompetitiveLandscape → CL-ONT.informsAnalysis → CompetitiveAnalysis",
+      "description": "Landscape context informs analysis (inverse)"
+    }
+  ],
+
+  "entities": [
+    {
+      "@id": "ca:CompetitiveAnalysis",
+      "@type": "rdfs:Class",
+      "name": "CompetitiveAnalysis",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "Analytical report or assessment of competitive landscape. References org:Organization for target and competitors.",
+      "oaa:properties": [
+        {"name": "analysisId", "type": "xsd:string", "required": true, "description": "Analysis identifier"},
+        {"name": "analysisType", "type": "xsd:string", "required": true, "enum": ["Full", "Quick", "Deep-Dive"], "description": "Type of competitive analysis"},
+        {"name": "analysisDate", "type": "xsd:date", "required": true, "schemaOrgMapping": "schema:dateCreated"},
+        {"name": "targetOrgRef", "type": "org:Organization", "required": true, "description": "Reference to target organization (ORG-ONT)"},
+        {"name": "keyFindings", "type": "xsd:string", "required": false, "description": "Summary of key findings"},
+        {"name": "recommendations", "type": "xsd:string", "required": false, "description": "Strategic recommendations"},
+        {"name": "confidenceLevel", "type": "xsd:string", "required": false, "enum": ["High", "Medium", "Low"]}
+      ]
+    },
+    {
+      "@id": "ca:CompetitorAssessment",
+      "@type": "rdfs:Class",
+      "name": "CompetitorAssessment",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Assessment of a specific competitor organization within an analysis. References org:Organization.",
+      "oaa:properties": [
+        {"name": "assessmentId", "type": "xsd:string", "required": true, "description": "Assessment identifier"},
+        {"name": "competitorOrgRef", "type": "org:Organization", "required": true, "description": "Reference to competitor organization (ORG-ONT)"},
+        {"name": "competitorType", "type": "xsd:string", "required": true, "enum": ["Direct", "Indirect", "Emerging"], "description": "Type of competitive relationship"},
+        {"name": "marketShare", "type": "xsd:decimal", "required": false, "description": "Estimated market share percentage"},
+        {"name": "competitiveStrength", "type": "xsd:string", "required": false, "enum": ["Strong", "Moderate", "Weak"], "description": "Overall competitive strength"},
+        {"name": "threatLevel", "type": "xsd:string", "required": true, "enum": ["High", "Medium", "Low"], "description": "Threat level to target organization"},
+        {"name": "domainCapabilities", "type": "xsd:string", "required": false, "description": "Key domain capabilities"}
+      ]
+    },
+    {
+      "@id": "ca:MarketOffering",
+      "@type": "rdfs:Class",
+      "name": "MarketOffering",
+      "rdfs:subClassOf": "schema:Product",
+      "description": "Products and services offered in the market by competitors or target organization.",
+      "oaa:properties": [
+        {"name": "offeringId", "type": "xsd:string", "required": true, "description": "Unique offering identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "offeringCategory", "type": "xsd:string", "required": true, "description": "Product/service category"},
+        {"name": "targetAudience", "type": "xsd:string", "required": false, "description": "Target customer segment"},
+        {"name": "pricingModel", "type": "xsd:string", "required": false, "description": "Pricing model"},
+        {"name": "uniqueValueProposition", "type": "xsd:string", "required": false, "description": "Key differentiator"}
+      ]
+    },
+    {
+      "@id": "ca:CompetitivePosition",
+      "@type": "rdfs:Class",
+      "name": "CompetitivePosition",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "An organization's position relative to competitors in the market.",
+      "oaa:properties": [
+        {"name": "positionId", "type": "xsd:string", "required": true, "description": "Position identifier"},
+        {"name": "organizationRef", "type": "org:Organization", "required": true, "description": "Reference to organization (ORG-ONT)"},
+        {"name": "marketLeadershipStatus", "type": "xsd:string", "required": true, "enum": ["Leader", "Challenger", "Follower", "Niche"]},
+        {"name": "marketShare", "type": "xsd:decimal", "required": false, "description": "Market share percentage"},
+        {"name": "brandStrength", "type": "xsd:string", "required": false, "enum": ["Strong", "Moderate", "Weak"]},
+        {"name": "innovationCapability", "type": "xsd:string", "required": false, "description": "Innovation rating"}
+      ]
+    },
+    {
+      "@id": "ca:BlueOceanOpportunity",
+      "@type": "rdfs:Class",
+      "name": "BlueOceanOpportunity",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Market opportunities with minimal direct competition.",
+      "oaa:properties": [
+        {"name": "opportunityId", "type": "xsd:string", "required": true, "description": "Opportunity identifier"},
+        {"name": "opportunityName", "type": "xsd:string", "required": true, "description": "Opportunity name"},
+        {"name": "marketSize", "type": "xsd:string", "required": false, "description": "Estimated market size"},
+        {"name": "competitiveBarriers", "type": "xsd:string", "required": true, "enum": ["None", "Low", "Medium", "High"]},
+        {"name": "accessibilityLevel", "type": "xsd:string", "required": false, "enum": ["Easy", "Moderate", "Difficult"]},
+        {"name": "strategicValue", "type": "xsd:string", "required": false, "enum": ["High", "Medium", "Low"]}
+      ]
+    }
+  ],
+
+  "relationships": [
+    {
+      "@id": "ca:analysisUsesLandscape",
+      "@type": "owl:ObjectProperty",
+      "name": "Analysis Uses Landscape",
+      "description": "Cross-ontology: Analysis is grounded in competitive landscape context from CL-ONT",
+      "domainIncludes": ["ca:CompetitiveAnalysis"],
+      "rangeIncludes": ["cl:CompetitiveLandscape"],
+      "oaa:crossOntology": true,
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "ca:hasCompetitorAssessment",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Competitor Assessment",
+      "description": "Analysis includes assessment of specific competitors",
+      "domainIncludes": ["ca:CompetitiveAnalysis"],
+      "rangeIncludes": ["ca:CompetitorAssessment"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "ca:assessmentOfOffering",
+      "@type": "owl:ObjectProperty",
+      "name": "Assessment Of Offering",
+      "description": "Competitor assessment evaluates specific market offerings",
+      "domainIncludes": ["ca:CompetitorAssessment"],
+      "rangeIncludes": ["ca:MarketOffering"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "ca:hasCompetitivePosition",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Competitive Position",
+      "description": "Analysis determines competitive position for organizations",
+      "domainIncludes": ["ca:CompetitiveAnalysis"],
+      "rangeIncludes": ["ca:CompetitivePosition"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "ca:identifiesOpportunity",
+      "@type": "owl:ObjectProperty",
+      "name": "Identifies Opportunity",
+      "description": "Analysis identifies blue ocean opportunities",
+      "domainIncludes": ["ca:CompetitiveAnalysis"],
+      "rangeIncludes": ["ca:BlueOceanOpportunity"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "ca:offeringTargetsSegment",
+      "@type": "owl:ObjectProperty",
+      "name": "Offering Targets Segment",
+      "description": "Cross-ontology: Offering targets market segment from CL-ONT",
+      "domainIncludes": ["ca:MarketOffering"],
+      "rangeIncludes": ["cl:MarketSegment"],
+      "oaa:crossOntology": true,
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "ca:opportunityInSegment",
+      "@type": "owl:ObjectProperty",
+      "name": "Opportunity In Segment",
+      "description": "Cross-ontology: Blue ocean opportunity exists within market segment from CL-ONT",
+      "domainIncludes": ["ca:BlueOceanOpportunity"],
+      "rangeIncludes": ["cl:MarketSegment"],
+      "oaa:crossOntology": true,
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    }
+  ],
+
+  "businessRules": [
+    {
+      "@id": "ca:BR-CA-001",
+      "name": "Minimum Competitor Assessments",
+      "description": "Every competitive analysis must assess at least 3 competitors",
+      "condition": "IF a CompetitiveAnalysis is created",
+      "action": "THEN it MUST have at least 3 hasCompetitorAssessment relationships",
+      "severity": "warning",
+      "appliesTo": ["ca:CompetitiveAnalysis"]
+    },
+    {
+      "@id": "ca:BR-CA-002",
+      "name": "Blue Ocean Qualification",
+      "description": "Blue ocean opportunities must have low competitive barriers",
+      "condition": "IF a BlueOceanOpportunity is classified as true blue ocean",
+      "action": "THEN competitiveBarriers MUST be 'Low' or 'None'",
+      "severity": "error",
+      "appliesTo": ["ca:BlueOceanOpportunity"]
+    },
+    {
+      "@id": "ca:BR-CA-003",
+      "name": "Threat Level Required for Direct Competitors",
+      "description": "Direct competitors must have threat level for prioritization",
+      "condition": "IF a CompetitorAssessment has competitorType 'Direct'",
+      "action": "THEN threatLevel MUST be specified",
+      "severity": "error",
+      "appliesTo": ["ca:CompetitorAssessment"]
+    },
+    {
+      "@id": "ca:BR-CA-004",
+      "name": "Analysis Must Reference Target Organization",
+      "description": "Every competitive analysis must identify the target organization",
+      "condition": "IF a CompetitiveAnalysis is created",
+      "action": "THEN targetOrgRef MUST reference a valid org:Organization",
+      "severity": "error",
+      "appliesTo": ["ca:CompetitiveAnalysis"]
+    },
+    {
+      "@id": "ca:BR-CA-005",
+      "name": "Competitive Position Requires Organization Reference",
+      "description": "Competitive positions must reference the organization being positioned",
+      "condition": "IF a CompetitivePosition is defined",
+      "action": "THEN organizationRef MUST reference a valid org:Organization",
+      "severity": "error",
+      "appliesTo": ["ca:CompetitivePosition"]
+    },
+    {
+      "@id": "ca:BR-CA-006",
+      "name": "Landscape Context Recommended",
+      "description": "Analyses should be grounded in competitive landscape context",
+      "condition": "IF a CompetitiveAnalysis is created for comprehensive assessment",
+      "action": "THEN it SHOULD have an analysisUsesLandscape relationship to CL-ONT",
+      "severity": "info",
+      "appliesTo": ["ca:CompetitiveAnalysis"]
+    }
+  ],
+
+  "changeControl": {
+    "currentVersion": "2.1.0",
+    "oaaSchemaVersion": "5.0.0",
+    "lastModified": "2026-02-01",
+    "modifiedBy": "OAA Ontology Workbench",
+    "changeNotes": "Integrated with ORG-ONT and CL-ONT. Removed duplicate organization entities (TargetOrganization, CompetitorOrganization) - now references org:Organization. Added CompetitorAssessment entity. Added cross-ontology relationships to CL-ONT.",
+    "versionHistory": [
+      {
+        "version": "2.0.0",
+        "date": "2026-02-01",
+        "notes": "Upgraded to OAA v5.0.0 JSON-LD format",
+        "archivedPath": "archive/competitive-analysis-v2.0.0-oaa-v5.json"
+      },
+      {
+        "version": "1.0.0",
+        "date": "2025-10-08",
+        "notes": "Initial creation in legacy format",
+        "archivedPath": "archive/competitive-analysis-v1.0.0-legacy.json"
+      }
+    ]
+  }
+}

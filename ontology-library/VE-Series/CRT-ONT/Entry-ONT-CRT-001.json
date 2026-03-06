@@ -1,0 +1,58 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-CRT-001",
+  "name": "CRT Ontology (Customer Role Taxonomy)",
+  "description": "Universal customer-side role taxonomy — B2B buyer roles, B2C consumer archetypes, and B2B2C intermediary roles with structured qualification criteria, industry role profiles, and purchase patterns. Maps to VP-ONT stakeholder types, RRR-ONT organisational roles, and ORG-CONTEXT industry/segment context.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/crt/",
+  "prefix": "crt:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "./pf-CRT-ONT-v1.0.0.jsonld",
+    "documentation": "./BRIEF-CRT-ONT.md",
+    "glossary": null,
+    "testData": null,
+    "validationReport": null,
+    "instanceData": [
+      "./instance-data/crt-vhf-nutrition-roles-v1.0.0.jsonld",
+      "./instance-data/crt-antiques-roles-v1.0.0.jsonld"
+    ]
+  },
+  "components": {
+    "entities": "CustomerRole (hub), RoleQualifier, IndustryRoleProfile, PurchasePattern",
+    "relationships": "9 relationships including 3 cross-ontology bridges (CRT→VP, CRT→RRR, CRT→ORG-CONTEXT)",
+    "businessRules": "4 rules (3 mandatory, 1 advisory) in IF-THEN format",
+    "enums": "channel (3 values), category (14 values), criteriaType (6), decisionStyle (5), buyerJourneyType (6), budgetAuthority (3), typicalEngagement (4), priceElasticity (3), purchaseFrequency (4)"
+  },
+  "dependencies": [
+    "Entry-ONT-VP-001",
+    "Entry-ONT-RRR-001",
+    "Entry-ONT-ORG-CTX-001"
+  ],
+  "dependents": [],
+  "relationships": {
+    "crossOntology": [
+      { "target": "Entry-ONT-VP-001", "type": "mapsToStakeholder", "direction": "outgoing" },
+      { "target": "Entry-ONT-RRR-001", "type": "mapsToRole", "direction": "outgoing" },
+      { "target": "Entry-ONT-ORG-CTX-001", "type": "mapsToIndustry", "direction": "outgoing" }
+    ]
+  },
+  "layer": "VE-SERIES",
+  "domain": "Customer Role Taxonomy",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-20",
+  "lastModified": "2026-02-20",
+  "notes": "v1.0.0: Initial release. B2B/B2C/B2B2C customer-side role archetypes with structured qualification criteria and industry profiles. VHF Nutrition (6 B2C roles) and Antiques (19 roles: 10 B2B + 7 B2C + 2 B2B2C) as first instance data sets. Reinforces VP↔RRR alignment convention with role-specific problem/solution/benefit modelling."
+}

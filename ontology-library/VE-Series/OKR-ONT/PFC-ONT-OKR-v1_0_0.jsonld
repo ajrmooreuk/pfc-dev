@@ -1,0 +1,793 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "okr": "https://enterprise.ontology/okr/v1/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+  },
+  "@graph": [
+    {
+      "@id": "okr:Ontology",
+      "@type": "CreativeWork",
+      "name": "OKR (Objectives and Key Results) Ontology",
+      "version": "1.0.0",
+      "identifier": "enterprise:ontology:okr-v1",
+      "dateCreated": "2025-10-10",
+      "dateModified": "2025-10-10",
+      "author": {
+        "@type": "Organization",
+        "name": "Enterprise Architecture Team"
+      },
+      "description": "Comprehensive ontology for Objectives and Key Results (OKR) framework enabling AI-driven goal management, alignment tracking, and performance optimization",
+      "keywords": ["OKR", "objectives", "key results", "goal management", "performance", "alignment"],
+      "inLanguage": "en",
+      "schemaVersion": "https://schema.org/version/latest/",
+      "license": "https://enterprise.ontology/licenses/internal-use"
+    },
+    {
+      "@id": "okr:Objective",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "name": "Objective",
+      "description": "A qualitative, inspirational, time-bound goal that defines what an organization, team, or individual wants to achieve",
+      "schemaOrgBase": "Intangible",
+      "properties": [
+        {
+          "@id": "okr:objectiveId",
+          "@type": "Property",
+          "name": "objectiveId",
+          "description": "Unique identifier for the objective",
+          "rangeIncludes": "Text",
+          "required": true,
+          "cardinality": "1..1",
+          "example": "OBJ-2025-Q1-001"
+        },
+        {
+          "@id": "okr:objectiveName",
+          "@type": "Property",
+          "name": "objectiveName",
+          "description": "Clear, concise name of the objective",
+          "rangeIncludes": "Text",
+          "required": true,
+          "cardinality": "1..1",
+          "constraints": {
+            "maxLength": 100,
+            "pattern": "^[A-Z].*$"
+          },
+          "example": "Become the Market Leader in AI-Driven Customer Experience"
+        },
+        {
+          "@id": "okr:objectiveDescription",
+          "@type": "Property",
+          "name": "objectiveDescription",
+          "description": "Detailed description explaining the objective's purpose and context",
+          "rangeIncludes": "Text",
+          "required": true,
+          "cardinality": "1..1",
+          "example": "Establish market leadership by delivering AI-powered customer experience solutions that increase NPS by 20+ points"
+        },
+        {
+          "@id": "okr:objectiveType",
+          "@type": "Property",
+          "name": "objectiveType",
+          "description": "Type classification of the objective",
+          "rangeIncludes": "okr:ObjectiveType",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:timePeriod",
+          "@type": "Property",
+          "name": "timePeriod",
+          "description": "Time period for achieving the objective",
+          "rangeIncludes": "okr:TimePeriod",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:owner",
+          "@type": "Property",
+          "name": "owner",
+          "description": "Person or team responsible for the objective",
+          "rangeIncludes": ["Person", "Organization"],
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:status",
+          "@type": "Property",
+          "name": "status",
+          "description": "Current status of the objective",
+          "rangeIncludes": "okr:ObjectiveStatus",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:priority",
+          "@type": "Property",
+          "name": "priority",
+          "description": "Priority level of the objective",
+          "rangeIncludes": "okr:PriorityLevel",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:confidenceLevel",
+          "@type": "Property",
+          "name": "confidenceLevel",
+          "description": "Confidence in achieving the objective (0-100%)",
+          "rangeIncludes": "Number",
+          "required": false,
+          "cardinality": "0..1",
+          "constraints": {
+            "minimum": 0,
+            "maximum": 100
+          }
+        },
+        {
+          "@id": "okr:progressPercentage",
+          "@type": "Property",
+          "name": "progressPercentage",
+          "description": "Overall progress towards objective completion (0-100%)",
+          "rangeIncludes": "Number",
+          "required": false,
+          "cardinality": "0..1",
+          "constraints": {
+            "minimum": 0,
+            "maximum": 100
+          }
+        },
+        {
+          "@id": "okr:strategicAlignment",
+          "@type": "Property",
+          "name": "strategicAlignment",
+          "description": "How this objective aligns with organizational strategy",
+          "rangeIncludes": "Text",
+          "required": false,
+          "cardinality": "0..1"
+        },
+        {
+          "@id": "okr:tags",
+          "@type": "Property",
+          "name": "tags",
+          "description": "Categorization tags for the objective",
+          "rangeIncludes": "Text",
+          "required": false,
+          "cardinality": "0..*"
+        }
+      ],
+      "businessRules": [
+        {
+          "@id": "okr:BR-OBJ-001",
+          "name": "Objective Must Have Key Results",
+          "description": "Every objective must have between 2 and 5 key results",
+          "constraint": "COUNT(hasKeyResult) >= 2 AND COUNT(hasKeyResult) <= 5",
+          "severity": "error"
+        },
+        {
+          "@id": "okr:BR-OBJ-002",
+          "name": "Objective Time Period Required",
+          "description": "Every objective must have a defined time period with start and end dates",
+          "constraint": "timePeriod.startDate EXISTS AND timePeriod.endDate EXISTS",
+          "severity": "error"
+        },
+        {
+          "@id": "okr:BR-OBJ-003",
+          "name": "Progress Calculation",
+          "description": "Objective progress is the weighted average of its key results",
+          "constraint": "progressPercentage = WEIGHTED_AVG(keyResults.progressPercentage, keyResults.weight)",
+          "severity": "warning"
+        }
+      ],
+      "aiCapabilities": {
+        "reasoning": [
+          "Identify objectives at risk based on KR progress and confidence",
+          "Suggest objective alignment improvements",
+          "Recommend priority adjustments based on strategic impact"
+        ],
+        "analysis": [
+          "Analyze objective completion trends",
+          "Identify objective dependencies and blockers",
+          "Compare objective performance across teams"
+        ],
+        "generation": [
+          "Generate objective recommendations from strategic initiatives",
+          "Suggest key results for objectives",
+          "Create objective cascading from company to team level"
+        ]
+      }
+    },
+    {
+      "@id": "okr:KeyResult",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "name": "KeyResult",
+      "description": "A quantitative, measurable outcome that indicates progress toward achieving an objective",
+      "schemaOrgBase": "Intangible",
+      "properties": [
+        {
+          "@id": "okr:keyResultId",
+          "@type": "Property",
+          "name": "keyResultId",
+          "description": "Unique identifier for the key result",
+          "rangeIncludes": "Text",
+          "required": true,
+          "cardinality": "1..1",
+          "example": "KR-2025-Q1-001-1"
+        },
+        {
+          "@id": "okr:keyResultName",
+          "@type": "Property",
+          "name": "keyResultName",
+          "description": "Clear, measurable statement of the key result",
+          "rangeIncludes": "Text",
+          "required": true,
+          "cardinality": "1..1",
+          "example": "Increase customer NPS from 45 to 65"
+        },
+        {
+          "@id": "okr:keyResultDescription",
+          "@type": "Property",
+          "name": "keyResultDescription",
+          "description": "Detailed description of what the key result measures and why",
+          "rangeIncludes": "Text",
+          "required": false,
+          "cardinality": "0..1"
+        },
+        {
+          "@id": "okr:keyResultType",
+          "@type": "Property",
+          "name": "keyResultType",
+          "description": "Type of key result measurement",
+          "rangeIncludes": "okr:KeyResultType",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:startValue",
+          "@type": "Property",
+          "name": "startValue",
+          "description": "Starting baseline value",
+          "rangeIncludes": "Number",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:targetValue",
+          "@type": "Property",
+          "name": "targetValue",
+          "description": "Target value to achieve",
+          "rangeIncludes": "Number",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:currentValue",
+          "@type": "Property",
+          "name": "currentValue",
+          "description": "Current actual value",
+          "rangeIncludes": "Number",
+          "required": false,
+          "cardinality": "0..1"
+        },
+        {
+          "@id": "okr:unit",
+          "@type": "Property",
+          "name": "unit",
+          "description": "Unit of measurement",
+          "rangeIncludes": "Text",
+          "required": true,
+          "cardinality": "1..1",
+          "example": "points, percentage, dollars, count"
+        },
+        {
+          "@id": "okr:weight",
+          "@type": "Property",
+          "name": "weight",
+          "description": "Weight of this KR in objective calculation (0-100)",
+          "rangeIncludes": "Number",
+          "required": false,
+          "cardinality": "0..1",
+          "constraints": {
+            "minimum": 0,
+            "maximum": 100,
+            "default": 25
+          }
+        },
+        {
+          "@id": "okr:status",
+          "@type": "Property",
+          "name": "status",
+          "description": "Current status of the key result",
+          "rangeIncludes": "okr:KeyResultStatus",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:progressPercentage",
+          "@type": "Property",
+          "name": "progressPercentage",
+          "description": "Progress percentage based on current vs target (0-100%)",
+          "rangeIncludes": "Number",
+          "required": false,
+          "cardinality": "0..1",
+          "constraints": {
+            "minimum": 0,
+            "maximum": 100
+          }
+        },
+        {
+          "@id": "okr:confidenceLevel",
+          "@type": "Property",
+          "name": "confidenceLevel",
+          "description": "Confidence in achieving the key result (0-100%)",
+          "rangeIncludes": "Number",
+          "required": false,
+          "cardinality": "0..1"
+        }
+      ],
+      "businessRules": [
+        {
+          "@id": "okr:BR-KR-001",
+          "name": "Target Must Differ From Start",
+          "description": "Target value must be different from start value",
+          "constraint": "targetValue != startValue",
+          "severity": "error"
+        },
+        {
+          "@id": "okr:BR-KR-002",
+          "name": "Progress Calculation",
+          "description": "Progress percentage calculated from current value relative to target",
+          "constraint": "progressPercentage = ((currentValue - startValue) / (targetValue - startValue)) * 100",
+          "severity": "warning"
+        },
+        {
+          "@id": "okr:BR-KR-003",
+          "name": "Weights Sum to 100",
+          "description": "All key result weights for an objective should sum to 100",
+          "constraint": "SUM(objective.keyResults.weight) = 100",
+          "severity": "warning"
+        }
+      ],
+      "aiCapabilities": {
+        "reasoning": [
+          "Identify at-risk key results based on progress trends",
+          "Predict key result achievement likelihood",
+          "Recommend corrective actions for off-track KRs"
+        ],
+        "analysis": [
+          "Analyze key result progress patterns",
+          "Compare actual vs projected progress",
+          "Identify common blockers across key results"
+        ],
+        "generation": [
+          "Generate key result suggestions from objectives",
+          "Recommend target values based on historical data",
+          "Create key result decomposition for complex objectives"
+        ]
+      }
+    },
+    {
+      "@id": "okr:Initiative",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Action",
+      "name": "Initiative",
+      "description": "A specific project, program, or action taken to achieve a key result",
+      "schemaOrgBase": "Action",
+      "properties": [
+        {
+          "@id": "okr:initiativeId",
+          "@type": "Property",
+          "name": "initiativeId",
+          "description": "Unique identifier for the initiative",
+          "rangeIncludes": "Text",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:initiativeName",
+          "@type": "Property",
+          "name": "initiativeName",
+          "description": "Name of the initiative",
+          "rangeIncludes": "Text",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:initiativeDescription",
+          "@type": "Property",
+          "name": "initiativeDescription",
+          "description": "Detailed description of the initiative",
+          "rangeIncludes": "Text",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:initiativeStatus",
+          "@type": "Property",
+          "name": "initiativeStatus",
+          "description": "Current status of the initiative",
+          "rangeIncludes": "okr:InitiativeStatus",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:estimatedImpact",
+          "@type": "Property",
+          "name": "estimatedImpact",
+          "description": "Estimated impact on the key result (numeric value)",
+          "rangeIncludes": "Number",
+          "required": false,
+          "cardinality": "0..1"
+        },
+        {
+          "@id": "okr:actualImpact",
+          "@type": "Property",
+          "name": "actualImpact",
+          "description": "Actual measured impact on the key result",
+          "rangeIncludes": "Number",
+          "required": false,
+          "cardinality": "0..1"
+        },
+        {
+          "@id": "okr:owner",
+          "@type": "Property",
+          "name": "owner",
+          "description": "Person responsible for the initiative",
+          "rangeIncludes": "Person",
+          "required": true,
+          "cardinality": "1..1"
+        }
+      ]
+    },
+    {
+      "@id": "okr:CheckIn",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Action",
+      "name": "CheckIn",
+      "description": "A periodic update recording progress, confidence, and commentary on an objective or key result",
+      "schemaOrgBase": "Action",
+      "properties": [
+        {
+          "@id": "okr:checkInId",
+          "@type": "Property",
+          "name": "checkInId",
+          "description": "Unique identifier for the check-in",
+          "rangeIncludes": "Text",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:checkInDate",
+          "@type": "Property",
+          "name": "checkInDate",
+          "description": "Date of the check-in",
+          "rangeIncludes": "Date",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:progressUpdate",
+          "@type": "Property",
+          "name": "progressUpdate",
+          "description": "Narrative update on progress",
+          "rangeIncludes": "Text",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:confidenceLevel",
+          "@type": "Property",
+          "name": "confidenceLevel",
+          "description": "Confidence in achieving the target (0-100%)",
+          "rangeIncludes": "Number",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:blockers",
+          "@type": "Property",
+          "name": "blockers",
+          "description": "List of impediments or blockers",
+          "rangeIncludes": "Text",
+          "required": false,
+          "cardinality": "0..*"
+        },
+        {
+          "@id": "okr:risks",
+          "@type": "Property",
+          "name": "risks",
+          "description": "Identified risks",
+          "rangeIncludes": "Text",
+          "required": false,
+          "cardinality": "0..*"
+        },
+        {
+          "@id": "okr:author",
+          "@type": "Property",
+          "name": "author",
+          "description": "Person who created the check-in",
+          "rangeIncludes": "Person",
+          "required": true,
+          "cardinality": "1..1"
+        }
+      ]
+    },
+    {
+      "@id": "okr:TimePeriod",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "name": "TimePeriod",
+      "description": "A defined time period for objectives (e.g., quarterly, annually)",
+      "schemaOrgBase": "Intangible",
+      "properties": [
+        {
+          "@id": "okr:periodType",
+          "@type": "Property",
+          "name": "periodType",
+          "description": "Type of time period",
+          "rangeIncludes": "okr:PeriodType",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:startDate",
+          "@type": "Property",
+          "name": "startDate",
+          "description": "Start date of the period",
+          "rangeIncludes": "Date",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:endDate",
+          "@type": "Property",
+          "name": "endDate",
+          "description": "End date of the period",
+          "rangeIncludes": "Date",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "okr:fiscalYear",
+          "@type": "Property",
+          "name": "fiscalYear",
+          "description": "Fiscal year reference",
+          "rangeIncludes": "Number",
+          "required": false,
+          "cardinality": "0..1"
+        },
+        {
+          "@id": "okr:quarter",
+          "@type": "Property",
+          "name": "quarter",
+          "description": "Quarter reference (1-4)",
+          "rangeIncludes": "Number",
+          "required": false,
+          "cardinality": "0..1"
+        }
+      ]
+    },
+    {
+      "@id": "okr:ObjectiveType",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Enumeration",
+      "name": "ObjectiveType",
+      "description": "Classification of objective types",
+      "oneOf": [
+        {
+          "@id": "okr:Company",
+          "name": "Company",
+          "description": "Company-level strategic objective"
+        },
+        {
+          "@id": "okr:Department",
+          "name": "Department",
+          "description": "Department-level objective"
+        },
+        {
+          "@id": "okr:Team",
+          "name": "Team",
+          "description": "Team-level objective"
+        },
+        {
+          "@id": "okr:Individual",
+          "name": "Individual",
+          "description": "Individual contributor objective"
+        },
+        {
+          "@id": "okr:Cross-Functional",
+          "name": "Cross-Functional",
+          "description": "Cross-functional initiative objective"
+        }
+      ]
+    },
+    {
+      "@id": "okr:ObjectiveStatus",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Enumeration",
+      "name": "ObjectiveStatus",
+      "description": "Status values for objectives",
+      "oneOf": [
+        {"@id": "okr:Draft", "name": "Draft"},
+        {"@id": "okr:Active", "name": "Active"},
+        {"@id": "okr:OnTrack", "name": "On Track"},
+        {"@id": "okr:AtRisk", "name": "At Risk"},
+        {"@id": "okr:OffTrack", "name": "Off Track"},
+        {"@id": "okr:Completed", "name": "Completed"},
+        {"@id": "okr:Cancelled", "name": "Cancelled"}
+      ]
+    },
+    {
+      "@id": "okr:KeyResultType",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Enumeration",
+      "name": "KeyResultType",
+      "description": "Types of key result measurements",
+      "oneOf": [
+        {"@id": "okr:Increase", "name": "Increase", "description": "Increase a metric"},
+        {"@id": "okr:Decrease", "name": "Decrease", "description": "Decrease a metric"},
+        {"@id": "okr:Maintain", "name": "Maintain", "description": "Maintain at a level"},
+        {"@id": "okr:Milestone", "name": "Milestone", "description": "Achieve a milestone"},
+        {"@id": "okr:Binary", "name": "Binary", "description": "Yes/No completion"}
+      ]
+    },
+    {
+      "@id": "okr:KeyResultStatus",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Enumeration",
+      "name": "KeyResultStatus",
+      "description": "Status values for key results",
+      "oneOf": [
+        {"@id": "okr:NotStarted", "name": "Not Started"},
+        {"@id": "okr:InProgress", "name": "In Progress"},
+        {"@id": "okr:OnTrack", "name": "On Track"},
+        {"@id": "okr:AtRisk", "name": "At Risk"},
+        {"@id": "okr:OffTrack", "name": "Off Track"},
+        {"@id": "okr:Achieved", "name": "Achieved"},
+        {"@id": "okr:PartiallyAchieved", "name": "Partially Achieved"},
+        {"@id": "okr:NotAchieved", "name": "Not Achieved"}
+      ]
+    },
+    {
+      "@id": "okr:PriorityLevel",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Enumeration",
+      "name": "PriorityLevel",
+      "description": "Priority levels for objectives",
+      "oneOf": [
+        {"@id": "okr:Critical", "name": "Critical", "value": 1},
+        {"@id": "okr:High", "name": "High", "value": 2},
+        {"@id": "okr:Medium", "name": "Medium", "value": 3},
+        {"@id": "okr:Low", "name": "Low", "value": 4}
+      ]
+    },
+    {
+      "@id": "okr:InitiativeStatus",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Enumeration",
+      "name": "InitiativeStatus",
+      "description": "Status values for initiatives",
+      "oneOf": [
+        {"@id": "okr:Planned", "name": "Planned"},
+        {"@id": "okr:InProgress", "name": "In Progress"},
+        {"@id": "okr:Completed", "name": "Completed"},
+        {"@id": "okr:OnHold", "name": "On Hold"},
+        {"@id": "okr:Cancelled", "name": "Cancelled"}
+      ]
+    },
+    {
+      "@id": "okr:PeriodType",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Enumeration",
+      "name": "PeriodType",
+      "description": "Types of time periods",
+      "oneOf": [
+        {"@id": "okr:Annual", "name": "Annual"},
+        {"@id": "okr:Quarterly", "name": "Quarterly"},
+        {"@id": "okr:Monthly", "name": "Monthly"},
+        {"@id": "okr:Custom", "name": "Custom"}
+      ]
+    },
+    {
+      "@id": "okr:hasKeyResult",
+      "@type": "rdf:Property",
+      "name": "hasKeyResult",
+      "description": "Links an Objective to its Key Results",
+      "domainIncludes": "okr:Objective",
+      "rangeIncludes": "okr:KeyResult",
+      "cardinality": "2..5",
+      "inverse": "okr:keyResultOf"
+    },
+    {
+      "@id": "okr:keyResultOf",
+      "@type": "rdf:Property",
+      "name": "keyResultOf",
+      "description": "Links a Key Result to its parent Objective",
+      "domainIncludes": "okr:KeyResult",
+      "rangeIncludes": "okr:Objective",
+      "cardinality": "1..1",
+      "inverse": "okr:hasKeyResult"
+    },
+    {
+      "@id": "okr:hasInitiative",
+      "@type": "rdf:Property",
+      "name": "hasInitiative",
+      "description": "Links a Key Result to initiatives that support it",
+      "domainIncludes": "okr:KeyResult",
+      "rangeIncludes": "okr:Initiative",
+      "cardinality": "0..*",
+      "inverse": "okr:supportsKeyResult"
+    },
+    {
+      "@id": "okr:supportsKeyResult",
+      "@type": "rdf:Property",
+      "name": "supportsKeyResult",
+      "description": "Links an Initiative to the Key Result it supports",
+      "domainIncludes": "okr:Initiative",
+      "rangeIncludes": "okr:KeyResult",
+      "cardinality": "1..*",
+      "inverse": "okr:hasInitiative"
+    },
+    {
+      "@id": "okr:alignsTo",
+      "@type": "rdf:Property",
+      "name": "alignsTo",
+      "description": "Links an Objective to a higher-level Objective it aligns with",
+      "domainIncludes": "okr:Objective",
+      "rangeIncludes": "okr:Objective",
+      "cardinality": "0..*",
+      "inverse": "okr:alignedFrom"
+    },
+    {
+      "@id": "okr:alignedFrom",
+      "@type": "rdf:Property",
+      "name": "alignedFrom",
+      "description": "Links an Objective to lower-level Objectives aligned to it",
+      "domainIncludes": "okr:Objective",
+      "rangeIncludes": "okr:Objective",
+      "cardinality": "0..*",
+      "inverse": "okr:alignsTo"
+    },
+    {
+      "@id": "okr:hasCheckIn",
+      "@type": "rdf:Property",
+      "name": "hasCheckIn",
+      "description": "Links an Objective or Key Result to its check-ins",
+      "domainIncludes": ["okr:Objective", "okr:KeyResult"],
+      "rangeIncludes": "okr:CheckIn",
+      "cardinality": "0..*",
+      "inverse": "okr:checkInFor"
+    },
+    {
+      "@id": "okr:checkInFor",
+      "@type": "rdf:Property",
+      "name": "checkInFor",
+      "description": "Links a CheckIn to the Objective or Key Result it updates",
+      "domainIncludes": "okr:CheckIn",
+      "rangeIncludes": ["okr:Objective", "okr:KeyResult"],
+      "cardinality": "1..1",
+      "inverse": "okr:hasCheckIn"
+    },
+    {
+      "@id": "okr:dependsOn",
+      "@type": "rdf:Property",
+      "name": "dependsOn",
+      "description": "Indicates a dependency between objectives or key results",
+      "domainIncludes": ["okr:Objective", "okr:KeyResult"],
+      "rangeIncludes": ["okr:Objective", "okr:KeyResult"],
+      "cardinality": "0..*",
+      "inverse": "okr:dependencyFor"
+    },
+    {
+      "@id": "okr:dependencyFor",
+      "@type": "rdf:Property",
+      "name": "dependencyFor",
+      "description": "Indicates what depends on this objective or key result",
+      "domainIncludes": ["okr:Objective", "okr:KeyResult"],
+      "rangeIncludes": ["okr:Objective", "okr:KeyResult"],
+      "cardinality": "0..*",
+      "inverse": "okr:dependsOn"
+    }
+  ]
+}

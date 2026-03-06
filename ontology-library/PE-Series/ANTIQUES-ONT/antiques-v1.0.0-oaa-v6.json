@@ -1,0 +1,614 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "antq": "https://baiv.co.uk/ontology/"
+  },
+  "@type": "Ontology",
+  "@id": "antq:ontology:antiques-v1.0",
+  "metadata": {
+    "name": "Antiques",
+    "version": "1.0.0",
+    "description": "Antiques and Insurance Valuations",
+    "domain": "Antiques and Collectibles Insurance",
+    "purpose": "Model antique items, their valuations, provenance, and insurance coverage for comprehensive risk assessment",
+    "oaaVersion": "6.1.0",
+    "series": "PE-Series",
+    "dateCreated": "2026-02-19",
+    "creator": "OAA Generator"
+  },
+  "entities": [
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "antq:AntiqueItem",
+      "name": "AntiqueItem",
+      "description": "A collectible object of historical significance, typically over 100 years old, with artistic or monetary value",
+      "properties": [
+        {
+          "name": "itemId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the antique item"
+        },
+        {
+          "name": "title",
+          "type": "Text",
+          "required": true,
+          "description": "Descriptive title of the antique item"
+        },
+        {
+          "name": "category",
+          "type": "Text",
+          "required": true,
+          "description": "Category classification such as furniture, ceramics, art, or jewelry"
+        },
+        {
+          "name": "period",
+          "type": "Text",
+          "required": false,
+          "description": "Historical period or era of origin"
+        },
+        {
+          "name": "condition",
+          "type": "Text",
+          "required": true,
+          "description": "Current physical condition rating of the item"
+        },
+        {
+          "name": "dimensions",
+          "type": "Text",
+          "required": false,
+          "description": "Physical dimensions of the item"
+        },
+        {
+          "name": "materials",
+          "type": "Text",
+          "required": false,
+          "description": "Primary materials used in construction"
+        },
+        {
+          "name": "dateAcquired",
+          "type": "DateTime",
+          "required": false,
+          "description": "Date when the current owner acquired the item"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "antq:Valuation",
+      "name": "Valuation",
+      "description": "A professional assessment of an antique item's monetary worth for insurance or sale purposes",
+      "properties": [
+        {
+          "name": "valuationId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the valuation record"
+        },
+        {
+          "name": "valuationDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date when the valuation was conducted"
+        },
+        {
+          "name": "marketValue",
+          "type": "Number",
+          "required": true,
+          "description": "Estimated fair market value in currency"
+        },
+        {
+          "name": "replacementValue",
+          "type": "Number",
+          "required": true,
+          "description": "Cost to replace the item with a comparable piece"
+        },
+        {
+          "name": "valuationType",
+          "type": "Text",
+          "required": true,
+          "description": "Type of valuation such as insurance, estate, or sale"
+        },
+        {
+          "name": "validUntil",
+          "type": "DateTime",
+          "required": false,
+          "description": "Expiration date of the valuation"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "antq:Appraiser",
+      "name": "Appraiser",
+      "description": "A qualified professional who assesses and certifies the value and authenticity of antique items",
+      "properties": [
+        {
+          "name": "appraiserId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the appraiser"
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true,
+          "description": "Full legal name of the appraiser"
+        },
+        {
+          "name": "certifications",
+          "type": "Text",
+          "required": true,
+          "description": "Professional certifications and credentials held"
+        },
+        {
+          "name": "specializations",
+          "type": "Text",
+          "required": false,
+          "description": "Areas of expertise such as furniture, paintings, or porcelain"
+        },
+        {
+          "name": "licenseNumber",
+          "type": "Text",
+          "required": false,
+          "description": "Professional license registration number"
+        },
+        {
+          "name": "contactEmail",
+          "type": "Text",
+          "required": true,
+          "description": "Professional contact email address"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "antq:InsurancePolicy",
+      "name": "InsurancePolicy",
+      "description": "A contract providing financial protection against loss, damage, or theft of insured antique items",
+      "properties": [
+        {
+          "name": "policyNumber",
+          "type": "Text",
+          "required": true,
+          "description": "Unique insurance policy reference number"
+        },
+        {
+          "name": "policyType",
+          "type": "Text",
+          "required": true,
+          "description": "Type of coverage such as comprehensive or named perils"
+        },
+        {
+          "name": "coverageAmount",
+          "type": "Number",
+          "required": true,
+          "description": "Maximum coverage amount in currency"
+        },
+        {
+          "name": "premium",
+          "type": "Number",
+          "required": true,
+          "description": "Annual premium cost for the policy"
+        },
+        {
+          "name": "deductible",
+          "type": "Number",
+          "required": true,
+          "description": "Deductible amount per claim"
+        },
+        {
+          "name": "effectiveDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Start date of policy coverage"
+        },
+        {
+          "name": "expirationDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "End date of policy coverage"
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "required": true,
+          "description": "Whether the policy is currently active"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "antq:Owner",
+      "name": "Owner",
+      "description": "An individual or organization that legally possesses and holds title to antique items",
+      "properties": [
+        {
+          "name": "ownerId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the owner"
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true,
+          "description": "Full legal name of the owner"
+        },
+        {
+          "name": "ownerType",
+          "type": "Text",
+          "required": true,
+          "description": "Type of owner such as individual, estate, or institution"
+        },
+        {
+          "name": "contactAddress",
+          "type": "Text",
+          "required": true,
+          "description": "Primary contact address for correspondence"
+        },
+        {
+          "name": "contactPhone",
+          "type": "Text",
+          "required": false,
+          "description": "Contact telephone number"
+        },
+        {
+          "name": "contactEmail",
+          "type": "Text",
+          "required": true,
+          "description": "Contact email address"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "antq:Provenance",
+      "name": "Provenance",
+      "description": "The documented history of ownership and custody of an antique item from origin to present",
+      "properties": [
+        {
+          "name": "provenanceId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the provenance record"
+        },
+        {
+          "name": "originDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Earliest known date of the item's existence"
+        },
+        {
+          "name": "originLocation",
+          "type": "Text",
+          "required": false,
+          "description": "Geographic location of origin or creation"
+        },
+        {
+          "name": "ownershipHistory",
+          "type": "Text",
+          "required": true,
+          "description": "Chronological record of previous owners"
+        },
+        {
+          "name": "documentation",
+          "type": "Text",
+          "required": false,
+          "description": "References to supporting documents and certificates"
+        },
+        {
+          "name": "authenticity",
+          "type": "Text",
+          "required": true,
+          "description": "Assessment of authenticity such as verified, probable, or unverified"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "antq:Claim",
+      "name": "Claim",
+      "description": "A formal request for compensation under an insurance policy for loss or damage to an antique item",
+      "properties": [
+        {
+          "name": "claimId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the insurance claim"
+        },
+        {
+          "name": "claimDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date when the claim was filed"
+        },
+        {
+          "name": "incidentDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date when the loss or damage occurred"
+        },
+        {
+          "name": "incidentType",
+          "type": "Text",
+          "required": true,
+          "description": "Type of incident such as theft, fire, flood, or accidental damage"
+        },
+        {
+          "name": "claimAmount",
+          "type": "Number",
+          "required": true,
+          "description": "Amount being claimed in currency"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "description": "Current status such as pending, approved, denied, or settled"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true,
+          "description": "Detailed description of the incident"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "Property",
+      "@id": "antq:hasValuation",
+      "name": "Has Valuation",
+      "description": "Links an antique item to its professional valuation assessments",
+      "domainIncludes": [
+        "antq:AntiqueItem"
+      ],
+      "rangeIncludes": [
+        "antq:Valuation"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "antq:conductedBy",
+      "name": "Conducted By",
+      "description": "Links a valuation to the qualified appraiser who performed the assessment",
+      "domainIncludes": [
+        "antq:Valuation"
+      ],
+      "rangeIncludes": [
+        "antq:Appraiser"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "antq:ownedBy",
+      "name": "Owned By",
+      "description": "Links an antique item to its current legal owner",
+      "domainIncludes": [
+        "antq:AntiqueItem"
+      ],
+      "rangeIncludes": [
+        "antq:Owner"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "antq:hasProvenance",
+      "name": "Has Provenance",
+      "description": "Links an antique item to its documented ownership and custody history",
+      "domainIncludes": [
+        "antq:AntiqueItem"
+      ],
+      "rangeIncludes": [
+        "antq:Provenance"
+      ],
+      "cardinality": "0..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "antq:insuredUnder",
+      "name": "Insured Under",
+      "description": "Links an antique item to the insurance policy providing coverage",
+      "domainIncludes": [
+        "antq:AntiqueItem"
+      ],
+      "rangeIncludes": [
+        "antq:InsurancePolicy"
+      ],
+      "cardinality": "0..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "antq:holdsPolicy",
+      "name": "Holds Policy",
+      "description": "Links an owner to their insurance policies covering antique items",
+      "domainIncludes": [
+        "antq:Owner"
+      ],
+      "rangeIncludes": [
+        "antq:InsurancePolicy"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "antq:filedAgainst",
+      "name": "Filed Against",
+      "description": "Links a claim to the insurance policy under which compensation is sought",
+      "domainIncludes": [
+        "antq:Claim"
+      ],
+      "rangeIncludes": [
+        "antq:InsurancePolicy"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "antq:claimFor",
+      "name": "Claim For",
+      "description": "Links a claim to the specific antique item that was lost or damaged",
+      "domainIncludes": [
+        "antq:Claim"
+      ],
+      "rangeIncludes": [
+        "antq:AntiqueItem"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "antq:verifiedBy",
+      "name": "Verified By",
+      "description": "Links provenance documentation to the appraiser who verified its authenticity",
+      "domainIncludes": [
+        "antq:Provenance"
+      ],
+      "rangeIncludes": [
+        "antq:Appraiser"
+      ],
+      "cardinality": "0..1"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-ANT-001",
+      "name": "Valuation Required for Insurance",
+      "condition": "IF an AntiqueItem is insuredUnder an InsurancePolicy",
+      "action": "THEN the AntiqueItem MUST have at least one Valuation dated within the last 36 months",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ANT-002",
+      "name": "Claim Amount Validation",
+      "condition": "IF a Claim is filed for an AntiqueItem",
+      "action": "THEN the claimAmount MUST NOT exceed the most recent Valuation replacementValue",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ANT-003",
+      "name": "Active Policy Required for Claim",
+      "condition": "IF a Claim is filedAgainst an InsurancePolicy",
+      "action": "THEN the InsurancePolicy isActive MUST be true and incidentDate MUST fall between effectiveDate and expirationDate",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ANT-004",
+      "name": "Appraiser Certification Required",
+      "condition": "IF a Valuation is conducted for insurance purposes",
+      "action": "THEN the Appraiser MUST have valid certifications documented",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ANT-005",
+      "name": "Provenance Verification Recommended",
+      "condition": "IF an AntiqueItem has a marketValue exceeding 10000",
+      "action": "THEN the AntiqueItem SHOULD have Provenance with authenticity status of verified",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-ANT-006",
+      "name": "Coverage Amount Adequacy",
+      "condition": "IF an AntiqueItem is insuredUnder an InsurancePolicy",
+      "action": "THEN the InsurancePolicy coverageAmount MUST be greater than or equal to the AntiqueItem most recent replacementValue",
+      "severity": "warning"
+    }
+  ],
+  "examples": [
+    {
+      "@type": "antq:AntiqueItem",
+      "@id": "antq:item-001",
+      "itemId": "ANT-2026-0001",
+      "title": "Georgian Mahogany Chest of Drawers",
+      "category": "Furniture",
+      "period": "Georgian (1714-1830)",
+      "condition": "Excellent",
+      "dimensions": "H: 92cm x W: 107cm x D: 52cm",
+      "materials": "Mahogany, brass hardware",
+      "dateAcquired": "2022-03-15"
+    },
+    {
+      "@type": "antq:Valuation",
+      "@id": "antq:val-001",
+      "valuationId": "VAL-2026-0042",
+      "valuationDate": "2026-01-10",
+      "marketValue": 12500,
+      "replacementValue": 15000,
+      "valuationType": "Insurance",
+      "validUntil": "2027-01-10"
+    }
+  ],
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "ANTIQUES-ONT",
+  "oaa:series": "PE-Series",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of AntiqueItem within this ontology?",
+      "targetEntities": [
+        "antq:AntiqueItem"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of Valuation within this ontology?",
+      "targetEntities": [
+        "antq:Valuation"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of Appraiser within this ontology?",
+      "targetEntities": [
+        "antq:Appraiser"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of InsurancePolicy within this ontology?",
+      "targetEntities": [
+        "antq:InsurancePolicy"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of Owner within this ontology?",
+      "targetEntities": [
+        "antq:Owner"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of Provenance within this ontology?",
+      "targetEntities": [
+        "antq:Provenance"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of Claim within this ontology?",
+      "targetEntities": [
+        "antq:Claim"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

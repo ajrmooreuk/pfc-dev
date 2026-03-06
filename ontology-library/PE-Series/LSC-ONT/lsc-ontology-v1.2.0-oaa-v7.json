@@ -1,0 +1,2850 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "lsc": "https://oaa-ontology.org/v6/logistics/",
+    "pe": "https://oaa-ontology.org/v6/process-engineering/",
+    "pf": "https://oaa-ontology.org/v5/rrr/",
+    "org": "https://oaa-ontology.org/v5/organization/",
+    "grc": "https://oaa-ontology.org/v6/grc-framework/",
+    "org-ctx": "https://platformcore.io/ontology/org-context/"
+  },
+  "@type": "owl:Ontology",
+  "@id": "lsc:schema",
+  "name": "Logistics & Supply-Chain Ontology (LSC-ONT)",
+  "description": "Models end-to-end logistics supply chains — the journey, nodes, shipping legs, compliance gates, risk assessments, bottlenecks, incidents, escalation paths, and net impact. Designed for international trade corridors (AU meat export → UK import as reference pattern) but generalisable to any regulated cold-chain or freight corridor.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.2.0",
+  "oaa:status": "compliant",
+  "oaa:series": "PE-Series",
+  "oaa:domain": "Logistics / Supply Chain / International Trade",
+  "oaa:imports": [
+    {
+      "ontology": "PE-ONT",
+      "version": "3.0.0",
+      "usedEntities": [
+        "pe:Process",
+        "pe:ProcessPhase",
+        "pe:ProcessGate",
+        "pe:AIAgent"
+      ]
+    },
+    {
+      "ontology": "ORG-ONT",
+      "version": "2.1.0",
+      "usedEntities": [
+        "org:Organization"
+      ]
+    },
+    {
+      "ontology": "RRR-ONT",
+      "version": "4.0.0",
+      "usedEntities": [
+        "pf:FunctionalRole"
+      ]
+    },
+    {
+      "ontology": "GRC-FW-ONT",
+      "version": "3.0.0",
+      "usedEntities": [
+        "grc:ComplianceRequirement",
+        "grc:RiskRegister"
+      ]
+    },
+    {
+      "ontology": "ORG-CONTEXT-ONT",
+      "version": "1.0.1",
+      "usedEntities": [
+        "org-ctx:OrganizationContext",
+        "org-ctx:MarketContext",
+        "org-ctx:MarketSegment",
+        "org-ctx:OrganizationMaturity"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-LSC-001",
+      "name": "End-to-End Journey Traversal",
+      "description": "Walk the full supply chain from origin to destination through ordered legs and nodes",
+      "joinPath": "lsc:SupplyChain → hasLeg → lsc:ShipmentLeg (ordered by legSequence) → connectsFrom/connectsTo → lsc:ChainNode",
+      "useCase": "Visualise the complete journey map with all waypoints"
+    },
+    {
+      "patternId": "JP-LSC-002",
+      "name": "Bottleneck Heat Map",
+      "description": "Overlay risk-scored bottlenecks on chain nodes to identify tight spots",
+      "joinPath": "lsc:ChainNode → hasBottleneck → lsc:Bottleneck → hasRiskAssessment → lsc:RiskAssessment",
+      "useCase": "Identify highest-risk nodes and their cumulative risk exposure"
+    },
+    {
+      "patternId": "JP-LSC-003",
+      "name": "Incident Escalation Chain",
+      "description": "Trace an incident through its escalation levels to resolution",
+      "joinPath": "lsc:Incident → triggersEscalation → lsc:Escalation → escalatesTo → lsc:Escalation (recursive)",
+      "useCase": "Map escalation pathways and identify time-to-resolution patterns"
+    },
+    {
+      "patternId": "JP-LSC-004",
+      "name": "Compliance Gate Document Flow",
+      "description": "Map which documents are required at each compliance gate and who issues them",
+      "joinPath": "lsc:ComplianceGate → requiresDocument → lsc:TradeDocument → issuedBy → lsc:Party",
+      "useCase": "Pre-flight document readiness checks before shipment departure"
+    },
+    {
+      "patternId": "JP-LSC-005",
+      "name": "Net Impact Cascade",
+      "description": "Calculate cascading net impact from a bottleneck through affected shipments to financial outcome",
+      "joinPath": "lsc:Bottleneck → hasImpactProfile → lsc:ImpactAssessment; lsc:Incident → hasImpact → lsc:ImpactAssessment",
+      "useCase": "Quantify total exposure and net financial/time/reputational impact of a disruption"
+    },
+    {
+      "patternId": "JP-LSC-006",
+      "name": "Cold Chain Integrity Trace",
+      "description": "Verify continuous cold chain through temperature events at each node and leg",
+      "joinPath": "lsc:Shipment → hasColdChainEvent → lsc:ColdChainEvent → recordedAt → lsc:ChainNode",
+      "useCase": "Audit temperature compliance across the full journey"
+    },
+    {
+      "patternId": "JP-LSC-007",
+      "name": "Logistics-to-Governance Bridge",
+      "description": "Connect logistics compliance gates to GRC framework requirements",
+      "joinPath": "lsc:ComplianceGate → mapsToGRCRequirement → grc:ComplianceRequirement",
+      "useCase": "Ensure logistics operations satisfy governance and regulatory obligations",
+      "oaa:crossOntologyRef": "GRC-FW-ONT"
+    },
+    {
+      "patternId": "JP-LSC-008",
+      "name": "Party Context & Maturity Roll-Up",
+      "description": "Roll up logistics party profiles to Foundation organisation context including industry classification, maturity dimensions, and market segments",
+      "joinPath": "lsc:Party → partyMapsToOrg → org:Organization; lsc:Party → partyHasOrgContext → org-ctx:OrganizationContext → hasMaturity → org-ctx:OrganizationMaturity",
+      "useCase": "Assess third-party reliability by correlating logistics performance with organisational maturity and industry context",
+      "oaa:crossOntologyRef": [
+        "ORG-ONT",
+        "ORG-CONTEXT-ONT"
+      ]
+    },
+    {
+      "patternId": "JP-LSC-009",
+      "name": "Corridor Market & Jurisdiction Roll-Up",
+      "description": "Roll up supply chain corridor to Foundation market context and node-level jurisdictions for geographic regulatory mapping",
+      "joinPath": "lsc:SupplyChain → operatesInMarket → org-ctx:MarketContext → hasSegment → org-ctx:MarketSegment; lsc:ChainNode → nodeInJurisdiction → org-ctx:MarketSegment",
+      "useCase": "Map corridor-level market scope and per-node regulatory jurisdictions to Foundation geography for cross-corridor comparison and compliance aggregation",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "lsc:SupplyChain",
+      "@type": "rdfs:Class",
+      "name": "SupplyChain",
+      "rdfs:subClassOf": "schema:Trip",
+      "description": "An end-to-end logistics corridor connecting origin to destination. Defines the trade route, commodity type, regulatory regime, and overall chain characteristics. The top-level container for the journey graph.",
+      "oaa:properties": [
+        {
+          "name": "chainId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this supply chain"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "commodity",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Product being shipped (e.g. chilled beef, frozen lamb)"
+        },
+        {
+          "name": "commodityClass",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Frozen",
+            "Chilled",
+            "Ambient",
+            "LiveAnimal",
+            "DangerousGoods",
+            "Perishable",
+            "DryGoods"
+          ],
+          "description": "Temperature/handling classification"
+        },
+        {
+          "name": "originCountry",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "destinationCountry",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "tradeRoute",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Named corridor e.g. AU-UK Meat Corridor"
+        },
+        {
+          "name": "regulatoryRegime",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Applicable trade agreement/framework e.g. AU-UK FTA"
+        },
+        {
+          "name": "totalTransitDays",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Estimated end-to-end transit in days"
+        },
+        {
+          "name": "chainStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Active",
+            "Suspended",
+            "UnderReview",
+            "Archived"
+          ],
+          "description": "Operational status of this corridor"
+        },
+        {
+          "name": "annualVolume",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Typical annual throughput (e.g. 12,000 tonnes)"
+        },
+        {
+          "name": "chainRiskScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Aggregate risk score 1.0-10.0 across all nodes"
+        }
+      ]
+    },
+    {
+      "@id": "lsc:ChainNode",
+      "@type": "rdfs:Class",
+      "name": "ChainNode",
+      "rdfs:subClassOf": "schema:Place",
+      "description": "A waypoint, facility, or checkpoint in the supply chain. Represents physical locations where cargo dwells, is processed, inspected, or transferred. Each node has a risk profile and may have compliance gates and bottlenecks attached.",
+      "oaa:properties": [
+        {
+          "name": "nodeId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "nodeType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Origin",
+            "ProcessingFacility",
+            "ColdStorage",
+            "InlandDepot",
+            "PortOfLoading",
+            "Transhipment",
+            "OceanTransit",
+            "PortOfDischarge",
+            "BorderControlPost",
+            "InlandDistribution",
+            "FinalDestination"
+          ]
+        },
+        {
+          "name": "country",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "location",
+          "type": "xsd:string",
+          "required": false,
+          "description": "City, port name, or facility address"
+        },
+        {
+          "name": "operator",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Organisation operating this node"
+        },
+        {
+          "name": "capabilities",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Comma-separated capabilities (e.g. blast-freeze, SPS-inspection, container-yard)"
+        },
+        {
+          "name": "typicalDwellTime",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Average time cargo spends at this node (e.g. 2-3 days)"
+        },
+        {
+          "name": "maxDwellTime",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Maximum acceptable dwell before shelf-life/compliance risk"
+        },
+        {
+          "name": "temperatureCapability",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Frozen",
+            "Chilled",
+            "Ambient",
+            "MultiTemp",
+            "None"
+          ]
+        },
+        {
+          "name": "nodeRiskScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Inherent risk score 1.0-10.0 for this node"
+        },
+        {
+          "name": "nodeSequence",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Order position in the chain (1 = origin)"
+        },
+        {
+          "name": "isCriticalPath",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "True if delay here delays the entire chain"
+        }
+      ]
+    },
+    {
+      "@id": "lsc:ShipmentLeg",
+      "@type": "rdfs:Class",
+      "name": "ShipmentLeg",
+      "rdfs:subClassOf": "schema:Trip",
+      "description": "A movement segment between two chain nodes. Captures the mode of transport, carrier, duration, temperature requirements, and shipping-specific details (vessel, container, route).",
+      "oaa:properties": [
+        {
+          "name": "legId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "legSequence",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Order in the chain (1 = first leg)"
+        },
+        {
+          "name": "legType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Road",
+            "Rail",
+            "Sea",
+            "Air",
+            "Barge",
+            "IntraFacility",
+            "Pipeline"
+          ]
+        },
+        {
+          "name": "carrier",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Carrier name (e.g. Maersk, Toll, Linehaul)"
+        },
+        {
+          "name": "vesselName",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Vessel name for sea legs"
+        },
+        {
+          "name": "voyageNumber",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "containerType",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Reefer20ft",
+            "Reefer40ft",
+            "Reefer40ftHC",
+            "DryContainer",
+            "OpenTop",
+            "FlatRack",
+            "Tank",
+            "Livestock"
+          ],
+          "description": "Container specification"
+        },
+        {
+          "name": "containerCount",
+          "type": "xsd:integer",
+          "required": false
+        },
+        {
+          "name": "temperatureSetpoint",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Target temperature in °C"
+        },
+        {
+          "name": "temperatureTolerance",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Acceptable deviation ±°C"
+        },
+        {
+          "name": "estimatedDuration",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Expected transit time (e.g. 28-32 days)"
+        },
+        {
+          "name": "distance",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Distance in km or nautical miles"
+        },
+        {
+          "name": "route",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Route description (e.g. via Suez Canal, via Cape of Good Hope)"
+        },
+        {
+          "name": "legRiskScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Risk score 1.0-10.0 for this leg"
+        },
+        {
+          "name": "insuranceCoverage",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Insurance type (e.g. Marine Cargo All-Risk, ICC-A)"
+        },
+        {
+          "name": "incoterm",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "EXW",
+            "FCA",
+            "FAS",
+            "FOB",
+            "CFR",
+            "CIF",
+            "CPT",
+            "CIP",
+            "DAP",
+            "DPU",
+            "DDP"
+          ],
+          "description": "Applicable Incoterm for risk/cost transfer"
+        }
+      ]
+    },
+    {
+      "@id": "lsc:Shipment",
+      "@type": "rdfs:Class",
+      "name": "Shipment",
+      "rdfs:subClassOf": "schema:ParcelDelivery",
+      "description": "An actual consignment of goods moving through the supply chain. Tracks current position, status, and cumulative events.",
+      "oaa:properties": [
+        {
+          "name": "shipmentId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "consignmentRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Commercial reference / booking number"
+        },
+        {
+          "name": "commodity",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "commodityClass",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Frozen",
+            "Chilled",
+            "Ambient",
+            "LiveAnimal"
+          ]
+        },
+        {
+          "name": "quantity",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Weight/volume (e.g. 24 tonnes)"
+        },
+        {
+          "name": "value",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Declared value (e.g. AUD 180,000)"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Booked",
+            "AtOrigin",
+            "InTransit",
+            "AtPort",
+            "UnderInspection",
+            "Cleared",
+            "InDistribution",
+            "Delivered",
+            "Held",
+            "Rejected",
+            "WrittenOff"
+          ]
+        },
+        {
+          "name": "shelfLifeRemaining",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Remaining shelf life at current point (e.g. 45 days)"
+        },
+        {
+          "name": "exportDate",
+          "type": "xsd:date",
+          "required": false
+        },
+        {
+          "name": "estimatedArrival",
+          "type": "xsd:date",
+          "required": false
+        },
+        {
+          "name": "actualArrival",
+          "type": "xsd:date",
+          "required": false
+        },
+        {
+          "name": "delayDays",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Cumulative delay vs schedule"
+        }
+      ]
+    },
+    {
+      "@id": "lsc:ComplianceGate",
+      "@type": "rdfs:Class",
+      "name": "ComplianceGate",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A regulatory or procedural checkpoint that cargo must pass. Failure to clear a gate blocks forward movement and triggers escalation. Each gate has a pass rate, typical duration, and known failure modes.",
+      "oaa:properties": [
+        {
+          "name": "gateId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "gateType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "ExportCertification",
+            "CustomsClearance",
+            "SanitaryPhytosanitary",
+            "DocumentVerification",
+            "PhysicalInspection",
+            "IdentityCheck",
+            "TemperatureVerification",
+            "WeighbridgeCheck",
+            "SecurityScreening",
+            "TariffClassification"
+          ]
+        },
+        {
+          "name": "authority",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Governing body (e.g. DAFF, DEFRA, APHA, HMRC, ABF)"
+        },
+        {
+          "name": "country",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "isMandatory",
+          "type": "xsd:boolean",
+          "required": true
+        },
+        {
+          "name": "passRate",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Historical pass rate 0.0-1.0"
+        },
+        {
+          "name": "avgDuration",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Average processing time (e.g. 4-6 hours)"
+        },
+        {
+          "name": "failureConsequence",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Hold",
+            "Rework",
+            "Rejection",
+            "Destruction",
+            "Quarantine",
+            "Reroute",
+            "FinePenalty"
+          ]
+        },
+        {
+          "name": "failureLikelihood",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Rare",
+            "Unlikely",
+            "Possible",
+            "Likely",
+            "AlmostCertain"
+          ]
+        },
+        {
+          "name": "commonFailureReasons",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Typical reasons for failure"
+        },
+        {
+          "name": "gateRiskScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Risk score 1.0-10.0"
+        }
+      ]
+    },
+    {
+      "@id": "lsc:TradeDocument",
+      "@type": "rdfs:Class",
+      "name": "TradeDocument",
+      "rdfs:subClassOf": "schema:DigitalDocument",
+      "description": "A document required in the trade chain — health certificates, customs declarations, bills of lading, certificates of origin, insurance certificates, etc. Documents have lifecycle status and validity periods.",
+      "oaa:properties": [
+        {
+          "name": "documentId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "documentType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "HealthCertificate",
+            "ExportPermit",
+            "PhytosanitaryCertificate",
+            "BillOfLading",
+            "CommercialInvoice",
+            "PackingList",
+            "CertificateOfOrigin",
+            "ImportHealthCertificate",
+            "CustomsDeclaration",
+            "TemperatureLog",
+            "InsuranceCertificate",
+            "LetterOfCredit",
+            "FumigationCertificate",
+            "HalalCertificate",
+            "VeterinaryCertificate",
+            "RegulatoryNotification",
+            "PreNotification",
+            "EntryDocument",
+            "TransitDocument",
+            "SanitaryCertificate",
+            "Other"
+          ]
+        },
+        {
+          "name": "issuingAuthority",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Draft",
+            "Issued",
+            "Submitted",
+            "Verified",
+            "Rejected",
+            "Expired",
+            "Amended",
+            "Cancelled"
+          ]
+        },
+        {
+          "name": "validFrom",
+          "type": "xsd:date",
+          "required": false
+        },
+        {
+          "name": "validTo",
+          "type": "xsd:date",
+          "required": false
+        },
+        {
+          "name": "requiredAtGate",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Which compliance gate requires this document"
+        },
+        {
+          "name": "leadTimeDays",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Days needed to obtain this document"
+        },
+        {
+          "name": "jurisdictionDocType",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Jurisdiction-specific document type name (e.g. AQIS_MeatNotice, IPAFFS_Notification, CHED-P) — instance-level override of the generic documentType enum"
+        },
+        {
+          "name": "rejectionRisk",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Low",
+            "Medium",
+            "High"
+          ],
+          "description": "Risk of document rejection"
+        }
+      ]
+    },
+    {
+      "@id": "lsc:ColdChainEvent",
+      "@type": "rdfs:Class",
+      "name": "ColdChainEvent",
+      "rdfs:subClassOf": "schema:Event",
+      "description": "A temperature monitoring data point in the cold chain. Continuous logging creates the temperature integrity proof for the shipment. Breaches trigger incidents and escalations.",
+      "oaa:properties": [
+        {
+          "name": "eventId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "timestamp",
+          "type": "xsd:dateTime",
+          "required": true
+        },
+        {
+          "name": "temperature",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Recorded temperature in °C"
+        },
+        {
+          "name": "humidity",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Relative humidity %"
+        },
+        {
+          "name": "location",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "sensorId",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "inRange",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "True if within acceptable tolerance"
+        },
+        {
+          "name": "excursionDuration",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How long the temperature has been out of range"
+        },
+        {
+          "name": "action",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "None",
+            "Alert",
+            "Alarm",
+            "Shutdown",
+            "ManualOverride"
+          ],
+          "description": "Action taken or triggered"
+        }
+      ]
+    },
+    {
+      "@id": "lsc:Party",
+      "@type": "rdfs:Class",
+      "name": "Party",
+      "rdfs:subClassOf": "schema:Organization",
+      "description": "An actor in the logistics chain — exporter, importer, freight forwarder, shipping line, customs broker, government authority, port operator, cold-chain provider, insurer, or bank.",
+      "oaa:properties": [
+        {
+          "name": "partyId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "partyType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Exporter",
+            "Importer",
+            "FreightForwarder",
+            "ShippingLine",
+            "CustomsBroker",
+            "GovernmentAuthority",
+            "PortOperator",
+            "ColdChainProvider",
+            "Insurer",
+            "Bank",
+            "InspectionBody",
+            "Haulier",
+            "WarehouseOperator",
+            "Agent"
+          ]
+        },
+        {
+          "name": "country",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "role",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Specific role in this chain"
+        },
+        {
+          "name": "responsibilities",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "riskOwnership",
+          "type": "xsd:string",
+          "required": false,
+          "description": "What risks this party owns/absorbs"
+        },
+        {
+          "name": "contactSLA",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Response time SLA for escalations (e.g. 2 hours)"
+        },
+        {
+          "name": "licences",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Regulatory licences held"
+        }
+      ]
+    },
+    {
+      "@id": "lsc:Bottleneck",
+      "@type": "rdfs:Class",
+      "name": "Bottleneck",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A known tight spot, constraint, or recurring friction point in the chain. Bottlenecks have a type, severity, likelihood, and associated risk/impact assessments. They are attached to specific nodes or legs where they manifest.",
+      "oaa:properties": [
+        {
+          "name": "bottleneckId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "bottleneckType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Regulatory",
+            "Infrastructure",
+            "ColdChain",
+            "Documentation",
+            "Commercial",
+            "Operational",
+            "Weather",
+            "Labour",
+            "Geopolitical",
+            "Capacity"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "severity",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Critical",
+            "Major",
+            "Moderate",
+            "Minor"
+          ]
+        },
+        {
+          "name": "likelihood",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Rare",
+            "Unlikely",
+            "Possible",
+            "Likely",
+            "AlmostCertain"
+          ]
+        },
+        {
+          "name": "typicalDelay",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How long this bottleneck typically delays shipments"
+        },
+        {
+          "name": "seasonality",
+          "type": "xsd:string",
+          "required": false,
+          "description": "When this bottleneck is most acute"
+        },
+        {
+          "name": "rootCause",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "mitigationStrategy",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "mitigationEffectiveness",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "FullyMitigated",
+            "Reduced",
+            "Monitored",
+            "Unmitigated"
+          ]
+        },
+        {
+          "name": "workaroundAvailable",
+          "type": "xsd:boolean",
+          "required": false
+        },
+        {
+          "name": "workaroundDescription",
+          "type": "xsd:string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "lsc:RiskAssessment",
+      "@type": "rdfs:Class",
+      "name": "RiskAssessment",
+      "rdfs:subClassOf": "schema:Rating",
+      "description": "A structured risk assessment attached to a node, leg, bottleneck, or compliance gate. Captures likelihood, impact dimensions, and a composite risk score. Enables heat-map visualisation across the chain.",
+      "oaa:properties": [
+        {
+          "name": "assessmentId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "assessmentDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "riskCategory",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Operational",
+            "Regulatory",
+            "Financial",
+            "Reputational",
+            "Safety",
+            "Environmental",
+            "ColdChain",
+            "Cyber",
+            "Geopolitical"
+          ]
+        },
+        {
+          "name": "likelihood",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "1-5 scale (1=Rare, 5=Almost Certain)"
+        },
+        {
+          "name": "financialImpact",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "1-5 scale (1=Negligible, 5=Catastrophic)"
+        },
+        {
+          "name": "timeImpact",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "1-5 scale (1=<1 day, 5=>30 days)"
+        },
+        {
+          "name": "reputationalImpact",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "1-5 scale (1=None, 5=Market exit)"
+        },
+        {
+          "name": "complianceImpact",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "1-5 scale (1=None, 5=Licence revocation)"
+        },
+        {
+          "name": "compositeRiskScore",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Weighted composite 1.0-25.0 (likelihood × highest impact)"
+        },
+        {
+          "name": "riskTrend",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Increasing",
+            "Stable",
+            "Decreasing"
+          ]
+        },
+        {
+          "name": "controlEffectiveness",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Effective",
+            "PartiallyEffective",
+            "Ineffective",
+            "NoControl"
+          ]
+        },
+        {
+          "name": "residualRiskScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Risk after controls applied"
+        },
+        {
+          "name": "reviewFrequency",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Monthly",
+            "Quarterly",
+            "Annually",
+            "PerShipment"
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "lsc:ImpactAssessment",
+      "@type": "rdfs:Class",
+      "name": "ImpactAssessment",
+      "rdfs:subClassOf": "schema:MonetaryAmount",
+      "description": "Quantifies the net impact of a bottleneck, incident, or risk event across financial, time, reputational, and compliance dimensions. Captures both gross impact and recoveries (insurance, claims) to calculate net impact.",
+      "oaa:properties": [
+        {
+          "name": "impactId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "impactType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Spoilage",
+            "Delay",
+            "Penalty",
+            "Rework",
+            "Rejection",
+            "Quarantine",
+            "Demurrage",
+            "Detention",
+            "InsuranceClaim",
+            "ReputationDamage",
+            "MarketLoss",
+            "ContractBreach"
+          ]
+        },
+        {
+          "name": "grossFinancialImpact",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Total financial loss before recoveries (currency units)"
+        },
+        {
+          "name": "currency",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "AUD",
+            "GBP",
+            "USD",
+            "EUR"
+          ]
+        },
+        {
+          "name": "insuranceRecovery",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Expected insurance payout"
+        },
+        {
+          "name": "otherRecoveries",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Carrier claims, penalties recovered, etc."
+        },
+        {
+          "name": "netFinancialImpact",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Gross minus all recoveries — the actual bottom-line hit"
+        },
+        {
+          "name": "timeLostDays",
+          "type": "xsd:decimal",
+          "required": false
+        },
+        {
+          "name": "shelfLifeLostDays",
+          "type": "xsd:decimal",
+          "required": false
+        },
+        {
+          "name": "reputationalImpact",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "None",
+            "Minor",
+            "Moderate",
+            "Significant",
+            "Severe"
+          ]
+        },
+        {
+          "name": "regulatoryConsequence",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Regulatory outcome (e.g. warning letter, licence review, trade suspension)"
+        },
+        {
+          "name": "cascadeEffect",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Downstream impacts on other shipments or chains"
+        },
+        {
+          "name": "annualisedExposure",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Expected annual loss = netImpact × annual frequency"
+        }
+      ]
+    },
+    {
+      "@id": "lsc:Incident",
+      "@type": "rdfs:Class",
+      "name": "Incident",
+      "rdfs:subClassOf": "schema:Event",
+      "description": "A disruption event that interrupts the normal flow of the supply chain. Incidents are classified by type and severity, occur at a specific node/leg, and trigger escalation paths.",
+      "oaa:properties": [
+        {
+          "name": "incidentId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "incidentType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "TemperatureBreach",
+            "DocumentFailure",
+            "InspectionFailure",
+            "VesselDelay",
+            "PortCongestion",
+            "ContainerDamage",
+            "Contamination",
+            "RegulatoryHold",
+            "StrikeAction",
+            "WeatherEvent",
+            "CustomsDispute",
+            "PaymentDefault",
+            "CyberIncident",
+            "EquipmentFailure"
+          ]
+        },
+        {
+          "name": "severity",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Critical",
+            "Major",
+            "Moderate",
+            "Minor"
+          ]
+        },
+        {
+          "name": "timestamp",
+          "type": "xsd:dateTime",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "rootCause",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "detectionMethod",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Automated",
+            "Manual",
+            "ThirdParty",
+            "CustomerComplaint"
+          ]
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Open",
+            "Investigating",
+            "Escalated",
+            "Mitigated",
+            "Resolved",
+            "Closed"
+          ]
+        },
+        {
+          "name": "resolution",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "timeToDetect",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "timeToResolve",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "lessonLearned",
+          "type": "xsd:string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "lsc:Escalation",
+      "@type": "rdfs:Class",
+      "name": "Escalation",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "An escalation step in the response pathway. Escalations are tiered (L0-L4), each with a responsible party, time window, and prescribed actions. Escalations chain together — if L1 fails to resolve within its window, it escalates to L2, etc.",
+      "oaa:properties": [
+        {
+          "name": "escalationId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "escalationLevel",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "L0_AutoResolve",
+            "L1_Operational",
+            "L2_Management",
+            "L3_Executive",
+            "L4_External"
+          ]
+        },
+        {
+          "name": "triggerCondition",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What condition triggers this escalation level"
+        },
+        {
+          "name": "responsibleParty",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Role or team responsible at this level"
+        },
+        {
+          "name": "timeToEscalate",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Time window before escalating to next level (e.g. 4 hours)"
+        },
+        {
+          "name": "prescribedActions",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Comma-separated actions to take at this level"
+        },
+        {
+          "name": "decisionAuthority",
+          "type": "xsd:string",
+          "required": false,
+          "description": "What decisions can be made at this level"
+        },
+        {
+          "name": "notificationList",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Who gets notified at this level"
+        },
+        {
+          "name": "maxFinancialAuthority",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Maximum spend authority at this level (e.g. up to AUD 50,000)"
+        },
+        {
+          "name": "outcome",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Resolved",
+            "Escalated",
+            "Accepted",
+            "WrittenOff",
+            "Litigated"
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "lsc:RiskMitigation",
+      "@type": "rdfs:Class",
+      "name": "RiskMitigation",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A proactive control or contingency measure that reduces the likelihood or impact of a bottleneck or risk. Mitigations have a type (preventive, detective, corrective), cost, and measured effectiveness.",
+      "oaa:properties": [
+        {
+          "name": "mitigationId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "controlType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Preventive",
+            "Detective",
+            "Corrective",
+            "Compensating"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "implementationCost",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "annualCost",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "effectiveness",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "High",
+            "Medium",
+            "Low"
+          ]
+        },
+        {
+          "name": "riskReductionPercent",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Estimated risk reduction 0-100%"
+        },
+        {
+          "name": "owner",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Party responsible for maintaining this control"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Planned",
+            "Implemented",
+            "UnderReview",
+            "Retired"
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "lsc:Hypothesis",
+      "@type": "rdfs:Class",
+      "name": "Hypothesis",
+      "rdfs:subClassOf": "schema:Claim",
+      "description": "A testable prediction about the supply chain — what we believe will happen under given conditions. Hypotheses have a confidence level, measurement method, and iterate through probabilistic testing. Extends the PE-ONT Hypothesis pattern into logistics context with predictive/historical pattern support.",
+      "oaa:properties": [
+        {
+          "name": "hypothesisId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "statement",
+          "type": "xsd:string",
+          "required": true,
+          "description": "The testable claim (e.g. 'Chilled beef via Suez will arrive within 28 days 85% of the time')"
+        },
+        {
+          "name": "hypothesisType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "TransitTime",
+            "ColdChainIntegrity",
+            "CostProjection",
+            "DemandForecast",
+            "CapacityConstraint",
+            "RegulatoryOutcome",
+            "RiskProbability",
+            "ShelfLifeRemaining",
+            "StorageAvailability",
+            "CarrierReliability"
+          ]
+        },
+        {
+          "name": "baselineValue",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Current/historical baseline"
+        },
+        {
+          "name": "predictedValue",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What we predict will happen"
+        },
+        {
+          "name": "confidenceLevel",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Confidence 0.0-1.0 (e.g. 0.85 = 85%)"
+        },
+        {
+          "name": "confidenceInterval",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Range e.g. '26-32 days (95% CI)'"
+        },
+        {
+          "name": "measurementMethod",
+          "type": "xsd:string",
+          "required": true,
+          "description": "How this hypothesis is tested/measured"
+        },
+        {
+          "name": "dataSource",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Historical data source for the prediction"
+        },
+        {
+          "name": "sampleSize",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of historical observations"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Proposed",
+            "Active",
+            "Validated",
+            "Invalidated",
+            "Inconclusive",
+            "Superseded"
+          ]
+        },
+        {
+          "name": "iterationCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of probabilistic iterations/tests run"
+        },
+        {
+          "name": "actualOutcome",
+          "type": "xsd:string",
+          "required": false,
+          "description": "What actually happened (filled after testing)"
+        },
+        {
+          "name": "variance",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Deviation from prediction"
+        },
+        {
+          "name": "learningNote",
+          "type": "xsd:string",
+          "required": false,
+          "description": "What was learned from this iteration"
+        },
+        {
+          "name": "nextIteration",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Refined hypothesis for next test cycle"
+        }
+      ]
+    },
+    {
+      "@id": "lsc:Scenario",
+      "@type": "rdfs:Class",
+      "name": "Scenario",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "A probabilistic what-if scenario that models alternative outcomes for the supply chain. Scenarios have trigger conditions, probability weights, and cascading consequences. Used for planning — 'what happens if the Suez Canal is blocked?' or 'what if UK cold-storage capacity drops 30%?'",
+      "oaa:properties": [
+        {
+          "name": "scenarioId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "scenarioType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "BestCase",
+            "ExpectedCase",
+            "WorstCase",
+            "StressTest",
+            "BlackSwan",
+            "SeasonalVariation",
+            "DemandSpike",
+            "SupplyShock",
+            "RegulatoryChange",
+            "GeopoliticalDisruption"
+          ]
+        },
+        {
+          "name": "triggerCondition",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What event/condition activates this scenario"
+        },
+        {
+          "name": "probability",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Estimated probability 0.0-1.0"
+        },
+        {
+          "name": "timeHorizon",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Time window for this scenario (e.g. 'Q3 2026', 'next 12 months')"
+        },
+        {
+          "name": "assumptions",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Key assumptions underpinning this scenario"
+        },
+        {
+          "name": "affectedNodes",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Comma-separated node IDs affected"
+        },
+        {
+          "name": "affectedLegs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Comma-separated leg IDs affected"
+        },
+        {
+          "name": "transitTimeChange",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Impact on transit time (e.g. '+12 days', '-2 days')"
+        },
+        {
+          "name": "costChange",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Impact on costs (e.g. '+35%', '+AUD 15,000 per container')"
+        },
+        {
+          "name": "capacityChange",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Impact on available capacity (e.g. '-30% cold storage')"
+        },
+        {
+          "name": "shelfLifeImpact",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Impact on remaining shelf life"
+        },
+        {
+          "name": "demandImpact",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Impact on demand (e.g. '+20% Christmas spike')"
+        },
+        {
+          "name": "netFinancialImpact",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Estimated net financial impact in currency units"
+        },
+        {
+          "name": "currency",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "AUD",
+            "GBP",
+            "USD",
+            "EUR"
+          ]
+        },
+        {
+          "name": "mitigationPlan",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Pre-planned response if this scenario materialises"
+        },
+        {
+          "name": "predictiveSignals",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Early-warning indicators that this scenario is materialising"
+        }
+      ]
+    },
+    {
+      "@id": "lsc:CascadeEffect",
+      "@type": "rdfs:Class",
+      "name": "CascadeEffect",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "An unintended or secondary consequence that propagates from a primary disruption. Cascade effects model the domino chain — a port delay causes storage overflow, which causes cost spikes, which causes contract renegotiation, which causes reputational damage. Each effect can trigger further cascades.",
+      "oaa:properties": [
+        {
+          "name": "cascadeId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "cascadeType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "StorageOverflow",
+            "CostEscalation",
+            "DemandDisplacement",
+            "ShelfLifeErosion",
+            "ContractBreach",
+            "RegulatoryEscalation",
+            "ReputationDamage",
+            "SupplierDefault",
+            "MarketPriceDislocation",
+            "LabourShortage",
+            "InsurancePremiumIncrease",
+            "AlternativeRouteCongestion",
+            "CustomerChurn"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "triggerDelay",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How long after the primary event this cascade manifests (e.g. '3-5 days', 'immediate', '2-4 weeks')"
+        },
+        {
+          "name": "severity",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Critical",
+            "Major",
+            "Moderate",
+            "Minor"
+          ]
+        },
+        {
+          "name": "probability",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Probability of this cascade given the primary event 0.0-1.0"
+        },
+        {
+          "name": "isIntended",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "False for unintended consequences, true for expected downstream effects"
+        },
+        {
+          "name": "affectedParties",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Who bears the impact of this cascade"
+        },
+        {
+          "name": "financialImpact",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Additional financial impact from this cascade"
+        },
+        {
+          "name": "currency",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "AUD",
+            "GBP",
+            "USD",
+            "EUR"
+          ]
+        },
+        {
+          "name": "reversibility",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Reversible",
+            "PartiallyReversible",
+            "Irreversible"
+          ]
+        },
+        {
+          "name": "timeToRecover",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Recovery time if reversible"
+        },
+        {
+          "name": "preventionPossible",
+          "type": "xsd:boolean",
+          "required": false
+        },
+        {
+          "name": "preventionAction",
+          "type": "xsd:string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "lsc:PredictivePattern",
+      "@type": "rdfs:Class",
+      "name": "PredictivePattern",
+      "rdfs:subClassOf": "schema:DataFeed",
+      "description": "A recurring pattern identified from historical supply chain data. Predictive patterns enable proactive planning — they describe what typically happens under given conditions and provide leading indicators for early warning.",
+      "oaa:properties": [
+        {
+          "name": "patternId",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "patternType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Seasonal",
+            "Cyclical",
+            "EventDriven",
+            "Structural",
+            "Emerging",
+            "Declining"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "observedFrequency",
+          "type": "xsd:string",
+          "required": true,
+          "description": "How often this pattern recurs (e.g. 'annually Q4', 'every 3-5 years', 'monthly')"
+        },
+        {
+          "name": "historicalOccurrences",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of times observed in data"
+        },
+        {
+          "name": "dataWindow",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Time period of data analysed (e.g. '2018-2025')"
+        },
+        {
+          "name": "leadIndicators",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Early-warning signals that this pattern is activating"
+        },
+        {
+          "name": "leadTimedays",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "How many days before the pattern manifests the indicators appear"
+        },
+        {
+          "name": "typicalImpact",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What typically happens when this pattern activates"
+        },
+        {
+          "name": "reliability",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Historical accuracy of this pattern 0.0-1.0"
+        },
+        {
+          "name": "confidenceTrend",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Strengthening",
+            "Stable",
+            "Weakening"
+          ],
+          "description": "Is this pattern becoming more or less reliable?"
+        },
+        {
+          "name": "recommendedAction",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Pre-emptive action when pattern is detected"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "lsc:hasLeg",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Leg",
+      "description": "Supply chain contains this shipment leg",
+      "domainIncludes": [
+        "lsc:SupplyChain"
+      ],
+      "rangeIncludes": [
+        "lsc:ShipmentLeg"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "lsc:hasNode",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Node",
+      "description": "Supply chain contains this chain node",
+      "domainIncludes": [
+        "lsc:SupplyChain"
+      ],
+      "rangeIncludes": [
+        "lsc:ChainNode"
+      ],
+      "oaa:cardinality": "2..*"
+    },
+    {
+      "@id": "lsc:connectsFrom",
+      "@type": "owl:ObjectProperty",
+      "name": "Connects From",
+      "description": "Leg originates at this node",
+      "domainIncludes": [
+        "lsc:ShipmentLeg"
+      ],
+      "rangeIncludes": [
+        "lsc:ChainNode"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "lsc:connectsTo",
+      "@type": "owl:ObjectProperty",
+      "name": "Connects To",
+      "description": "Leg terminates at this node",
+      "domainIncludes": [
+        "lsc:ShipmentLeg"
+      ],
+      "rangeIncludes": [
+        "lsc:ChainNode"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "lsc:nextLeg",
+      "@type": "owl:ObjectProperty",
+      "name": "Next Leg",
+      "description": "Sequential link to the next leg in the chain",
+      "domainIncludes": [
+        "lsc:ShipmentLeg"
+      ],
+      "rangeIncludes": [
+        "lsc:ShipmentLeg"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "lsc:hasComplianceGate",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Compliance Gate",
+      "description": "This node has a regulatory/procedural gate that must be cleared",
+      "domainIncludes": [
+        "lsc:ChainNode"
+      ],
+      "rangeIncludes": [
+        "lsc:ComplianceGate"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "lsc:requiresDocument",
+      "@type": "owl:ObjectProperty",
+      "name": "Requires Document",
+      "description": "This compliance gate requires this document to pass",
+      "domainIncludes": [
+        "lsc:ComplianceGate"
+      ],
+      "rangeIncludes": [
+        "lsc:TradeDocument"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "lsc:issuedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Issued By",
+      "description": "Document issued by this party",
+      "domainIncludes": [
+        "lsc:TradeDocument"
+      ],
+      "rangeIncludes": [
+        "lsc:Party"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "lsc:hasBottleneck",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Bottleneck",
+      "description": "This node or leg has a known bottleneck/tight spot",
+      "domainIncludes": [
+        "lsc:ChainNode",
+        "lsc:ShipmentLeg"
+      ],
+      "rangeIncludes": [
+        "lsc:Bottleneck"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "lsc:hasRiskAssessment",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Risk Assessment",
+      "description": "Risk assessment attached to a node, leg, bottleneck, or gate",
+      "domainIncludes": [
+        "lsc:ChainNode",
+        "lsc:ShipmentLeg",
+        "lsc:Bottleneck",
+        "lsc:ComplianceGate"
+      ],
+      "rangeIncludes": [
+        "lsc:RiskAssessment"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "lsc:hasImpactProfile",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Impact Profile",
+      "description": "Bottleneck or risk has a quantified impact profile showing net financial/time/reputational impact",
+      "domainIncludes": [
+        "lsc:Bottleneck",
+        "lsc:RiskAssessment"
+      ],
+      "rangeIncludes": [
+        "lsc:ImpactAssessment"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "lsc:hasImpact",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Impact",
+      "description": "Incident has a measured impact assessment",
+      "domainIncludes": [
+        "lsc:Incident"
+      ],
+      "rangeIncludes": [
+        "lsc:ImpactAssessment"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "lsc:triggersEscalation",
+      "@type": "owl:ObjectProperty",
+      "name": "Triggers Escalation",
+      "description": "Incident triggers this escalation pathway",
+      "domainIncludes": [
+        "lsc:Incident"
+      ],
+      "rangeIncludes": [
+        "lsc:Escalation"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "lsc:escalatesTo",
+      "@type": "owl:ObjectProperty",
+      "name": "Escalates To",
+      "description": "This escalation level chains to the next level if unresolved within time window",
+      "domainIncludes": [
+        "lsc:Escalation"
+      ],
+      "rangeIncludes": [
+        "lsc:Escalation"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "lsc:operatedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Operated By",
+      "description": "Node is operated/managed by this party",
+      "domainIncludes": [
+        "lsc:ChainNode"
+      ],
+      "rangeIncludes": [
+        "lsc:Party"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "lsc:carriedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Carried By",
+      "description": "Shipment leg carried by this party (carrier/shipping line/haulier)",
+      "domainIncludes": [
+        "lsc:ShipmentLeg"
+      ],
+      "rangeIncludes": [
+        "lsc:Party"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "lsc:currentlyAt",
+      "@type": "owl:ObjectProperty",
+      "name": "Currently At",
+      "description": "Shipment is currently located at this node",
+      "domainIncludes": [
+        "lsc:Shipment"
+      ],
+      "rangeIncludes": [
+        "lsc:ChainNode"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "lsc:onLeg",
+      "@type": "owl:ObjectProperty",
+      "name": "On Leg",
+      "description": "Shipment is currently on this transport leg",
+      "domainIncludes": [
+        "lsc:Shipment"
+      ],
+      "rangeIncludes": [
+        "lsc:ShipmentLeg"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "lsc:hasColdChainEvent",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Cold Chain Event",
+      "description": "Shipment has this cold chain monitoring event",
+      "domainIncludes": [
+        "lsc:Shipment"
+      ],
+      "rangeIncludes": [
+        "lsc:ColdChainEvent"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "lsc:recordedAt",
+      "@type": "owl:ObjectProperty",
+      "name": "Recorded At",
+      "description": "Cold chain event was recorded at this node or during this leg",
+      "domainIncludes": [
+        "lsc:ColdChainEvent"
+      ],
+      "rangeIncludes": [
+        "lsc:ChainNode",
+        "lsc:ShipmentLeg"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "lsc:affectsShipment",
+      "@type": "owl:ObjectProperty",
+      "name": "Affects Shipment",
+      "description": "Incident affects this shipment",
+      "domainIncludes": [
+        "lsc:Incident"
+      ],
+      "rangeIncludes": [
+        "lsc:Shipment"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "lsc:occursAtNode",
+      "@type": "owl:ObjectProperty",
+      "name": "Occurs At Node",
+      "description": "Incident occurs at this chain node",
+      "domainIncludes": [
+        "lsc:Incident"
+      ],
+      "rangeIncludes": [
+        "lsc:ChainNode"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "lsc:occursOnLeg",
+      "@type": "owl:ObjectProperty",
+      "name": "Occurs On Leg",
+      "description": "Incident occurs during this transport leg",
+      "domainIncludes": [
+        "lsc:Incident"
+      ],
+      "rangeIncludes": [
+        "lsc:ShipmentLeg"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "lsc:mitigates",
+      "@type": "owl:ObjectProperty",
+      "name": "mitigates",
+      "description": "Risk mitigation addresses this bottleneck",
+      "domainIncludes": [
+        "lsc:RiskMitigation"
+      ],
+      "rangeIncludes": [
+        "lsc:Bottleneck"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "lsc:ownedByParty",
+      "@type": "owl:ObjectProperty",
+      "name": "Owned By Party",
+      "description": "Risk or mitigation is owned by this party",
+      "domainIncludes": [
+        "lsc:RiskAssessment",
+        "lsc:RiskMitigation"
+      ],
+      "rangeIncludes": [
+        "lsc:Party"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "lsc:travelsChain",
+      "@type": "owl:ObjectProperty",
+      "name": "Travels Chain",
+      "description": "Shipment travels this supply chain route",
+      "domainIncludes": [
+        "lsc:Shipment"
+      ],
+      "rangeIncludes": [
+        "lsc:SupplyChain"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "lsc:mapsToProcess",
+      "@type": "owl:ObjectProperty",
+      "name": "Maps To Process",
+      "description": "Supply chain maps to a PE-ONT process definition",
+      "domainIncludes": [
+        "lsc:SupplyChain"
+      ],
+      "rangeIncludes": [
+        "pe:Process"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "PE-ONT"
+    },
+    {
+      "@id": "lsc:mapsToGRCRequirement",
+      "@type": "owl:ObjectProperty",
+      "name": "Maps To GRC Requirement",
+      "description": "Compliance gate maps to a GRC framework requirement",
+      "domainIncludes": [
+        "lsc:ComplianceGate"
+      ],
+      "rangeIncludes": [
+        "grc:ComplianceRequirement"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "GRC-FW-ONT"
+    },
+    {
+      "@id": "lsc:partyMapsToOrg",
+      "@type": "owl:ObjectProperty",
+      "name": "Party Maps To Org",
+      "description": "Party maps to an ORG-ONT organisation",
+      "domainIncludes": [
+        "lsc:Party"
+      ],
+      "rangeIncludes": [
+        "org:Organization"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "ORG-ONT"
+    },
+    {
+      "@id": "lsc:partyMapsToRole",
+      "@type": "owl:ObjectProperty",
+      "name": "partyMapsToRole",
+      "description": "Party maps to a RRR-ONT functional role — bridges logistics actor responsibilities to the risk/requirement/result role taxonomy",
+      "domainIncludes": [
+        "lsc:Party"
+      ],
+      "rangeIncludes": [
+        "pf:FunctionalRole"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    },
+    {
+      "@id": "lsc:hasHypothesis",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Hypothesis",
+      "description": "Supply chain or leg has a testable hypothesis attached",
+      "domainIncludes": [
+        "lsc:SupplyChain",
+        "lsc:ShipmentLeg",
+        "lsc:ChainNode"
+      ],
+      "rangeIncludes": [
+        "lsc:Hypothesis"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "lsc:hasScenario",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Scenario",
+      "description": "Supply chain has a modelled what-if scenario",
+      "domainIncludes": [
+        "lsc:SupplyChain"
+      ],
+      "rangeIncludes": [
+        "lsc:Scenario"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "lsc:scenarioTriggersBottleneck",
+      "@type": "owl:ObjectProperty",
+      "name": "Scenario Triggers Bottleneck",
+      "description": "This scenario would activate or worsen this bottleneck",
+      "domainIncludes": [
+        "lsc:Scenario"
+      ],
+      "rangeIncludes": [
+        "lsc:Bottleneck"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "lsc:scenarioHasImpact",
+      "@type": "owl:ObjectProperty",
+      "name": "Scenario Has Impact",
+      "description": "Scenario has a quantified impact assessment",
+      "domainIncludes": [
+        "lsc:Scenario"
+      ],
+      "rangeIncludes": [
+        "lsc:ImpactAssessment"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "lsc:hasCascade",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Cascade",
+      "description": "Bottleneck, incident, or scenario triggers this cascade effect",
+      "domainIncludes": [
+        "lsc:Bottleneck",
+        "lsc:Incident",
+        "lsc:Scenario"
+      ],
+      "rangeIncludes": [
+        "lsc:CascadeEffect"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "lsc:cascadeLeadsTo",
+      "@type": "owl:ObjectProperty",
+      "name": "Cascade Leads To",
+      "description": "This cascade effect triggers a further cascade (domino chain)",
+      "domainIncludes": [
+        "lsc:CascadeEffect"
+      ],
+      "rangeIncludes": [
+        "lsc:CascadeEffect"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "lsc:hasPredictivePattern",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Predictive Pattern",
+      "description": "Supply chain, node, or leg has an identified predictive pattern",
+      "domainIncludes": [
+        "lsc:SupplyChain",
+        "lsc:ChainNode",
+        "lsc:ShipmentLeg"
+      ],
+      "rangeIncludes": [
+        "lsc:PredictivePattern"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "lsc:patternValidatesHypothesis",
+      "@type": "owl:ObjectProperty",
+      "name": "Pattern Validates Hypothesis",
+      "description": "Historical pattern provides evidence for or against a hypothesis",
+      "domainIncludes": [
+        "lsc:PredictivePattern"
+      ],
+      "rangeIncludes": [
+        "lsc:Hypothesis"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "lsc:hypothesisInformsScenario",
+      "@type": "owl:ObjectProperty",
+      "name": "Hypothesis Informs Scenario",
+      "description": "Hypothesis testing results inform this scenario's probability/parameters",
+      "domainIncludes": [
+        "lsc:Hypothesis"
+      ],
+      "rangeIncludes": [
+        "lsc:Scenario"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "lsc:partyHasOrgContext",
+      "@type": "owl:ObjectProperty",
+      "name": "Party Has Org Context",
+      "description": "Party maps to an ORG-CONTEXT organisation context — provides industry classification, maturity assessment, product/brand portfolio, and competitive landscape for this logistics actor",
+      "domainIncludes": [
+        "lsc:Party"
+      ],
+      "rangeIncludes": [
+        "org-ctx:OrganizationContext"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "lsc:operatesInMarket",
+      "@type": "owl:ObjectProperty",
+      "name": "Operates In Market",
+      "description": "Supply chain operates within this market context — defines the geographic scope, industry verticals, and localisation requirements for the corridor",
+      "domainIncludes": [
+        "lsc:SupplyChain"
+      ],
+      "rangeIncludes": [
+        "org-ctx:MarketContext"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "lsc:nodeInJurisdiction",
+      "@type": "owl:ObjectProperty",
+      "name": "Node In Jurisdiction",
+      "description": "Chain node sits within this market segment's jurisdiction — enables roll-up of node-level regulatory context to Foundation market geography",
+      "domainIncludes": [
+        "lsc:ChainNode"
+      ],
+      "rangeIncludes": [
+        "org-ctx:MarketSegment"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-LSC-001",
+      "name": "OriginAndDestinationRequired",
+      "condition": "IF a SupplyChain is defined",
+      "action": "THEN it MUST have at least one ChainNode with nodeType=Origin AND at least one with nodeType=FinalDestination",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-002",
+      "name": "ColdChainContinuity",
+      "condition": "IF commodityClass IN [Frozen, Chilled]",
+      "action": "THEN every ChainNode in the chain MUST have temperatureCapability matching the commodityClass, AND every ShipmentLeg MUST have temperatureSetpoint defined",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-003",
+      "name": "FrozenTemperatureThreshold",
+      "condition": "IF commodityClass = Frozen AND a ColdChainEvent.temperature > -18.0",
+      "action": "THEN inRange MUST be false AND an Incident of type TemperatureBreach MUST be created",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-004",
+      "name": "ChilledTemperatureThreshold",
+      "condition": "IF commodityClass = Chilled AND a ColdChainEvent.temperature NOT BETWEEN 0.0 AND 5.0",
+      "action": "THEN inRange MUST be false AND an Incident of type TemperatureBreach MUST be created",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-005",
+      "name": "EscalationLevelProgression",
+      "condition": "IF an Escalation.escalatesTo references another Escalation",
+      "action": "THEN the target escalation level MUST be higher than the source (L0 < L1 < L2 < L3 < L4)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-006",
+      "name": "ComplianceGateDocumentation",
+      "condition": "IF a ComplianceGate has isMandatory = true",
+      "action": "THEN it MUST have at least one requiresDocument relationship",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-007",
+      "name": "LegSequenceConnectivity",
+      "condition": "IF ShipmentLeg[n].nextLeg references ShipmentLeg[n+1]",
+      "action": "THEN ShipmentLeg[n].connectsTo MUST equal ShipmentLeg[n+1].connectsFrom (no gaps in the chain)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-008",
+      "name": "IncidentRequiresEscalation",
+      "condition": "IF an Incident has severity IN [Critical, Major]",
+      "action": "THEN it MUST have a triggersEscalation relationship with escalationLevel >= L2_Management",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-009",
+      "name": "NetImpactCalculation",
+      "condition": "IF an ImpactAssessment exists",
+      "action": "THEN netFinancialImpact MUST equal grossFinancialImpact minus (insuranceRecovery + otherRecoveries)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-010",
+      "name": "ShelfLifeMonitoring",
+      "condition": "IF a Shipment.shelfLifeRemaining < 14 days AND status NOT IN [Delivered, WrittenOff]",
+      "action": "THEN an Incident of severity >= Moderate SHOULD be raised with escalationLevel >= L1_Operational",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-LSC-011",
+      "name": "CriticalPathDelay",
+      "condition": "IF a ChainNode.isCriticalPath = true AND actual dwell time exceeds maxDwellTime",
+      "action": "THEN an Incident MUST be raised AND escalation MUST be triggered",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-012",
+      "name": "RiskScoreComposite",
+      "condition": "IF a RiskAssessment is created",
+      "action": "THEN compositeRiskScore MUST equal likelihood × MAX(financialImpact, timeImpact, reputationalImpact, complianceImpact)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-013",
+      "name": "DocumentValidityAtGate",
+      "condition": "IF a Shipment arrives at a ComplianceGate",
+      "action": "THEN all required TradeDocuments MUST have status = Issued or Verified AND validTo >= current date",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-014",
+      "name": "InspectionFailureConsequence",
+      "condition": "IF a ComplianceGate of gateType = SanitaryPhytosanitary has failureConsequence = Rejection",
+      "action": "THEN the Incident MUST trigger escalation at minimum L3_Executive AND regulatory notification is required",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-015",
+      "name": "HypothesisRequiresMeasurement",
+      "condition": "IF a Hypothesis has status = Active",
+      "action": "THEN it MUST have a measurementMethod defined AND confidenceLevel MUST be between 0.0 and 1.0",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-LSC-016",
+      "name": "ScenarioProbabilityBound",
+      "condition": "IF a Scenario exists",
+      "action": "THEN probability MUST be between 0.0 and 1.0 AND the sum of all scenario probabilities for a SupplyChain SHOULD NOT exceed 1.0 for mutually exclusive scenarios",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-LSC-017",
+      "name": "CascadeChainDepth",
+      "condition": "IF a CascadeEffect.cascadeLeadsTo chain exceeds depth 5",
+      "action": "THEN the deepest cascade SHOULD be flagged for review — excessive cascade depth may indicate modelling error or systemic fragility requiring structural mitigation",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-LSC-018",
+      "name": "InvalidatedHypothesisIteration",
+      "condition": "IF a Hypothesis.status = Invalidated",
+      "action": "THEN it MUST have actualOutcome, variance, and learningNote populated AND nextIteration SHOULD reference a refined hypothesis",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-LSC-019",
+      "name": "PredictivePatternReliability",
+      "condition": "IF a PredictivePattern.reliability < 0.5",
+      "action": "THEN confidenceTrend SHOULD be 'Weakening' AND the pattern SHOULD NOT be used for automated decision-making without human review",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-LSC-020",
+      "name": "UnintendedCascadeMustBeTracked",
+      "condition": "IF a CascadeEffect.isIntended = false AND severity IN [Critical, Major]",
+      "action": "THEN the cascade MUST be linked to a RiskMitigation or an Escalation for tracking",
+      "severity": "error"
+    }
+  ],
+  "changeControl": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-20",
+      "author": "PF-Core",
+      "changes": [
+        "Initial release — 18 entities, 38 relationships, 20 business rules, 7 join patterns",
+        "Designed for AU→UK meat trade corridor as reference implementation",
+        "Risk scoring with 5-dimension impact model (financial, time, reputational, compliance, composite)",
+        "Net impact assessment with insurance/recovery offsets",
+        "5-level escalation model (L0 auto → L4 external/governmental)",
+        "Cold chain integrity tracking with automated breach detection",
+        "Cross-ontology bridges to PE-ONT, ORG-ONT, GRC-FW-ONT",
+        "Hypothesis testing with iterative measurement, confidence intervals, and variance tracking",
+        "Scenario modelling with probability-weighted impact projections",
+        "Cascade/domino effect chains for unintended consequence mapping",
+        "Predictive pattern recognition with lead indicators and reliability scoring"
+      ]
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-02-20",
+      "author": "PF-Core",
+      "changes": [
+        "NEUTRALITY FIX — removed corridor-specific document types (AQIS_MeatNotice, IPAFFS_Notification, CHED_P) from TradeDocument enum; replaced with generic types (RegulatoryNotification, PreNotification, EntryDocument, TransitDocument, SanitaryCertificate). Added jurisdictionDocType property for instance-level override.",
+        "FOUNDATION ROLL-UP — added ORG-CONTEXT-ONT import (v1.0.1) with 3 new bridge relationships: partyHasOrgContext → OrganizationContext, operatesInMarket → MarketContext, nodeInJurisdiction → MarketSegment",
+        "Added 2 Foundation roll-up join patterns: JP-LSC-008 (Party Context & Maturity Roll-Up), JP-LSC-009 (Corridor Market & Jurisdiction Roll-Up)",
+        "Totals now: 18 entities, 41 relationships, 20 business rules, 9 join patterns. Imports: PE-ONT, ORG-ONT, RRR-ONT, GRC-FW-ONT, ORG-CONTEXT-ONT."
+      ]
+    },
+    {
+      "version": "1.2.0",
+      "date": "2026-02-23",
+      "author": "PF-Core",
+      "changes": [
+        "OAA v7.0.0 COMPLIANCE UPGRADE — full pass on gates G1-G4, G7, G20-G24",
+        "G20 fix: Replaced 18 generic placeholder competency questions with domain-specific questions referencing target relationships and business rules",
+        "G8 fix (advisory): Renamed relationship 'Mitigates' → 'mitigates' for camelCase compliance (41/41 now pass)",
+        "Added partyMapsToRole relationship (lsc:Party → pf:FunctionalRole) — resolves orphaned RRR-ONT import, completes 6th cross-ontology bridge",
+        "Totals now: 18 entities, 42 relationships, 20 business rules, 9 join patterns, 18 competency questions. 6 cross-ontology bridges (PE, ORG, RRR, GRC-FW, ORG-CONTEXT ×3)."
+      ]
+    }
+  ],
+  "oaa:ontologyId": "LSC-ONT",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What trade routes and commodity types does this supply chain corridor serve, and what is its aggregate risk score?",
+      "targetEntities": ["lsc:SupplyChain"],
+      "targetRelationships": ["lsc:hasLeg", "lsc:hasNode"],
+      "targetRules": ["BR-LSC-001"]
+    },
+    {
+      "@id": "CQ-002",
+      "question": "Which chain nodes are on the critical path, and what are their dwell time constraints and temperature capabilities?",
+      "targetEntities": ["lsc:ChainNode"],
+      "targetRelationships": ["lsc:hasNode", "lsc:hasComplianceGate", "lsc:hasBottleneck"],
+      "targetRules": ["BR-LSC-002", "BR-LSC-011"]
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the ordered sequence of transport legs from origin to destination, and which legs carry the highest risk?",
+      "targetEntities": ["lsc:ShipmentLeg"],
+      "targetRelationships": ["lsc:connectsFrom", "lsc:connectsTo", "lsc:nextLeg"],
+      "targetRules": ["BR-LSC-007"]
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the current status and location of a shipment, and how much shelf life remains?",
+      "targetEntities": ["lsc:Shipment"],
+      "targetRelationships": ["lsc:travelsChain", "lsc:currentlyAt", "lsc:onLeg"],
+      "targetRules": ["BR-LSC-010"]
+    },
+    {
+      "@id": "CQ-005",
+      "question": "Which regulatory gates must cargo clear at each node, what are their historical pass rates, and what happens on failure?",
+      "targetEntities": ["lsc:ComplianceGate"],
+      "targetRelationships": ["lsc:hasComplianceGate", "lsc:requiresDocument", "lsc:mapsToGRCRequirement"],
+      "targetRules": ["BR-LSC-006", "BR-LSC-013", "BR-LSC-014"]
+    },
+    {
+      "@id": "CQ-006",
+      "question": "Which documents are required at each compliance gate, who issues them, and what is their current validity status?",
+      "targetEntities": ["lsc:TradeDocument"],
+      "targetRelationships": ["lsc:requiresDocument", "lsc:issuedBy"],
+      "targetRules": ["BR-LSC-013"]
+    },
+    {
+      "@id": "CQ-007",
+      "question": "Has the cold chain been maintained within tolerance throughout the journey, and where did temperature excursions occur?",
+      "targetEntities": ["lsc:ColdChainEvent"],
+      "targetRelationships": ["lsc:hasColdChainEvent", "lsc:recordedAt"],
+      "targetRules": ["BR-LSC-003", "BR-LSC-004"]
+    },
+    {
+      "@id": "CQ-008",
+      "question": "Which parties are responsible for each segment of the supply chain, and what are their SLA commitments and risk ownership?",
+      "targetEntities": ["lsc:Party"],
+      "targetRelationships": ["lsc:operatedBy", "lsc:carriedBy", "lsc:issuedBy", "lsc:partyMapsToOrg", "lsc:partyMapsToRole"],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "Where are the known bottlenecks in the chain, what is their severity and likelihood, and what mitigation strategies exist?",
+      "targetEntities": ["lsc:Bottleneck"],
+      "targetRelationships": ["lsc:hasBottleneck", "lsc:hasRiskAssessment", "lsc:hasImpactProfile"],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the composite risk score across all dimensions for a given node, leg, or bottleneck, and what is the residual risk after controls?",
+      "targetEntities": ["lsc:RiskAssessment"],
+      "targetRelationships": ["lsc:hasRiskAssessment", "lsc:ownedByParty"],
+      "targetRules": ["BR-LSC-012"]
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the net financial impact of a disruption after insurance and other recoveries are applied, and what is the annualised exposure?",
+      "targetEntities": ["lsc:ImpactAssessment"],
+      "targetRelationships": ["lsc:hasImpactProfile", "lsc:hasImpact"],
+      "targetRules": ["BR-LSC-009"]
+    },
+    {
+      "@id": "CQ-012",
+      "question": "What incidents have occurred on this supply chain, what was the root cause, and what was the time-to-detect and time-to-resolve?",
+      "targetEntities": ["lsc:Incident"],
+      "targetRelationships": ["lsc:affectsShipment", "lsc:occursAtNode", "lsc:occursOnLeg", "lsc:triggersEscalation"],
+      "targetRules": ["BR-LSC-008"]
+    },
+    {
+      "@id": "CQ-013",
+      "question": "What is the escalation pathway for a critical incident, which parties hold decision authority at each level, and what is the time window?",
+      "targetEntities": ["lsc:Escalation"],
+      "targetRelationships": ["lsc:triggersEscalation", "lsc:escalatesTo"],
+      "targetRules": ["BR-LSC-005", "BR-LSC-008"]
+    },
+    {
+      "@id": "CQ-014",
+      "question": "What preventive and corrective controls are in place to mitigate each bottleneck, and what is their measured effectiveness and cost?",
+      "targetEntities": ["lsc:RiskMitigation"],
+      "targetRelationships": ["lsc:mitigates", "lsc:ownedByParty"],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-015",
+      "question": "What testable predictions have been made about this supply chain, what is their confidence level, and how have they been validated or invalidated?",
+      "targetEntities": ["lsc:Hypothesis"],
+      "targetRelationships": ["lsc:hasHypothesis", "lsc:hypothesisInformsScenario", "lsc:patternValidatesHypothesis"],
+      "targetRules": ["BR-LSC-015", "BR-LSC-018"]
+    },
+    {
+      "@id": "CQ-016",
+      "question": "What probabilistic what-if scenarios have been modelled for this corridor, what are their trigger conditions and net financial impact?",
+      "targetEntities": ["lsc:Scenario"],
+      "targetRelationships": ["lsc:hasScenario", "lsc:scenarioTriggersBottleneck", "lsc:scenarioHasImpact"],
+      "targetRules": ["BR-LSC-016"]
+    },
+    {
+      "@id": "CQ-017",
+      "question": "What downstream cascade effects could a primary disruption trigger, which are reversible, and what is the domino chain depth?",
+      "targetEntities": ["lsc:CascadeEffect"],
+      "targetRelationships": ["lsc:hasCascade", "lsc:cascadeLeadsTo"],
+      "targetRules": ["BR-LSC-017", "BR-LSC-020"]
+    },
+    {
+      "@id": "CQ-018",
+      "question": "What recurring patterns have been identified from historical data, what are their leading indicators and reliability scores?",
+      "targetEntities": ["lsc:PredictivePattern"],
+      "targetRelationships": ["lsc:hasPredictivePattern", "lsc:patternValidatesHypothesis"],
+      "targetRules": ["BR-LSC-019"]
+    }
+  ]
+}

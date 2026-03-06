@@ -1,0 +1,1250 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "fs": "https://platformcore.io/ontology/fairslice/",
+    "pf": "https://platformcore.io/ontology/",
+    "oaa": "https://platformcore.io/ontology/oaa/",
+    "partner": "https://platformcore.io/ontology/partner/",
+    "rrr": "https://platformcore.io/ontology/rrr/",
+    "pe": "https://platformcore.io/ontology/pe/",
+    "grc-fw": "https://platformcore.io/ontology/grc-fw/",
+    "emc": "https://platformcore.io/ontology/emc/",
+    "vsom": "https://platformcore.io/ontology/vsom/",
+    "org": "https://platformcore.io/ontology/org/"
+  },
+  "@type": "Ontology",
+  "@id": "fs:ontology:fairslice-v1.0",
+  "metadata": {
+    "name": "FairSlice Platform Economics Ontology",
+    "version": "1.0.0",
+    "description": "Platform economics ontology governing dynamic equity, revenue sharing, and contribution-based value distribution across PF-Core instances. 9 owned entities: Pie, PieMember, Slice, Claim, WaterfallRule, RevenueEvent, Distribution, SmartContract, License. Automates the 'Fair Slice' principle — equitable, transparent, auditable distribution of value across builders, rainmakers, architects, and partners. Revenue Waterfall engine with 7 priority steps. AI Judge integration for claim verification. Smart Contract Registry extends Unified Registry with licensable business logic. 13 internal relationships + 6 cross-ontology bridges to RRR (roles), PE (processes), GRC-FW (audit), EMC (instances), VSOM (strategy trace), and PARTNER-ONT (channel economics).",
+    "domain": "Platform Economics & Revenue Distribution",
+    "purpose": "Provide the definitive model for dynamic equity tracking, contribution-based slice allocation, revenue waterfall distribution, smart contract governance, and AI-verified claim processing. Serves as the economic foundation for PFC-PFI-Product-Client graph cascade — every tier can have its own Pie with inherited rules.",
+    "oaaVersion": "7.0.0",
+    "series": "Orchestration",
+    "dateCreated": "2026-02-26",
+    "dateModified": "2026-02-26",
+    "creator": "Azlan EA-AAA"
+  },
+  "oaa:sourceFrameworks": [
+    {
+      "name": "Slicing Pie — Grunt Fund Dynamic Equity Model",
+      "version": "2.0",
+      "publisher": "Mike Moyer",
+      "applicability": [
+        "Dynamic equity allocation",
+        "Contribution-based ownership",
+        "Multiplier frameworks for non-cash contributions"
+      ]
+    },
+    {
+      "name": "Revenue Waterfall Distribution (SaaS Best Practice)",
+      "version": "Industry Standard",
+      "publisher": "Various",
+      "applicability": [
+        "Priority-based revenue distribution",
+        "Platform fee extraction",
+        "Multi-tier payout chains"
+      ]
+    },
+    {
+      "name": "Smart Contract Governance (Adapted for AI-Native Platforms)",
+      "version": "PFC-Native",
+      "publisher": "PF-Core Architecture",
+      "applicability": [
+        "Business logic as registry artifacts",
+        "Licensable validation rules",
+        "AI Judge verification pattern"
+      ]
+    }
+  ],
+  "oaa:imports": [
+    {
+      "@id": "partner:schema",
+      "name": "PARTNER-ONT",
+      "version": "1.0.0",
+      "description": "Partner, Agency, and Affiliate entities for channel economics",
+      "importedEntities": [
+        "partner:Partner",
+        "partner:Agency",
+        "partner:Affiliate",
+        "partner:Referral"
+      ]
+    },
+    {
+      "@id": "rrr:schema",
+      "name": "RRR-ONT",
+      "version": "1.0.0",
+      "description": "Roles, Responsibilities, and Relationships for member role alignment",
+      "importedEntities": [
+        "rrr:FunctionalRole",
+        "rrr:Responsibility"
+      ]
+    },
+    {
+      "@id": "grc-fw:schema",
+      "name": "GRC-FW-ONT",
+      "version": "3.0.0",
+      "description": "GRC governance hub for audit trail and compliance governance",
+      "importedEntities": [
+        "grc-fw:GRCContext",
+        "grc-fw:GovernanceAssurance"
+      ]
+    },
+    {
+      "@id": "emc:schema",
+      "name": "EMC-ONT",
+      "version": "5.0.0",
+      "description": "Enterprise Model Composition for instance configuration mapping",
+      "importedEntities": [
+        "emc:InstanceConfiguration"
+      ]
+    },
+    {
+      "@id": "pe:schema",
+      "name": "PE-ONT",
+      "version": "3.0.0",
+      "description": "Process Engineering for claim-as-process verification pattern",
+      "importedEntities": [
+        "pe:Process",
+        "pe:ProcessStep"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-FS-001",
+      "name": "Pie Member to RRR Role Bridge",
+      "description": "Maps FairSlice pie members to their RRR functional roles — Builder=Engineer, Rainmaker=Sales, Architect=ModuleCreator, Partner=Agency/Affiliate",
+      "joinPath": "fs:PieMember → fs:memberMapsToRole → rrr:FunctionalRole",
+      "useCase": "Determine slice multiplier based on RRR role classification. Builder roles get 2x, Rainmaker roles get commission-weighted slices."
+    },
+    {
+      "patternId": "JP-FS-002",
+      "name": "Claim to PE Process Verification",
+      "description": "Claims follow a governed process from submission through AI Judge verification to approval/rejection",
+      "joinPath": "fs:Claim → fs:claimFollowsProcess → pe:Process → pe:hasStep → pe:ProcessStep[AIJudge]",
+      "useCase": "Track claim lifecycle through process engineering steps: Submit → Validate → Judge → Approve/Reject → Distribute"
+    },
+    {
+      "patternId": "JP-FS-003",
+      "name": "Distribution to GRC Audit Trail",
+      "description": "Every distribution creates an immutable audit entry governed by GRC framework",
+      "joinPath": "fs:Distribution → fs:distributionAuditedBy → grc-fw:GovernanceAssurance → grc-fw:assuranceForContext → grc-fw:GRCContext",
+      "useCase": "Board-level visibility from GRC governance context into distribution audit trail. Ensures every payout is traceable and auditable."
+    },
+    {
+      "patternId": "JP-FS-004",
+      "name": "Smart Contract to Unified Registry",
+      "description": "Smart contracts are registry artifacts following the quasi-OO cascade (Core → Instance → Product → Client)",
+      "joinPath": "fs:SmartContract → fs:contractInRegistry → pfc:RegistryArtifact[artifactType=smart-contract]",
+      "useCase": "Architects publish smart contracts to the Unified Registry. Tenants subscribe via one-click install. Registry cascade enables Core rules inherited by Instances."
+    },
+    {
+      "patternId": "JP-FS-005",
+      "name": "Waterfall to VSOM Strategy Trace",
+      "description": "Waterfall rules trace to strategic intent — every distribution rule has a 'why' anchored in VSOM",
+      "joinPath": "fs:WaterfallRule → fs:waterfallTracesStrategy → vsom:Strategy → vsom:hasObjective → vsom:Objective",
+      "useCase": "Verify that revenue distribution rules align to strategic objectives. E.g., partner payouts align to S4 (Instance Customisation) growth strategy."
+    },
+    {
+      "patternId": "JP-FS-006",
+      "name": "Partner Referral to Waterfall Payout",
+      "description": "Partner referrals trigger waterfall steps — affiliate payouts and agency retainers",
+      "joinPath": "partner:Referral → partner:referralLinkedToPie → fs:Pie → fs:pieHasWaterfallRule → fs:WaterfallRule[type=affiliate-payout|agency-retainer]",
+      "useCase": "When a revenue event occurs, the system checks for active partner referrals and triggers the appropriate waterfall steps for affiliate and agency payouts."
+    },
+    {
+      "patternId": "JP-FS-007",
+      "name": "Pie to EMC Instance Configuration",
+      "description": "Each pie maps to an EMC instance configuration — the pie inherits the instance's ontology set and composition rules",
+      "joinPath": "fs:Pie → fs:pieMapsToInstance → emc:InstanceConfiguration → emc:declaredOntologies",
+      "useCase": "Determine which ontologies govern a pie's business rules. A BAIV pie inherits BAIV's 7 declared ontologies; a W4M pie inherits W4M's set."
+    }
+  ],
+  "entities": [
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "fs:Pie",
+      "name": "Pie",
+      "description": "A venture, startup, or project whose value is being shared among contributors. The Pie is the top-level tenant in FairSlice — it contains members, slices, waterfall rules, and active smart contracts. Each Pie has a JSONB ontology_config that defines its business rules (multipliers, waterfall priorities, vesting schedules). Maps to the 'pies' table in the Supabase schema. Inherits from PFI instance configuration via EMC.",
+      "properties": [
+        {
+          "name": "pieId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the pie (UUID)"
+        },
+        {
+          "name": "pieName",
+          "type": "Text",
+          "required": true,
+          "description": "Human-readable name for the venture/project"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": false,
+          "description": "Description of the venture, its market, and value proposition"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "description": "Pie lifecycle status: Active, Paused, Dissolved, Graduated"
+        },
+        {
+          "name": "ontologyConfig",
+          "type": "JSONB",
+          "required": true,
+          "description": "JSONB configuration defining business rules — multipliers per role, waterfall priorities, vesting schedules, custom validation rules. Follows Unified Registry cascade pattern (Core defaults → Instance override → Pie-specific)."
+        },
+        {
+          "name": "foundedDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date the pie was created"
+        },
+        {
+          "name": "currency",
+          "type": "Text",
+          "required": true,
+          "description": "Primary currency for revenue and distributions (ISO 4217 code)"
+        },
+        {
+          "name": "totalSlices",
+          "type": "Number",
+          "required": false,
+          "description": "Calculated field: SUM of all allocated slices. Used to determine ownership percentages."
+        },
+        {
+          "name": "instanceRef",
+          "type": "Text",
+          "required": false,
+          "description": "Reference to the PFI instance this pie belongs to (e.g., PFI-BAIV, PFI-W4M)"
+        },
+        {
+          "name": "stripeAccountId",
+          "type": "Text",
+          "required": false,
+          "description": "Stripe Connect account ID for payment processing"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "fs:PieMember",
+      "name": "PieMember",
+      "description": "A participant in a pie — a person or entity that holds slices and receives distributions. Each member has a role (Builder, Rainmaker, Architect, Partner) which determines their slice multiplier and distribution rules. Maps to 'pie_members' join table in Supabase.",
+      "properties": [
+        {
+          "name": "memberId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the membership record"
+        },
+        {
+          "name": "profileRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to the user profile (auth.uid in Supabase)"
+        },
+        {
+          "name": "pieRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to the pie this membership belongs to"
+        },
+        {
+          "name": "role",
+          "type": "Text",
+          "required": true,
+          "description": "Member role in this pie: Builder, Rainmaker, Architect, Partner, Advisor, Observer"
+        },
+        {
+          "name": "multiplier",
+          "type": "Number",
+          "required": true,
+          "description": "Slice multiplier for this member's role (e.g., Builder=2.0, Rainmaker=1.0, Architect=1.5)"
+        },
+        {
+          "name": "joinedDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date the member joined the pie"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "description": "Membership status: Active, Inactive, Vested-Out, Departed"
+        },
+        {
+          "name": "vestingSchedule",
+          "type": "JSONB",
+          "required": false,
+          "description": "Optional vesting schedule: cliff period, vesting duration, acceleration triggers"
+        },
+        {
+          "name": "sliceCount",
+          "type": "Number",
+          "required": false,
+          "description": "Calculated field: total slices held by this member in this pie"
+        },
+        {
+          "name": "ownershipPercentage",
+          "type": "Number",
+          "required": false,
+          "description": "Calculated field: (memberSlices / totalPieSlices) * 100"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "fs:Slice",
+      "name": "Slice",
+      "description": "A unit of contribution to a pie. Slices are the base currency of FairSlice — they represent time, money, IP, or other contributions. The slice's value is determined by its type and the member's multiplier. A Builder contributing 10 hours at 2x multiplier earns 20 slices. Total ownership = member's slices / total pie slices.",
+      "properties": [
+        {
+          "name": "sliceId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this slice allocation"
+        },
+        {
+          "name": "memberRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to the PieMember who earned these slices"
+        },
+        {
+          "name": "sliceType",
+          "type": "Text",
+          "required": true,
+          "description": "Type of contribution: Equity, Time, Cash, IP, Sweat-Equity"
+        },
+        {
+          "name": "baseUnits",
+          "type": "Number",
+          "required": true,
+          "description": "Raw contribution units before multiplier (hours, dollars, deliverables)"
+        },
+        {
+          "name": "multiplier",
+          "type": "Number",
+          "required": true,
+          "description": "Multiplier applied at allocation time (from member's role multiplier)"
+        },
+        {
+          "name": "totalSlices",
+          "type": "Number",
+          "required": true,
+          "description": "Calculated: baseUnits * multiplier. The actual slice count added."
+        },
+        {
+          "name": "claimRef",
+          "type": "Text",
+          "required": false,
+          "description": "Reference to the approved Claim that generated these slices (null for founder allocations)"
+        },
+        {
+          "name": "allocatedDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date and time the slices were allocated"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": false,
+          "description": "Human-readable description of the contribution"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "fs:Claim",
+      "name": "Claim",
+      "description": "A contribution claim submitted by a pie member for verification. Claims are the input to the AI Judge — they contain proof of contribution and the requested slice allocation. The AI Judge reads the pie's active smart contracts to verify the claim, then approves/rejects. Approved claims generate Slice allocations.",
+      "properties": [
+        {
+          "name": "claimId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this claim"
+        },
+        {
+          "name": "claimantRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to the PieMember submitting the claim"
+        },
+        {
+          "name": "pieRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to the pie this claim is for"
+        },
+        {
+          "name": "claimType",
+          "type": "Text",
+          "required": true,
+          "description": "Type of contribution being claimed: CodeShipped, DealClosed, ModuleCreated, ContentDelivered, CashInvested, TimeContributed"
+        },
+        {
+          "name": "proof",
+          "type": "JSONB",
+          "required": true,
+          "description": "Evidence of contribution: git commit hashes, invoice references, CRM deal IDs, deliverable URLs, time logs"
+        },
+        {
+          "name": "requestedSlices",
+          "type": "Number",
+          "required": true,
+          "description": "Number of base slices requested (before multiplier)"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "description": "Claim lifecycle: Pending, Under-Review, Approved, Rejected, Disputed"
+        },
+        {
+          "name": "submittedDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date and time the claim was submitted"
+        },
+        {
+          "name": "resolvedDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Date and time the claim was approved/rejected"
+        },
+        {
+          "name": "judgeReasoning",
+          "type": "Text",
+          "required": false,
+          "description": "The AI Judge's reasoning for the decision — stored verbatim for audit"
+        },
+        {
+          "name": "smartContractRef",
+          "type": "Text",
+          "required": false,
+          "description": "Reference to the SmartContract used to evaluate this claim"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "fs:WaterfallRule",
+      "name": "WaterfallRule",
+      "description": "A priority step in the revenue distribution waterfall. When a RevenueEvent arrives, the waterfall rules execute in priority order: Platform Fee first, then Affiliate Payout, Agency Retainer, Architect Royalty, OpEx Recovery, Tax Reserve, and finally Dividend Distribution. Each rule defines what percentage or fixed amount is extracted at that priority level.",
+      "properties": [
+        {
+          "name": "ruleId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this waterfall rule"
+        },
+        {
+          "name": "pieRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to the pie this rule belongs to"
+        },
+        {
+          "name": "priority",
+          "type": "Number",
+          "required": true,
+          "description": "Execution priority (1 = first, higher = later). Must be unique within a pie."
+        },
+        {
+          "name": "stepType",
+          "type": "Text",
+          "required": true,
+          "description": "Waterfall step type: Platform-Fee, Affiliate-Payout, Agency-Retainer, Architect-Royalty, OpEx-Recovery, Tax-Reserve, Dividend-Distribution"
+        },
+        {
+          "name": "calculationType",
+          "type": "Text",
+          "required": true,
+          "description": "How to calculate: Percentage, Fixed-Amount, Remainder"
+        },
+        {
+          "name": "value",
+          "type": "Number",
+          "required": true,
+          "description": "The percentage (0-100) or fixed amount for this step"
+        },
+        {
+          "name": "recipientType",
+          "type": "Text",
+          "required": true,
+          "description": "Who receives: Platform, Affiliate, Agency, Architect, Member, Pool, TaxAuthority"
+        },
+        {
+          "name": "recipientRef",
+          "type": "Text",
+          "required": false,
+          "description": "Specific recipient reference (partner ID, member ID, or 'pool' for dividend)"
+        },
+        {
+          "name": "conditions",
+          "type": "JSONB",
+          "required": false,
+          "description": "Optional conditions for this step (e.g., only applies if cash > threshold, only if partner referral exists)"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "description": "Rule status: Active, Paused, Expired"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "fs:RevenueEvent",
+      "name": "RevenueEvent",
+      "description": "An incoming revenue or transaction event for a pie. Revenue events trigger the waterfall — the system processes each WaterfallRule in priority order, creating Distribution records for each step. Sources include: SaaS subscriptions, one-time sales, marketplace licenses, consulting fees, and external payments.",
+      "properties": [
+        {
+          "name": "eventId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this revenue event"
+        },
+        {
+          "name": "pieRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to the pie receiving the revenue"
+        },
+        {
+          "name": "amount",
+          "type": "Number",
+          "required": true,
+          "description": "Gross revenue amount before waterfall distribution"
+        },
+        {
+          "name": "currency",
+          "type": "Text",
+          "required": true,
+          "description": "Currency code (ISO 4217)"
+        },
+        {
+          "name": "source",
+          "type": "Text",
+          "required": true,
+          "description": "Revenue source: SaaS-Subscription, One-Time-Sale, Marketplace-License, Consulting-Fee, External-Payment"
+        },
+        {
+          "name": "sourceRef",
+          "type": "Text",
+          "required": false,
+          "description": "External reference: Stripe payment ID, invoice number, contract reference"
+        },
+        {
+          "name": "eventDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date and time the revenue was received"
+        },
+        {
+          "name": "processedDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Date and time the waterfall was processed"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "description": "Event status: Pending, Processing, Distributed, Failed, Reversed"
+        },
+        {
+          "name": "netToPie",
+          "type": "Number",
+          "required": false,
+          "description": "Calculated: amount remaining after all waterfall deductions"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "fs:Distribution",
+      "name": "Distribution",
+      "description": "A calculated payout from a revenue event. Each Distribution represents one step in the waterfall execution — it records exactly how much went to whom, via which rule, from which event. Distributions are immutable once created (audit requirement BR-FS-004).",
+      "properties": [
+        {
+          "name": "distributionId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this distribution"
+        },
+        {
+          "name": "eventRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to the RevenueEvent that triggered this distribution"
+        },
+        {
+          "name": "waterfallRuleRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to the WaterfallRule applied"
+        },
+        {
+          "name": "recipientRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to the recipient (PieMember ID, Partner ID, or 'platform')"
+        },
+        {
+          "name": "amount",
+          "type": "Number",
+          "required": true,
+          "description": "Amount distributed in this step"
+        },
+        {
+          "name": "distributionType",
+          "type": "Text",
+          "required": true,
+          "description": "Type: Cash-Payout, Equity-Grant, Royalty-Payment, Commission-Payment, Platform-Fee, Tax-Withholding"
+        },
+        {
+          "name": "distributedDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date and time the distribution was calculated"
+        },
+        {
+          "name": "paymentStatus",
+          "type": "Text",
+          "required": true,
+          "description": "Payment status: Calculated, Queued, Paid, Failed"
+        },
+        {
+          "name": "stripeTransferId",
+          "type": "Text",
+          "required": false,
+          "description": "Stripe transfer ID if paid via Stripe Connect"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "fs:SmartContract",
+      "name": "SmartContract",
+      "description": "A packaged set of validation rules and business logic that governs specific operations within a pie. Smart Contracts are published by Architects to the Unified Registry and can be licensed by any pie. They define the system prompt and validation rules for the AI Judge. Examples: contribution verification rules, commission triggers, vesting schedules, royalty calculations, compliance checks.",
+      "properties": [
+        {
+          "name": "contractId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this smart contract"
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true,
+          "description": "Human-readable name for the contract"
+        },
+        {
+          "name": "version",
+          "type": "Text",
+          "required": true,
+          "description": "Semantic version (contracts are immutable; new versions for changes)"
+        },
+        {
+          "name": "category",
+          "type": "Text",
+          "required": true,
+          "description": "Contract category: Contribution-Verification, Commission-Trigger, Vesting-Schedule, Royalty-Calculation, Compliance-Check, Custom"
+        },
+        {
+          "name": "authorRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to the Architect (PieMember) who created this contract"
+        },
+        {
+          "name": "systemPrompt",
+          "type": "Text",
+          "required": true,
+          "description": "The system prompt template used by the AI Judge when evaluating claims against this contract. Supports variable interpolation for pie-specific context."
+        },
+        {
+          "name": "validationRules",
+          "type": "JSONB",
+          "required": true,
+          "description": "Structured validation rules: conditions, thresholds, required evidence types, scoring criteria"
+        },
+        {
+          "name": "licensingTerms",
+          "type": "JSONB",
+          "required": true,
+          "description": "How this contract can be used: {feeType: 'cash'|'equity'|'free', amount: N, currency: 'GBP', billingCycle: 'monthly'|'one-time'}"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "description": "Contract status: Draft, Published, Deprecated, Archived"
+        },
+        {
+          "name": "registryArtifactRef",
+          "type": "Text",
+          "required": false,
+          "description": "Reference to the Unified Registry artifact entry (pfc:RegistryArtifact)"
+        },
+        {
+          "name": "publishedDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Date the contract was published to the registry"
+        },
+        {
+          "name": "installCount",
+          "type": "Number",
+          "required": false,
+          "description": "Number of pies currently using this contract"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "fs:License",
+      "name": "License",
+      "description": "A subscription linking a SmartContract to a specific Pie. When a tenant installs a smart contract via one-click install, a License record is created. The license defines the terms (cash fee, equity fee, or free), duration, and activation status. Royalty payments to the Architect are triggered via the waterfall.",
+      "properties": [
+        {
+          "name": "licenseId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this license"
+        },
+        {
+          "name": "contractRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to the SmartContract being licensed"
+        },
+        {
+          "name": "pieRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to the pie using this contract"
+        },
+        {
+          "name": "feeType",
+          "type": "Text",
+          "required": true,
+          "description": "Payment type: Cash, Equity, Free"
+        },
+        {
+          "name": "feeAmount",
+          "type": "Number",
+          "required": false,
+          "description": "Fee amount per billing cycle (null for free licenses)"
+        },
+        {
+          "name": "billingCycle",
+          "type": "Text",
+          "required": false,
+          "description": "Billing frequency: Monthly, Quarterly, Annual, One-Time"
+        },
+        {
+          "name": "activatedDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date the license was activated"
+        },
+        {
+          "name": "expiresDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "License expiration date (null for perpetual)"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "description": "License status: Active, Suspended, Expired, Cancelled"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "Property",
+      "@id": "fs:pieHasMember",
+      "name": "Pie Has Member",
+      "description": "Links a Pie to its participating members",
+      "domainIncludes": ["fs:Pie"],
+      "rangeIncludes": ["fs:PieMember"],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:memberHoldsSlices",
+      "name": "Member Holds Slices",
+      "description": "Links a PieMember to their allocated slices",
+      "domainIncludes": ["fs:PieMember"],
+      "rangeIncludes": ["fs:Slice"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:claimRequestsSlice",
+      "name": "Claim Requests Slice",
+      "description": "Links an approved Claim to the Slice allocation it generated",
+      "domainIncludes": ["fs:Claim"],
+      "rangeIncludes": ["fs:Slice"],
+      "cardinality": "0..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:claimSubmittedBy",
+      "name": "Claim Submitted By",
+      "description": "Links a Claim to the PieMember who submitted it",
+      "domainIncludes": ["fs:Claim"],
+      "rangeIncludes": ["fs:PieMember"],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:pieHasWaterfallRule",
+      "name": "Pie Has Waterfall Rule",
+      "description": "Links a Pie to its revenue waterfall rules (ordered by priority)",
+      "domainIncludes": ["fs:Pie"],
+      "rangeIncludes": ["fs:WaterfallRule"],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:revenueEventForPie",
+      "name": "Revenue Event For Pie",
+      "description": "Links a RevenueEvent to the Pie receiving the revenue",
+      "domainIncludes": ["fs:RevenueEvent"],
+      "rangeIncludes": ["fs:Pie"],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:distributionFromEvent",
+      "name": "Distribution From Event",
+      "description": "Links a Distribution to the RevenueEvent that triggered it",
+      "domainIncludes": ["fs:Distribution"],
+      "rangeIncludes": ["fs:RevenueEvent"],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:distributionToRecipient",
+      "name": "Distribution To Recipient",
+      "description": "Links a Distribution to its recipient (PieMember or Partner)",
+      "domainIncludes": ["fs:Distribution"],
+      "rangeIncludes": ["fs:PieMember"],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:distributionViaRule",
+      "name": "Distribution Via Rule",
+      "description": "Links a Distribution to the WaterfallRule that calculated it",
+      "domainIncludes": ["fs:Distribution"],
+      "rangeIncludes": ["fs:WaterfallRule"],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:contractVerifiesClaim",
+      "name": "Contract Verifies Claim",
+      "description": "Links a SmartContract to the Claims it has been used to evaluate",
+      "domainIncludes": ["fs:SmartContract"],
+      "rangeIncludes": ["fs:Claim"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:licenseForContract",
+      "name": "License For Contract",
+      "description": "Links a License to the SmartContract it grants access to",
+      "domainIncludes": ["fs:License"],
+      "rangeIncludes": ["fs:SmartContract"],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:licenseInPie",
+      "name": "License In Pie",
+      "description": "Links a License to the Pie that subscribed to it",
+      "domainIncludes": ["fs:License"],
+      "rangeIncludes": ["fs:Pie"],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:contractPublishedBy",
+      "name": "Contract Published By",
+      "description": "Links a SmartContract to the Architect who created and published it",
+      "domainIncludes": ["fs:SmartContract"],
+      "rangeIncludes": ["fs:PieMember"],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:memberMapsToRole",
+      "name": "Member Maps To RRR Role",
+      "description": "Maps a FairSlice PieMember to their corresponding RRR functional role. Builder=Engineer, Rainmaker=Sales, Architect=ModuleCreator, Partner=Agency/Affiliate.",
+      "domainIncludes": ["fs:PieMember"],
+      "rangeIncludes": ["rrr:FunctionalRole"],
+      "cardinality": "1..1",
+      "oaa:crossOntologyRef": "RRR"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:claimFollowsProcess",
+      "name": "Claim Follows Process",
+      "description": "Claims follow a governed PE process: Submit → Validate → Judge → Approve/Reject → Distribute",
+      "domainIncludes": ["fs:Claim"],
+      "rangeIncludes": ["pe:Process"],
+      "cardinality": "1..1",
+      "oaa:crossOntologyRef": "PE"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:distributionAuditedBy",
+      "name": "Distribution Audited By",
+      "description": "Every distribution is audited under GRC governance — immutable audit trail with input, reasoning, and output",
+      "domainIncludes": ["fs:Distribution"],
+      "rangeIncludes": ["grc-fw:GovernanceAssurance"],
+      "cardinality": "1..1",
+      "oaa:crossOntologyRef": "GRC-FW"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:pieMapsToInstance",
+      "name": "Pie Maps To Instance",
+      "description": "Maps a Pie to its governing EMC InstanceConfiguration — the pie inherits the instance's ontology set and composition rules",
+      "domainIncludes": ["fs:Pie"],
+      "rangeIncludes": ["emc:InstanceConfiguration"],
+      "cardinality": "0..1",
+      "oaa:crossOntologyRef": "EMC"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:waterfallTracesStrategy",
+      "name": "Waterfall Traces Strategy",
+      "description": "Every waterfall rule traces to a VSOM strategy — the 'why' behind every distribution rule",
+      "domainIncludes": ["fs:WaterfallRule"],
+      "rangeIncludes": ["vsom:Strategy"],
+      "cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM"
+    },
+    {
+      "@type": "Property",
+      "@id": "fs:contractInRegistry",
+      "name": "Contract In Registry",
+      "description": "Smart contracts are registered as artifacts in the Unified Registry, following the quasi-OO cascade",
+      "domainIncludes": ["fs:SmartContract"],
+      "rangeIncludes": ["pf:RegistryArtifact"],
+      "cardinality": "0..1",
+      "oaa:crossOntologyRef": "PFC-Registry"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-FS-001",
+      "name": "Slice Ownership Calculation",
+      "condition": "IF slices are allocated to a PieMember",
+      "action": "THEN ownershipPercentage MUST equal (memberSlices / SUM(allPieSlices)) * 100 AND totalSlices on Pie MUST be updated",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-FS-002",
+      "name": "Waterfall Priority Uniqueness",
+      "condition": "IF WaterfallRules exist for a Pie",
+      "action": "THEN each rule MUST have a unique priority value AND Platform-Fee MUST be priority 1",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-FS-003",
+      "name": "Claim Requires Proof",
+      "condition": "IF a Claim is submitted",
+      "action": "THEN proof MUST contain at least one evidence item (commit hash, invoice ref, contract ref, URL, or time log)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-FS-004",
+      "name": "Distribution Audit Trail",
+      "condition": "IF a Distribution is created",
+      "action": "THEN an immutable audit log entry MUST be created with exact input data, AI Judge reasoning (if applicable), and output amounts",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-FS-005",
+      "name": "Immutable Attribution",
+      "condition": "IF a partner referral attribution is attached to a Pie",
+      "action": "THEN the referral code and partner link MUST be immutable — cannot be changed, reassigned, or deleted (prevents commission hijacking)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-FS-006",
+      "name": "Smart Contract Versioning",
+      "condition": "IF a SmartContract is published",
+      "action": "THEN it MUST have a semantic version AND active contracts MUST NOT be modified in-place — new versions MUST be created for changes",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-FS-007",
+      "name": "Multiplier Transparency",
+      "condition": "IF a slice multiplier is applied to a member",
+      "action": "THEN the multiplier MUST be declared in the Pie's ontologyConfig before being used AND visible to all pie members",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-FS-008",
+      "name": "Waterfall Sum Constraint",
+      "condition": "IF WaterfallRules are configured for a Pie",
+      "action": "THEN the sum of all percentage-based rules MUST NOT exceed 100% AND the final step SHOULD be Dividend-Distribution with calculationType=Remainder",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-FS-009",
+      "name": "AI Judge Reasoning Persistence",
+      "condition": "IF the AI Judge processes a Claim",
+      "action": "THEN the exact system prompt, input data, and output reasoning MUST be stored in audit_logs AND the Claim's judgeReasoning field MUST be populated",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-FS-010",
+      "name": "Tenant Isolation",
+      "condition": "IF a user accesses Pie data",
+      "action": "THEN RLS policies MUST enforce that only pie_members of that pie (or authorised agency partners) can read/write data",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-FS-011",
+      "name": "Revenue Event Completeness",
+      "condition": "IF a RevenueEvent is processed",
+      "action": "THEN netToPie MUST equal (amount - SUM(all distributions)) AND the event status MUST transition to Distributed",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-FS-012",
+      "name": "License Required for Contract Use",
+      "condition": "IF a SmartContract is used to evaluate a Claim in a Pie",
+      "action": "THEN an active License MUST exist linking that contract to that pie",
+      "severity": "error"
+    }
+  ],
+  "oaa:enumerations": [
+    {
+      "@id": "fs:PieStatus",
+      "@type": "DefinedTermSet",
+      "name": "PieStatus",
+      "description": "Lifecycle states for a Pie.",
+      "hasDefinedTerm": [
+        {"@id": "fs:piestatus/active", "name": "Active", "description": "Pie is operational, accepting contributions and distributing revenue"},
+        {"@id": "fs:piestatus/paused", "name": "Paused", "description": "Pie operations temporarily suspended — no new claims or distributions"},
+        {"@id": "fs:piestatus/dissolved", "name": "Dissolved", "description": "Pie has been formally dissolved — final distributions calculated"},
+        {"@id": "fs:piestatus/graduated", "name": "Graduated", "description": "Pie has transitioned to a formal entity (Ltd, LLC) — FairSlice governance replaced by corporate structure"}
+      ]
+    },
+    {
+      "@id": "fs:MemberRole",
+      "@type": "DefinedTermSet",
+      "name": "MemberRole",
+      "description": "Roles a PieMember can hold. Maps to RRR functional roles.",
+      "hasDefinedTerm": [
+        {"@id": "fs:role/builder", "name": "Builder", "description": "Engineer/developer — earns 2x multiplier for code shipped. Maps to rrr:Engineer.", "defaultMultiplier": 2.0},
+        {"@id": "fs:role/rainmaker", "name": "Rainmaker", "description": "Sales/business development — earns commission + equity. Maps to rrr:Sales.", "defaultMultiplier": 1.0},
+        {"@id": "fs:role/architect", "name": "Architect", "description": "Module/smart contract creator — earns royalties. Maps to rrr:ModuleCreator.", "defaultMultiplier": 1.5},
+        {"@id": "fs:role/partner", "name": "Partner", "description": "Agency or affiliate — earns override/revenue share. Maps to partner:Partner.", "defaultMultiplier": 1.0},
+        {"@id": "fs:role/advisor", "name": "Advisor", "description": "Strategic advisor — earns equity for guidance. Typically lower multiplier.", "defaultMultiplier": 0.5},
+        {"@id": "fs:role/observer", "name": "Observer", "description": "Read-only access — investors, board members. No slices earned.", "defaultMultiplier": 0.0}
+      ]
+    },
+    {
+      "@id": "fs:SliceType",
+      "@type": "DefinedTermSet",
+      "name": "SliceType",
+      "description": "Types of contribution that earn slices.",
+      "hasDefinedTerm": [
+        {"@id": "fs:slicetype/equity", "name": "Equity", "description": "Direct equity allocation (founder shares, investor stakes)"},
+        {"@id": "fs:slicetype/time", "name": "Time", "description": "Time-based contribution (hours worked, sprints completed)"},
+        {"@id": "fs:slicetype/cash", "name": "Cash", "description": "Cash investment (seed funding, operating expenses paid)"},
+        {"@id": "fs:slicetype/ip", "name": "IP", "description": "Intellectual property contribution (patents, designs, smart contracts)"},
+        {"@id": "fs:slicetype/sweat-equity", "name": "Sweat-Equity", "description": "Non-cash contribution of labour or expertise before revenue"}
+      ]
+    },
+    {
+      "@id": "fs:ClaimStatus",
+      "@type": "DefinedTermSet",
+      "name": "ClaimStatus",
+      "description": "Lifecycle states for a Claim.",
+      "hasDefinedTerm": [
+        {"@id": "fs:claimstatus/pending", "name": "Pending", "description": "Claim submitted, awaiting review"},
+        {"@id": "fs:claimstatus/under-review", "name": "Under-Review", "description": "AI Judge is evaluating the claim against active smart contracts"},
+        {"@id": "fs:claimstatus/approved", "name": "Approved", "description": "Claim verified and slices allocated"},
+        {"@id": "fs:claimstatus/rejected", "name": "Rejected", "description": "Claim failed verification — reasoning stored in judgeReasoning"},
+        {"@id": "fs:claimstatus/disputed", "name": "Disputed", "description": "Claim decision challenged by claimant — escalated for human review"}
+      ]
+    },
+    {
+      "@id": "fs:WaterfallStepType",
+      "@type": "DefinedTermSet",
+      "name": "WaterfallStepType",
+      "description": "Types of waterfall distribution steps, in typical priority order.",
+      "hasDefinedTerm": [
+        {"@id": "fs:wfstep/platform-fee", "name": "Platform-Fee", "description": "FairSlice SaaS platform fee — always priority 1", "typicalPriority": 1},
+        {"@id": "fs:wfstep/affiliate-payout", "name": "Affiliate-Payout", "description": "Auto-redirect X% of platform fee to referring affiliate", "typicalPriority": 2},
+        {"@id": "fs:wfstep/agency-retainer", "name": "Agency-Retainer", "description": "Management fee paid to agency managing this pie", "typicalPriority": 3},
+        {"@id": "fs:wfstep/architect-royalty", "name": "Architect-Royalty", "description": "License fee for smart contracts used by this pie", "typicalPriority": 4},
+        {"@id": "fs:wfstep/opex-recovery", "name": "OpEx-Recovery", "description": "Repayment of operating expenses and cash contributions", "typicalPriority": 5},
+        {"@id": "fs:wfstep/tax-reserve", "name": "Tax-Reserve", "description": "Withholding for tax obligations", "typicalPriority": 6},
+        {"@id": "fs:wfstep/dividend-distribution", "name": "Dividend-Distribution", "description": "Remaining profit distributed to shareholders by ownership %", "typicalPriority": 7}
+      ]
+    },
+    {
+      "@id": "fs:ContractCategory",
+      "@type": "DefinedTermSet",
+      "name": "ContractCategory",
+      "description": "Categories of smart contracts in the registry.",
+      "hasDefinedTerm": [
+        {"@id": "fs:contractcat/contribution-verification", "name": "Contribution-Verification", "description": "Validates contribution claims (code shipped, deals closed, content delivered)"},
+        {"@id": "fs:contractcat/commission-trigger", "name": "Commission-Trigger", "description": "Triggers commission payouts based on revenue events or deal closure"},
+        {"@id": "fs:contractcat/vesting-schedule", "name": "Vesting-Schedule", "description": "Defines equity vesting rules — cliff, duration, acceleration triggers"},
+        {"@id": "fs:contractcat/royalty-calculation", "name": "Royalty-Calculation", "description": "Calculates royalty payments for licensed smart contracts or IP"},
+        {"@id": "fs:contractcat/compliance-check", "name": "Compliance-Check", "description": "Validates regulatory or governance compliance requirements"},
+        {"@id": "fs:contractcat/custom", "name": "Custom", "description": "Custom business logic defined by the pie's ontology_config"}
+      ]
+    },
+    {
+      "@id": "fs:DistributionType",
+      "@type": "DefinedTermSet",
+      "name": "DistributionType",
+      "description": "Types of distribution payouts.",
+      "hasDefinedTerm": [
+        {"@id": "fs:disttype/cash-payout", "name": "Cash-Payout", "description": "Cash payment to a member or partner"},
+        {"@id": "fs:disttype/equity-grant", "name": "Equity-Grant", "description": "Equity allocation (slices) rather than cash"},
+        {"@id": "fs:disttype/royalty-payment", "name": "Royalty-Payment", "description": "Royalty to a smart contract architect"},
+        {"@id": "fs:disttype/commission-payment", "name": "Commission-Payment", "description": "Commission to a sales member or partner"},
+        {"@id": "fs:disttype/platform-fee", "name": "Platform-Fee", "description": "Fee paid to the FairSlice platform"},
+        {"@id": "fs:disttype/tax-withholding", "name": "Tax-Withholding", "description": "Tax reserve withholding"}
+      ]
+    },
+    {
+      "@id": "fs:ClaimType",
+      "@type": "DefinedTermSet",
+      "name": "ClaimType",
+      "description": "Types of contribution claims.",
+      "hasDefinedTerm": [
+        {"@id": "fs:claimtype/code-shipped", "name": "CodeShipped", "description": "Code merged to main branch — proof: git commit hashes, PR references"},
+        {"@id": "fs:claimtype/deal-closed", "name": "DealClosed", "description": "Sales deal closed — proof: CRM deal ID, signed contract, invoice"},
+        {"@id": "fs:claimtype/module-created", "name": "ModuleCreated", "description": "Smart contract or module published — proof: registry artifact ID, version"},
+        {"@id": "fs:claimtype/content-delivered", "name": "ContentDelivered", "description": "Content or deliverable completed — proof: URL, client sign-off"},
+        {"@id": "fs:claimtype/cash-invested", "name": "CashInvested", "description": "Cash investment made — proof: bank transfer ref, invoice"},
+        {"@id": "fs:claimtype/time-contributed", "name": "TimeContributed", "description": "Time-based contribution — proof: time log, sprint report, deliverable"}
+      ]
+    }
+  ],
+  "crossOntologyReferences": {
+    "bridges": [
+      {
+        "to": "rrr:",
+        "entity": "FunctionalRole",
+        "relationship": "memberMapsToRole",
+        "description": "PieMember roles align to RRR functional roles — Builder=Engineer, Rainmaker=Sales, Architect=ModuleCreator"
+      },
+      {
+        "to": "pe:",
+        "entity": "Process",
+        "relationship": "claimFollowsProcess",
+        "description": "Claims follow a governed PE process lifecycle: Submit → Validate → Judge → Approve/Reject → Distribute"
+      },
+      {
+        "to": "grc-fw:",
+        "entity": "GovernanceAssurance",
+        "relationship": "distributionAuditedBy",
+        "description": "Every distribution is audited under GRC governance with immutable audit trail"
+      },
+      {
+        "to": "emc:",
+        "entity": "InstanceConfiguration",
+        "relationship": "pieMapsToInstance",
+        "description": "Pies inherit PFI instance configuration — ontology set and composition rules"
+      },
+      {
+        "to": "vsom:",
+        "entity": "Strategy",
+        "relationship": "waterfallTracesStrategy",
+        "description": "Waterfall rules trace to VSOM strategies — every distribution has strategic justification"
+      },
+      {
+        "to": "partner:",
+        "entity": "Partner",
+        "relationship": "referralLinkedToPie (via PARTNER-ONT)",
+        "description": "Partner referrals trigger waterfall steps for affiliate payouts and agency retainers"
+      }
+    ],
+    "description": "FAIRSLICE-ONT bridges to RRR (role alignment), PE (process governance), GRC-FW (audit trail), EMC (instance configuration), VSOM (strategy trace), and PARTNER (channel economics). It sits in the Orchestration series alongside EMC-ONT, governing the economic layer of the PFC platform."
+  },
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "7.0.0",
+    "lastModified": "2026-02-26",
+    "modifiedBy": "Azlan EA-AAA",
+    "changeNotes": "Initial release: 9 owned entities (Pie, PieMember, Slice, Claim, WaterfallRule, RevenueEvent, Distribution, SmartContract, License). 19 relationships (13 internal + 6 cross-ontology). 12 business rules. 8 enumerations. 7 join patterns. Revenue Waterfall engine with 7 priority steps. AI Judge integration pattern. Smart Contract Registry extending Unified Registry. VP-RRR alignment: Problem→Risk (contributor under-reward), Solution→Requirement (transparent ledger), Benefit→Result (equitable returns). Epic 50 F50.1.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-02-26",
+        "notes": "Initial release. Platform economics for dynamic equity and revenue sharing. Slicing Pie model adapted for PFC agentic platform. Revenue Waterfall: Platform Fee → Affiliate → Agency → Architect Royalty → OpEx → Tax → Dividend. Smart Contract Registry as Unified Registry artifact type. AI Judge claim verification. 6 cross-ontology bridges. Epic 50 F50.1."
+      }
+    ]
+  },
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "FAIRSLICE-ONT",
+  "oaa:series": "Orchestration",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-FS-001",
+      "question": "What percentage of the pie does contributor X currently own?",
+      "targetEntities": ["fs:Pie", "fs:PieMember", "fs:Slice"],
+      "targetRelationships": ["fs:pieHasMember", "fs:memberHoldsSlices"],
+      "targetRules": ["BR-FS-001"]
+    },
+    {
+      "@id": "CQ-FS-002",
+      "question": "When $100 of revenue arrives, how is it distributed across the waterfall?",
+      "targetEntities": ["fs:RevenueEvent", "fs:WaterfallRule", "fs:Distribution"],
+      "targetRelationships": ["fs:revenueEventForPie", "fs:pieHasWaterfallRule", "fs:distributionFromEvent"],
+      "targetRules": ["BR-FS-002", "BR-FS-008", "BR-FS-011"]
+    },
+    {
+      "@id": "CQ-FS-003",
+      "question": "Which smart contracts govern claim verification in pie Y?",
+      "targetEntities": ["fs:SmartContract", "fs:License", "fs:Pie"],
+      "targetRelationships": ["fs:licenseInPie", "fs:licenseForContract"],
+      "targetRules": ["BR-FS-012"]
+    },
+    {
+      "@id": "CQ-FS-004",
+      "question": "What is the complete audit trail for distribution Z?",
+      "targetEntities": ["fs:Distribution", "fs:RevenueEvent", "fs:WaterfallRule"],
+      "targetRelationships": ["fs:distributionFromEvent", "fs:distributionViaRule", "fs:distributionAuditedBy"],
+      "targetRules": ["BR-FS-004", "BR-FS-009"]
+    },
+    {
+      "@id": "CQ-FS-005",
+      "question": "Which partner referrals are attached to pie Y and what commission do they earn?",
+      "targetEntities": ["fs:Pie", "fs:WaterfallRule"],
+      "targetRelationships": ["fs:pieHasWaterfallRule"],
+      "targetRules": ["BR-FS-005"]
+    }
+  ]
+}

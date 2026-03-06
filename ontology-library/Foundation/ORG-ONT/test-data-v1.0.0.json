@@ -1,0 +1,220 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform.framework/ontology/"
+  },
+  "@type": "Dataset",
+  "@id": "pf:testdata:org-ontology-v1",
+  
+  "name": "Organization Ontology Test Data",
+  "version": "1.0.0",
+  "dateCreated": "2026-01-20",
+  "description": "Comprehensive test data for Organization Ontology validation",
+  
+  "distribution": {
+    "typical": {
+      "count": 6,
+      "percentage": 60,
+      "description": "Standard, expected use cases"
+    },
+    "edge": {
+      "count": 2,
+      "percentage": 20,
+      "description": "Valid but unusual combinations"
+    },
+    "boundary": {
+      "count": 1,
+      "percentage": 10,
+      "description": "At the limits of valid values"
+    },
+    "invalid": {
+      "count": 1,
+      "percentage": 10,
+      "description": "Should fail validation - for testing error handling"
+    }
+  },
+  
+  "totalInstances": 10,
+  
+  "testData": {
+    "Organization": {
+      "typical": [
+        {
+          "testId": "ORG-TYP-001",
+          "description": "Standard direct client - SME in Healthcare",
+          "@type": "pf:Organization",
+          "@id": "org:foot-scientific",
+          "organizationId": "org:foot-scientific",
+          "name": "Foot Scientific",
+          "legalName": "Foot Scientific, LLC",
+          "type": "Client",
+          "industry": "Healthcare",
+          "size": "SME (51-250)",
+          "domain": "https://footscientific.com",
+          "platformRelationships": [
+            {"type": "client", "tier": "direct", "status": "active"}
+          ]
+        },
+        {
+          "testId": "ORG-TYP-002",
+          "description": "Standard agency organization",
+          "@type": "pf:Organization",
+          "@id": "org:marketing-masters",
+          "organizationId": "org:marketing-masters",
+          "name": "Marketing Masters Agency",
+          "legalName": "Marketing Masters, Inc.",
+          "type": "Agency",
+          "industry": "Professional Services",
+          "size": "SME (51-250)",
+          "domain": "https://marketingmasters.com",
+          "platformRelationships": [
+            {"type": "agency", "status": "active"}
+          ]
+        },
+        {
+          "testId": "ORG-TYP-003",
+          "description": "Standard agency-managed client",
+          "@type": "pf:Organization",
+          "@id": "org:small-retail-co",
+          "organizationId": "org:small-retail-co",
+          "name": "Small Retail Co",
+          "type": "Client",
+          "industry": "Retail",
+          "size": "Startup (1-50)",
+          "domain": "https://smallretail.com",
+          "platformRelationships": [
+            {"type": "client", "tier": "agency_managed", "managedBy": "org:marketing-masters", "status": "active"}
+          ]
+        },
+        {
+          "testId": "ORG-TYP-004",
+          "description": "Enterprise client - large retail",
+          "@type": "pf:Organization",
+          "@id": "org:shoe-carnival",
+          "organizationId": "org:shoe-carnival",
+          "name": "Shoe Carnival",
+          "legalName": "Shoe Carnival, Inc.",
+          "type": "Client",
+          "industry": "Retail",
+          "size": "Enterprise (1000+)",
+          "domain": "https://shoecarnival.com",
+          "platformRelationships": [
+            {"type": "client", "tier": "direct", "status": "active"}
+          ]
+        },
+        {
+          "testId": "ORG-TYP-005",
+          "description": "Standard competitor organization",
+          "@type": "pf:Organization",
+          "@id": "org:superfeet",
+          "organizationId": "org:superfeet",
+          "name": "Superfeet",
+          "type": "Competitor",
+          "industry": "Healthcare",
+          "size": "Mid-Market (251-1000)",
+          "domain": "https://superfeet.com",
+          "platformRelationships": [
+            {"type": "competitor", "status": "active"}
+          ]
+        },
+        {
+          "testId": "ORG-TYP-006",
+          "description": "Standard partner organization",
+          "@type": "pf:Organization",
+          "@id": "org:tech-partner",
+          "organizationId": "org:tech-partner",
+          "name": "Tech Integration Partners",
+          "type": "Partner",
+          "industry": "Technology",
+          "size": "SME (51-250)",
+          "domain": "https://techpartners.io",
+          "platformRelationships": [
+            {"type": "partner", "status": "active"}
+          ]
+        }
+      ],
+      "edge": [
+        {
+          "testId": "ORG-EDG-001",
+          "description": "Organization with multiple relationship types (client + affiliate)",
+          "@type": "pf:Organization",
+          "@id": "org:dual-role-client",
+          "organizationId": "org:dual-role-client",
+          "name": "Dual Role Organization",
+          "legalName": "Dual Role Corp",
+          "type": "Client",
+          "industry": "Financial Services",
+          "size": "SME (51-250)",
+          "domain": "https://dualrole.com",
+          "platformRelationships": [
+            {"type": "client", "tier": "direct", "status": "active"},
+            {"type": "affiliate", "status": "active", "referralCode": "DUAL2025"}
+          ]
+        },
+        {
+          "testId": "ORG-EDG-002",
+          "description": "Agency that is also a client (uses platform for themselves)",
+          "@type": "pf:Organization",
+          "@id": "org:agency-client-hybrid",
+          "organizationId": "org:agency-client-hybrid",
+          "name": "Hybrid Marketing Agency",
+          "type": "Agency",
+          "industry": "Professional Services",
+          "size": "SME (51-250)",
+          "domain": "https://hybridagency.com",
+          "platformRelationships": [
+            {"type": "agency", "status": "active"},
+            {"type": "client", "tier": "direct", "status": "active"}
+          ]
+        }
+      ],
+      "boundary": [
+        {
+          "testId": "ORG-BND-001",
+          "description": "Organization at minimum valid state - only required fields",
+          "@type": "pf:Organization",
+          "@id": "org:minimal-org",
+          "organizationId": "org:minimal-org",
+          "name": "Minimal Organization",
+          "type": "Client",
+          "industry": "Other",
+          "size": "Startup (1-50)",
+          "platformRelationships": [
+            {"type": "client", "tier": "direct", "status": "prospect"}
+          ]
+        }
+      ],
+      "invalid": [
+        {
+          "testId": "ORG-INV-001",
+          "description": "INVALID: Agency-managed client missing managedBy reference",
+          "@type": "pf:Organization",
+          "@id": "org:invalid-managed",
+          "organizationId": "org:invalid-managed",
+          "name": "Invalid Managed Client",
+          "type": "Client",
+          "industry": "Retail",
+          "size": "Startup (1-50)",
+          "platformRelationships": [
+            {"type": "client", "tier": "agency_managed", "status": "active"}
+          ],
+          "expectedValidationErrors": [
+            {
+              "rule": "BR-ORG-002",
+              "field": "platformRelationships[0].managedBy",
+              "message": "Agency managed clients must specify managedBy"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  
+  "validationSummary": {
+    "totalTestCases": 10,
+    "expectedPass": 9,
+    "expectedFail": 1,
+    "coveragePercentage": 100,
+    "distributionValid": true
+  }
+}

@@ -1,0 +1,415 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ea": "https://ontology.enterprise-architecture.io/azure/",
+    "azure": "https://ontology.enterprise-architecture.io/azure/cloud/",
+    "waf": "https://ontology.enterprise-architecture.io/azure/waf/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+  },
+  "@graph": [
+    {
+      "@id": "waf:WellArchitectedFramework",
+      "@type": "DefinedTermSet",
+      "name": "Azure Well-Architected Framework Ontology",
+      "description": "Microsoft Azure Well-Architected Framework pillars, design principles, and assessment criteria",
+      "version": "2.0.0-pre-oaav5",
+      "url": "https://learn.microsoft.com/azure/well-architected/"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "waf:WAFPillar",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTerm"},
+      "rdfs:label": "WAF Pillar",
+      "rdfs:comment": "A foundational pillar of the Azure Well-Architected Framework"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "waf:DesignPrinciple",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTerm"},
+      "rdfs:label": "Design Principle",
+      "rdfs:comment": "A guiding principle for well-architected solutions"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "waf:AssessmentCriterion",
+      "rdfs:subClassOf": {"@id": "schema:QuantitativeValue"},
+      "rdfs:label": "Assessment Criterion",
+      "rdfs:comment": "A measurable criterion for architecture assessment"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "waf:TradeoffConsideration",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTerm"},
+      "rdfs:label": "Tradeoff Consideration",
+      "rdfs:comment": "A documented tradeoff between WAF pillars"
+    },
+
+    {
+      "@type": "waf:WAFPillar",
+      "@id": "waf:ReliabilityPillar",
+      "name": "Reliability",
+      "description": "The ability of a system to recover from failures and continue to function",
+      "waf:pillarOrder": 1,
+      "waf:keyGoals": [
+        "Design for business requirements",
+        "Design for resilience",
+        "Design for recovery",
+        "Design for operations",
+        "Keep it simple"
+      ],
+      "waf:azureServices": [
+        "Azure Site Recovery",
+        "Azure Backup",
+        "Availability Zones",
+        "Azure Traffic Manager",
+        "Azure Front Door",
+        "Azure Load Balancer"
+      ]
+    },
+
+    {
+      "@type": "waf:WAFPillar",
+      "@id": "waf:SecurityPillar",
+      "name": "Security",
+      "description": "Protect applications and data from threats",
+      "waf:pillarOrder": 2,
+      "waf:keyGoals": [
+        "Plan your security readiness",
+        "Design to protect confidentiality",
+        "Design to protect integrity",
+        "Design to protect availability",
+        "Sustain and evolve your security posture"
+      ],
+      "waf:azureServices": [
+        "Microsoft Entra ID",
+        "Azure Key Vault",
+        "Microsoft Defender for Cloud",
+        "Microsoft Sentinel",
+        "Azure Firewall",
+        "Azure DDoS Protection",
+        "Azure Private Link"
+      ]
+    },
+
+    {
+      "@type": "waf:WAFPillar",
+      "@id": "waf:CostOptimizationPillar",
+      "name": "Cost Optimization",
+      "description": "Manage costs to maximize the value delivered",
+      "waf:pillarOrder": 3,
+      "waf:keyGoals": [
+        "Develop cost-management discipline",
+        "Design with a cost-efficiency mindset",
+        "Design for usage optimization",
+        "Design for rate optimization",
+        "Monitor and optimize over time"
+      ],
+      "waf:azureServices": [
+        "Azure Cost Management",
+        "Azure Advisor",
+        "Azure Reservations",
+        "Azure Spot VMs",
+        "Azure Hybrid Benefit"
+      ]
+    },
+
+    {
+      "@type": "waf:WAFPillar",
+      "@id": "waf:OperationalExcellencePillar",
+      "name": "Operational Excellence",
+      "description": "Operations processes that keep a system running in production",
+      "waf:pillarOrder": 4,
+      "waf:keyGoals": [
+        "Embrace DevOps culture",
+        "Establish development standards",
+        "Evolve operations with observability",
+        "Deploy with confidence",
+        "Automate for efficiency"
+      ],
+      "waf:azureServices": [
+        "Azure DevOps",
+        "GitHub Actions",
+        "Azure Monitor",
+        "Application Insights",
+        "Azure Log Analytics",
+        "Azure Automation",
+        "Azure Resource Manager"
+      ]
+    },
+
+    {
+      "@type": "waf:WAFPillar",
+      "@id": "waf:PerformanceEfficiencyPillar",
+      "name": "Performance Efficiency",
+      "description": "The ability of a system to adapt to changes in load",
+      "waf:pillarOrder": 5,
+      "waf:keyGoals": [
+        "Negotiate realistic performance targets",
+        "Design to meet capacity requirements",
+        "Achieve and sustain performance",
+        "Improve efficiency through optimization"
+      ],
+      "waf:azureServices": [
+        "Azure CDN",
+        "Azure Cache for Redis",
+        "Azure Load Testing",
+        "Azure Autoscale",
+        "Azure SQL Hyperscale",
+        "Cosmos DB with autoscale"
+      ]
+    },
+
+    {
+      "@type": "waf:DesignPrinciple",
+      "@id": "waf:DesignForFailure",
+      "name": "Design for failure",
+      "waf:belongsToPillar": {"@id": "waf:ReliabilityPillar"},
+      "description": "Anticipate failures and design systems to be resilient"
+    },
+
+    {
+      "@type": "waf:DesignPrinciple",
+      "@id": "waf:DefenseInDepth",
+      "name": "Defense in depth",
+      "waf:belongsToPillar": {"@id": "waf:SecurityPillar"},
+      "description": "Implement multiple layers of security controls"
+    },
+
+    {
+      "@type": "waf:DesignPrinciple",
+      "@id": "waf:ZeroTrust",
+      "name": "Zero Trust",
+      "waf:belongsToPillar": {"@id": "waf:SecurityPillar"},
+      "description": "Never trust, always verify - assume breach"
+    },
+
+    {
+      "@type": "waf:DesignPrinciple",
+      "@id": "waf:PayForWhatYouUse",
+      "name": "Pay for what you use",
+      "waf:belongsToPillar": {"@id": "waf:CostOptimizationPillar"},
+      "description": "Align costs with actual consumption patterns"
+    },
+
+    {
+      "@type": "waf:DesignPrinciple",
+      "@id": "waf:InfrastructureAsCode",
+      "name": "Infrastructure as Code",
+      "waf:belongsToPillar": {"@id": "waf:OperationalExcellencePillar"},
+      "description": "Manage infrastructure using code and automation"
+    },
+
+    {
+      "@type": "waf:DesignPrinciple",
+      "@id": "waf:DesignForScaleOut",
+      "name": "Design for scale-out",
+      "waf:belongsToPillar": {"@id": "waf:PerformanceEfficiencyPillar"},
+      "description": "Design systems to scale horizontally"
+    },
+
+    {
+      "@type": "waf:AssessmentCriterion",
+      "@id": "waf:RTOMetric",
+      "name": "Recovery Time Objective (RTO)",
+      "waf:belongsToPillar": {"@id": "waf:ReliabilityPillar"},
+      "unitCode": "MIN",
+      "description": "Maximum acceptable downtime"
+    },
+
+    {
+      "@type": "waf:AssessmentCriterion",
+      "@id": "waf:RPOMetric",
+      "name": "Recovery Point Objective (RPO)",
+      "waf:belongsToPillar": {"@id": "waf:ReliabilityPillar"},
+      "unitCode": "MIN",
+      "description": "Maximum acceptable data loss measured in time"
+    },
+
+    {
+      "@type": "waf:AssessmentCriterion",
+      "@id": "waf:UptimeSLA",
+      "name": "Uptime SLA",
+      "waf:belongsToPillar": {"@id": "waf:ReliabilityPillar"},
+      "unitCode": "P1",
+      "description": "Percentage of time service is available"
+    },
+
+    {
+      "@type": "waf:AssessmentCriterion",
+      "@id": "waf:MTTR",
+      "name": "Mean Time To Recovery",
+      "waf:belongsToPillar": {"@id": "waf:ReliabilityPillar"},
+      "unitCode": "MIN",
+      "description": "Average time to restore service after failure"
+    },
+
+    {
+      "@type": "waf:AssessmentCriterion",
+      "@id": "waf:SecurityScore",
+      "name": "Microsoft Secure Score",
+      "waf:belongsToPillar": {"@id": "waf:SecurityPillar"},
+      "unitCode": "P1",
+      "description": "Microsoft security posture assessment score"
+    },
+
+    {
+      "@type": "waf:AssessmentCriterion",
+      "@id": "waf:ComplianceScore",
+      "name": "Compliance Score",
+      "waf:belongsToPillar": {"@id": "waf:SecurityPillar"},
+      "unitCode": "P1",
+      "description": "Regulatory compliance assessment score"
+    },
+
+    {
+      "@type": "waf:AssessmentCriterion",
+      "@id": "waf:CostVariance",
+      "name": "Cost Variance",
+      "waf:belongsToPillar": {"@id": "waf:CostOptimizationPillar"},
+      "unitCode": "P1",
+      "description": "Percentage variance from budget"
+    },
+
+    {
+      "@type": "waf:AssessmentCriterion",
+      "@id": "waf:ResourceUtilization",
+      "name": "Resource Utilization",
+      "waf:belongsToPillar": {"@id": "waf:CostOptimizationPillar"},
+      "unitCode": "P1",
+      "description": "Percentage of provisioned resources actually used"
+    },
+
+    {
+      "@type": "waf:AssessmentCriterion",
+      "@id": "waf:DeploymentFrequency",
+      "name": "Deployment Frequency",
+      "waf:belongsToPillar": {"@id": "waf:OperationalExcellencePillar"},
+      "unitCode": "DAY",
+      "description": "Number of deployments per time period"
+    },
+
+    {
+      "@type": "waf:AssessmentCriterion",
+      "@id": "waf:LeadTimeForChanges",
+      "name": "Lead Time for Changes",
+      "waf:belongsToPillar": {"@id": "waf:OperationalExcellencePillar"},
+      "unitCode": "HUR",
+      "description": "Time from code commit to production deployment"
+    },
+
+    {
+      "@type": "waf:AssessmentCriterion",
+      "@id": "waf:P95Latency",
+      "name": "P95 Latency",
+      "waf:belongsToPillar": {"@id": "waf:PerformanceEfficiencyPillar"},
+      "unitCode": "MTR",
+      "description": "95th percentile response time in milliseconds"
+    },
+
+    {
+      "@type": "waf:AssessmentCriterion",
+      "@id": "waf:Throughput",
+      "name": "Throughput",
+      "waf:belongsToPillar": {"@id": "waf:PerformanceEfficiencyPillar"},
+      "unitCode": "SEC",
+      "description": "Requests or transactions per second"
+    },
+
+    {
+      "@type": "waf:TradeoffConsideration",
+      "@id": "waf:ReliabilityVsCost",
+      "name": "Reliability vs Cost",
+      "waf:pillarA": {"@id": "waf:ReliabilityPillar"},
+      "waf:pillarB": {"@id": "waf:CostOptimizationPillar"},
+      "description": "Higher reliability through redundancy increases costs"
+    },
+
+    {
+      "@type": "waf:TradeoffConsideration",
+      "@id": "waf:SecurityVsPerformance",
+      "name": "Security vs Performance",
+      "waf:pillarA": {"@id": "waf:SecurityPillar"},
+      "waf:pillarB": {"@id": "waf:PerformanceEfficiencyPillar"},
+      "description": "Security controls like encryption add latency"
+    },
+
+    {
+      "@type": "waf:TradeoffConsideration",
+      "@id": "waf:PerformanceVsCost",
+      "name": "Performance vs Cost",
+      "waf:pillarA": {"@id": "waf:PerformanceEfficiencyPillar"},
+      "waf:pillarB": {"@id": "waf:CostOptimizationPillar"},
+      "description": "Higher performance requires more expensive resources"
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "waf:pillarOrder",
+      "rdfs:label": "pillar order",
+      "rdfs:domain": {"@id": "waf:WAFPillar"},
+      "rdfs:range": {"@id": "xsd:integer"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "waf:keyGoals",
+      "rdfs:label": "key goals",
+      "rdfs:domain": {"@id": "waf:WAFPillar"},
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "waf:azureServices",
+      "rdfs:label": "Azure services",
+      "rdfs:domain": {"@id": "waf:WAFPillar"},
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "waf:belongsToPillar",
+      "rdfs:label": "belongs to pillar",
+      "rdfs:domain": {"@id": "waf:DesignPrinciple"},
+      "rdfs:range": {"@id": "waf:WAFPillar"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "waf:pillarA",
+      "rdfs:label": "pillar A",
+      "rdfs:domain": {"@id": "waf:TradeoffConsideration"},
+      "rdfs:range": {"@id": "waf:WAFPillar"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "waf:pillarB",
+      "rdfs:label": "pillar B",
+      "rdfs:domain": {"@id": "waf:TradeoffConsideration"},
+      "rdfs:range": {"@id": "waf:WAFPillar"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "waf:assessmentScore",
+      "rdfs:label": "assessment score",
+      "rdfs:comment": "Score from WAF assessment review",
+      "rdfs:domain": {"@id": "azure:AzureResource"},
+      "rdfs:range": {"@id": "xsd:integer"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "waf:assessmentDate",
+      "rdfs:label": "assessment date",
+      "rdfs:domain": {"@id": "azure:AzureResource"},
+      "rdfs:range": {"@id": "xsd:date"}
+    }
+  ]
+}

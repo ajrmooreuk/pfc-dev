@@ -1,0 +1,596 @@
+{
+  "@context": {
+    "vp": "https://oaa-ontology.org/v6/value-proposition/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/",
+    "org": "https://oaa-ontology.org/v6/organisation/",
+    "pf": "https://oaa-ontology.org/v6/rrr/",
+    "raci": "https://oaa-ontology.org/v6/raci/",
+    "schema": "https://schema.org/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "oaa": "https://oaa-ontology.org/v7/"
+  },
+  "@id": "vp:wwg-value-proposition-instance",
+  "@type": "oaa:OntologyInstance",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:instanceVersion": "1.0.0",
+  "oaa:brand": "wwg",
+  "oaa:brandFullName": "World Wide Gourmet",
+  "oaa:organizationContextRef": "org:ctx-wwg",
+  "oaa:created": "2026-02-24",
+  "oaa:lastModified": "2026-02-24",
+  "oaa:imports": [
+    { "ontology": "VP-ONT", "version": ">=1.2.3", "purpose": "Value Proposition schema" },
+    { "ontology": "RRR-ONT", "version": ">=4.0.0", "purpose": "Role-based ICP references" },
+    { "ontology": "VSOM-ONT", "version": ">=1.0.0", "purpose": "Strategy alignment" },
+    { "ontology": "ORG-ONT", "version": ">=2.1.0", "purpose": "Organization context" }
+  ],
+
+  "entities": [
+    {
+      "@id": "vp:wwg-vp-001",
+      "@type": "vp:ValueProposition",
+      "vpId": "vp:wwg-specialist-import",
+      "name": "WWG International Specialist Food Import Platform",
+      "description": "Graph-driven multi-corridor food sourcing that transforms international supply chain risk into competitive advantage — giving UK food businesses reliable access to premium Australian, New Zealand, Icelandic, and Irish products with proactive disruption management and margin-protected fulfilment.",
+      "primaryStatement": "WWG delivers premium international food products to UK businesses with graph-driven supply chain intelligence that detects disruptions before they impact your orders, communicates proactively, and protects your menu and shelf plans from the volatility of global logistics.",
+      "alternativeStatement": "Multi-corridor sourcing with predictive risk management — your customers never know about the disruptions we handle before they reach you.",
+      "keyBenefits": [
+        "Proactive disruption notification (average 5 days before impact)",
+        "Cross-corridor substitution capability across 4 source countries",
+        "Real-time shelf life transparency at every chain node",
+        "Margin-protected fulfilment with change-cost visibility"
+      ],
+      "uniqueDifferentiators": [
+        "Graph-based supply chain intelligence across 4 international corridors",
+        "Ontology-modelled risk and scenario pre-computation",
+        "Bidirectional supply-demand risk unification",
+        "Customer change costing with negotiated fairness"
+      ],
+      "organizationContextRef": "org:ctx-wwg",
+      "status": "Active",
+      "validationDate": "2026-02-24"
+    },
+
+    {
+      "@id": "vp:wwg-icp-restaurant",
+      "@type": "vp:IdealCustomerProfile",
+      "icpId": "icp:wwg-restaurant-chain",
+      "name": "UK Restaurant Chain Procurement",
+      "description": "Multi-site restaurant group sourcing premium international proteins and seafood for consistent menu delivery across 10-200+ locations. Needs reliable supply, guaranteed shelf life, and advance warning of any disruption that could affect menu availability.",
+      "industry": "Hospitality / Restaurant",
+      "companySize": "Mid-market (50-500 employees)",
+      "geography": "United Kingdom",
+      "annualSpend": "GBP 250K-2M",
+      "keyNeeds": [
+        "Menu consistency across all sites",
+        "Minimum 14-day shelf life at delivery",
+        "48-hour advance notice of any supply disruption",
+        "Single-source multi-protein (beef, lamb, seafood, dairy)"
+      ],
+      "buyingBehaviour": "Contract-based with quarterly reviews, 2-3 approved suppliers per category"
+    },
+    {
+      "@id": "vp:wwg-icp-wholesaler",
+      "@type": "vp:IdealCustomerProfile",
+      "icpId": "icp:wwg-wholesaler",
+      "name": "UK Specialist Food Wholesaler",
+      "description": "Regional or national wholesaler distributing premium imported products to independent restaurants, delis, and farm shops. Needs competitive pricing, consistent supply, and product provenance documentation for end customers.",
+      "industry": "Food Wholesale / Distribution",
+      "companySize": "Mid-market (20-200 employees)",
+      "geography": "United Kingdom",
+      "annualSpend": "GBP 500K-5M",
+      "keyNeeds": [
+        "Competitive landed cost with transparent margin",
+        "Product provenance and certification trail",
+        "Flexible order quantities with consolidation options",
+        "Seasonal availability forecasting 8+ weeks ahead"
+      ],
+      "buyingBehaviour": "Relationship-based, price-sensitive, multi-supplier portfolio"
+    },
+    {
+      "@id": "vp:wwg-icp-foodservice",
+      "@type": "vp:IdealCustomerProfile",
+      "icpId": "icp:wwg-food-service",
+      "name": "UK Food Service Distributor",
+      "description": "Large-scale food service distributor supplying hospitals, schools, corporate catering, and events. Requires high OTIF rates, compliance documentation for public sector tenders, and temperature-controlled delivery to multiple drop points.",
+      "industry": "Food Service Distribution",
+      "companySize": "Enterprise (200+ employees)",
+      "geography": "United Kingdom",
+      "annualSpend": "GBP 1M-10M",
+      "keyNeeds": [
+        "98%+ OTIF (On-Time In-Full) delivery rate",
+        "Full compliance documentation for public sector audits",
+        "Multi-drop delivery capability",
+        "Halal/kosher certification where required"
+      ],
+      "buyingBehaviour": "Tender-based procurement, SLA-driven, penalty clauses for non-compliance"
+    },
+    {
+      "@id": "vp:wwg-icp-online",
+      "@type": "vp:IdealCustomerProfile",
+      "icpId": "icp:wwg-online-specialist",
+      "name": "UK Online Specialist Food Retailer",
+      "description": "E-commerce food business selling premium imported products direct to consumer. Needs excellent shelf life at delivery, attractive product storytelling (provenance, sustainability), and reliable next-day or scheduled delivery from WWG warehouse.",
+      "industry": "E-commerce / Specialty Retail",
+      "companySize": "Small-Medium (5-50 employees)",
+      "geography": "United Kingdom",
+      "annualSpend": "GBP 50K-500K",
+      "keyNeeds": [
+        "Maximum shelf life at delivery (21+ days preferred)",
+        "Product origin story and sustainability credentials",
+        "Small-batch ordering with weekly replenishment",
+        "Photo-ready packaging and presentation"
+      ],
+      "buyingBehaviour": "Agile, trend-driven, low volume high margin, social media influenced"
+    },
+
+    {
+      "@id": "vp:wwg-prob-strategic",
+      "@type": "vp:Problem",
+      "problemId": "prob:wwg-supply-chain-opacity",
+      "problemStatement": "UK food businesses importing internationally have no real-time visibility into their supply chain — disruptions are discovered reactively when deliveries fail, not proactively when events occur at origin, in transit, or at border control.",
+      "problemType": "Functional",
+      "severity": "Critical",
+      "frequency": "Constant",
+      "isGrowing": true,
+      "marketSizeImpact": "UK food import market GBP 48B pa; specialist/premium segment GBP 3-5B",
+      "scopeLevel": "Strategic",
+      "ownerRole": "pf:func-wwg-procurement-mgr"
+    },
+    {
+      "@id": "vp:wwg-prob-tactical",
+      "@type": "vp:Problem",
+      "problemId": "prob:wwg-margin-erosion",
+      "problemStatement": "Margin erodes invisibly between goods landing and customer delivery through storage costs, customer changes, shelf life decay, and dispatch replanning — with no single view of cumulative erosion per order until the P&L closes.",
+      "problemType": "Economic",
+      "severity": "Major",
+      "frequency": "Frequent",
+      "isGrowing": true,
+      "marketSizeImpact": "Average 8-15% margin erosion on international orders vs 2-4% on domestic",
+      "scopeLevel": "Tactical",
+      "ownerRole": "pf:func-wwg-finance-analyst"
+    },
+    {
+      "@id": "vp:wwg-prob-operational",
+      "@type": "vp:Problem",
+      "problemId": "prob:wwg-customer-change-cost",
+      "problemStatement": "Customer changes (date push-backs, quantity reductions, spec changes, cancellations) cascade into storage overflow, shelf life risk, and orphaned stock — but the true cost of each change is unknown, making it impossible to price flexibility fairly.",
+      "problemType": "Economic",
+      "severity": "Major",
+      "frequency": "Frequent",
+      "isGrowing": false,
+      "marketSizeImpact": "Customer changes affect 25-40% of orders in specialist food import",
+      "scopeLevel": "Operational",
+      "ownerRole": "pf:func-wwg-sales-account-mgr"
+    },
+
+    {
+      "@id": "vp:wwg-pain-001",
+      "@type": "vp:PainPoint",
+      "painId": "pain:wwg-reactive-notification",
+      "painDescription": "Customers learn about supply disruptions only when their delivery fails — no advance warning, no alternatives offered, no revised timeline communicated.",
+      "painDimension": "Functional",
+      "customerImpact": "Menu gaps, shelf gaps, lost revenue, emergency sourcing at premium",
+      "quantifiedImpact": "Average 2.5 days of lost sales per unnotified disruption",
+      "impactUnit": "days"
+    },
+    {
+      "@id": "vp:wwg-pain-002",
+      "@type": "vp:PainPoint",
+      "painId": "pain:wwg-month-end-surprise",
+      "painDescription": "Margin erosion from storage, changes, and dispatch replanning is only visible at month-end P&L — too late to intervene on individual orders.",
+      "painDimension": "Financial",
+      "customerImpact": "Unpredictable cost per order, inability to price accurately",
+      "quantifiedImpact": "8-15% average margin erosion vs booked margin",
+      "impactUnit": "percentage"
+    },
+    {
+      "@id": "vp:wwg-pain-003",
+      "@type": "vp:PainPoint",
+      "painId": "pain:wwg-corridor-silos",
+      "painDescription": "Each source corridor (AU, NZ, IS, IE) is managed independently with no cross-corridor visibility — when AU is disrupted, NZ substitution is not automatic.",
+      "painDimension": "Functional",
+      "customerImpact": "Longer recovery time from single-corridor disruptions",
+      "quantifiedImpact": "5-14 additional days delay when substitution is manual vs graph-driven",
+      "impactUnit": "days"
+    },
+    {
+      "@id": "vp:wwg-pain-004",
+      "@type": "vp:PainPoint",
+      "painId": "pain:wwg-compliance-rework",
+      "painDescription": "Different regulatory regimes per corridor (DAFF, MPI, MAST, DAFM, Windsor Framework) require separate documentation workflows with no unified compliance view.",
+      "painDimension": "Process",
+      "customerImpact": "BCP inspection delays averaging 2-5 days on 8-12% of consignments",
+      "quantifiedImpact": "GBP 3-8K per compliance gate failure",
+      "impactUnit": "GBP"
+    },
+    {
+      "@id": "vp:wwg-pain-005",
+      "@type": "vp:PainPoint",
+      "painId": "pain:wwg-shelf-life-opacity",
+      "painDescription": "No real-time visibility of remaining shelf life at each chain node — goods arrive with less shelf life than expected, forcing markdowns or customer disappointment.",
+      "painDimension": "Functional",
+      "customerImpact": "Customer refuses delivery or requires price discount if shelf life below threshold",
+      "quantifiedImpact": "15-25% price markdown on short-dated stock",
+      "impactUnit": "percentage"
+    },
+
+    {
+      "@id": "vp:wwg-gain-001",
+      "@type": "vp:Gain",
+      "gainId": "gain:wwg-proactive-comms",
+      "gainDescription": "Customers receive proactive notification of disruptions 3-7 days before impact, with alternatives already identified and revised delivery dates confirmed.",
+      "gainType": "Expected",
+      "gainCategory": "ExperienceImprovement",
+      "priority": 1,
+      "quantifiedValue": "Average 5 days advance notification"
+    },
+    {
+      "@id": "vp:wwg-gain-002",
+      "@type": "vp:Gain",
+      "gainId": "gain:wwg-cross-corridor",
+      "gainDescription": "When one corridor is disrupted, the graph automatically identifies substitution opportunities from other corridors with matching commodity class, available capacity, and compatible delivery windows.",
+      "gainType": "Desired",
+      "gainCategory": "StrategicAdvantage",
+      "priority": 2,
+      "quantifiedValue": "4 corridors × 3-5 commodity overlaps = 12-20 substitution options"
+    },
+    {
+      "@id": "vp:wwg-gain-003",
+      "@type": "vp:Gain",
+      "gainId": "gain:wwg-margin-transparency",
+      "gainDescription": "Real-time margin tracking per order line from booking to delivery — every erosion event visible as it happens, with RAG status driving intervention before write-off.",
+      "gainType": "Required",
+      "gainCategory": "CostReduction",
+      "priority": 3,
+      "quantifiedValue": "Reduce margin erosion from 12% to 5% within 12 months"
+    },
+
+    {
+      "@id": "vp:wwg-sol-001",
+      "@type": "vp:Solution",
+      "solutionId": "sol:wwg-graph-platform",
+      "name": "WWG Graph-Driven Supply-Demand Intelligence Platform",
+      "coreFunctionality": "Unified graph of 4 international supply corridors (LSC-ONT) bridged to customer order fulfilment (OFM-ONT) through warehouse stock allocation, with real-time risk scoring, scenario pre-computation, margin tracking, and proactive customer communication.",
+      "deliveryMethod": "PFI-W4M-WWG instance on PF-Core platform with web dashboard and automated alerts",
+      "pricingModel": "Included in WWG service — value captured through margin preservation and customer retention",
+      "timeToValue": "Phase 1 (4 corridors live): 8 weeks. Full supply-demand bridge: 16 weeks."
+    },
+
+    {
+      "@id": "vp:wwg-ben-reliability",
+      "@type": "vp:Benefit",
+      "benefitId": "ben:wwg-supply-reliability",
+      "benefitDescription": "Proactive disruption management across 4 corridors reduces customer-visible supply failures by 60% within 12 months, with advance notification for remaining disruptions.",
+      "benefitType": "Quantifiable",
+      "benefitCategory": "RiskReduction",
+      "quantifiedValue": "60% reduction in customer-visible supply failures",
+      "measurementMethod": "OTIF rate improvement: from 82% to 95%+",
+      "realizationTimeframe": "12 months"
+    },
+    {
+      "@id": "vp:wwg-ben-margin",
+      "@type": "vp:Benefit",
+      "benefitId": "ben:wwg-margin-protection",
+      "benefitDescription": "Real-time margin erosion tracking and early intervention reduces average order margin erosion from 12% to 5%, recovering approximately GBP 180K per annum on current volumes.",
+      "benefitType": "Quantifiable",
+      "benefitCategory": "CostReduction",
+      "quantifiedValue": "GBP 180K per annum margin recovery",
+      "measurementMethod": "Booked vs realised margin delta, tracked per order line",
+      "realizationTimeframe": "6-12 months"
+    },
+    {
+      "@id": "vp:wwg-ben-shelf-life",
+      "@type": "vp:Benefit",
+      "benefitId": "ben:wwg-shelf-life-guarantee",
+      "benefitDescription": "Real-time shelf life tracking at every chain node enables guaranteed minimum shelf life at delivery, eliminating short-date rejections and building customer confidence in product freshness.",
+      "benefitType": "Quantifiable",
+      "benefitCategory": "ExperienceImprovement",
+      "quantifiedValue": "Zero short-date rejections (from current 3-5% rejection rate)",
+      "measurementMethod": "Shelf life remaining at customer delivery point",
+      "realizationTimeframe": "6 months"
+    },
+    {
+      "@id": "vp:wwg-ben-change-pricing",
+      "@type": "vp:Benefit",
+      "benefitId": "ben:wwg-change-cost-fairness",
+      "benefitDescription": "Data-driven change-cost library enables fair pricing of customer flexibility — customers know the cost of changes upfront, WWG recovers true cost, and the relationship remains transparent.",
+      "benefitType": "Qualitative",
+      "benefitCategory": "RevenueGrowth",
+      "quantifiedValue": "50% change-cost recovery rate (from current 0%)",
+      "measurementMethod": "Change-cost billed vs change-cost incurred",
+      "realizationTimeframe": "12 months"
+    },
+    {
+      "@id": "vp:wwg-ben-compliance",
+      "@type": "vp:Benefit",
+      "benefitId": "ben:wwg-compliance-readiness",
+      "benefitDescription": "Unified compliance view across AU/NZ/IS/IE regulatory regimes with document pre-flight checking eliminates BCP gate failures, reducing average inspection delay from 3 days to 0.",
+      "benefitType": "Quantifiable",
+      "benefitCategory": "ComplianceAssurance",
+      "quantifiedValue": "100% document pre-flight pass rate, zero BCP gate failures",
+      "measurementMethod": "Gate pass rate and document validity at gate arrival",
+      "realizationTimeframe": "3-6 months"
+    },
+
+    {
+      "@id": "vp:wwg-diff-graph",
+      "@type": "vp:Differentiator",
+      "differentiatorId": "diff:wwg-graph-intelligence",
+      "differentiatorDescription": "Only UK specialist importer with graph-based supply chain intelligence — every node, leg, gate, bottleneck, and party modelled as structured data with pre-computed scenarios and cascade effects.",
+      "differentiatorType": "Technology",
+      "competitiveAdvantage": "Proactive vs reactive — competitors discover disruptions when customers complain; WWG discovers them when they happen at origin.",
+      "defensibility": "High — requires ontology modelling expertise, historical data, and continuous pattern validation. 12-18 month head start.",
+      "customerImportance": "Critical for enterprise customers with SLA penalties"
+    },
+    {
+      "@id": "vp:wwg-diff-corridors",
+      "@type": "vp:Differentiator",
+      "differentiatorId": "diff:wwg-four-corridors",
+      "differentiatorDescription": "Four-corridor sourcing (AU, NZ, IS, IE) with graph-driven substitution capability — when one corridor is disrupted, alternatives are identified automatically from matching commodity classes in other corridors.",
+      "differentiatorType": "Capability",
+      "competitiveAdvantage": "Most competitors are single-corridor specialists (AU meat OR NZ dairy). WWG cross-corridor substitution reduces single-point-of-failure exposure.",
+      "defensibility": "Medium — corridor relationships take years to establish, but model is replicable.",
+      "customerImportance": "High for customers needing year-round availability"
+    },
+    {
+      "@id": "vp:wwg-diff-margin",
+      "@type": "vp:Differentiator",
+      "differentiatorId": "diff:wwg-margin-transparency",
+      "differentiatorDescription": "Full margin lifecycle tracking from order booking to delivery — every erosion event (storage, changes, shelf life, dispatch) visible in real time, enabling intervention before write-off.",
+      "differentiatorType": "Process",
+      "competitiveAdvantage": "Competitors discover margin erosion at month-end. WWG sees it daily and acts.",
+      "defensibility": "High — requires OFM-ONT demand-side modelling integrated with LSC supply-side. Unique architectural capability.",
+      "customerImportance": "Moderate for customers, critical for WWG internal operations"
+    },
+
+    {
+      "@id": "vp:wwg-alt-single-corridor",
+      "@type": "vp:CompetitiveAlternative",
+      "alternativeId": "alt:wwg-single-corridor-importers",
+      "alternativeType": "DirectCompetitor",
+      "name": "Single-Corridor Specialist Importers",
+      "marketShare": "60% of UK specialist food import",
+      "strengths": ["Deep corridor-specific expertise", "Established supplier relationships", "Lower overhead"],
+      "weaknesses": ["No cross-corridor substitution", "Single point of failure", "Reactive to disruptions"],
+      "pricingComparison": "5-10% lower on corridor-specific products but no risk mitigation value"
+    },
+    {
+      "@id": "vp:wwg-alt-broadline",
+      "@type": "vp:CompetitiveAlternative",
+      "alternativeId": "alt:wwg-broadline-distributor",
+      "alternativeType": "Substitute",
+      "name": "Broadline Food Distributors (Brakes, Bidfood)",
+      "marketShare": "25% of UK food import (primarily commodity, not specialist)",
+      "strengths": ["Scale", "Nationwide delivery infrastructure", "One-stop shop"],
+      "weaknesses": ["No specialist provenance", "Generic products", "No corridor-specific intelligence"],
+      "pricingComparison": "10-20% lower but commodity grade, not premium specialist"
+    },
+    {
+      "@id": "vp:wwg-alt-direct",
+      "@type": "vp:CompetitiveAlternative",
+      "alternativeId": "alt:wwg-direct-import",
+      "alternativeType": "Workaround",
+      "name": "Direct Import (customer imports themselves)",
+      "marketShare": "10% of specialist segment (large restaurant groups)",
+      "strengths": ["Control over supply chain", "Direct supplier relationships", "No intermediary margin"],
+      "weaknesses": ["Requires compliance expertise per corridor", "No substitution across corridors", "Full risk exposure"],
+      "pricingComparison": "Potentially lower unit cost but significantly higher operational cost and risk"
+    },
+
+    {
+      "@id": "vp:wwg-evid-001",
+      "@type": "vp:ValidationEvidence",
+      "evidenceId": "evid:wwg-corridor-disruption-data",
+      "evidenceType": "InternalData",
+      "evidenceSource": "WWG operational records 2024-2026",
+      "evidenceDate": "2026-02-24",
+      "evidenceDescription": "Analysis of 18 months of AU-UK shipment data showing average 6.2 composite risk score, 38-day transit, and 12% margin erosion on disrupted shipments.",
+      "evidenceStrength": "Strong",
+      "sampleSize": 350
+    },
+    {
+      "@id": "vp:wwg-evid-002",
+      "@type": "vp:ValidationEvidence",
+      "evidenceId": "evid:wwg-customer-change-analysis",
+      "evidenceType": "InternalData",
+      "evidenceSource": "WWG sales order system 2025-2026",
+      "evidenceDate": "2026-02-24",
+      "evidenceDescription": "Analysis showing 32% of orders experience at least one customer change, with average change-cost of GBP 280 per event and zero current recovery.",
+      "evidenceStrength": "Strong",
+      "sampleSize": 840
+    },
+    {
+      "@id": "vp:wwg-evid-003",
+      "@type": "vp:ValidationEvidence",
+      "evidenceId": "evid:wwg-industry-disruption-frequency",
+      "evidenceType": "IndustryReport",
+      "evidenceSource": "FTA UK Food & Drink Import Report 2025",
+      "evidenceDate": "2025-11-15",
+      "evidenceDescription": "UK food importers experienced average 14 supply disruption events per month in 2025, up 23% from 2024. Post-Brexit regulatory friction remains the top cause.",
+      "evidenceStrength": "Moderate",
+      "sampleSize": 120
+    },
+
+    {
+      "@id": "vp:wwg-sm-001",
+      "@type": "vp:SuccessMetric",
+      "metricId": "sm:wwg-otif-rate",
+      "description": "On-Time In-Full delivery rate across all customer orders",
+      "baseline": "82%",
+      "target": "95%+",
+      "measurementMethod": "Delivery confirmation vs committed delivery window",
+      "measurementFrequency": "Weekly"
+    },
+    {
+      "@id": "vp:wwg-sm-002",
+      "@type": "vp:SuccessMetric",
+      "metricId": "sm:wwg-margin-realisation",
+      "description": "Realised margin as percentage of booked margin across all orders",
+      "baseline": "88% (12% erosion)",
+      "target": "95% (5% erosion)",
+      "measurementMethod": "Booked margin vs realised margin per order line",
+      "measurementFrequency": "Monthly"
+    },
+    {
+      "@id": "vp:wwg-sm-003",
+      "@type": "vp:SuccessMetric",
+      "metricId": "sm:wwg-disruption-lead-time",
+      "description": "Average days of advance notification to customer before disruption impacts delivery",
+      "baseline": "0 days (reactive notification)",
+      "target": "5+ days proactive notification",
+      "measurementMethod": "Notification timestamp vs disruption impact timestamp",
+      "measurementFrequency": "Per-incident"
+    },
+    {
+      "@id": "vp:wwg-sm-004",
+      "@type": "vp:SuccessMetric",
+      "metricId": "sm:wwg-change-cost-recovery",
+      "description": "Percentage of customer-change costs recovered through fair change pricing",
+      "baseline": "0%",
+      "target": "50%",
+      "measurementMethod": "Change-cost billed vs change-cost incurred",
+      "measurementFrequency": "Quarterly"
+    },
+
+    {
+      "@id": "vp:wwg-sh-procurement",
+      "@type": "vp:Stakeholder",
+      "stakeholderId": "sh:wwg-customer-procurement",
+      "stakeholderRole": "EconomicBuyer",
+      "influenceLevel": "High",
+      "interests": ["Reliable supply", "Competitive pricing", "Reduced risk of menu/shelf gaps"],
+      "objections": ["Premium pricing vs commodity alternatives", "Switching cost from existing supplier"]
+    },
+    {
+      "@id": "vp:wwg-sh-quality",
+      "@type": "vp:Stakeholder",
+      "stakeholderId": "sh:wwg-customer-quality",
+      "stakeholderRole": "TechnicalEvaluator",
+      "influenceLevel": "Medium",
+      "interests": ["Shelf life guarantees", "Temperature integrity", "Provenance documentation"],
+      "objections": ["Need to audit cold chain processes", "Compliance documentation burden"]
+    },
+    {
+      "@id": "vp:wwg-sh-operations",
+      "@type": "vp:Stakeholder",
+      "stakeholderId": "sh:wwg-customer-operations",
+      "stakeholderRole": "PrimaryUser",
+      "influenceLevel": "Medium",
+      "interests": ["Predictable delivery windows", "Flexible ordering", "Single point of contact"],
+      "objections": ["International sourcing adds complexity", "Multi-corridor coordination overhead"]
+    },
+
+    {
+      "@id": "vp:wwg-msg-primary",
+      "@type": "vp:MessagingFramework",
+      "frameworkId": "msg:wwg-primary",
+      "primaryMessage": "World-class products, world-class visibility — your international supply chain, managed.",
+      "supportingMessages": [
+        "4 corridors, 1 graph — see your entire supply chain in real time",
+        "We tell you about disruptions before they reach your customers",
+        "Margin-protected fulfilment: you know the true cost of every order, every day",
+        "When AU is disrupted, NZ is ready — cross-corridor substitution in hours, not weeks"
+      ],
+      "emotionalHooks": ["Confidence in supply", "No more month-end margin surprises", "Your customers never see the disruption"],
+      "useCustomerLanguage": true
+    }
+  ],
+
+  "relationships": [
+    { "@type": "vp:belongsToOrgContext", "from": "vp:wwg-vp-001", "to": "org:ctx-wwg" },
+
+    { "@type": "vp:targetsICP", "from": "vp:wwg-vp-001", "to": "vp:wwg-icp-restaurant" },
+    { "@type": "vp:targetsICP", "from": "vp:wwg-vp-001", "to": "vp:wwg-icp-wholesaler" },
+    { "@type": "vp:targetsICP", "from": "vp:wwg-vp-001", "to": "vp:wwg-icp-foodservice" },
+    { "@type": "vp:targetsICP", "from": "vp:wwg-vp-001", "to": "vp:wwg-icp-online" },
+
+    { "@type": "vp:addressesProblem", "from": "vp:wwg-vp-001", "to": "vp:wwg-prob-strategic" },
+    { "@type": "vp:addressesProblem", "from": "vp:wwg-vp-001", "to": "vp:wwg-prob-tactical" },
+    { "@type": "vp:addressesProblem", "from": "vp:wwg-vp-001", "to": "vp:wwg-prob-operational" },
+
+    { "@type": "vp:problemRollsUpTo", "from": "vp:wwg-prob-operational", "to": "vp:wwg-prob-tactical" },
+    { "@type": "vp:problemRollsUpTo", "from": "vp:wwg-prob-tactical", "to": "vp:wwg-prob-strategic" },
+
+    { "@type": "vp:problemHasPainPoint", "from": "vp:wwg-prob-strategic", "to": "vp:wwg-pain-001" },
+    { "@type": "vp:problemHasPainPoint", "from": "vp:wwg-prob-strategic", "to": "vp:wwg-pain-003" },
+    { "@type": "vp:problemHasPainPoint", "from": "vp:wwg-prob-tactical", "to": "vp:wwg-pain-002" },
+    { "@type": "vp:problemHasPainPoint", "from": "vp:wwg-prob-tactical", "to": "vp:wwg-pain-005" },
+    { "@type": "vp:problemHasPainPoint", "from": "vp:wwg-prob-operational", "to": "vp:wwg-pain-004" },
+
+    { "@type": "vp:icpHasProblem", "from": "vp:wwg-icp-restaurant", "to": "vp:wwg-prob-strategic" },
+    { "@type": "vp:icpHasProblem", "from": "vp:wwg-icp-wholesaler", "to": "vp:wwg-prob-tactical" },
+    { "@type": "vp:icpHasProblem", "from": "vp:wwg-icp-foodservice", "to": "vp:wwg-prob-strategic" },
+    { "@type": "vp:icpHasProblem", "from": "vp:wwg-icp-online", "to": "vp:wwg-prob-operational" },
+
+    { "@type": "vp:offeredThrough", "from": "vp:wwg-vp-001", "to": "vp:wwg-sol-001" },
+    { "@type": "vp:solutionAddressesProblem", "from": "vp:wwg-sol-001", "to": "vp:wwg-prob-strategic" },
+    { "@type": "vp:solutionAddressesProblem", "from": "vp:wwg-sol-001", "to": "vp:wwg-prob-tactical" },
+    { "@type": "vp:solutionAddressesProblem", "from": "vp:wwg-sol-001", "to": "vp:wwg-prob-operational" },
+
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:wwg-sol-001", "to": "vp:wwg-ben-reliability" },
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:wwg-sol-001", "to": "vp:wwg-ben-margin" },
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:wwg-sol-001", "to": "vp:wwg-ben-shelf-life" },
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:wwg-sol-001", "to": "vp:wwg-ben-change-pricing" },
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:wwg-sol-001", "to": "vp:wwg-ben-compliance" },
+
+    { "@type": "vp:solutionDeliversGain", "from": "vp:wwg-sol-001", "to": "vp:wwg-gain-001" },
+    { "@type": "vp:solutionDeliversGain", "from": "vp:wwg-sol-001", "to": "vp:wwg-gain-002" },
+    { "@type": "vp:solutionDeliversGain", "from": "vp:wwg-sol-001", "to": "vp:wwg-gain-003" },
+
+    { "@type": "vp:solutionDifferentiatedBy", "from": "vp:wwg-sol-001", "to": "vp:wwg-diff-graph" },
+    { "@type": "vp:solutionDifferentiatedBy", "from": "vp:wwg-sol-001", "to": "vp:wwg-diff-corridors" },
+    { "@type": "vp:solutionDifferentiatedBy", "from": "vp:wwg-sol-001", "to": "vp:wwg-diff-margin" },
+
+    { "@type": "vp:differentiatesFrom", "from": "vp:wwg-diff-graph", "to": "vp:wwg-alt-single-corridor" },
+    { "@type": "vp:differentiatesFrom", "from": "vp:wwg-diff-corridors", "to": "vp:wwg-alt-single-corridor" },
+    { "@type": "vp:differentiatesFrom", "from": "vp:wwg-diff-corridors", "to": "vp:wwg-alt-broadline" },
+    { "@type": "vp:differentiatesFrom", "from": "vp:wwg-diff-margin", "to": "vp:wwg-alt-direct" },
+
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:wwg-ben-reliability", "to": "vp:wwg-pain-001" },
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:wwg-ben-margin", "to": "vp:wwg-pain-002" },
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:wwg-ben-shelf-life", "to": "vp:wwg-pain-005" },
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:wwg-ben-change-pricing", "to": "vp:wwg-pain-002" },
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:wwg-ben-compliance", "to": "vp:wwg-pain-004" },
+
+    { "@type": "vp:supportedByEvidence", "from": "vp:wwg-vp-001", "to": "vp:wwg-evid-001" },
+    { "@type": "vp:supportedByEvidence", "from": "vp:wwg-vp-001", "to": "vp:wwg-evid-002" },
+    { "@type": "vp:supportedByEvidence", "from": "vp:wwg-vp-001", "to": "vp:wwg-evid-003" },
+
+    { "@type": "vp:problemValidatedBy", "from": "vp:wwg-prob-strategic", "to": "vp:wwg-evid-001" },
+    { "@type": "vp:problemValidatedBy", "from": "vp:wwg-prob-tactical", "to": "vp:wwg-evid-002" },
+    { "@type": "vp:problemValidatedBy", "from": "vp:wwg-prob-operational", "to": "vp:wwg-evid-002" },
+
+    { "@type": "vp:benefitMeasuredBy", "from": "vp:wwg-ben-reliability", "to": "vp:wwg-sm-001" },
+    { "@type": "vp:benefitMeasuredBy", "from": "vp:wwg-ben-margin", "to": "vp:wwg-sm-002" },
+    { "@type": "vp:benefitMeasuredBy", "from": "vp:wwg-ben-shelf-life", "to": "vp:wwg-sm-003" },
+    { "@type": "vp:benefitMeasuredBy", "from": "vp:wwg-ben-change-pricing", "to": "vp:wwg-sm-004" },
+
+    { "@type": "vp:icpHasStakeholder", "from": "vp:wwg-icp-restaurant", "to": "vp:wwg-sh-procurement" },
+    { "@type": "vp:icpHasStakeholder", "from": "vp:wwg-icp-foodservice", "to": "vp:wwg-sh-quality" },
+    { "@type": "vp:icpHasStakeholder", "from": "vp:wwg-icp-wholesaler", "to": "vp:wwg-sh-operations" },
+
+    { "@type": "vp:communicatedVia", "from": "vp:wwg-vp-001", "to": "vp:wwg-msg-primary" },
+    { "@type": "vp:messagingTargetsStakeholder", "from": "vp:wwg-msg-primary", "to": "vp:wwg-sh-procurement" },
+    { "@type": "vp:messagingTargetsStakeholder", "from": "vp:wwg-msg-primary", "to": "vp:wwg-sh-quality" },
+    { "@type": "vp:messagingTargetsStakeholder", "from": "vp:wwg-msg-primary", "to": "vp:wwg-sh-operations" }
+  ],
+
+  "designDirectorPipeline": {
+    "upstreamDependencies": [
+      { "ontology": "VSOM-ONT", "bridgeType": "alignsToObjective", "purpose": "Strategy alignment" },
+      { "ontology": "ORG-ONT", "bridgeType": "belongsToOrgContext", "purpose": "Organization scoping" },
+      { "ontology": "RRR-ONT", "bridgeType": "roleRef", "purpose": "Role-based ICP hierarchy" }
+    ],
+    "downstreamConsumers": [
+      { "ontology": "LSC-ONT", "bridgeType": "supplyChainRisk", "purpose": "Supply-side risk feeding VP problems" },
+      { "ontology": "OFM-ONT", "bridgeType": "demandSideRisk", "purpose": "Demand-side risk feeding VP problems" },
+      { "ontology": "KPI-ONT", "bridgeType": "successMetrics", "purpose": "VP metrics → KPI instances" }
+    ],
+    "emcComposition": {
+      "instanceConfig": "emc:InstanceConfiguration-W4M-WWG",
+      "requiredFor": "PFI-W4M-WWG composed graph"
+    }
+  }
+}

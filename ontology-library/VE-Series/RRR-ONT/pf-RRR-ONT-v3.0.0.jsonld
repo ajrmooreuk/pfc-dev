@@ -1,0 +1,1033 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform-foundation.io/ontology/v1/",
+    "raci": "https://platform-foundation.io/ontology/v1/raci/",
+    "rbac": "https://platform-foundation.io/ontology/v1/rbac/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "owl:Ontology",
+  "@id": "pf:ontology:roles-raci-rbac-v3.0.0",
+  "name": "Platform Foundation: Roles, RACI & RBAC Ontology",
+  "version": "3.0.0",
+  "dateCreated": "2025-10-11",
+  "dateModified": "2025-10-11",
+  "creator": "Amanda Moore",
+  "description": "Comprehensive ontology for organizational roles, RACI accountability framework, and role-based access control (RBAC) for multi-venture platform foundation",
+  "domain": "Organizational Governance, Access Management, Accountability Framework",
+  "subDomains": [
+    "Executive Leadership Structure",
+    "Functional Accountability (RACI)",
+    "Role-Based Access Control (RBAC)",
+    "Permission & Capability Management",
+    "Matrix Organization Modeling"
+  ],
+  "businessObjectives": [
+    "Enable multi-venture role portability",
+    "Support matrix management structures",
+    "Facilitate AI agent authorization decisions",
+    "Ensure RACI accountability clarity",
+    "Enable dynamic, context-aware access control",
+    "Support organizational scale flexibility (startup to enterprise)"
+  ],
+  "dependencies": [
+    {
+      "ontologyId": "pf:ontology:individual-v1",
+      "reason": "INDIVIDUALS (schema:Person) fill ROLES"
+    },
+    {
+      "ontologyId": "pf:ontology:user-v1",
+      "reason": "USERS link to INDIVIDUALS and are governed by RBAC"
+    },
+    {
+      "ontologyId": "pf:ontology:organization-v1",
+      "reason": "ORGANIZATIONS contain ROLES and own VSOM Strategy"
+    },
+    {
+      "ontologyId": "pf:ontology:vsom-strategy-v1",
+      "reason": "ROLES are accountable for Strategy formulation and implementation"
+    }
+  ],
+  "useCases": [
+    {
+      "id": "UC-001",
+      "name": "Multi-Venture Role Assignment",
+      "description": "Individual holds different roles across multiple ventures (e.g., CEO of Venture A, Advisor to Venture B, CMO of Venture C)"
+    },
+    {
+      "id": "UC-002",
+      "name": "RACI Matrix Generation",
+      "description": "For any business process or activity, determine who is Responsible, Accountable, Consulted, and Informed"
+    },
+    {
+      "id": "UC-003",
+      "name": "Permission Resolution for Users",
+      "description": "AI agent queries: 'Can User X perform Action Y on Resource Z?' based on RBAC policies"
+    },
+    {
+      "id": "UC-004",
+      "name": "Organizational Capability Gap Analysis",
+      "description": "Identify capability gaps when executive or functional roles are unfilled or understaffed"
+    },
+    {
+      "id": "UC-005",
+      "name": "Cross-Functional Collaboration Discovery",
+      "description": "Discover collaboration paths and who should be consulted when traversing functional boundaries"
+    }
+  ],
+  "entities": [
+    {
+      "@type": "rdfs:Class",
+      "@id": "pf:ExecutiveRole",
+      "rdfs:subClassOf": "schema:OrganizationalRole",
+      "rdfs:label": "Executive Role",
+      "rdfs:comment": "A C-Suite or senior executive position with strategic accountability within an organization",
+      "schemaOrgAlignment": {
+        "baseType": "schema:OrganizationalRole",
+        "rationale": "schema:OrganizationalRole provides the foundation for any organizational position, which we extend for executive-specific attributes",
+        "extensions": [
+          "roleCode",
+          "roleCategory",
+          "strategicFocus",
+          "vsomComponent",
+          "bscPerspective",
+          "keyFrameworks",
+          "primaryMetrics",
+          "aiVisibilityRole",
+          "seniorityLevel"
+        ],
+        "alternativesConsidered": [
+          "schema:Role - too generic",
+          "schema:EmployeeRole - limited to employment context"
+        ]
+      },
+      "properties": [
+        {
+          "@id": "pf:roleCode",
+          "@type": "rdf:Property",
+          "rdfs:label": "Role Code",
+          "rdfs:comment": "Short code identifier for the role (e.g., CEO, CMO, CFO)",
+          "schema:domainIncludes": "pf:ExecutiveRole",
+          "schema:rangeIncludes": "xsd:string",
+          "pattern": "^[A-Z]{2,5}$",
+          "required": true,
+          "example": "CEO"
+        },
+        {
+          "@id": "pf:roleTitle",
+          "@type": "rdf:Property",
+          "rdfs:label": "Role Title",
+          "rdfs:comment": "Full formal title of the executive role",
+          "schema:domainIncludes": "pf:ExecutiveRole",
+          "schema:rangeIncludes": "xsd:string",
+          "required": true,
+          "example": "Chief Executive Officer"
+        },
+        {
+          "@id": "pf:roleCategory",
+          "@type": "rdf:Property",
+          "rdfs:label": "Role Category",
+          "rdfs:comment": "Grouping category for the executive role based on functional domain",
+          "schema:domainIncludes": "pf:ExecutiveRole",
+          "schema:rangeIncludes": "xsd:string",
+          "enum": [
+            "Core Traditional CSuite",
+            "Data Analytics CSuite",
+            "Revenue Customer CSuite",
+            "Risk Governance CSuite",
+            "Strategy Innovation CSuite",
+            "People Culture CSuite",
+            "Commercial CSuite"
+          ],
+          "required": true,
+          "example": "Core Traditional CSuite"
+        },
+        {
+          "@id": "pf:strategicFocus",
+          "@type": "rdf:Property",
+          "rdfs:label": "Strategic Focus",
+          "rdfs:comment": "Primary strategic area of responsibility for this role",
+          "schema:domainIncludes": "pf:ExecutiveRole",
+          "schema:rangeIncludes": "xsd:string",
+          "required": false,
+          "example": "Corporate Leadership & Vision"
+        },
+        {
+          "@id": "pf:vsomComponent",
+          "@type": "rdf:Property",
+          "rdfs:label": "VSOM Component",
+          "rdfs:comment": "Alignment with VSOM (Vision, Strategy, Operations, Metrics) framework component",
+          "schema:domainIncludes": "pf:ExecutiveRole",
+          "schema:rangeIncludes": "xsd:string",
+          "required": false,
+          "example": "Corporate Vision & Strategy"
+        },
+        {
+          "@id": "pf:bscPerspective",
+          "@type": "rdf:Property",
+          "rdfs:label": "Balanced Scorecard Perspective",
+          "rdfs:comment": "Primary Balanced Scorecard perspective this role aligns with",
+          "schema:domainIncludes": "pf:ExecutiveRole",
+          "schema:rangeIncludes": "xsd:string",
+          "enum": [
+            "Financial",
+            "Customer",
+            "Internal Process",
+            "Learning & Growth",
+            "Innovation",
+            "Technology",
+            "Risk/Governance",
+            "Stakeholder/ESG",
+            "Strategic",
+            "Integrated View"
+          ],
+          "required": false,
+          "example": "Integrated View"
+        },
+        {
+          "@id": "pf:keyFrameworks",
+          "@type": "rdf:Property",
+          "rdfs:label": "Key Frameworks",
+          "rdfs:comment": "Management and strategic frameworks typically used by this role",
+          "schema:domainIncludes": "pf:ExecutiveRole",
+          "schema:rangeIncludes": "xsd:string",
+          "cardinality": "0..*",
+          "required": false,
+          "example": ["Blue Ocean Strategy", "Corporate Strategy", "BSC"]
+        },
+        {
+          "@id": "pf:primaryMetrics",
+          "@type": "rdf:Property",
+          "rdfs:label": "Primary Metrics",
+          "rdfs:comment": "Key Performance Indicators (KPIs) owned or primarily tracked by this role",
+          "schema:domainIncludes": "pf:ExecutiveRole",
+          "schema:rangeIncludes": "xsd:string",
+          "cardinality": "0..*",
+          "required": false,
+          "example": ["Revenue Growth", "Market Position", "Stakeholder Value"]
+        },
+        {
+          "@id": "pf:aiVisibilityRole",
+          "@type": "rdf:Property",
+          "rdfs:label": "AI Visibility Role",
+          "rdfs:comment": "Description of how this role relates to AI visibility and brand authority strategy",
+          "schema:domainIncludes": "pf:ExecutiveRole",
+          "schema:rangeIncludes": "xsd:string",
+          "required": false,
+          "example": "Executive AI Thought Leadership & Strategic Direction"
+        },
+        {
+          "@id": "pf:seniorityLevel",
+          "@type": "rdf:Property",
+          "rdfs:label": "Seniority Level",
+          "rdfs:comment": "Numeric seniority level where 1=C-Suite, 2=VP, 3=Director, etc.",
+          "schema:domainIncludes": ["pf:ExecutiveRole", "pf:FunctionalRole"],
+          "schema:rangeIncludes": "xsd:integer",
+          "minimum": 1,
+          "maximum": 10,
+          "required": true,
+          "example": 1
+        }
+      ]
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "pf:FunctionalRole",
+      "rdfs:subClassOf": "schema:EmployeeRole",
+      "rdfs:label": "Functional Role",
+      "rdfs:comment": "Operational or functional position below executive level, typically within a specific department or function",
+      "schemaOrgAlignment": {
+        "baseType": "schema:EmployeeRole",
+        "rationale": "schema:EmployeeRole is appropriate for non-executive organizational positions",
+        "extensions": [
+          "function",
+          "seniorityLevel"
+        ]
+      },
+      "properties": [
+        {
+          "@id": "pf:function",
+          "@type": "rdf:Property",
+          "rdfs:label": "Function",
+          "rdfs:comment": "Functional department or area this role belongs to",
+          "schema:domainIncludes": "pf:FunctionalRole",
+          "schema:rangeIncludes": "xsd:string",
+          "enum": [
+            "Marketing",
+            "Sales",
+            "Operations",
+            "Finance",
+            "Technology",
+            "HR",
+            "Legal",
+            "Product",
+            "Data",
+            "Customer Success",
+            "Strategy",
+            "Innovation",
+            "Compliance",
+            "Security"
+          ],
+          "required": true,
+          "example": "Marketing"
+        },
+        {
+          "@id": "pf:roleTitle",
+          "@type": "rdf:Property",
+          "rdfs:label": "Role Title",
+          "rdfs:comment": "Full title of the functional role",
+          "schema:domainIncludes": "pf:FunctionalRole",
+          "schema:rangeIncludes": "xsd:string",
+          "required": true,
+          "example": "Marketing Manager"
+        }
+      ]
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "pf:RoleAssignment",
+      "rdfs:subClassOf": "schema:Thing",
+      "rdfs:label": "Role Assignment",
+      "rdfs:comment": "Assignment of an INDIVIDUAL (schema:Person) to a ROLE within an ORGANIZATION context. Enables multi-venture role portfolios.",
+      "schemaOrgAlignment": {
+        "baseType": "schema:Thing",
+        "rationale": "No direct schema.org equivalent for role assignment as a reified relationship",
+        "extensions": [
+          "individual",
+          "role",
+          "organization",
+          "assignmentType",
+          "timeCommitment",
+          "isActive",
+          "startDate",
+          "endDate"
+        ]
+      },
+      "properties": [
+        {
+          "@id": "pf:individual",
+          "@type": "rdf:Property",
+          "rdfs:label": "Individual",
+          "rdfs:comment": "The INDIVIDUAL (schema:Person) who is assigned to the role",
+          "schema:domainIncludes": "pf:RoleAssignment",
+          "schema:rangeIncludes": "schema:Person",
+          "cardinality": "1..1",
+          "required": true,
+          "businessMeaning": "The actual person filling this role"
+        },
+        {
+          "@id": "pf:role",
+          "@type": "rdf:Property",
+          "rdfs:label": "Role",
+          "rdfs:comment": "The ROLE being assigned (ExecutiveRole or FunctionalRole)",
+          "schema:domainIncludes": "pf:RoleAssignment",
+          "schema:rangeIncludes": ["pf:ExecutiveRole", "pf:FunctionalRole"],
+          "cardinality": "1..1",
+          "required": true,
+          "businessMeaning": "The organizational position being filled"
+        },
+        {
+          "@id": "pf:organization",
+          "@type": "rdf:Property",
+          "rdfs:label": "Organization",
+          "rdfs:comment": "The ORGANIZATION within which this role assignment exists",
+          "schema:domainIncludes": "pf:RoleAssignment",
+          "schema:rangeIncludes": "schema:Organization",
+          "cardinality": "1..1",
+          "required": true,
+          "businessMeaning": "The venture, company, or organizational unit context"
+        },
+        {
+          "@id": "pf:assignmentType",
+          "@type": "rdf:Property",
+          "rdfs:label": "Assignment Type",
+          "rdfs:comment": "Nature of the role assignment",
+          "schema:domainIncludes": "pf:RoleAssignment",
+          "schema:rangeIncludes": "xsd:string",
+          "enum": [
+            "Primary",
+            "Secondary",
+            "Acting",
+            "Interim",
+            "Advisory",
+            "Board",
+            "Consultant"
+          ],
+          "required": true,
+          "example": "Primary"
+        },
+        {
+          "@id": "pf:timeCommitment",
+          "@type": "rdf:Property",
+          "rdfs:label": "Time Commitment",
+          "rdfs:comment": "Percentage of time commitment for this role (0-100)",
+          "schema:domainIncludes": "pf:RoleAssignment",
+          "schema:rangeIncludes": "xsd:float",
+          "minimum": 0,
+          "maximum": 100,
+          "required": false,
+          "example": 100.0
+        },
+        {
+          "@id": "pf:isActive",
+          "@type": "rdf:Property",
+          "rdfs:label": "Is Active",
+          "rdfs:comment": "Whether this role assignment is currently active",
+          "schema:domainIncludes": "pf:RoleAssignment",
+          "schema:rangeIncludes": "xsd:boolean",
+          "required": true,
+          "default": true
+        },
+        {
+          "@id": "pf:startDate",
+          "@type": "rdf:Property",
+          "rdfs:label": "Start Date",
+          "rdfs:comment": "Date when the role assignment began",
+          "schema:domainIncludes": "pf:RoleAssignment",
+          "schema:rangeIncludes": "xsd:date",
+          "required": false
+        },
+        {
+          "@id": "pf:endDate",
+          "@type": "rdf:Property",
+          "rdfs:label": "End Date",
+          "rdfs:comment": "Date when the role assignment ended (null if active)",
+          "schema:domainIncludes": "pf:RoleAssignment",
+          "schema:rangeIncludes": "xsd:date",
+          "cardinality": "0..1",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "raci:RACIAssignment",
+      "rdfs:subClassOf": "schema:Thing",
+      "rdfs:label": "RACI Assignment",
+      "rdfs:comment": "Defines who is Responsible, Accountable, Consulted, or Informed for a specific activity or process. Applied to ROLES, not individuals.",
+      "schemaOrgAlignment": {
+        "baseType": "schema:Thing",
+        "rationale": "RACI is a governance concept with no direct schema.org equivalent",
+        "extensions": [
+          "activity",
+          "role",
+          "raciType",
+          "context",
+          "organization"
+        ]
+      },
+      "properties": [
+        {
+          "@id": "raci:activity",
+          "@type": "rdf:Property",
+          "rdfs:label": "Activity",
+          "rdfs:comment": "The activity, process, or action for which RACI accountability is defined",
+          "schema:domainIncludes": "raci:RACIAssignment",
+          "schema:rangeIncludes": ["schema:Action", "pf:BusinessProcess"],
+          "cardinality": "1..1",
+          "required": true,
+          "businessMeaning": "What needs to be done"
+        },
+        {
+          "@id": "raci:role",
+          "@type": "rdf:Property",
+          "rdfs:label": "Role",
+          "rdfs:comment": "The ROLE that has this RACI assignment",
+          "schema:domainIncludes": "raci:RACIAssignment",
+          "schema:rangeIncludes": ["pf:ExecutiveRole", "pf:FunctionalRole"],
+          "cardinality": "1..1",
+          "required": true,
+          "businessMeaning": "Who (by role, not individual) has this accountability"
+        },
+        {
+          "@id": "raci:raciType",
+          "@type": "rdf:Property",
+          "rdfs:label": "RACI Type",
+          "rdfs:comment": "The type of RACI accountability: Responsible (does the work), Accountable (owns the outcome), Consulted (provides input), or Informed (kept updated)",
+          "schema:domainIncludes": "raci:RACIAssignment",
+          "schema:rangeIncludes": "xsd:string",
+          "enum": [
+            "Responsible",
+            "Accountable",
+            "Consulted",
+            "Informed"
+          ],
+          "required": true,
+          "example": "Accountable"
+        },
+        {
+          "@id": "raci:context",
+          "@type": "rdf:Property",
+          "rdfs:label": "Context",
+          "rdfs:comment": "Additional contextual notes about this RACI assignment",
+          "schema:domainIncludes": "raci:RACIAssignment",
+          "schema:rangeIncludes": "xsd:string",
+          "required": false
+        },
+        {
+          "@id": "raci:organization",
+          "@type": "rdf:Property",
+          "rdfs:label": "Organization",
+          "rdfs:comment": "Organization context for this RACI assignment (optional, for multi-org scenarios)",
+          "schema:domainIncludes": "raci:RACIAssignment",
+          "schema:rangeIncludes": "schema:Organization",
+          "cardinality": "0..1",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "pf:Capability",
+      "rdfs:subClassOf": "schema:Action",
+      "rdfs:label": "Capability",
+      "rdfs:comment": "An ability, skill, or competency that can be performed by a role or required for a role",
+      "schemaOrgAlignment": {
+        "baseType": "schema:Action",
+        "rationale": "Capabilities are potential actions that can be performed",
+        "extensions": [
+          "capabilityType",
+          "proficiencyRequired",
+          "relatedFrameworks"
+        ]
+      },
+      "properties": [
+        {
+          "@id": "pf:capabilityName",
+          "@type": "rdf:Property",
+          "rdfs:label": "Capability Name",
+          "rdfs:comment": "Name of the capability",
+          "schema:domainIncludes": "pf:Capability",
+          "schema:rangeIncludes": "xsd:string",
+          "required": true,
+          "example": "Strategic Planning"
+        },
+        {
+          "@id": "pf:capabilityType",
+          "@type": "rdf:Property",
+          "rdfs:label": "Capability Type",
+          "rdfs:comment": "Category of capability",
+          "schema:domainIncludes": "pf:Capability",
+          "schema:rangeIncludes": "xsd:string",
+          "enum": [
+            "Technical",
+            "Business",
+            "Leadership",
+            "Analytical",
+            "Creative",
+            "Strategic",
+            "Operational"
+          ],
+          "required": false,
+          "example": "Strategic"
+        },
+        {
+          "@id": "pf:proficiencyRequired",
+          "@type": "rdf:Property",
+          "rdfs:label": "Proficiency Required",
+          "rdfs:comment": "Level of proficiency required for this capability",
+          "schema:domainIncludes": "pf:Capability",
+          "schema:rangeIncludes": "xsd:string",
+          "enum": [
+            "Basic",
+            "Intermediate",
+            "Advanced",
+            "Expert"
+          ],
+          "required": false,
+          "example": "Expert"
+        },
+        {
+          "@id": "pf:relatedFrameworks",
+          "@type": "rdf:Property",
+          "rdfs:label": "Related Frameworks",
+          "rdfs:comment": "Management or technical frameworks related to this capability",
+          "schema:domainIncludes": "pf:Capability",
+          "schema:rangeIncludes": "xsd:string",
+          "cardinality": "0..*",
+          "required": false,
+          "example": ["Blue Ocean Strategy", "BSC"]
+        }
+      ]
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "rbac:Permission",
+      "rdfs:subClassOf": "schema:Thing",
+      "rdfs:label": "Permission",
+      "rdfs:comment": "Authorization to perform an action on a resource. Applied to USERS (not roles directly) through AccessPolicies.",
+      "schemaOrgAlignment": {
+        "baseType": "schema:Thing",
+        "rationale": "No schema.org equivalent for access control permissions",
+        "extensions": [
+          "action",
+          "resource",
+          "conditions",
+          "effect"
+        ]
+      },
+      "properties": [
+        {
+          "@id": "rbac:action",
+          "@type": "rdf:Property",
+          "rdfs:label": "Action",
+          "rdfs:comment": "The action that is permitted or denied",
+          "schema:domainIncludes": "rbac:Permission",
+          "schema:rangeIncludes": "xsd:string",
+          "enum": [
+            "Create",
+            "Read",
+            "Update",
+            "Delete",
+            "Execute",
+            "Approve",
+            "Share",
+            "Export",
+            "Import",
+            "Publish"
+          ],
+          "required": true,
+          "example": "Approve"
+        },
+        {
+          "@id": "rbac:resource",
+          "@type": "rdf:Property",
+          "rdfs:label": "Resource",
+          "rdfs:comment": "The resource type or specific resource identifier this permission applies to",
+          "schema:domainIncludes": "rbac:Permission",
+          "schema:rangeIncludes": "xsd:string",
+          "required": true,
+          "example": "Budget"
+        },
+        {
+          "@id": "rbac:conditions",
+          "@type": "rdf:Property",
+          "rdfs:label": "Conditions",
+          "rdfs:comment": "Contextual conditions that must be met for permission to apply (e.g., value thresholds, time constraints)",
+          "schema:domainIncludes": "rbac:Permission",
+          "schema:rangeIncludes": "rbac:AccessCondition",
+          "cardinality": "0..*",
+          "required": false,
+          "example": {"attribute": "amount", "operator": "lessThan", "value": 10000}
+        },
+        {
+          "@id": "rbac:effect",
+          "@type": "rdf:Property",
+          "rdfs:label": "Effect",
+          "rdfs:comment": "Whether this permission allows or denies the action",
+          "schema:domainIncludes": "rbac:Permission",
+          "schema:rangeIncludes": "xsd:string",
+          "enum": ["Allow", "Deny"],
+          "default": "Allow",
+          "required": true,
+          "example": "Allow"
+        }
+      ]
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "rbac:AccessPolicy",
+      "rdfs:subClassOf": "schema:Thing",
+      "rdfs:label": "Access Policy",
+      "rdfs:comment": "Binds ROLES to PERMISSIONS, which are then inherited by USERS who fill those roles. This is the core RBAC mechanism.",
+      "schemaOrgAlignment": {
+        "baseType": "schema:Thing",
+        "rationale": "No schema.org equivalent for access control policies",
+        "extensions": [
+          "role",
+          "permissions",
+          "organization",
+          "priority",
+          "isActive"
+        ]
+      },
+      "properties": [
+        {
+          "@id": "rbac:role",
+          "@type": "rdf:Property",
+          "rdfs:label": "Role",
+          "rdfs:comment": "The ROLE that this policy applies to",
+          "schema:domainIncludes": "rbac:AccessPolicy",
+          "schema:rangeIncludes": ["pf:ExecutiveRole", "pf:FunctionalRole"],
+          "cardinality": "1..1",
+          "required": true,
+          "businessMeaning": "USERS who fill this role inherit these permissions"
+        },
+        {
+          "@id": "rbac:permissions",
+          "@type": "rdf:Property",
+          "rdfs:label": "Permissions",
+          "rdfs:comment": "The set of permissions granted by this policy",
+          "schema:domainIncludes": "rbac:AccessPolicy",
+          "schema:rangeIncludes": "rbac:Permission",
+          "cardinality": "1..*",
+          "required": true
+        },
+        {
+          "@id": "rbac:organization",
+          "@type": "rdf:Property",
+          "rdfs:label": "Organization",
+          "rdfs:comment": "Organization context - if specified, policy only applies within this organization",
+          "schema:domainIncludes": "rbac:AccessPolicy",
+          "schema:rangeIncludes": "schema:Organization",
+          "cardinality": "0..1",
+          "required": false
+        },
+        {
+          "@id": "rbac:priority",
+          "@type": "rdf:Property",
+          "rdfs:label": "Priority",
+          "rdfs:comment": "Conflict resolution priority (higher = takes precedence)",
+          "schema:domainIncludes": "rbac:AccessPolicy",
+          "schema:rangeIncludes": "xsd:integer",
+          "required": false,
+          "default": 0
+        },
+        {
+          "@id": "rbac:isActive",
+          "@type": "rdf:Property",
+          "rdfs:label": "Is Active",
+          "rdfs:comment": "Whether this policy is currently active",
+          "schema:domainIncludes": "rbac:AccessPolicy",
+          "schema:rangeIncludes": "xsd:boolean",
+          "required": true,
+          "default": true
+        }
+      ]
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "rbac:AccessCondition",
+      "rdfs:subClassOf": "schema:Thing",
+      "rdfs:label": "Access Condition",
+      "rdfs:comment": "A conditional constraint that must be satisfied for a permission to apply",
+      "properties": [
+        {
+          "@id": "rbac:attribute",
+          "@type": "rdf:Property",
+          "rdfs:label": "Attribute",
+          "rdfs:comment": "The attribute to evaluate",
+          "schema:domainIncludes": "rbac:AccessCondition",
+          "schema:rangeIncludes": "xsd:string",
+          "required": true,
+          "example": "amount"
+        },
+        {
+          "@id": "rbac:operator",
+          "@type": "rdf:Property",
+          "rdfs:label": "Operator",
+          "rdfs:comment": "Comparison operator",
+          "schema:domainIncludes": "rbac:AccessCondition",
+          "schema:rangeIncludes": "xsd:string",
+          "enum": ["equals", "notEquals", "lessThan", "lessThanOrEqual", "greaterThan", "greaterThanOrEqual", "contains", "in"],
+          "required": true,
+          "example": "lessThan"
+        },
+        {
+          "@id": "rbac:value",
+          "@type": "rdf:Property",
+          "rdfs:label": "Value",
+          "rdfs:comment": "The value to compare against",
+          "schema:domainIncludes": "rbac:AccessCondition",
+          "schema:rangeIncludes": "xsd:string",
+          "required": true,
+          "example": "10000"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "pf:hasRoleAssignment",
+      "@type": "rdf:Property",
+      "rdfs:label": "Has Role Assignment",
+      "rdfs:comment": "Links an INDIVIDUAL (schema:Person) to their RoleAssignments",
+      "schema:domainIncludes": "schema:Person",
+      "schema:rangeIncludes": "pf:RoleAssignment",
+      "cardinality": "0..*",
+      "inverse": "pf:assignedToIndividual"
+    },
+    {
+      "@id": "pf:assignedRole",
+      "@type": "rdf:Property",
+      "rdfs:label": "Assigned Role",
+      "rdfs:comment": "The role that is assigned in this RoleAssignment",
+      "schema:domainIncludes": "pf:RoleAssignment",
+      "schema:rangeIncludes": ["pf:ExecutiveRole", "pf:FunctionalRole"],
+      "cardinality": "1..1",
+      "inverse": "pf:hasAssignment"
+    },
+    {
+      "@id": "pf:inOrganization",
+      "@type": "rdf:Property",
+      "rdfs:label": "In Organization",
+      "rdfs:comment": "The organization context for this RoleAssignment",
+      "schema:domainIncludes": "pf:RoleAssignment",
+      "schema:rangeIncludes": "schema:Organization",
+      "cardinality": "1..1",
+      "inverse": "pf:hasRoleAssignment"
+    },
+    {
+      "@id": "pf:reportsTo",
+      "@type": "rdf:Property",
+      "rdfs:label": "Reports To",
+      "rdfs:comment": "Hierarchical reporting relationship between roles",
+      "schema:domainIncludes": ["pf:ExecutiveRole", "pf:FunctionalRole"],
+      "schema:rangeIncludes": ["pf:ExecutiveRole", "pf:FunctionalRole"],
+      "cardinality": "0..1",
+      "inverse": "pf:manages",
+      "semantics": "Direct hierarchical reporting relationship"
+    },
+    {
+      "@id": "pf:collaboratesWith",
+      "@type": "rdf:Property",
+      "rdfs:label": "Collaborates With",
+      "rdfs:comment": "Peer collaboration relationship between roles (symmetric)",
+      "schema:domainIncludes": ["pf:ExecutiveRole", "pf:FunctionalRole"],
+      "schema:rangeIncludes": ["pf:ExecutiveRole", "pf:FunctionalRole"],
+      "cardinality": "0..*",
+      "inverse": "pf:collaboratesWith",
+      "semantics": "Symmetric peer collaboration without hierarchy"
+    },
+    {
+      "@id": "pf:hasCapability",
+      "@type": "rdf:Property",
+      "rdfs:label": "Has Capability",
+      "rdfs:comment": "Capabilities required or expected for this role",
+      "schema:domainIncludes": ["pf:ExecutiveRole", "pf:FunctionalRole"],
+      "schema:rangeIncludes": "pf:Capability",
+      "cardinality": "0..*",
+      "inverse": "pf:requiredByRole"
+    },
+    {
+      "@id": "raci:hasRACIAssignment",
+      "@type": "rdf:Property",
+      "rdfs:label": "Has RACI Assignment",
+      "rdfs:comment": "RACI assignments for an activity",
+      "schema:domainIncludes": ["schema:Action", "pf:BusinessProcess"],
+      "schema:rangeIncludes": "raci:RACIAssignment",
+      "cardinality": "1..*",
+      "inverse": "raci:raciFor"
+    },
+    {
+      "@id": "rbac:governedBy",
+      "@type": "rdf:Property",
+      "rdfs:label": "Governed By",
+      "rdfs:comment": "Access policies that govern this role",
+      "schema:domainIncludes": ["pf:ExecutiveRole", "pf:FunctionalRole"],
+      "schema:rangeIncludes": "rbac:AccessPolicy",
+      "cardinality": "0..*",
+      "inverse": "rbac:appliesTo"
+    },
+    {
+      "@id": "rbac:grantsPermission",
+      "@type": "rdf:Property",
+      "rdfs:label": "Grants Permission",
+      "rdfs:comment": "Permissions granted by this policy",
+      "schema:domainIncludes": "rbac:AccessPolicy",
+      "schema:rangeIncludes": "rbac:Permission",
+      "cardinality": "1..*",
+      "inverse": "rbac:grantedBy"
+    }
+  ],
+  "businessRules": [
+    {
+      "id": "BR-001",
+      "name": "One Accountable Per Activity",
+      "description": "Each activity must have exactly one role marked as Accountable in RACI",
+      "severity": "error",
+      "formalLogic": "∀activity ∈ Activity: COUNT(RACIAssignment WHERE raciType='Accountable' AND activity=activity) = 1",
+      "validation": "For each activity, count RACI assignments with raciType='Accountable' must equal exactly 1"
+    },
+    {
+      "id": "BR-002",
+      "name": "At Least One Responsible",
+      "description": "Each activity must have at least one Responsible role",
+      "severity": "error",
+      "formalLogic": "∀activity ∈ Activity: COUNT(RACIAssignment WHERE raciType='Responsible' AND activity=activity) ≥ 1",
+      "validation": "For each activity, count RACI assignments with raciType='Responsible' must be at least 1"
+    },
+    {
+      "id": "BR-003",
+      "name": "No Circular Reporting",
+      "description": "Reporting relationships must not create cycles",
+      "severity": "error",
+      "formalLogic": "GRAPH(reportsTo) MUST BE ACYCLIC",
+      "validation": "Traverse reportsTo relationships and detect cycles"
+    },
+    {
+      "id": "BR-004",
+      "name": "Active Assignment Has No End Date",
+      "description": "If RoleAssignment.isActive=true, then endDate must be null",
+      "severity": "error",
+      "formalLogic": "∀ra ∈ RoleAssignment: (ra.isActive = true) → (ra.endDate IS NULL)",
+      "validation": "For each RoleAssignment where isActive=true, endDate must be null"
+    },
+    {
+      "id": "BR-005",
+      "name": "Time Commitment Range",
+      "description": "Total time commitment across all active assignments for a person should not exceed 100%",
+      "severity": "warning",
+      "formalLogic": "∀person ∈ Person: SUM(RoleAssignment.timeCommitment WHERE individual=person AND isActive=true) ≤ 100",
+      "validation": "For each person, sum of timeCommitment across active assignments should not exceed 100"
+    },
+    {
+      "id": "BR-006",
+      "name": "C-Suite Seniority Level",
+      "description": "Executive roles in C-Suite categories should have seniorityLevel=1",
+      "severity": "warning",
+      "formalLogic": "∀role ∈ ExecutiveRole: (role.roleCategory CONTAINS 'CSuite') → (role.seniorityLevel = 1)",
+      "validation": "For ExecutiveRole where roleCategory contains 'CSuite', seniorityLevel should be 1"
+    },
+    {
+      "id": "BR-007",
+      "name": "Permission Conflict Resolution",
+      "description": "When multiple policies apply, highest priority wins. Deny overrides Allow at same priority.",
+      "severity": "info",
+      "formalLogic": "POLICY_RESOLUTION: ORDER BY priority DESC, effect='Deny' FIRST",
+      "validation": "When resolving permissions, sort policies by priority descending, with Deny effect taking precedence over Allow at same priority level"
+    },
+    {
+      "id": "BR-008",
+      "name": "User Inherits Role Permissions",
+      "description": "USERS inherit permissions from ROLES they fill via RoleAssignments",
+      "severity": "info",
+      "formalLogic": "∀user ∈ User, ∀ra ∈ RoleAssignment WHERE ra.individual = user.person AND ra.isActive = true: user INHERITS permissions FROM AccessPolicy WHERE role = ra.role",
+      "validation": "User permissions are derived from active RoleAssignments to roles with AccessPolicies"
+    },
+    {
+      "id": "BR-009",
+      "name": "RACI Applies to Roles Not Individuals",
+      "description": "RACI assignments are made to ROLES, not directly to INDIVIDUALS",
+      "severity": "info",
+      "formalLogic": "∀raci ∈ RACIAssignment: raci.role ∈ (ExecutiveRole ∪ FunctionalRole)",
+      "validation": "RACI role property must reference ExecutiveRole or FunctionalRole, never Person directly"
+    },
+    {
+      "id": "BR-010",
+      "name": "Organization Context Consistency",
+      "description": "When resolving permissions or RACI for a specific organizational context, only consider assignments/policies for that organization",
+      "severity": "info",
+      "formalLogic": "∀query(user, action, resource, org): FILTER(AccessPolicy WHERE organization IS NULL OR organization = org)",
+      "validation": "Filter policies by organization context when resolving permissions"
+    }
+  ],
+  "aiCapabilities": {
+    "authorization": {
+      "description": "Determine if a USER can perform an action on a resource",
+      "queryPattern": "Can {user} {action} {resource} in {organization}?",
+      "resolutionSteps": [
+        "1. Identify the USER and their linked INDIVIDUAL (schema:Person)",
+        "2. Find all active RoleAssignments for that INDIVIDUAL in the specified ORGANIZATION",
+        "3. For each assigned ROLE, retrieve all AccessPolicies that govern that role",
+        "4. Collect all Permissions from those policies",
+        "5. Filter permissions matching the requested action and resource",
+        "6. Evaluate any conditions on the permissions",
+        "7. Apply conflict resolution (priority, Deny override)",
+        "8. Return authorization decision: Allow or Deny"
+      ],
+      "exampleQuery": "Can user 'amanda.moore@baiv.io' approve budget over $10K in BAIV organization?",
+      "graphTraversal": "User -> links to -> Person -> hasRoleAssignment -> RoleAssignment -> assignedRole -> Role -> governedBy -> AccessPolicy -> grantsPermission -> Permission"
+    },
+    "raciQuery": {
+      "description": "Find which ROLES have specific RACI accountability for an activity",
+      "queryPattern": "Who is {raciType} for {activity}?",
+      "resolutionSteps": [
+        "1. Find RACIAssignments for the specified activity",
+        "2. Filter by raciType (Responsible, Accountable, Consulted, Informed)",
+        "3. Return the ROLES that have this RACI assignment",
+        "4. Optionally resolve to current INDIVIDUALS via active RoleAssignments"
+      ],
+      "exampleQuery": "Who is Accountable for 'AI Strategy Development' activity?",
+      "graphTraversal": "Activity -> hasRACIAssignment -> RACIAssignment (filter by raciType) -> role -> ExecutiveRole/FunctionalRole"
+    },
+    "raciMatrixGeneration": {
+      "description": "Generate complete RACI matrix for a process or set of activities",
+      "queryPattern": "Generate RACI matrix for {process}",
+      "resolutionSteps": [
+        "1. Identify all activities in the process",
+        "2. For each activity, find all RACIAssignments",
+        "3. Create matrix: rows=activities, columns=roles, cells=RACI type",
+        "4. Validate BR-001 and BR-002 (one Accountable, at least one Responsible)"
+      ],
+      "exampleQuery": "Generate RACI matrix for 'Annual Strategic Planning' process"
+    },
+    "capabilityGapAnalysis": {
+      "description": "Identify organizational capability gaps",
+      "queryPattern": "What capabilities are missing in {organization}?",
+      "resolutionSteps": [
+        "1. Retrieve all ExecutiveRoles defined in the ontology",
+        "2. Find active RoleAssignments in the specified organization",
+        "3. Identify roles with no active assignments (unfilled)",
+        "4. Aggregate required capabilities from unfilled roles",
+        "5. Return capability gap report"
+      ],
+      "exampleQuery": "What executive capabilities are missing in startup venture X?"
+    },
+    "organizationalGraph": {
+      "description": "Visualize organizational structure",
+      "queryPattern": "Show org chart for {organization}",
+      "resolutionSteps": [
+        "1. Get all active RoleAssignments for organization",
+        "2. Build hierarchical graph using reportsTo relationships",
+        "3. Add collaboratesWith edges for matrix view",
+        "4. Annotate nodes with individual names and role titles",
+        "5. Return graph visualization"
+      ],
+      "exampleQuery": "Show me the organizational chart for BAIV"
+    },
+    "crossVentureRolePortfolio": {
+      "description": "View all roles an individual holds across ventures",
+      "queryPattern": "What roles does {individual} hold?",
+      "resolutionSteps": [
+        "1. Find all active RoleAssignments for the specified individual",
+        "2. Group by organization",
+        "3. Include role title, assignment type, and time commitment",
+        "4. Calculate total time commitment across ventures"
+      ],
+      "exampleQuery": "What roles does Amanda Moore hold across all ventures?"
+    },
+    "strategicAccountabilityChain": {
+      "description": "Trace accountability for strategic initiatives from VSOM Strategy to ROLES via RACI",
+      "queryPattern": "Who is accountable for implementing {strategy component}?",
+      "resolutionSteps": [
+        "1. Identify activities related to the strategy component (from VSOM Strategy ontology)",
+        "2. Find RACIAssignments for those activities where raciType='Accountable'",
+        "3. Resolve to ROLES",
+        "4. Optionally resolve to current INDIVIDUALS via RoleAssignments",
+        "5. Return accountability chain"
+      ],
+      "exampleQuery": "Who is accountable for implementing the 'AI Visibility Strategy' in W4M?",
+      "crossOntologyDependency": "Requires pf:ontology:vsom-strategy-v1"
+    }
+  },
+  "qualityMetrics": {
+    "schemaOrgAlignment": 0.71,
+    "entityReuseRate": null,
+    "validationPassRate": null,
+    "documentationCompleteness": 1.0,
+    "relationshipDensity": 1.375,
+    "namingConventionCompliance": 1.0,
+    "agentQuerySuccess": null
+  },
+  "changeLog": [
+    {
+      "version": "3.0.0",
+      "date": "2025-10-11",
+      "changeType": "Initial Release",
+      "changes": [
+        "Initial ontology creation",
+        "Defined 8 core entities: ExecutiveRole, FunctionalRole, RoleAssignment, RACIAssignment, Capability, Permission, AccessPolicy, AccessCondition",
+        "Established 21 C-Suite executive roles from VSOM framework",
+        "Defined 9 core relationships",
+        "Specified 10 business rules",
+        "Mapped 7 AI agent capabilities",
+        "Integrated with dependent ontologies: individual, user, organization, vsom-strategy"
+      ],
+      "breakingChanges": false,
+      "migrationRequired": false
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pe": "https://platformcore.io/ontology/process-engineering/",
+    "ds": "https://platformcore.io/ontology/ds/",
+    "oaa": "https://oaa-ontology.org/v6/"
+  },
+  "@type": "pe:Process",
+  "pe:processId": "PE-DS-EXTRACT-001",
+  "pe:processName": "Design System Token Extraction Pipeline",
+  "pe:processType": "development",
+  "pe:description": "Four-phase pipeline extracting design tokens from Figma via MCP, classifying into three-tier cascade (Primitive/Semantic/Component), validating against DS-ONT business rules, and populating DS instance JSONLD files per PF-Instance brand.",
+  "pe:businessObjective": "Automate design-to-data flow: Figma source of truth into ontology-compliant instance data for multi-brand PFI resolution.",
+  "pe:scope": "Single Figma file key per brand variant; outputs one DS instance JSONLD per execution.",
+  "pe:owner": "Azlan EA-AAA / Design-Director Agent",
+  "pe:status": "active",
+  "pe:version": "1.0.0",
+  "pe:estimatedDuration": "PT5M",
+  "pe:automationLevel": 90,
+
+  "pe:hasPhase": [
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-1-EXTRACT",
+      "pe:phaseName": "Figma Variable Extraction",
+      "pe:phaseNumber": 1,
+      "pe:description": "Call Figma MCP get_variable_defs on root node of target Figma file. Collect raw variable collections.",
+      "pe:entryConditions": "figmaFileKey present in DS-ONT instanceData entry; Figma MCP authenticated",
+      "pe:exitConditions": "Raw extraction JSON contains at least 1 variable collection with 5+ variables",
+      "pe:activities": "1. Read figmaFileKey from DS-ONT Entry instanceData. 2. Call get_variable_defs(fileKey, nodeId=0:1). 3. Optionally call get_metadata to discover variable collection node IDs. 4. For each collection node, call get_variable_defs. 5. Merge all variable definitions into extraction log JSON.",
+      "pe:estimatedDuration": "PT2M",
+      "pe:parallelExecution": false
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-2-CLASSIFY",
+      "pe:phaseName": "Token Tier Classification",
+      "pe:phaseNumber": 2,
+      "pe:description": "Classify extracted Figma variables into Primitive, Semantic, and Component tiers per DS-ONT TokenTier enumeration.",
+      "pe:entryConditions": "Raw extraction JSON from Phase 1 available",
+      "pe:exitConditions": "All tokens classified into exactly one tier; tier counts logged",
+      "pe:activities": "1. Parse Figma variable names using slash-path convention (collection/group/name). 2. Apply classification rules: colour scales and raw values = Primitive; intent-named tokens (surface/text/border/accent/feedback) = Semantic; component-scoped tokens (button/card/input prefix) = Component. 3. Generate TokenCategory entries per DS-ONT schema. 4. Map valueType using DS-ONT TokenValueType enum (Color/Spacing/Radius/Typography/Shadow/Border/Opacity).",
+      "pe:estimatedDuration": "PT30S",
+      "pe:parallelExecution": false
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-3-VALIDATE",
+      "pe:phaseName": "DS-ONT Schema Validation",
+      "pe:phaseNumber": 3,
+      "pe:description": "Validate classified tokens against DS-ONT business rules BR-DS-001 through BR-DS-008.",
+      "pe:entryConditions": "Classified token arrays from Phase 2 available",
+      "pe:exitConditions": "Zero blocking violations; all warnings documented",
+      "pe:activities": "1. BR-DS-001: Semantic tokens must reference a known primitive. 2. BR-DS-002: Component tokens must reference a semantic. 3. BR-DS-003: All consumed component tokens must exist. 4. BR-DS-004: If themeModeSupport=true, semantics need light+dark values. 5. BR-DS-005: Figma sources older than 7 days flagged Stale. 6. BR-DS-006: Every brand variant must bind to a FigmaSource. 7. Required property completeness per entity type.",
+      "pe:estimatedDuration": "PT30S",
+      "pe:parallelExecution": false
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-4-POPULATE",
+      "pe:phaseName": "DS Instance Population",
+      "pe:phaseNumber": 4,
+      "pe:description": "Generate the DS instance JSONLD file conforming to DS-ONT entity definitions.",
+      "pe:entryConditions": "Validation gate passed with zero blocking errors",
+      "pe:exitConditions": "Valid JSONLD file written; instanceData entry updated in registry",
+      "pe:activities": "1. Assemble @graph array: DesignSystem root, TokenCategories, PrimitiveTokens[], SemanticTokens[], ComponentTokens[], BrandVariant, FigmaSource, ThemeModes, DesignPatterns. 2. Write to instance-data/{brand}-ds-instance-v{version}.jsonld. 3. Write extraction log to instance-data/{brand}-extraction-log.json. 4. Update Entry-ONT-DS-001.json instanceData entry: status=populated, extractedAt=now.",
+      "pe:estimatedDuration": "PT1M",
+      "pe:parallelExecution": false
+    }
+  ],
+
+  "pe:hasGate": [
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-1-EXTRACTION-COMPLETE",
+      "pe:gateName": "Extraction Completeness Gate",
+      "pe:gateType": "completeness",
+      "pe:description": "Verify raw extraction contains minimum viable token set",
+      "pe:criteria": "At least 10 colour tokens, 3 spacing tokens, 2 radius tokens extracted",
+      "pe:threshold": 80,
+      "pe:automated": true,
+      "pe:blockingFactor": "blocking"
+    },
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-2-CLASSIFICATION-VALID",
+      "pe:gateName": "Classification Validity Gate",
+      "pe:gateType": "quality",
+      "pe:description": "All tokens classified into exactly one tier with valid valueType",
+      "pe:criteria": "Zero unclassified tokens; all tokens have DS-ONT enum-valid valueType",
+      "pe:threshold": 100,
+      "pe:automated": true,
+      "pe:blockingFactor": "blocking"
+    },
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-3-SCHEMA-VALID",
+      "pe:gateName": "DS-ONT Schema Validation Gate",
+      "pe:gateType": "compliance",
+      "pe:description": "Instance data conforms to DS-ONT business rules",
+      "pe:criteria": "Zero severity=error rule violations from BR-DS-001 through BR-DS-008",
+      "pe:threshold": 100,
+      "pe:automated": true,
+      "pe:blockingFactor": "blocking"
+    },
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-4-OUTPUT-VALID",
+      "pe:gateName": "Output JSONLD Structural Gate",
+      "pe:gateType": "quality",
+      "pe:description": "Output file is valid JSON-LD with correct @context and @graph",
+      "pe:criteria": "Valid JSON; @context contains ds: prefix; @graph has DesignSystem + BrandVariant + FigmaSource + at least 1 token per tier",
+      "pe:threshold": 100,
+      "pe:automated": true,
+      "pe:blockingFactor": "blocking"
+    }
+  ],
+
+  "pe:augmentedBy": [
+    {
+      "@type": "pe:AIAgent",
+      "pe:agentId": "AGENT-DS-EXTRACTOR",
+      "pe:agentName": "Design Token Extraction Agent",
+      "pe:agentType": "generation",
+      "pe:description": "Claude Code agent with Figma MCP access executing the four-phase extraction pipeline",
+      "pe:capabilities": "Figma MCP get_variable_defs, get_metadata, get_design_context; token classification; JSONLD generation; DS-ONT business rule validation",
+      "pe:autonomyLevel": "supervised",
+      "pe:model": "claude-opus-4-6",
+      "pe:qualityThreshold": 90
+    }
+  ],
+
+  "pe:measures": [
+    {
+      "@type": "pe:ProcessMetric",
+      "pe:metricId": "METRIC-TOKEN-COUNT",
+      "pe:metricName": "Extracted Token Count",
+      "pe:metricType": "output",
+      "pe:formula": "primitiveCount + semanticCount + componentCount",
+      "pe:unit": "tokens",
+      "pe:target": 50,
+      "pe:collectionMethod": "automated",
+      "pe:frequency": "per-execution"
+    },
+    {
+      "@type": "pe:ProcessMetric",
+      "pe:metricId": "METRIC-VALIDATION-SCORE",
+      "pe:metricName": "Business Rule Compliance",
+      "pe:metricType": "quality",
+      "pe:formula": "(rules_passed / total_rules) * 100",
+      "pe:unit": "percent",
+      "pe:target": 100,
+      "pe:collectionMethod": "automated",
+      "pe:frequency": "per-execution"
+    }
+  ]
+}

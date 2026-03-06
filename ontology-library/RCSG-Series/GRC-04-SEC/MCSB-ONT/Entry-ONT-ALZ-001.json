@@ -1,0 +1,99 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-ALZ-001",
+  "name": "MCSB Ontology (Microsoft Cloud Security Benchmark v1)",
+  "description": "Comprehensive ontology representing the Microsoft Cloud Security Benchmark v1 framework, enabling AI agents to reason about cloud security controls, compliance mappings, implementation guidance, and responsibility assignments across Azure and multi-cloud environments. Acts as governance overlay bridging RCSG security controls to EA architecture domains.",
+  "version": "2.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/mcsb/",
+  "prefix": "mcsb:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-09",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./mcsb-v2.0.0-oaa-v6.json",
+    "documentation": "./source/v1/MCSB-Documentation-v1.0.0 (1).md",
+    "glossary": "./source/MCSB-Glossary-v1.0.0 (1).json",
+    "testData": "./source/MCSB-TestData-v1.0.0 (2).json",
+    "validationReport": "./source/MCSB-ValidationReport-v1.0.0 (2).json",
+    "changelog": "./source/MCSB-Changelog-v1.0.0 (1).md",
+    "instanceData": []
+  },
+  "components": {
+    "ControlDomain": "High-level security control category (12 domains: NS, IM, PA, DP, LT, AM, GS, IR, PV, ES, DS, BR)",
+    "SecurityControl": "Specific security control with ID, severity, and security principle",
+    "ImplementationGuidance": "Platform-specific implementation instructions for Azure and AWS",
+    "ComplianceMapping": "Cross-framework control mapping to NIST, CIS, PCI-DSS",
+    "ComplianceFramework": "External compliance framework reference",
+    "ResponsibilityAssignment": "Shared responsibility model (Client/Provider/Joint)",
+    "SecurityStakeholder": "Security role and RACI participant",
+    "ControlAssessment": "Control implementation assessment tracking"
+  },
+  "relationships": {
+    "internal": 9,
+    "crossOntology": [
+      {
+        "name": "appliesTo",
+        "from": "mcsb:SecurityControl",
+        "to": "ea-core:SecurityArchitecture",
+        "cardinality": "n:m",
+        "purpose": "MCSB → EA-CORE: Security controls map to enterprise security architecture domains"
+      },
+      {
+        "name": "assessesResource",
+        "from": "mcsb:ControlAssessment",
+        "to": "ea-msft:AzureResource",
+        "cardinality": "n:m",
+        "purpose": "MCSB → EA-MSFT: Control assessments target specific Azure resources"
+      },
+      {
+        "name": "guidanceForPlatform",
+        "from": "mcsb:ImplementationGuidance",
+        "to": "ea-msft:CloudPlatform",
+        "cardinality": "n:1",
+        "purpose": "MCSB → EA-MSFT: Implementation guidance filtered by cloud platform"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-EA-CORE-001",
+    "Entry-ONT-EA-MSFT-001"
+  ],
+  "dependents": [
+    "Entry-ONT-EA-001",
+    "Entry-ONT-OKR-001",
+    "Entry-ONT-EMC-001",
+    "Entry-ONT-RCSG-FW-001"
+  ],
+  "layer": "RCSG-SERIES",
+  "domain": "Cloud Security & Compliance",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-23",
+  "lastModified": "2026-02-09",
+  "sourceDocument": "PFC-Security_Schedules_Microsoft_cloud_security_benchmark_v1.xlsx",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-01-23",
+      "changes": "Initial creation from MCSB v1 Excel source with 12 control domains, 76 controls, compliance mappings. OAA v5.0.0."
+    },
+    {
+      "version": "2.0.0",
+      "date": "2026-02-09",
+      "changes": "OAA v6.1.0 rebuild: CloudPlatform/CloudService entities removed (now in EA-MSFT). Added 3 cross-ontology bridges to EA-CORE (SecurityArchitecture) and EA-MSFT (AzureResource, CloudPlatform). 8 entities, 12 relationships, 10 business rules, 5 enumerations."
+    }
+  ],
+  "notes": "MCSB-ONT is a governance overlay in RCSG-Series. Security controls govern EA architecture — they are not part of EA. Source material preserved in ./source/ directory including v1 ontology, v2 differential analysis, glossary, test data, and validation reports."
+}

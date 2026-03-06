@@ -1,0 +1,186 @@
+%% PF-Core: VE PMF DIAG-Ontology v2.0.0
+%% Product-Market Fit Module Entity Relationships
+%% Platform Foundation Core
+%% Document ID: PF-Core_VE_PMF_Diagram-Ontology_v2.0.0
+
+erDiagram
+    PMF_STATE ||--|| VALUE_PROPOSITION : "validates"
+    PMF_STATE ||--o{ VALIDATION_EXPERIMENT : "runs"
+    PMF_STATE ||--o{ PMF_INDICATOR : "tracks"
+    PMF_STATE ||--o{ PIVOT_DECISION : "triggers"
+    PMF_STATE }|--|| HYPOTHESIS : "tests"
+    
+    VALIDATION_EXPERIMENT ||--o{ SURVEY_RESPONSE : "collects"
+    VALIDATION_EXPERIMENT ||--o{ INTERVIEW_INSIGHT : "captures"
+    VALIDATION_EXPERIMENT ||--|| EXPERIMENT_DESIGN : "follows"
+    
+    PMF_INDICATOR ||--o{ RETENTION_COHORT : "measured_by"
+    PMF_INDICATOR ||--o{ ENGAGEMENT_METRIC : "includes"
+    PMF_INDICATOR ||--|| SEAN_ELLIS_SCORE : "culminates_in"
+    
+    PIVOT_DECISION ||--|| HYPOTHESIS : "from"
+    PIVOT_DECISION ||--|| HYPOTHESIS : "to"
+    PIVOT_DECISION ||--o{ MARKET_SIGNAL : "triggered_by"
+    
+    CUSTOMER_FEEDBACK ||--|| SURVEY_RESPONSE : "via"
+    CUSTOMER_FEEDBACK ||--|| INTERVIEW_INSIGHT : "via"
+    CUSTOMER_FEEDBACK }|--|| CUSTOMER_SEGMENT : "from"
+    
+    PMF_STATE {
+        string stateId PK
+        string valuePropositionId FK
+        string hypothesisId FK
+        enum validationLevel "Untested|ProblemValidated|SolutionValidated|PMFAchieved"
+        float confidenceScore
+        date lastAssessedAt
+        string assessmentMethod
+        enum trend "Improving|Stable|Declining"
+    }
+    
+    VALIDATION_EXPERIMENT {
+        string experimentId PK
+        string stateId FK
+        string hypothesisId FK
+        string experimentName
+        enum method "CustomerInterview|ABTest|Survey|PrototypeTest|PilotProgram|ConciergeTest"
+        date startDate
+        date endDate
+        string[] successCriteria
+        enum status "Designed|Running|Completed|Cancelled"
+        string findings
+    }
+    
+    EXPERIMENT_DESIGN {
+        string designId PK
+        string experimentId FK
+        string targetAudience
+        int sampleSize
+        string controlGroup
+        string treatmentGroup
+        string[] variables
+        string[] metrics
+        float significanceThreshold
+    }
+    
+    SURVEY_RESPONSE {
+        string responseId PK
+        string experimentId FK
+        string segmentId FK
+        datetime responseTimestamp
+        enum seanEllisAnswer "VeryDisappointed|SomewhatDisappointed|NotDisappointed"
+        string verbatimFeedback
+        int npsScore
+        float csatScore
+        json additionalResponses
+    }
+    
+    INTERVIEW_INSIGHT {
+        string insightId PK
+        string experimentId FK
+        string intervieweeRole
+        string companyType
+        string[] painPointsIdentified
+        string[] valueDriversConfirmed
+        string[] objectionsRaised
+        string[] quotesCaptures
+        enum willingnessToPay "High|Medium|Low|None"
+        float pricePointSuggested
+    }
+    
+    PMF_INDICATOR {
+        string indicatorId PK
+        string stateId FK
+        enum indicatorType "Retention|Engagement|Acquisition|Revenue|NPS"
+        string indicatorName
+        float currentValue
+        float targetValue
+        float previousValue
+        enum trend "Up|Down|Stable"
+        date measuredAt
+        string benchmark
+    }
+    
+    SEAN_ELLIS_SCORE {
+        string scoreId PK
+        string stateId FK
+        float veryDisappointedPercent
+        float somewhatDisappointedPercent
+        float notDisappointedPercent
+        int totalResponses
+        date calculatedAt
+        bool pmfThresholdMet
+    }
+    
+    RETENTION_COHORT {
+        string cohortId PK
+        string indicatorId FK
+        string cohortPeriod
+        int initialUsers
+        float day1Retention
+        float day7Retention
+        float day30Retention
+        float day90Retention
+        string[] primaryChurnReasons
+        enum cohortQuality "Strong|Moderate|Weak"
+    }
+    
+    ENGAGEMENT_METRIC {
+        string metricId PK
+        string indicatorId FK
+        enum metricName "DAU|WAU|MAU|SessionDuration|ActionsPerSession|FeatureAdoption"
+        float value
+        float benchmark
+        date measuredAt
+        string segment
+    }
+    
+    PIVOT_DECISION {
+        string decisionId PK
+        string stateId FK
+        string fromHypothesisId FK
+        string toHypothesisId FK
+        date decisionDate
+        string rationale
+        string[] triggeringSignals
+        enum pivotType "CustomerSegment|Problem|Solution|Channel|RevenueModel|Technology"
+        float estimatedImpact
+        string[] actionItems
+    }
+    
+    MARKET_SIGNAL {
+        string signalId PK
+        string decisionId FK
+        enum signalType "CompetitorMove|MarketTrend|CustomerFeedback|TechChange|RegChange"
+        string signalDescription
+        date detectedAt
+        enum strength "Strong|Moderate|Weak"
+        string source
+        string[] implications
+    }
+    
+    HYPOTHESIS {
+        string hypothesisId PK
+        string ifComponent
+        string forComponent
+        string thenComponent
+        string becauseComponent
+        float confidenceLevel
+        enum status "Untested|InProgress|Validated|Invalidated|Refined"
+    }
+    
+    VALUE_PROPOSITION {
+        string propositionId PK
+        string propositionStatement
+    }
+    
+    CUSTOMER_SEGMENT {
+        string segmentId PK
+        string segmentName
+    }
+    
+    CUSTOMER_FEEDBACK {
+        string feedbackId PK
+        string content
+        date receivedAt
+        string channel
+    }

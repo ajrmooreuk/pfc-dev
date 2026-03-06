@@ -1,0 +1,788 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pfc-oaa": "https://platform.foundation/ontology/pfc-oaa#",
+    "vsom": "https://platform.foundation/ontology/vsom#",
+    "baiv": "https://beai.visible/ontology#",
+    "pf": "https://platform.foundation/core#"
+  },
+  "@type": "Ontology",
+  "@id": "pfc-oaa:VE-ONT1-VSOM",
+  "name": "PFC-OAA-VE-ONT1-VSOM - Vision, Strategy, Objectives, Metrics Ontology",
+  "version": "1.0.0",
+  "description": "Platform Foundation Core - Ontology Architect Agent. Domain-agnostic ontology for capturing organizational and functional strategic planning through Vision, Strategy, Objectives, and Metrics cascade. Supports both organizational-wide and functional-specific strategic frameworks.",
+  "domain": "Strategy",
+  "dateCreated": "2025-01-08T00:00:00Z",
+  "dateModified": "2025-01-08T00:00:00Z",
+  "author": "Amanda Moore",
+  "schemaOrgAlignment": 80,
+  
+  "entities": [
+    {
+      "@type": "Class",
+      "@id": "pfc-oaa:Vision",
+      "name": "Vision",
+      "description": "A strategic vision statement that articulates the desired future state of the organization or functional domain. The vision provides directional clarity and inspires the strategy. Vision is typically set at the organizational level but can be defined for specific functional domains (e.g., Marketing Vision, Technology Vision).",
+      "schemaOrgBase": ["Thing", "CreativeWork"],
+      "properties": [
+        {
+          "@type": "Property",
+          "name": "visionStatement",
+          "schemaOrgProperty": "text",
+          "dataType": "Text",
+          "description": "The actual vision statement in natural language",
+          "required": true,
+          "constraints": {
+            "minLength": 50,
+            "maxLength": 500
+          }
+        },
+        {
+          "@type": "Property",
+          "name": "visionScope",
+          "dataType": "DefinedTerm",
+          "description": "The scope of the vision: organizational or functional",
+          "required": true,
+          "enumeration": ["organizational", "functional"],
+          "propertyRationale": "Custom property needed to distinguish organizational vs functional vision scope"
+        },
+        {
+          "@type": "Property",
+          "name": "visionHorizon",
+          "schemaOrgProperty": "duration",
+          "dataType": "Duration",
+          "description": "The time horizon for the vision (typically 3-10 years)",
+          "required": true,
+          "constraints": {
+            "minYears": 1,
+            "maxYears": 10
+          }
+        },
+        {
+          "@type": "Property",
+          "name": "visionOwner",
+          "dataType": "Reference",
+          "description": "The C-Suite role responsible for setting the vision (links to RRR Roles)",
+          "required": true,
+          "referenceTo": "pf:RRRRole"
+        },
+        {
+          "@type": "Property",
+          "name": "dateEstablished",
+          "schemaOrgProperty": "dateCreated",
+          "dataType": "Date",
+          "description": "When the vision was established",
+          "required": true
+        },
+        {
+          "@type": "Property",
+          "name": "status",
+          "dataType": "DefinedTerm",
+          "description": "Current status of the vision",
+          "required": true,
+          "enumeration": ["draft", "active", "under_review", "retired"]
+        }
+      ]
+    },
+    {
+      "@type": "Class",
+      "@id": "pfc-oaa:Strategy",
+      "name": "Strategy",
+      "description": "A strategic approach or plan that operationalizes the vision into actionable direction. Strategy defines how the organization or functional domain will achieve its vision. Strategies are informed by market and organizational context and are scoped as either organizational-wide or functional-specific.",
+      "schemaOrgBase": ["Action", "Plan"],
+      "properties": [
+        {
+          "@type": "Property",
+          "name": "strategyName",
+          "schemaOrgProperty": "name",
+          "dataType": "Text",
+          "description": "Name of the strategy",
+          "required": true,
+          "constraints": {
+            "minLength": 10,
+            "maxLength": 200
+          }
+        },
+        {
+          "@type": "Property",
+          "name": "strategyDescription",
+          "schemaOrgProperty": "description",
+          "dataType": "Text",
+          "description": "Detailed description of the strategic approach",
+          "required": true,
+          "constraints": {
+            "minLength": 100,
+            "maxLength": 2000
+          }
+        },
+        {
+          "@type": "Property",
+          "name": "strategyType",
+          "dataType": "DefinedTerm",
+          "description": "Type of strategy: growth, transformation, operational_excellence, innovation, market_penetration, etc.",
+          "required": true,
+          "enumeration": [
+            "growth",
+            "transformation",
+            "operational_excellence",
+            "innovation",
+            "market_penetration",
+            "diversification",
+            "competitive_positioning",
+            "customer_centricity",
+            "digital_transformation",
+            "sustainability"
+          ],
+          "propertyRationale": "Custom enumeration needed for domain-agnostic strategy types not in schema.org"
+        },
+        {
+          "@type": "Property",
+          "name": "strategicFocus",
+          "dataType": "Text",
+          "description": "Primary focus areas of the strategy (e.g., AI-driven marketing, cloud migration, customer retention)",
+          "required": true,
+          "propertyRationale": "Custom property for domain-specific focus articulation"
+        },
+        {
+          "@type": "Property",
+          "name": "timeHorizon",
+          "schemaOrgProperty": "duration",
+          "dataType": "Duration",
+          "description": "Planning horizon for the strategy (1-3 years typically)",
+          "required": true,
+          "constraints": {
+            "minYears": 1,
+            "maxYears": 3
+          }
+        },
+        {
+          "@type": "Property",
+          "name": "dateCreated",
+          "schemaOrgProperty": "dateCreated",
+          "dataType": "Date",
+          "description": "When the strategy was created",
+          "required": true
+        },
+        {
+          "@type": "Property",
+          "name": "dateModified",
+          "schemaOrgProperty": "dateModified",
+          "dataType": "Date",
+          "description": "Last modification date",
+          "required": true
+        },
+        {
+          "@type": "Property",
+          "name": "status",
+          "dataType": "DefinedTerm",
+          "description": "Current status of the strategy",
+          "required": true,
+          "enumeration": ["draft", "approved", "in_execution", "completed", "deprecated"]
+        }
+      ]
+    },
+    {
+      "@type": "Class",
+      "@id": "pfc-oaa:StrategyScope",
+      "name": "StrategyScope",
+      "description": "Defines the scope and level of a strategy: organizational-wide or functional-specific. This entity establishes the boundary and authority context for strategic planning. Organizational strategies are set by the CEO and cascade across all functions. Functional strategies are set by functional C-Suite leaders (CMO, CTO, CFO, etc.) and operate within their domain.",
+      "schemaOrgBase": "DefinedTerm",
+      "properties": [
+        {
+          "@type": "Property",
+          "name": "scopeLevel",
+          "dataType": "DefinedTerm",
+          "description": "Level of strategic scope",
+          "required": true,
+          "enumeration": ["organizational", "functional"]
+        },
+        {
+          "@type": "Property",
+          "name": "scopeDomain",
+          "dataType": "Text",
+          "description": "If functional scope, specifies the functional domain (e.g., Marketing, Technology, Finance, Operations, HR)",
+          "required": false,
+          "propertyRationale": "Custom property to identify functional domain when scopeLevel is functional"
+        },
+        {
+          "@type": "Property",
+          "name": "scopeDescription",
+          "schemaOrgProperty": "description",
+          "dataType": "Text",
+          "description": "Description of what this scope encompasses",
+          "required": true
+        }
+      ]
+    },
+    {
+      "@type": "Class",
+      "@id": "pfc-oaa:StrategicObjective",
+      "name": "StrategicObjective",
+      "description": "A high-level, measurable objective that contributes to achieving the strategy. Strategic objectives are specific, time-bound goals that cascade from the strategy and are measured by metrics. Objectives represent what must be accomplished and serve as the bridge between strategy and execution (via OKRs and initiatives).",
+      "schemaOrgBase": "Goal",
+      "properties": [
+        {
+          "@type": "Property",
+          "name": "objectiveName",
+          "schemaOrgProperty": "name",
+          "dataType": "Text",
+          "description": "Name of the strategic objective",
+          "required": true,
+          "constraints": {
+            "minLength": 10,
+            "maxLength": 200
+          }
+        },
+        {
+          "@type": "Property",
+          "name": "objectiveDescription",
+          "schemaOrgProperty": "description",
+          "dataType": "Text",
+          "description": "Detailed description of what the objective aims to achieve",
+          "required": true,
+          "constraints": {
+            "minLength": 50,
+            "maxLength": 1000
+          }
+        },
+        {
+          "@type": "Property",
+          "name": "objectiveType",
+          "dataType": "DefinedTerm",
+          "description": "Type of objective: financial, customer, operational, learning_growth (aligned with BSC perspectives)",
+          "required": true,
+          "enumeration": ["financial", "customer", "operational", "learning_growth", "innovation", "sustainability"],
+          "propertyRationale": "Custom enumeration for strategic objective categorization aligned with BSC framework"
+        },
+        {
+          "@type": "Property",
+          "name": "objectivePriority",
+          "dataType": "Integer",
+          "description": "Priority ranking of the objective (1 = highest priority)",
+          "required": true,
+          "constraints": {
+            "minimum": 1,
+            "maximum": 10
+          },
+          "propertyRationale": "Custom property for priority sequencing not in schema.org Goal"
+        },
+        {
+          "@type": "Property",
+          "name": "objectiveOwner",
+          "dataType": "Reference",
+          "description": "The role accountable for the objective (links to RRR Roles via RACI)",
+          "required": true,
+          "referenceTo": "pf:RRRRole"
+        },
+        {
+          "@type": "Property",
+          "name": "targetDate",
+          "schemaOrgProperty": "expectedDate",
+          "dataType": "Date",
+          "description": "Target completion or achievement date",
+          "required": true
+        },
+        {
+          "@type": "Property",
+          "name": "status",
+          "dataType": "DefinedTerm",
+          "description": "Current status of the objective",
+          "required": true,
+          "enumeration": ["not_started", "in_progress", "at_risk", "on_track", "completed", "deferred"]
+        }
+      ]
+    },
+    {
+      "@type": "Class",
+      "@id": "pfc-oaa:Metric",
+      "name": "Metric",
+      "description": "A key performance indicator (KPI) or metric that measures progress toward a strategic objective. Metrics are quantifiable, trackable measurements that provide evidence of objective achievement. Metrics can be leading indicators (predictive) or lagging indicators (outcome-based).",
+      "schemaOrgBase": "PropertyValue",
+      "properties": [
+        {
+          "@type": "Property",
+          "name": "metricName",
+          "schemaOrgProperty": "name",
+          "dataType": "Text",
+          "description": "Name of the metric",
+          "required": true,
+          "constraints": {
+            "minLength": 5,
+            "maxLength": 150
+          }
+        },
+        {
+          "@type": "Property",
+          "name": "metricDescription",
+          "schemaOrgProperty": "description",
+          "dataType": "Text",
+          "description": "Description of what the metric measures and why it matters",
+          "required": true,
+          "constraints": {
+            "minLength": 30,
+            "maxLength": 500
+          }
+        },
+        {
+          "@type": "Property",
+          "name": "metricType",
+          "dataType": "DefinedTerm",
+          "description": "Type of metric: leading (predictive) or lagging (outcome)",
+          "required": true,
+          "enumeration": ["leading", "lagging"],
+          "propertyRationale": "Custom property to distinguish predictive vs outcome metrics"
+        },
+        {
+          "@type": "Property",
+          "name": "unitOfMeasure",
+          "schemaOrgProperty": "unitCode",
+          "dataType": "Text",
+          "description": "Unit of measurement (e.g., USD, %, count, score, days)",
+          "required": true
+        },
+        {
+          "@type": "Property",
+          "name": "baselineValue",
+          "schemaOrgProperty": "value",
+          "dataType": "Number",
+          "description": "Starting or baseline value for the metric",
+          "required": true
+        },
+        {
+          "@type": "Property",
+          "name": "targetValue",
+          "dataType": "Number",
+          "description": "Target value to achieve",
+          "required": true,
+          "propertyRationale": "Custom property for target specification not in schema.org PropertyValue"
+        },
+        {
+          "@type": "Property",
+          "name": "currentValue",
+          "schemaOrgProperty": "value",
+          "dataType": "Number",
+          "description": "Current measured value",
+          "required": false
+        },
+        {
+          "@type": "Property",
+          "name": "measurementFrequency",
+          "dataType": "DefinedTerm",
+          "description": "How often the metric is measured",
+          "required": true,
+          "enumeration": ["daily", "weekly", "monthly", "quarterly", "annually"],
+          "propertyRationale": "Custom property for measurement cadence"
+        },
+        {
+          "@type": "Property",
+          "name": "dataSource",
+          "dataType": "Text",
+          "description": "Where the metric data comes from (system, report, manual entry)",
+          "required": true,
+          "propertyRationale": "Custom property for metric data provenance"
+        },
+        {
+          "@type": "Property",
+          "name": "formula",
+          "dataType": "Text",
+          "description": "Calculation formula if the metric is computed",
+          "required": false,
+          "propertyRationale": "Custom property for computed metric definition"
+        }
+      ]
+    },
+    {
+      "@type": "Class",
+      "@id": "pfc-oaa:StrategicCapability",
+      "name": "StrategicCapability",
+      "description": "An organizational or functional capability required to execute the strategy and achieve objectives. Capabilities are domain-agnostic and represent skills, processes, technologies, or resources needed for strategic success. Examples: AI/ML capabilities, digital marketing expertise, cloud infrastructure, agile development.",
+      "schemaOrgBase": ["Thing", "Skill"],
+      "properties": [
+        {
+          "@type": "Property",
+          "name": "capabilityName",
+          "schemaOrgProperty": "name",
+          "dataType": "Text",
+          "description": "Name of the strategic capability",
+          "required": true,
+          "constraints": {
+            "minLength": 5,
+            "maxLength": 150
+          }
+        },
+        {
+          "@type": "Property",
+          "name": "capabilityDescription",
+          "schemaOrgProperty": "description",
+          "dataType": "Text",
+          "description": "Description of what the capability enables",
+          "required": true,
+          "constraints": {
+            "minLength": 30,
+            "maxLength": 500
+          }
+        },
+        {
+          "@type": "Property",
+          "name": "capabilityDomain",
+          "dataType": "Text",
+          "description": "Domain or category of the capability (e.g., Technology, Marketing, Operations, Data, People)",
+          "required": true,
+          "propertyRationale": "Custom property for domain-agnostic capability categorization"
+        },
+        {
+          "@type": "Property",
+          "name": "capabilityLevel",
+          "dataType": "DefinedTerm",
+          "description": "Current maturity level of the capability",
+          "required": true,
+          "enumeration": ["nascent", "developing", "established", "advanced", "leading"],
+          "propertyRationale": "Custom property for capability maturity assessment"
+        },
+        {
+          "@type": "Property",
+          "name": "targetCapabilityLevel",
+          "dataType": "DefinedTerm",
+          "description": "Desired maturity level of the capability",
+          "required": true,
+          "enumeration": ["nascent", "developing", "established", "advanced", "leading"],
+          "propertyRationale": "Custom property for target capability state"
+        },
+        {
+          "@type": "Property",
+          "name": "capabilityGap",
+          "dataType": "Text",
+          "description": "Description of the gap between current and target capability levels",
+          "required": false,
+          "propertyRationale": "Custom property for gap analysis"
+        }
+      ]
+    },
+    {
+      "@type": "Class",
+      "@id": "pfc-oaa:RoleContext",
+      "name": "RoleContext",
+      "description": "The C-Suite role context that sets and governs the strategy scope. For organizational strategies, this is typically the CEO. For functional strategies, this is the relevant functional leader (CMO, CTO, CFO, COO, CHRO, etc.). This entity establishes the authority and accountability for strategic direction and links to the RRR Roles ontology.",
+      "schemaOrgBase": "OrganizationRole",
+      "properties": [
+        {
+          "@type": "Property",
+          "name": "roleLevel",
+          "dataType": "DefinedTerm",
+          "description": "Level of the role setting strategy",
+          "required": true,
+          "enumeration": ["ceo", "cfo", "cmo", "cto", "coo", "chro", "ciso", "cdo", "other_csuite"],
+          "propertyRationale": "Custom enumeration for C-Suite role identification"
+        },
+        {
+          "@type": "Property",
+          "name": "scopeAuthority",
+          "dataType": "DefinedTerm",
+          "description": "Authority level for strategy setting",
+          "required": true,
+          "enumeration": ["organizational", "functional", "business_unit", "product_line"],
+          "propertyRationale": "Custom property for authority scope definition"
+        },
+        {
+          "@type": "Property",
+          "name": "roleReference",
+          "dataType": "Reference",
+          "description": "Link to the specific RRR Role entity",
+          "required": true,
+          "referenceTo": "pf:RRRRole"
+        }
+      ]
+    }
+  ],
+  
+  "relationships": [
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:informs",
+      "name": "informs",
+      "description": "Vision informs Strategy - the vision provides directional clarity that shapes the strategic approach",
+      "sourceEntity": "pfc-oaa:Vision",
+      "targetEntity": "pfc-oaa:Strategy",
+      "cardinality": "1..*",
+      "inverseRelationship": "pfc-oaa:informedBy",
+      "inverseCardinality": "1..1",
+      "semantics": "A single vision can inform multiple strategies, but each strategy must be informed by exactly one vision"
+    },
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:hasScope",
+      "name": "hasScope",
+      "description": "Strategy has a defined scope (organizational or functional)",
+      "sourceEntity": "pfc-oaa:Strategy",
+      "targetEntity": "pfc-oaa:StrategyScope",
+      "cardinality": "1..1",
+      "inverseRelationship": "pfc-oaa:scopeOf",
+      "inverseCardinality": "0..*",
+      "semantics": "Every strategy must have exactly one scope definition, but a scope definition can apply to multiple strategies"
+    },
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:defines",
+      "name": "defines",
+      "description": "Strategy defines Strategic Objectives - the strategy establishes specific objectives to be achieved",
+      "sourceEntity": "pfc-oaa:Strategy",
+      "targetEntity": "pfc-oaa:StrategicObjective",
+      "cardinality": "1..*",
+      "inverseRelationship": "pfc-oaa:definedBy",
+      "inverseCardinality": "1..1",
+      "semantics": "A strategy must define at least one objective, and each objective belongs to exactly one strategy"
+    },
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:measuredBy",
+      "name": "measuredBy",
+      "description": "Strategic Objective is measured by Metrics - objectives are tracked through quantifiable metrics",
+      "sourceEntity": "pfc-oaa:StrategicObjective",
+      "targetEntity": "pfc-oaa:Metric",
+      "cardinality": "1..*",
+      "inverseRelationship": "pfc-oaa:measures",
+      "inverseCardinality": "1..1",
+      "semantics": "Each objective must have at least one metric, and each metric measures exactly one objective"
+    },
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:requires",
+      "name": "requires",
+      "description": "Strategic Objective requires Strategic Capabilities - capabilities are needed to achieve objectives",
+      "sourceEntity": "pfc-oaa:StrategicObjective",
+      "targetEntity": "pfc-oaa:StrategicCapability",
+      "cardinality": "0..*",
+      "inverseRelationship": "pfc-oaa:requiredBy",
+      "inverseCardinality": "0..*",
+      "semantics": "Objectives may require multiple capabilities, and capabilities may support multiple objectives"
+    },
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:setBy",
+      "name": "setBy",
+      "description": "Strategy is set by a Role Context - identifies the C-Suite role with authority to establish the strategy",
+      "sourceEntity": "pfc-oaa:Strategy",
+      "targetEntity": "pfc-oaa:RoleContext",
+      "cardinality": "1..1",
+      "inverseRelationship": "pfc-oaa:sets",
+      "inverseCardinality": "1..*",
+      "semantics": "Each strategy is set by exactly one role context, but a role can set multiple strategies"
+    },
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:informedBy_MarketContext",
+      "name": "informedBy",
+      "description": "Strategy is informed by Market Context (external integration hook to Market Context Ontology)",
+      "sourceEntity": "pfc-oaa:Strategy",
+      "targetEntity": "pf:MarketContext",
+      "cardinality": "0..1",
+      "inverseRelationship": "pf:informs",
+      "inverseCardinality": "0..*",
+      "semantics": "A strategy may be informed by market context analysis",
+      "externalOntology": true,
+      "targetOntology": "PF-Core Market Context Ontology"
+    },
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:informedBy_OrganizationalContext",
+      "name": "informedBy",
+      "description": "Strategy is informed by Organizational Context (external integration hook to Organizational Context Ontology)",
+      "sourceEntity": "pfc-oaa:Strategy",
+      "targetEntity": "pf:OrganizationalContext",
+      "cardinality": "0..1",
+      "inverseRelationship": "pf:informs",
+      "inverseCardinality": "0..*",
+      "semantics": "A strategy may be informed by organizational context (structure, culture, maturity)",
+      "externalOntology": true,
+      "targetOntology": "PF-Core Organizational Context Ontology"
+    },
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:cascadesTo_OKR",
+      "name": "cascadesTo",
+      "description": "Strategic Objective cascades to OKRs (external integration hook to OKR Sub-Ontology)",
+      "sourceEntity": "pfc-oaa:StrategicObjective",
+      "targetEntity": "pf:OKR",
+      "cardinality": "0..*",
+      "inverseRelationship": "pf:cascadesFrom",
+      "inverseCardinality": "0..1",
+      "semantics": "Strategic objectives can cascade into multiple OKRs for detailed execution tracking",
+      "externalOntology": true,
+      "targetOntology": "OKR Sub-Ontology (future)"
+    },
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:partOf_MetricTree",
+      "name": "partOf",
+      "description": "Metric is part of a hierarchical Metric Tree (external integration hook to Metrics-KPI Tree Ontology)",
+      "sourceEntity": "pfc-oaa:Metric",
+      "targetEntity": "pf:MetricTree",
+      "cardinality": "0..1",
+      "inverseRelationship": "pf:contains",
+      "inverseCardinality": "0..*",
+      "semantics": "Metrics can be organized in hierarchical trees for aggregate reporting",
+      "externalOntology": true,
+      "targetOntology": "Metrics-KPI Tree Ontology (future)"
+    },
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:alignsWith_BSC",
+      "name": "alignsWith",
+      "description": "Strategy aligns with Balanced Scorecard Perspective (external integration hook to BSC Ontology)",
+      "sourceEntity": "pfc-oaa:Strategy",
+      "targetEntity": "pf:BSCPerspective",
+      "cardinality": "0..*",
+      "inverseRelationship": "pf:alignedWith",
+      "inverseCardinality": "0..*",
+      "semantics": "Strategies can align with one or more BSC perspectives (Financial, Customer, Internal, Learning)",
+      "externalOntology": true,
+      "targetOntology": "BSC Ontology (future)"
+    },
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:hasTimeframe",
+      "name": "hasTimeframe",
+      "description": "Strategic Objective has a temporal timeframe (external integration hook to Temporal Ontology)",
+      "sourceEntity": "pfc-oaa:StrategicObjective",
+      "targetEntity": "pf:TemporalPeriod",
+      "cardinality": "1..1",
+      "inverseRelationship": "pf:appliesTo",
+      "inverseCardinality": "0..*",
+      "semantics": "Each objective must be bound to a temporal period (1-3yr, quarterly, monthly)",
+      "externalOntology": true,
+      "targetOntology": "Temporal/Timeline Ontology (future)"
+    },
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:mapsTo_RRRRole",
+      "name": "mapsTo",
+      "description": "Role Context maps to a specific RRR Role (external integration to RRR Roles Ontology)",
+      "sourceEntity": "pfc-oaa:RoleContext",
+      "targetEntity": "pf:RRRRole",
+      "cardinality": "1..1",
+      "inverseRelationship": "pf:hasContext",
+      "inverseCardinality": "0..*",
+      "semantics": "Each role context maps to exactly one RRR role definition",
+      "externalOntology": true,
+      "targetOntology": "PF-Core RRR Roles Ontology"
+    },
+    {
+      "@type": "RelationshipDefinition",
+      "@id": "pfc-oaa:hasAccountability",
+      "name": "hasAccountability",
+      "description": "Role Context has RACI accountability (external integration to RACI Matrix Ontology)",
+      "sourceEntity": "pfc-oaa:RoleContext",
+      "targetEntity": "pf:RACIEntry",
+      "cardinality": "0..*",
+      "inverseRelationship": "pf:accountableFor",
+      "inverseCardinality": "1..1",
+      "semantics": "Role context links to RACI accountability entries defining Responsible, Accountable, Consulted, Informed",
+      "externalOntology": true,
+      "targetOntology": "PF-Core RACI Matrix Ontology"
+    }
+  ],
+  
+  "businessRules": [
+    {
+      "@type": "BusinessRule",
+      "@id": "pfc-oaa:rule-001",
+      "name": "Vision Must Inform Strategy",
+      "description": "IF a Strategy exists THEN it MUST be informed by exactly one Vision",
+      "ruleType": "constraint",
+      "priority": 1,
+      "entities": ["pfc-oaa:Strategy", "pfc-oaa:Vision"],
+      "validationLogic": "Every Strategy instance must have a valid 'informedBy' relationship to a Vision instance"
+    },
+    {
+      "@type": "BusinessRule",
+      "@id": "pfc-oaa:rule-002",
+      "name": "Strategy Scope Required",
+      "description": "IF a Strategy exists THEN it MUST have exactly one StrategyScope defined",
+      "ruleType": "constraint",
+      "priority": 1,
+      "entities": ["pfc-oaa:Strategy", "pfc-oaa:StrategyScope"],
+      "validationLogic": "Every Strategy instance must have a valid 'hasScope' relationship to a StrategyScope instance"
+    },
+    {
+      "@type": "BusinessRule",
+      "@id": "pfc-oaa:rule-003",
+      "name": "Functional Scope Domain Required",
+      "description": "IF StrategyScope.scopeLevel = 'functional' THEN StrategyScope.scopeDomain MUST be specified",
+      "ruleType": "constraint",
+      "priority": 1,
+      "entities": ["pfc-oaa:StrategyScope"],
+      "validationLogic": "When scopeLevel is 'functional', scopeDomain cannot be null or empty"
+    },
+    {
+      "@type": "BusinessRule",
+      "@id": "pfc-oaa:rule-004",
+      "name": "Objective Must Have Metrics",
+      "description": "IF a StrategicObjective exists THEN it MUST be measured by at least one Metric",
+      "ruleType": "constraint",
+      "priority": 1,
+      "entities": ["pfc-oaa:StrategicObjective", "pfc-oaa:Metric"],
+      "validationLogic": "Every StrategicObjective instance must have at least one valid 'measuredBy' relationship to a Metric instance"
+    },
+    {
+      "@type": "BusinessRule",
+      "@id": "pfc-oaa:rule-005",
+      "name": "Metric Target Must Exceed Baseline",
+      "description": "IF Metric.metricType = 'leading' OR 'lagging' THEN Metric.targetValue MUST be greater than Metric.baselineValue (for improvement metrics)",
+      "ruleType": "validation",
+      "priority": 2,
+      "entities": ["pfc-oaa:Metric"],
+      "validationLogic": "For improvement-oriented metrics, targetValue > baselineValue",
+      "exceptions": "Reverse logic applies for cost reduction or risk mitigation metrics where lower is better"
+    },
+    {
+      "@type": "BusinessRule",
+      "@id": "pfc-oaa:rule-006",
+      "name": "Strategy Authority Alignment",
+      "description": "IF Strategy.strategyScope = 'organizational' THEN RoleContext.roleLevel MUST be 'ceo'",
+      "ruleType": "constraint",
+      "priority": 1,
+      "entities": ["pfc-oaa:Strategy", "pfc-oaa:RoleContext"],
+      "validationLogic": "Organizational strategies must be set by CEO role"
+    },
+    {
+      "@type": "BusinessRule",
+      "@id": "pfc-oaa:rule-007",
+      "name": "Functional Strategy Authority",
+      "description": "IF Strategy.strategyScope = 'functional' THEN RoleContext.roleLevel MUST match the functional domain (e.g., CMO for Marketing)",
+      "ruleType": "constraint",
+      "priority": 1,
+      "entities": ["pfc-oaa:Strategy", "pfc-oaa:RoleContext", "pfc-oaa:StrategyScope"],
+      "validationLogic": "Functional strategies must be set by the appropriate functional C-Suite leader"
+    },
+    {
+      "@type": "BusinessRule",
+      "@id": "pfc-oaa:rule-008",
+      "name": "Objective Priority Uniqueness",
+      "description": "IF multiple StrategicObjectives exist under the same Strategy THEN each MUST have a unique objectivePriority within that Strategy",
+      "ruleType": "constraint",
+      "priority": 2,
+      "entities": ["pfc-oaa:StrategicObjective"],
+      "validationLogic": "Within a single Strategy, no two objectives can have the same priority number"
+    },
+    {
+      "@type": "BusinessRule",
+      "@id": "pfc-oaa:rule-009",
+      "name": "Vision Horizon Exceeds Strategy Horizon",
+      "description": "IF Vision informs Strategy THEN Vision.visionHorizon MUST be >= Strategy.timeHorizon",
+      "ruleType": "validation",
+      "priority": 2,
+      "entities": ["pfc-oaa:Vision", "pfc-oaa:Strategy"],
+      "validationLogic": "Vision should have a longer time horizon than the strategies it informs"
+    },
+    {
+      "@type": "BusinessRule",
+      "@id": "pfc-oaa:rule-010",
+      "name": "Capability Gap Triggers Development",
+      "description": "IF StrategicCapability.capabilityLevel < StrategicCapability.targetCapabilityLevel THEN StrategicCapability.capabilityGap MUST be documented",
+      "ruleType": "validation",
+      "priority": 2,
+      "entities": ["pfc-oaa:StrategicCapability"],
+      "validationLogic": "When current capability is below target, the gap must be described"
+    }
+  ]
+}

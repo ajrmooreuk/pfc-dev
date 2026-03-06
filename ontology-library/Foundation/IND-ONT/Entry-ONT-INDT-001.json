@@ -1,0 +1,29 @@
+{
+  "ontologyId": "ONT-INDT-001",
+  "name": "Individual Types",
+  "abbreviation": "IND-ONT",
+  "version": "1.0.0",
+  "status": "proposal",
+  "series": "Foundation",
+  "oaaVersion": "6.1.0",
+  "description": "Foundation-level ontology defining individual types across B2B, B2C, and B2B2C contexts. B2B types subclass RRR roles with org relation. B2C types are standalone. ICP (VP-ONT) groups individuals; IND defines the types within.",
+  "domain": "Foundation — Individual Classification",
+  "filePath": "Foundation/IND-ONT/ind-v1.0.0-oaa-v6.json",
+  "entities": ["IndividualType", "IndividualQualifier", "IndustryProfile", "PurchaseBehaviour"],
+  "entityCount": 4,
+  "relationshipCount": 9,
+  "ruleCount": 8,
+  "designRuleCount": 8,
+  "enumCount": 11,
+  "crossReferences": [
+    { "ontology": "RRR-ONT", "joinPatterns": ["JP-IND-RRR-001: B2B IndividualType subclasses ExecutiveRole/FunctionalRole"] },
+    { "ontology": "ORG-ONT", "joinPatterns": ["JP-IND-ORG-001: B2B IndividualType hasOrgRelation to Organization"] },
+    { "ontology": "VP-ONT", "joinPatterns": ["JP-IND-VP-001: IndividualType populatesICP to IdealCustomerProfile/RoleBasedICP"] },
+    { "ontology": "ORG-CONTEXT-ONT", "joinPatterns": ["JP-IND-CTX-001: IndustryProfile maps to MarketSegment"] },
+    { "ontology": "PE-ONT", "joinPatterns": ["JP-IND-PE-001: IndividualTypes participate in PE customer journey processes (DR-IND-005)"] },
+    { "ontology": "ANTIQUES-ONT", "joinPatterns": ["JP-IND-ANT-001: IndividualType maps to Owner/Appraiser domain entities"] }
+  ],
+  "instanceDomains": ["Antiques & Collectibles (PFI-BAIV prototype, 7 individuals)"],
+  "dateCreated": "2026-02-20",
+  "creator": "OAA Generator"
+}

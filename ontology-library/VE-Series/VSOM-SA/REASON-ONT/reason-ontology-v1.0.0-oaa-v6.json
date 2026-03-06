@@ -1,0 +1,1808 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "rsn": "https://oaa-ontology.org/v6/reason/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/",
+    "bsc": "https://oaa-ontology.org/v6/bsc/",
+    "ind": "https://oaa-ontology.org/v6/industry/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/",
+    "okr": "https://oaa-ontology.org/v6/okr/",
+    "rrr": "https://oaa-ontology.org/v6/rrr/",
+    "org": "https://oaa-ontology.org/v6/organization/",
+    "orgctx": "https://oaa-ontology.org/v6/org-context/",
+    "ga": "https://oaa-ontology.org/v6/gap-analysis/",
+    "ea": "https://oaa-ontology.org/v6/ea-core/",
+    "ppm": "https://oaa-ontology.org/v6/ppm/"
+  },
+  "@id": "https://oaa-ontology.org/v6/reason/schema",
+  "@type": "owl:Ontology",
+  "name": "Strategic Reasoning & Analysis Ontology",
+  "alternateName": "REASON-ONT — MECE Trees, Logic Trees, Hypothesis-Driven Strategy & AI Analysis Synthesis",
+  "description": "The AI agent reasoning substrate. Provides structured analytical patterns that give Gen AI agents rigorous frameworks for strategic thinking: MECE decomposition (structured problem breakdown), Logic Trees (quantitative metric driver analysis), Hypothesis-Driven Strategy (scientific method applied to strategy), and Analysis Synthesis (multi-framework convergence into recommendations). This is the cross-cutting meta-layer that structures HOW analysis is performed across all other VSOM-SA layers. The ontology graph becomes a reasoning substrate — not just data storage but a scaffold for AI-powered strategic analysis workflows. Part of VE-Series VSOM-SA (Strategy Analysis).",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "Strategic Analysis, Decision Science, AI-Augmented Reasoning",
+  "oaa:status": "Draft",
+  "dateCreated": "2026-02-12",
+  "dateModified": "2026-02-12",
+  "creator": {
+    "@type": "Organization",
+    "name": "W4M Strategic Patterns Framework"
+  },
+  "oaa:imports": [
+    {
+      "@id": "vsom:schema",
+      "name": "VSOM-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "vsom:VSOMFramework",
+        "vsom:VisionComponent",
+        "vsom:StrategyComponent",
+        "vsom:ObjectivesComponent",
+        "vsom:MetricsComponent",
+        "vsom:StrategicReviewCycle"
+      ],
+      "importedRelationships": [
+        "vsom:hasStrategy",
+        "vsom:hasObjective"
+      ]
+    },
+    {
+      "@id": "bsc:schema",
+      "name": "BSC-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "bsc:BalancedScorecard",
+        "bsc:BSCObjective",
+        "bsc:BSCPerspective",
+        "bsc:CausalLink"
+      ],
+      "importedRelationships": [
+        "bsc:operationalizes"
+      ]
+    },
+    {
+      "@id": "ind:schema",
+      "name": "INDUSTRY-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "ind:PortersFiveForcesAnalysis",
+        "ind:SWOTAnalysis",
+        "ind:TOWSSynthesis",
+        "ind:AnsoffGrowthMatrix",
+        "ind:CompetitivePositioning"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "kpi:schema",
+      "name": "KPI-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "kpi:KPI",
+        "kpi:Metric",
+        "kpi:VEAnalysis"
+      ],
+      "importedRelationships": [
+        "kpi:trackedVia",
+        "kpi:quantifiedBy"
+      ]
+    },
+    {
+      "@id": "okr:schema",
+      "name": "OKR-ONT",
+      "version": "2.0.0",
+      "importedEntities": [
+        "okr:Objective",
+        "okr:KeyResult",
+        "okr:Initiative"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "rrr:schema",
+      "name": "RRR-ONT",
+      "version": "4.0.0",
+      "importedEntities": [
+        "rrr:ExecutiveRole"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "orgctx:schema",
+      "name": "ORG-CONTEXT-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "orgctx:OrganizationContext"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "ga:schema",
+      "name": "GA-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "ga:Recommendation"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "ppm:schema",
+      "name": "PPM-ONT",
+      "version": "4.0.0",
+      "importedEntities": [
+        "ppm:Initiative"
+      ],
+      "importedRelationships": []
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-RSN-001",
+      "name": "Question-to-Strategy AI Pipeline",
+      "description": "The complete AI agent strategic analysis pipeline: receive question, decompose via MECE, analyze per branch using frameworks, synthesize findings, update VSOM strategy. This is the E2E reasoning pattern.",
+      "joinPath": "rsn:StrategicQuestion → rsn:decomposedBy → rsn:MECETree → rsn:hasBranch → rsn:MECEBranch [→ framework analysis per branch] → rsn:synthesizedInto → rsn:AnalysisSynthesis → rsn:updatesStrategy → vsom:VSOMFramework",
+      "useCase": "AI agent performs structured end-to-end strategic analysis"
+    },
+    {
+      "patternId": "JP-RSN-002",
+      "name": "Hypothesis Validation Chain",
+      "description": "Scientific method for strategy: form hypothesis from strategic options, test against framework evidence, validate or invalidate, act accordingly.",
+      "joinPath": "rsn:StrategicHypothesis → rsn:testedByAnalysis → [ind:SWOTAnalysis | ind:PortersFiveForcesAnalysis | bsc:BalancedScorecard | ...] → rsn:hasEvidence → rsn:StrategicHypothesis.status → rsn:hypothesisActioned → vsom:ObjectivesComponent",
+      "useCase": "Evidence-based strategy validation before commitment"
+    },
+    {
+      "patternId": "JP-RSN-003",
+      "name": "Logic Tree Sensitivity to Strategy",
+      "description": "Quantitative driver decomposition identifies highest-sensitivity metric levers, which become strategic objectives in VSOM and BSC.",
+      "joinPath": "rsn:LogicTree → rsn:hasLeafNode → rsn:LogicTreeNode [leaf with sensitivity] → rsn:leverMapsToKPI → kpi:KPI → kpi:trackedVia ← okr:KeyResult ← okr:Objective ← vsom:ObjectivesComponent",
+      "useCase": "Data-driven identification of highest-impact strategic levers"
+    },
+    {
+      "patternId": "JP-RSN-004",
+      "name": "Synthesis-to-BSC Operationalization",
+      "description": "Analysis synthesis recommendations cascade through VSOM into BSC perspective objectives for execution.",
+      "joinPath": "rsn:AnalysisSynthesis → rsn:hasRecommendation → rsn:StrategicRecommendation → rsn:recommendationTargetsVSOM → vsom:StrategyComponent → bsc:operationalizedBy → bsc:BalancedScorecard → bsc:hasPerspective → bsc:BSCPerspective",
+      "useCase": "Analytical findings translate directly into balanced, measurable execution"
+    },
+    {
+      "patternId": "JP-RSN-005",
+      "name": "MECE Branch Framework Routing",
+      "description": "Each MECE branch is tagged with the most appropriate analysis framework, enabling AI agents to route each branch to the right analytical tool in parallel.",
+      "joinPath": "rsn:MECEBranch.assignedFramework → [ind:PortersFiveForcesAnalysis | ind:SWOTAnalysis | bsc:BalancedScorecard | kpi:VEAnalysis | rsn:LogicTree]",
+      "useCase": "Parallel multi-framework analysis orchestrated by MECE decomposition"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "rsn:StrategicQuestion",
+      "@type": "rdfs:Class",
+      "name": "StrategicQuestion",
+      "rdfs:subClassOf": "schema:Question",
+      "description": "A structured strategic question that drives an analysis cycle. Every strategic engagement starts with a question. The question type determines which VSOM layer is primarily addressed and which analytical frameworks are most relevant. Questions decompose into MECE trees, generate hypotheses, and connect to framework analyses. An AI agent receives a StrategicQuestion as its entry point.",
+      "oaa:properties": [
+        {
+          "name": "questionId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "question",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:text",
+          "description": "The strategic question in natural language, e.g. 'How should we grow revenue 3x in 3 years?'"
+        },
+        {
+          "name": "questionType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "WhereToPlay",
+            "HowToWin",
+            "WhatCapabilities",
+            "WhatManagementSystems",
+            "GrowthDirection",
+            "CompetitivePositioning",
+            "ResourceAllocation",
+            "TransformationRoadmap",
+            "RiskMitigation",
+            "ValueCreation",
+            "MarketEntry",
+            "DigitalTransformation"
+          ],
+          "description": "Classification of the strategic question type. Determines default MECE decomposition pattern and framework routing."
+        },
+        {
+          "name": "vsomLayerTarget",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Vision",
+            "Strategy",
+            "Objectives",
+            "Metrics"
+          ],
+          "description": "Which VSOM layer this question primarily addresses"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "sponsorRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to rrr:ExecutiveRole @id who needs the answer"
+        },
+        {
+          "name": "scope",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Corporate",
+            "BusinessUnit",
+            "Product",
+            "Market",
+            "Function"
+          ],
+          "description": "Scope of the question"
+        },
+        {
+          "name": "urgency",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Immediate",
+            "Quarterly",
+            "Annual",
+            "Strategic"
+          ],
+          "description": "Time pressure on the analysis"
+        },
+        {
+          "name": "constraints",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Known constraints (budget, time, regulatory, etc.)",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "priorAnalysisRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to previous analyses that inform this question",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Open",
+            "Analyzing",
+            "Synthesizing",
+            "Answered",
+            "Superseded"
+          ],
+          "description": "Current status of the analysis"
+        },
+        {
+          "name": "conclusion",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Final answer/recommendation — populated when status=Answered"
+        },
+        {
+          "name": "confidence",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Confidence in the conclusion (0.0-1.0)"
+        },
+        {
+          "name": "vsomActionRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:StrategyComponent or vsom:ObjectivesComponent created as a result"
+        }
+      ]
+    },
+    {
+      "@id": "rsn:MECETree",
+      "@type": "rdfs:Class",
+      "name": "MECETree",
+      "rdfs:subClassOf": "schema:ItemList",
+      "description": "Mutually Exclusive, Collectively Exhaustive decomposition of a strategic question. The backbone of structured problem-solving. Each branch is independently analysable and together they cover the full solution space. MECE trees enable AI agents to parallelise analysis — each branch can be routed to a different framework and analyzed concurrently. Tree types determine default decomposition patterns: issue trees for diagnosis, hypothesis trees for validation, driver trees for quantification.",
+      "oaa:properties": [
+        {
+          "name": "treeId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "questionRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to rsn:StrategicQuestion @id being decomposed"
+        },
+        {
+          "name": "treeType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "IssueTree",
+            "HypothesisTree",
+            "DecisionTree",
+            "DriverTree",
+            "ProfitabilityTree",
+            "CapabilityTree",
+            "ValueTree"
+          ],
+          "description": "Type of decomposition — determines structural pattern"
+        },
+        {
+          "name": "rootStatement",
+          "type": "xsd:string",
+          "required": true,
+          "description": "The top-level statement being decomposed"
+        },
+        {
+          "name": "depth",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Maximum tree depth (typically 3-5 levels)"
+        },
+        {
+          "name": "branchCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Total number of branches (including sub-branches)"
+        },
+        {
+          "name": "leafNodeCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of leaf (terminal) nodes — these are the analysable units"
+        },
+        {
+          "name": "isMECE",
+          "type": "xsd:boolean",
+          "required": false,
+          "description": "Validated as mutually exclusive and collectively exhaustive"
+        },
+        {
+          "name": "meceValidationNotes",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Notes on MECE validation — gaps or overlaps identified"
+        }
+      ]
+    },
+    {
+      "@id": "rsn:MECEBranch",
+      "@type": "rdfs:Class",
+      "name": "MECEBranch",
+      "rdfs:subClassOf": "schema:ListItem",
+      "description": "A single branch (node) in a MECE tree. Can be an internal node (has sub-branches) or a leaf node (terminal, directly analysable). Each leaf branch is tagged with the most appropriate analysis framework and can carry findings. The branch structure enables AI agents to work top-down (decompose then analyse) or bottom-up (synthesise findings).",
+      "oaa:properties": [
+        {
+          "name": "branchId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "label",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Short label for the branch"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "level",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Depth level in the tree (0=root, 1=first level, etc.)"
+        },
+        {
+          "name": "parentBranchRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to parent rsn:MECEBranch @id (null for root)"
+        },
+        {
+          "name": "isLeaf",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "True if this is a terminal node with no sub-branches"
+        },
+        {
+          "name": "position",
+          "type": "xsd:integer",
+          "required": false,
+          "schemaOrgMapping": "schema:position",
+          "description": "Order position among siblings"
+        },
+        {
+          "name": "assignedFramework",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "PortersFiveForces",
+            "SWOT",
+            "BSC",
+            "Ansoff",
+            "ValueChain",
+            "GrowthShareMatrix",
+            "PESTEL",
+            "ScenarioPlanning",
+            "VEAnalysis",
+            "CapabilityAssessment",
+            "FinancialAnalysis",
+            "MarketSizing",
+            "LogicTree",
+            "CustomerAnalysis",
+            "CompetitorBenchmark"
+          ],
+          "description": "Which analytical framework to apply at this branch. AI agents use this to route analysis."
+        },
+        {
+          "name": "analysisRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to the specific analysis entity produced (e.g. ind:SWOTAnalysis @id, ind:PortersFiveForcesAnalysis @id)"
+        },
+        {
+          "name": "hypothesisRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to rsn:StrategicHypothesis @id tested at this branch"
+        },
+        {
+          "name": "finding",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Key finding from analysis at this branch"
+        },
+        {
+          "name": "evidenceStrength",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Strong",
+            "Moderate",
+            "Weak",
+            "Assumption"
+          ],
+          "description": "Strength of evidence supporting the finding"
+        },
+        {
+          "name": "valueImpact",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "High",
+            "Medium",
+            "Low",
+            "Unknown"
+          ],
+          "description": "Estimated impact of this branch on the overall question"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Pending",
+            "InProgress",
+            "Analyzed",
+            "Synthesized"
+          ],
+          "description": "Analysis status of this branch"
+        }
+      ]
+    },
+    {
+      "@id": "rsn:StrategicHypothesis",
+      "@type": "rdfs:Class",
+      "name": "StrategicHypothesis",
+      "rdfs:subClassOf": "schema:Claim",
+      "description": "A testable hypothesis about strategic direction. Hypothesis-driven strategy is the scientific method applied to business: (1) form hypotheses from VSOM strategic options, (2) identify critical assumptions, (3) design tests using framework analyses as evidence, (4) validate or invalidate each assumption, (5) update strategy confidence and direction. AI agents use this pattern to avoid confirmation bias — they must explicitly seek disconfirming evidence.",
+      "oaa:properties": [
+        {
+          "name": "hypothesisId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "statement",
+          "type": "xsd:string",
+          "required": true,
+          "description": "The testable hypothesis statement, e.g. 'Entering the SME market segment will grow revenue by 40% within 18 months'"
+        },
+        {
+          "name": "questionRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to rsn:StrategicQuestion @id this hypothesis addresses"
+        },
+        {
+          "name": "vsomStrategyRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:StrategyComponent @id being hypothesized"
+        },
+        {
+          "name": "hypothesisType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Growth",
+            "Positioning",
+            "Capability",
+            "Market",
+            "Product",
+            "Operational",
+            "Financial",
+            "Transformation"
+          ],
+          "description": "Category of strategic hypothesis"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Draft",
+            "Testing",
+            "Validated",
+            "Invalidated",
+            "Pivoted",
+            "Deferred"
+          ]
+        },
+        {
+          "name": "confidence",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Current confidence level (0.0-1.0) — updated as evidence accumulates"
+        },
+        {
+          "name": "riskIfWrong",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Critical",
+            "High",
+            "Medium",
+            "Low"
+          ],
+          "description": "Consequence severity if this hypothesis proves wrong"
+        },
+        {
+          "name": "pivotDirection",
+          "type": "xsd:string",
+          "required": false,
+          "description": "If invalidated: what alternative direction to explore"
+        },
+        {
+          "name": "vsomActionRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "If validated: reference to vsom:ObjectivesComponent or vsom:StrategyComponent created"
+        }
+      ]
+    },
+    {
+      "@id": "rsn:HypothesisAssumption",
+      "@type": "rdfs:Class",
+      "name": "HypothesisAssumption",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A critical assumption underlying a strategic hypothesis. Each assumption is independently testable. Assumptions are prioritised by criticality — 'must-be-true' assumptions are tested first because if they fail, the hypothesis is immediately invalidated. AI agents track assumption status to update overall hypothesis confidence.",
+      "oaa:properties": [
+        {
+          "name": "assumptionId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "assumption",
+          "type": "xsd:string",
+          "required": true,
+          "description": "The assumption statement"
+        },
+        {
+          "name": "criticality",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "MustBeTrue",
+            "Important",
+            "NiceToHave"
+          ],
+          "description": "How critical this assumption is to the hypothesis"
+        },
+        {
+          "name": "testable",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether this assumption can be tested with available data/analysis"
+        },
+        {
+          "name": "testMethod",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How to test this assumption (e.g. 'market sizing analysis', 'competitor benchmark', 'customer survey')"
+        },
+        {
+          "name": "testFramework",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "PortersFiveForces",
+            "SWOT",
+            "BSC",
+            "Ansoff",
+            "VEAnalysis",
+            "MarketSizing",
+            "FinancialAnalysis",
+            "CustomerAnalysis",
+            "CompetitorBenchmark",
+            "LogicTree"
+          ],
+          "description": "Which framework to use for testing"
+        },
+        {
+          "name": "analysisRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to the analysis entity providing evidence"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Untested",
+            "Testing",
+            "Validated",
+            "Invalidated",
+            "Inconclusive"
+          ]
+        },
+        {
+          "name": "evidence",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Summary of evidence for/against this assumption"
+        },
+        {
+          "name": "confidenceInResult",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Confidence in the test result (0.0-1.0)"
+        }
+      ]
+    },
+    {
+      "@id": "rsn:EvidenceItem",
+      "@type": "rdfs:Class",
+      "name": "EvidenceItem",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A single piece of evidence supporting or contradicting a strategic hypothesis. Evidence is gathered from framework analyses across VSOM-SA. Each item records source framework, finding, direction (supporting/contradicting), and strength. AI agents aggregate evidence items to compute hypothesis confidence scores.",
+      "oaa:properties": [
+        {
+          "name": "evidenceId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What the evidence shows"
+        },
+        {
+          "name": "direction",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Supporting",
+            "Contradicting",
+            "Neutral"
+          ],
+          "description": "Whether this evidence supports or contradicts the hypothesis"
+        },
+        {
+          "name": "strength",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Strong",
+            "Moderate",
+            "Weak"
+          ],
+          "description": "Strength of this evidence"
+        },
+        {
+          "name": "sourceFramework",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "PortersFiveForces",
+            "SWOT",
+            "BSC",
+            "Ansoff",
+            "PESTEL",
+            "ScenarioPlanning",
+            "VEAnalysis",
+            "LogicTree",
+            "MarketData",
+            "FinancialData",
+            "CustomerFeedback",
+            "CompetitorIntelligence",
+            "ExpertJudgement"
+          ]
+        },
+        {
+          "name": "sourceAnalysisRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to specific analysis entity (e.g. ind:SWOTAnalysis @id)"
+        },
+        {
+          "name": "dataPoint",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Specific data point or metric, if quantitative"
+        },
+        {
+          "name": "dateGathered",
+          "type": "xsd:date",
+          "required": false
+        },
+        {
+          "name": "reliability",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Verified",
+            "Estimated",
+            "Assumed"
+          ],
+          "description": "How reliable the underlying data is"
+        }
+      ]
+    },
+    {
+      "@id": "rsn:LogicTree",
+      "@type": "rdfs:Class",
+      "name": "LogicTree",
+      "rdfs:subClassOf": "schema:ItemList",
+      "description": "Quantitative driver decomposition tree. Decomposes a business metric into its mathematical components (revenue = volume x price, etc.). Each leaf node maps to a kpi:KPI. Sensitivity analysis identifies which leaf-node levers have the highest impact on the root metric — these become strategic priority objectives in VSOM. Logic trees give AI agents the ability to answer: 'Which single lever would have the biggest impact on our target metric?'",
+      "oaa:properties": [
+        {
+          "name": "treeId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "treeType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Profitability",
+            "RevenueDriver",
+            "CostDriver",
+            "GrowthDriver",
+            "ValueDriver",
+            "EfficiencyDriver",
+            "CustomerDriver"
+          ],
+          "description": "Type of driver decomposition"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "questionRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to rsn:StrategicQuestion @id if part of a larger analysis"
+        },
+        {
+          "name": "analysisDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "rootMetricName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Name of the root metric being decomposed (e.g. 'Net Profit', 'Revenue', 'Customer LTV')"
+        },
+        {
+          "name": "rootKPIRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to kpi:KPI @id for the root metric"
+        },
+        {
+          "name": "rootCurrentValue",
+          "type": "xsd:decimal",
+          "required": false
+        },
+        {
+          "name": "rootTargetValue",
+          "type": "xsd:decimal",
+          "required": false
+        },
+        {
+          "name": "rootUnit",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Unit of the root metric ($, %, #, etc.)"
+        },
+        {
+          "name": "nodeCount",
+          "type": "xsd:integer",
+          "required": false
+        },
+        {
+          "name": "leafNodeCount",
+          "type": "xsd:integer",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "rsn:LogicTreeNode",
+      "@type": "rdfs:Class",
+      "name": "LogicTreeNode",
+      "rdfs:subClassOf": "schema:ListItem",
+      "description": "A single node in a logic tree. Internal nodes define mathematical operators (add, subtract, multiply, divide) combining their children. Leaf nodes are the atomic levers — each maps to a kpi:KPI and carries sensitivity analysis showing its impact on the root metric. High-sensitivity leaf nodes become VSOM strategic objectives.",
+      "oaa:properties": [
+        {
+          "name": "nodeId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "parentNodeRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to parent rsn:LogicTreeNode @id (null for root)"
+        },
+        {
+          "name": "isLeaf",
+          "type": "xsd:boolean",
+          "required": true
+        },
+        {
+          "name": "operator",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Add",
+            "Subtract",
+            "Multiply",
+            "Divide"
+          ],
+          "description": "Mathematical operator combining children (only for non-leaf nodes)"
+        },
+        {
+          "name": "kpiRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to kpi:KPI @id this node represents"
+        },
+        {
+          "name": "currentValue",
+          "type": "xsd:decimal",
+          "required": false
+        },
+        {
+          "name": "targetValue",
+          "type": "xsd:decimal",
+          "required": false
+        },
+        {
+          "name": "unit",
+          "type": "xsd:string",
+          "required": false
+        },
+        {
+          "name": "improvementLever",
+          "type": "xsd:string",
+          "required": false,
+          "description": "For leaf nodes: what action would improve this metric"
+        },
+        {
+          "name": "sensitivityPct",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "For leaf nodes: if this lever improves by 10%, how much does the root metric change (%)"
+        },
+        {
+          "name": "sensitivityRank",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Rank among all leaf nodes by sensitivity (1=highest impact)"
+        },
+        {
+          "name": "feasibility",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "High",
+            "Medium",
+            "Low"
+          ],
+          "description": "How feasible is it to move this lever"
+        },
+        {
+          "name": "timeToImpact",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Immediate",
+            "ShortTerm",
+            "MediumTerm",
+            "LongTerm"
+          ]
+        },
+        {
+          "name": "vsomObjectiveRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:ObjectivesComponent @id if this lever becomes a strategic objective"
+        },
+        {
+          "name": "bscPerspective",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Financial",
+            "Customer",
+            "Internal Process",
+            "Learning & Growth"
+          ],
+          "description": "Which BSC perspective this lever maps to"
+        }
+      ]
+    },
+    {
+      "@id": "rsn:AnalysisSynthesis",
+      "@type": "rdfs:Class",
+      "name": "AnalysisSynthesis",
+      "rdfs:subClassOf": "schema:Report",
+      "description": "The synthesis layer where an AI agent combines findings from multiple framework analyses into coherent strategic recommendations. This is the 'so what?' — translating parallel analyses into convergent insights and actionable VSOM strategy updates. The synthesis identifies convergent findings (multiple frameworks agree — high confidence), divergent findings (frameworks disagree — requires resolution), and blind spots (areas not covered by any framework). The output is a set of StrategicRecommendations with evidence chains.",
+      "oaa:properties": [
+        {
+          "name": "synthesisId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "questionRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to rsn:StrategicQuestion @id being answered"
+        },
+        {
+          "name": "meceTreeRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to rsn:MECETree @id structuring the analysis"
+        },
+        {
+          "name": "synthesisDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "frameworksUsed",
+          "type": "xsd:string",
+          "required": false,
+          "description": "List of framework types used in the analysis",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "convergentFindingCount",
+          "type": "xsd:integer",
+          "required": false
+        },
+        {
+          "name": "divergentFindingCount",
+          "type": "xsd:integer",
+          "required": false
+        },
+        {
+          "name": "blindSpotCount",
+          "type": "xsd:integer",
+          "required": false
+        },
+        {
+          "name": "overallConfidence",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Overall confidence in the synthesis (0.0-1.0)"
+        },
+        {
+          "name": "strategicNarrative",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Coherent story connecting analyses to recommended strategic direction"
+        },
+        {
+          "name": "vsomFrameworkRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:VSOMFramework @id being updated"
+        }
+      ]
+    },
+    {
+      "@id": "rsn:SynthesisFinding",
+      "@type": "rdfs:Class",
+      "name": "SynthesisFinding",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A finding within the analysis synthesis — either convergent (multiple frameworks agree), divergent (frameworks disagree), or a blind spot (gap in analysis coverage). Convergent findings carry high confidence. Divergent findings require resolution narrative. Blind spots require additional analysis or explicit risk acceptance.",
+      "oaa:properties": [
+        {
+          "name": "findingId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "findingType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Convergent",
+            "Divergent",
+            "BlindSpot"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "supportingFrameworks",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Frameworks that support this finding",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "contradictingFrameworks",
+          "type": "xsd:string",
+          "required": false,
+          "description": "For divergent: frameworks that contradict",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "resolution",
+          "type": "xsd:string",
+          "required": false,
+          "description": "For divergent: how the contradiction was resolved"
+        },
+        {
+          "name": "confidence",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Confidence in this finding (0.0-1.0)"
+        },
+        {
+          "name": "strategicImplication",
+          "type": "xsd:string",
+          "required": false,
+          "description": "What this finding means for strategy"
+        }
+      ]
+    },
+    {
+      "@id": "rsn:StrategicRecommendation",
+      "@type": "rdfs:Class",
+      "name": "StrategicRecommendation",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "An actionable strategic recommendation produced by the analysis synthesis. Each recommendation targets a specific VSOM layer, carries an evidence chain linking back to framework analyses, and has an assigned owner from RRR roles. Recommendations are the bridge from analysis to action — they become VSOM strategy updates, BSC objectives, OKR goals, or PPM initiatives.",
+      "oaa:properties": [
+        {
+          "name": "recommendationId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "vsomLayerTarget",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Vision",
+            "Strategy",
+            "Objectives",
+            "Metrics"
+          ],
+          "description": "Which VSOM layer this recommendation targets"
+        },
+        {
+          "name": "priority",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Critical",
+            "High",
+            "Medium",
+            "Low"
+          ]
+        },
+        {
+          "name": "confidenceLevel",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Confidence in this recommendation (0.0-1.0)"
+        },
+        {
+          "name": "riskLevel",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "High",
+            "Medium",
+            "Low"
+          ]
+        },
+        {
+          "name": "timeHorizon",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Immediate",
+            "ShortTerm",
+            "MediumTerm",
+            "LongTerm"
+          ]
+        },
+        {
+          "name": "ownerRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to rrr:ExecutiveRole @id who should own execution"
+        },
+        {
+          "name": "bscPerspective",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Financial",
+            "Customer",
+            "Internal Process",
+            "Learning & Growth"
+          ],
+          "description": "Which BSC perspective this recommendation falls under"
+        },
+        {
+          "name": "evidenceChainRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to rsn:EvidenceItem @ids supporting this recommendation",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "hypothesisRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to rsn:StrategicHypothesis @id this recommendation validates"
+        },
+        {
+          "name": "adoptionStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Proposed",
+            "Accepted",
+            "Rejected",
+            "Deferred",
+            "Implemented"
+          ]
+        },
+        {
+          "name": "vsomComponentRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:StrategyComponent or vsom:ObjectivesComponent @id if accepted"
+        },
+        {
+          "name": "bscObjectiveRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to bsc:BSCObjective @id if operationalized"
+        },
+        {
+          "name": "ppmInitiativeRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to ppm:Initiative @id if funded for execution"
+        },
+        {
+          "name": "gaRecommendationRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to ga:Recommendation @id if linked to gap analysis"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "rsn:decomposedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Decomposed By MECE Tree",
+      "description": "Strategic question is decomposed into a MECE tree structure",
+      "domainIncludes": [
+        "rsn:StrategicQuestion"
+      ],
+      "rangeIncludes": [
+        "rsn:MECETree"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "rsn:hasBranch",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Branch",
+      "description": "MECE tree contains branches",
+      "domainIncludes": [
+        "rsn:MECETree"
+      ],
+      "rangeIncludes": [
+        "rsn:MECEBranch"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "rsn:hasSubBranch",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Sub-Branch",
+      "description": "MECE branch contains sub-branches (recursive)",
+      "domainIncludes": [
+        "rsn:MECEBranch"
+      ],
+      "rangeIncludes": [
+        "rsn:MECEBranch"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "rsn:generatesHypothesis",
+      "@type": "owl:ObjectProperty",
+      "name": "Generates Hypothesis",
+      "description": "MECE branch generates a testable strategic hypothesis",
+      "domainIncludes": [
+        "rsn:MECEBranch"
+      ],
+      "rangeIncludes": [
+        "rsn:StrategicHypothesis"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "rsn:hasAssumption",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Assumption",
+      "description": "Strategic hypothesis has critical assumptions",
+      "domainIncludes": [
+        "rsn:StrategicHypothesis"
+      ],
+      "rangeIncludes": [
+        "rsn:HypothesisAssumption"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "rsn:hasEvidence",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Evidence",
+      "description": "Strategic hypothesis has evidence items supporting or contradicting it",
+      "domainIncludes": [
+        "rsn:StrategicHypothesis"
+      ],
+      "rangeIncludes": [
+        "rsn:EvidenceItem"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "rsn:testedByAnalysis",
+      "@type": "owl:ObjectProperty",
+      "name": "Tested By Analysis",
+      "description": "Strategic hypothesis is tested by framework analyses from INDUSTRY-ONT, BSC-ONT, etc.",
+      "domainIncludes": [
+        "rsn:StrategicHypothesis"
+      ],
+      "rangeIncludes": [
+        "ind:PortersFiveForcesAnalysis",
+        "ind:SWOTAnalysis",
+        "ind:AnsoffGrowthMatrix",
+        "bsc:BalancedScorecard",
+        "kpi:VEAnalysis"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "INDUSTRY-ONT"
+    },
+    {
+      "@id": "rsn:hypothesisActioned",
+      "@type": "owl:ObjectProperty",
+      "name": "Hypothesis Actioned",
+      "description": "Validated hypothesis produces VSOM action (strategy update or new objective)",
+      "domainIncludes": [
+        "rsn:StrategicHypothesis"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategyComponent",
+        "vsom:ObjectivesComponent"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "rsn:hasLogicTreeNode",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Logic Tree Node",
+      "description": "Logic tree contains nodes",
+      "domainIncludes": [
+        "rsn:LogicTree"
+      ],
+      "rangeIncludes": [
+        "rsn:LogicTreeNode"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "rsn:nodeHasChildren",
+      "@type": "owl:ObjectProperty",
+      "name": "Node Has Children",
+      "description": "Logic tree node has child nodes (recursive)",
+      "domainIncludes": [
+        "rsn:LogicTreeNode"
+      ],
+      "rangeIncludes": [
+        "rsn:LogicTreeNode"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "rsn:leverMapsToKPI",
+      "@type": "owl:ObjectProperty",
+      "name": "Lever Maps To KPI",
+      "description": "Logic tree leaf node maps to a KPI metric",
+      "domainIncludes": [
+        "rsn:LogicTreeNode"
+      ],
+      "rangeIncludes": [
+        "kpi:KPI"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "KPI-ONT"
+    },
+    {
+      "@id": "rsn:leverBecomesObjective",
+      "@type": "owl:ObjectProperty",
+      "name": "Lever Becomes Objective",
+      "description": "High-sensitivity logic tree lever becomes a VSOM strategic objective",
+      "domainIncludes": [
+        "rsn:LogicTreeNode"
+      ],
+      "rangeIncludes": [
+        "vsom:ObjectivesComponent"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "rsn:synthesizedInto",
+      "@type": "owl:ObjectProperty",
+      "name": "Synthesized Into",
+      "description": "MECE tree analysis results are synthesized into an AnalysisSynthesis",
+      "domainIncludes": [
+        "rsn:MECETree"
+      ],
+      "rangeIncludes": [
+        "rsn:AnalysisSynthesis"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "rsn:hasSynthesisFinding",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Synthesis Finding",
+      "description": "Analysis synthesis contains findings (convergent, divergent, blind spots)",
+      "domainIncludes": [
+        "rsn:AnalysisSynthesis"
+      ],
+      "rangeIncludes": [
+        "rsn:SynthesisFinding"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "rsn:hasRecommendation",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Recommendation",
+      "description": "Analysis synthesis produces strategic recommendations",
+      "domainIncludes": [
+        "rsn:AnalysisSynthesis"
+      ],
+      "rangeIncludes": [
+        "rsn:StrategicRecommendation"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "rsn:updatesStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "Updates Strategy",
+      "description": "Analysis synthesis updates the VSOM framework with evidence-based recommendations",
+      "domainIncludes": [
+        "rsn:AnalysisSynthesis"
+      ],
+      "rangeIncludes": [
+        "vsom:VSOMFramework"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "rsn:recommendationTargetsVSOM",
+      "@type": "owl:ObjectProperty",
+      "name": "Recommendation Targets VSOM",
+      "description": "Strategic recommendation targets a VSOM component for action",
+      "domainIncludes": [
+        "rsn:StrategicRecommendation"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategyComponent",
+        "vsom:ObjectivesComponent"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "rsn:recommendationOwnedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Recommendation Owned By",
+      "description": "Strategic recommendation is owned by an executive role",
+      "domainIncludes": [
+        "rsn:StrategicRecommendation"
+      ],
+      "rangeIncludes": [
+        "rrr:ExecutiveRole"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    },
+    {
+      "@id": "rsn:recommendationFundedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Recommendation Funded By Initiative",
+      "description": "Accepted recommendation is funded and executed via PPM initiative",
+      "domainIncludes": [
+        "rsn:StrategicRecommendation"
+      ],
+      "rangeIncludes": [
+        "ppm:Initiative"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "PPM-ONT"
+    },
+    {
+      "@id": "rsn:questionSponsoredBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Question Sponsored By",
+      "description": "Strategic question is sponsored by an executive role",
+      "domainIncludes": [
+        "rsn:StrategicQuestion"
+      ],
+      "rangeIncludes": [
+        "rrr:ExecutiveRole"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    },
+    {
+      "@id": "rsn:questionTriggersReview",
+      "@type": "owl:ObjectProperty",
+      "name": "Question Triggers Review",
+      "description": "Strategic question results can trigger a VSOM strategic review cycle",
+      "domainIncludes": [
+        "rsn:StrategicQuestion"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategicReviewCycle"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-RSN-001",
+      "name": "Question Must Have VSOM Target",
+      "condition": "IF a StrategicQuestion is created",
+      "action": "THEN vsomLayerTarget MUST be specified to scope the analysis",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RSN-002",
+      "name": "MECE Tree Must Be Validated",
+      "condition": "IF a MECETree is used for analysis",
+      "action": "THEN isMECE SHOULD be explicitly validated — gaps and overlaps must be documented in meceValidationNotes",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-RSN-003",
+      "name": "Leaf Branches Must Have Framework",
+      "condition": "IF a MECEBranch is a leaf node (isLeaf=true)",
+      "action": "THEN assignedFramework SHOULD be specified to enable AI agent routing",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-RSN-004",
+      "name": "Hypothesis Must Have Assumptions",
+      "condition": "IF a StrategicHypothesis is created",
+      "action": "THEN it MUST have at least one HypothesisAssumption with criticality 'MustBeTrue'",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RSN-005",
+      "name": "Must-Be-True Assumptions Tested First",
+      "condition": "IF a StrategicHypothesis has assumptions with criticality 'MustBeTrue'",
+      "action": "THEN those assumptions MUST be tested (status != 'Untested') before hypothesis status can move to 'Validated'",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RSN-006",
+      "name": "Invalidated Assumption Invalidates Hypothesis",
+      "condition": "IF any HypothesisAssumption with criticality 'MustBeTrue' has status 'Invalidated'",
+      "action": "THEN the parent StrategicHypothesis status MUST be 'Invalidated' or 'Pivoted'",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RSN-007",
+      "name": "Evidence Must Declare Direction",
+      "condition": "IF an EvidenceItem is created",
+      "action": "THEN direction (Supporting/Contradicting/Neutral) MUST be explicitly declared to prevent confirmation bias",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RSN-008",
+      "name": "Hypothesis Must Seek Contradicting Evidence",
+      "condition": "IF a StrategicHypothesis is being tested",
+      "action": "THEN the analysis SHOULD explicitly seek contradicting evidence — at least one EvidenceItem with direction 'Contradicting' or documented absence thereof",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-RSN-009",
+      "name": "Logic Tree Operator Required For Non-Leaf",
+      "condition": "IF a LogicTreeNode has isLeaf=false",
+      "action": "THEN operator MUST be specified (Add, Subtract, Multiply, or Divide)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RSN-010",
+      "name": "Logic Tree Leaf Must Map to KPI",
+      "condition": "IF a LogicTreeNode has isLeaf=true",
+      "action": "THEN kpiRef SHOULD reference a valid kpi:KPI @id for measurement",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-RSN-011",
+      "name": "High Sensitivity Levers Become Objectives",
+      "condition": "IF a LogicTreeNode has sensitivityRank <= 3 (top 3 levers)",
+      "action": "THEN vsomObjectiveRef SHOULD reference a vsom:ObjectivesComponent to ensure the highest-impact levers are strategically targeted",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-RSN-012",
+      "name": "Synthesis Must Reference Question",
+      "condition": "IF an AnalysisSynthesis is created",
+      "action": "THEN questionRef MUST reference the rsn:StrategicQuestion @id being answered",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RSN-013",
+      "name": "Synthesis Must Identify Divergent Findings",
+      "condition": "IF an AnalysisSynthesis contains multiple framework inputs",
+      "action": "THEN any contradictions between frameworks MUST be documented as SynthesisFinding with findingType 'Divergent' and resolution provided",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RSN-014",
+      "name": "Recommendation Must Have Evidence Chain",
+      "condition": "IF a StrategicRecommendation has priority 'Critical' or 'High'",
+      "action": "THEN evidenceChainRefs MUST reference at least one rsn:EvidenceItem @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RSN-015",
+      "name": "Accepted Recommendation Must Target VSOM",
+      "condition": "IF a StrategicRecommendation has adoptionStatus 'Accepted'",
+      "action": "THEN vsomComponentRef MUST reference a valid vsom:StrategyComponent or vsom:ObjectivesComponent @id",
+      "severity": "error"
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-12",
+    "modifiedBy": "OAA v6.1.0 Agent",
+    "changeNotes": "Initial release of REASON-ONT as part of VE-Series VSOM-SA (Strategy Analysis). Provides the AI agent reasoning substrate: MECE decomposition, Logic Trees, Hypothesis-Driven Strategy with assumption tracking and evidence management, and Analysis Synthesis with convergent/divergent finding detection. Cross-references all VSOM-SA ontologies (BSC-ONT, INDUSTRY-ONT) plus VSOM-ONT, KPI-ONT, OKR-ONT, RRR-ONT, ORG-CONTEXT-ONT, GA-ONT, PPM-ONT. Key design principles: (1) explicit anti-confirmation-bias rules (BR-RSN-007/008), (2) assumption criticality tracking (BR-RSN-005/006), (3) evidence chain requirements for high-priority recommendations (BR-RSN-014).",
+    "versionHistory": []
+  },
+  "oaa:ontologyId": "RSN-ONT",
+  "oaa:series": "VE-Series / VSOM-SA",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of StrategicQuestion within this ontology?",
+      "targetEntities": [
+        "rsn:StrategicQuestion"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of MECETree within this ontology?",
+      "targetEntities": [
+        "rsn:MECETree"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of MECEBranch within this ontology?",
+      "targetEntities": [
+        "rsn:MECEBranch"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of StrategicHypothesis within this ontology?",
+      "targetEntities": [
+        "rsn:StrategicHypothesis"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of HypothesisAssumption within this ontology?",
+      "targetEntities": [
+        "rsn:HypothesisAssumption"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of EvidenceItem within this ontology?",
+      "targetEntities": [
+        "rsn:EvidenceItem"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of LogicTree within this ontology?",
+      "targetEntities": [
+        "rsn:LogicTree"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of LogicTreeNode within this ontology?",
+      "targetEntities": [
+        "rsn:LogicTreeNode"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of AnalysisSynthesis within this ontology?",
+      "targetEntities": [
+        "rsn:AnalysisSynthesis"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of SynthesisFinding within this ontology?",
+      "targetEntities": [
+        "rsn:SynthesisFinding"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the role and purpose of StrategicRecommendation within this ontology?",
+      "targetEntities": [
+        "rsn:StrategicRecommendation"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

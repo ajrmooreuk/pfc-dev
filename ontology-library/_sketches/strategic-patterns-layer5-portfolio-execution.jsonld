@@ -1,0 +1,384 @@
+{
+  "@context": {
+    "sp": "https://pf-ontology.com/strategic-patterns/",
+    "vsom": "https://pf-ontology.com/vsom/",
+    "kpi": "https://pf-ontology.com/kpi/",
+    "okr": "https://pf-ontology.com/okr/",
+    "ppm": "https://pf-ontology.com/ppm/",
+    "orgctx": "https://pf-ontology.com/org-context/",
+    "rrr": "https://pf-ontology.com/rrr/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#"
+  },
+  "@id": "sp:StrategicPatterns-PortfolioExecution",
+  "@type": "owl:Ontology",
+  "rdfs:label": "Strategic Patterns — Layer 5: Portfolio Strategy, Innovation & Execution",
+  "description": "Growth-Share Matrix (BCG), Innovation Waves (Three Horizons), Investment Maps, Strategy Maps, and Portfolio-level strategic direction. Bridges VSOM strategy to PPM execution across brands, products, services, and business units.",
+  "version": "0.1.0-sketch",
+
+  "entities": {
+    "GrowthShareMatrix": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "BCG Growth-Share Matrix",
+      "description": "Portfolio analysis across Relative Market Share × Market Growth Rate. Classifies business units/products into Stars, Cash Cows, Question Marks, Dogs. Directly informs VSOM resource allocation strategy and PPM investment decisions.",
+      "properties": {
+        "matrixId": { "type": "string", "required": true },
+        "contextRef": { "type": "string", "description": "→ orgctx:OrganizationContext" },
+        "analysisDate": { "type": "date" },
+        "portfolioScope": { "type": "string", "enum": ["business-units", "products", "brands", "services", "markets"] },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "entryId": { "type": "string" },
+              "name": { "type": "string" },
+              "entityRef": { "type": "string", "description": "→ orgctx:Product | orgctx:Brand | orgctx:BusinessUnit" },
+              "relativeMarketShare": { "type": "number", "description": "Relative to largest competitor" },
+              "marketGrowthRate": { "type": "number", "description": "Annual %" },
+              "revenue": { "type": "number" },
+              "profitMargin": { "type": "number" },
+              "quadrant": {
+                "type": "string",
+                "enum": ["star", "cash-cow", "question-mark", "dog"]
+              },
+              "strategicDirection": {
+                "type": "string",
+                "enum": ["invest-grow", "harvest-maintain", "invest-or-divest", "divest-eliminate", "turnaround"]
+              },
+              "investmentAllocation": { "type": "number", "description": "% of total investment budget" },
+              "vsomStrategyRef": { "type": "string", "description": "→ vsom:StrategyComponent governing this entity" },
+              "ansoffQuadrant": { "type": "string", "description": "→ sp:AnsoffGrowthMatrix.quadrants.*" },
+              "lifecycleStage": { "type": "string", "description": "→ orgctx lifecycle type" }
+            }
+          }
+        },
+        "portfolioBalance": {
+          "type": "object",
+          "properties": {
+            "starCount": { "type": "integer" },
+            "cashCowCount": { "type": "integer" },
+            "questionMarkCount": { "type": "integer" },
+            "dogCount": { "type": "integer" },
+            "healthAssessment": { "type": "string", "enum": ["balanced", "growth-heavy", "harvest-heavy", "at-risk"] },
+            "cashFlowBalance": { "type": "string", "description": "Do cash cows fund stars and question marks?" }
+          }
+        },
+        "strategicActions": {
+          "type": "array",
+          "items": {
+            "action": "string",
+            "affectedEntities": "array:string",
+            "ppmInitiativeRef": "string → ppm:Initiative",
+            "investmentAmount": "number"
+          }
+        }
+      }
+    },
+
+    "ThreeHorizonsModel": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Three Horizons Innovation Model",
+      "description": "McKinsey Three Horizons — structures innovation investment across: H1 (core business optimization), H2 (emerging opportunities), H3 (transformational bets). Maps to VSOM time horizons and PPM portfolio allocation.",
+      "properties": {
+        "modelId": { "type": "string", "required": true },
+        "contextRef": { "type": "string", "description": "→ orgctx:OrganizationContext" },
+        "horizons": {
+          "type": "object",
+          "properties": {
+            "H1_core": {
+              "description": "Horizon 1: Extend and defend core business (0-12 months)",
+              "timeFrame": "0-12 months",
+              "investmentPct": "number (typically 70%)",
+              "focus": "Optimization, efficiency, incremental improvement",
+              "vsomMapping": "vsom:ObjectivesComponent (near-term, SMART)",
+              "bscPerspective": "Financial + Internal Process",
+              "initiatives": {
+                "type": "array",
+                "items": {
+                  "name": "string",
+                  "ppmRef": "string → ppm:Initiative",
+                  "bcgQuadrant": "string:enum[cash-cow,star]",
+                  "expectedROI": "number",
+                  "riskLevel": "low"
+                }
+              }
+            },
+            "H2_emerging": {
+              "description": "Horizon 2: Build emerging businesses (12-36 months)",
+              "timeFrame": "12-36 months",
+              "investmentPct": "number (typically 20%)",
+              "focus": "Scale proven innovations, enter adjacent markets",
+              "vsomMapping": "vsom:StrategyComponent (medium-term strategic moves)",
+              "bscPerspective": "Customer + Learning & Growth",
+              "initiatives": {
+                "type": "array",
+                "items": {
+                  "name": "string",
+                  "ppmRef": "string → ppm:Programme",
+                  "bcgQuadrant": "string:enum[star,question-mark]",
+                  "pmfStatus": "string → pmf:ProductMarketFit.status",
+                  "expectedROI": "number",
+                  "riskLevel": "moderate"
+                }
+              }
+            },
+            "H3_transformational": {
+              "description": "Horizon 3: Create future options (36+ months)",
+              "timeFrame": "36+ months",
+              "investmentPct": "number (typically 10%)",
+              "focus": "Explore disruptions, seed future businesses, R&D bets",
+              "vsomMapping": "vsom:VisionComponent (long-term aspirational)",
+              "bscPerspective": "Learning & Growth",
+              "scenarioRefs": "array:string → sp:Scenario",
+              "initiatives": {
+                "type": "array",
+                "items": {
+                  "name": "string",
+                  "type": "string:enum[research,pilot,experiment,partnership,acquisition-scan]",
+                  "futuresFunnelLayer": "string:enum[possible,plausible]",
+                  "riskLevel": "high",
+                  "optionValue": "string"
+                }
+              }
+            }
+          }
+        },
+        "investmentBalance": {
+          "type": "object",
+          "properties": {
+            "currentSplit": { "H1": "number:%", "H2": "number:%", "H3": "number:%" },
+            "targetSplit": { "H1": "number:%", "H2": "number:%", "H3": "number:%" },
+            "rebalancingNeeded": "boolean",
+            "rebalancingActions": "array:string"
+          }
+        }
+      },
+      "_vsomTimeHorizonMapping": {
+        "H1": "VSOM Objectives (quarterly/annual) → OKR → KPI",
+        "H2": "VSOM Strategy (1-3 year) → PPM Programmes",
+        "H3": "VSOM Vision (3-10 year) → Scenarios → Futures Funnel"
+      }
+    },
+
+    "StrategicInvestmentMap": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Strategic Investment Map",
+      "description": "Maps investment allocation across strategic themes, connecting VSOM strategy pillars to PPM portfolio funding. Visualizes where money flows relative to strategic priorities.",
+      "properties": {
+        "mapId": { "type": "string", "required": true },
+        "vsomFrameworkRef": { "type": "string", "description": "→ vsom:VSOMFramework" },
+        "totalBudget": { "type": "number" },
+        "period": { "type": "string" },
+        "allocations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "strategicTheme": { "type": "string" },
+              "vsomStrategyRef": { "type": "string", "description": "→ vsom:StrategyComponent" },
+              "bscPerspective": { "type": "string" },
+              "budget": { "type": "number" },
+              "budgetPct": { "type": "number" },
+              "horizon": { "type": "string", "enum": ["H1", "H2", "H3"] },
+              "portfolioRef": { "type": "string", "description": "→ ppm:Portfolio" },
+              "initiativeCount": { "type": "integer" },
+              "expectedReturn": { "type": "number" },
+              "riskProfile": { "type": "string", "enum": ["conservative", "balanced", "aggressive"] },
+              "ownerRef": { "type": "string", "description": "→ rrr:ExecutiveRole" }
+            }
+          }
+        },
+        "alignmentScore": {
+          "type": "number",
+          "min": 0, "max": 100,
+          "description": "How well investment allocation matches strategic priorities"
+        }
+      }
+    },
+
+    "PortfolioStrategicLens": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Portfolio Strategic Lens",
+      "description": "A focused analytical view of a specific portfolio segment — by brand, product, service line, business unit, or market vertical. Combines multiple framework results into a coherent strategic picture for that segment.",
+      "properties": {
+        "lensId": { "type": "string", "required": true },
+        "lensType": {
+          "type": "string",
+          "enum": ["brand", "product", "service-line", "business-unit", "market-vertical", "geography", "customer-segment"]
+        },
+        "entityRef": { "type": "string", "description": "→ orgctx:Product | orgctx:Brand | orgctx:BusinessUnit | orgctx:MarketContext" },
+        "contextRef": { "type": "string", "description": "→ orgctx:OrganizationContext" },
+
+        "strategicPosition": {
+          "type": "object",
+          "properties": {
+            "bcgQuadrant": { "type": "string", "enum": ["star", "cash-cow", "question-mark", "dog"] },
+            "ansoffDirection": { "type": "string", "enum": ["penetrate", "develop-market", "develop-product", "diversify"] },
+            "lifecycleStage": { "type": "string" },
+            "competitivePosition": { "type": "string", "enum": ["leader", "challenger", "follower", "niche"] },
+            "pmfStatus": { "type": "string", "description": "→ pmf:ProductMarketFit.status" },
+            "innovationHorizon": { "type": "string", "enum": ["H1", "H2", "H3"] }
+          }
+        },
+
+        "financialProfile": {
+          "revenue": "number",
+          "growthRate": "number:%",
+          "margin": "number:%",
+          "marketShare": "number:%",
+          "investmentLevel": "number"
+        },
+
+        "strategicDirection": {
+          "type": "string",
+          "enum": ["accelerate", "sustain", "optimize", "harvest", "transform", "divest"],
+          "description": "Strategic direction for this portfolio element"
+        },
+
+        "vsomAlignment": {
+          "visionContribution": "string — how this element contributes to the vision",
+          "strategyRef": "string → vsom:StrategyComponent",
+          "objectives": "array:string → vsom:ObjectivesComponent",
+          "keyMetrics": "array:string → kpi:KPI"
+        },
+
+        "vpRef": { "type": "string", "description": "→ vp:ValueProposition for this element" },
+        "okrRefs": { "type": "array", "items": "string → okr:Objective" },
+        "ppmRefs": { "type": "array", "items": "string → ppm:Initiative" }
+      },
+      "_graphLensNote": "This entity enables focused graph views — an AI agent can pull ALL strategic context for a single product/brand/BU by traversing from this lens entity through all connected frameworks. It's the 'zoom in' mechanism."
+    },
+
+    "StrategicDirectionSummary": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Strategic Direction Summary",
+      "description": "Executive-level synthesis of strategic analysis across all layers. The 'one-page strategy' that connects macro context, industry dynamics, organizational capability, analytical findings, and portfolio decisions into a coherent strategic narrative.",
+      "properties": {
+        "summaryId": { "type": "string", "required": true },
+        "vsomFrameworkRef": { "type": "string", "description": "→ vsom:VSOMFramework" },
+        "contextRef": { "type": "string", "description": "→ orgctx:OrganizationContext" },
+
+        "whereWePlay": {
+          "type": "object",
+          "description": "Lafley & Martin: Where to Play",
+          "properties": {
+            "targetMarkets": "array:string → orgctx:MarketContext",
+            "targetSegments": "array:string → vp:IdealCustomerProfile",
+            "geographies": "array:string",
+            "productCategories": "array:string → orgctx:Product",
+            "valueChainPosition": "string → sp:IndustryValueChainAnalysis"
+          }
+        },
+
+        "howWeWin": {
+          "type": "object",
+          "description": "Lafley & Martin: How to Win",
+          "properties": {
+            "competitiveAdvantage": "string:enum[cost-leadership,differentiation,focus,platform,ecosystem]",
+            "coreDifferentiators": "array:string → vp:Differentiator",
+            "strategicMoat": "string",
+            "ansoffPath": "string → sp:AnsoffGrowthMatrix.selectedGrowthPath"
+          }
+        },
+
+        "whatCapabilities": {
+          "type": "object",
+          "description": "Required capabilities to execute",
+          "properties": {
+            "coreCapabilities": "array:string → ea:BusinessCapability",
+            "capabilityGaps": "array:string → ea:CapabilityGap",
+            "maturityTargets": "array:object → orgctx:MaturitySubType (merged)",
+            "talentNeeds": "array:string"
+          }
+        },
+
+        "strategicBets": {
+          "type": "array",
+          "items": {
+            "bet": "string",
+            "horizon": "string:enum[H1,H2,H3]",
+            "investment": "number",
+            "expectedOutcome": "string",
+            "riskLevel": "string",
+            "portfolioLensRef": "string → sp:PortfolioStrategicLens"
+          }
+        },
+
+        "executionPriorities": {
+          "type": "array",
+          "items": {
+            "priority": "string",
+            "bscPerspective": "string",
+            "okrRef": "string → okr:Objective",
+            "ppmRef": "string → ppm:Initiative",
+            "ownerRef": "string → rrr:ExecutiveRole",
+            "timeline": "string"
+          }
+        },
+
+        "analysisRefs": {
+          "pestelRef": "string → sp:PESTELAnalysis",
+          "porterRef": "string → sp:PortersFiveForces",
+          "swotRef": "string → sp:SWOTAnalysis",
+          "bscRef": "string → sp:BalancedScorecard",
+          "growthShareRef": "string → sp:GrowthShareMatrix",
+          "horizonsRef": "string → sp:ThreeHorizonsModel",
+          "scenarioRef": "string → sp:ScenarioSet",
+          "synthesisRef": "string → sp:AnalysisSynthesis"
+        }
+      }
+    }
+  },
+
+  "relationships": {
+    "classifiesPortfolio": {
+      "domain": "sp:GrowthShareMatrix",
+      "range": ["orgctx:Product", "orgctx:Brand"],
+      "cardinality": "n:m"
+    },
+    "allocatesInvestment": {
+      "domain": "sp:ThreeHorizonsModel",
+      "range": "ppm:Portfolio",
+      "cardinality": "n:m"
+    },
+    "mapsInvestmentToStrategy": {
+      "domain": "sp:StrategicInvestmentMap",
+      "range": "vsom:StrategyComponent",
+      "cardinality": "n:m"
+    },
+    "lensViewsEntity": {
+      "domain": "sp:PortfolioStrategicLens",
+      "range": ["orgctx:Product", "orgctx:Brand", "orgctx:MarketContext"],
+      "cardinality": "1:1"
+    },
+    "summarizesStrategy": {
+      "domain": "sp:StrategicDirectionSummary",
+      "range": "vsom:VSOMFramework",
+      "cardinality": "1:1"
+    }
+  },
+
+  "joinPatterns": {
+    "JP-SP-040": {
+      "name": "Portfolio-to-Strategy-to-Execution Chain",
+      "path": "sp:GrowthShareMatrix.entry → strategicDirection → vsom:StrategyComponent → alignsTo → ppm:Portfolio → contains → ppm:Initiative → decomposesTo → efs:Epic",
+      "description": "BCG classification drives strategy which drives portfolio investment which drives execution"
+    },
+    "JP-SP-041": {
+      "name": "Innovation Horizon Investment Flow",
+      "path": "sp:ThreeHorizonsModel.H* → initiatives → ppm:Initiative/Programme → benefitMetric → kpi:KPI ← trackedVia ← okr:KeyResult ← okr:Objective ← vsom:ObjectivesComponent",
+      "description": "Innovation investments flow through PPM to measurable outcomes via OKR/KPI"
+    },
+    "JP-SP-042": {
+      "name": "Strategic Lens Full Traversal",
+      "path": "sp:PortfolioStrategicLens → entityRef → orgctx:Product → [sp:GrowthShareMatrix, sp:AnsoffGrowthMatrix, vp:ValueProposition, pmf:ProductMarketFit, kpi:KPI, okr:Objective, ppm:Initiative]",
+      "description": "From a single product/brand lens, traverse ALL connected strategic analyses — the focused graph view"
+    },
+    "JP-SP-043": {
+      "name": "E2E Strategic Analysis Graph",
+      "path": "sp:PESTELAnalysis → informsVision → vsom:VisionComponent → defines → vsom:StrategyComponent ← informedBy ← [sp:SWOTAnalysis, sp:PortersFiveForces, sp:AnsoffGrowthMatrix] → operationalizedBy → sp:BalancedScorecard → measuredBy → kpi:KPI; vsom:StrategyComponent → allocatedVia → sp:StrategicInvestmentMap → fundsInitiatives → ppm:Portfolio → executedVia → efs:Epic → deliveredBy → pe:Process",
+      "description": "THE COMPLETE END-TO-END GRAPH: From macro environment through strategic analysis through execution to delivery"
+    }
+  }
+}

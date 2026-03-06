@@ -1,0 +1,448 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ea": "https://ontology.enterprise-architecture.io/azure/",
+    "azure": "https://ontology.enterprise-architecture.io/azure/cloud/",
+    "togaf": "https://ontology.enterprise-architecture.io/togaf/",
+    "waf": "https://ontology.enterprise-architecture.io/azure/waf/",
+    "caf": "https://ontology.enterprise-architecture.io/azure/caf/",
+    "ai": "https://ontology.enterprise-architecture.io/azure/ai/",
+    "vsem": "https://wings4mind.ai/ontology/vsem/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "ea:enterprise-contoso",
+      "@type": "ea:EAEntity",
+      "name": "Contoso Enterprise Architecture",
+      "description": "Enterprise architecture model for Contoso Corporation",
+      "dateCreated": "2026-01-26",
+      "version": "2.0.0-pre-oaav5"
+    },
+
+    {
+      "@id": "ea:cap-customer-experience",
+      "@type": ["Action", "ea:BusinessCapability"],
+      "name": "Customer Experience Management",
+      "description": "Deliver exceptional customer experiences across all touchpoints",
+      "ea:maturityLevel": 3,
+      "ea:businessCriticality": "Critical",
+      "ea:composedOf": [
+        {"@id": "ea:cap-customer-service"},
+        {"@id": "ea:cap-customer-analytics"},
+        {"@id": "ea:cap-personalization"}
+      ]
+    },
+
+    {
+      "@id": "ea:cap-customer-service",
+      "@type": ["Action", "ea:BusinessCapability"],
+      "name": "Customer Service",
+      "description": "Handle customer inquiries and support requests",
+      "ea:maturityLevel": 4,
+      "ea:businessCriticality": "Critical"
+    },
+
+    {
+      "@id": "ea:cap-customer-analytics",
+      "@type": ["Action", "ea:BusinessCapability"],
+      "name": "Customer Analytics",
+      "description": "Analyze customer behavior and preferences",
+      "ea:maturityLevel": 2,
+      "ea:businessCriticality": "High"
+    },
+
+    {
+      "@id": "ea:cap-personalization",
+      "@type": ["Action", "ea:BusinessCapability"],
+      "name": "Personalization",
+      "description": "Deliver personalized content and recommendations",
+      "ea:maturityLevel": 2,
+      "ea:businessCriticality": "High"
+    },
+
+    {
+      "@id": "ea:proc-customer-onboarding",
+      "@type": ["HowTo", "ea:BusinessProcess"],
+      "name": "Customer Onboarding",
+      "description": "End-to-end process for onboarding new customers",
+      "ea:supports": {"@id": "ea:cap-customer-experience"},
+      "ea:managedBy": {"@id": "ea:org-customer-success"}
+    },
+
+    {
+      "@id": "ea:org-customer-success",
+      "@type": ["Organization", "ea:OrganizationalUnit"],
+      "name": "Customer Success Team",
+      "description": "Team responsible for customer success and retention"
+    },
+
+    {
+      "@id": "ea:app-dynamics-crm",
+      "@type": ["SoftwareApplication", "ea:Application"],
+      "name": "Dynamics 365 Customer Engagement",
+      "description": "CRM platform for sales and customer service",
+      "ea:realizes": [
+        {"@id": "ea:cap-customer-service"},
+        {"@id": "ea:cap-customer-analytics"}
+      ],
+      "ea:hostedOn": {"@id": "azure:dynamics365-prod"},
+      "ea:lifecycleStatus": "Production",
+      "ea:businessCriticality": "Critical",
+      "ea:technologyFit": "Good"
+    },
+
+    {
+      "@id": "ea:app-customer-portal",
+      "@type": ["SoftwareApplication", "ea:Application"],
+      "name": "Customer Self-Service Portal",
+      "description": "Web portal for customer self-service",
+      "ea:realizes": {"@id": "ea:cap-customer-service"},
+      "ea:hostedOn": {"@id": "azure:aks-prod"},
+      "ea:integratesWith": [
+        {"@id": "ea:app-dynamics-crm"},
+        {"@id": "ai:customer-copilot"}
+      ],
+      "ea:lifecycleStatus": "Production",
+      "ea:businessCriticality": "High"
+    },
+
+    {
+      "@id": "ai:customer-copilot",
+      "@type": "ai:AIAgent",
+      "name": "Customer Service Copilot",
+      "description": "AI assistant for customer support",
+      "ai:usesModel": {"@id": "azure:gpt4-deployment"},
+      "ai:hasTools": [
+        {"@id": "ai:tool-knowledge-search"},
+        {"@id": "ai:tool-crm-lookup"},
+        {"@id": "ai:tool-order-status"}
+      ],
+      "ea:realizes": {"@id": "ea:cap-customer-service"},
+      "ea:securedBy": [
+        {"@id": "ai:content-filter-config"},
+        {"@id": "ai:pii-protection"}
+      ]
+    },
+
+    {
+      "@id": "ai:customer-rag",
+      "@type": "ai:RAGSystem",
+      "name": "Customer Knowledge RAG",
+      "description": "RAG system for customer knowledge base",
+      "ai:usesModel": {"@id": "azure:gpt4-deployment"},
+      "ai:vectorIndex": {"@id": "azure:ai-search-knowledge"},
+      "ai:implements": {"@id": "ai:AdvancedRAGPattern"}
+    },
+
+    {
+      "@id": "ai:tool-knowledge-search",
+      "@type": "ai:AgentTool",
+      "name": "Knowledge Base Search",
+      "description": "Search product documentation and FAQs"
+    },
+
+    {
+      "@id": "ai:tool-crm-lookup",
+      "@type": "ai:AgentTool",
+      "name": "CRM Customer Lookup",
+      "description": "Retrieve customer information from CRM"
+    },
+
+    {
+      "@id": "ai:tool-order-status",
+      "@type": "ai:AgentTool",
+      "name": "Order Status Check",
+      "description": "Check order status and shipping information"
+    },
+
+    {
+      "@id": "ai:content-filter-config",
+      "@type": "ai:ContentFilter",
+      "name": "Customer Copilot Content Filter",
+      "ai:contentFilterLevel": "High",
+      "ai:categories": ["Hate", "Violence", "Sexual", "Self-harm"]
+    },
+
+    {
+      "@id": "ai:pii-protection",
+      "@type": "ai:ResponsibleAIControl",
+      "name": "PII Protection",
+      "description": "Protect personally identifiable information"
+    },
+
+    {
+      "@id": "ea:data-customer",
+      "@type": ["Dataset", "ea:DataEntity"],
+      "name": "Customer Master Data",
+      "description": "Authoritative customer data entity",
+      "ea:managedBy": {"@id": "ea:org-data-governance"}
+    },
+
+    {
+      "@id": "ea:org-data-governance",
+      "@type": ["Organization", "ea:OrganizationalUnit"],
+      "name": "Data Governance Office",
+      "description": "Central data governance and stewardship"
+    },
+
+    {
+      "@id": "ea:api-customer",
+      "@type": ["WebAPI", "ea:API"],
+      "name": "Customer API",
+      "description": "RESTful API for customer data access",
+      "ea:consumedBy": [
+        {"@id": "ea:app-customer-portal"},
+        {"@id": "ai:customer-copilot"}
+      ],
+      "ea:hostedOn": {"@id": "azure:apim-prod"}
+    },
+
+    {
+      "@id": "azure:mg-contoso",
+      "@type": "azure:ManagementGroup",
+      "name": "Contoso Root Management Group",
+      "azure:resourceId": "/providers/Microsoft.Management/managementGroups/contoso-root"
+    },
+
+    {
+      "@id": "azure:sub-prod",
+      "@type": "azure:Subscription",
+      "name": "Contoso Production",
+      "azure:resourceId": "/subscriptions/12345678-1234-1234-1234-123456789012",
+      "ea:managedBy": {"@id": "ea:org-cloud-platform"}
+    },
+
+    {
+      "@id": "ea:org-cloud-platform",
+      "@type": ["Organization", "ea:OrganizationalUnit"],
+      "name": "Cloud Platform Team",
+      "description": "Central cloud infrastructure and platform management"
+    },
+
+    {
+      "@id": "azure:rg-customer-prod",
+      "@type": "azure:ResourceGroup",
+      "name": "rg-customer-prod-uksouth",
+      "azure:resourceId": "/subscriptions/.../resourceGroups/rg-customer-prod-uksouth",
+      "azure:region": "uksouth",
+      "azure:tags": [
+        {"@type": "PropertyValue", "name": "Environment", "value": "Production"},
+        {"@type": "PropertyValue", "name": "CostCenter", "value": "CC-1234"},
+        {"@type": "PropertyValue", "name": "Application", "value": "CustomerPlatform"}
+      ]
+    },
+
+    {
+      "@id": "azure:vnet-prod",
+      "@type": "azure:VirtualNetwork",
+      "name": "vnet-prod-uksouth",
+      "azure:resourceId": "/subscriptions/.../Microsoft.Network/virtualNetworks/vnet-prod-uksouth",
+      "azure:region": "uksouth",
+      "description": "Production virtual network"
+    },
+
+    {
+      "@id": "azure:aks-prod",
+      "@type": "azure:KubernetesService",
+      "name": "aks-customer-prod",
+      "azure:resourceId": "/subscriptions/.../Microsoft.ContainerService/managedClusters/aks-customer-prod",
+      "azure:region": "uksouth",
+      "azure:skuTier": "Standard",
+      "ea:hostedOn": {"@id": "azure:vnet-prod"}
+    },
+
+    {
+      "@id": "azure:apim-prod",
+      "@type": "azure:APIManagement",
+      "name": "apim-contoso-prod",
+      "azure:resourceId": "/subscriptions/.../Microsoft.ApiManagement/service/apim-contoso-prod",
+      "azure:region": "uksouth",
+      "azure:skuTier": "Premium"
+    },
+
+    {
+      "@id": "azure:openai-prod",
+      "@type": "azure:OpenAIService",
+      "name": "openai-contoso-prod",
+      "azure:resourceId": "/subscriptions/.../Microsoft.CognitiveServices/accounts/openai-contoso-prod",
+      "azure:region": "uksouth",
+      "azure:skuTier": "S0"
+    },
+
+    {
+      "@id": "azure:gpt4-deployment",
+      "@type": "ai:LLMDeployment",
+      "name": "gpt-4-turbo",
+      "ai:modelFamily": "GPT-4",
+      "ai:contextWindow": 128000,
+      "ai:deploymentType": "Standard",
+      "ai:tokensPerMinute": 120000,
+      "ea:hostedOn": {"@id": "azure:openai-prod"}
+    },
+
+    {
+      "@id": "azure:ai-search-prod",
+      "@type": "azure:AISearch",
+      "name": "search-contoso-prod",
+      "azure:resourceId": "/subscriptions/.../Microsoft.Search/searchServices/search-contoso-prod",
+      "azure:region": "uksouth",
+      "azure:skuTier": "Standard"
+    },
+
+    {
+      "@id": "azure:ai-search-knowledge",
+      "@type": "ai:VectorStore",
+      "name": "knowledge-index",
+      "description": "Vector index for customer knowledge base",
+      "ai:embeddingDimension": 1536,
+      "ea:hostedOn": {"@id": "azure:ai-search-prod"}
+    },
+
+    {
+      "@id": "azure:cosmosdb-prod",
+      "@type": "azure:CosmosDB",
+      "name": "cosmos-customer-prod",
+      "azure:resourceId": "/subscriptions/.../Microsoft.DocumentDB/databaseAccounts/cosmos-customer-prod",
+      "azure:region": "uksouth",
+      "azure:skuTier": "Standard"
+    },
+
+    {
+      "@id": "azure:keyvault-prod",
+      "@type": "azure:KeyVault",
+      "name": "kv-customer-prod",
+      "azure:resourceId": "/subscriptions/.../Microsoft.KeyVault/vaults/kv-customer-prod",
+      "azure:region": "uksouth",
+      "ea:securedBy": {"@id": "ea:rbac-keyvault"}
+    },
+
+    {
+      "@id": "ea:rbac-keyvault",
+      "@type": "ea:AccessPolicy",
+      "name": "Key Vault RBAC Policy",
+      "description": "Role-based access control for Key Vault"
+    },
+
+    {
+      "@id": "azure:appinsights-prod",
+      "@type": "azure:ApplicationInsights",
+      "name": "appi-customer-prod",
+      "azure:resourceId": "/subscriptions/.../Microsoft.Insights/components/appi-customer-prod",
+      "azure:region": "uksouth"
+    },
+
+    {
+      "@id": "azure:dynamics365-prod",
+      "@type": "azure:Dynamics365",
+      "name": "Dynamics 365 CE Production",
+      "description": "Dynamics 365 Customer Engagement environment"
+    },
+
+    {
+      "@id": "ea:principle-cloud-first",
+      "@type": "ea:ArchitecturePrinciple",
+      "name": "Cloud-First",
+      "description": "Prefer cloud-native solutions over on-premises",
+      "ea:governs": {"@id": "ea:enterprise-contoso"}
+    },
+
+    {
+      "@id": "ea:principle-ai-augmented",
+      "@type": "ea:ArchitecturePrinciple",
+      "name": "AI-Augmented Operations",
+      "description": "Leverage AI to enhance employee and customer experiences",
+      "ea:governs": {"@id": "ea:enterprise-contoso"}
+    },
+
+    {
+      "@id": "ea:principle-zero-trust",
+      "@type": "ea:ArchitecturePrinciple",
+      "name": "Zero Trust Security",
+      "description": "Never trust, always verify - assume breach",
+      "ea:governs": {"@id": "ea:enterprise-contoso"}
+    },
+
+    {
+      "@id": "ea:standard-api-first",
+      "@type": "ea:ArchitectureStandard",
+      "name": "API-First Design",
+      "description": "All services must expose functionality via well-defined APIs"
+    },
+
+    {
+      "@id": "ea:adr-customer-copilot",
+      "@type": "ea:ArchitectureDecision",
+      "name": "ADR-001: Customer Service Copilot Architecture",
+      "description": "Use Azure OpenAI with RAG pattern for customer service AI assistant",
+      "dateCreated": "2025-06-15",
+      "ea:rationale": "Azure OpenAI provides enterprise-grade security, compliance, and content filtering required for customer-facing AI",
+      "ea:alternatives": ["AWS Bedrock", "Self-hosted Llama", "Vertex AI"],
+      "ea:status": "Accepted"
+    },
+
+    {
+      "@id": "ea:gap-analytics-maturity",
+      "@type": "ea:CapabilityGap",
+      "name": "Customer Analytics Maturity Gap",
+      "description": "Gap between current (L2) and target (L4) analytics maturity",
+      "ea:currentState": 2,
+      "ea:targetState": 4,
+      "ea:relatedCapability": {"@id": "ea:cap-customer-analytics"}
+    },
+
+    {
+      "@id": "ea:risk-data-quality",
+      "@type": "ea:ArchitectureRisk",
+      "name": "Customer Data Quality Risk",
+      "description": "Inconsistent customer data across systems impacts AI model accuracy",
+      "ea:riskLevel": "High",
+      "ea:mitigatedBy": {"@id": "ea:initiative-mdm"}
+    },
+
+    {
+      "@id": "ea:initiative-mdm",
+      "@type": "ea:ArchitectureRoadmap",
+      "name": "Master Data Management Initiative",
+      "description": "Implement MDM solution for customer data",
+      "startDate": "2026-Q2",
+      "endDate": "2026-Q4"
+    },
+
+    {
+      "@id": "vsem:objective-cx-excellence",
+      "@type": ["Action", "vsem:StrategicObjective"],
+      "name": "Achieve Customer Experience Excellence",
+      "description": "Deliver industry-leading customer experience scores",
+      "vsem:targetDate": "2027-12-31",
+      "vsem:bscPerspective": "Customer",
+      "ea:alignsTo": {"@id": "ea:cap-customer-experience"}
+    },
+
+    {
+      "@id": "vsem:metric-nps",
+      "@type": ["QuantitativeValue", "vsem:StrategicKPI"],
+      "name": "Net Promoter Score",
+      "vsem:metricType": "Lagging",
+      "vsem:targetValue": 70,
+      "vsem:currentValue": 52,
+      "vsem:baselineValue": 45,
+      "vsem:measurementFrequency": "Quarterly",
+      "vsem:measures": {"@id": "ea:cap-customer-experience"},
+      "vsem:validates": {"@id": "vsem:objective-cx-excellence"}
+    },
+
+    {
+      "@id": "waf:assessment-customer-platform",
+      "@type": "waf:ArchitectureAssessment",
+      "name": "Customer Platform WAF Assessment",
+      "waf:assessmentDate": "2026-01-15",
+      "waf:reliabilityScore": 78,
+      "waf:securityScore": 85,
+      "waf:costOptimizationScore": 62,
+      "waf:operationalExcellenceScore": 71,
+      "waf:performanceEfficiencyScore": 74,
+      "ea:assessedEntity": {"@id": "ea:app-customer-portal"}
+    }
+  ]
+}

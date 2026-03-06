@@ -1,0 +1,204 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-VP-001",
+  "name": "VP Ontology (Value Proposition)",
+  "description": "Comprehensive ontology for developing, validating, and articulating value propositions. Links VSOM strategic layer to EFS execution layer through ICP-driven problem-solution mapping. Part of VE lineage chain: VSOM \u2192 OKR \u2192 VP \u2192 PMF \u2192 EFS.",
+  "version": "1.2.3",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/vp/",
+  "prefix": "vp:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-02",
+  "gatesPassed": 8,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./value-proposition-ontology-v1.2.3-oaa-v6.jsonld",
+    "legacyOntology": "./value-proposition-ontology-v1.2.2-oaa-v6.jsonld",
+    "documentation": "./VALUE-PROPOSITION-ONTOLOGY-SUMMARY (1).md",
+    "frameworkGuide": "./value-proposition-framework-guide (1).md",
+    "diagrams": [
+      "./value-proposition-ontology-diagram (1).mermaid"
+    ],
+    "visualGuide": null,
+    "glossary": "./vp-glossary-v1.2.0.json",
+    "testData": "./vp-test-data-v1.1.0.json",
+    "validationReport": "./value-proposition-validation-report (1).json"
+  },
+  "entities": {
+    "count": 17,
+    "list": [
+      "ValueProposition",
+      "IdealCustomerProfile",
+      "RoleBasedICP",
+      "Problem",
+      "PainPoint",
+      "Gain",
+      "Solution",
+      "Benefit",
+      "Differentiator",
+      "CompetitiveAlternative",
+      "ValidationEvidence",
+      "SuccessMetric",
+      "Stakeholder",
+      "MessagingFramework",
+      "VPRACIAssignment"
+    ]
+  },
+  "relationships": {
+    "count": 30,
+    "internal": 22,
+    "crossOntology": 8,
+    "keyBridges": [
+      {
+        "name": "alignsToObjective",
+        "from": "vp:ValueProposition",
+        "to": "vsom:ObjectivesComponent",
+        "purpose": "VSOM lineage - strategy to value"
+      },
+      {
+        "name": "informsValue",
+        "from": "okr:KeyResult",
+        "to": "vp:ValueProposition",
+        "purpose": "OKR \u2192 VP lineage chain"
+      },
+      {
+        "name": "validatesMarket",
+        "from": "vp:ValueProposition",
+        "to": "pmf:ProductMarketFit",
+        "purpose": "VP \u2192 PMF lineage chain"
+      },
+      {
+        "name": "mapsToEpic",
+        "from": "vp:Problem",
+        "to": "efs:Epic",
+        "purpose": "EFS bridge - problem to execution"
+      },
+      {
+        "name": "manifestsAsPersona",
+        "from": "vp:IdealCustomerProfile",
+        "to": "efs:Persona",
+        "purpose": "EFS bridge - ICP to user stories"
+      },
+      {
+        "name": "realizesInStory",
+        "from": "vp:Benefit",
+        "to": "efs:UserStory",
+        "purpose": "EFS bridge - benefit to story outcome"
+      },
+      {
+        "name": "belongsToOrgContext",
+        "from": "vp:ValueProposition",
+        "to": "org:OrganizationContext",
+        "purpose": "PFI-instance scoping"
+      }
+    ]
+  },
+  "businessRules": {
+    "count": 22,
+    "format": "IF-THEN",
+    "severityBreakdown": {
+      "error": 17,
+      "warning": 5
+    }
+  },
+  "testData": {
+    "distribution": "60-20-10-10",
+    "totalInstances": 30,
+    "happyPath": 18,
+    "edgeCases": 6,
+    "errorScenarios": 3,
+    "boundaryTests": 3
+  },
+  "joinPatterns": [
+    {
+      "id": "JP-VP-001",
+      "name": "VSOM-to-VP Strategic Alignment",
+      "path": "vsom:ObjectivesComponent \u2192 vp:alignsToObjective \u2190 vp:ValueProposition"
+    },
+    {
+      "id": "JP-VP-002",
+      "name": "OKR-to-VP Value Chain",
+      "path": "okr:KeyResult \u2192 vp:informsValue \u2192 vp:ValueProposition"
+    },
+    {
+      "id": "JP-VP-003",
+      "name": "VP-to-PMF Market Validation",
+      "path": "vp:ValueProposition \u2192 vp:validatesMarket \u2192 pmf:ProductMarketFit"
+    },
+    {
+      "id": "JP-VP-004",
+      "name": "VP-to-EFS Execution Mapping",
+      "path": "vp:Problem \u2192 vp:mapsToEpic \u2192 efs:Epic"
+    },
+    {
+      "id": "JP-VP-005",
+      "name": "ICP-to-Persona Bridge",
+      "path": "vp:IdealCustomerProfile \u2192 vp:manifestsAsPersona \u2192 efs:Persona"
+    },
+    {
+      "id": "JP-VP-006",
+      "name": "Org-Context Scoping",
+      "path": "org:OrganizationContext \u2192 vp:hasValueProposition \u2192 vp:ValueProposition"
+    }
+  ],
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-OKR-001",
+    "Entry-ONT-RRR-001",
+    "Entry-ONT-ORG-001",
+    "Entry-ONT-ORG-CTX-001"
+  ],
+  "dependents": [
+    "Entry-ONT-PMF-001",
+    "Entry-ONT-EFS-001"
+  ],
+  "layer": "STRATEGIC LAYER (VE-Series)",
+  "domain": "Value Engineering",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2025-10-08",
+  "lastModified": "2026-02-02",
+  "versionHistory": [
+    {
+      "version": "1.2.3",
+      "date": "2026-02-02",
+      "changes": "G2 fix: cardinality object\u2192string notation in all 30 relationships for OAA v6.1.0 compliance"
+    },
+    {
+      "version": "1.2.2",
+      "date": "2026-02-02",
+      "changes": "G3 fix: constraint\u2192action field in all 22 business rules"
+    },
+    {
+      "version": "1.2.1",
+      "date": "2026-02-02",
+      "changes": "OAA v6.1.0 upgrade attempt (G3 format issue identified)"
+    },
+    {
+      "version": "1.2.0",
+      "date": "2026-02-02",
+      "changes": "RRR integration: RoleBasedICP, VPRACIAssignment, hierarchical ICP structure, problem roll-up"
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-02-01",
+      "changes": "OAA v5.0.0 compliance, VSOM lineage, EFS bridges, Org context scoping, G5 test data"
+    },
+    {
+      "version": "1.0.0",
+      "date": "2025-10-08",
+      "changes": "Initial VP ontology in legacy format"
+    }
+  ],
+  "notes": "VP v1.2.3 OAA v6.1.0 compliant with 17 entities, 30 relationships, 22 business rules. Includes RRR integration with RoleBasedICP and VPRACIAssignment. Part of VE lineage chain: VSOM \u2192 OKR \u2192 VP \u2192 PMF \u2192 EFS."
+}

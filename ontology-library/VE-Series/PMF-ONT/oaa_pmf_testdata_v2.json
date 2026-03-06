@@ -1,0 +1,510 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pmf": "https://baiv.ai/ontology/pmf-process/v2/",
+    "org": "https://baiv.ai/ontology/organization/",
+    "oaa": "https://baiv.ai/ontology/oaa-registry/"
+  },
+  "testDataMetadata": {
+    "title": "BAIV PMF Process Ontology Test Data",
+    "version": "2.0.0",
+    "date": "2025-01-20",
+    "ontologyId": "baiv:ontology:pmf-process-v2",
+    "instanceCount": 25,
+    "distribution": {
+      "typical": "60% - Normal operation scenarios",
+      "edge": "20% - Boundary value scenarios",
+      "boundary": "10% - Constraint limit scenarios",
+      "invalid": "10% - Validation error scenarios"
+    }
+  },
+  "testInstances": [
+    {
+      "@id": "test:org-context-001",
+      "@type": "pmf:OrganizationContext",
+      "testCategory": "typical",
+      "description": "Typical platform owner organization",
+      "data": {
+        "orgId": "org:baiv-platform",
+        "orgType": ["platformOwner"],
+        "pmfRole": "process_executor",
+        "relationshipType": "self",
+        "name": "BAIV Platform",
+        "industry": "AI/ML SaaS",
+        "size": 45,
+        "revenue": {
+          "@type": "MonetaryAmount",
+          "currency": "USD",
+          "value": 5200000
+        },
+        "pmfMaturity": "Advanced"
+      }
+    },
+    {
+      "@id": "test:org-context-002",
+      "@type": "pmf:OrganizationContext",
+      "testCategory": "typical",
+      "description": "Typical target customer organization",
+      "data": {
+        "orgId": "org:widget-corp",
+        "orgType": ["targetCustomer"],
+        "pmfRole": "research_subject",
+        "relationshipType": "prospect",
+        "name": "Widget Corp Marketing Agency",
+        "industry": "Digital Marketing",
+        "size": 120,
+        "revenue": {
+          "@type": "MonetaryAmount",
+          "currency": "USD",
+          "value": 15000000
+        }
+      }
+    },
+    {
+      "@id": "test:org-context-003",
+      "@type": "pmf:OrganizationContext",
+      "testCategory": "typical",
+      "description": "Target customer that became actual client",
+      "data": {
+        "orgId": "org:acme-media",
+        "orgType": ["targetCustomer", "actualClient"],
+        "pmfRole": "validation_participant",
+        "relationshipType": "customer",
+        "name": "Acme Media Solutions",
+        "industry": "Content Marketing",
+        "size": 85,
+        "transitionDate": "2024-11-15"
+      }
+    },
+    {
+      "@id": "test:org-context-004",
+      "@type": "pmf:OrganizationContext",
+      "testCategory": "typical",
+      "description": "Competitor organization",
+      "data": {
+        "orgId": "org:competitor-x",
+        "orgType": ["competitor"],
+        "pmfRole": "benchmark_reference",
+        "relationshipType": "competitor",
+        "name": "Competitor X Marketing Platform",
+        "industry": "Marketing SaaS",
+        "competitiveAdvantage": "Established brand, large customer base",
+        "weaknesses": "Slow feature development, no AI capabilities"
+      }
+    },
+    {
+      "@id": "test:org-context-005",
+      "@type": "pmf:OrganizationContext",
+      "testCategory": "edge",
+      "description": "Organization with multiple roles",
+      "data": {
+        "orgId": "org:partner-co",
+        "orgType": ["supplyChainPartner", "actualClient"],
+        "pmfRole": "ecosystem_participant",
+        "relationshipType": "strategic_partner",
+        "name": "Partner Co Data Services",
+        "industry": "Data Infrastructure"
+      }
+    },
+    {
+      "@id": "test:org-bridge-001",
+      "@type": "pmf:OrganizationBridge",
+      "testCategory": "typical",
+      "description": "Standard organization bridge",
+      "data": {
+        "sourceOrgId": "org:widget-corp",
+        "pmfContextId": "pmf-ctx-001",
+        "bridgeMetadata": {
+          "establishedDate": "2025-01-10",
+          "relationshipStrength": "strong",
+          "dataFlowDirection": "bidirectional"
+        }
+      }
+    },
+    {
+      "@id": "test:strategy-bridge-001",
+      "@type": "pmf:StrategyBridge",
+      "testCategory": "typical",
+      "description": "Strategy to value proposition bridge",
+      "data": {
+        "strategyId": "org:strategy-baiv-growth-2025",
+        "vsomId": "vsom:baiv-vsom-2025",
+        "valuePropositionId": "pmf:vp-air-visibility"
+      }
+    },
+    {
+      "@id": "test:value-prop-001",
+      "@type": "pmf:ValueProposition",
+      "testCategory": "typical",
+      "description": "AI-powered marketing visibility value proposition",
+      "data": {
+        "valuePropositionId": "pmf:vp-air-visibility",
+        "name": "AI-Powered Marketing Visibility",
+        "customerSegment": "org:segment-marketing-agencies",
+        "problemStatement": "Marketing agencies waste 15+ hours per week on manual content optimization and visibility tracking",
+        "solutionDescription": "AI-powered platform that automates content optimization and provides real-time visibility insights",
+        "uniqueDifferentiator": "10x faster optimization with predictive visibility scoring",
+        "benefitQuantification": {
+          "timeSaved": "15 hours per week",
+          "costReduction": "40% lower content production costs",
+          "qualityImprovement": "5x more engagement on optimized content"
+        },
+        "improvementMultiplier": 5.0,
+        "competitiveDifferentiation": "Only solution with predictive AI visibility scoring"
+      }
+    },
+    {
+      "@id": "test:product-001",
+      "@type": "pmf:Product",
+      "testCategory": "typical",
+      "description": "AIR product in growth stage",
+      "data": {
+        "productId": "prod:air-v2",
+        "name": "AIR - AI Marketing Visibility Platform v2.1",
+        "stage": "Growth",
+        "type": "SaaS",
+        "businessModel": "Freemium",
+        "valuePropositionId": "pmf:vp-air-visibility",
+        "pmfStatus": "Achieved",
+        "pmfScore": 0.45,
+        "metrics": {
+          "ellisScore": 0.45,
+          "retentionRate": 0.42,
+          "nps": 52,
+          "activeUsers": 2340,
+          "mrr": 187000
+        }
+      }
+    },
+    {
+      "@id": "test:pmf-process-001",
+      "@type": "pmf:PMFProcess",
+      "testCategory": "typical",
+      "description": "Complete PMF process for AIR product",
+      "data": {
+        "pmfProcessId": "pmf:process-air-001",
+        "productId": "prod:air-v2",
+        "platformOwner": "org:baiv-platform",
+        "targetCustomers": [
+          "org:widget-corp",
+          "org:acme-media",
+          "org:digital-dynamo",
+          "org:content-kings",
+          "org:media-masters"
+        ],
+        "competitors": [
+          "org:competitor-x",
+          "org:competitor-y"
+        ],
+        "currentStage": "PMF Testing",
+        "startDate": "2024-10-01",
+        "phaseStatus": {
+          "customerDiscovery": "completed",
+          "problemValidation": "completed",
+          "solutionDevelopment": "completed",
+          "pmfTesting": "in_progress",
+          "pmfOptimization": "not_started",
+          "pmfMaintenance": "not_started"
+        }
+      }
+    },
+    {
+      "@id": "test:customer-discovery-001",
+      "@type": "pmf:CustomerDiscovery",
+      "testCategory": "typical",
+      "description": "Completed customer discovery phase",
+      "data": {
+        "phaseId": "cd:air-001",
+        "pmfProcessId": "pmf:process-air-001",
+        "duration": "6 weeks",
+        "startDate": "2024-10-01",
+        "endDate": "2024-11-12",
+        "interviewCount": 25,
+        "organizationsInterviewed": [
+          "org:widget-corp",
+          "org:acme-media",
+          "org:digital-dynamo"
+        ],
+        "deliverables": {
+          "icp": "test:icp-marketing-agencies",
+          "journeyMaps": "test:journey-map-001",
+          "sharpestProblems": "test:problems-matrix-001",
+          "competitiveAnalysis": "test:comp-analysis-001",
+          "marketSize": "test:market-size-001"
+        },
+        "successCriteria": {
+          "interviewsRequired": 20,
+          "interviewsCompleted": 25,
+          "passed": true
+        }
+      }
+    },
+    {
+      "@id": "test:sharpest-problems-001",
+      "@type": "pmf:SharpestProblem",
+      "testCategory": "typical",
+      "description": "Top priority sharpest problem",
+      "data": {
+        "problemId": "prob:content-optimization-speed",
+        "problemStatement": "Manual content optimization takes 15+ hours per week",
+        "severity": "critical",
+        "frequency": "daily",
+        "difficulty": "easy",
+        "prioritizationQuadrant": "quickWins",
+        "prioritizationScore": 95,
+        "affectedOrganizations": [
+          "org:widget-corp",
+          "org:acme-media",
+          "org:digital-dynamo"
+        ],
+        "percentageAffected": 0.92,
+        "currentSolutions": [
+          "Manual optimization",
+          "Basic SEO tools",
+          "Competitor X platform"
+        ],
+        "improvementOpportunity": "5x faster with AI automation"
+      }
+    },
+    {
+      "@id": "test:wtp-analysis-001",
+      "@type": "pmf:WTPAnalysis",
+      "testCategory": "typical",
+      "description": "Willingness to pay analysis results",
+      "data": {
+        "analysisId": "wtp:air-agencies-001",
+        "methodology": "9 Rules of Pricing - Monetizing Innovation",
+        "citation": "Monetizing Innovation by Madhavan Ramanujam and Georg Tacke",
+        "problemId": "prob:content-optimization-speed",
+        "targetSegment": "org:segment-marketing-agencies",
+        "sampleSize": 25,
+        "wtpRange": {
+          "minimum": 400,
+          "maximum": 1500,
+          "median": 800,
+          "mean": 850,
+          "currency": "USD",
+          "period": "monthly"
+        },
+        "priceSensitivityCurve": {
+          "at_500": 0.92,
+          "at_800": 0.78,
+          "at_1200": 0.52,
+          "at_1500": 0.28
+        },
+        "recommendedPricing": {
+          "freemium": 0,
+          "starter": 499,
+          "professional": 899,
+          "enterprise": 1499
+        }
+      }
+    },
+    {
+      "@id": "test:pmf-metrics-001",
+      "@type": "pmf:PMFMetrics",
+      "testCategory": "typical",
+      "description": "PMF metrics showing achieved PMF",
+      "data": {
+        "metricsId": "metrics:air-2024-q4",
+        "productId": "prod:air-v2",
+        "measurementDate": "2024-12-15",
+        "ellisScore": 0.45,
+        "retentionRate": 0.42,
+        "netPromoterScore": 52,
+        "customerAcquisitionCost": 850,
+        "customerLifetimeValue": 3200,
+        "cacLtvRatio": 0.266,
+        "organicGrowthRate": 0.44,
+        "premiumPricing": 0.28,
+        "thresholds": {
+          "ellisScore": 0.40,
+          "retentionRate": 0.40,
+          "nps": 50,
+          "cacLtvRatio": 0.33,
+          "organicGrowth": 0.40
+        },
+        "pmfStatus": "Achieved",
+        "improvementValidated": true,
+        "improvementMultiplier": 5.2
+      }
+    },
+    {
+      "@id": "test:edge-case-001",
+      "@type": "pmf:PMFProcess",
+      "testCategory": "edge",
+      "description": "PMF process at minimum viable organization count",
+      "data": {
+        "pmfProcessId": "pmf:process-edge-001",
+        "platformOwner": "org:w4m-platform",
+        "targetCustomers": ["org:single-customer"],
+        "competitors": ["org:single-competitor"],
+        "validationWarning": "Minimum organization count - results may not be statistically significant"
+      }
+    },
+    {
+      "@id": "test:boundary-001",
+      "@type": "pmf:PMFMetrics",
+      "testCategory": "boundary",
+      "description": "PMF metrics exactly at threshold",
+      "data": {
+        "metricsId": "metrics:boundary-test",
+        "ellisScore": 0.40,
+        "retentionRate": 0.40,
+        "netPromoterScore": 50,
+        "pmfStatus": "Just Achieved",
+        "note": "Metrics at exact threshold values"
+      }
+    },
+    {
+      "@id": "test:boundary-002",
+      "@type": "pmf:ValueProposition",
+      "testCategory": "boundary",
+      "description": "3X improvement at minimum threshold",
+      "data": {
+        "valuePropositionId": "pmf:vp-boundary",
+        "improvementMultiplier": 3.0,
+        "note": "Minimum acceptable improvement multiplier"
+      }
+    },
+    {
+      "@id": "test:invalid-001",
+      "@type": "pmf:OrganizationContext",
+      "testCategory": "invalid",
+      "description": "Missing required orgId",
+      "expectedError": "OR-002: orgId MUST exist in org:Organization",
+      "data": {
+        "orgType": ["targetCustomer"],
+        "pmfRole": "research_subject",
+        "name": "Invalid Org Without ID"
+      }
+    },
+    {
+      "@id": "test:invalid-002",
+      "@type": "pmf:PMFProcess",
+      "testCategory": "invalid",
+      "description": "Missing platform owner",
+      "expectedError": "OR-001: Platform Owner MUST be identified",
+      "data": {
+        "pmfProcessId": "pmf:process-invalid",
+        "targetCustomers": ["org:widget-corp"]
+      }
+    },
+    {
+      "@id": "test:invalid-003",
+      "@type": "pmf:ValueProposition",
+      "testCategory": "invalid",
+      "description": "Improvement multiplier below 3X threshold",
+      "expectedError": "VC-003: improvementMultiplier MUST be >= 3.0",
+      "data": {
+        "valuePropositionId": "pmf:vp-invalid",
+        "improvementMultiplier": 2.5
+      }
+    },
+    {
+      "@id": "test:invalid-004",
+      "@type": "pmf:PMFMetrics",
+      "testCategory": "invalid",
+      "description": "Ellis score out of valid range",
+      "expectedError": "VC-001: ellisScore MUST be between 0.00 and 1.00",
+      "data": {
+        "metricsId": "metrics:invalid",
+        "ellisScore": 1.25
+      }
+    },
+    {
+      "@id": "test:invalid-005",
+      "@type": "pmf:SolutionDevelopment",
+      "testCategory": "invalid",
+      "description": "Phase sequence violation",
+      "expectedError": "PR-001: Customer Discovery MUST complete before Problem Validation",
+      "data": {
+        "phaseId": "sd:invalid",
+        "pmfProcessId": "pmf:process-test",
+        "startDate": "2025-01-01",
+        "dependencies": {
+          "customerDiscovery": "not_completed"
+        }
+      }
+    },
+    {
+      "@id": "test:scenario-001",
+      "@type": "pmf:PMFScenario",
+      "testCategory": "typical",
+      "description": "End-to-end PMF achievement scenario",
+      "data": {
+        "scenarioName": "AIR Product PMF Achievement",
+        "platformOwner": "org:baiv-platform",
+        "product": "prod:air-v2",
+        "timeline": {
+          "start": "2024-10-01",
+          "pmfAchieved": "2024-12-15",
+          "totalDuration": "10 weeks"
+        },
+        "phaseProgression": [
+          {
+            "phase": "Customer Discovery",
+            "duration": "6 weeks",
+            "organizations": 25,
+            "sharpestProblems": 3
+          },
+          {
+            "phase": "Problem Validation",
+            "duration": "4 weeks",
+            "wtpConfirmed": true,
+            "improvementValidated": "5x"
+          },
+          {
+            "phase": "Solution Development",
+            "duration": "12 weeks",
+            "mvpReleased": "2024-11-30"
+          },
+          {
+            "phase": "PMF Testing",
+            "duration": "2 weeks",
+            "ellisScore": 0.45,
+            "retentionRate": 0.42,
+            "result": "PMF Achieved"
+          }
+        ]
+      }
+    }
+  ],
+  "validationScenarios": {
+    "scenario1": {
+      "name": "Happy Path - Complete PMF Achievement",
+      "description": "Organization successfully achieves PMF following all phases",
+      "expectedOutcome": "PMF status = Achieved",
+      "testInstances": [
+        "test:org-context-001",
+        "test:org-context-002",
+        "test:product-001",
+        "test:pmf-process-001",
+        "test:pmf-metrics-001"
+      ]
+    },
+    "scenario2": {
+      "name": "Phase Gate Validation",
+      "description": "System enforces phase sequencing rules",
+      "expectedOutcome": "Error if phases attempted out of order",
+      "testInstances": ["test:invalid-005"]
+    },
+    "scenario3": {
+      "name": "Organization Bridge Integrity",
+      "description": "System enforces orgId referential integrity",
+      "expectedOutcome": "Error if orgId not found in org:Organization",
+      "testInstances": ["test:invalid-001"]
+    },
+    "scenario4": {
+      "name": "3X-5X Threshold Validation",
+      "description": "System enforces minimum improvement multiplier",
+      "expectedOutcome": "Warning if multiplier < 3.0",
+      "testInstances": ["test:invalid-003"]
+    }
+  },
+  "testDataUsage": {
+    "forDevelopers": "Use test instances to validate PMF process implementation and rule enforcement",
+    "forQA": "Execute validation scenarios to verify business rule compliance",
+    "forAIAgents": "Train on typical cases; test edge case handling; validate error detection on invalid cases"
+  }
+}

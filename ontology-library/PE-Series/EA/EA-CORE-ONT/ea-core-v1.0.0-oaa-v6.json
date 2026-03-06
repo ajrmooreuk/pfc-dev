@@ -1,0 +1,856 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ea-core": "https://oaa-ontology.org/v6/ea-core/",
+    "org": "https://oaa-ontology.org/v6/organization/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/"
+  },
+  "@id": "https://oaa-ontology.org/v6/ea-core/schema",
+  "@type": "owl:Ontology",
+  "name": "Enterprise Architecture Core Ontology",
+  "description": "Platform-agnostic enterprise architecture ontology covering TOGAF architecture domains (Business, Data, Application, Technology, Security, Integration), core EA entities, governance constructs (principles, decisions, roadmaps), and capability gap analysis. Provides the foundation for cloud-platform-specific extensions (Microsoft, AWS, GCP).",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "Enterprise Architecture",
+  "oaa:status": "Production",
+  "dateCreated": "2026-02-09",
+  "dateModified": "2026-02-09",
+  "creator": {
+    "@type": "Organization",
+    "name": "Azlan EA-AAA"
+  },
+  "oaa:imports": [
+    {
+      "@id": "org:schema",
+      "name": "ORG-ONT",
+      "version": "3.0.0",
+      "description": "Organisation foundation ontology providing OrganizationalUnit for EA entity management responsibility",
+      "importedEntities": [
+        "org:OrganizationalUnit"
+      ]
+    },
+    {
+      "@id": "vsom:schema",
+      "name": "VSOM-ONT",
+      "version": "3.0.0",
+      "description": "Vision-Strategy-Objectives-Metrics ontology providing strategic alignment anchors",
+      "importedEntities": [
+        "vsom:StrategicObjective"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-EA-CORE-001",
+      "name": "Strategic Alignment Join",
+      "description": "EA entities align to VSOM strategic objectives for traceability from architecture to strategy",
+      "joinPath": "ea-core:EAEntity → ea-core:alignsTo → vsom:StrategicObjective",
+      "useCase": "Strategic alignment reporting and architecture value justification"
+    },
+    {
+      "patternId": "JP-EA-CORE-002",
+      "name": "Organisation Management Join",
+      "description": "EA entities are managed by ORG organisational units for accountability",
+      "joinPath": "ea-core:EAEntity → ea-core:managedBy → org:OrganizationalUnit",
+      "useCase": "Architecture ownership and RACI assignment"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "ea-core:EAEntity",
+      "@type": "rdfs:Class",
+      "name": "EAEntity",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Base class for all enterprise architecture entities. Represents any element within the enterprise architecture that can be described, governed, and related to other elements across architecture domains.",
+      "oaa:properties": [
+        {
+          "name": "lifecycleStatus",
+          "type": "ea-core:LifecycleStatus",
+          "required": false,
+          "description": "Current lifecycle phase of the entity"
+        },
+        {
+          "name": "businessCriticality",
+          "type": "ea-core:BusinessCriticality",
+          "required": false,
+          "description": "Criticality rating for impact assessment"
+        },
+        {
+          "name": "totalCostOfOwnership",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Annual TCO for the entity in base currency"
+        }
+      ]
+    },
+    {
+      "@id": "ea-core:BusinessArchitecture",
+      "@type": "rdfs:Class",
+      "name": "BusinessArchitecture",
+      "rdfs:subClassOf": "ea-core:EAEntity",
+      "description": "TOGAF Business Architecture domain covering strategy, governance, organisation, and business capabilities. Contains entities that define what the business does and how it creates value."
+    },
+    {
+      "@id": "ea-core:DataArchitecture",
+      "@type": "rdfs:Class",
+      "name": "DataArchitecture",
+      "rdfs:subClassOf": "ea-core:EAEntity",
+      "description": "Data Architecture domain covering the structure of logical and physical data assets, data management resources, data governance policies, and data lifecycle management."
+    },
+    {
+      "@id": "ea-core:ApplicationArchitecture",
+      "@type": "rdfs:Class",
+      "name": "ApplicationArchitecture",
+      "rdfs:subClassOf": "ea-core:EAEntity",
+      "description": "Application Architecture domain providing a blueprint for individual applications, their interactions, and relationships to core business processes and data entities."
+    },
+    {
+      "@id": "ea-core:TechnologyArchitecture",
+      "@type": "rdfs:Class",
+      "name": "TechnologyArchitecture",
+      "rdfs:subClassOf": "ea-core:EAEntity",
+      "description": "Technology Architecture domain covering the logical software and hardware capabilities required to support business, data, and application services including platforms and infrastructure."
+    },
+    {
+      "@id": "ea-core:SecurityArchitecture",
+      "@type": "rdfs:Class",
+      "name": "SecurityArchitecture",
+      "rdfs:subClassOf": "ea-core:EAEntity",
+      "description": "Cross-cutting security domain covering identity management, access control, compliance requirements, threat management, and security control implementation across all architecture layers."
+    },
+    {
+      "@id": "ea-core:IntegrationArchitecture",
+      "@type": "rdfs:Class",
+      "name": "IntegrationArchitecture",
+      "rdfs:subClassOf": "ea-core:EAEntity",
+      "description": "Cross-cutting integration domain covering APIs, event streams, data flows, integration patterns, and the connectivity fabric between enterprise systems and services."
+    },
+    {
+      "@id": "ea-core:BusinessCapability",
+      "@type": "rdfs:Class",
+      "name": "BusinessCapability",
+      "rdfs:subClassOf": "ea-core:BusinessArchitecture",
+      "description": "A particular ability or capacity that a business possesses or exchanges to achieve a specific purpose. Capabilities are measured by maturity level and criticality, and are realised by applications.",
+      "oaa:properties": [
+        {
+          "name": "maturityLevel",
+          "type": "ea-core:MaturityLevel",
+          "required": false,
+          "description": "Capability maturity level (1-5 scale)"
+        },
+        {
+          "name": "businessCriticality",
+          "type": "ea-core:BusinessCriticality",
+          "required": true,
+          "description": "Criticality rating for prioritisation"
+        }
+      ]
+    },
+    {
+      "@id": "ea-core:BusinessProcess",
+      "@type": "rdfs:Class",
+      "name": "BusinessProcess",
+      "rdfs:subClassOf": "ea-core:BusinessArchitecture",
+      "description": "A collection of related, structured activities that produce a specific service or product for a particular customer or market. Processes support business capabilities and are managed by organisational units."
+    },
+    {
+      "@id": "ea-core:Application",
+      "@type": "rdfs:Class",
+      "name": "Application",
+      "rdfs:subClassOf": "ea-core:ApplicationArchitecture",
+      "description": "A software system that supports business functions, automates processes, and provides services. Applications realise business capabilities and are hosted on technology platforms.",
+      "oaa:properties": [
+        {
+          "name": "lifecycleStatus",
+          "type": "ea-core:LifecycleStatus",
+          "required": true,
+          "description": "Current application lifecycle phase"
+        },
+        {
+          "name": "technologyFit",
+          "type": "ea-core:TechnologyFit",
+          "required": false,
+          "description": "Assessment of technology fit to purpose"
+        },
+        {
+          "name": "businessCriticality",
+          "type": "ea-core:BusinessCriticality",
+          "required": true,
+          "description": "Application criticality for BIA"
+        }
+      ]
+    },
+    {
+      "@id": "ea-core:DataEntity",
+      "@type": "rdfs:Class",
+      "name": "DataEntity",
+      "rdfs:subClassOf": "ea-core:DataArchitecture",
+      "description": "A fundamental business data object representing a core concept in the enterprise data model. Data entities are managed under data governance policies and consumed by applications."
+    },
+    {
+      "@id": "ea-core:ArchitecturePrinciple",
+      "@type": "rdfs:Class",
+      "name": "ArchitecturePrinciple",
+      "rdfs:subClassOf": "ea-core:EAEntity",
+      "description": "A fundamental guideline intended to be enduring and seldom amended that informs and supports the way in which an organisation sets about fulfilling its mission through architecture decisions.",
+      "oaa:properties": [
+        {
+          "name": "rationale",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reasoning behind why this principle is important"
+        },
+        {
+          "name": "implications",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Consequences of adopting this principle"
+        }
+      ]
+    },
+    {
+      "@id": "ea-core:ArchitectureDecision",
+      "@type": "rdfs:Class",
+      "name": "ArchitectureDecision",
+      "rdfs:subClassOf": "ea-core:EAEntity",
+      "description": "A recorded architectural decision with rationale, alternatives considered, and status. Architecture Decision Records (ADRs) provide traceability for significant choices that shape the enterprise architecture.",
+      "oaa:properties": [
+        {
+          "name": "rationale",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reasoning behind the decision"
+        },
+        {
+          "name": "alternatives",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Alternative options considered"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Decision status: Proposed, Accepted, Superseded, Deprecated",
+          "enum": [
+            "Proposed",
+            "Accepted",
+            "Superseded",
+            "Deprecated"
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "ea-core:ArchitectureRoadmap",
+      "@type": "rdfs:Class",
+      "name": "ArchitectureRoadmap",
+      "rdfs:subClassOf": "ea-core:EAEntity",
+      "description": "A timeline of planned architecture transitions from baseline to target state, identifying capability gaps, work packages, and transition architectures required to achieve the desired future state.",
+      "oaa:properties": [
+        {
+          "name": "startDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Roadmap planning start date"
+        },
+        {
+          "name": "endDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Roadmap target completion date"
+        }
+      ]
+    },
+    {
+      "@id": "ea-core:CapabilityGap",
+      "@type": "rdfs:Class",
+      "name": "CapabilityGap",
+      "rdfs:subClassOf": "ea-core:EAEntity",
+      "description": "An identified gap between current and target capability states, quantified by maturity levels and linked to architecture roadmap items for remediation planning.",
+      "oaa:properties": [
+        {
+          "name": "currentState",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Current capability maturity level (1-5)"
+        },
+        {
+          "name": "targetState",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Target capability maturity level (1-5)"
+        },
+        {
+          "name": "priority",
+          "type": "ea-core:BusinessCriticality",
+          "required": false,
+          "description": "Gap remediation priority"
+        }
+      ]
+    },
+    {
+      "@id": "org:OrganizationalUnit",
+      "@type": "rdfs:Class",
+      "name": "OrganizationalUnit",
+      "description": "External ORG-ONT entity representing an organisational unit responsible for managing EA entities and architecture governance.",
+      "oaa:externalOntology": "org:OrganizationFoundationOntology"
+    },
+    {
+      "@id": "vsom:StrategicObjective",
+      "@type": "rdfs:Class",
+      "name": "StrategicObjective",
+      "description": "External VSOM-ONT entity representing a strategic objective that EA entities align to for strategy-architecture traceability.",
+      "oaa:externalOntology": "vsom:VisionStrategyOperatingModelOntology"
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "ea-core:composedOf",
+      "@type": "owl:ObjectProperty",
+      "name": "composedOf",
+      "description": "An EA entity is composed of other EA entities, forming a hierarchical decomposition (e.g., architecture domain composed of capabilities, application composed of components)",
+      "domainIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "rangeIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ea-core:dependsOn",
+      "@type": "owl:ObjectProperty",
+      "name": "dependsOn",
+      "description": "An EA entity depends on another entity for its operation, creating a dependency chain for impact analysis and change management",
+      "domainIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "rangeIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-core:realizes",
+      "@type": "owl:ObjectProperty",
+      "name": "realizes",
+      "description": "An application realises one or more business capabilities, providing the technology enablement for organisational abilities",
+      "domainIncludes": [
+        "ea-core:Application"
+      ],
+      "rangeIncludes": [
+        "ea-core:BusinessCapability"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-core:supports",
+      "@type": "owl:ObjectProperty",
+      "name": "supports",
+      "description": "An EA entity supports another entity in achieving its purpose, representing enabling relationships between architecture elements",
+      "domainIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "rangeIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-core:hostedOn",
+      "@type": "owl:ObjectProperty",
+      "name": "hostedOn",
+      "description": "An application is hosted on a technology architecture element, establishing the runtime platform dependency",
+      "domainIncludes": [
+        "ea-core:Application"
+      ],
+      "rangeIncludes": [
+        "ea-core:TechnologyArchitecture"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ea-core:governs",
+      "@type": "owl:ObjectProperty",
+      "name": "governs",
+      "description": "An architecture principle governs EA entities, establishing governance constraints and guidelines that shape architecture decisions",
+      "domainIncludes": [
+        "ea-core:ArchitecturePrinciple"
+      ],
+      "rangeIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-core:implements",
+      "@type": "owl:ObjectProperty",
+      "name": "implements",
+      "description": "An EA entity implements a standard, pattern, or another entity's specification, establishing traceability from design to implementation",
+      "domainIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "rangeIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-core:securedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "securedBy",
+      "description": "An EA entity is secured by security architecture controls, establishing security coverage across the enterprise",
+      "domainIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "rangeIncludes": [
+        "ea-core:SecurityArchitecture"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-core:managedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "managedBy",
+      "description": "An EA entity is managed by an organisational unit, establishing ownership and accountability for architecture elements",
+      "domainIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "rangeIncludes": [
+        "org:OrganizationalUnit"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "ORG-ONT"
+    },
+    {
+      "@id": "ea-core:alignsTo",
+      "@type": "owl:ObjectProperty",
+      "name": "alignsTo",
+      "description": "An EA entity aligns to a VSOM strategic objective, ensuring architecture investments are traceable to strategic outcomes",
+      "domainIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategicObjective"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "ea-core:integratesWith",
+      "@type": "owl:ObjectProperty",
+      "name": "integratesWith",
+      "description": "An EA entity integrates with another entity via APIs, events, or data flows, establishing the integration fabric between systems",
+      "domainIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "rangeIncludes": [
+        "ea-core:EAEntity"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-core:identifiesGap",
+      "@type": "owl:ObjectProperty",
+      "name": "identifiesGap",
+      "description": "An architecture roadmap identifies capability gaps that need to be addressed through planned transitions and investments",
+      "domainIncludes": [
+        "ea-core:ArchitectureRoadmap"
+      ],
+      "rangeIncludes": [
+        "ea-core:CapabilityGap"
+      ],
+      "oaa:cardinality": "1..*"
+    }
+  ],
+  "enumerations": [
+    {
+      "@id": "ea-core:LifecycleStatus",
+      "@type": "DefinedTermSet",
+      "name": "LifecycleStatus",
+      "description": "Lifecycle phases for EA entities from initial proposal through retirement",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-core:lifecycle/proposed",
+          "name": "Proposed",
+          "description": "Entity proposed, not yet approved for development"
+        },
+        {
+          "@id": "ea-core:lifecycle/development",
+          "name": "Development",
+          "description": "Entity under active development or implementation"
+        },
+        {
+          "@id": "ea-core:lifecycle/production",
+          "name": "Production",
+          "description": "Entity operational and delivering value"
+        },
+        {
+          "@id": "ea-core:lifecycle/deprecated",
+          "name": "Deprecated",
+          "description": "Entity scheduled for retirement, replacement planned"
+        },
+        {
+          "@id": "ea-core:lifecycle/retired",
+          "name": "Retired",
+          "description": "Entity decommissioned and no longer operational"
+        }
+      ]
+    },
+    {
+      "@id": "ea-core:BusinessCriticality",
+      "@type": "DefinedTermSet",
+      "name": "BusinessCriticality",
+      "description": "Criticality ratings for business impact assessment and prioritisation",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-core:criticality/low",
+          "name": "Low",
+          "description": "Minimal business impact if unavailable"
+        },
+        {
+          "@id": "ea-core:criticality/medium",
+          "name": "Medium",
+          "description": "Moderate business impact, workarounds available"
+        },
+        {
+          "@id": "ea-core:criticality/high",
+          "name": "High",
+          "description": "Significant business impact, limited workarounds"
+        },
+        {
+          "@id": "ea-core:criticality/critical",
+          "name": "Critical",
+          "description": "Severe business impact, no workarounds possible"
+        }
+      ]
+    },
+    {
+      "@id": "ea-core:MaturityLevel",
+      "@type": "DefinedTermSet",
+      "name": "MaturityLevel",
+      "description": "Capability maturity levels based on CMMI scale for gap analysis",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-core:maturity/1",
+          "name": "1-Initial",
+          "description": "Ad hoc, unpredictable, poorly controlled"
+        },
+        {
+          "@id": "ea-core:maturity/2",
+          "name": "2-Repeatable",
+          "description": "Processes characterised and repeatable"
+        },
+        {
+          "@id": "ea-core:maturity/3",
+          "name": "3-Defined",
+          "description": "Processes documented, standardised, and integrated"
+        },
+        {
+          "@id": "ea-core:maturity/4",
+          "name": "4-Managed",
+          "description": "Processes measured and controlled quantitatively"
+        },
+        {
+          "@id": "ea-core:maturity/5",
+          "name": "5-Optimising",
+          "description": "Continuous improvement with innovation focus"
+        }
+      ]
+    },
+    {
+      "@id": "ea-core:TechnologyFit",
+      "@type": "DefinedTermSet",
+      "name": "TechnologyFit",
+      "description": "Assessment of how well technology serves its intended purpose",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-core:fit/poor",
+          "name": "Poor",
+          "description": "Significant gaps, replacement recommended"
+        },
+        {
+          "@id": "ea-core:fit/adequate",
+          "name": "Adequate",
+          "description": "Meets minimum requirements, improvement needed"
+        },
+        {
+          "@id": "ea-core:fit/good",
+          "name": "Good",
+          "description": "Meets requirements well, minor enhancements possible"
+        },
+        {
+          "@id": "ea-core:fit/excellent",
+          "name": "Excellent",
+          "description": "Exceeds requirements, best-in-class fit"
+        }
+      ]
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "ea-core:BR-CORE-001",
+      "name": "BusinessCapabilityDomainAssignment",
+      "description": "Every business capability must belong to exactly one architecture domain via composedOf to ensure complete capability coverage",
+      "condition": "IF ea-core:BusinessCapability exists",
+      "action": "THEN it MUST be referenced by exactly one architecture domain entity via ea-core:composedOf",
+      "severity": "error",
+      "appliesTo": [
+        "ea-core:BusinessCapability"
+      ]
+    },
+    {
+      "@id": "ea-core:BR-CORE-002",
+      "name": "ApplicationCapabilityRealisation",
+      "description": "Every application must realise at least one business capability to justify its existence in the portfolio",
+      "condition": "IF ea-core:Application exists",
+      "action": "THEN it MUST have at least one ea-core:realizes relationship to a ea-core:BusinessCapability",
+      "severity": "error",
+      "appliesTo": [
+        "ea-core:Application"
+      ]
+    },
+    {
+      "@id": "ea-core:BR-CORE-003",
+      "name": "ArchitectureDecisionRationale",
+      "description": "Architecture decisions must document rationale for traceability and governance review",
+      "condition": "IF ea-core:ArchitectureDecision exists",
+      "action": "THEN it MUST have a non-empty rationale property",
+      "severity": "error",
+      "appliesTo": [
+        "ea-core:ArchitectureDecision"
+      ]
+    },
+    {
+      "@id": "ea-core:BR-CORE-004",
+      "name": "CapabilityGapProgression",
+      "description": "Capability gaps must show improvement direction with target state higher than current state",
+      "condition": "IF ea-core:CapabilityGap has currentState and targetState properties",
+      "action": "THEN targetState MUST be greater than currentState",
+      "severity": "error",
+      "appliesTo": [
+        "ea-core:CapabilityGap"
+      ]
+    },
+    {
+      "@id": "ea-core:BR-CORE-005",
+      "name": "PrincipleGovernanceCoverage",
+      "description": "Architecture principles must govern at least one entity to demonstrate active governance",
+      "condition": "IF ea-core:ArchitecturePrinciple exists",
+      "action": "THEN it MUST have at least one ea-core:governs relationship",
+      "severity": "warning",
+      "appliesTo": [
+        "ea-core:ArchitecturePrinciple"
+      ]
+    },
+    {
+      "@id": "ea-core:BR-CORE-006",
+      "name": "DeprecatedApplicationReplacement",
+      "description": "Deprecated applications should reference their planned replacement for migration planning",
+      "condition": "IF ea-core:Application has lifecycleStatus 'Deprecated'",
+      "action": "THEN it SHOULD have a ea-core:dependsOn reference to its replacement application",
+      "severity": "warning",
+      "appliesTo": [
+        "ea-core:Application"
+      ]
+    },
+    {
+      "@id": "ea-core:BR-CORE-007",
+      "name": "CriticalEntitySecurityCoverage",
+      "description": "Critical business entities must have security coverage to meet risk management requirements",
+      "condition": "IF ea-core:EAEntity has businessCriticality 'Critical'",
+      "action": "THEN it MUST have at least one ea-core:securedBy relationship to ea-core:SecurityArchitecture",
+      "severity": "error",
+      "appliesTo": [
+        "ea-core:EAEntity"
+      ]
+    },
+    {
+      "@id": "ea-core:BR-CORE-008",
+      "name": "RoadmapGapIdentification",
+      "description": "Architecture roadmaps must identify at least one capability gap to drive transition planning",
+      "condition": "IF ea-core:ArchitectureRoadmap exists",
+      "action": "THEN it MUST have at least one ea-core:identifiesGap relationship to ea-core:CapabilityGap",
+      "severity": "error",
+      "appliesTo": [
+        "ea-core:ArchitectureRoadmap"
+      ]
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-09",
+    "modifiedBy": "Azlan EA-AAA",
+    "changeNotes": "Initial creation from EA-ONT V3 source consolidation. Platform-agnostic core extracted from ea-azure-ontology-v2-pre-oaav5, covering 7 architecture domains, 15 entities, 12 relationships, 8 business rules, and 4 enumerations.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-02-09",
+        "notes": "Initial release: Platform-agnostic EA core from V3 source consolidation"
+      }
+    ]
+  },
+  "oaa:ontologyId": "EA-CORE-ONT",
+  "oaa:series": "PE-Series",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of EAEntity within this ontology?",
+      "targetEntities": [
+        "ea-core:EAEntity"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of BusinessArchitecture within this ontology?",
+      "targetEntities": [
+        "ea-core:BusinessArchitecture"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of DataArchitecture within this ontology?",
+      "targetEntities": [
+        "ea-core:DataArchitecture"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of ApplicationArchitecture within this ontology?",
+      "targetEntities": [
+        "ea-core:ApplicationArchitecture"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of TechnologyArchitecture within this ontology?",
+      "targetEntities": [
+        "ea-core:TechnologyArchitecture"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of SecurityArchitecture within this ontology?",
+      "targetEntities": [
+        "ea-core:SecurityArchitecture"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of IntegrationArchitecture within this ontology?",
+      "targetEntities": [
+        "ea-core:IntegrationArchitecture"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of BusinessCapability within this ontology?",
+      "targetEntities": [
+        "ea-core:BusinessCapability"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of BusinessProcess within this ontology?",
+      "targetEntities": [
+        "ea-core:BusinessProcess"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of Application within this ontology?",
+      "targetEntities": [
+        "ea-core:Application"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the role and purpose of DataEntity within this ontology?",
+      "targetEntities": [
+        "ea-core:DataEntity"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-012",
+      "question": "What is the role and purpose of ArchitecturePrinciple within this ontology?",
+      "targetEntities": [
+        "ea-core:ArchitecturePrinciple"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-013",
+      "question": "What is the role and purpose of ArchitectureDecision within this ontology?",
+      "targetEntities": [
+        "ea-core:ArchitectureDecision"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-014",
+      "question": "What is the role and purpose of ArchitectureRoadmap within this ontology?",
+      "targetEntities": [
+        "ea-core:ArchitectureRoadmap"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-015",
+      "question": "What is the role and purpose of CapabilityGap within this ontology?",
+      "targetEntities": [
+        "ea-core:CapabilityGap"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-016",
+      "question": "What is the role and purpose of OrganizationalUnit within this ontology?",
+      "targetEntities": [
+        "org:OrganizationalUnit"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-017",
+      "question": "What is the role and purpose of StrategicObjective within this ontology?",
+      "targetEntities": [
+        "vsom:StrategicObjective"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

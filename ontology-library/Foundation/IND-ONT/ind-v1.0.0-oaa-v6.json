@@ -1,0 +1,708 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ind": "https://oaa-ontology.org/v6/individual-types/",
+    "rrr": "https://oaa-ontology.org/v5/rrr/",
+    "vp": "https://oaa-ontology.org/v5/value-proposition/",
+    "org": "https://oaa-ontology.org/v5/organization/",
+    "pe": "https://oaa-ontology.org/v5/process-engineering/",
+    "ant": "https://baiv.co.uk/ontology/"
+  },
+  "@type": "Ontology",
+  "@id": "ind:ontology:ind-v1.0",
+  "metadata": {
+    "name": "Individual Types",
+    "abbreviation": "IND-ONT",
+    "version": "1.0.0",
+    "description": "Foundation-level ontology defining individual types across B2B and B2C contexts. B2B individual types subclass RRR-ONT roles with organisational relations. B2C individual types are standalone Foundation entities with no org hierarchy. ICP (VP-ONT) groups individuals into target segments; IND-ONT defines the types within.",
+    "domain": "Foundation — Individual Classification",
+    "purpose": "Define who the customer actually is — individual archetypes for B2B organisational buyers (subclassing RRR, with org relation) and B2C consumers (standalone). Market/industry context follows Foundation patterns. Customer journeys are PE-Series processes referencing IND types as participants.",
+    "oaaVersion": "6.1.0",
+    "series": "Foundation",
+    "dateCreated": "2026-02-20",
+    "creator": "OAA Generator",
+    "crossReferences": [
+      "RRR-ONT (B2B IndividualType subclasses ExecutiveRole/FunctionalRole)",
+      "ORG-ONT (B2B IndividualType.hasOrgRelation → Organization)",
+      "ORG-CONTEXT-ONT (IndustryProfile → MarketSegment, OrganizationContext)",
+      "VP-ONT (ICP is the class/group; IndividualType populates it)",
+      "PE-ONT (Customer journeys are PE processes; IND types are participants)",
+      "ANTIQUES-ONT (domain bridge: IndividualType → Owner, Appraiser)"
+    ]
+  },
+
+  "enums": [
+    {
+      "@id": "ind:ChannelEnum",
+      "name": "Channel",
+      "values": ["B2B", "B2C", "B2B2C"]
+    },
+    {
+      "@id": "ind:B2BTypeEnum",
+      "name": "B2BType",
+      "values": ["B2B_Executive", "B2B_Management", "B2B_Professional", "B2B_Procurement", "B2B_EndUser", "B2B_Technical"]
+    },
+    {
+      "@id": "ind:B2CTypeEnum",
+      "name": "B2CType",
+      "values": ["B2C_Enthusiast", "B2C_Professional", "B2C_Casual", "B2C_Investor", "B2C_Inheritor", "B2C_Gifter"]
+    },
+    {
+      "@id": "ind:B2B2CTypeEnum",
+      "name": "B2B2CType",
+      "values": ["B2B2C_Intermediary", "B2B2C_Reseller"]
+    },
+    {
+      "@id": "ind:DecisionStyleEnum",
+      "name": "DecisionStyle",
+      "values": ["Analytical", "Emotional", "Delegated", "Consensus", "Impulse", "Advised"]
+    },
+    {
+      "@id": "ind:BudgetAuthorityEnum",
+      "name": "BudgetAuthority",
+      "values": ["Owner", "Approver", "Influencer", "None"]
+    },
+    {
+      "@id": "ind:EngagementTypeEnum",
+      "name": "EngagementType",
+      "values": ["Transactional", "Relational", "Subscription", "Project", "Episodic"]
+    },
+    {
+      "@id": "ind:CriteriaTypeEnum",
+      "name": "CriteriaType",
+      "values": ["Demographic", "Firmographic", "Psychographic", "Behavioral", "Financial", "Contextual"]
+    },
+    {
+      "@id": "ind:OperatorEnum",
+      "name": "Operator",
+      "values": ["equals", "greaterThan", "lessThan", "contains", "between", "exists", "notEquals"]
+    },
+    {
+      "@id": "ind:BuyerJourneyTypeEnum",
+      "name": "BuyerJourneyType",
+      "values": ["Researched", "Impulse", "Advised", "Inherited", "Mandated", "Subscription", "Auction", "Referral"]
+    },
+    {
+      "@id": "ind:PurchaseFrequencyEnum",
+      "name": "PurchaseFrequency",
+      "values": ["OneTime", "Occasional", "Regular", "Continuous"]
+    }
+  ],
+
+  "entities": [
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ind:IndividualType",
+      "name": "IndividualType",
+      "description": "Archetype of a real person who interacts with products/services. B2B: subclasses RRR role, has org relation. B2C: standalone Foundation entity, no org hierarchy. ICP (VP-ONT) groups IndividualTypes into target segments.",
+      "properties": [
+        { "name": "indTypeId", "type": "Text", "required": true, "description": "Unique identifier" },
+        { "name": "name", "type": "Text", "required": true, "description": "Human-readable name" },
+        { "name": "channel", "type": "ind:ChannelEnum", "required": true, "description": "B2B (has org relation, subclasses RRR), B2C (standalone), or B2B2C (hybrid)" },
+        { "name": "typeCategory", "type": "Text", "required": true, "description": "From B2BTypeEnum, B2CTypeEnum, or B2B2CTypeEnum — must align with channel per DR-IND-001" },
+        { "name": "description", "type": "Text", "required": true, "description": "What this individual type does and typical context" },
+        { "name": "motivations", "type": "Text", "required": true, "description": "Primary drivers" },
+        { "name": "painSummary", "type": "Text", "required": true, "description": "Top pain points" },
+        { "name": "decisionStyle", "type": "ind:DecisionStyleEnum", "required": false, "description": "How this individual makes purchase decisions" },
+        { "name": "budgetAuthority", "type": "ind:BudgetAuthorityEnum", "required": false, "description": "Financial authority level" },
+        { "name": "typicalEngagement", "type": "ind:EngagementTypeEnum", "required": false, "description": "Typical engagement pattern" },
+        { "name": "rrrSubclass", "type": "Text", "required": false, "description": "B2B only: RRR-ONT role this individual subclasses" },
+        { "name": "rrrSeniorityLevel", "type": "Number", "required": false, "description": "B2B only: RRR seniority 1-10" },
+        { "name": "vpStakeholderType", "type": "Text", "required": true, "description": "Maps to VP-ONT Stakeholder.stakeholderRole" }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ind:IndividualQualifier",
+      "name": "IndividualQualifier",
+      "description": "Structured criteria that qualify when an individual type applies. Criteria types align with Foundation ORG-CONTEXT patterns and extend for B2C.",
+      "properties": [
+        { "name": "qualifierId", "type": "Text", "required": true, "description": "Unique identifier" },
+        { "name": "criteriaType", "type": "ind:CriteriaTypeEnum", "required": true, "description": "Category of criteria" },
+        { "name": "criteriaName", "type": "Text", "required": true, "description": "What is measured" },
+        { "name": "operator", "type": "ind:OperatorEnum", "required": true, "description": "Comparison operator" },
+        { "name": "value", "type": "Text", "required": true, "description": "Qualifying value or range" },
+        { "name": "weight", "type": "Number", "required": false, "description": "Importance 0.0–1.0" }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ind:IndustryProfile",
+      "name": "IndustryProfile",
+      "description": "Binds an IndividualType to an industry vertical. Industry/market follows Foundation patterns (ORG-CONTEXT-ONT). Instance data owned by PFI brand/sub-brand.",
+      "properties": [
+        { "name": "profileId", "type": "Text", "required": true, "description": "Unique identifier" },
+        { "name": "industry", "type": "Text", "required": true, "description": "Industry vertical — aligns with ORG-CONTEXT MarketSegment" },
+        { "name": "industrySegment", "type": "Text", "required": false, "description": "Sub-segment" },
+        { "name": "owningInstance", "type": "Text", "required": true, "description": "PFI brand/sub-brand that owns this instance data" },
+        { "name": "typicalBudgetRange", "type": "Text", "required": false, "description": "Industry-typical spend" },
+        { "name": "purchaseFrequency", "type": "ind:PurchaseFrequencyEnum", "required": false, "description": "Transaction frequency" },
+        { "name": "seasonality", "type": "Text", "required": false, "description": "Seasonal patterns" },
+        { "name": "regulatoryContext", "type": "Text", "required": false, "description": "Relevant regulations" },
+        { "name": "industrySpecificTraits", "type": "Text", "required": false, "description": "Industry-unique traits" }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ind:PurchaseBehaviour",
+      "name": "PurchaseBehaviour",
+      "description": "How an individual type enters and navigates buying decisions. Describes behavioural tendencies. The customer journey process itself is PE-Series — PurchaseBehaviour describes how the individual participates in that PE process.",
+      "properties": [
+        { "name": "behaviourId", "type": "Text", "required": true, "description": "Unique identifier" },
+        { "name": "buyerJourneyType", "type": "ind:BuyerJourneyTypeEnum", "required": true, "description": "How the individual enters the buying process" },
+        { "name": "decisionTimeframe", "type": "Text", "required": false, "description": "Typical time to purchase" },
+        { "name": "influencers", "type": "Text", "required": false, "description": "Decision influencers" },
+        { "name": "trustSignals", "type": "Text", "required": false, "description": "What builds trust" },
+        { "name": "priceElasticity", "type": "Text", "required": false, "description": "Price sensitivity: High, Medium, Low" },
+        { "name": "channelPreference", "type": "Text", "required": false, "description": "Preferred purchase channels" }
+      ]
+    }
+  ],
+
+  "relationships": [
+    {
+      "@type": "Property", "@id": "ind:hasQualifier",
+      "name": "Has Qualifier",
+      "description": "Links individual type to qualifying criteria",
+      "domainIncludes": ["ind:IndividualType"], "rangeIncludes": ["ind:IndividualQualifier"], "cardinality": "1..*"
+    },
+    {
+      "@type": "Property", "@id": "ind:hasIndustryProfile",
+      "name": "Has Industry Profile",
+      "description": "Links individual type to industry-specific instantiation — instance data owned by PFI brand/sub-brand",
+      "domainIncludes": ["ind:IndividualType"], "rangeIncludes": ["ind:IndustryProfile"], "cardinality": "0..*"
+    },
+    {
+      "@type": "Property", "@id": "ind:hasPurchaseBehaviour",
+      "name": "Has Purchase Behaviour",
+      "description": "Links individual type to typical buying behaviour",
+      "domainIncludes": ["ind:IndividualType"], "rangeIncludes": ["ind:PurchaseBehaviour"], "cardinality": "1..1"
+    },
+    {
+      "@type": "Property", "@id": "ind:subclassesRRRRole",
+      "name": "Subclasses RRR Role",
+      "description": "B2B only: links individual type to RRR-ONT role it subclasses. Inherits RACI/RBAC context.",
+      "domainIncludes": ["ind:IndividualType"], "rangeIncludes": ["rrr:ExecutiveRole", "rrr:FunctionalRole"], "cardinality": "0..1"
+    },
+    {
+      "@type": "Property", "@id": "ind:hasOrgRelation",
+      "name": "Has Org Relation",
+      "description": "B2B only: links individual type to organisation type. B2C has no org relation.",
+      "domainIncludes": ["ind:IndividualType"], "rangeIncludes": ["org:Organization"], "cardinality": "0..1"
+    },
+    {
+      "@type": "Property", "@id": "ind:populatesICP",
+      "name": "Populates ICP",
+      "description": "Links individual type to VP-ONT ICP. ICP is the class; IndividualType is the type within that class.",
+      "domainIncludes": ["ind:IndividualType"], "rangeIncludes": ["vp:IdealCustomerProfile", "vp:RoleBasedICP"], "cardinality": "0..*"
+    },
+    {
+      "@type": "Property", "@id": "ind:industryProfileMapsToMarket",
+      "name": "Maps to Market Segment",
+      "description": "Links industry profile to Foundation ORG-CONTEXT-ONT MarketSegment",
+      "domainIncludes": ["ind:IndustryProfile"], "rangeIncludes": ["org:MarketSegment"], "cardinality": "0..*"
+    },
+    {
+      "@type": "Property", "@id": "ind:mapsToDomainEntity",
+      "name": "Maps to Domain Entity",
+      "description": "Links individual type to a domain-specific entity in another ontology",
+      "domainIncludes": ["ind:IndividualType"], "rangeIncludes": [], "cardinality": "0..*"
+    },
+    {
+      "@type": "Property", "@id": "ind:influencedBy",
+      "name": "Influenced By",
+      "description": "Links an individual type to another that influences its decisions",
+      "domainIncludes": ["ind:IndividualType"], "rangeIncludes": ["ind:IndividualType"], "cardinality": "0..*"
+    }
+  ],
+
+  "designRules": [
+    {
+      "ruleId": "DR-IND-001",
+      "name": "Channel-Category Alignment",
+      "description": "IndividualType.channel MUST align with typeCategory prefix: B2B → B2B_*, B2C → B2C_*, B2B2C → B2B2C_*"
+    },
+    {
+      "ruleId": "DR-IND-002",
+      "name": "B2B Individuals Subclass RRR",
+      "description": "B2B IndividualTypes MUST populate rrrSubclass with a valid RRR-ONT role and MUST have hasOrgRelation to org:Organization. They inherit RACI/RBAC from RRR."
+    },
+    {
+      "ruleId": "DR-IND-003",
+      "name": "B2C Individuals Are Standalone",
+      "description": "B2C IndividualTypes MUST NOT have rrrSubclass, rrrSeniorityLevel, or hasOrgRelation. Standalone Foundation entities — individuals, not org positions."
+    },
+    {
+      "ruleId": "DR-IND-004",
+      "name": "ICP Is the Class, IND Is the Individual",
+      "description": "VP-ONT ICP defines the target segment (class/group). IND-ONT IndividualType defines types within. Relationship: populatesICP. Do not duplicate ICP-level attributes in IndividualType."
+    },
+    {
+      "ruleId": "DR-IND-005",
+      "name": "Customer Journeys Are PE Processes",
+      "description": "The customer journey (awareness→consideration→decision→adoption→advocacy) is a PE-Series process. IND-ONT defines PurchaseBehaviour (how they enter/navigate) but the journey process, stages, and orchestration belong in PE-Series. IndividualTypes are participants in PE journeys."
+    },
+    {
+      "ruleId": "DR-IND-006",
+      "name": "Industry and Market Follow Foundation Patterns",
+      "description": "IndustryProfile.industry MUST align with ORG-CONTEXT-ONT MarketSegment definitions. Industry/market classification is Foundation — IND-ONT references, does not redefine."
+    },
+    {
+      "ruleId": "DR-IND-007",
+      "name": "Instance Data Ownership",
+      "description": "IndustryProfile.owningInstance identifies the PFI brand/sub-brand owning the instance data. Core types (PFC) are generic archetypes. Instance types (PFI) are brand-specific."
+    },
+    {
+      "ruleId": "DR-IND-008",
+      "name": "VP-RRR Alignment Preserved",
+      "description": "Standing VP↔RRR convention (Problem→Risk, Solution→Requirement, Benefit→Result) applies through IND. B2B types inherit via RRR subclass. Pain summaries should align with VP Problem statements."
+    }
+  ],
+
+  "businessRules": [
+    {
+      "ruleId": "BR-IND-001",
+      "name": "B2B Must Have RRR Subclass",
+      "condition": "IF IndividualType channel=B2B AND typeCategory in (B2B_Executive, B2B_Management, B2B_Professional)",
+      "action": "THEN rrrSubclass MUST reference a valid RRR-ONT role",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-002",
+      "name": "B2B Must Have Org Relation",
+      "condition": "IF IndividualType channel=B2B",
+      "action": "THEN hasOrgRelation MUST link to org:Organization",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-003",
+      "name": "B2C Must Not Have Org Relation",
+      "condition": "IF IndividualType channel=B2C",
+      "action": "THEN rrrSubclass, rrrSeniorityLevel, hasOrgRelation MUST be null",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-004",
+      "name": "VP Stakeholder Type Required",
+      "condition": "IF IndividualType exists",
+      "action": "THEN vpStakeholderType MUST be populated",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-005",
+      "name": "At Least One Qualifier Required",
+      "condition": "IF IndividualType exists",
+      "action": "THEN MUST have >=1 IndividualQualifier via hasQualifier",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-006",
+      "name": "Qualifier Weight Bounds",
+      "condition": "IF IndividualQualifier has weight",
+      "action": "THEN weight MUST be 0.0–1.0",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-007",
+      "name": "Industry Profile Must Have Owner",
+      "condition": "IF IndustryProfile exists",
+      "action": "THEN owningInstance MUST identify PFI brand/sub-brand",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-008",
+      "name": "Inheritor Must Have Contextual Trigger",
+      "condition": "IF IndividualType typeCategory=B2C_Inheritor",
+      "action": "THEN >=1 qualifier MUST have criteriaType=Contextual describing inheritance trigger",
+      "severity": "warning"
+    }
+  ],
+
+  "examples": [
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:ant-serious-collector",
+      "indTypeId": "ind:ant-serious-collector",
+      "name": "Serious Collector",
+      "channel": "B2C",
+      "typeCategory": "B2C_Enthusiast",
+      "description": "Passionate, knowledgeable private collector acquiring antiques as personal interest and long-term investment. Maintains insured collection, attends major fairs/auctions, established dealer relationships. Standalone individual — no org affiliation.",
+      "motivations": "Passion for period/category, investment growth, prestige, completing collections, provenance discovery",
+      "painSummary": "Authentication uncertainty, insurance adequacy, valuation currency, storage/conservation, succession planning",
+      "decisionStyle": "Analytical",
+      "budgetAuthority": "Owner",
+      "typicalEngagement": "Relational",
+      "vpStakeholderType": "DecisionMaker",
+      "rrrSubclass": null,
+      "rrrSeniorityLevel": null,
+      "relationships": {
+        "hasQualifier": ["ind:q-sc-financial-01", "ind:q-sc-behavioral-01", "ind:q-sc-psychographic-01", "ind:q-sc-contextual-01"],
+        "hasIndustryProfile": ["ind:ip-sc-antiques"],
+        "hasPurchaseBehaviour": "ind:pb-sc-antiques",
+        "populatesICP": ["vp:icp-antiques-hnw-collector"],
+        "mapsToDomainEntity": ["ant:Owner"],
+        "influencedBy": ["ind:ant-dealer-wholesale", "ind:ant-authenticator"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-sc-financial-01",
+      "qualifierId": "ind:q-sc-financial-01", "criteriaType": "Financial",
+      "criteriaName": "collectionInsuredValue", "operator": "greaterThan", "value": "50000", "weight": 0.8
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-sc-behavioral-01",
+      "qualifierId": "ind:q-sc-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "annualPurchaseCount", "operator": "greaterThan", "value": "4", "weight": 0.7
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-sc-psychographic-01",
+      "qualifierId": "ind:q-sc-psychographic-01", "criteriaType": "Psychographic",
+      "criteriaName": "primaryMotivation", "operator": "contains", "value": "passion,investment", "weight": 0.6
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-sc-contextual-01",
+      "qualifierId": "ind:q-sc-contextual-01", "criteriaType": "Contextual",
+      "criteriaName": "memberOf", "operator": "contains", "value": "BADA,LAPADA,CINOA,specialist-society", "weight": 0.5
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-sc-antiques",
+      "profileId": "ind:ip-sc-antiques", "industry": "Antiques & Collectibles",
+      "industrySegment": "Fine Antiques (pre-1930)", "owningInstance": "PFI-BAIV",
+      "typicalBudgetRange": "5000-500000 per acquisition", "purchaseFrequency": "Regular",
+      "seasonality": "Peak: Jan-Mar (post-estate), Sep-Nov (autumn fairs); auction calendar driven",
+      "regulatoryContext": "CITES (ivory/endangered materials), Cultural Property (export controls), MLR 2017",
+      "industrySpecificTraits": "Provenance documentation essential. Values decade-long dealer relationships. Attends Olympia, TEFAF, Frieze Masters."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-sc-antiques",
+      "behaviourId": "ind:pb-sc-antiques", "buyerJourneyType": "Researched",
+      "decisionTimeframe": "Days (auction) to years (completing collection)",
+      "influencers": "Specialist dealers, auction house specialists, other collectors, museum exhibitions",
+      "trustSignals": "Provenance docs, auction guarantee, BADA/LAPADA membership, condition report",
+      "priceElasticity": "Low", "channelPreference": "Auction, specialist dealers, fairs, private treaty"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:ant-inheritor",
+      "indTypeId": "ind:ant-inheritor",
+      "name": "Inheritor / Beneficiary",
+      "channel": "B2C",
+      "typeCategory": "B2C_Inheritor",
+      "description": "Individual who received antique items via inheritance/bequest/estate settlement. Unfamiliar with market, overwhelmed by valuation/insurance/sell-or-keep decisions. Standalone — no org.",
+      "motivations": "Understanding value, informed sell-or-keep, honouring legacy, insurance, navigating probate",
+      "painSummary": "No knowledge of value, emotional attachment, market unfamiliarity, exploitation risk, probate pressure",
+      "decisionStyle": "Advised",
+      "budgetAuthority": "Owner",
+      "typicalEngagement": "Episodic",
+      "vpStakeholderType": "Beneficiary",
+      "rrrSubclass": null, "rrrSeniorityLevel": null,
+      "relationships": {
+        "hasQualifier": ["ind:q-inh-contextual-01", "ind:q-inh-behavioral-01", "ind:q-inh-psychographic-01"],
+        "hasIndustryProfile": ["ind:ip-inh-antiques"],
+        "hasPurchaseBehaviour": "ind:pb-inh-antiques",
+        "populatesICP": ["vp:icp-antiques-inheritor"],
+        "mapsToDomainEntity": ["ant:Owner"],
+        "influencedBy": ["ind:ant-estate-agent", "ind:ant-authenticator"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-inh-contextual-01",
+      "qualifierId": "ind:q-inh-contextual-01", "criteriaType": "Contextual",
+      "criteriaName": "triggerEvent", "operator": "contains", "value": "bereavement,estate-settlement,probate,gift-transfer", "weight": 1.0
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-inh-behavioral-01",
+      "qualifierId": "ind:q-inh-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "priorMarketExperience", "operator": "equals", "value": "none", "weight": 0.7
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-inh-psychographic-01",
+      "qualifierId": "ind:q-inh-psychographic-01", "criteriaType": "Psychographic",
+      "criteriaName": "emotionalState", "operator": "contains", "value": "overwhelmed,uncertain,sentimental", "weight": 0.6
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-inh-antiques",
+      "profileId": "ind:ip-inh-antiques", "industry": "Antiques & Collectibles",
+      "owningInstance": "PFI-BAIV",
+      "typicalBudgetRange": "Service consumer (valuation fees 200-2000)",
+      "purchaseFrequency": "OneTime", "seasonality": "Life-event driven, not calendar",
+      "regulatoryContext": "Probate rules, inheritance tax (HMRC), capital gains on disposal",
+      "industrySpecificTraits": "Needs handholding. Values empathy over expertise. Often a gateway customer."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-inh-antiques",
+      "behaviourId": "ind:pb-inh-antiques", "buyerJourneyType": "Inherited",
+      "decisionTimeframe": "Weeks to months (probate-driven)",
+      "influencers": "Solicitors, family, estate agents, local auction houses",
+      "trustSignals": "RICS/BADA credentials, solicitor referral, transparent fees, no-obligation consult",
+      "priceElasticity": "High", "channelPreference": "Local auction, estate valuer, solicitor referral"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:ant-insurance-underwriter",
+      "indTypeId": "ind:ant-insurance-underwriter",
+      "name": "Insurance Underwriter (Antiques Specialist)",
+      "channel": "B2B",
+      "typeCategory": "B2B_Professional",
+      "description": "Specialist insurance professional assessing risk and underwriting high-value antique collections. Subclasses RRR CRO. Works within insurance company/Lloyd's syndicate — has org relation.",
+      "motivations": "Accurate risk pricing, claims ratio, portfolio growth, FCA/PRA compliance",
+      "painSummary": "Valuation reliability, fraud detection, coverage disputes, security documentation, market volatility",
+      "decisionStyle": "Analytical",
+      "budgetAuthority": "Approver",
+      "typicalEngagement": "Relational",
+      "vpStakeholderType": "TechnicalEvaluator",
+      "rrrSubclass": "rrr:CRO", "rrrSeniorityLevel": 3,
+      "relationships": {
+        "hasQualifier": ["ind:q-iu-firmographic-01", "ind:q-iu-behavioral-01", "ind:q-iu-contextual-01"],
+        "hasIndustryProfile": ["ind:ip-iu-antiques"],
+        "hasPurchaseBehaviour": "ind:pb-iu-antiques",
+        "subclassesRRRRole": "rrr:CRO",
+        "hasOrgRelation": "org:InsuranceCompany",
+        "populatesICP": ["vp:icp-antiques-insurer"],
+        "mapsToDomainEntity": ["ant:InsurancePolicy", "ant:Valuation"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-iu-firmographic-01",
+      "qualifierId": "ind:q-iu-firmographic-01", "criteriaType": "Firmographic",
+      "criteriaName": "organizationType", "operator": "contains", "value": "Insurance Company,Lloyds Syndicate,MGA,Specialist Broker", "weight": 1.0
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-iu-behavioral-01",
+      "qualifierId": "ind:q-iu-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "annualPoliciesUnderwritten", "operator": "greaterThan", "value": "100", "weight": 0.6
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-iu-contextual-01",
+      "qualifierId": "ind:q-iu-contextual-01", "criteriaType": "Contextual",
+      "criteriaName": "regulatoryFramework", "operator": "contains", "value": "FCA,PRA,Lloyds", "weight": 0.8
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-iu-antiques",
+      "profileId": "ind:ip-iu-antiques", "industry": "Antiques & Collectibles",
+      "industrySegment": "Specialist Insurance", "owningInstance": "PFI-BAIV",
+      "typicalBudgetRange": "Underwriting capacity 1M-50M per account",
+      "purchaseFrequency": "Continuous",
+      "seasonality": "Annual renewal cycle; new business spikes around fair/auction seasons",
+      "regulatoryContext": "FCA ICOBS, Solvency II, Lloyds minimum standards, Consumer Duty",
+      "industrySpecificTraits": "Requires RICS valuations <3 years. Assesses security (alarms, safes, CCTV). Condition surveys for items >50k."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-iu-antiques",
+      "behaviourId": "ind:pb-iu-antiques", "buyerJourneyType": "Mandated",
+      "decisionTimeframe": "5-15 business days (quote to bind)",
+      "influencers": "Claims data, valuation reports, broker submissions, market loss ratios",
+      "trustSignals": "RICS/ASA accreditation, provenance, security survey, broker reputation",
+      "priceElasticity": "Medium", "channelPreference": "Broker submission, valuer referral, industry networks"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:ant-auction-director",
+      "indTypeId": "ind:ant-auction-director",
+      "name": "Auction House Director",
+      "channel": "B2B",
+      "typeCategory": "B2B_Executive",
+      "description": "Senior executive responsible for strategic direction, catalogue quality, and commercial performance of an auction house. Subclasses RRR CEO. Has org relation to auction house.",
+      "motivations": "Sale revenue, premium consignments, catalogue prestige, buyer growth, hammer-to-estimate ratio",
+      "painSummary": "Consignor competition, buyer fatigue, online/live balance, estimate accuracy, AML/CITES burden",
+      "decisionStyle": "Consensus",
+      "budgetAuthority": "Owner",
+      "typicalEngagement": "Relational",
+      "vpStakeholderType": "DecisionMaker",
+      "rrrSubclass": "rrr:CEO", "rrrSeniorityLevel": 1,
+      "relationships": {
+        "hasQualifier": ["ind:q-ad-firmographic-01", "ind:q-ad-behavioral-01"],
+        "hasIndustryProfile": ["ind:ip-ad-antiques"],
+        "hasPurchaseBehaviour": "ind:pb-ad-antiques",
+        "subclassesRRRRole": "rrr:CEO",
+        "hasOrgRelation": "org:AuctionHouse",
+        "populatesICP": ["vp:icp-antiques-auction-house"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-ad-firmographic-01",
+      "qualifierId": "ind:q-ad-firmographic-01", "criteriaType": "Firmographic",
+      "criteriaName": "organizationType", "operator": "equals", "value": "Auction House", "weight": 1.0
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-ad-behavioral-01",
+      "qualifierId": "ind:q-ad-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "annualSalesTurnover", "operator": "greaterThan", "value": "1000000", "weight": 0.8
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-ad-antiques",
+      "profileId": "ind:ip-ad-antiques", "industry": "Antiques & Collectibles",
+      "industrySegment": "Auction Services", "owningInstance": "PFI-BAIV",
+      "typicalBudgetRange": "Vendor services 50k-500k/yr; technology 20k-200k/yr",
+      "purchaseFrequency": "Regular",
+      "seasonality": "Spring/autumn major sales; Christmas decorative arts; summer country house",
+      "regulatoryContext": "AML 5th Directive, CITES, Consumer Contracts, auction conduct rules",
+      "industrySpecificTraits": "Relationship-driven. Board-level platform decisions. Catalogue reputation existential. Online bidding now competitive differentiator."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-ad-antiques",
+      "behaviourId": "ind:pb-ad-antiques", "buyerJourneyType": "Researched",
+      "decisionTimeframe": "1-6 months (technology); ongoing (vendors)",
+      "influencers": "Board, department heads, IT director, peer houses, industry press",
+      "trustSignals": "Track record, peer refs, SLA guarantees, data security, white-label flexibility",
+      "priceElasticity": "Medium", "channelPreference": "Direct vendor, SoFAA conferences, peer recommendation"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:ant-hobbyist",
+      "indTypeId": "ind:ant-hobbyist",
+      "name": "Hobbyist Collector",
+      "channel": "B2C",
+      "typeCategory": "B2C_Casual",
+      "description": "Casual, passion-driven collector acquiring antiques for enjoyment. Moderate budget, growing knowledge, active in local fairs and online. Standalone individual.",
+      "motivations": "Enjoyment, learning, community, affordable finds, decorating with character",
+      "painSummary": "Authenticity uncertainty, storage, overpaying, finding reliable accessible dealers",
+      "decisionStyle": "Emotional",
+      "budgetAuthority": "Owner",
+      "typicalEngagement": "Transactional",
+      "vpStakeholderType": "PrimaryUser",
+      "rrrSubclass": null, "rrrSeniorityLevel": null,
+      "relationships": {
+        "hasQualifier": ["ind:q-hob-financial-01", "ind:q-hob-behavioral-01"],
+        "hasIndustryProfile": ["ind:ip-hob-antiques"],
+        "hasPurchaseBehaviour": "ind:pb-hob-antiques",
+        "populatesICP": ["vp:icp-antiques-hobbyist"],
+        "mapsToDomainEntity": ["ant:Owner"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-hob-financial-01",
+      "qualifierId": "ind:q-hob-financial-01", "criteriaType": "Financial",
+      "criteriaName": "typicalSpendPerItem", "operator": "between", "value": "50-2000", "weight": 0.7
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-hob-behavioral-01",
+      "qualifierId": "ind:q-hob-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "attendsLocalFairsOrOnline", "operator": "equals", "value": "true", "weight": 0.6
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-hob-antiques",
+      "profileId": "ind:ip-hob-antiques", "industry": "Antiques & Collectibles",
+      "industrySegment": "Affordable Antiques & Collectibles", "owningInstance": "PFI-BAIV",
+      "typicalBudgetRange": "50-2000 per item; 1000-5000 annual",
+      "purchaseFrequency": "Regular", "seasonality": "Year-round; bank holiday fair peaks",
+      "regulatoryContext": "Consumer Rights Act (distance selling online)",
+      "industrySpecificTraits": "Price-conscious, condition-sensitive. eBay, Etsy, local auctions, antiques centres. Social media for identification."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-hob-antiques",
+      "behaviourId": "ind:pb-hob-antiques", "buyerJourneyType": "Impulse",
+      "decisionTimeframe": "Minutes (fair) to days (online)",
+      "influencers": "Social media, YouTube, dealer recs, collector friends",
+      "trustSignals": "Seller reviews, fair reputation, return policy, clear photos, honest condition",
+      "priceElasticity": "High", "channelPreference": "Fairs, eBay, Etsy, antiques centres, local auction, charity shops"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:ant-interior-designer",
+      "indTypeId": "ind:ant-interior-designer",
+      "name": "Interior Designer",
+      "channel": "B2B2C",
+      "typeCategory": "B2B2C_Intermediary",
+      "description": "Design professional sourcing antique pieces for client projects. Hybrid: buys from B2B suppliers for B2C clients. Intermediary role.",
+      "motivations": "Client brief fulfilment, period authenticity, trade margin, design coherence, sourcing exclusivity",
+      "painSummary": "Sourcing to brief, delivery timescales, condition surprises, client budget vs authenticity",
+      "decisionStyle": "Advised",
+      "budgetAuthority": "Influencer",
+      "typicalEngagement": "Project",
+      "vpStakeholderType": "Influencer",
+      "rrrSubclass": null, "rrrSeniorityLevel": null,
+      "relationships": {
+        "hasQualifier": ["ind:q-id-behavioral-01", "ind:q-id-contextual-01"],
+        "hasIndustryProfile": ["ind:ip-id-antiques"],
+        "hasPurchaseBehaviour": "ind:pb-id-antiques",
+        "populatesICP": ["vp:icp-antiques-trade-buyer"],
+        "influencedBy": ["ind:ant-dealer-wholesale"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-id-behavioral-01",
+      "qualifierId": "ind:q-id-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "antiqueSourcingFrequency", "operator": "greaterThan", "value": "6", "weight": 0.7
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-id-contextual-01",
+      "qualifierId": "ind:q-id-contextual-01", "criteriaType": "Contextual",
+      "criteriaName": "professionalMembership", "operator": "contains", "value": "BIID,SBID,RIBA", "weight": 0.5
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-id-antiques",
+      "profileId": "ind:ip-id-antiques", "industry": "Antiques & Collectibles",
+      "industrySegment": "Interior Design / Decorative Arts", "owningInstance": "PFI-BAIV",
+      "typicalBudgetRange": "500-50000 per piece (client dependent)",
+      "purchaseFrequency": "Regular", "seasonality": "Project-driven; spring/autumn completions",
+      "regulatoryContext": "Consumer Rights Act (for client), trade description",
+      "industrySpecificTraits": "Needs quality images for client presentations. Values approval/hold/return. Expects 10-20% trade discount."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-id-antiques",
+      "behaviourId": "ind:pb-id-antiques", "buyerJourneyType": "Researched",
+      "decisionTimeframe": "1-4 weeks (sourcing to client approval)",
+      "influencers": "Client brief, mood boards, dealer relationships, auction previews",
+      "trustSignals": "Trade discount, return policy, dealer reputation, photography quality, condition accuracy",
+      "priceElasticity": "Medium", "channelPreference": "Specialist dealers, trade fairs, auctions, online platforms"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:ant-investor",
+      "indTypeId": "ind:ant-investor",
+      "name": "Antiques Investor",
+      "channel": "B2C",
+      "typeCategory": "B2C_Investor",
+      "description": "Financially-motivated individual acquiring antiques as alternative assets. Portfolio diversification focus. Standalone individual — may use advisors but is the principal.",
+      "motivations": "Capital appreciation, diversification, inflation hedge, tangible assets, tax efficiency (chattels exemption)",
+      "painSummary": "Illiquidity, valuation volatility, storage/insurance costs, authentication risk, market timing",
+      "decisionStyle": "Analytical",
+      "budgetAuthority": "Owner",
+      "typicalEngagement": "Transactional",
+      "vpStakeholderType": "EconomicBuyer",
+      "rrrSubclass": null, "rrrSeniorityLevel": null,
+      "relationships": {
+        "hasQualifier": ["ind:q-inv-financial-01", "ind:q-inv-psychographic-01"],
+        "hasIndustryProfile": ["ind:ip-inv-antiques"],
+        "hasPurchaseBehaviour": "ind:pb-inv-antiques",
+        "populatesICP": ["vp:icp-antiques-investor"],
+        "mapsToDomainEntity": ["ant:Owner"],
+        "influencedBy": ["ind:ant-authenticator", "ind:ant-auction-director"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-inv-financial-01",
+      "qualifierId": "ind:q-inv-financial-01", "criteriaType": "Financial",
+      "criteriaName": "alternativeAssetAllocation", "operator": "greaterThan", "value": "100000", "weight": 0.9
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-inv-psychographic-01",
+      "qualifierId": "ind:q-inv-psychographic-01", "criteriaType": "Psychographic",
+      "criteriaName": "primaryMotivation", "operator": "equals", "value": "financial-return", "weight": 0.9
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-inv-antiques",
+      "profileId": "ind:ip-inv-antiques", "industry": "Antiques & Collectibles",
+      "industrySegment": "Investment-Grade Antiques", "owningInstance": "PFI-BAIV",
+      "typicalBudgetRange": "10000-1000000+ per acquisition",
+      "purchaseFrequency": "Occasional", "seasonality": "Opportunistic — market/estate driven",
+      "regulatoryContext": "CGT (chattels exemption <6000), IHT, AML for high-value",
+      "industrySpecificTraits": "Demands auction records, comparable sales, market indices. Values bonded storage. Interest in fractional ownership/tokenisation."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-inv-antiques",
+      "behaviourId": "ind:pb-inv-antiques", "buyerJourneyType": "Researched",
+      "decisionTimeframe": "Weeks to months (due diligence)",
+      "influencers": "Financial advisors, art analysts, auction specialists, fund managers, tax advisors",
+      "trustSignals": "Auction provenance, valuation history, price indices, dealer guarantees, independent auth",
+      "priceElasticity": "Low", "channelPreference": "Major auction houses, specialist dealers, art funds, private treaty"
+    }
+  ]
+}

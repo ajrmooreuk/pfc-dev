@@ -1,0 +1,139 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-GA-001",
+  "name": "GA Ontology (Gap Analysis)",
+  "description": "Gap analysis ontology for identifying gaps, assessing threats and opportunities, structural holes, priority scoring, and generating phased implementation recommendations with expected outcomes.",
+  "version": "2.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/ga/",
+  "prefix": "ga:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-07",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./gap-analysis-v1.0.0-oaa-v5.json",
+    "glossary": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "GapAnalysisReport": "Top-level container for a complete gap analysis engagement",
+    "IdentifiedGap": "Specific gap between current state and desired state",
+    "GapEvidence": "Quantitative or qualitative evidence supporting a gap",
+    "BusinessImpact": "Business consequences of a gap remaining unaddressed",
+    "StructuralHole": "Network position where bridging would create value",
+    "BridgeConcept": "Concept or initiative that bridges a structural hole",
+    "ThreatAssessment": "Threat analysis linked to an identified gap",
+    "MitigationOption": "Option for mitigating a threat",
+    "OpportunityAssessment": "Opportunity analysis linked to an identified gap",
+    "PotentialValue": "Quantified value of an opportunity",
+    "PriorityMatrix": "Scoring framework for ranking gaps and recommendations",
+    "PriorityQuadrant": "Named quadrant within a priority matrix",
+    "RankedItem": "Scored item placed in a priority quadrant",
+    "Recommendation": "Actionable recommendation derived from gap analysis",
+    "ImplementationPhase": "Phased execution step for a recommendation",
+    "ExpectedOutcome": "Anticipated result of implementing a recommendation",
+    "OutcomeMetric": "Measurable KPI for tracking an expected outcome",
+    "ExecutiveSummary": "High-level summary for executive stakeholders"
+  },
+  "relationships": {
+    "internal": 22,
+    "crossOntology": [
+      {
+        "name": "analysesOrganizationContext",
+        "from": "org-ctx:OrganizationContext",
+        "to": "ga:GapAnalysisReport",
+        "cardinality": "1:n",
+        "purpose": "ORG-CONTEXT \u2192 GA: Organization context drives gap analysis"
+      },
+      {
+        "name": "assessesAgainstStrategy",
+        "from": "ga:GapAnalysisReport",
+        "to": "vsom:VSOMFramework",
+        "cardinality": "n:1",
+        "purpose": "GA \u2192 VSOM: Gap analysis benchmarks against strategic framework"
+      },
+      {
+        "name": "assessesAgainstLandscape",
+        "from": "ga:GapAnalysisReport",
+        "to": "org-ctx:CompetitiveLandscape",
+        "cardinality": "n:1",
+        "purpose": "GA \u2192 ORG-CONTEXT: Gap analysis uses competitive landscape data"
+      },
+      {
+        "name": "evidencedByMaturity",
+        "from": "ga:IdentifiedGap",
+        "to": "org-mat:DimensionScore",
+        "cardinality": "n:1",
+        "purpose": "GA \u2192 ORG-MAT: Gaps evidenced by maturity dimension scores"
+      },
+      {
+        "name": "alignsToObjective",
+        "from": "ga:Recommendation",
+        "to": "vsom:ObjectivesComponent",
+        "cardinality": "n:1",
+        "purpose": "GA \u2192 VSOM: Recommendations align to strategic objectives"
+      },
+      {
+        "name": "spawnsProject",
+        "from": "ga:Recommendation",
+        "to": "ppm:Project",
+        "cardinality": "1:n",
+        "purpose": "GA \u2192 PPM: Recommendations spawn implementation projects"
+      },
+      {
+        "name": "targetsMarketSegment",
+        "from": "ga:OpportunityAssessment",
+        "to": "org-ctx:MarketSegment",
+        "cardinality": "n:1",
+        "purpose": "GA \u2192 ORG-CONTEXT: Opportunities target specific market segments"
+      },
+      {
+        "name": "addressesCompetitorProfile",
+        "from": "ga:ThreatAssessment",
+        "to": "org-ctx:CompetitorProfile",
+        "cardinality": "n:1",
+        "purpose": "GA \u2192 ORG-CONTEXT: Threats assessed against competitor profiles"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-ORG-MAT-001",
+    "Entry-ONT-PPM-001"
+  ],
+  "dependents": [
+    "Entry-ONT-PPM-001"
+  ],
+  "layer": "ANALYSIS LAYER",
+  "domain": "Gap Analysis",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "lastModified": "2026-02-07",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-02",
+      "changes": "Initial OAA v5 compliance with 18 entities, 30 relationships"
+    },
+    {
+      "version": "2.0.0",
+      "date": "2026-02-07",
+      "changes": "OAA v6.1.0 upgrade: 30 relationships (22 internal + 8 cross-ontology) forming single connected component, 8 business rules with IF-THEN format, crossOntologyReferences with keyBridges for ORG-CTX/VSOM/CL/ORG-MAT/PPM bridges, all 18 entities fully connected"
+    }
+  ],
+  "notes": "Analysis ontology bridging strategy and execution via recommendations that spawn projects. Bridges ORG-CONTEXT, VSOM, CL, and ORG-MAT for comprehensive gap assessment."
+}

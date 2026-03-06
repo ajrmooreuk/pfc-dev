@@ -1,0 +1,1685 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ind": "https://oaa-ontology.org/v6/industry/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/",
+    "bsc": "https://oaa-ontology.org/v6/bsc/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/",
+    "okr": "https://oaa-ontology.org/v6/okr/",
+    "org": "https://oaa-ontology.org/v6/organization/",
+    "orgctx": "https://oaa-ontology.org/v6/org-context/",
+    "ga": "https://oaa-ontology.org/v6/gap-analysis/",
+    "ea": "https://oaa-ontology.org/v6/ea-core/",
+    "vp": "https://oaa-ontology.org/v6/value-proposition/",
+    "ppm": "https://oaa-ontology.org/v6/ppm/"
+  },
+  "@id": "https://oaa-ontology.org/v6/industry/schema",
+  "@type": "owl:Ontology",
+  "name": "Industry & Sector Strategic Analysis Ontology",
+  "alternateName": "INDUSTRY-ONT — Porter's, SWOT/TOWS, Ansoff Growth & Competitive Strategy",
+  "description": "Formalizes industry-level strategic analysis frameworks: Porter's Five Forces Analysis (structured assessment layer over orgctx:CompetitiveForce), SWOT/TOWS Synthesis (linking internal strengths/weaknesses to external opportunities/threats for strategy generation), and Ansoff Growth Matrix (product/market expansion direction). These frameworks feed industry intelligence into VSOM StrategyComponent and BSC-ONT for execution. Part of VE-Series VSOM-SA (Strategy Analysis). Does NOT duplicate ORG-CONTEXT entities — references them and adds the analytical framework layer.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "Strategic Management, Competitive Strategy, Industry Analysis",
+  "oaa:status": "Draft",
+  "dateCreated": "2026-02-12",
+  "dateModified": "2026-02-12",
+  "creator": {
+    "@type": "Organization",
+    "name": "W4M Strategic Patterns Framework"
+  },
+  "oaa:imports": [
+    {
+      "@id": "vsom:schema",
+      "name": "VSOM-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "vsom:VSOMFramework",
+        "vsom:VisionComponent",
+        "vsom:StrategyComponent",
+        "vsom:ObjectivesComponent",
+        "vsom:StrategicReviewCycle"
+      ],
+      "importedRelationships": [
+        "vsom:hasStrategicContext",
+        "vsom:informsStrategy"
+      ]
+    },
+    {
+      "@id": "bsc:schema",
+      "name": "BSC-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "bsc:BalancedScorecard",
+        "bsc:BSCObjective"
+      ],
+      "importedRelationships": [
+        "bsc:operationalizes"
+      ]
+    },
+    {
+      "@id": "org:schema",
+      "name": "ORG-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "org:Organization",
+        "org:OrganizationContext"
+      ],
+      "importedRelationships": [
+        "org:hasContext"
+      ]
+    },
+    {
+      "@id": "orgctx:schema",
+      "name": "ORG-CONTEXT-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "orgctx:OrganizationContext",
+        "orgctx:CompetitiveLandscape",
+        "orgctx:Competitor",
+        "orgctx:CompetitiveForce",
+        "orgctx:Trend",
+        "orgctx:MarketContext",
+        "orgctx:Product",
+        "orgctx:Brand",
+        "orgctx:ProductPortfolio"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "ga:schema",
+      "name": "GA-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "ga:IdentifiedGap",
+        "ga:ThreatAssessment",
+        "ga:OpportunityAssessment",
+        "ga:Recommendation"
+      ],
+      "importedRelationships": [
+        "ga:analysesLandscape"
+      ]
+    },
+    {
+      "@id": "ea:schema",
+      "name": "EA-CORE-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "ea:BusinessCapability",
+        "ea:CapabilityGap"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "vp:schema",
+      "name": "VP-ONT",
+      "version": "1.2.3",
+      "importedEntities": [
+        "vp:ValueProposition",
+        "vp:Differentiator"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "ppm:schema",
+      "name": "PPM-ONT",
+      "version": "4.0.0",
+      "importedEntities": [
+        "ppm:Portfolio",
+        "ppm:Initiative"
+      ],
+      "importedRelationships": []
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-IND-001",
+      "name": "Porter-to-VSOM Strategy Feed",
+      "description": "Porter's Five Forces analysis enriches the competitive landscape that VSOM's review cycle monitors. Force shifts trigger strategy review and potential iteration.",
+      "joinPath": "ind:PortersFiveForcesAnalysis → ind:enrichesLandscape → orgctx:CompetitiveLandscape ← vsom:reviewsLandscape ← vsom:StrategicReviewCycle → vsom:informsStrategy → vsom:StrategyComponent",
+      "useCase": "Industry structure changes feed through to strategy updates"
+    },
+    {
+      "patternId": "JP-IND-002",
+      "name": "SWOT-TOWS-VSOM Strategy Pipeline",
+      "description": "SWOT analysis generates strategic options via TOWS synthesis, which produce candidate strategies for VSOM StrategyComponent.",
+      "joinPath": "ind:SWOTAnalysis → ind:synthesizesTo → ind:TOWSSynthesis → ind:towsProducesStrategy → vsom:StrategyComponent",
+      "useCase": "End-to-end: SWOT assessment generates TOWS strategy options for VSOM adoption"
+    },
+    {
+      "patternId": "JP-IND-003",
+      "name": "Ansoff-to-Portfolio Alignment",
+      "description": "Growth direction choice flows through VSOM strategy into PPM portfolio investment allocation and BSC execution.",
+      "joinPath": "ind:AnsoffGrowthMatrix → ind:ansoffInformsStrategy → vsom:StrategyComponent → bsc:operationalizedBy → bsc:BalancedScorecard",
+      "useCase": "Growth strategy drives balanced scorecard objectives and portfolio investment"
+    },
+    {
+      "patternId": "JP-IND-004",
+      "name": "SWOT Weakness-to-Gap Bridge",
+      "description": "SWOT internal weaknesses link to GA-ONT identified gaps and EA-CORE capability gaps for remediation planning.",
+      "joinPath": "ind:SWOTFactor [weakness] → ind:factorLinksToGap → ga:IdentifiedGap; ind:SWOTFactor [weakness] → ind:factorLinksToCapabilityGap → ea:CapabilityGap",
+      "useCase": "Connect strategic weakness identification to formal gap analysis and capability planning"
+    },
+    {
+      "patternId": "JP-IND-005",
+      "name": "Industry Analysis Full Context",
+      "description": "Full traversal from organization through competitive context through industry analysis to strategy formulation.",
+      "joinPath": "org:Organization → org:hasContext → orgctx:OrganizationContext → orgctx:competitiveLandscape → orgctx:CompetitiveLandscape → ind:analyzedBy → ind:PortersFiveForcesAnalysis; orgctx:OrganizationContext → ind:analyzedBySWOT → ind:SWOTAnalysis",
+      "useCase": "Complete industry analysis context for strategic decision-making"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "ind:PortersFiveForcesAnalysis",
+      "@type": "rdfs:Class",
+      "name": "PortersFiveForcesAnalysis",
+      "rdfs:subClassOf": "schema:Report",
+      "description": "Structured Porter's Five Forces assessment that adds analytical scoring, strategic response options, and VSOM integration on top of existing orgctx:CompetitiveForce entities. Does NOT replace CompetitiveForce — it references them and adds the analysis framework. Produces an overall industry attractiveness score and strategic implications that feed into VSOM StrategyComponent.",
+      "oaa:properties": [
+        {
+          "name": "analysisId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "competitiveLandscapeRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:CompetitiveLandscape @id containing the underlying CompetitiveForce entities"
+        },
+        {
+          "name": "analysisDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "industry",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Industry being analyzed (e.g. NAICS/SIC code or name)"
+        },
+        {
+          "name": "industryAttractiveness",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Overall industry attractiveness score (1.0=unattractive, 5.0=highly attractive). Weighted average of five force scores."
+        },
+        {
+          "name": "overallAssessment",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Narrative summary of industry competitive dynamics"
+        },
+        {
+          "name": "strategicImplications",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Key implications for VSOM strategy formulation",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "vsomStrategyRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:StrategyComponent @id informed by this analysis"
+        },
+        {
+          "name": "reviewCycleRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:StrategicReviewCycle @id triggered by force changes"
+        },
+        {
+          "name": "validUntil",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Date by which this analysis should be refreshed"
+        }
+      ]
+    },
+    {
+      "@id": "ind:ForceAssessment",
+      "@type": "rdfs:Class",
+      "name": "ForceAssessment",
+      "rdfs:subClassOf": "schema:Rating",
+      "description": "Detailed assessment of a single Porter's force. References an existing orgctx:CompetitiveForce and adds scoring, driver analysis, strategic response options, and trend direction. Five ForceAssessments compose one PortersFiveForcesAnalysis.",
+      "oaa:properties": [
+        {
+          "name": "assessmentId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "competitiveForceRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:CompetitiveForce @id being assessed"
+        },
+        {
+          "name": "forceType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "CompetitiveRivalry",
+            "ThreatOfNewEntrants",
+            "ThreatOfSubstitutes",
+            "BargainingPowerOfBuyers",
+            "BargainingPowerOfSuppliers"
+          ],
+          "description": "Maps to orgctx:CompetitiveForce.forceType values"
+        },
+        {
+          "name": "intensityScore",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Force intensity score (1.0=very low, 5.0=very high)"
+        },
+        {
+          "name": "intensityLevel",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "VeryLow",
+            "Low",
+            "Moderate",
+            "High",
+            "VeryHigh"
+          ]
+        },
+        {
+          "name": "trend",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Increasing",
+            "Stable",
+            "Decreasing"
+          ],
+          "description": "Direction the force intensity is moving"
+        },
+        {
+          "name": "keyDrivers",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Factors driving this force's intensity",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "barrierFactors",
+          "type": "xsd:string",
+          "required": false,
+          "description": "For entry/substitute forces: specific barriers or lack thereof",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "strategicResponse",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Recommended strategic response to this force"
+        },
+        {
+          "name": "impactOnMargin",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "HighlyNegative",
+            "Negative",
+            "Neutral",
+            "Positive"
+          ],
+          "description": "Impact of this force on industry profit margins"
+        },
+        {
+          "name": "weight",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Weight of this force in overall attractiveness calculation (0.0-1.0, sum of 5 = 1.0)"
+        }
+      ]
+    },
+    {
+      "@id": "ind:SWOTAnalysis",
+      "@type": "rdfs:Class",
+      "name": "SWOTAnalysis",
+      "rdfs:subClassOf": "schema:Report",
+      "description": "Structured SWOT analysis linking internal Strengths/Weaknesses to external Opportunities/Threats. Internal factors reference org capabilities (ea:BusinessCapability), maturity (orgctx maturity types), and competitive position. External factors reference orgctx:Trend (PESTEL-typed) and orgctx:CompetitiveLandscape signals. SWOT quadrants map to VSOM components: Strengths→leverage in Strategy, Weaknesses→address in Objectives, Opportunities→shape Vision, Threats→constrain Strategy.",
+      "oaa:properties": [
+        {
+          "name": "analysisId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "analysisDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "scope",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Corporate",
+            "BusinessUnit",
+            "ProductLine",
+            "Brand",
+            "Market"
+          ],
+          "description": "Scope of analysis — can be done at multiple levels"
+        },
+        {
+          "name": "scopeEntityRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to specific orgctx:Product, orgctx:Brand, or business unit if scope is not Corporate"
+        },
+        {
+          "name": "porterAnalysisRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to ind:PortersFiveForcesAnalysis @id that informed external factors"
+        },
+        {
+          "name": "strengthCount",
+          "type": "xsd:integer",
+          "required": false
+        },
+        {
+          "name": "weaknessCount",
+          "type": "xsd:integer",
+          "required": false
+        },
+        {
+          "name": "opportunityCount",
+          "type": "xsd:integer",
+          "required": false
+        },
+        {
+          "name": "threatCount",
+          "type": "xsd:integer",
+          "required": false
+        },
+        {
+          "name": "overallAssessment",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Summary strategic assessment"
+        },
+        {
+          "name": "towsSynthesisRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to ind:TOWSSynthesis @id generated from this SWOT"
+        }
+      ]
+    },
+    {
+      "@id": "ind:SWOTFactor",
+      "@type": "rdfs:Class",
+      "name": "SWOTFactor",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A single factor in one of the four SWOT quadrants. Typed as Strength, Weakness, Opportunity, or Threat. Each factor can cross-reference existing ontology entities: Strengths/Weaknesses → ea:BusinessCapability, orgctx maturity; Opportunities/Threats → orgctx:Trend, orgctx:CompetitiveForce, ga:OpportunityAssessment, ga:ThreatAssessment.",
+      "oaa:properties": [
+        {
+          "name": "factorId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "quadrant",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Strength",
+            "Weakness",
+            "Opportunity",
+            "Threat"
+          ]
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "category",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Capability",
+            "Resource",
+            "MarketPosition",
+            "Brand",
+            "Talent",
+            "Technology",
+            "Process",
+            "Culture",
+            "Financial",
+            "Regulatory",
+            "Competitive",
+            "Market",
+            "Social",
+            "Environmental"
+          ],
+          "description": "Category of factor for structured analysis"
+        },
+        {
+          "name": "significance",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Critical",
+            "High",
+            "Medium",
+            "Low"
+          ],
+          "description": "How significant this factor is to strategic outcomes"
+        },
+        {
+          "name": "timeframe",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Immediate",
+            "ShortTerm",
+            "MediumTerm",
+            "LongTerm"
+          ],
+          "description": "For O/T: when will this manifest"
+        },
+        {
+          "name": "probability",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "For O/T: probability of materializing (0.0-1.0)"
+        },
+        {
+          "name": "sustainability",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Durable",
+            "Moderate",
+            "Fragile"
+          ],
+          "description": "For S: how sustainable is this advantage; For W: how entrenched is this weakness"
+        },
+        {
+          "name": "capabilityRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "For S/W: reference to ea:BusinessCapability @id"
+        },
+        {
+          "name": "maturityDimensionRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "For S/W: reference to orgctx maturity subtype"
+        },
+        {
+          "name": "trendRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "For O/T: reference to orgctx:Trend @id"
+        },
+        {
+          "name": "competitiveForceRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "For O/T: reference to orgctx:CompetitiveForce @id"
+        },
+        {
+          "name": "gapRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "For W: reference to ga:IdentifiedGap @id or ea:CapabilityGap @id"
+        },
+        {
+          "name": "threatAssessmentRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "For T: reference to ga:ThreatAssessment @id"
+        },
+        {
+          "name": "opportunityAssessmentRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "For O: reference to ga:OpportunityAssessment @id"
+        },
+        {
+          "name": "competitorRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to orgctx:Competitor @id if factor is competitor-related"
+        },
+        {
+          "name": "vsomImplication",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Which VSOM component this factor most impacts"
+        },
+        {
+          "name": "evidenceSources",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Data or analysis supporting this factor",
+          "cardinality": "0..*"
+        }
+      ],
+      "_vsomMapping": {
+        "Strength": "Leverage in vsom:StrategyComponent — what we build strategy ON",
+        "Weakness": "Address via vsom:ObjectivesComponent and ga:IdentifiedGap — what we must fix",
+        "Opportunity": "Shape vsom:VisionComponent — what future we pursue",
+        "Threat": "Constrain vsom:StrategyComponent + trigger vsom:StrategicReviewCycle"
+      }
+    },
+    {
+      "@id": "ind:TOWSSynthesis",
+      "@type": "rdfs:Class",
+      "name": "TOWSSynthesis",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "TOWS Matrix — the action-oriented output of SWOT analysis. Generates strategy options by systematically crossing internal factors (S/W) with external factors (O/T) across four quadrants: SO (Maxi-Maxi: aggressive growth), WO (Mini-Maxi: turnaround), ST (Maxi-Mini: defensive), WT (Mini-Mini: survival). Each quadrant produces candidate strategies for VSOM adoption.",
+      "oaa:properties": [
+        {
+          "name": "synthesisId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "swotAnalysisRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to ind:SWOTAnalysis @id this synthesis derives from"
+        },
+        {
+          "name": "synthesisDate",
+          "type": "xsd:date",
+          "required": true
+        }
+      ]
+    },
+    {
+      "@id": "ind:TOWSStrategy",
+      "@type": "rdfs:Class",
+      "name": "TOWSStrategy",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A single strategy option generated from the TOWS matrix. Links specific internal factors to external factors to produce an actionable strategy candidate. Strategies can be adopted by VSOM StrategyComponent or rejected with rationale.",
+      "oaa:properties": [
+        {
+          "name": "strategyId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "towsQuadrant",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "SO",
+            "WO",
+            "ST",
+            "WT"
+          ],
+          "description": "SO=Strength-Opportunity (aggressive), WO=Weakness-Opportunity (turnaround), ST=Strength-Threat (defensive), WT=Weakness-Threat (survival)"
+        },
+        {
+          "name": "strategicPosture",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Aggressive",
+            "Turnaround",
+            "Defensive",
+            "Survival"
+          ],
+          "description": "Strategic posture implied by quadrant"
+        },
+        {
+          "name": "internalFactorRefs",
+          "type": "xsd:string",
+          "required": true,
+          "description": "References to ind:SWOTFactor @ids (S or W) combined in this strategy",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "externalFactorRefs",
+          "type": "xsd:string",
+          "required": true,
+          "description": "References to ind:SWOTFactor @ids (O or T) combined in this strategy",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "riskLevel",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "High",
+            "Medium",
+            "Low"
+          ]
+        },
+        {
+          "name": "feasibility",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "High",
+            "Medium",
+            "Low"
+          ]
+        },
+        {
+          "name": "timeHorizon",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "ShortTerm",
+            "MediumTerm",
+            "LongTerm"
+          ]
+        },
+        {
+          "name": "adoptionStatus",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Candidate",
+            "Adopted",
+            "Rejected",
+            "Deferred"
+          ],
+          "description": "Whether VSOM adopted this strategy option"
+        },
+        {
+          "name": "vsomStrategyRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:StrategyComponent @id if adopted"
+        },
+        {
+          "name": "rejectionRationale",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Why this strategy was not adopted"
+        },
+        {
+          "name": "ansoffQuadrant",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "MarketPenetration",
+            "MarketDevelopment",
+            "ProductDevelopment",
+            "Diversification"
+          ],
+          "description": "Which Ansoff quadrant this strategy aligns to, if applicable"
+        }
+      ]
+    },
+    {
+      "@id": "ind:AnsoffGrowthMatrix",
+      "@type": "rdfs:Class",
+      "name": "AnsoffGrowthMatrix",
+      "rdfs:subClassOf": "schema:Report",
+      "description": "Ansoff Growth Matrix — growth direction analysis across Product (existing/new) x Market (existing/new). Four quadrants: Market Penetration (low risk), Market Development (moderate), Product Development (moderate), Diversification (high risk). The chosen growth path informs VSOM StrategyComponent and directs PPM portfolio investment allocation. References orgctx:Product, orgctx:Brand, orgctx:MarketContext for existing portfolio, and identifies new market/product opportunities.",
+      "oaa:properties": [
+        {
+          "name": "matrixId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "analysisDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "swotAnalysisRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to ind:SWOTAnalysis @id informing growth direction choice"
+        },
+        {
+          "name": "selectedGrowthPath",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "MarketPenetration",
+            "MarketDevelopment",
+            "ProductDevelopment",
+            "Diversification",
+            "Hybrid"
+          ],
+          "description": "Primary growth direction chosen"
+        },
+        {
+          "name": "rationale",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Why this growth path was selected"
+        },
+        {
+          "name": "overallGrowthTarget",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Overall revenue/market growth target (%)"
+        },
+        {
+          "name": "riskTolerance",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Conservative",
+            "Balanced",
+            "Aggressive"
+          ]
+        },
+        {
+          "name": "vsomStrategyRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:StrategyComponent @id aligned to growth choice"
+        },
+        {
+          "name": "portfolioRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to ppm:Portfolio @id for investment allocation"
+        }
+      ]
+    },
+    {
+      "@id": "ind:AnsoffQuadrant",
+      "@type": "rdfs:Class",
+      "name": "AnsoffQuadrant",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "One of four Ansoff growth quadrants with specific strategies, risk profile, existing/new product-market combinations, and growth targets. Each quadrant can reference existing orgctx:Product and orgctx:MarketContext for existing portfolio, and identify new opportunities.",
+      "oaa:properties": [
+        {
+          "name": "quadrantId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "quadrantType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "MarketPenetration",
+            "MarketDevelopment",
+            "ProductDevelopment",
+            "Diversification"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "riskLevel",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Low",
+            "Moderate",
+            "High",
+            "VeryHigh"
+          ]
+        },
+        {
+          "name": "strategies",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Specific growth strategies for this quadrant",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "existingProductRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to orgctx:Product @ids (existing products)",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "existingMarketRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to orgctx:MarketContext @ids (existing markets)",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "newProducts",
+          "type": "xsd:string",
+          "required": false,
+          "description": "New product concepts being considered",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "newMarkets",
+          "type": "xsd:string",
+          "required": false,
+          "description": "New market segments being considered",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "growthTarget",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Growth target for this quadrant (%)"
+        },
+        {
+          "name": "investmentAllocation",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Percentage of total growth investment allocated to this quadrant"
+        },
+        {
+          "name": "vsomStrategyType",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Corporate",
+            "Marketing",
+            "Operational",
+            "Digital",
+            "Growth",
+            "Innovation"
+          ],
+          "description": "Which VSOM strategy type this quadrant aligns to"
+        },
+        {
+          "name": "bscPerspectiveFocus",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Financial",
+            "Customer",
+            "Internal Process",
+            "Learning & Growth"
+          ],
+          "description": "Dominant BSC perspective for this quadrant"
+        },
+        {
+          "name": "diversificationType",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Related",
+            "Unrelated",
+            "Conglomerate"
+          ],
+          "description": "For Diversification quadrant only: type of diversification"
+        },
+        {
+          "name": "initiativeRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to ppm:Initiative @ids driving growth in this quadrant",
+          "cardinality": "0..*"
+        }
+      ],
+      "_quadrantDefaults": {
+        "MarketPenetration": {
+          "risk": "Low",
+          "vsomStrategyType": "Marketing/Operational",
+          "bscFocus": "Customer"
+        },
+        "MarketDevelopment": {
+          "risk": "Moderate",
+          "vsomStrategyType": "Corporate/Marketing",
+          "bscFocus": "Customer"
+        },
+        "ProductDevelopment": {
+          "risk": "Moderate",
+          "vsomStrategyType": "Digital/Innovation",
+          "bscFocus": "Internal Process"
+        },
+        "Diversification": {
+          "risk": "High-VeryHigh",
+          "vsomStrategyType": "Corporate",
+          "bscFocus": "Financial"
+        }
+      }
+    },
+    {
+      "@id": "ind:CompetitivePositioning",
+      "@type": "rdfs:Class",
+      "name": "CompetitivePositioning",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Strategic positioning assessment combining Porter's generic strategies (cost leadership, differentiation, focus) with competitive position (leader, challenger, follower, niche). Synthesizes Porter's 5F and SWOT findings into a positioning recommendation that feeds VSOM StrategyComponent and VP-ONT Differentiator.",
+      "oaa:properties": [
+        {
+          "name": "positioningId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "analysisDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "genericStrategy",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "CostLeadership",
+            "Differentiation",
+            "CostFocus",
+            "DifferentiationFocus"
+          ],
+          "description": "Porter's generic competitive strategy"
+        },
+        {
+          "name": "competitivePosition",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Leader",
+            "Challenger",
+            "Follower",
+            "Niche"
+          ],
+          "description": "Current market position relative to competitors"
+        },
+        {
+          "name": "targetPosition",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Leader",
+            "Challenger",
+            "Follower",
+            "Niche"
+          ],
+          "description": "Target market position"
+        },
+        {
+          "name": "positioningStatement",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Concise positioning statement"
+        },
+        {
+          "name": "coreDifferentiators",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to vp:Differentiator @ids",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "competitiveAdvantageSource",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Cost",
+            "Differentiation",
+            "Innovation",
+            "Network",
+            "Platform",
+            "Ecosystem",
+            "Brand",
+            "Data"
+          ],
+          "description": "Primary source of competitive advantage"
+        },
+        {
+          "name": "sustainabilityOfAdvantage",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Durable",
+            "Moderate",
+            "Fragile"
+          ],
+          "description": "How defensible is this positioning"
+        },
+        {
+          "name": "strategicMoat",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Description of competitive moat protecting the position"
+        },
+        {
+          "name": "porterAnalysisRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to ind:PortersFiveForcesAnalysis @id"
+        },
+        {
+          "name": "swotAnalysisRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to ind:SWOTAnalysis @id"
+        },
+        {
+          "name": "vsomStrategyRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:StrategyComponent @id this positioning informs"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "ind:analyzedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Analyzed By Porter's",
+      "description": "Competitive landscape is analyzed by a Porter's Five Forces assessment",
+      "domainIncludes": [
+        "orgctx:CompetitiveLandscape"
+      ],
+      "rangeIncludes": [
+        "ind:PortersFiveForcesAnalysis"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "ind:enrichesLandscape",
+      "@type": "owl:ObjectProperty",
+      "name": "Enriches Landscape",
+      "description": "Porter's analysis enriches the competitive landscape with structural force assessments",
+      "domainIncludes": [
+        "ind:PortersFiveForcesAnalysis"
+      ],
+      "rangeIncludes": [
+        "orgctx:CompetitiveLandscape"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:inverseOf": "ind:analyzedBy",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "ind:hasForceAssessment",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Force Assessment",
+      "description": "Porter's analysis contains five force assessments",
+      "domainIncludes": [
+        "ind:PortersFiveForcesAnalysis"
+      ],
+      "rangeIncludes": [
+        "ind:ForceAssessment"
+      ],
+      "oaa:cardinality": "5..5"
+    },
+    {
+      "@id": "ind:assessesForce",
+      "@type": "owl:ObjectProperty",
+      "name": "Assesses Force",
+      "description": "Force assessment references an existing competitive force entity",
+      "domainIncludes": [
+        "ind:ForceAssessment"
+      ],
+      "rangeIncludes": [
+        "orgctx:CompetitiveForce"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "ind:porterInformsStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "Porter Informs Strategy",
+      "description": "Porter's analysis informs VSOM strategy formulation",
+      "domainIncludes": [
+        "ind:PortersFiveForcesAnalysis"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategyComponent"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "ind:porterTriggersReview",
+      "@type": "owl:ObjectProperty",
+      "name": "Porter Triggers Review",
+      "description": "Significant force changes trigger a VSOM strategic review cycle",
+      "domainIncludes": [
+        "ind:PortersFiveForcesAnalysis"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategicReviewCycle"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "ind:analyzedBySWOT",
+      "@type": "owl:ObjectProperty",
+      "name": "Analyzed By SWOT",
+      "description": "Organization context is analyzed by a SWOT assessment",
+      "domainIncludes": [
+        "orgctx:OrganizationContext"
+      ],
+      "rangeIncludes": [
+        "ind:SWOTAnalysis"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "ind:hasSWOTFactor",
+      "@type": "owl:ObjectProperty",
+      "name": "Has SWOT Factor",
+      "description": "SWOT analysis contains individual factors across four quadrants",
+      "domainIncludes": [
+        "ind:SWOTAnalysis"
+      ],
+      "rangeIncludes": [
+        "ind:SWOTFactor"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ind:factorLinksToGap",
+      "@type": "owl:ObjectProperty",
+      "name": "Factor Links To Gap",
+      "description": "SWOT weakness factor links to a formally identified gap",
+      "domainIncludes": [
+        "ind:SWOTFactor"
+      ],
+      "rangeIncludes": [
+        "ga:IdentifiedGap"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "GA-ONT"
+    },
+    {
+      "@id": "ind:factorLinksToCapabilityGap",
+      "@type": "owl:ObjectProperty",
+      "name": "Factor Links To Capability Gap",
+      "description": "SWOT weakness factor links to an EA capability gap",
+      "domainIncludes": [
+        "ind:SWOTFactor"
+      ],
+      "rangeIncludes": [
+        "ea:CapabilityGap"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "EA-CORE-ONT"
+    },
+    {
+      "@id": "ind:factorLinksThreat",
+      "@type": "owl:ObjectProperty",
+      "name": "Factor Links To Threat Assessment",
+      "description": "SWOT threat factor links to a formal GA threat assessment",
+      "domainIncludes": [
+        "ind:SWOTFactor"
+      ],
+      "rangeIncludes": [
+        "ga:ThreatAssessment"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "GA-ONT"
+    },
+    {
+      "@id": "ind:factorLinksOpportunity",
+      "@type": "owl:ObjectProperty",
+      "name": "Factor Links To Opportunity Assessment",
+      "description": "SWOT opportunity factor links to a formal GA opportunity assessment",
+      "domainIncludes": [
+        "ind:SWOTFactor"
+      ],
+      "rangeIncludes": [
+        "ga:OpportunityAssessment"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "GA-ONT"
+    },
+    {
+      "@id": "ind:factorReferencesTrend",
+      "@type": "owl:ObjectProperty",
+      "name": "Factor References Trend",
+      "description": "SWOT external factor (O/T) references an existing orgctx trend",
+      "domainIncludes": [
+        "ind:SWOTFactor"
+      ],
+      "rangeIncludes": [
+        "orgctx:Trend"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "ind:factorReferencesCapability",
+      "@type": "owl:ObjectProperty",
+      "name": "Factor References Capability",
+      "description": "SWOT internal factor (S/W) references an EA business capability",
+      "domainIncludes": [
+        "ind:SWOTFactor"
+      ],
+      "rangeIncludes": [
+        "ea:BusinessCapability"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "EA-CORE-ONT"
+    },
+    {
+      "@id": "ind:synthesizesTo",
+      "@type": "owl:ObjectProperty",
+      "name": "Synthesizes To TOWS",
+      "description": "SWOT analysis is synthesized into a TOWS matrix for strategy generation",
+      "domainIncludes": [
+        "ind:SWOTAnalysis"
+      ],
+      "rangeIncludes": [
+        "ind:TOWSSynthesis"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ind:hasTOWSStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "Has TOWS Strategy",
+      "description": "TOWS synthesis contains strategy options across four quadrants",
+      "domainIncludes": [
+        "ind:TOWSSynthesis"
+      ],
+      "rangeIncludes": [
+        "ind:TOWSStrategy"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ind:towsProducesStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "TOWS Produces Strategy",
+      "description": "TOWS strategy option, if adopted, produces a VSOM strategy component",
+      "domainIncludes": [
+        "ind:TOWSStrategy"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategyComponent"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "ind:analyzedByAnsoff",
+      "@type": "owl:ObjectProperty",
+      "name": "Analyzed By Ansoff",
+      "description": "Organization context is analyzed by an Ansoff growth matrix",
+      "domainIncludes": [
+        "orgctx:OrganizationContext"
+      ],
+      "rangeIncludes": [
+        "ind:AnsoffGrowthMatrix"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "ind:hasAnsoffQuadrant",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Ansoff Quadrant",
+      "description": "Ansoff matrix contains four growth quadrants",
+      "domainIncludes": [
+        "ind:AnsoffGrowthMatrix"
+      ],
+      "rangeIncludes": [
+        "ind:AnsoffQuadrant"
+      ],
+      "oaa:cardinality": "4..4"
+    },
+    {
+      "@id": "ind:ansoffInformsStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "Ansoff Informs Strategy",
+      "description": "Ansoff growth direction choice informs VSOM strategy formulation",
+      "domainIncludes": [
+        "ind:AnsoffGrowthMatrix"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategyComponent"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "ind:ansoffInformedBySWOT",
+      "@type": "owl:ObjectProperty",
+      "name": "Ansoff Informed By SWOT",
+      "description": "Ansoff growth direction is informed by SWOT assessment",
+      "domainIncludes": [
+        "ind:AnsoffGrowthMatrix"
+      ],
+      "rangeIncludes": [
+        "ind:SWOTAnalysis"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ind:hasCompetitivePositioning",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Competitive Positioning",
+      "description": "Organization context has a competitive positioning assessment",
+      "domainIncludes": [
+        "orgctx:OrganizationContext"
+      ],
+      "rangeIncludes": [
+        "ind:CompetitivePositioning"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "ind:positioningInformsStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "Positioning Informs Strategy",
+      "description": "Competitive positioning informs VSOM strategy",
+      "domainIncludes": [
+        "ind:CompetitivePositioning"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategyComponent"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "ind:positioningLeveragesDifferentiator",
+      "@type": "owl:ObjectProperty",
+      "name": "Positioning Leverages Differentiator",
+      "description": "Competitive positioning leverages value proposition differentiators",
+      "domainIncludes": [
+        "ind:CompetitivePositioning"
+      ],
+      "rangeIncludes": [
+        "vp:Differentiator"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "VP-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-IND-001",
+      "name": "Porter's Must Have Five Assessments",
+      "condition": "IF a PortersFiveForcesAnalysis is created",
+      "action": "THEN it MUST have exactly five ForceAssessment instances covering all five force types",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-002",
+      "name": "Porter's Must Reference Landscape",
+      "condition": "IF a PortersFiveForcesAnalysis is created",
+      "action": "THEN competitiveLandscapeRef MUST reference a valid orgctx:CompetitiveLandscape @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-003",
+      "name": "Force Assessment Must Reference Existing Force",
+      "condition": "IF a ForceAssessment is created",
+      "action": "THEN competitiveForceRef MUST reference a valid orgctx:CompetitiveForce @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-004",
+      "name": "Force Weights Must Sum to 1.0",
+      "condition": "IF ForceAssessment.weight values are specified",
+      "action": "THEN the sum of all five force weights MUST equal 1.0",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-005",
+      "name": "SWOT Must Have All Quadrants",
+      "condition": "IF a SWOTAnalysis is created",
+      "action": "THEN it MUST have at least one SWOTFactor in each quadrant (Strength, Weakness, Opportunity, Threat)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-006",
+      "name": "SWOT Weakness Should Link Gap",
+      "condition": "IF a SWOTFactor has quadrant 'Weakness' and significance 'Critical' or 'High'",
+      "action": "THEN gapRef SHOULD reference a ga:IdentifiedGap or ea:CapabilityGap @id",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-IND-007",
+      "name": "SWOT External Factor Should Link Trend",
+      "condition": "IF a SWOTFactor has quadrant 'Opportunity' or 'Threat'",
+      "action": "THEN trendRef or competitiveForceRef SHOULD reference an orgctx entity for evidence",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-IND-008",
+      "name": "TOWS Strategy Must Cross Quadrants",
+      "condition": "IF a TOWSStrategy is created",
+      "action": "THEN internalFactorRefs MUST reference S or W factors matching the TOWS quadrant, AND externalFactorRefs MUST reference O or T factors matching the TOWS quadrant",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-009",
+      "name": "TOWS Quadrant Factor Consistency",
+      "condition": "IF a TOWSStrategy has towsQuadrant 'SO'",
+      "action": "THEN internalFactorRefs MUST reference Strength factors AND externalFactorRefs MUST reference Opportunity factors. Similarly for WO, ST, WT.",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-010",
+      "name": "Ansoff Must Have Four Quadrants",
+      "condition": "IF an AnsoffGrowthMatrix is created",
+      "action": "THEN it MUST have exactly four AnsoffQuadrant instances",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-011",
+      "name": "Ansoff Penetration Must Reference Existing",
+      "condition": "IF an AnsoffQuadrant has quadrantType 'MarketPenetration'",
+      "action": "THEN existingProductRefs and existingMarketRefs SHOULD reference existing orgctx:Product and orgctx:MarketContext @ids",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-IND-012",
+      "name": "Ansoff Diversification Must Specify Type",
+      "condition": "IF an AnsoffQuadrant has quadrantType 'Diversification'",
+      "action": "THEN diversificationType MUST be specified (Related, Unrelated, or Conglomerate)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-013",
+      "name": "Competitive Positioning Must Have Generic Strategy",
+      "condition": "IF a CompetitivePositioning is created",
+      "action": "THEN genericStrategy MUST be one of Porter's four generic strategies",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-014",
+      "name": "Adopted TOWS Strategy Must Reference VSOM",
+      "condition": "IF a TOWSStrategy has adoptionStatus 'Adopted'",
+      "action": "THEN vsomStrategyRef MUST reference a valid vsom:StrategyComponent @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-IND-015",
+      "name": "Significant Porter Force Change Triggers Review",
+      "condition": "IF a ForceAssessment shows intensityLevel changed by 2+ levels from previous assessment",
+      "action": "THEN a vsom:StrategicReviewCycle with triggerType 'MarketEvent' SHOULD be triggered",
+      "severity": "warning"
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-12",
+    "modifiedBy": "OAA v6.1.0 Agent",
+    "changeNotes": "Initial release of INDUSTRY-ONT as part of VE-Series VSOM-SA (Strategy Analysis). Provides Porter's Five Forces Analysis, SWOT/TOWS strategy synthesis, Ansoff Growth Matrix, and Competitive Positioning frameworks. References existing ORG-CONTEXT-ONT entities (CompetitiveLandscape, CompetitiveForce, Competitor, Trend) — adds analytical framework layer without duplication. Cross-references VSOM-ONT v3.0.0, BSC-ONT v1.0.0, GA-ONT v1.0.0, EA-CORE-ONT v1.0.0, VP-ONT v1.2.3, PPM-ONT v4.0.0.",
+    "versionHistory": []
+  },
+  "oaa:ontologyId": "IND-ONT",
+  "oaa:series": "VE-Series / VSOM-SA",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of PortersFiveForcesAnalysis within this ontology?",
+      "targetEntities": [
+        "ind:PortersFiveForcesAnalysis"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of ForceAssessment within this ontology?",
+      "targetEntities": [
+        "ind:ForceAssessment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of SWOTAnalysis within this ontology?",
+      "targetEntities": [
+        "ind:SWOTAnalysis"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of SWOTFactor within this ontology?",
+      "targetEntities": [
+        "ind:SWOTFactor"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of TOWSSynthesis within this ontology?",
+      "targetEntities": [
+        "ind:TOWSSynthesis"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of TOWSStrategy within this ontology?",
+      "targetEntities": [
+        "ind:TOWSStrategy"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of AnsoffGrowthMatrix within this ontology?",
+      "targetEntities": [
+        "ind:AnsoffGrowthMatrix"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of AnsoffQuadrant within this ontology?",
+      "targetEntities": [
+        "ind:AnsoffQuadrant"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of CompetitivePositioning within this ontology?",
+      "targetEntities": [
+        "ind:CompetitivePositioning"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

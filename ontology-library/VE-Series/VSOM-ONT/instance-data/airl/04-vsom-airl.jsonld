@@ -1,0 +1,421 @@
+{
+  "@context": {
+    "vsom": "https://platformcore.io/ontology/vsom/",
+    "bsc": "https://platformcore.io/ontology/bsc/",
+    "orgctx": "https://platformcore.io/ontology/org-context/",
+    "rrr": "https://platformcore.io/ontology/rrr/",
+    "pfc": "https://platformcore.io/ontology/"
+  },
+  "@type": "vsom:VSOMFramework",
+  "@id": "vsom:framework-airl",
+  "vsom:organizationContextRef": "org:ctx-airl",
+
+  "vsom:vision": {
+    "@type": "vsom:Vision",
+    "@id": "vsom:vision-airl",
+    "vsom:visionStatement": "Become the UK's trusted platform for NCSC CAF compliance — replacing manual audit spreadsheets with an agentic assessment engine that delivers 70% cost savings, 5x faster assessments, and continuous compliance visibility from board level to IGP level.",
+    "vsom:visionScope": "organizational",
+    "vsom:visionHorizon": 5,
+    "vsom:visionOwner": "rrr:role-airl-pfi-owner",
+    "vsom:status": "draft",
+    "vsom:keyInsight": "NIS Regulations require ~700 UK operators of essential services to demonstrate CAF compliance. Current approach: Big 4 consulting at £200K-£1M per engagement, 3-6 month cycles. Opportunity: platform-based compliance at 70% cost reduction with continuous monitoring."
+  },
+
+  "vsom:strategies": [
+    {
+      "@type": "vsom:Strategy",
+      "@id": "vsom:strategy-airl-1",
+      "vsom:strategyName": "Agentic CAF Assessment Engine",
+      "vsom:strategyDescription": "Build an agentic audit engine that automates gap analysis across the full CAF hierarchy (4 Objectives → 14 Principles → 41 Outcomes → ~559 IGPs), with evidence collection, scoring, and remediation sequencing.",
+      "vsom:strategyType": "innovation",
+      "vsom:strategicFocus": "Product differentiation through AI-driven automation",
+      "vsom:timeHorizon": 2,
+      "vsom:strategyScope": "organizational",
+      "vsom:setByRole": "rrr:role-airl-pfi-owner",
+      "vsom:informedBy": ["vsom:vision-airl"],
+      "vsom:status": "draft"
+    },
+    {
+      "@type": "vsom:Strategy",
+      "@id": "vsom:strategy-airl-2",
+      "vsom:strategyName": "Cross-Framework Compliance Bridge",
+      "vsom:strategyDescription": "Map CAF compliance to parallel frameworks (ISO 27001, GDPR, Azure MCSB, DSPT) so that a single assessment covers multiple regulatory requirements, reducing total compliance burden for customers.",
+      "vsom:strategyType": "operational_excellence",
+      "vsom:strategicFocus": "Customer value through compliance efficiency",
+      "vsom:timeHorizon": 2,
+      "vsom:strategyScope": "organizational",
+      "vsom:setByRole": "rrr:role-airl-pfi-owner",
+      "vsom:informedBy": ["vsom:vision-airl"],
+      "vsom:status": "draft",
+      "vsom:frameworkMappings": [
+        { "from": "NCSC-CAF", "to": "ISO 27001:2022", "ontology": "NCSC-CAF-ONT ↔ RMF-IS27005-ONT" },
+        { "from": "NCSC-CAF", "to": "GDPR/UK DPA", "ontology": "NCSC-CAF-ONT ↔ PII-ONT" },
+        { "from": "NCSC-CAF", "to": "Azure MCSB", "ontology": "NCSC-CAF-ONT ↔ MCSB-ONT" },
+        { "from": "NCSC-CAF", "to": "DSPT", "ontology": "NCSC-CAF-ONT ↔ DSPT-ONT" }
+      ]
+    },
+    {
+      "@type": "vsom:Strategy",
+      "@id": "vsom:strategy-airl-3",
+      "vsom:strategyName": "Cyber Insurance Readiness Scoring",
+      "vsom:strategyDescription": "Provide a quantified cyber insurance readiness score (0-100) based on CAF compliance evidence, enabling customers to negotiate better premiums and demonstrate due diligence to underwriters.",
+      "vsom:strategyType": "customer_centricity",
+      "vsom:strategicFocus": "Financial value creation for customers",
+      "vsom:timeHorizon": 2,
+      "vsom:strategyScope": "organizational",
+      "vsom:setByRole": "rrr:role-airl-pfi-owner",
+      "vsom:informedBy": ["vsom:vision-airl", "vsom:strategy-airl-1"],
+      "vsom:status": "draft"
+    },
+    {
+      "@type": "vsom:Strategy",
+      "@id": "vsom:strategy-airl-4",
+      "vsom:strategyName": "UK Public Sector Market Penetration",
+      "vsom:strategyDescription": "Establish AIRL as the default CAF compliance platform for UK public sector and CNI operators, leveraging GovAssure preparation as the entry point.",
+      "vsom:strategyType": "growth",
+      "vsom:strategicFocus": "Market development and customer acquisition",
+      "vsom:timeHorizon": 3,
+      "vsom:strategyScope": "organizational",
+      "vsom:setByRole": "rrr:role-airl-pfi-owner",
+      "vsom:informedBy": ["vsom:vision-airl"],
+      "vsom:status": "draft"
+    }
+  ],
+
+  "vsom:objectives": [
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-airl-f1",
+      "vsom:objectiveName": "Establish recurring compliance revenue",
+      "vsom:objectiveDescription": "Build subscription-based revenue from UK public sector and CNI operators for continuous CAF compliance monitoring",
+      "vsom:bscPerspective": "Financial",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:role-airl-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-airl-4",
+      "vsom:timeframe": "Multi-year"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-airl-f2",
+      "vsom:objectiveName": "70% cost reduction vs Big 4",
+      "vsom:objectiveDescription": "Platform-based assessment at 70% lower cost than traditional Big 4 consulting engagements",
+      "vsom:bscPerspective": "Financial",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:role-airl-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-airl-1",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "£200K-£1M (Big 4)",
+      "vsom:target": "£60K-£300K (AIRL platform)"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-airl-c1",
+      "vsom:objectiveName": "5x faster time-to-compliance",
+      "vsom:objectiveDescription": "Reduce full CAF assessment from 200+ hours to 40 hours through agentic automation",
+      "vsom:bscPerspective": "Customer",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:role-airl-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-airl-1",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "200+ hours",
+      "vsom:target": "40 hours"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-airl-c2",
+      "vsom:objectiveName": "Achieve 85% CAF compliance score for clients",
+      "vsom:objectiveDescription": "Help customers reach 85% CAF compliance score within first assessment cycle",
+      "vsom:bscPerspective": "Customer",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:role-airl-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-airl-1",
+      "vsom:timeframe": "Annual",
+      "vsom:target": "85% CAF compliance score"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-airl-c3",
+      "vsom:objectiveName": "Cyber insurance readiness above 75/100",
+      "vsom:objectiveDescription": "Clients using the platform achieve cyber insurance readiness score of 75+ enabling premium negotiation",
+      "vsom:bscPerspective": "Customer",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:role-airl-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-airl-3",
+      "vsom:timeframe": "Annual",
+      "vsom:target": "75/100"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-airl-c4",
+      "vsom:objectiveName": "Cross-framework compliance coverage",
+      "vsom:objectiveDescription": "Single assessment covers CAF + ISO 27001 + GDPR requirements, reducing total compliance burden",
+      "vsom:bscPerspective": "Customer",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:role-airl-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-airl-2",
+      "vsom:timeframe": "Multi-year"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-airl-p1",
+      "vsom:objectiveName": "Evidence completeness rate 95%+",
+      "vsom:objectiveDescription": "Agentic evidence collection achieves 95%+ completeness across all ~559 IGPs",
+      "vsom:bscPerspective": "InternalProcess",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:role-airl-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-airl-1",
+      "vsom:timeframe": "Annual",
+      "vsom:target": "95%"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-airl-p2",
+      "vsom:objectiveName": "Remediation plan acceptance rate 90%",
+      "vsom:objectiveDescription": "Auto-generated remediation plans accepted by customers without major modification",
+      "vsom:bscPerspective": "InternalProcess",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:role-airl-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-airl-1",
+      "vsom:timeframe": "Annual",
+      "vsom:target": "90%"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-airl-p3",
+      "vsom:objectiveName": "Board-ready dashboard generation",
+      "vsom:objectiveDescription": "Automated generation of board-level compliance dashboards from assessment data",
+      "vsom:bscPerspective": "InternalProcess",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:role-airl-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-airl-1",
+      "vsom:timeframe": "Annual"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-airl-l1",
+      "vsom:objectiveName": "CAF ontology depth and accuracy",
+      "vsom:objectiveDescription": "Complete and accurate NCSC-CAF ontology with all ~559 IGPs modelled and validated",
+      "vsom:bscPerspective": "LearningGrowth",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:role-airl-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-airl-1",
+      "vsom:timeframe": "Annual"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-airl-l2",
+      "vsom:objectiveName": "GovAssure methodology expertise",
+      "vsom:objectiveDescription": "Deep understanding of GovAssure assessment methodology embedded in platform logic",
+      "vsom:bscPerspective": "LearningGrowth",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:role-airl-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-airl-4",
+      "vsom:timeframe": "Multi-year"
+    }
+  ],
+
+  "vsom:metrics": [
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-airl-c1-1",
+      "vsom:metricName": "Assessment Time Reduction",
+      "vsom:metricType": "Lagging",
+      "vsom:formula": "Hours for full CAF assessment (from start to complete report)",
+      "vsom:unit": "hours",
+      "vsom:baselineValue": 200,
+      "vsom:targetValue": 40,
+      "vsom:dataSource": "Assessment engine telemetry",
+      "vsom:frequency": "Per assessment",
+      "vsom:objectiveRef": "vsom:obj-airl-c1"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-airl-c2-1",
+      "vsom:metricName": "Average CAF Compliance Score",
+      "vsom:metricType": "Lagging",
+      "vsom:formula": "Average compliance % across all client assessments",
+      "vsom:unit": "%",
+      "vsom:baselineValue": null,
+      "vsom:targetValue": 85,
+      "vsom:dataSource": "Assessment scoring engine",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-airl-c2"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-airl-c3-1",
+      "vsom:metricName": "Cyber Insurance Readiness Score",
+      "vsom:metricType": "Leading",
+      "vsom:formula": "Composite score (0-100) based on CAF evidence completeness, control maturity, and risk posture",
+      "vsom:unit": "score (0-100)",
+      "vsom:baselineValue": null,
+      "vsom:targetValue": 75,
+      "vsom:dataSource": "Insurance scoring module",
+      "vsom:frequency": "Per assessment",
+      "vsom:objectiveRef": "vsom:obj-airl-c3"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-airl-p1-1",
+      "vsom:metricName": "Evidence Completeness Rate",
+      "vsom:metricType": "Leading",
+      "vsom:formula": "IGPs with evidence / Total IGPs in scope × 100%",
+      "vsom:unit": "%",
+      "vsom:baselineValue": 0,
+      "vsom:targetValue": 95,
+      "vsom:dataSource": "Evidence collection engine",
+      "vsom:frequency": "Per assessment",
+      "vsom:objectiveRef": "vsom:obj-airl-p1"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-airl-p2-1",
+      "vsom:metricName": "Remediation Acceptance Rate",
+      "vsom:metricType": "Lagging",
+      "vsom:formula": "Auto-generated remediations accepted / Total remediations presented × 100%",
+      "vsom:unit": "%",
+      "vsom:baselineValue": 0,
+      "vsom:targetValue": 90,
+      "vsom:dataSource": "Remediation workflow tracking",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-airl-p2"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-airl-l1-1",
+      "vsom:metricName": "IGP Coverage",
+      "vsom:metricType": "Leading",
+      "vsom:formula": "IGPs modelled in NCSC-CAF-ONT / Total IGPs in CAF v4.0 × 100%",
+      "vsom:unit": "%",
+      "vsom:baselineValue": null,
+      "vsom:targetValue": 100,
+      "vsom:dataSource": "Ontology completeness audit",
+      "vsom:frequency": "Quarterly",
+      "vsom:objectiveRef": "vsom:obj-airl-l1"
+    }
+  ],
+
+  "bsc:balancedScorecard": {
+    "@type": "bsc:BalancedScorecard",
+    "@id": "bsc:scorecard-airl",
+    "bsc:perspectives": [
+      {
+        "@type": "bsc:BSCPerspective",
+        "bsc:perspectiveName": "Financial",
+        "bsc:perspectiveWeight": 0.25,
+        "bsc:perspectiveOwnedBy": "rrr:role-airl-pfi-owner",
+        "bsc:objectives": ["vsom:obj-airl-f1", "vsom:obj-airl-f2"]
+      },
+      {
+        "@type": "bsc:BSCPerspective",
+        "bsc:perspectiveName": "Customer",
+        "bsc:perspectiveWeight": 0.30,
+        "bsc:perspectiveOwnedBy": "rrr:role-airl-pfi-owner",
+        "bsc:objectives": ["vsom:obj-airl-c1", "vsom:obj-airl-c2", "vsom:obj-airl-c3", "vsom:obj-airl-c4"]
+      },
+      {
+        "@type": "bsc:BSCPerspective",
+        "bsc:perspectiveName": "InternalProcess",
+        "bsc:perspectiveWeight": 0.25,
+        "bsc:perspectiveOwnedBy": "rrr:role-airl-pfi-owner",
+        "bsc:objectives": ["vsom:obj-airl-p1", "vsom:obj-airl-p2", "vsom:obj-airl-p3"]
+      },
+      {
+        "@type": "bsc:BSCPerspective",
+        "bsc:perspectiveName": "LearningGrowth",
+        "bsc:perspectiveWeight": 0.20,
+        "bsc:perspectiveOwnedBy": "rrr:role-airl-pfi-owner",
+        "bsc:objectives": ["vsom:obj-airl-l1", "vsom:obj-airl-l2"]
+      }
+    ]
+  },
+
+  "bsc:strategyMap": {
+    "@type": "bsc:StrategyMap",
+    "@id": "bsc:strategy-map-airl",
+    "bsc:causalLinks": [
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-airl-1",
+        "bsc:fromObjective": "vsom:obj-airl-l1",
+        "bsc:toObjective": "vsom:obj-airl-p1",
+        "bsc:hypothesis": "If the CAF ontology covers all ~559 IGPs (L&G), then evidence completeness reaches 95% (Internal Process), because complete ontology coverage enables comprehensive automated evidence collection.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-airl-2",
+        "bsc:fromObjective": "vsom:obj-airl-l2",
+        "bsc:toObjective": "vsom:obj-airl-p3",
+        "bsc:hypothesis": "If GovAssure methodology is embedded in platform logic (L&G), then board-ready dashboards are generated automatically (Internal Process), because the methodology defines what boards need to see.",
+        "bsc:confidence": "Medium"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-airl-3",
+        "bsc:fromObjective": "vsom:obj-airl-p1",
+        "bsc:toObjective": "vsom:obj-airl-c2",
+        "bsc:hypothesis": "If evidence completeness reaches 95% (Internal Process), then clients achieve 85% CAF compliance (Customer), because comprehensive evidence enables accurate scoring and targeted remediation.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-airl-4",
+        "bsc:fromObjective": "vsom:obj-airl-p2",
+        "bsc:toObjective": "vsom:obj-airl-c1",
+        "bsc:hypothesis": "If 90% of remediation plans are accepted (Internal Process), then assessment time drops to 40 hours (Customer), because accepted remediations eliminate back-and-forth revision cycles.",
+        "bsc:confidence": "Medium"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-airl-5",
+        "bsc:fromObjective": "vsom:obj-airl-c2",
+        "bsc:toObjective": "vsom:obj-airl-c3",
+        "bsc:hypothesis": "If clients reach 85% CAF compliance (Customer), then insurance readiness scores exceed 75 (Customer), because CAF compliance is the primary input to cyber insurance underwriting.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-airl-6",
+        "bsc:fromObjective": "vsom:obj-airl-c1",
+        "bsc:toObjective": "vsom:obj-airl-f2",
+        "bsc:hypothesis": "If assessment time drops to 40 hours (Customer), then cost is 70% lower than Big 4 (Financial), because platform automation replaces expensive consultant hours.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-airl-7",
+        "bsc:fromObjective": "vsom:obj-airl-c3",
+        "bsc:toObjective": "vsom:obj-airl-f1",
+        "bsc:hypothesis": "If insurance readiness exceeds 75 (Customer), then recurring revenue grows (Financial), because insurance-driven compliance creates annual renewal cycles.",
+        "bsc:confidence": "Medium"
+      }
+    ]
+  },
+
+  "pfc:version": "1.0.0",
+  "pfc:status": "draft",
+  "pfc:createdDate": "2026-03-01",
+  "pfc:generatedBy": "pfc-vsom (manual execution)",
+  "pfc:sourceDocuments": [
+    "Foundation/ORG-CONTEXT-ONT/instance-data/airl/01-org-context-airl.jsonld",
+    "VE-Series/VP-ONT/instance-data/vp-airl-instance-v1.0.0.jsonld",
+    "Foundation/IND-ONT/ind-instances-airl-caf-v0.1.0.json",
+    "PBS/STRATEGY/BRIEFING-Epic34-PFI-Instance-Readiness.md",
+    "PBS/ARCHITECTURE/PFI-CICD/PFI-AIRL-CAF-AZA-Setup-Guide.md"
+  ],
+  "pfc:vsomSummary": {
+    "vision": "UK's trusted platform for NCSC CAF compliance",
+    "visionHorizon": "5 years",
+    "strategies": 4,
+    "strategyTypes": ["innovation", "operational_excellence", "customer_centricity", "growth"],
+    "objectives": 11,
+    "objectivesByPerspective": { "Financial": 2, "Customer": 4, "InternalProcess": 3, "LearningGrowth": 2 },
+    "metrics": 6,
+    "metricsLeading": 3,
+    "metricsLagging": 3,
+    "bscCausalChains": 7,
+    "saGrounding": { "MACRO": false, "INDUSTRY": false },
+    "note": "VSOM formulated from VP instance data and PFI readiness briefing. RCSG-heavy compliance focus. MACRO and INDUSTRY analysis not yet available."
+  }
+}

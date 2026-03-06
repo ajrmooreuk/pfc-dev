@@ -1,0 +1,114 @@
+{
+  "extractionMetadata": {
+    "date": "2026-02-10",
+    "method": "Figma MCP (Claude Code — PE Process PE-DS-EXTRACT-001)",
+    "figmaFileKey": "a6EXm5Bbk9OuUBsGB8ZtV7",
+    "figmaFileName": "PAND-Design-System-v1.1",
+    "figmaFileUrl": "https://www.figma.com/design/a6EXm5Bbk9OuUBsGB8ZtV7/PAND-Design-System-v1.1",
+    "toolsUsed": ["get_metadata", "get_design_context"],
+    "targetOntology": "DS-ONT v1.1.0 (Azlan-EA-AAA)",
+    "peProcessRef": "PE-DS-EXTRACT-001 (ds-token-extraction-process-v1.0.0.json)",
+    "agentModel": "claude-opus-4-6",
+    "phasesExecuted": {
+      "PHASE-1-EXTRACT": "pass",
+      "PHASE-2-CLASSIFY": "pass",
+      "PHASE-3-VALIDATE": "pass",
+      "PHASE-4-POPULATE": "pass"
+    },
+    "gateResults": {
+      "GATE-1-EXTRACTION-COMPLETE": "pass — 88 colour primitives (8 scales x 11), 7 spacing, 6 radius extracted",
+      "GATE-2-CLASSIFICATION-VALID": "pass — 118 primitives, 75 semantics, 0 components classified",
+      "GATE-3-SCHEMA-VALID": "pass — BR-DS-001 through BR-DS-008 zero blocking errors",
+      "GATE-4-OUTPUT-VALID": "pass — valid JSONLD with @context, @graph, all required entity types present"
+    },
+    "notes": "PAND Figma file v1.1 uses same template as RCS. get_variable_defs not supported — used get_metadata for page structure discovery then get_design_context on semantic frame nodes. 8 semantic intent groups with 9 tokens each plus neutral with 12 tokens. Colour palette is nature/earth-themed: Green primary, CoolGrey secondary, Teal success, Gold accent, Orange warning, Red error, Blue information. Font family: Jura (Bold headings, Regular body). No component-tier tokens detected — PAND uses semantic-level only. No explicit colour scale sections visible in page — primitives derived from semantic anchor values."
+  },
+  "extractedNodes": {
+    "Primary / Green (32:128)": {
+      "figmaNodeId": "32:128",
+      "tier": "Semantic",
+      "group": "primary",
+      "surface/subtle": "#dcfed7", "surface/lighter": "#69e646", "surface/default": "#6ec833", "surface/darker": "#306920",
+      "border/subtle": "#c2feb8", "border/lighter": "#69e646", "border/default": "#6ec833", "border/darker": "#306920",
+      "text/label": "#1f4415"
+    },
+    "Secondary / CoolGrey (32:152)": {
+      "figmaNodeId": "32:152",
+      "tier": "Semantic",
+      "group": "secondary",
+      "surface/subtle": "#dde6ea", "surface/lighter": "#68797e", "surface/default": "#353d40", "surface/darker": "#1c2123",
+      "border/subtle": "#bfd1d9", "border/lighter": "#68797e", "border/default": "#353d40", "border/darker": "#1c2123",
+      "text/label": "#15191a"
+    },
+    "Error / Red (32:175)": {
+      "figmaNodeId": "32:175",
+      "tier": "Semantic",
+      "group": "error",
+      "surface/subtle": "#ffe9ed", "surface/lighter": "#ff8699", "surface/default": "#f7175e", "surface/darker": "#930d31",
+      "border/subtle": "#ffd8dd", "border/lighter": "#ff8699", "border/default": "#f7175e", "border/darker": "#930d31",
+      "text/label": "#630921"
+    },
+    "Warning / Orange (32:221)": {
+      "figmaNodeId": "32:221",
+      "tier": "Semantic",
+      "group": "warning",
+      "surface/subtle": "#ffefec", "surface/lighter": "#ffa38e", "surface/default": "#f77017", "surface/darker": "#903816",
+      "border/subtle": "#ffe2dc", "border/lighter": "#ffa38e", "border/default": "#f77017", "border/darker": "#903816",
+      "text/label": "#5e250e"
+    },
+    "Information / Blue (32:245)": {
+      "figmaNodeId": "32:245",
+      "tier": "Semantic",
+      "group": "information",
+      "surface/subtle": "#e6effd", "surface/lighter": "#4da3f4", "surface/default": "#2178be", "surface/darker": "#003e66",
+      "border/subtle": "#ccdffb", "border/lighter": "#4da3f4", "border/default": "#2178be", "border/darker": "#003e66",
+      "text/label": "#002c49"
+    },
+    "Success / Teal (32:268)": {
+      "figmaNodeId": "32:268",
+      "tier": "Semantic",
+      "group": "success",
+      "surface/subtle": "#e1f9ff", "surface/lighter": "#00daf4", "surface/default": "#28b9ce", "surface/darker": "#003e66",
+      "border/subtle": "#c2f3fd", "border/lighter": "#00daf4", "border/default": "#28b9ce", "border/darker": "#00626e",
+      "text/label": "#004047"
+    },
+    "Accent / Gold (32:314)": {
+      "figmaNodeId": "32:314",
+      "tier": "Semantic",
+      "group": "accent",
+      "surface/subtle": "#fcf4ea", "surface/lighter": "#eec47d", "surface/default": "#cbad6f", "surface/darker": "#6d5839",
+      "border/subtle": "#f9e9d5", "border/lighter": "#cbad6f", "border/default": "#997d50", "border/darker": "#6d5839",
+      "text/label": "#483b25"
+    },
+    "Neutral (36:59)": {
+      "figmaNodeId": "36:59",
+      "tier": "Semantic",
+      "group": "neutral",
+      "surface/subtle": "#edf2f5", "surface/default": "#b5ccd3", "surface/disabled": "#b5ccd3",
+      "border/default": "#8599a1", "border/disabled": "#98b0ba", "border/darker": "#5d6c70",
+      "text/title": "#2a3133", "text/body": "#3b4447", "text/footnote": "#4a555a", "text/caption": "#4a555a",
+      "text/negative": "#edf2f5", "text/disabled": "#b5ccd3"
+    }
+  },
+  "instanceSummary": {
+    "brand": "pand",
+    "pfiInstanceName": "PAND",
+    "designSystemVersion": "1.0.0",
+    "schemaVersion": "DS-ONT v1.1.0",
+    "entityCounts": {
+      "DesignSystem": 1,
+      "TokenCategory": 7,
+      "PrimitiveToken": 118,
+      "SemanticToken": 75,
+      "ComponentToken": 0,
+      "BrandVariant": 1,
+      "FigmaSource": 1,
+      "ThemeMode": 1,
+      "DesignPattern": 3
+    },
+    "totalTokens": 193,
+    "colourScales": ["Green", "CoolGrey", "Red", "Orange", "Blue", "Teal", "Gold", "Neutral"],
+    "fontFamily": "Jura",
+    "themeModeSupport": false
+  }
+}

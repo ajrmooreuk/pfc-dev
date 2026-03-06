@@ -1,0 +1,450 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "emc": "https://oaa-ontology.org/v5/emc/",
+    "lsc": "https://oaa-ontology.org/v6/logistics/",
+    "vp": "https://oaa-ontology.org/v5/vp/",
+    "rrr": "https://oaa-ontology.org/v5/rrr/",
+    "org": "https://oaa-ontology.org/v5/organization/",
+    "org-ctx": "https://platformcore.io/ontology/org-context/",
+    "kpi": "https://oaa-ontology.org/v5/kpi/",
+    "bsc": "https://oaa-ontology.org/v6/bsc/",
+    "grc": "https://oaa-ontology.org/v6/grc-framework/",
+    "ind": "https://oaa-ontology.org/v6/industry/",
+    "ds": "https://platformcore.io/ontology/design-system/",
+    "ofm": "https://oaa-ontology.org/v6/order-fulfilment/"
+  },
+  "@type": "InstanceDataSet",
+  "@id": "emc:wwg-emc-instance-v1.0.0",
+  "metadata": {
+    "title": "W4M-WWG EMC InstanceConfiguration — Supply-Demand Procurement Graph",
+    "version": "1.0.0",
+    "created": "2026-02-24",
+    "author": "PF-Core Platform Team",
+    "owningInstance": "PFI-W4M-WWG",
+    "sourceOntology": "EMC-ONT v5.0.0",
+    "oaaVersion": "7.0.0",
+    "parentEpic": "Epic 45 (#634)",
+    "parentFeature": "F45.4 (#638)",
+    "description": "EMC InstanceConfiguration for World Wide Gourmet — the second PFI InstanceConfiguration (after BAIV), proving the EMC pattern is repeatable. Models a UK specialist food importer with 4 inbound supply corridors (AU, NZ, IS, IE) and demand-side customer fulfilment via OFM-ONT. All 3 layers active.",
+    "designDirectorPipeline": {
+      "sourceOntologies": ["VP-ONT", "RRR-ONT", "LSC-ONT", "OFM-ONT"],
+      "compositionTarget": "emc:ComposedGraphSpec-W4M-WWG",
+      "instanceConfigRef": "emc:InstanceConfiguration-W4M-WWG"
+    }
+  },
+  "examples": [
+
+    {"_section": "=== INSTANCE CONFIGURATION ==="},
+
+    {
+      "@type": "emc:InstanceConfiguration",
+      "@id": "emc:InstanceConfiguration-W4M-WWG",
+      "productCode": "W4M-WWG",
+      "description": "World Wide Gourmet — UK specialist food importer sourcing from AU, NZ, Iceland, and Ireland. B2B supply-demand graph bridging 4 inbound LSC corridors through warehouse margin pool to customer order fulfilment. Second PFI InstanceConfiguration after BAIV, proving EMC pattern repeatability.",
+      "contextLevel": "PFI",
+      "requirementScopes": [
+        "PRODUCT",
+        "FULFILMENT",
+        "COMPETITIVE"
+      ],
+      "maturityLevel": 2,
+      "verticalMarket": "Food Import / International Trade",
+      "requiredOntologies": [
+        "ORG-ONT",
+        "ORG-CONTEXT-ONT",
+        "VP-ONT",
+        "RRR-ONT",
+        "LSC-ONT",
+        "OFM-ONT",
+        "KPI-ONT",
+        "BSC-ONT"
+      ],
+      "recommendedOntologies": [
+        "PMF-ONT",
+        "GRC-FW-ONT",
+        "INDUSTRY-ONT"
+      ],
+      "pendingOntologies": [],
+      "appSkeletonConfig": {
+        "baseApp": "pfc-visualiser",
+        "pfiOverrides": "PBS/ONTOLOGIES/ontology-library/PE-Series/DS-ONT/instance-data/wwg-ds-instance-v1.0.0.jsonld",
+        "productOverrides": null,
+        "appOverrides": null
+      },
+      "instanceDataRefs": [
+        {
+          "ontology": "VP-ONT",
+          "file": "VE-Series/VP-ONT/instance-data/vp-wwg-instance-v1.0.0.jsonld",
+          "description": "4 ICPs, 3 problems, 5 benefits, VP-RRR alignment"
+        },
+        {
+          "ontology": "RRR-ONT",
+          "file": "VE-Series/RRR-ONT/instance-data/rrr-wwg-instance-v1.0.0.jsonld",
+          "description": "7 functional roles, 14 RACI assignments"
+        },
+        {
+          "ontology": "LSC-ONT",
+          "file": "PE-Series/LSC-ONT/instance-data/wwg/wwg-lsc-au-uk-v1.0.0.json",
+          "description": "AU-UK chilled/frozen meat corridor (flagship) — 11 nodes, 9 legs"
+        },
+        {
+          "ontology": "LSC-ONT",
+          "file": "PE-Series/LSC-ONT/instance-data/wwg/wwg-lsc-nz-uk-v1.0.0.json",
+          "description": "NZ-UK dairy & lamb corridor — 10 nodes, 8 legs, Panama routing"
+        },
+        {
+          "ontology": "LSC-ONT",
+          "file": "PE-Series/LSC-ONT/instance-data/wwg/wwg-lsc-is-uk-v1.0.0.json",
+          "description": "IS-UK seafood corridor — 7 nodes, 5 legs, quota-dependent"
+        },
+        {
+          "ontology": "LSC-ONT",
+          "file": "PE-Series/LSC-ONT/instance-data/wwg/wwg-lsc-ie-uk-v1.0.0.json",
+          "description": "IE-UK dairy & beef corridor — 5 nodes, 3 legs, Windsor Framework"
+        },
+        {
+          "ontology": "KPI-ONT + BSC-ONT",
+          "file": "VE-Series/KPI-ONT/instance-data/wwg/wwg-kpi-bsc-instance-v1.0.0.jsonld",
+          "description": "24 KPIs, 4 BSC perspectives, 12 objectives, 1 strategy map with 16 causal links"
+        },
+        {
+          "ontology": "OFM-ONT",
+          "file": "PE-Series/OFM-ONT/instance-data/wwg/wwg-ofm-instances-v1.0.0.json",
+          "description": "5 SalesOrders, 18 OrderLines, 12 StockAllocations, 8 StorageEvents, 5 DispatchLegs, 4 CustomerChanges, 12 MarginImpacts, 8 FulfilmentRisks, 4 DemandPatterns, 1 CapacityForecast"
+        }
+      ],
+
+      "scopeRules": [
+
+        {"_section": "=== SCOPE RULE 1: PRODUCT MATCH ==="},
+
+        {
+          "@type": "emc:GraphScopeRule",
+          "@id": "emc:GraphScopeRule-WWG-Product-Scope",
+          "ruleId": "WWG-Product-Scope",
+          "ruleName": "WWG Product Scope",
+          "description": "Include VP, RRR entities scoped to W4M-WWG product context. Loads value propositions, customer profiles, functional roles, and RACI assignments specific to WWG operations.",
+          "scopeLevel": "entity",
+          "priority": 1,
+          "isActive": true,
+          "condition": {
+            "@type": "emc:ScopeCondition",
+            "conditionType": "product-match",
+            "conditionOperator": "equals",
+            "conditionValue": "W4M-WWG",
+            "conditionTarget": "org-ctx:Product.productCode"
+          },
+          "action": {
+            "@type": "emc:ScopeAction",
+            "actionType": "include-data",
+            "targetNamespaces": ["vp:", "rrr:"],
+            "targetEntityTypes": [
+              "vp:ValueProposition",
+              "vp:IdealCustomerProfile",
+              "vp:Problem",
+              "vp:Solution",
+              "vp:Benefit",
+              "rrr:FunctionalRole",
+              "rrr:RACIAssignment"
+            ],
+            "targetEntityFilter": "productContext == 'W4M-WWG'",
+            "applyToRelationships": true
+          }
+        },
+
+        {"_section": "=== SCOPE RULE 2: CORRIDOR SCOPE ==="},
+
+        {
+          "@type": "emc:GraphScopeRule",
+          "@id": "emc:GraphScopeRule-WWG-Corridor-Scope",
+          "ruleId": "WWG-Corridor-Scope",
+          "ruleName": "WWG 4-Corridor Supply Chain Scope",
+          "description": "Include LSC-ONT supply chain entities for WWG's 4 trade corridors. Each corridor has its own chain, nodes, legs, compliance gates, bottlenecks, risk assessments, hypotheses, scenarios, and predictive patterns.",
+          "scopeLevel": "entity",
+          "priority": 2,
+          "isActive": true,
+          "condition": {
+            "@type": "emc:ScopeCondition",
+            "conditionType": "corridor-match",
+            "conditionOperator": "in",
+            "conditionValue": ["AU-UK", "NZ-UK", "IS-UK", "IE-UK"],
+            "conditionTarget": "lsc:SupplyChain.corridorCode"
+          },
+          "action": {
+            "@type": "emc:ScopeAction",
+            "actionType": "include-data",
+            "targetNamespaces": ["lsc:"],
+            "targetEntityTypes": [
+              "lsc:SupplyChain",
+              "lsc:ChainNode",
+              "lsc:ShipmentLeg",
+              "lsc:Party",
+              "lsc:ComplianceGate",
+              "lsc:TradeDocument",
+              "lsc:Bottleneck",
+              "lsc:RiskAssessment",
+              "lsc:ImpactAssessment",
+              "lsc:Hypothesis",
+              "lsc:Scenario",
+              "lsc:CascadeEffect",
+              "lsc:PredictivePattern",
+              "lsc:Incident",
+              "lsc:Escalation",
+              "lsc:Shipment"
+            ],
+            "targetEntityFilter": "supplyChain.corridorCode IN ('AU-UK', 'NZ-UK', 'IS-UK', 'IE-UK')",
+            "applyToRelationships": true
+          }
+        },
+
+        {"_section": "=== SCOPE RULE 3: FULFILMENT SCOPE ==="},
+
+        {
+          "@type": "emc:GraphScopeRule",
+          "@id": "emc:GraphScopeRule-WWG-Fulfilment-Scope",
+          "ruleId": "WWG-Fulfilment-Scope",
+          "ruleName": "WWG Customer Order Fulfilment Scope",
+          "description": "Include OFM-ONT demand-side entities for WWG customer orders, stock allocations, margin waterfalls, and dispatch.",
+          "scopeLevel": "entity",
+          "priority": 3,
+          "isActive": true,
+          "condition": {
+            "@type": "emc:ScopeCondition",
+            "conditionType": "provider-match",
+            "conditionOperator": "equals",
+            "conditionValue": "W4M-WWG",
+            "conditionTarget": "ofm:SalesOrder.provider"
+          },
+          "action": {
+            "@type": "emc:ScopeAction",
+            "actionType": "include-data",
+            "targetNamespaces": ["ofm:"],
+            "targetEntityTypes": [
+              "ofm:SalesOrder",
+              "ofm:OrderLine",
+              "ofm:StockAllocation",
+              "ofm:StorageEvent",
+              "ofm:CustomerChange",
+              "ofm:MarginImpact",
+              "ofm:DispatchLeg",
+              "ofm:DemandPattern",
+              "ofm:FulfilmentRisk"
+            ],
+            "targetEntityFilter": "salesOrder.provider == 'W4M-WWG'",
+            "applyToRelationships": true
+          }
+        },
+
+        {"_section": "=== SCOPE RULE 4: MATURITY THRESHOLD ==="},
+
+        {
+          "@type": "emc:GraphScopeRule",
+          "@id": "emc:GraphScopeRule-WWG-Maturity-Threshold",
+          "ruleId": "WWG-Maturity-Threshold",
+          "ruleName": "WWG Maturity-Gated Exclusion",
+          "description": "Exclude advanced analytics ontologies (KPI, BSC, GRC deep analysis) for WWG at maturity level < 2. WWG is currently maturity 1 — these ontologies become available as the organisation matures.",
+          "scopeLevel": "ontology",
+          "priority": 4,
+          "isActive": true,
+          "condition": {
+            "@type": "emc:ScopeCondition",
+            "conditionType": "maturity-threshold",
+            "conditionOperator": "less-than",
+            "conditionValue": "3",
+            "conditionTarget": "org-ctx:Organisation.maturityLevel"
+          },
+          "action": {
+            "@type": "emc:ScopeAction",
+            "actionType": "exclude-data",
+            "targetNamespaces": ["kpi:", "bsc:", "grc:"],
+            "targetEntityTypes": [
+              "kpi:KPI",
+              "kpi:MetricDefinition",
+              "bsc:BalancedScorecard",
+              "bsc:StrategicObjective",
+              "grc:RiskRegister",
+              "grc:ComplianceAssessment"
+            ],
+            "targetEntityFilter": null,
+            "applyToRelationships": true
+          }
+        }
+      ],
+
+      "composedGraphSpec": {
+        "@type": "emc:ComposedGraphSpec",
+        "@id": "emc:ComposedGraphSpec-W4M-WWG",
+        "specId": "W4M-WWG-Graph-Spec",
+        "specName": "W4M-WWG Supply-Demand Composed Graph Specification",
+        "description": "Three-layer composed graph bridging inbound supply corridors (LSC-ONT) through warehouse margin pool to customer order fulfilment (OFM-ONT). All 3 layers active.",
+        "componentOntologies": ["VP-ONT", "RRR-ONT", "LSC-ONT", "OFM-ONT", "ORG-ONT", "ORG-CONTEXT-ONT"],
+        "layers": [
+          {
+            "layerId": "L1-Supply",
+            "layerName": "Supply — Inbound Corridors (LSC-ONT)",
+            "status": "active",
+            "ontologies": ["LSC-ONT"],
+            "description": "4 SupplyChain instances (AU-UK, NZ-UK, IS-UK, IE-UK) with full entity coverage: nodes, legs, gates, documents, parties, bottlenecks, risk assessments, hypotheses, scenarios, cascade effects, predictive patterns, incidents, escalations",
+            "entityCount": {
+              "supplyChains": 4,
+              "chainNodes": 33,
+              "shipmentLegs": 25,
+              "parties": 37,
+              "complianceGates": 26,
+              "tradeDocuments": 47,
+              "bottlenecks": 28,
+              "riskAssessments": 28,
+              "hypotheses": 15,
+              "scenarios": 12,
+              "cascadeEffects": 18,
+              "predictivePatterns": 12
+            }
+          },
+          {
+            "layerId": "L2-Warehouse-Bridge",
+            "layerName": "Warehouse Bridge — Stock Allocation & Storage",
+            "status": "active",
+            "ontologies": ["OFM-ONT", "LSC-ONT"],
+            "description": "StockAllocation entities bridge lsc:Shipment arrivals to ofm:OrderLine commitments. StorageEvent chains model UK cold warehouse cost accumulation. CapacityForecast balances inbound arrivals against outbound dispatches.",
+            "plannedJoinPoints": [
+              "lsc:Shipment → ofm:StockAllocation (allocatedFrom)",
+              "ofm:StockAllocation → ofm:OrderLine (allocatedTo)",
+              "lsc:Incident → ofm:MarginImpact (supply disruption → margin erosion)"
+            ]
+          },
+          {
+            "layerId": "L3-Demand",
+            "layerName": "Demand — Customer Order Fulfilment (OFM-ONT)",
+            "status": "active",
+            "ontologies": ["OFM-ONT"],
+            "description": "SalesOrders, OrderLines, DeliveryWindows, CustomerChanges, MarginImpact waterfalls, DispatchLegs, DemandPatterns, FulfilmentRisks.",
+            "plannedEntityTypes": [
+              "ofm:SalesOrder",
+              "ofm:OrderLine",
+              "ofm:StockAllocation",
+              "ofm:StorageEvent",
+              "ofm:CustomerChange",
+              "ofm:MarginImpact",
+              "ofm:DispatchLeg",
+              "ofm:DemandPattern",
+              "ofm:FulfilmentRisk"
+            ]
+          }
+        ],
+        "dataSliceRefs": [
+          {"ontology": "VP-ONT", "slice": "WWG value proposition — 4 ICPs (restaurant, wholesaler, food service, online), 3 problems, 5 benefits"},
+          {"ontology": "RRR-ONT", "slice": "WWG 7 functional roles (procurement, logistics, warehouse, sales, quality, finance, compliance), 14 RACI assignments"},
+          {"ontology": "LSC-ONT", "slice": "4 inbound corridors: AU-UK meat (flagship), NZ-UK dairy/lamb, IS-UK seafood, IE-UK dairy/beef"},
+          {"ontology": "ORG-CONTEXT-ONT", "slice": "WWG organisation profile, market context, competitive landscape"},
+          {"ontology": "OFM-ONT", "slice": "5 SalesOrders, 18 OrderLines, 12 StockAllocations, 8 StorageEvents, 5 DispatchLegs, 4 CustomerChanges, 12 MarginImpacts, 8 FulfilmentRisks, 4 DemandPatterns, 1 CapacityForecast"}
+        ],
+        "joinPoints": [
+          {
+            "joinId": "JP-WWG-001",
+            "from": "vp:IdealCustomerProfile",
+            "to": "rrr:FunctionalRole",
+            "relationship": "icpServedByRole",
+            "description": "VP customer profiles are served by RRR functional roles (e.g., restaurant ICP → Sales/Account Manager)",
+            "status": "active"
+          },
+          {
+            "joinId": "JP-WWG-002",
+            "from": "vp:Problem",
+            "to": "lsc:Bottleneck",
+            "relationship": "problemManifestsAsBottleneck",
+            "description": "VP problems (supply chain opacity, margin erosion) manifest as specific LSC bottlenecks across corridors",
+            "status": "active"
+          },
+          {
+            "joinId": "JP-WWG-003",
+            "from": "rrr:FunctionalRole",
+            "to": "lsc:Escalation",
+            "relationship": "roleHandlesEscalation",
+            "description": "RRR roles are responsible parties in LSC escalation chains (e.g., Logistics Coordinator → L1 operational escalations)",
+            "status": "active"
+          },
+          {
+            "joinId": "JP-WWG-004",
+            "from": "lsc:Shipment",
+            "to": "ofm:StockAllocation",
+            "relationship": "shipmentAllocatedToOrders",
+            "description": "LSC shipment batches are allocated to OFM order lines via StockAllocation — the critical supply→demand bridge",
+            "status": "active"
+          },
+          {
+            "joinId": "JP-WWG-005",
+            "from": "lsc:Incident",
+            "to": "ofm:MarginImpact",
+            "relationship": "incidentErodesMargin",
+            "description": "LSC supply disruptions (delay, temp breach, port congestion) cascade into OFM margin erosion on affected orders",
+            "status": "active"
+          },
+          {
+            "joinId": "JP-WWG-006",
+            "from": "lsc:Bottleneck",
+            "to": "ofm:FulfilmentRisk",
+            "relationship": "bottleneckCreatesFulfilmentRisk",
+            "description": "LSC supply constraints (reefer shortage, BCP delay) create fulfilment risks on committed customer orders",
+            "status": "active"
+          },
+          {
+            "joinId": "JP-WWG-007",
+            "from": "lsc:PredictivePattern",
+            "to": "ofm:DemandPattern",
+            "relationship": "supplyPatternCorrelatesWithDemand",
+            "description": "Supply-side seasonal patterns (reefer crunch, dairy season) correlate with demand-side ordering patterns",
+            "status": "active"
+          },
+          {
+            "joinId": "JP-WWG-008",
+            "from": "ofm:CustomerChange",
+            "to": "lsc:Shipment",
+            "relationship": "customerChangeExposesShipment",
+            "description": "Demand-side customer changes (cancellation, date push) expose unallocated inbound shipments to storage cost",
+            "status": "active"
+          },
+          {
+            "joinId": "JP-WWG-009",
+            "from": "lsc:Scenario",
+            "to": "ofm:Scenario",
+            "relationship": "supplyScenarioCascadesToDemand",
+            "description": "Supply-side scenarios (Suez closure, quota cut) cascade to demand-side impact scenarios",
+            "status": "active"
+          }
+        ],
+        "cascadeRules": [
+          {
+            "ruleId": "CASCADE-S2D-001",
+            "direction": "supply-to-demand",
+            "name": "Vessel Delay Margin Erosion Cascade",
+            "chain": "lsc:Incident(vessel delay) → lsc:CascadeEffect(late landing) → ofm:StorageEvent(overflow) → ofm:DispatchLeg(delayed) → ofm:FulfilmentRisk(OTIF failure) → ofm:MarginImpact(erosion)",
+            "status": "active"
+          },
+          {
+            "ruleId": "CASCADE-D2S-001",
+            "direction": "demand-to-supply",
+            "name": "Customer Cancellation Exposure Cascade",
+            "chain": "ofm:CustomerChange(cancellation) → ofm:StockAllocation(unallocated) → ofm:StorageEvent(accumulation) → lsc:Shipment(spoilage risk) → lsc:ImpactAssessment(purchase exposure)",
+            "status": "active"
+          }
+        ],
+        "rootAnchorEntity": "emc:InstanceConfiguration-W4M-WWG",
+        "frozenVersion": "1.0.0"
+      },
+
+      "canonicalSnapshot": {
+        "@type": "emc:CanonicalSnapshot",
+        "@id": "emc:CanonicalSnapshot-W4M-WWG-v1",
+        "snapshotId": "W4M-WWG-Snapshot-v1.0.0",
+        "snapshotVersion": "1.0.0",
+        "sourceComposedGraphSpec": "emc:ComposedGraphSpec-W4M-WWG",
+        "frozenAt": "2026-02-24T00:00:00Z",
+        "frozenBy": "PF-Core Platform Team",
+        "changeControlStatus": "locked",
+        "parentSnapshot": null,
+        "coverageNote": "Full 3-layer coverage: L1 Supply (4 corridors), L2 Warehouse Bridge (stock allocations, storage), L3 Demand (5 orders, margin waterfalls). 9 join points active, 2 cascade rules active."
+      }
+    }
+  ]
+}

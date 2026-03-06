@@ -1,0 +1,159 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform.framework/ontology/",
+    "baiv": "https://baiv.co.uk/ontology/"
+  },
+  "@type": "RegistryEntry",
+  "@id": "baiv:registry:entry:org-ontology-v1",
+  
+  "entryId": "ONT-ORG-001",
+  "name": "Organization Ontology",
+  "version": "1.0.0",
+  "status": "draft",
+  "confidenceScore": 0.87,
+  
+  "registryMetadata": {
+    "dateCreated": "2026-01-20",
+    "dateModified": "2026-01-20",
+    "creator": "BAIV Platform Team",
+    "approvedBy": null,
+    "approvalDate": null,
+    "registryVersion": "3.0.0",
+    "changeControlId": "CC-ORG-001"
+  },
+  
+  "ontologyMetadata": {
+    "domain": "Organization Management",
+    "purpose": "Define the foundational organization entity that all other ontologies reference",
+    "scope": "Platform Framework (Domain-Agnostic)",
+    "tenantApplicability": ["PFI", "Agency", "Client"],
+    "dependencies": [],
+    "dependents": ["pf:ontology:org-context-v1", "pf:ontology:rbac-v1"],
+    "schemaOrgAlignment": 85,
+    "reusesFromPFCore": []
+  },
+  
+  "qualityMetrics": {
+    "completenessScore": 100,
+    "validationPassRate": 100,
+    "competencyScore": 95,
+    "testDataCoverage": 100,
+    "documentationCoverage": 100
+  },
+  
+  "completenessGates": {
+    "gate1_entityDescriptions": {
+      "required": 1,
+      "present": 1,
+      "missing": [],
+      "percentage": 100,
+      "status": "pass"
+    },
+    "gate2_relationshipCardinality": {
+      "required": 5,
+      "present": 5,
+      "missing": [],
+      "percentage": 100,
+      "status": "pass"
+    },
+    "gate3_businessRulesFormat": {
+      "required": 3,
+      "present": 3,
+      "invalidFormat": [],
+      "percentage": 100,
+      "status": "pass"
+    },
+    "gate4_propertyMappings": {
+      "required": 8,
+      "mappedToSchemaOrg": 6,
+      "withRationale": 2,
+      "missingRationale": [],
+      "percentage": 100,
+      "status": "pass"
+    },
+    "gate5_testDataCoverage": {
+      "required": 1,
+      "present": 1,
+      "instancesPerEntity": 10,
+      "percentage": 100,
+      "status": "pass"
+    },
+    "overallStatus": "pass",
+    "gatesPassed": 5,
+    "gatesFailed": 0
+  },
+  
+  "competencyValidation": {
+    "domainPattern": "organization-management",
+    "requiredEntities": ["Organization"],
+    "presentEntities": ["Organization"],
+    "competencyScore": 100,
+    "threshold": 90,
+    "result": "PASS"
+  },
+  
+  "artifacts": {
+    "ontologyDefinition": "org-ontology-v1.0.0.json",
+    "registryEntry": "registry-entry-v3.0.0.json",
+    "glossary": {
+      "json": "glossary-v1.0.0.json",
+      "markdown": "glossary-v1.0.0.md"
+    },
+    "testData": "test-data-v1.0.0.json",
+    "validationReport": "validation-report-v1.0.0.md",
+    "documentation": "README.md",
+    "changelog": "CHANGELOG.md"
+  },
+  
+  "entitySummary": {
+    "totalEntities": 1,
+    "entities": [
+      {
+        "name": "Organization",
+        "schemaOrgBase": "schema:Organization",
+        "propertyCount": 8,
+        "description": "Core organization entity representing any business or entity in the platform"
+      }
+    ]
+  },
+  
+  "relationshipSummary": {
+    "totalRelationships": 5,
+    "relationships": [
+      {"name": "managedBy", "cardinality": "0..1"},
+      {"name": "partnerOf", "cardinality": "0..*"},
+      {"name": "competitorOf", "cardinality": "0..*"},
+      {"name": "hasContext", "cardinality": "0..1"},
+      {"name": "isAffiliateOf", "cardinality": "0..*"}
+    ]
+  },
+  
+  "businessRulesSummary": {
+    "totalRules": 3,
+    "rules": [
+      "BR-ORG-001: Multiple Relationships Allowed",
+      "BR-ORG-002: Agency Managed Requires Manager",
+      "BR-ORG-003: Unique Organization ID"
+    ]
+  },
+  
+  "changeControl": {
+    "changeControlId": "CC-ORG-001",
+    "changeType": "new",
+    "changeReason": "Initial creation of Organization Ontology for platform foundation",
+    "impactAssessment": "Foundation ontology - all org-related ontologies depend on this",
+    "approvalStatus": "pending",
+    "approver": null,
+    "approvalDate": null
+  },
+  
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-01-20",
+      "changes": "Initial release",
+      "author": "BAIV Platform Team"
+    }
+  ]
+}

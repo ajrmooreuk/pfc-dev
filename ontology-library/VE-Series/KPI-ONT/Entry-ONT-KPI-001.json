@@ -1,0 +1,129 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-KPI-001",
+  "name": "KPI Ontology (Metrics & Key Performance Indicators)",
+  "description": "Integrated performance measurement ontology spanning VSOM strategic cascade (Vision\u2192Strategy\u2192Objective\u2192KeyResult\u2192KPI\u2192Metric) and Value Engineering analysis. Bridges strategic planning to measurable execution outcomes.",
+  "version": "1.0.0",
+  "oaaVersion": "6.2.0",
+  "namespace": "https://platformcore.io/ontology/kpi/",
+  "prefix": "kpi:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-07",
+  "gatesPassed": 8,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./PF-CORE-Ontology-Metrics-VE-VSOM-v1.0.0.json",
+    "documentation": "./PF-CORE-Ontology-Metrics-VE-VSOM-v1.0.0.md",
+    "visualGuide": "./PF-CORE-Metrics-VSOM-VE-Visual-Guide.md",
+    "glossary": "../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "entities": {
+    "count": 10,
+    "list": [
+      "Vision",
+      "Strategy",
+      "StrategicObjective",
+      "Objective",
+      "KeyResult",
+      "KPI",
+      "Metric",
+      "VEAnalysis",
+      "VEFunction",
+      "VECostElement"
+    ]
+  },
+  "components": {
+    "VSOMCascade": "Vision\u2192Strategy\u2192StrategicObjective strategic alignment",
+    "OKRFramework": "Objective\u2192KeyResult measurable goal tracking",
+    "KPIMetrics": "KPI\u2192Metric quantitative performance measurement",
+    "ValueEngineering": "VEAnalysis\u2192VEFunction\u2192VECostElement cost-value optimization"
+  },
+  "relationships": {
+    "count": 11,
+    "list": [
+      "defines",
+      "decomposesTo",
+      "cascadesTo",
+      "measuredBy",
+      "trackedVia",
+      "quantifiedBy",
+      "optimizedVia",
+      "analyzes",
+      "evaluates",
+      "delivers",
+      "supports"
+    ],
+    "crossOntology": [
+      {
+        "name": "metricsForVSOM",
+        "from": "kpi:Vision",
+        "to": "vsom:VisionComponent",
+        "purpose": "KPI Vision entity maps to VSOM Vision component"
+      },
+      {
+        "name": "metricsForOKR",
+        "from": "kpi:Objective",
+        "to": "okr:Objective",
+        "purpose": "KPI Objective aligns with OKR Objective entity"
+      },
+      {
+        "name": "kpiTracksKeyResult",
+        "from": "kpi:KPI",
+        "to": "okr:KeyResult",
+        "purpose": "KPIs quantify OKR Key Results"
+      }
+    ]
+  },
+  "businessRules": {
+    "count": 12,
+    "format": "IF-THEN"
+  },
+  "joinPatterns": [
+    {
+      "id": "JP-KPI-001",
+      "name": "VSOM-to-KPI Metrics",
+      "path": "vsom:VSOMFramework \u2192 kpi:Vision \u2192 kpi:Strategy \u2192 kpi:KPI"
+    },
+    {
+      "id": "JP-KPI-002",
+      "name": "OKR-to-KPI Tracking",
+      "path": "okr:Objective \u2192 kpi:Objective \u2192 kpi:KeyResult \u2192 kpi:KPI"
+    },
+    {
+      "id": "JP-KPI-003",
+      "name": "VE Cost-Value Analysis",
+      "path": "kpi:Objective \u2192 kpi:VEAnalysis \u2192 kpi:VEFunction \u2192 kpi:VECostElement"
+    }
+  ],
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-OKR-001"
+  ],
+  "dependents": [],
+  "layer": "STRATEGIC LAYER (VE-Series)",
+  "domain": "Performance Measurement",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-07",
+  "lastModified": "2026-02-07",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-07",
+      "changes": "Initial production ontology with 10 entities, 11 relationships, 12 business rules. VSOM-OKR-KPI cascade plus Value Engineering analysis. OAA v6.2.0 compliant, all 6 gates PASS."
+    }
+  ],
+  "notes": "Comprehensive metrics ontology integrating VSOM strategic cascade (Vision\u2192Strategy\u2192SO\u2192Objective\u2192KR\u2192KPI\u2192Metric) with Value Engineering cost-function analysis. Bridges strategic planning to measurable execution. Completes the KPI measurement layer in VE-Series."
+}

@@ -1,0 +1,112 @@
+{
+  "@context": "https://baiv.co.uk/context/uniregistry/v1",
+  "@type": "UniRegistryEntry",
+  "@id": "baiv:uniregistry:tool:ontology-visualiser",
+  "registryMetadata": {
+    "entryType": "tool",
+    "entryId": "Entry-TOL-001",
+    "name": "OAA Ontology Visualiser",
+    "version": "1.0.0",
+    "status": "active",
+    "domain": "pf-core",
+    "tier": "tier1",
+    "dateCreated": "2026-01-31T00:00:00Z",
+    "lastModified": "2026-01-31T00:00:00Z",
+    "createdBy": "claude-opus-4.5",
+    "description": "Browser-based ontology visualisation tool with OAA v6.1.0 compliance validation, Claude Code CLI integration for upgrades, and IndexedDB-based library with version history.",
+    "tags": [
+      "ontology",
+      "visualiser",
+      "oaa-v5",
+      "compliance",
+      "validation",
+      "graph",
+      "vis.js",
+      "claude-code"
+    ]
+  },
+  "artifactDefinition": {
+    "toolType": "web-app",
+    "technology": {
+      "frontend": "vanilla-js",
+      "graphLibrary": "vis.js",
+      "storage": "IndexedDB",
+      "deployment": "GitHub Pages"
+    },
+    "capabilities": [
+      {
+        "name": "Ontology Visualization",
+        "description": "Force-directed, hierarchical, and circular graph layouts using vis.js"
+      },
+      {
+        "name": "OAA v6.1.0 Validation",
+        "description": "Client-side validation against G1-G4 core gates and G5-G6 advisory gates"
+      },
+      {
+        "name": "Claude Code Integration",
+        "description": "Generate CLI commands for OAA upgrade via Claude Code"
+      },
+      {
+        "name": "Ontology Library",
+        "description": "IndexedDB-based persistent storage with versioning and audit trail"
+      },
+      {
+        "name": "GitHub Integration",
+        "description": "Load ontologies directly from private GitHub repos via PAT"
+      },
+      {
+        "name": "Multi-format Support",
+        "description": "OAA v6.1.0, JSON-LD, UniRegistry, Registry Entry, Agent Registry formats"
+      }
+    ],
+    "endpoints": {
+      "production": "https://ajrmooreuk.github.io/Azlan-EA-AAA/",
+      "source": "https://github.com/ajrmooreuk/Azlan-EA-AAA/tree/main/PBS/TOOLS/ontology-visualiser"
+    }
+  },
+  "crossArtifactRelationships": {
+    "validates": [
+      {
+        "@ref": "baiv:uniregistry:ontology:*",
+        "relationshipType": "validates-compliance",
+        "permissions": "read"
+      }
+    ],
+    "requires": [
+      {
+        "@ref": "baiv:uniregistry:ontology:oaa-system-prompt-v5",
+        "relationshipType": "validation-rules",
+        "permissions": "read"
+      }
+    ],
+    "usedBy": [
+      {
+        "@ref": "baiv:uniregistry:agent:oaa-v5",
+        "relationshipType": "validation-ui",
+        "permissions": "read"
+      }
+    ]
+  },
+  "qualityMetrics": {
+    "overallScore": 85,
+    "completenessScore": 90,
+    "validationStatus": "pass",
+    "gatesPassed": 6,
+    "gatesFailed": 0,
+    "lastValidated": "2026-01-31T00:00:00Z"
+  },
+  "changeControl": {
+    "changeReason": "Initial registration of Ontology Visualiser with OAA v6.1.0 upgrade integration and Library features",
+    "approvalStatus": "approved",
+    "approvedBy": "system",
+    "approvalDate": "2026-01-31T00:00:00Z",
+    "breakingChanges": false
+  },
+  "versionHistory": [],
+  "artifacts": {
+    "specification": "PBS/TOOLS/ontology-visualiser/HLD-VISUALISER-ENHANCED-v1.0.0.md",
+    "implementation": "PBS/TOOLS/ontology-visualiser/browser-viewer.html",
+    "documentation": "PBS/TOOLS/ontology-visualiser/README.md",
+    "registryEntry": "PBS/TOOLS/ontology-visualiser/registry-entry-v1.0.0.jsonld"
+  }
+}

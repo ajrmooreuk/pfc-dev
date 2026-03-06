@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "description": "PFC-Core releasable components. The unified registry indexes all platform artifacts (ontologies, agents, UI/UX, DB, media, docs). Each component can be independently enabled for release. PFI instances receive filtered snapshots based on their subscribed series.",
+  "components": {
+    "ontology-registry": {
+      "enabled": true,
+      "source": "PBS/ONTOLOGIES/ontology-library/ont-registry-index.json",
+      "target": "pfc-core/ontology-registry.json",
+      "filterBySeries": true,
+      "description": "Filtered ontology registry snapshot — entries filtered by PFI's subscribed ontologySeries"
+    },
+    "visualiser": {
+      "enabled": false,
+      "source": "PBS/TOOLS/ontology-visualiser/",
+      "target": "pfc-core/ontology-visualiser/",
+      "filterBySeries": false,
+      "description": "Embeddable ontology visualiser (12 ES modules, vis-network v9.1.2)",
+      "plannedRelease": "pfc-v2.0.0"
+    },
+    "agents": {
+      "enabled": false,
+      "source": "PBS/AGENTS/",
+      "target": "pfc-core/agents/",
+      "filterBySeries": false,
+      "description": "OAA agent system prompts and configurations",
+      "plannedRelease": "pfc-v2.0.0"
+    },
+    "design-system": {
+      "enabled": false,
+      "source": "PBS/DESIGN-SYSTEM/",
+      "target": "pfc-core/design-system/",
+      "filterBySeries": false,
+      "description": "Design system token taxonomy and brand foundations",
+      "plannedRelease": "pfc-v2.0.0"
+    }
+  },
+  "versionFile": {
+    "target": "pfc-core/pfc-version",
+    "description": "Contains the PFC-Core release tag (e.g., pfc-v1.0.0). Separate from azlan-workflow-version (convention pin)."
+  },
+  "targetingSource": {
+    "field": "pfiInstances",
+    "devRepoPath": "hubSpokeConfig.repos.dev",
+    "seriesPath": "hubSpokeConfig.ontologySeries",
+    "pinPath": "hubSpokeConfig.pfcPin",
+    "description": "Targets are read from ont-registry-index.json pfiInstances array. Each PFI declares its dev repo, subscribed series, and version pin."
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-EA-AI-001",
+  "name": "EA-AI Ontology (AI/ML Architecture)",
+  "description": "Vendor-neutral AI/ML architecture ontology covering AI workloads, autonomous agents, RAG systems, ML pipelines, model registries, agent orchestration, architecture patterns, and responsible AI controls. Extracted from EA-MSFT-ONT to enable multi-cloud AI architecture modelling.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://oaa-ontology.org/v6/ea-ai/",
+  "prefix": "ea-ai:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-03-04",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "seriesRole": "spoke",
+  "spokeType": "capability",
+  "artifacts": {
+    "ontology": "./ea-ai-v1.0.0-oaa-v6.json",
+    "documentation": null,
+    "instanceData": [],
+    "glossary": "../../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "AIWorkload": "Application leveraging AI/ML capabilities (vendor-neutral)",
+    "AIAgent": "Autonomous AI agent with tool-use and reasoning capabilities",
+    "RAGSystem": "Retrieval-Augmented Generation system with vector store",
+    "MLPipeline": "Machine learning pipeline for model training and deployment",
+    "ModelRegistry": "Centralised repository for versioned ML models and governance",
+    "AgentOrchestrator": "Coordination layer for multi-agent system orchestration",
+    "AIArchitecturePattern": "Reusable AI solution architecture pattern",
+    "ResponsibleAIControl": "Control mechanism for ethical and responsible AI governance"
+  },
+  "relationships": {
+    "internal": 5,
+    "crossOntology": [
+      {
+        "name": "hostsWorkload",
+        "from": "ea-core:Application",
+        "to": "ea-ai:AIWorkload",
+        "cardinality": "1:n",
+        "purpose": "EA-CORE -> EA-AI: Application hosts AI workloads"
+      },
+      {
+        "name": "hasTools",
+        "from": "ea-ai:AIAgent",
+        "to": "ea-core:Application",
+        "cardinality": "1:n",
+        "purpose": "EA-AI -> EA-CORE: AI agent tool integration with applications"
+      },
+      {
+        "name": "alignsToSecurity",
+        "from": "ea-ai:ResponsibleAIControl",
+        "to": "ea-core:SecurityArchitecture",
+        "cardinality": "n:1",
+        "purpose": "EA-AI -> EA-CORE: Responsible AI controls align to enterprise security"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-EA-CORE-001"
+  ],
+  "dependents": [
+    "Entry-ONT-EA-MSFT-001"
+  ],
+  "layer": "EXECUTION LAYER (PE-Series)",
+  "domain": "AI/ML Architecture",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-03-04",
+  "lastModified": "2026-03-04",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-03-04",
+      "changes": "Initial vendor-neutral AI/ML ontology. 5 entities extracted from EA-MSFT-ONT v1.0.0 (AIWorkload, AIAgent, RAGSystem, AIArchitecturePattern, ResponsibleAIControl) and re-namespaced to ea-ai:. 3 new entities added (MLPipeline, ModelRegistry, AgentOrchestrator). 8 entities, 9 relationships, 8 business rules, 6 enumerations. OAA v6.1.0 compliant."
+    }
+  ],
+  "notes": "EA-AI provides vendor-neutral AI/ML architecture modelling as a capability spoke in the EA sub-series. Extends EA-CORE-ONT. Originally extracted from EA-MSFT-ONT per Decision D2 (Scenario A) in BRIEFING-EA-Sub-Series-Restructure-VE-Skill-Chain.md. Vendor-specific AI implementations (Azure AI Services, AWS Bedrock, GCP Vertex AI) reference EA-AI entities and add platform-specific properties."
+}

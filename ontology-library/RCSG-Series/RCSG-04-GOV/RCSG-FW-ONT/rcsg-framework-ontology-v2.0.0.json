@@ -1,0 +1,945 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ns": "https://platformcore.io/ontology/rcsg-fw/",
+    "ctx": "https://baiv.co.uk/ontology/",
+    "gdpr": "https://platformcore.io/ontology/gdpr/",
+    "mcsb": "https://platformcore.io/ontology/mcsb/",
+    "pii": "https://platformcore.io/ontology/pii-governance/",
+    "ncsc-caf": "https://platformcore.io/ontology/ncsc-caf/",
+    "org": "https://platformcore.io/ontology/org/",
+    "oaa": "https://platformcore.io/ontology/oaa/",
+    "pf": "https://platform.framework/ontology/"
+  },
+  "@type": "Ontology",
+  "@id": "ns:ontology:rcsg-framework-v2.0",
+  "metadata": {
+    "name": "RCSG Framework Ontology (Regulatory, Compliance, Security & Governance)",
+    "version": "2.0.0",
+    "description": "Unified RCSG framework ontology combining the abstract regulatory, compliance, security and governance context layer with the NCSC/DSIT Cyber Governance Code of Practice. Provides 9 entities covering RCSG context profiles, regulatory requirements, compliance frameworks, governance models, governance codes, principles, board-level actions, glossary terms, and cross-framework mappings to 9 international standards. Bridges to CTX context dimensions, GDPR, MCSB, PII implementation ontologies, NCSC-CAF assessment framework, and ORG domain authorities.",
+    "domain": "Regulatory, Compliance, Security & Governance",
+    "purpose": "Provide the unified RCSG framework hub bridging organisational context to RCSG-Series implementation ontologies (GDPR, PII, MCSB) while modelling cyber governance codes, principles, board-level actions, and cross-framework mappings for compliance alignment across multiple international standards",
+    "oaaVersion": "6.1.0",
+    "series": "RCSG-Series",
+    "subSeries": "RCSG-04-GOV",
+    "dateCreated": "2026-02-10",
+    "dateModified": "2026-02-16",
+    "creator": "Azlan EA-AAA"
+  },
+  "oaa:sourceFramework": {
+    "name": "Cyber Governance Code of Practice",
+    "version": "1.0",
+    "publisher": "UK National Cyber Security Centre (NCSC) / Department for Science, Innovation and Technology (DSIT)",
+    "publishDate": "2025",
+    "uri": "https://www.ncsc.gov.uk/collection/cyber-governance",
+    "companionDocument": "DSIT Cyber Governance Mapping (August 2025) — 10-sheet XLSX cross-referencing 22 governance actions to 9 international frameworks",
+    "applicability": [
+      "UK board directors and senior leaders",
+      "Organisations subject to NIS Regulations 2018",
+      "Organisations seeking cyber governance best practice alignment",
+      "Public sector bodies and critical national infrastructure operators"
+    ]
+  },
+  "oaa:imports": [
+    {
+      "@id": "ctx:schema",
+      "name": "CTX-ONT",
+      "version": "1.0.0",
+      "description": "Context ontology providing GeoContext, FunctionalMaturity, ITMaturity, and MarketClassification dimensions for jurisdiction, maturity, and market linkage",
+      "importedEntities": ["ctx:GeoContext", "ctx:FunctionalMaturity", "ctx:ITMaturity", "ctx:MarketClassification"]
+    },
+    {
+      "@id": "ncsc-caf:schema",
+      "name": "NCSC-CAF-ONT",
+      "version": "1.0.0",
+      "description": "NCSC Cyber Assessment Framework ontology providing CAFPrinciple and ContributingOutcome entities for governance-to-assessment alignment",
+      "importedEntities": ["ncsc-caf:CAFPrinciple", "ncsc-caf:ContributingOutcome"]
+    },
+    {
+      "@id": "org:schema",
+      "name": "ORG-ONT",
+      "version": "3.1.0",
+      "description": "Organization ontology providing Organization entity for domain authority publisher references",
+      "importedEntities": ["org:Organization"]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-RCSG-001",
+      "name": "RCSG Framework to CTX Jurisdiction Bridge",
+      "description": "Links regulatory requirements to geographic context for jurisdiction-specific compliance",
+      "joinPath": "ns:RegulatoryRequirement → ns:regulatoryShapedByGeo → ctx:GeoContext",
+      "useCase": "Determine which regulations apply based on organisational operating regions"
+    },
+    {
+      "patternId": "JP-RCSG-002",
+      "name": "Governance Model to Code Bridge",
+      "description": "Links the central governance model to published governance codes for board-level oversight",
+      "joinPath": "ns:GovernanceModel → ns:hasGovernanceCode → ns:GovernanceCode → ns:hasPrinciple → ns:GovernancePrinciple → ns:hasAction → ns:GovernanceAction",
+      "useCase": "Navigate from governance model through code hierarchy to specific board actions"
+    },
+    {
+      "patternId": "JP-RCSG-003",
+      "name": "Governance Action to CAF Alignment Bridge",
+      "description": "Links governance actions to NCSC CAF principles for cross-framework compliance alignment",
+      "joinPath": "ns:GovernanceAction → ns:governanceAlignedToCAF → ncsc-caf:CAFPrinciple",
+      "useCase": "Map governance board actions to operational CAF assessment outcomes"
+    },
+    {
+      "patternId": "JP-RCSG-004",
+      "name": "Governance Code to Authority Bridge",
+      "description": "Links governance codes to their publishing domain authority organization",
+      "joinPath": "ns:GovernanceCode → ns:publishedByAuthority → org:Organization",
+      "useCase": "Identify which domain authorities publish governance codes and their jurisdictional scope"
+    }
+  ],
+  "entities": [
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:RCSGContext",
+      "name": "RCSGContext",
+      "description": "Top-level Regulatory, Compliance, Security, and Governance context defining which RCSG requirements apply to an organisation — bridges to RCSG-Series ontologies (MCSB, GDPR, PII, AZALZ) and drives Legal, Regulatory, and Compliance functional maturity assessments",
+      "properties": [
+        { "name": "rcsgProfileId", "type": "Text", "required": true, "description": "Unique identifier for this RCSG requirement profile" },
+        { "name": "compliancePosture", "type": "Text", "required": true, "description": "Overall compliance posture: Non-Compliant, Partial, Substantially-Compliant, Fully-Compliant, Certified" },
+        { "name": "primaryRegulator", "type": "Text", "required": false, "description": "Primary regulatory body overseeing the organisation (e.g., FCA, SEC, ICO, APRA)" },
+        { "name": "dataClassification", "type": "Text", "required": false, "description": "Highest data classification handled: Public, Internal, Confidential, Restricted, Top-Secret" },
+        { "name": "auditFrequency", "type": "Text", "required": false, "description": "Required audit frequency: Annual, Semi-Annual, Quarterly, Continuous" }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:RegulatoryRequirement",
+      "name": "RegulatoryRequirement",
+      "description": "Specific regulatory requirement applicable to the organisation, including the regulation name, enforcement body, jurisdiction mapping, penalty risk level, and compliance deadline — extensible for industry-specific regulations",
+      "properties": [
+        { "name": "regulationId", "type": "Text", "required": true, "description": "Standard regulation identifier (e.g., GDPR, SOX, HIPAA, PCI-DSS, FCA-COBS, MiFID-II)" },
+        { "name": "regulationName", "type": "Text", "required": true, "description": "Full name of the regulation or regulatory requirement" },
+        { "name": "enforcementBody", "type": "Text", "required": true, "description": "Regulatory body enforcing this requirement (e.g., ICO, FCA, SEC, FINMA, BaFin)" },
+        { "name": "jurisdictions", "type": "Text", "required": true, "description": "Jurisdictions where this regulation applies — links to GeoContext operating regions" },
+        { "name": "penaltyRisk", "type": "Text", "required": false, "description": "Non-compliance penalty risk: Low, Moderate, High, Severe, Existential" },
+        { "name": "complianceStatus", "type": "Text", "required": false, "description": "Current status: Not-Started, In-Progress, Partially-Compliant, Compliant, Exempt" },
+        { "name": "nextReviewDate", "type": "DateTime", "required": false, "description": "Next scheduled compliance review or renewal date" }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:ComplianceFramework",
+      "name": "ComplianceFramework",
+      "description": "Compliance or security framework applied to the organisation, covering certification status, scope, and audit cycle — includes standards like ISO27001, SOC2, PCI-DSS, MCSB, Cyber Essentials, and industry-specific frameworks",
+      "properties": [
+        { "name": "frameworkId", "type": "Text", "required": true, "description": "Framework identifier (e.g., ISO27001, SOC2-TypeII, PCI-DSS-v4, MCSB-v1, CE-Plus, NIST-CSF)" },
+        { "name": "frameworkName", "type": "Text", "required": true, "description": "Full name of the compliance or security framework" },
+        { "name": "certificationStatus", "type": "Text", "required": true, "description": "Certification state: Not-Pursued, In-Progress, Certified, Lapsed, Exempt" },
+        { "name": "scope", "type": "Text", "required": false, "description": "Scope of certification: Full-Organisation, Division, Product, Service, Infrastructure" },
+        { "name": "certificationExpiry", "type": "DateTime", "required": false, "description": "Expiry date for current certification — triggers renewal workflow" },
+        { "name": "controlCoverage", "type": "Number", "required": false, "description": "Percentage of framework controls implemented (0-100)" }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:GovernanceModel",
+      "name": "GovernanceModel",
+      "description": "Corporate governance structure defining board composition, committee structures, policy frameworks, and decision-making authority levels — serves as the central governance node linking to published governance codes for board-level cyber oversight",
+      "properties": [
+        { "name": "governanceType", "type": "Text", "required": true, "description": "Governance model: Owner-Managed, Board-Led, Committee-Based, Distributed, Federated, Regulated-Entity" },
+        { "name": "boardComposition", "type": "Text", "required": false, "description": "Board structure: None, Advisory, Non-Executive, Executive, Mixed, Independent-Majority" },
+        { "name": "committeesActive", "type": "Text", "required": false, "description": "Active governance committees (comma-separated): Audit, Risk, Remuneration, Nominations, ESG, Technology, Data" },
+        { "name": "policyFramework", "type": "Text", "required": false, "description": "Policy management approach: Ad-Hoc, Documented, Centralised, Automated, Continuously-Reviewed" },
+        { "name": "riskAppetiteStatement", "type": "Boolean", "required": false, "description": "Whether a formal risk appetite statement exists and is reviewed periodically" }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:GovernanceCode",
+      "name": "GovernanceCode",
+      "description": "A published governance code, standard, or guide authored by a domain authority providing principles and actions for board-level cyber governance oversight — connects directly to GovernanceModel as the central governance node",
+      "properties": [
+        { "name": "codeId", "type": "Text", "required": true, "description": "Unique identifier for the governance code" },
+        { "name": "codeName", "type": "Text", "required": true, "description": "Full name of the governance code or standard" },
+        { "name": "publisher", "type": "Text", "required": true, "description": "Name of the publishing authority or organisation" },
+        { "name": "publisherRef", "type": "Text", "required": false, "description": "Reference to the publisher Organization instance in ORG-ONT" },
+        { "name": "version", "type": "Text", "required": true, "description": "Version of the code or standard" },
+        { "name": "publicationDate", "type": "Text", "required": true, "description": "Year or date of publication" },
+        { "name": "jurisdiction", "type": "Text", "required": true, "description": "Geographic or regulatory jurisdiction scope" },
+        { "name": "codeType", "type": "Text", "required": true, "description": "Type classification of the code: CodeOfPractice, Certification, Standard, Guide, or Regulation" },
+        { "name": "status", "type": "Text", "required": true, "description": "Current status: Active, Superseded, or Draft" },
+        { "name": "url", "type": "URL", "required": false, "description": "Official publication URL for the governance code" },
+        { "name": "supportModel", "type": "Text", "required": false, "description": "Description of how the code supports governance implementation" }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:GovernancePrinciple",
+      "name": "GovernancePrinciple",
+      "description": "A high-level governance principle within a code defining a strategic area of board-level cyber governance responsibility such as risk management, strategy, or incident planning",
+      "properties": [
+        { "name": "principleCode", "type": "Text", "required": true, "description": "Single-letter principle identifier (e.g. A, B, C, D, E)" },
+        { "name": "principleName", "type": "Text", "required": true, "description": "Full name of the governance principle" },
+        { "name": "principleDescription", "type": "Text", "required": true, "description": "Detailed description of the principle scope and purpose" },
+        { "name": "actionCount", "type": "Number", "required": true, "description": "Number of governance actions under this principle" },
+        { "name": "principleCategory", "type": "Text", "required": true, "description": "Category: Strategic, Operational, or Assurance" }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:GovernanceAction",
+      "name": "GovernanceAction",
+      "description": "A specific board-level governance action under a principle defining what directors and senior leaders must do to govern cyber security effectively with dependency chains to related actions",
+      "properties": [
+        { "name": "actionCode", "type": "Text", "required": true, "description": "Action identifier code (e.g. A1, B2, E5)" },
+        { "name": "actionName", "type": "Text", "required": true, "description": "Short name summarising the action" },
+        { "name": "actionDescription", "type": "Text", "required": true, "description": "Full description of the governance action and board responsibilities" },
+        { "name": "boardRelevance", "type": "Text", "required": true, "description": "How the action relates to board-level oversight and accountability" },
+        { "name": "dependsOn", "type": "Text", "required": false, "description": "Comma-separated list of action codes this action depends on" }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:GovernanceGlossaryTerm",
+      "name": "GovernanceGlossaryTerm",
+      "description": "A defined term from a governance code glossary providing precise definitions for key cyber governance concepts used throughout the code principles and actions",
+      "properties": [
+        { "name": "termId", "type": "Text", "required": true, "description": "Unique identifier for the glossary term" },
+        { "name": "term", "type": "Text", "required": true, "description": "The glossary term word or phrase" },
+        { "name": "definition", "type": "Text", "required": true, "description": "Full definition of the term as published in the code glossary" },
+        { "name": "relatedActionCodes", "type": "Text", "required": false, "description": "Comma-separated action codes where this term is referenced" }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:GovernanceActionMapping",
+      "name": "GovernanceActionMapping",
+      "description": "A cross-framework mapping entry linking a governance action to an equivalent or related control in an external international standard, certification, or best practice guide",
+      "properties": [
+        { "name": "mappingId", "type": "Text", "required": true, "description": "Unique mapping identifier (e.g. MAP-A1-CAF-001)" },
+        { "name": "targetFramework", "type": "Text", "required": true, "description": "Name of the target framework being mapped to" },
+        { "name": "targetFrameworkVersion", "type": "Text", "required": true, "description": "Version of the target framework" },
+        { "name": "targetControlId", "type": "Text", "required": true, "description": "Control or section identifier in the target framework" },
+        { "name": "targetControlName", "type": "Text", "required": false, "description": "Human-readable name of the target control or section" },
+        { "name": "mappingStrength", "type": "Text", "required": true, "description": "Mapping strength: Full, Partial, or Related" },
+        { "name": "mappingNotes", "type": "Text", "required": false, "description": "Additional notes on the mapping alignment context" }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ncsc-caf:CAFPrinciple",
+      "name": "CAFPrinciple",
+      "description": "External NCSC-CAF entity representing a principle within the Cyber Assessment Framework used for governance alignment",
+      "oaa:externalOntology": "ncsc-caf:NCSCCAFOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ncsc-caf:ContributingOutcome",
+      "name": "ContributingOutcome",
+      "description": "External NCSC-CAF entity representing a contributing outcome under a CAF principle for detailed action mapping",
+      "oaa:externalOntology": "ncsc-caf:NCSCCAFOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "org:Organization",
+      "name": "Organization",
+      "description": "External ORG-ONT entity representing a domain authority organisation that publishes governance codes and standards",
+      "oaa:externalOntology": "org:OrganizationOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ctx:GeoContext",
+      "name": "GeoContext",
+      "description": "External CTX entity providing geographic and jurisdictional context for regulatory applicability",
+      "oaa:externalOntology": "ctx:ContextOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ctx:FunctionalMaturity",
+      "name": "FunctionalMaturity",
+      "description": "External CTX entity providing per-function maturity scores driven by RCSG requirements",
+      "oaa:externalOntology": "ctx:ContextOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ctx:MarketClassification",
+      "name": "MarketClassification",
+      "description": "External CTX entity linking regulations to specific market verticals",
+      "oaa:externalOntology": "ctx:ContextOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ctx:ITMaturity",
+      "name": "ITMaturity",
+      "description": "External CTX entity providing IT infrastructure maturity required by compliance certifications",
+      "oaa:externalOntology": "ctx:ContextOntology",
+      "oaa:stubEntity": true
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "Property",
+      "@id": "ns:hasRegulatoryRequirements",
+      "name": "Has Regulatory Requirements",
+      "description": "Links an RCSGContext to its applicable RegulatoryRequirements, defining which regulations the organisation must comply with",
+      "domainIncludes": ["ns:RCSGContext"],
+      "rangeIncludes": ["ns:RegulatoryRequirement"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:hasComplianceFrameworks",
+      "name": "Has Compliance Frameworks",
+      "description": "Links an RCSGContext to its applied ComplianceFrameworks such as ISO27001, SOC2, PCI-DSS, or MCSB",
+      "domainIncludes": ["ns:RCSGContext"],
+      "rangeIncludes": ["ns:ComplianceFramework"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:hasGovernanceModel",
+      "name": "Has Governance Model",
+      "description": "Links an RCSGContext to the organisation's GovernanceModel defining board, committee, and policy structures",
+      "domainIncludes": ["ns:RCSGContext"],
+      "rangeIncludes": ["ns:GovernanceModel"],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:hasGovernanceCode",
+      "name": "Has Governance Code",
+      "description": "Links a GovernanceModel to one or more published governance codes that define board-level cyber governance principles and actions — this is the direct connection from the central governance node to governance code content",
+      "domainIncludes": ["ns:GovernanceModel"],
+      "rangeIncludes": ["ns:GovernanceCode"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:hasPrinciple",
+      "name": "Has Principle",
+      "description": "A GovernanceCode contains one or more GovernancePrinciples defining strategic governance areas",
+      "domainIncludes": ["ns:GovernanceCode"],
+      "rangeIncludes": ["ns:GovernancePrinciple"],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:belongsToCode",
+      "name": "Belongs To Code",
+      "description": "A GovernancePrinciple belongs to exactly one parent GovernanceCode",
+      "domainIncludes": ["ns:GovernancePrinciple"],
+      "rangeIncludes": ["ns:GovernanceCode"],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:hasAction",
+      "name": "Has Action",
+      "description": "A GovernancePrinciple contains one or more GovernanceActions defining board-level responsibilities",
+      "domainIncludes": ["ns:GovernancePrinciple"],
+      "rangeIncludes": ["ns:GovernanceAction"],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:belongsToPrinciple",
+      "name": "Belongs To Principle",
+      "description": "A GovernanceAction belongs to exactly one parent GovernancePrinciple",
+      "domainIncludes": ["ns:GovernanceAction"],
+      "rangeIncludes": ["ns:GovernancePrinciple"],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:dependsOnAction",
+      "name": "Depends On Action",
+      "description": "A GovernanceAction may depend on one or more other actions forming governance dependency chains",
+      "domainIncludes": ["ns:GovernanceAction"],
+      "rangeIncludes": ["ns:GovernanceAction"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:usesGlossaryTerm",
+      "name": "Uses Glossary Term",
+      "description": "A GovernanceAction references one or more defined glossary terms from the code vocabulary",
+      "domainIncludes": ["ns:GovernanceAction"],
+      "rangeIncludes": ["ns:GovernanceGlossaryTerm"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:hasActionMapping",
+      "name": "Has Action Mapping",
+      "description": "A GovernanceAction has one or more cross-framework mappings to external standards and controls",
+      "domainIncludes": ["ns:GovernanceAction"],
+      "rangeIncludes": ["ns:GovernanceActionMapping"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:belongsToAction",
+      "name": "Belongs To Action",
+      "description": "A GovernanceActionMapping belongs to exactly one parent GovernanceAction",
+      "domainIncludes": ["ns:GovernanceActionMapping"],
+      "rangeIncludes": ["ns:GovernanceAction"],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:governanceInContext",
+      "name": "Governance In Context",
+      "description": "A GovernanceCode is applied within an RCSG organisational governance context",
+      "domainIncludes": ["ns:GovernanceCode"],
+      "rangeIncludes": ["ns:RCSGContext"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:governanceRequiresCompliance",
+      "name": "Governance Requires Compliance",
+      "description": "A GovernanceCode may require compliance with one or more RCSG compliance frameworks",
+      "domainIncludes": ["ns:GovernanceCode"],
+      "rangeIncludes": ["ns:ComplianceFramework"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:regulatoryShapedByGeo",
+      "name": "Regulatory Shaped By Geo",
+      "description": "Links a RegulatoryRequirement to GeoContext, reflecting that regulations are jurisdiction-specific and depend on where the organisation operates",
+      "domainIncludes": ["ns:RegulatoryRequirement"],
+      "rangeIncludes": ["ctx:GeoContext"],
+      "cardinality": "1..*",
+      "oaa:crossOntologyRef": "CTX"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:rcsgDrivesFunctionalMaturity",
+      "name": "RCSG Drives Functional Maturity",
+      "description": "Links RCSGContext to FunctionalMaturity, reflecting how regulatory and compliance requirements drive maturity needs for Legal, Regulatory, Compliance, Governance, and Security functions",
+      "domainIncludes": ["ns:RCSGContext"],
+      "rangeIncludes": ["ctx:FunctionalMaturity"],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "CTX"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:regulatoryInMarket",
+      "name": "Regulatory In Market",
+      "description": "Links a RegulatoryRequirement to MarketClassification, reflecting that specific regulations apply to specific market verticals (e.g., FCA for financial services, HIPAA for healthcare)",
+      "domainIncludes": ["ns:RegulatoryRequirement"],
+      "rangeIncludes": ["ctx:MarketClassification"],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "CTX"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:complianceRequiresITMaturity",
+      "name": "Compliance Requires IT Maturity",
+      "description": "Links a ComplianceFramework to ITMaturity, reflecting that security and compliance certifications require minimum IT infrastructure, DevOps, and security maturity levels",
+      "domainIncludes": ["ns:ComplianceFramework"],
+      "rangeIncludes": ["ctx:ITMaturity"],
+      "cardinality": "0..1",
+      "oaa:crossOntologyRef": "CTX"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:regulatoryImplementedByGDPR",
+      "name": "Regulatory Implemented By GDPR",
+      "description": "Links a RegulatoryRequirement to GDPR DataProtectionPrinciples, formalising how specific regulatory requirements map to GDPR compliance obligations",
+      "domainIncludes": ["ns:RegulatoryRequirement"],
+      "rangeIncludes": ["gdpr:DataProtectionPrinciple"],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "GDPR"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:frameworkImplementedByMCSB",
+      "name": "Framework Implemented By MCSB",
+      "description": "Links a ComplianceFramework to MCSB SecurityControls, formalising how compliance framework requirements map to cloud security benchmark controls",
+      "domainIncludes": ["ns:ComplianceFramework"],
+      "rangeIncludes": ["mcsb:SecurityControl"],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "MCSB"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:frameworkImplementedByPII",
+      "name": "Framework Implemented By PII",
+      "description": "Links a ComplianceFramework to PII Governance ComplianceFramework, formalising how data protection framework requirements map to PII governance implementations",
+      "domainIncludes": ["ns:ComplianceFramework"],
+      "rangeIncludes": ["pii:ComplianceFramework"],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "PII"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:governanceAlignedToCAF",
+      "name": "Governance Aligned To CAF",
+      "description": "A GovernanceAction aligns to one or more NCSC CAF principles for operational compliance bridge",
+      "domainIncludes": ["ns:GovernanceAction"],
+      "rangeIncludes": ["ncsc-caf:CAFPrinciple"],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "NCSC-CAF"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:governanceAlignedToCAFOutcome",
+      "name": "Governance Aligned To CAF Outcome",
+      "description": "A GovernanceAction aligns to one or more NCSC CAF contributing outcomes for detailed assessment mapping",
+      "domainIncludes": ["ns:GovernanceAction"],
+      "rangeIncludes": ["ncsc-caf:ContributingOutcome"],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "NCSC-CAF"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:publishedByAuthority",
+      "name": "Published By Authority",
+      "description": "A GovernanceCode is published by exactly one domain authority organization",
+      "domainIncludes": ["ns:GovernanceCode"],
+      "rangeIncludes": ["org:Organization"],
+      "cardinality": "1..1",
+      "oaa:crossOntologyRef": "ORG"
+    }
+  ],
+  "oaa:enumerations": [
+    {
+      "@id": "ns:CodeType",
+      "@type": "DefinedTermSet",
+      "name": "CodeType",
+      "description": "Classification of governance code publication types",
+      "hasDefinedTerm": [
+        { "@id": "ns:codetype/code-of-practice", "name": "CodeOfPractice", "description": "Voluntary code of practice with recommended governance actions" },
+        { "@id": "ns:codetype/certification", "name": "Certification", "description": "Certification scheme with auditable governance requirements" },
+        { "@id": "ns:codetype/standard", "name": "Standard", "description": "Formal standard published by a recognised standards body" },
+        { "@id": "ns:codetype/guide", "name": "Guide", "description": "Best practice guide or handbook for governance practitioners" },
+        { "@id": "ns:codetype/regulation", "name": "Regulation", "description": "Legally binding regulation with mandatory compliance requirements" }
+      ]
+    },
+    {
+      "@id": "ns:CodeStatus",
+      "@type": "DefinedTermSet",
+      "name": "CodeStatus",
+      "description": "Lifecycle status of a governance code or standard",
+      "hasDefinedTerm": [
+        { "@id": "ns:codestatus/active", "name": "Active", "description": "Currently active and in force for governance compliance" },
+        { "@id": "ns:codestatus/superseded", "name": "Superseded", "description": "Replaced by a newer version or alternative code" },
+        { "@id": "ns:codestatus/draft", "name": "Draft", "description": "Under development and not yet formally published" }
+      ]
+    },
+    {
+      "@id": "ns:PrincipleCategory",
+      "@type": "DefinedTermSet",
+      "name": "PrincipleCategory",
+      "description": "Strategic categorisation of governance principles",
+      "hasDefinedTerm": [
+        { "@id": "ns:princat/strategic", "name": "Strategic", "description": "Principles focused on strategic direction and risk appetite" },
+        { "@id": "ns:princat/operational", "name": "Operational", "description": "Principles focused on operational security practices and people" },
+        { "@id": "ns:princat/assurance", "name": "Assurance", "description": "Principles focused on assurance, review, and continuous improvement" }
+      ]
+    },
+    {
+      "@id": "ns:MappingStrength",
+      "@type": "DefinedTermSet",
+      "name": "MappingStrength",
+      "description": "Degree of alignment between a governance action and target framework control",
+      "hasDefinedTerm": [
+        { "@id": "ns:mapstr/full", "name": "Full", "description": "Direct and complete mapping between governance action and target control" },
+        { "@id": "ns:mapstr/partial", "name": "Partial", "description": "Partial overlap where governance action covers some aspects of the target control" },
+        { "@id": "ns:mapstr/related", "name": "Related", "description": "Thematic relationship without direct control-level mapping" }
+      ]
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-RCSG-001",
+      "name": "RCSG Context Requires Coverage",
+      "condition": "IF an RCSGContext is created",
+      "action": "THEN it MUST have at least one RegulatoryRequirement or ComplianceFramework linked to define minimum RCSG scope",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RCSG-002",
+      "name": "Regulatory Requirement Requires Jurisdiction",
+      "condition": "IF a RegulatoryRequirement is created",
+      "action": "THEN jurisdictions MUST be specified and SHOULD map to an existing GeoContext operatingRegions value",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RCSG-003",
+      "name": "Certified Framework Requires Expiry",
+      "condition": "IF a ComplianceFramework has certificationStatus of Certified",
+      "action": "THEN certificationExpiry MUST be specified to enable renewal tracking",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-RCSG-004",
+      "name": "Governance Model Requires Type",
+      "condition": "IF a GovernanceModel is created",
+      "action": "THEN governanceType MUST be specified from the standard governance model types",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RCSG-005",
+      "name": "Principle Requires Code Parent",
+      "condition": "IF a GovernancePrinciple exists",
+      "action": "THEN it MUST have exactly one belongsToCode relationship to a GovernanceCode",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RCSG-006",
+      "name": "Action Requires Principle Parent",
+      "condition": "IF a GovernanceAction exists",
+      "action": "THEN it MUST have exactly one belongsToPrinciple relationship to a GovernancePrinciple",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RCSG-007",
+      "name": "Mapping Requires Action Parent",
+      "condition": "IF a GovernanceActionMapping exists",
+      "action": "THEN it MUST have exactly one belongsToAction relationship to a GovernanceAction",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RCSG-008",
+      "name": "Code Must Have Publisher",
+      "condition": "IF a GovernanceCode exists",
+      "action": "THEN it MUST have exactly one publishedByAuthority relationship to an org:Organization",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RCSG-009",
+      "name": "Mapping Strength Validation",
+      "condition": "IF a GovernanceActionMapping has a mappingStrength property",
+      "action": "THEN mappingStrength MUST be one of Full, Partial, or Related",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RCSG-010",
+      "name": "Code Type Validation",
+      "condition": "IF a GovernanceCode has a codeType property",
+      "action": "THEN codeType MUST be one of CodeOfPractice, Certification, Standard, Guide, or Regulation",
+      "severity": "error"
+    }
+  ],
+  "examples": [
+    {
+      "@id": "ns:code-ncsc-cgcop",
+      "@type": "ns:GovernanceCode",
+      "codeId": "NCSC-CGCOP-2025",
+      "codeName": "Cyber Governance Code of Practice",
+      "publisher": "NCSC / DSIT",
+      "publisherRef": "org:NCSC",
+      "version": "1.0",
+      "publicationDate": "2025",
+      "jurisdiction": "United Kingdom",
+      "codeType": "CodeOfPractice",
+      "status": "Active",
+      "url": "https://www.ncsc.gov.uk/collection/cyber-governance",
+      "supportModel": "Voluntary governance code supported by 22 board-level actions across 5 principles with companion cross-framework mapping to 9 international standards"
+    },
+    {
+      "@id": "ns:principle-A",
+      "@type": "ns:GovernancePrinciple",
+      "principleCode": "A",
+      "principleName": "Risk Management",
+      "principleDescription": "The board should ensure that the most significant risks to the organisation, including cyber risks, are identified, assessed and managed. Board members should understand the organisation's risk exposure and its risk appetite, and be able to demonstrate this through a strategic approach to risk management.",
+      "actionCount": 5,
+      "principleCategory": "Strategic"
+    },
+    {
+      "@id": "ns:principle-B",
+      "@type": "ns:GovernancePrinciple",
+      "principleCode": "B",
+      "principleName": "Cyber Strategy",
+      "principleDescription": "The board should ensure that cyber resilience is embedded across the organisation through a comprehensive strategy that aligns with the organisation's broader goals. This strategy should be regularly reviewed, adapted and communicated.",
+      "actionCount": 5,
+      "principleCategory": "Strategic"
+    },
+    {
+      "@id": "ns:principle-C",
+      "@type": "ns:GovernancePrinciple",
+      "principleCode": "C",
+      "principleName": "People",
+      "principleDescription": "The board should promote a culture of cyber resilience across the organisation, ensuring that people at all levels understand their role in maintaining security. This includes fostering cyber literacy, clear policies, and a positive security culture.",
+      "actionCount": 4,
+      "principleCategory": "Operational"
+    },
+    {
+      "@id": "ns:principle-D",
+      "@type": "ns:GovernancePrinciple",
+      "principleCode": "D",
+      "principleName": "Incident Planning, Response & Recovery",
+      "principleDescription": "The board should ensure that the organisation has appropriate plans, processes and resources to respond to and recover from cyber incidents effectively, minimising disruption and ensuring business continuity.",
+      "actionCount": 4,
+      "principleCategory": "Operational"
+    },
+    {
+      "@id": "ns:principle-E",
+      "@type": "ns:GovernancePrinciple",
+      "principleCode": "E",
+      "principleName": "Assurance & Oversight",
+      "principleDescription": "The board should establish appropriate governance structures to ensure effective oversight and assurance of the organisation's cyber resilience, including regular review of policies, controls, and risk appetite.",
+      "actionCount": 4,
+      "principleCategory": "Assurance"
+    },
+    {
+      "@id": "ns:action-A1", "@type": "ns:GovernanceAction",
+      "actionCode": "A1", "actionName": "Determine cyber risk appetite",
+      "actionDescription": "Boards should define the organisation's cyber risk appetite as part of overall risk management, articulating acceptable levels of cyber risk in the context of the organisation's strategy and objectives.",
+      "boardRelevance": "Board directly sets risk appetite and ensures alignment with organisational strategy", "dependsOn": ""
+    },
+    {
+      "@id": "ns:action-A2", "@type": "ns:GovernanceAction",
+      "actionCode": "A2", "actionName": "Identify key digital processes, assets and services",
+      "actionDescription": "Boards should ensure the organisation has identified and documented its key digital processes, data and digital assets, and services that are critical to business operations.",
+      "boardRelevance": "Board ensures comprehensive asset identification to underpin risk decisions", "dependsOn": ""
+    },
+    {
+      "@id": "ns:action-A3", "@type": "ns:GovernanceAction",
+      "actionCode": "A3", "actionName": "Assess cyber risks to key processes, assets and services",
+      "actionDescription": "Boards should ensure the organisation regularly assesses cyber risks to its identified key digital processes, assets and services, including supply chain and third-party dependencies.",
+      "boardRelevance": "Board reviews risk assessment results and challenges management on risk exposure", "dependsOn": "A2"
+    },
+    {
+      "@id": "ns:action-A4", "@type": "ns:GovernanceAction",
+      "actionCode": "A4", "actionName": "Understand and manage the threat landscape",
+      "actionDescription": "Boards should ensure the organisation has access to relevant and timely cyber threat intelligence and understands how the threat landscape affects organisational risk.",
+      "boardRelevance": "Board receives regular threat landscape briefings and factors threats into risk appetite", "dependsOn": ""
+    },
+    {
+      "@id": "ns:action-A5", "@type": "ns:GovernanceAction",
+      "actionCode": "A5", "actionName": "Manage cyber risk across the supply chain",
+      "actionDescription": "Boards should ensure the organisation identifies, assesses and manages cyber risks arising from its supply chain and third-party relationships.",
+      "boardRelevance": "Board ensures supply chain cyber risk is integrated into overall risk management", "dependsOn": "A3"
+    },
+    {
+      "@id": "ns:action-B1", "@type": "ns:GovernanceAction",
+      "actionCode": "B1", "actionName": "Develop a cyber strategy",
+      "actionDescription": "Boards should ensure the organisation has a documented cyber strategy that aligns with the broader business strategy, covering risk management, technology, people and processes.",
+      "boardRelevance": "Board approves and owns the cyber strategy aligned to business objectives", "dependsOn": ""
+    },
+    {
+      "@id": "ns:action-B2", "@type": "ns:GovernanceAction",
+      "actionCode": "B2", "actionName": "Ensure cyber strategy is resourced",
+      "actionDescription": "Boards should ensure the organisation allocates appropriate resources (financial, human, technical) to implement the cyber strategy effectively.",
+      "boardRelevance": "Board approves budgets and resources for cyber security implementation", "dependsOn": "B1"
+    },
+    {
+      "@id": "ns:action-B3", "@type": "ns:GovernanceAction",
+      "actionCode": "B3", "actionName": "Ensure appropriate policies and processes",
+      "actionDescription": "Boards should ensure the organisation has appropriate and proportionate cyber security policies and processes in place that are regularly reviewed and updated.",
+      "boardRelevance": "Board ensures policy framework exists and receives summary of policy review outcomes", "dependsOn": ""
+    },
+    {
+      "@id": "ns:action-B4", "@type": "ns:GovernanceAction",
+      "actionCode": "B4", "actionName": "Implement effective technical controls",
+      "actionDescription": "Boards should ensure the organisation has implemented effective technical controls appropriate to its size, sector and risk profile to protect against cyber threats.",
+      "boardRelevance": "Board receives assurance that technical controls are proportionate and effective", "dependsOn": "B3"
+    },
+    {
+      "@id": "ns:action-B5", "@type": "ns:GovernanceAction",
+      "actionCode": "B5", "actionName": "Ensure regulatory and legal compliance",
+      "actionDescription": "Boards should ensure the organisation understands and complies with all relevant cyber security and data protection regulations and legal requirements.",
+      "boardRelevance": "Board has oversight of regulatory compliance status and material gaps", "dependsOn": ""
+    },
+    {
+      "@id": "ns:action-C1", "@type": "ns:GovernanceAction",
+      "actionCode": "C1", "actionName": "Promote a positive cyber security culture",
+      "actionDescription": "Boards should promote and foster a positive cyber security culture where all employees understand their role in keeping the organisation secure.",
+      "boardRelevance": "Board sets the tone from the top for security culture and leads by example", "dependsOn": ""
+    },
+    {
+      "@id": "ns:action-C2", "@type": "ns:GovernanceAction",
+      "actionCode": "C2", "actionName": "Develop cyber skills and awareness",
+      "actionDescription": "Boards should ensure the organisation provides appropriate cyber security training and awareness programmes for all staff and that there are sufficient specialist skills available.",
+      "boardRelevance": "Board ensures investment in training and receives reports on workforce cyber literacy", "dependsOn": ""
+    },
+    {
+      "@id": "ns:action-C3", "@type": "ns:GovernanceAction",
+      "actionCode": "C3", "actionName": "Embed cyber security in roles and responsibilities",
+      "actionDescription": "Boards should ensure that cyber security roles and responsibilities are clearly defined, documented and understood across the organisation, including a named accountable board member.",
+      "boardRelevance": "Board designates a lead member for cyber governance and reviews role clarity", "dependsOn": ""
+    },
+    {
+      "@id": "ns:action-C4", "@type": "ns:GovernanceAction",
+      "actionCode": "C4", "actionName": "Ensure board-level cyber literacy",
+      "actionDescription": "Board members should develop and maintain sufficient cyber literacy to understand cyber risks, challenge management effectively and make informed governance decisions.",
+      "boardRelevance": "Board members undertake appropriate development to maintain cyber literacy", "dependsOn": ""
+    },
+    {
+      "@id": "ns:action-D1", "@type": "ns:GovernanceAction",
+      "actionCode": "D1", "actionName": "Develop incident response plan",
+      "actionDescription": "Boards should ensure the organisation has a documented and tested cyber incident response plan that covers detection, containment, eradication, recovery and communication.",
+      "boardRelevance": "Board approves incident response plan and understands escalation triggers", "dependsOn": ""
+    },
+    {
+      "@id": "ns:action-D2", "@type": "ns:GovernanceAction",
+      "actionCode": "D2", "actionName": "Test and exercise incident plans",
+      "actionDescription": "Boards should ensure the organisation regularly tests and exercises its incident response and business continuity plans through tabletop exercises, simulations and live drills.",
+      "boardRelevance": "Board participates in exercises and reviews outcomes to improve readiness", "dependsOn": "D1"
+    },
+    {
+      "@id": "ns:action-D3", "@type": "ns:GovernanceAction",
+      "actionCode": "D3", "actionName": "Establish communication protocols",
+      "actionDescription": "Boards should ensure clear communication protocols are established for cyber incidents, including internal escalation, external stakeholder notification and regulatory reporting obligations.",
+      "boardRelevance": "Board understands communication responsibilities and media/regulatory obligations", "dependsOn": "D1"
+    },
+    {
+      "@id": "ns:action-D4", "@type": "ns:GovernanceAction",
+      "actionCode": "D4", "actionName": "Learn from incidents and near-misses",
+      "actionDescription": "Boards should ensure the organisation has processes to learn from cyber incidents and near-misses, conducting post-incident reviews and implementing improvements to reduce future risk.",
+      "boardRelevance": "Board receives post-incident reports and ensures lessons are embedded in strategy", "dependsOn": "D1"
+    },
+    {
+      "@id": "ns:action-E1", "@type": "ns:GovernanceAction",
+      "actionCode": "E1", "actionName": "Establish governance structure",
+      "actionDescription": "Boards should establish appropriate governance structures for cyber security oversight, including clear reporting lines, committee structures and escalation paths.",
+      "boardRelevance": "Board designs and owns the governance structure for cyber oversight", "dependsOn": ""
+    },
+    {
+      "@id": "ns:action-E2", "@type": "ns:GovernanceAction",
+      "actionCode": "E2", "actionName": "Gain assurance on cyber resilience",
+      "actionDescription": "Boards should gain appropriate assurance that the organisation's cyber security measures are effective, through internal and external audit, penetration testing and certification schemes.",
+      "boardRelevance": "Board commissions and reviews assurance activities and acts on findings", "dependsOn": ""
+    },
+    {
+      "@id": "ns:action-E3", "@type": "ns:GovernanceAction",
+      "actionCode": "E3", "actionName": "Review and adapt approach",
+      "actionDescription": "Boards should ensure the organisation regularly reviews and adapts its cyber governance approach in response to changes in the threat landscape, business environment and lessons learned.",
+      "boardRelevance": "Board reviews cyber governance effectiveness at least annually and drives adaptation", "dependsOn": "E2"
+    },
+    {
+      "@id": "ns:action-E4", "@type": "ns:GovernanceAction",
+      "actionCode": "E4", "actionName": "Report on cyber governance",
+      "actionDescription": "Boards should ensure appropriate reporting on cyber governance effectiveness to relevant internal and external stakeholders, including regulators where required.",
+      "boardRelevance": "Board approves reporting content and ensures transparency with stakeholders", "dependsOn": "E1"
+    },
+    {
+      "@id": "ns:glossary-ciso", "@type": "ns:GovernanceGlossaryTerm",
+      "termId": "GT-RCSG-001", "term": "CISO",
+      "definition": "Chief Information Security Officer — the senior executive responsible for the organisation's information and cyber security strategy, policy and operations",
+      "relatedActionCodes": "C3,E1"
+    },
+    {
+      "@id": "ns:glossary-cyber-literacy", "@type": "ns:GovernanceGlossaryTerm",
+      "termId": "GT-RCSG-002", "term": "Cyber literacy",
+      "definition": "The ability of individuals, particularly board members, to understand cyber security concepts, risks and governance responsibilities sufficiently to make informed decisions",
+      "relatedActionCodes": "C4"
+    },
+    {
+      "@id": "ns:glossary-cyber-resilience", "@type": "ns:GovernanceGlossaryTerm",
+      "termId": "GT-RCSG-003", "term": "Cyber resilience",
+      "definition": "An organisation's ability to prepare for, respond to and recover from cyber attacks while continuing to operate and deliver its objectives",
+      "relatedActionCodes": "B1,E2,E3"
+    },
+    {
+      "@id": "ns:glossary-cyber-security", "@type": "ns:GovernanceGlossaryTerm",
+      "termId": "GT-RCSG-004", "term": "Cyber security",
+      "definition": "The protection of internet-connected systems including hardware, software and data from cyber threats through technologies, processes and governance controls",
+      "relatedActionCodes": "A1,B1,B4"
+    },
+    {
+      "@id": "ns:glossary-cyber-culture", "@type": "ns:GovernanceGlossaryTerm",
+      "termId": "GT-RCSG-005", "term": "Cyber security culture",
+      "definition": "The collective values, beliefs, knowledge and behaviours across an organisation that shape how people approach and prioritise cyber security in daily operations",
+      "relatedActionCodes": "C1,C2"
+    },
+    {
+      "@id": "ns:glossary-cyber-strategy", "@type": "ns:GovernanceGlossaryTerm",
+      "termId": "GT-RCSG-006", "term": "Cyber strategy",
+      "definition": "A documented plan that sets out the organisation's approach to managing cyber risk, aligned with business strategy and covering people, process and technology dimensions",
+      "relatedActionCodes": "B1,B2"
+    },
+    {
+      "@id": "ns:glossary-data-digital-assets", "@type": "ns:GovernanceGlossaryTerm",
+      "termId": "GT-RCSG-007", "term": "Data and digital assets",
+      "definition": "All digital information, systems, applications and technology infrastructure that support business processes and create value for the organisation",
+      "relatedActionCodes": "A2,A3"
+    },
+    {
+      "@id": "ns:glossary-gain-assurance", "@type": "ns:GovernanceGlossaryTerm",
+      "termId": "GT-RCSG-008", "term": "Gain assurance",
+      "definition": "The process of obtaining evidence and confidence that cyber security measures are effective, through audit, testing, certification and other verification activities",
+      "relatedActionCodes": "E2"
+    },
+    {
+      "@id": "ns:glossary-internal-controls", "@type": "ns:GovernanceGlossaryTerm",
+      "termId": "GT-RCSG-009", "term": "Internal controls",
+      "definition": "The policies, procedures and technical measures implemented within an organisation to manage cyber risks and protect information assets",
+      "relatedActionCodes": "B3,B4"
+    },
+    {
+      "@id": "ns:glossary-risk-appetite", "@type": "ns:GovernanceGlossaryTerm",
+      "termId": "GT-RCSG-010", "term": "Risk appetite",
+      "definition": "The level and type of cyber risk that an organisation is prepared to accept in pursuit of its strategic objectives, as determined by the board",
+      "relatedActionCodes": "A1"
+    },
+    {
+      "@id": "ns:glossary-risk-owner", "@type": "ns:GovernanceGlossaryTerm",
+      "termId": "GT-RCSG-011", "term": "Risk owner",
+      "definition": "An individual or role within the organisation who has accountability for the management and treatment of a specific cyber risk or set of risks",
+      "relatedActionCodes": "A3,C3"
+    },
+    {
+      "@id": "ns:glossary-threat-landscape", "@type": "ns:GovernanceGlossaryTerm",
+      "termId": "GT-RCSG-012", "term": "Threat landscape",
+      "definition": "The evolving set of cyber threats, threat actors, attack techniques and vulnerabilities that could affect an organisation's security posture",
+      "relatedActionCodes": "A4"
+    }
+  ],
+  "crossOntologyReferences": {
+    "ctxDimensions": ["ctx:"],
+    "rcsgImplementations": ["gdpr:", "mcsb:", "pii:"],
+    "ncscCAF": ["ncsc-caf:"],
+    "foundation": ["org:"],
+    "description": "RCSG-FW v2.0.0 is the unified RCSG framework hub bridging organisational context (via CTX dimensions) to concrete RCSG-Series implementation ontologies (GDPR, MCSB, PII), while also modelling cyber governance codes with alignment to NCSC-CAF assessment framework and ORG domain authorities. Jurisdiction, maturity, and market classification linkage flows through CTX cross-ontology bridges. Governance actions align to CAF principles and contributing outcomes for cross-framework compliance.",
+    "lineageAlignment": {
+      "ctx:GeoContext": "CTX GeoContext provides jurisdiction and geographic scope for regulatory applicability",
+      "ctx:FunctionalMaturity": "CTX FunctionalMaturity provides per-function maturity scores driven by RCSG requirements",
+      "ctx:MarketClassification": "CTX MarketClassification links regulations to specific market verticals",
+      "ctx:ITMaturity": "CTX ITMaturity provides IT infrastructure maturity required by compliance certifications",
+      "gdpr:DataProtectionPrinciple": "GDPR-ONT defines the Article 5 data protection principles that RegulatoryRequirements implement",
+      "mcsb:SecurityControl": "MCSB-ONT defines cloud security benchmark controls that ComplianceFrameworks map to",
+      "pii:ComplianceFramework": "PII-ONT implements data protection governance that ComplianceFrameworks reference",
+      "ncsc-caf:CAFPrinciple": "NCSC-CAF CAFPrinciple receives governance action alignment for operational compliance bridging",
+      "ncsc-caf:ContributingOutcome": "NCSC-CAF ContributingOutcome provides detailed assessment outcome targets for governance action mapping",
+      "org:Organization": "ORG Organization provides domain authority publisher identity for governance codes"
+    },
+    "keyBridges": [
+      {"from": "ns:RegulatoryRequirement", "to": "ctx:GeoContext", "relationship": "regulatoryShapedByGeo"},
+      {"from": "ns:RCSGContext", "to": "ctx:FunctionalMaturity", "relationship": "rcsgDrivesFunctionalMaturity"},
+      {"from": "ns:RegulatoryRequirement", "to": "ctx:MarketClassification", "relationship": "regulatoryInMarket"},
+      {"from": "ns:ComplianceFramework", "to": "ctx:ITMaturity", "relationship": "complianceRequiresITMaturity"},
+      {"from": "ns:RegulatoryRequirement", "to": "gdpr:DataProtectionPrinciple", "relationship": "regulatoryImplementedByGDPR"},
+      {"from": "ns:ComplianceFramework", "to": "mcsb:SecurityControl", "relationship": "frameworkImplementedByMCSB"},
+      {"from": "ns:ComplianceFramework", "to": "pii:ComplianceFramework", "relationship": "frameworkImplementedByPII"},
+      {"from": "ns:GovernanceAction", "to": "ncsc-caf:CAFPrinciple", "relationship": "governanceAlignedToCAF"},
+      {"from": "ns:GovernanceAction", "to": "ncsc-caf:ContributingOutcome", "relationship": "governanceAlignedToCAFOutcome"},
+      {"from": "ns:GovernanceCode", "to": "org:Organization", "relationship": "publishedByAuthority"}
+    ]
+  },
+  "changeControl": {
+    "currentVersion": "2.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-16",
+    "modifiedBy": "Azlan EA-AAA",
+    "changeNotes": "Major version: merged CG-ONT (Cyber Governance Code of Practice) into RCSG-FW. 9 owned entities (4 original + 5 from CG), 14 internal + 10 cross-ontology relationships, 10 business rules, 4 enumerations. GovernanceModel now directly connects to GovernanceCode hierarchy via hasGovernanceCode. Seed instances: 1 code, 5 principles, 22 actions, 12 glossary terms. Cross-framework mappings to 9 international standards as separate instance file. Epic 30 F30.11.",
+    "versionHistory": [
+      {
+        "version": "2.0.0",
+        "date": "2026-02-16",
+        "notes": "Merged CG-ONT into RCSG-FW. Added GovernanceCode, GovernancePrinciple, GovernanceAction, GovernanceGlossaryTerm, GovernanceActionMapping entities. New hasGovernanceCode relationship connecting GovernanceModel to governance code hierarchy. Absorbed CG business rules (BR-RCSG-005–010), enumerations, seed instances. Added NCSC-CAF and ORG cross-ontology bridges. Epic 30 F30.11."
+      },
+      {
+        "version": "1.0.0",
+        "date": "2026-02-10",
+        "notes": "Initial release: 4 entities, 10 relationships (3 internal + 7 cross-ontology), 4 business rules. Extracted from CTX ontology to establish abstract RCSG framework layer."
+      }
+    ]
+  }
+}

@@ -1,0 +1,420 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ds": "https://platformcore.io/ontology/ds/",
+    "emc": "https://platformcore.io/ontology/emc/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "ds:pfi-app-skeleton-template-v1.0.0",
+  "@type": "ds:AppSkeletonTemplate",
+  "ds:version": "1.0.0",
+  "ds:dateCreated": "2026-02-24",
+  "ds:templateDescription": "Parameterised skeleton template for generating PFI application skeletons from VSOM briefs. Placeholders use {{variableName}} syntax. Conditional sections use @if. Repeatable sections use @each. This template is consumed by Claude (or any AI agent) — it is NOT a runtime template engine.",
+
+  "ds:templateVariables": {
+    "pfiShortCode": "2-5 char uppercase code (e.g. DICE, BAIV, WWG)",
+    "pfiInstanceId": "Full PFI instance ID (e.g. PFI-PC-DICE)",
+    "pfiInstanceName": "Human-readable name (e.g. FloodGraph AI — Paul Cowen)",
+    "pfiVersion": "Semantic version (e.g. 1.0.0)",
+    "pfiDate": "ISO date (e.g. 2026-02-24)",
+    "emcInstanceConfigId": "EMC InstanceConfiguration @id (e.g. emc:InstanceConfiguration-PFI-PC-DICE)",
+    "visionStatement": "From VSOM Section 2",
+    "domainAgents": "Array of {agentName, agentSlot, description} from VSOM Section 6.2",
+    "inheritedAgents": "Array of {agentName, role} from VSOM Section 6.1",
+    "stakeholderRoles": "Array of {roleName, description, keyActions} from VSOM Section 4 (S4)",
+    "instanceOntologies": "Array of ontology short names from VSOM Section 5.4",
+    "requirementScopes": "Array of scope strings from VSOM Section 5.4",
+    "hasGRCFW": "Boolean — true if GRC-FW-ONT in instanceOntologies",
+    "hasKPI": "Boolean — true if KPI-ONT in instanceOntologies",
+    "hasBSC": "Boolean — true if BSC-ONT in instanceOntologies",
+    "hasPPM": "Boolean — true if PPM-ONT in instanceOntologies",
+    "brandAccentColor": "Primary accent hex (optional, defaults to PFC accent)",
+    "brandAccentActiveColor": "Active accent hex (optional)"
+  },
+
+  "@graph": [
+
+    {
+      "@comment": "=== SECTION 1: APPLICATION HEADER ===",
+      "@id": "ds:{{pfiShortCode | lowercase}}-app-skeleton-v{{pfiVersion}}",
+      "@type": "ds:Application",
+      "ds:appId": "{{pfiShortCode | lowercase}}-app",
+      "ds:appName": "{{pfiInstanceName}}",
+      "ds:version": "{{pfiVersion}}",
+      "ds:dateCreated": "{{pfiDate}}",
+      "ds:description": "{{visionStatement}}",
+      "ds:appType": "SPA",
+      "ds:rootRoute": "/",
+      "ds:cascadeTier": "PFI",
+      "ds:extendsApp": { "@id": "ds:pfc-app-skeleton-v1.0.0" },
+      "ds:configuredByApp": { "@id": "{{emcInstanceConfigId}}" }
+    },
+
+    {
+      "@comment": "=== SECTION 2: PFI IDENTITY ZONE ===",
+      "@id": "ds:zone-Z-{{pfiShortCode}}-100",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-{{pfiShortCode}}-100",
+      "ds:zoneName": "{{pfiInstanceName}} Identity",
+      "ds:zoneType": "Conditional",
+      "ds:position": "top",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 97
+    },
+
+    {
+      "@comment": "=== SECTION 3: AGENT DASHBOARD ZONE ===",
+      "@id": "ds:zone-Z-{{pfiShortCode}}-101",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-{{pfiShortCode}}-101",
+      "ds:zoneName": "Agent Dashboard",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}'",
+      "ds:cascadeTier": "PFI",
+      "ds:zIndex": 60,
+      "ds:zoneDescription": "Overview of all {{inheritedAgents.length + domainAgents.length}} agents — inherited PE-RMF agents plus domain-specific agents"
+    },
+
+    {
+      "@comment": "=== SECTION 4: AGENT PANEL ZONES (one per domain agent) ===",
+      "@each": "domainAgents",
+      "@eachIndex": "i",
+      "@eachItem": "agent",
+      "@template": {
+        "@id": "ds:zone-Z-{{pfiShortCode}}-{{102 + i}}",
+        "@type": "ds:AppZone",
+        "ds:zoneId": "Z-{{pfiShortCode}}-{{102 + i}}",
+        "ds:zoneName": "{{agent.agentName}} Panel",
+        "ds:zoneType": "Sliding",
+        "ds:position": "right",
+        "ds:defaultVisible": false,
+        "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}'",
+        "ds:cascadeTier": "PFI",
+        "ds:zIndex": 60,
+        "ds:zoneDescription": "{{agent.description}} — maps to PE-RMF {{agent.agentSlot}} slot"
+      }
+    },
+
+    {
+      "@comment": "=== SECTION 5: STAKEHOLDER VIEW ZONES (one per role) ===",
+      "@each": "stakeholderRoles",
+      "@eachIndex": "j",
+      "@eachItem": "role",
+      "@template": {
+        "@id": "ds:zone-Z-{{pfiShortCode}}-{{200 + j}}",
+        "@type": "ds:AppZone",
+        "ds:zoneId": "Z-{{pfiShortCode}}-{{200 + j}}",
+        "ds:zoneName": "{{role.roleName}} View",
+        "ds:zoneType": "Sliding",
+        "ds:position": "right",
+        "ds:defaultVisible": false,
+        "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}' && state.activeStakeholderRole === '{{role.roleName}}'",
+        "ds:cascadeTier": "PFI",
+        "ds:zIndex": 60,
+        "ds:zoneDescription": "{{role.description}} — key actions: {{role.keyActions}}"
+      }
+    },
+
+    {
+      "@comment": "=== SECTION 6: COMPLIANCE DASHBOARD (conditional on GRC-FW) ===",
+      "@if": "hasGRCFW",
+      "@template": {
+        "@id": "ds:zone-Z-{{pfiShortCode}}-300",
+        "@type": "ds:AppZone",
+        "ds:zoneId": "Z-{{pfiShortCode}}-300",
+        "ds:zoneName": "Compliance Dashboard",
+        "ds:zoneType": "Sliding",
+        "ds:position": "left",
+        "ds:defaultVisible": false,
+        "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}'",
+        "ds:cascadeTier": "PFI",
+        "ds:zIndex": 60,
+        "ds:zoneDescription": "GRC-FW compliance checks, regulatory status, audit trail"
+      }
+    },
+
+    {
+      "@comment": "=== SECTION 7: ANALYTICS DASHBOARD (conditional on KPI + BSC) ===",
+      "@if": "hasKPI && hasBSC",
+      "@template": {
+        "@id": "ds:zone-Z-{{pfiShortCode}}-301",
+        "@type": "ds:AppZone",
+        "ds:zoneId": "Z-{{pfiShortCode}}-301",
+        "ds:zoneName": "Analytics Dashboard",
+        "ds:zoneType": "Sliding",
+        "ds:position": "left",
+        "ds:defaultVisible": false,
+        "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}'",
+        "ds:cascadeTier": "PFI",
+        "ds:zIndex": 60,
+        "ds:zoneDescription": "KPI metrics and BSC objective tracking"
+      }
+    },
+
+    {
+      "@comment": "=== SECTION 8: PPM ZONE (conditional on PPM) ===",
+      "@if": "hasPPM",
+      "@template": {
+        "@id": "ds:zone-Z-{{pfiShortCode}}-302",
+        "@type": "ds:AppZone",
+        "ds:zoneId": "Z-{{pfiShortCode}}-302",
+        "ds:zoneName": "Project Management",
+        "ds:zoneType": "Sliding",
+        "ds:position": "left",
+        "ds:defaultVisible": false,
+        "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}' && state.ppmActive === true",
+        "ds:cascadeTier": "PFI",
+        "ds:zIndex": 60,
+        "ds:zoneDescription": "PPM lifecycle — phases, milestones, gates, budget tracking"
+      }
+    },
+
+    {
+      "@comment": "=== SECTION 9: L4 NAV ITEMS ===",
+      "@comment2": "Generate nav items for: agents, domain features, stakeholder views, compose/freeze, and conditional dashboards",
+
+      "@navItems": [
+        {
+          "@id": "ds:nav-L4-{{pfiShortCode | lowercase}}-agents",
+          "@type": "ds:NavItem",
+          "ds:itemId": "nav-{{pfiShortCode | lowercase}}-agents",
+          "ds:label": "AI Agents",
+          "ds:itemType": "Button",
+          "ds:action": "toggle{{pfiShortCode}}Agents",
+          "ds:icon": "bot",
+          "ds:renderOrder": 1,
+          "ds:cascadeTier": "PFI",
+          "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}'",
+          "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+        },
+        {
+          "@comment": "@each domainAgents — generate one nav item per domain agent if agent count > 3",
+          "@if": "domainAgents.length > 3",
+          "@each": "domainAgents",
+          "@eachItem": "agent",
+          "@eachIndex": "k",
+          "@template": {
+            "@id": "ds:nav-L4-{{pfiShortCode | lowercase}}-{{agent.agentName | kebab-case}}",
+            "@type": "ds:NavItem",
+            "ds:itemId": "nav-{{pfiShortCode | lowercase}}-{{agent.agentName | kebab-case}}",
+            "ds:label": "{{agent.agentName | short-label}}",
+            "ds:itemType": "Button",
+            "ds:action": "toggle{{pfiShortCode}}{{agent.agentName | pascal-case}}",
+            "ds:renderOrder": "{{2 + k}}",
+            "ds:cascadeTier": "PFI",
+            "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}'",
+            "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+          }
+        },
+        {
+          "@id": "ds:nav-L4-{{pfiShortCode | lowercase}}-stakeholders",
+          "@type": "ds:NavItem",
+          "ds:itemId": "nav-{{pfiShortCode | lowercase}}-stakeholders",
+          "ds:label": "Views",
+          "ds:itemType": "Dropdown",
+          "ds:action": "toggle{{pfiShortCode}}StakeholderMenu",
+          "ds:icon": "users",
+          "ds:renderOrder": "{{domainAgents.length + 3}}",
+          "ds:cascadeTier": "PFI",
+          "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}'",
+          "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+        },
+        {
+          "@id": "ds:nav-L4-{{pfiShortCode | lowercase}}-compose",
+          "@type": "ds:NavItem",
+          "ds:itemId": "nav-{{pfiShortCode | lowercase}}-compose",
+          "ds:label": "Compose Graph",
+          "ds:itemType": "Button",
+          "ds:action": "compose{{pfiShortCode}}Graph",
+          "ds:icon": "git-merge",
+          "ds:renderOrder": "{{domainAgents.length + 4}}",
+          "ds:cascadeTier": "PFI",
+          "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}'",
+          "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+        },
+        {
+          "@id": "ds:nav-L4-{{pfiShortCode | lowercase}}-freeze",
+          "@type": "ds:NavItem",
+          "ds:itemId": "nav-{{pfiShortCode | lowercase}}-freeze",
+          "ds:label": "Freeze Snapshot",
+          "ds:itemType": "Button",
+          "ds:action": "freeze{{pfiShortCode}}Snapshot",
+          "ds:icon": "snowflake",
+          "ds:renderOrder": "{{domainAgents.length + 5}}",
+          "ds:cascadeTier": "PFI",
+          "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}' && state.composedPFIGraph",
+          "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+        },
+        {
+          "@if": "hasGRCFW",
+          "@template": {
+            "@id": "ds:nav-L4-{{pfiShortCode | lowercase}}-compliance",
+            "@type": "ds:NavItem",
+            "ds:itemId": "nav-{{pfiShortCode | lowercase}}-compliance",
+            "ds:label": "Compliance",
+            "ds:itemType": "Button",
+            "ds:action": "toggle{{pfiShortCode}}Compliance",
+            "ds:icon": "shield-check",
+            "ds:renderOrder": "{{domainAgents.length + 6}}",
+            "ds:cascadeTier": "PFI",
+            "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}'",
+            "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+          }
+        },
+        {
+          "@if": "hasKPI && hasBSC",
+          "@template": {
+            "@id": "ds:nav-L4-{{pfiShortCode | lowercase}}-analytics",
+            "@type": "ds:NavItem",
+            "ds:itemId": "nav-{{pfiShortCode | lowercase}}-analytics",
+            "ds:label": "Analytics",
+            "ds:itemType": "Button",
+            "ds:action": "toggle{{pfiShortCode}}Analytics",
+            "ds:icon": "bar-chart-3",
+            "ds:renderOrder": "{{domainAgents.length + 7}}",
+            "ds:cascadeTier": "PFI",
+            "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}'",
+            "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+          }
+        },
+        {
+          "@if": "hasPPM",
+          "@template": {
+            "@id": "ds:nav-L4-{{pfiShortCode | lowercase}}-ppm",
+            "@type": "ds:NavItem",
+            "ds:itemId": "nav-{{pfiShortCode | lowercase}}-ppm",
+            "ds:label": "Projects",
+            "ds:itemType": "Button",
+            "ds:action": "toggle{{pfiShortCode}}PPM",
+            "ds:icon": "gantt-chart",
+            "ds:renderOrder": "{{domainAgents.length + 8}}",
+            "ds:cascadeTier": "PFI",
+            "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}' && state.ppmActive === true",
+            "ds:belongsToLayer": { "@id": "ds:navlayer-L4" }
+          }
+        }
+      ]
+    },
+
+    {
+      "@comment": "=== SECTION 10: ZONE COMPONENTS (one per new zone) ===",
+      "@comment2": "Each new zone gets a corresponding ZoneComponent placement. Generate one for each zone created in sections 2-8.",
+
+      "@zoneComponents": [
+        {
+          "@id": "ds:cmp-{{pfiShortCode | lowercase}}-identity",
+          "@type": "ds:ZoneComponent",
+          "ds:placementId": "cmp-{{pfiShortCode | lowercase}}-identity",
+          "ds:slotName": "identity-content",
+          "ds:placedInZone": { "@id": "ds:zone-Z-{{pfiShortCode}}-100" },
+          "ds:placesComponent": { "@id": "ds:dc-pfi-identity" },
+          "ds:renderOrder": 1,
+          "ds:cascadeTier": "PFI"
+        },
+        {
+          "@id": "ds:cmp-{{pfiShortCode | lowercase}}-agent-dashboard",
+          "@type": "ds:ZoneComponent",
+          "ds:placementId": "cmp-{{pfiShortCode | lowercase}}-agent-dashboard",
+          "ds:slotName": "agent-dashboard-content",
+          "ds:placedInZone": { "@id": "ds:zone-Z-{{pfiShortCode}}-101" },
+          "ds:placesComponent": { "@id": "ds:dc-agent-dashboard" },
+          "ds:renderOrder": 1,
+          "ds:cascadeTier": "PFI"
+        },
+        {
+          "@each": "domainAgents",
+          "@eachIndex": "i",
+          "@eachItem": "agent",
+          "@template": {
+            "@id": "ds:cmp-{{pfiShortCode | lowercase}}-{{agent.agentName | kebab-case}}",
+            "@type": "ds:ZoneComponent",
+            "ds:placementId": "cmp-{{pfiShortCode | lowercase}}-{{agent.agentName | kebab-case}}",
+            "ds:slotName": "{{agent.agentName | kebab-case}}-content",
+            "ds:placedInZone": { "@id": "ds:zone-Z-{{pfiShortCode}}-{{102 + i}}" },
+            "ds:placesComponent": { "@id": "ds:dc-agent-panel" },
+            "ds:renderOrder": 1,
+            "ds:cascadeTier": "PFI"
+          }
+        },
+        {
+          "@each": "stakeholderRoles",
+          "@eachIndex": "j",
+          "@eachItem": "role",
+          "@template": {
+            "@id": "ds:cmp-{{pfiShortCode | lowercase}}-{{role.roleName | kebab-case}}-view",
+            "@type": "ds:ZoneComponent",
+            "ds:placementId": "cmp-{{pfiShortCode | lowercase}}-{{role.roleName | kebab-case}}-view",
+            "ds:slotName": "{{role.roleName | kebab-case}}-view-content",
+            "ds:placedInZone": { "@id": "ds:zone-Z-{{pfiShortCode}}-{{200 + j}}" },
+            "ds:placesComponent": { "@id": "ds:dc-stakeholder-view" },
+            "ds:renderOrder": 1,
+            "ds:cascadeTier": "PFI"
+          }
+        },
+        {
+          "@if": "hasGRCFW",
+          "@template": {
+            "@id": "ds:cmp-{{pfiShortCode | lowercase}}-compliance",
+            "@type": "ds:ZoneComponent",
+            "ds:placementId": "cmp-{{pfiShortCode | lowercase}}-compliance",
+            "ds:slotName": "compliance-content",
+            "ds:placedInZone": { "@id": "ds:zone-Z-{{pfiShortCode}}-300" },
+            "ds:placesComponent": { "@id": "ds:dc-compliance-dashboard" },
+            "ds:renderOrder": 1,
+            "ds:cascadeTier": "PFI"
+          }
+        },
+        {
+          "@if": "hasKPI && hasBSC",
+          "@template": {
+            "@id": "ds:cmp-{{pfiShortCode | lowercase}}-analytics",
+            "@type": "ds:ZoneComponent",
+            "ds:placementId": "cmp-{{pfiShortCode | lowercase}}-analytics",
+            "ds:slotName": "analytics-content",
+            "ds:placedInZone": { "@id": "ds:zone-Z-{{pfiShortCode}}-301" },
+            "ds:placesComponent": { "@id": "ds:dc-analytics-dashboard" },
+            "ds:renderOrder": 1,
+            "ds:cascadeTier": "PFI"
+          }
+        },
+        {
+          "@if": "hasPPM",
+          "@template": {
+            "@id": "ds:cmp-{{pfiShortCode | lowercase}}-ppm",
+            "@type": "ds:ZoneComponent",
+            "ds:placementId": "cmp-{{pfiShortCode | lowercase}}-ppm",
+            "ds:slotName": "ppm-content",
+            "ds:placedInZone": { "@id": "ds:zone-Z-{{pfiShortCode}}-302" },
+            "ds:placesComponent": { "@id": "ds:dc-ppm-dashboard" },
+            "ds:renderOrder": 1,
+            "ds:cascadeTier": "PFI"
+          }
+        }
+      ]
+    },
+
+    {
+      "@comment": "=== SECTION 11: TOKEN OVERRIDES (optional brand accent) ===",
+      "@if": "brandAccentColor",
+      "@template": {
+        "@id": "ds:cmp-pfi-context-bar",
+        "@type": "ds:ZoneComponent",
+        "ds:cascadeTier": "PFI",
+        "ds:placementId": "cmp-pfi-context-bar",
+        "ds:slotName": "context-bar-content",
+        "ds:placedInZone": { "@id": "ds:zone-Z3" },
+        "ds:placesComponent": { "@id": "ds:dc-context-bar" },
+        "ds:renderOrder": 1,
+        "ds:tokenOverrides": {
+          "--viz-accent": "{{brandAccentColor}}",
+          "--viz-accent-active": "{{brandAccentActiveColor}}"
+        },
+        "ds:visibilityCondition": "state.activeInstanceId === '{{pfiInstanceId}}'"
+      }
+    }
+  ]
+}

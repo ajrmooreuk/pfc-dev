@@ -1,0 +1,345 @@
+{
+  "@context": {
+    "pe": "https://oaa-ontology.org/v6/process-engineering/",
+    "ppm": "https://oaa-ontology.org/v6/ppm/",
+    "org": "https://pbs.azlan.me/ontology/org#",
+    "rcsg": "https://pbs.azlan.me/ontology/rcsg#",
+    "schema": "https://schema.org/",
+    "oaa": "https://pbs.azlan.me/oaa#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "pe:ins-ea-assessment-process-template",
+  "@type": "oaa:OntologyTemplate",
+  "oaa:templateOf": "pe:process-engineering-ontology",
+  "oaa:schemaVersion": "3.0.0",
+  "oaa:templateVersion": "1.0.0",
+  "oaa:vertical": "insurance",
+  "oaa:created": "2026-02-12",
+  "oaa:description": "Reusable PE-ONT process template for Insurance EA Assessment — defines the process lifecycle with insurance-specific phases, gates, artefacts, metrics, AI agents, and patterns.",
+
+  "entities": [
+    {
+      "@id": "pe:ins-process-ea-assess",
+      "@type": "pe:Process",
+      "processId": "pe:ins-ea-assess-001",
+      "processName": "Insurance Enterprise Architecture Assessment",
+      "processType": "analysis",
+      "description": "Structured EA assessment process for insurance sector clients covering business, data, application, and technology architecture domains with insurance regulatory overlay and compliance integration.",
+      "businessObjective": "Assess current state architecture maturity, define target state aligned with insurance digital transformation strategy, identify gaps, and produce prioritised transformation roadmap",
+      "scope": "Full enterprise architecture across business, data, application, technology, and security domains. Includes insurance-specific regulatory architecture (Solvency II, IDD, DORA) and Azure cloud alignment.",
+      "owner": "EA Workstream Lead",
+      "status": "active",
+      "version": "1.0.0",
+      "estimatedDuration": "P12W",
+      "automationLevel": 35
+    },
+
+    {
+      "@id": "pe:ins-phase-discovery",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:ins-ph-discovery",
+      "phaseName": "Discovery",
+      "phaseNumber": 1,
+      "description": "Stakeholder engagement, data collection, and current state documentation across all architecture domains. Insurance-specific: regulatory landscape mapping and compliance baseline.",
+      "entryConditions": "Programme kick-off complete; stakeholder list confirmed; data access agreements signed; compliance team engaged",
+      "exitConditions": "All architecture domains documented; stakeholder interviews complete; regulatory landscape mapped; data sources catalogued",
+      "activities": "Stakeholder interviews (15-20); Document collection and review; Application portfolio discovery; Data estate mapping; Technology inventory; Insurance regulatory landscape mapping; Compliance baseline with RCSG",
+      "estimatedDuration": "P3W",
+      "parallelExecution": true
+    },
+    {
+      "@id": "pe:ins-phase-analysis",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:ins-ph-analysis",
+      "phaseName": "Analysis",
+      "phaseNumber": 2,
+      "description": "Current state architecture analysis, pattern identification, risk assessment, and insurance-specific regulatory gap analysis. AI-augmented analysis of architecture patterns and compliance gaps.",
+      "entryConditions": "Discovery phase complete; all domain data collected; regulatory landscape documented",
+      "exitConditions": "Current state architecture blueprint approved; risk register populated; regulatory gaps identified; architecture maturity scored",
+      "activities": "Architecture pattern analysis; Technology debt assessment; Data quality evaluation; Application dependency mapping; Insurance regulatory gap analysis; Risk scoring and prioritisation; Maturity assessment across 5 domains",
+      "estimatedDuration": "P3W",
+      "parallelExecution": false
+    },
+    {
+      "@id": "pe:ins-phase-design",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:ins-ph-design",
+      "phaseName": "Design",
+      "phaseNumber": 3,
+      "description": "Target state architecture design aligned with insurance digital transformation strategy, Azure cloud patterns, and regulatory requirements. Includes insurance-specific architecture decision records.",
+      "entryConditions": "Current state analysis complete; strategic objectives confirmed; architecture principles agreed; regulatory requirements mapped",
+      "exitConditions": "Target state blueprint approved; architecture decision records documented; migration patterns selected; compliance alignment confirmed",
+      "activities": "Target state design workshops; Architecture Decision Records (ADRs); Azure reference architecture selection; Insurance compliance architecture overlay; Data architecture modernisation design; Integration architecture design; Security architecture alignment",
+      "estimatedDuration": "P3W",
+      "parallelExecution": false
+    },
+    {
+      "@id": "pe:ins-phase-roadmap",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:ins-ph-roadmap",
+      "phaseName": "Roadmap & Recommendations",
+      "phaseNumber": 4,
+      "description": "Gap analysis, transformation roadmap creation, and recommendations delivery. Dependency-aware sequencing with insurance regulatory constraints and compliance deadlines.",
+      "entryConditions": "Target state design approved; gap analysis data available; regulatory timeline constraints identified",
+      "exitConditions": "Gap analysis report delivered; transformation roadmap approved by steering committee; implementation recommendations accepted",
+      "activities": "Gap analysis (current vs target); Dependency mapping and critical path analysis; Roadmap creation with phased approach; Resource and budget estimation; Risk mitigation planning; Regulatory compliance timeline alignment; Steering committee presentation and approval",
+      "estimatedDuration": "P2W",
+      "parallelExecution": false
+    },
+    {
+      "@id": "pe:ins-phase-governance",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:ins-ph-governance",
+      "phaseName": "Governance & Handover",
+      "phaseNumber": 5,
+      "description": "Architecture governance setup, knowledge transfer, and handover to implementation teams. Insurance-specific: regulatory monitoring setup and compliance tracking configuration.",
+      "entryConditions": "Roadmap approved; implementation teams identified; governance framework agreed",
+      "exitConditions": "Architecture governance board established; knowledge transfer complete; monitoring configured; handover documentation signed off",
+      "activities": "Architecture governance board setup; Architecture principles documentation; Decision framework handover; Compliance monitoring configuration; Knowledge transfer sessions; Handover documentation",
+      "estimatedDuration": "P1W",
+      "parallelExecution": false
+    },
+
+    {
+      "@id": "pe:ins-gate-discovery",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:ins-g1-discovery",
+      "gateName": "G1: Discovery Completeness Gate",
+      "gateType": "completeness",
+      "description": "Verify all architecture domains have been documented and stakeholder input is complete before proceeding to analysis",
+      "criteria": "All 5 architecture domains documented (business, data, application, technology, security); 80%+ stakeholder interviews complete; regulatory landscape mapped; data sources catalogued",
+      "threshold": 80,
+      "automated": false,
+      "blockingFactor": "blocking"
+    },
+    {
+      "@id": "pe:ins-gate-analysis",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:ins-g2-analysis",
+      "gateName": "G2: Analysis Quality Gate",
+      "gateType": "quality",
+      "description": "Verify current state analysis quality and completeness before target state design",
+      "criteria": "Current state blueprint peer-reviewed; maturity scores validated; risk register reviewed by compliance team; insurance regulatory gaps identified and categorised",
+      "threshold": 85,
+      "automated": false,
+      "blockingFactor": "blocking"
+    },
+    {
+      "@id": "pe:ins-gate-design",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:ins-g3-design",
+      "gateName": "G3: Design Approval Gate",
+      "gateType": "approval",
+      "description": "Steering committee approval of target state architecture before roadmap creation",
+      "criteria": "Target state blueprint approved by client CTO; ADRs reviewed; compliance alignment confirmed by CISO; Azure architecture validated by cloud team",
+      "threshold": 90,
+      "automated": false,
+      "blockingFactor": "blocking"
+    },
+    {
+      "@id": "pe:ins-gate-compliance",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:ins-g4-compliance",
+      "gateName": "G4: Insurance Compliance Gate",
+      "gateType": "compliance",
+      "description": "Insurance-specific compliance gate verifying regulatory requirements coverage",
+      "criteria": "Solvency II architecture requirements mapped; IDD data handling requirements addressed; DORA digital resilience requirements covered; GDPR data architecture aligned; MCSB cloud security baseline met",
+      "threshold": 85,
+      "automated": true,
+      "blockingFactor": "blocking"
+    },
+
+    {
+      "@id": "pe:ins-artifact-current-state",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:ins-art-current-state",
+      "artifactName": "Current State Architecture Blueprint",
+      "artifactType": "document",
+      "description": "Comprehensive documentation of current state across all architecture domains with insurance regulatory overlay",
+      "format": "ArchiMate Model + Markdown Report",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:ins-artifact-target-state",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:ins-art-target-state",
+      "artifactName": "Target State Architecture Blueprint",
+      "artifactType": "document",
+      "description": "Target state architecture design with Azure cloud patterns and insurance compliance alignment",
+      "format": "ArchiMate Model + Markdown Report",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:ins-artifact-gap-analysis",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:ins-art-gap-analysis",
+      "artifactName": "Gap Analysis Report",
+      "artifactType": "report",
+      "description": "Detailed gap analysis between current and target state with severity scoring and regulatory impact assessment",
+      "format": "Markdown + Spreadsheet",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:ins-artifact-roadmap",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:ins-art-roadmap",
+      "artifactName": "Transformation Roadmap",
+      "artifactType": "document",
+      "description": "Phased transformation roadmap with dependency-aware sequencing, resource estimates, and regulatory compliance timeline alignment",
+      "format": "Markdown + Gantt Chart",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:ins-artifact-compliance-report",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:ins-art-compliance",
+      "artifactName": "Insurance Regulatory Architecture Overlay",
+      "artifactType": "report",
+      "description": "Insurance-specific regulatory mapping covering Solvency II, IDD, DORA requirements and their architecture implications",
+      "format": "Markdown + Ontology Instance",
+      "mandatory": true
+    },
+
+    {
+      "@id": "pe:ins-metric-coverage",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:ins-met-coverage",
+      "metricName": "Architecture Domain Coverage",
+      "metricType": "quality",
+      "description": "Percentage of architecture domains fully documented in current state analysis",
+      "unit": "percentage",
+      "target": 100,
+      "collectionMethod": "manual",
+      "frequency": "per-phase"
+    },
+    {
+      "@id": "pe:ins-metric-regulatory",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:ins-met-regulatory",
+      "metricName": "Regulatory Coverage Score",
+      "metricType": "quality",
+      "description": "Percentage of insurance regulatory requirements (Solvency II, IDD, DORA, GDPR, MCSB) addressed in target architecture",
+      "unit": "percentage",
+      "target": 85,
+      "collectionMethod": "automated",
+      "frequency": "per-gate"
+    },
+    {
+      "@id": "pe:ins-metric-maturity",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:ins-met-maturity",
+      "metricName": "Architecture Maturity Level",
+      "metricType": "outcome",
+      "description": "Current architecture maturity score on 1-5 TOGAF maturity scale",
+      "unit": "level",
+      "target": 3,
+      "collectionMethod": "manual",
+      "frequency": "per-assessment"
+    },
+    {
+      "@id": "pe:ins-metric-risk-score",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:ins-met-risk",
+      "metricName": "Architecture Risk Score",
+      "metricType": "leading-indicator",
+      "description": "Aggregated risk score from gap analysis — number of critical/high severity gaps",
+      "unit": "count",
+      "target": 5,
+      "collectionMethod": "hybrid",
+      "frequency": "per-phase"
+    },
+
+    {
+      "@id": "pe:ins-agent-compliance-scanner",
+      "@type": "pe:AIAgent",
+      "agentId": "pe:ins-ai-compliance",
+      "agentName": "Insurance Compliance Scanner",
+      "agentType": "analysis",
+      "description": "AI agent that analyses architecture artefacts against insurance regulatory requirements (Solvency II, IDD, DORA, GDPR, MCSB) and identifies compliance gaps automatically",
+      "capabilities": "Regulatory requirement mapping; Cross-framework gap detection; Compliance score calculation; Remediation suggestion generation",
+      "autonomyLevel": "supervised",
+      "model": "GPT-4 + RCSG ontology rules",
+      "qualityThreshold": 80
+    },
+    {
+      "@id": "pe:ins-agent-risk-assessor",
+      "@type": "pe:AIAgent",
+      "agentId": "pe:ins-ai-risk",
+      "agentName": "Architecture Risk Assessor",
+      "agentType": "analysis",
+      "description": "AI agent that assesses architectural risks by analysing technology debt, dependency complexity, and insurance-specific operational risks",
+      "capabilities": "Technology debt scoring; Dependency complexity analysis; Insurance operational risk assessment; Risk prioritisation by business impact",
+      "autonomyLevel": "supervised",
+      "model": "GPT-4 + EA-ONT risk framework",
+      "qualityThreshold": 75
+    },
+    {
+      "@id": "pe:ins-agent-gap-analyser",
+      "@type": "pe:AIAgent",
+      "agentId": "pe:ins-ai-gap",
+      "agentName": "Gap Analysis Generator",
+      "agentType": "generation",
+      "description": "AI agent that generates gap analysis reports by comparing current state and target state architecture models and identifying differences with severity scoring",
+      "capabilities": "Architecture model comparison; Gap identification and categorisation; Severity scoring; Remediation recommendation generation; Insurance-specific gap categorisation",
+      "autonomyLevel": "supervised",
+      "model": "GPT-4 + ArchiMate model parser",
+      "qualityThreshold": 80
+    },
+
+    {
+      "@id": "pe:ins-pattern-compliance-first",
+      "@type": "pe:ProcessPattern",
+      "patternId": "pe:ins-pat-compliance",
+      "patternName": "Compliance-First Architecture Assessment",
+      "description": "Insurance-specific pattern that front-loads regulatory compliance analysis in the assessment process, ensuring architecture decisions are compliant-by-design",
+      "context": "Insurance sector engagements where regulatory compliance (Solvency II, IDD, DORA) is a primary constraint on architecture decisions",
+      "problem": "Architecture assessments that treat compliance as an afterthought result in costly redesign when regulatory requirements surface late in the process",
+      "solution": "Integrate RCSG compliance baseline in Discovery phase; make compliance gate blocking before Design phase; use AI compliance scanner throughout; map regulatory requirements to architecture decisions in ADRs",
+      "benefits": "Zero late-stage compliance surprises; Regulatory requirements inform architecture choices; Audit-ready architecture documentation; 40% reduction in compliance-driven rework"
+    },
+    {
+      "@id": "pe:ins-pattern-risk-driven",
+      "@type": "pe:ProcessPattern",
+      "patternId": "pe:ins-pat-risk",
+      "patternName": "Risk-Driven Prioritisation",
+      "description": "Pattern for prioritising transformation roadmap items based on aggregated risk score (architecture risk + compliance risk + operational risk)",
+      "context": "Insurance transformation programmes with competing priorities and limited budget requiring risk-based prioritisation",
+      "problem": "Transformation roadmaps prioritised by ease-of-implementation or political pressure rather than objective risk reduction",
+      "solution": "Score each gap by multi-dimensional risk (architecture debt, compliance exposure, operational fragility); prioritise roadmap by composite risk reduction per investment unit; use AI risk assessor for objective scoring",
+      "benefits": "Objective, defensible prioritisation; Maximum risk reduction per investment; Regulatory penalty risk addressed first; Board-level confidence in transformation sequencing"
+    }
+  ],
+
+  "relationships": [
+    { "@type": "pe:hasPhase", "from": "pe:ins-process-ea-assess", "to": "pe:ins-phase-discovery" },
+    { "@type": "pe:hasPhase", "from": "pe:ins-process-ea-assess", "to": "pe:ins-phase-analysis" },
+    { "@type": "pe:hasPhase", "from": "pe:ins-process-ea-assess", "to": "pe:ins-phase-design" },
+    { "@type": "pe:hasPhase", "from": "pe:ins-process-ea-assess", "to": "pe:ins-phase-roadmap" },
+    { "@type": "pe:hasPhase", "from": "pe:ins-process-ea-assess", "to": "pe:ins-phase-governance" },
+
+    { "@type": "pe:hasGate", "from": "pe:ins-phase-discovery", "to": "pe:ins-gate-discovery" },
+    { "@type": "pe:hasGate", "from": "pe:ins-phase-analysis", "to": "pe:ins-gate-analysis" },
+    { "@type": "pe:hasGate", "from": "pe:ins-phase-design", "to": "pe:ins-gate-design" },
+    { "@type": "pe:hasGate", "from": "pe:ins-phase-design", "to": "pe:ins-gate-compliance" },
+
+    { "@type": "pe:produces", "from": "pe:ins-phase-analysis", "to": "pe:ins-artifact-current-state" },
+    { "@type": "pe:produces", "from": "pe:ins-phase-design", "to": "pe:ins-artifact-target-state" },
+    { "@type": "pe:produces", "from": "pe:ins-phase-roadmap", "to": "pe:ins-artifact-gap-analysis" },
+    { "@type": "pe:produces", "from": "pe:ins-phase-roadmap", "to": "pe:ins-artifact-roadmap" },
+    { "@type": "pe:produces", "from": "pe:ins-phase-analysis", "to": "pe:ins-artifact-compliance-report" },
+
+    { "@type": "pe:measuredBy", "from": "pe:ins-process-ea-assess", "to": "pe:ins-metric-coverage" },
+    { "@type": "pe:measuredBy", "from": "pe:ins-process-ea-assess", "to": "pe:ins-metric-regulatory" },
+    { "@type": "pe:measuredBy", "from": "pe:ins-process-ea-assess", "to": "pe:ins-metric-maturity" },
+    { "@type": "pe:measuredBy", "from": "pe:ins-process-ea-assess", "to": "pe:ins-metric-risk-score" },
+
+    { "@type": "pe:augmentedBy", "from": "pe:ins-phase-analysis", "to": "pe:ins-agent-compliance-scanner" },
+    { "@type": "pe:augmentedBy", "from": "pe:ins-phase-analysis", "to": "pe:ins-agent-risk-assessor" },
+    { "@type": "pe:augmentedBy", "from": "pe:ins-phase-roadmap", "to": "pe:ins-agent-gap-analyser" },
+
+    { "@type": "pe:appliesPattern", "from": "pe:ins-process-ea-assess", "to": "pe:ins-pattern-compliance-first" },
+    { "@type": "pe:appliesPattern", "from": "pe:ins-process-ea-assess", "to": "pe:ins-pattern-risk-driven" },
+
+    { "@type": "pe:linkedToProject", "from": "pe:ins-process-ea-assess", "to": "ppm:ins-proj-ea-assess" }
+  ]
+}

@@ -1,0 +1,923 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platformcore.io/ontology/",
+    "pii": "https://platformcore.io/ontology/pii-governance/",
+    "oaa": "https://platformcore.io/ontology/oaa/"
+  },
+  "@type": "pf:Ontology",
+  "@id": "pii:pii-governance-microsoft-native",
+  "name": "PII Governance Ontology - Microsoft Native Web Apps",
+  "description": "Ontology for PII protection in web applications using Azure SQL Database Graph, Microsoft Graph API, Presidio, and Azure OpenAI. Provides comprehensive data governance framework for UK-based AI systems processing personal data.",
+  "version": "3.0.0",
+  "oaaVersion": "6.1.0",
+  "created": "2026-02-03",
+  "lastModified": "2026-02-06",
+  "author": "PF-Core Security Module",
+  "schemaOrgAlignment": 0.85,
+  "pfCoreModule": "SECURITY",
+  "pfCoreInstances": ["BAIV-SEC", "W4M-RCS", "AIR-GOV"],
+
+  "metadata": {
+    "domain": "Data Governance & Privacy",
+    "purpose": "Define PII protection patterns for Microsoft-native AI applications with UK data residency compliance",
+    "scope": "Enterprise AI systems processing personal data within UK/EU jurisdictions",
+    "targetAudience": ["Security Architects", "Data Protection Officers", "AI Platform Engineers"],
+    "complianceFrameworks": ["UK-GDPR", "GDPR", "ISO27001", "MCSBv2"]
+  },
+
+  "hasDefinedTerm": [
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:DataResidencyRegion",
+      "name": "DataResidencyRegion",
+      "description": "Geographic region for data residency compliance, mapping Azure regions to applicable data protection laws and adequacy decisions",
+      "termCode": "DRR",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:Place",
+      "properties": {
+        "regionCode": {
+          "type": "string",
+          "description": "ISO 3166-1 region code"
+        },
+        "azureRegion": {
+          "type": "string",
+          "description": "Azure region identifier",
+          "enum": ["uksouth", "ukwest", "northeurope", "westeurope", "eastus", "westus"]
+        },
+        "dataProtectionLaw": {
+          "type": "string",
+          "description": "Primary data protection regulation",
+          "enum": ["UK-GDPR", "GDPR", "CCPA", "HIPAA"]
+        },
+        "adequacyDecision": {
+          "type": "boolean",
+          "description": "Has EU adequacy decision"
+        }
+      },
+      "instances": ["UK", "EU", "US", "GLOBAL"]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:PIIEntityType",
+      "name": "PIIEntityType",
+      "description": "Type of personally identifiable information with risk classification, detection patterns, and Presidio integration configuration for UK-specific and standard PII categories",
+      "termCode": "PET",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:DefinedTerm",
+      "properties": {
+        "entityCode": {
+          "type": "string",
+          "description": "Presidio entity type code"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Human-readable name for the PII type"
+        },
+        "riskLevel": {
+          "type": "string",
+          "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+          "description": "Risk classification determining handling action"
+        },
+        "ukSpecific": {
+          "type": "boolean",
+          "description": "Whether this is a UK-specific PII type requiring custom recognition"
+        },
+        "presidioBuiltIn": {
+          "type": "boolean",
+          "description": "Whether Presidio has built-in recognition"
+        },
+        "regexPattern": {
+          "type": "string",
+          "description": "Regex pattern for detection"
+        },
+        "contextKeywords": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Context words that increase detection confidence"
+        }
+      },
+      "instances": [
+        {
+          "@id": "pii:PIIEntityType-UK_NINO",
+          "entityCode": "UK_NINO",
+          "displayName": "UK National Insurance Number",
+          "riskLevel": "CRITICAL",
+          "ukSpecific": true,
+          "presidioBuiltIn": false,
+          "regexPattern": "[A-CEGHJ-PR-TW-Z]{2}\\s?\\d{2}\\s?\\d{2}\\s?\\d{2}\\s?[A-D]",
+          "contextKeywords": ["national insurance", "NI number", "NINO", "HMRC", "tax"]
+        },
+        {
+          "@id": "pii:PIIEntityType-UK_NHS_NUMBER",
+          "entityCode": "UK_NHS_NUMBER",
+          "displayName": "UK NHS Number",
+          "riskLevel": "CRITICAL",
+          "ukSpecific": true,
+          "presidioBuiltIn": false,
+          "regexPattern": "\\d{3}\\s?\\d{3}\\s?\\d{4}",
+          "contextKeywords": ["NHS", "patient", "medical", "hospital", "GP"]
+        },
+        {
+          "@id": "pii:PIIEntityType-UK_POSTCODE",
+          "entityCode": "UK_POSTCODE",
+          "displayName": "UK Postcode",
+          "riskLevel": "MEDIUM",
+          "ukSpecific": true,
+          "presidioBuiltIn": false,
+          "regexPattern": "[A-Z]{1,2}\\d[A-Z\\d]?\\s?\\d[A-Z]{2}",
+          "contextKeywords": ["address", "postcode", "postal", "delivery"]
+        },
+        {
+          "@id": "pii:PIIEntityType-UK_DRIVING_LICENCE",
+          "entityCode": "UK_DRIVING_LICENCE",
+          "displayName": "UK Driving Licence Number",
+          "riskLevel": "HIGH",
+          "ukSpecific": true,
+          "presidioBuiltIn": false,
+          "regexPattern": "[A-Z]{5}\\d{6}[A-Z]{2}\\d{2}",
+          "contextKeywords": ["driving", "licence", "DVLA", "driver"]
+        },
+        {
+          "@id": "pii:PIIEntityType-UK_BANK_ACCOUNT",
+          "entityCode": "UK_BANK_ACCOUNT",
+          "displayName": "UK Bank Account (Sort Code + Account)",
+          "riskLevel": "CRITICAL",
+          "ukSpecific": true,
+          "presidioBuiltIn": false,
+          "regexPattern": "\\d{2}-\\d{2}-\\d{2}|\\d{8}",
+          "contextKeywords": ["bank", "account", "sort code", "payment", "BACS"]
+        },
+        {
+          "@id": "pii:PIIEntityType-PERSON",
+          "entityCode": "PERSON",
+          "displayName": "Person Name",
+          "riskLevel": "MEDIUM",
+          "ukSpecific": false,
+          "presidioBuiltIn": true
+        },
+        {
+          "@id": "pii:PIIEntityType-EMAIL_ADDRESS",
+          "entityCode": "EMAIL_ADDRESS",
+          "displayName": "Email Address",
+          "riskLevel": "MEDIUM",
+          "ukSpecific": false,
+          "presidioBuiltIn": true
+        },
+        {
+          "@id": "pii:PIIEntityType-PHONE_NUMBER",
+          "entityCode": "PHONE_NUMBER",
+          "displayName": "Phone Number",
+          "riskLevel": "MEDIUM",
+          "ukSpecific": false,
+          "presidioBuiltIn": true
+        },
+        {
+          "@id": "pii:PIIEntityType-CREDIT_CARD",
+          "entityCode": "CREDIT_CARD",
+          "displayName": "Credit Card Number",
+          "riskLevel": "CRITICAL",
+          "ukSpecific": false,
+          "presidioBuiltIn": true
+        },
+        {
+          "@id": "pii:PIIEntityType-IBAN_CODE",
+          "entityCode": "IBAN_CODE",
+          "displayName": "IBAN",
+          "riskLevel": "CRITICAL",
+          "ukSpecific": false,
+          "presidioBuiltIn": true
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:AnonymizationOperator",
+      "name": "AnonymizationOperator",
+      "description": "Presidio anonymization operator defining transformation methods for PII redaction, each with specific reversibility and use case characteristics",
+      "termCode": "AO",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:Action",
+      "properties": {
+        "operatorName": {
+          "type": "string",
+          "enum": ["replace", "redact", "mask", "hash", "encrypt"],
+          "description": "Presidio operator type"
+        },
+        "isReversible": {
+          "type": "boolean",
+          "description": "Whether the transformation can be reversed"
+        },
+        "description": {
+          "type": "string",
+          "description": "Explanation of what the operator does"
+        },
+        "useCase": {
+          "type": "string",
+          "description": "Primary scenario for using this operator"
+        }
+      },
+      "instances": [
+        { "@id": "pii:AnonymizationOperator-replace", "operatorName": "replace", "isReversible": false, "description": "Replace PII with placeholder text", "useCase": "General anonymization for AI processing" },
+        { "@id": "pii:AnonymizationOperator-mask", "operatorName": "mask", "isReversible": false, "description": "Mask characters with asterisks", "useCase": "Display partial information (e.g., email, phone)" },
+        { "@id": "pii:AnonymizationOperator-hash", "operatorName": "hash", "isReversible": false, "description": "One-way cryptographic hash", "useCase": "Audit logging, deduplication" },
+        { "@id": "pii:AnonymizationOperator-encrypt", "operatorName": "encrypt", "isReversible": true, "description": "AES encryption with key", "useCase": "Temporary processing requiring restoration" },
+        { "@id": "pii:AnonymizationOperator-redact", "operatorName": "redact", "isReversible": false, "description": "Remove PII entirely", "useCase": "Training data preparation" }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:AzureSQLGraphNode",
+      "name": "AzureSQLGraphNode",
+      "description": "Node table in Azure SQL Database Graph representing entities in the PII governance data model with encryption and row-level security configuration",
+      "termCode": "ASGN",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:Thing",
+      "properties": {
+        "tableName": {
+          "type": "string",
+          "description": "SQL table name for the node"
+        },
+        "nodeType": {
+          "type": "string",
+          "enum": ["Organisation", "Person", "Document", "AIInteraction", "Agent", "PIIAuditLog"],
+          "description": "Type of entity represented"
+        },
+        "hasPIIColumns": {
+          "type": "boolean",
+          "description": "Whether table contains PII data columns"
+        },
+        "encryptionType": {
+          "type": "string",
+          "enum": ["NONE", "ALWAYS_ENCRYPTED_DETERMINISTIC", "ALWAYS_ENCRYPTED_RANDOMIZED", "HASH_ONLY"],
+          "description": "Azure SQL encryption method"
+        },
+        "rlsEnabled": {
+          "type": "boolean",
+          "description": "Row-Level Security enabled for tenant isolation"
+        }
+      },
+      "instances": ["Organisation", "Person", "Document", "AIInteraction", "Agent", "PIIAuditLog"]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:AzureSQLGraphEdge",
+      "name": "AzureSQLGraphEdge",
+      "description": "Edge table representing relationships in Azure SQL Database Graph, connecting node entities with typed relationship semantics",
+      "termCode": "ASGE",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:Action",
+      "properties": {
+        "tableName": {
+          "type": "string",
+          "description": "SQL edge table name"
+        },
+        "fromNode": {
+          "type": "string",
+          "description": "Source node type"
+        },
+        "toNode": {
+          "type": "string",
+          "description": "Target node type"
+        },
+        "relationshipType": {
+          "type": "string",
+          "description": "Semantic type of relationship"
+        },
+        "hasProperties": {
+          "type": "boolean",
+          "description": "Whether edge has additional properties"
+        }
+      },
+      "instances": [
+        { "@id": "pii:AzureSQLGraphEdge-WorksFor", "tableName": "WorksFor", "fromNode": "Person", "toNode": "Organisation", "relationshipType": "EMPLOYMENT", "hasProperties": false },
+        { "@id": "pii:AzureSQLGraphEdge-Authored", "tableName": "Authored", "fromNode": "Person", "toNode": "Document", "relationshipType": "AUTHORSHIP", "hasProperties": false },
+        { "@id": "pii:AzureSQLGraphEdge-HasAccess", "tableName": "HasAccess", "fromNode": "Person", "toNode": "Document", "relationshipType": "PERMISSION", "hasProperties": true },
+        { "@id": "pii:AzureSQLGraphEdge-Initiated", "tableName": "Initiated", "fromNode": "Person", "toNode": "AIInteraction", "relationshipType": "INITIATED", "hasProperties": false },
+        { "@id": "pii:AzureSQLGraphEdge-Referenced", "tableName": "Referenced", "fromNode": "AIInteraction", "toNode": "Document", "relationshipType": "REFERENCE", "hasProperties": true },
+        { "@id": "pii:AzureSQLGraphEdge-PerformedBy", "tableName": "PerformedBy", "fromNode": "AIInteraction", "toNode": "Agent", "relationshipType": "EXECUTION", "hasProperties": false },
+        { "@id": "pii:AzureSQLGraphEdge-AuditedInteraction", "tableName": "AuditedInteraction", "fromNode": "PIIAuditLog", "toNode": "AIInteraction", "relationshipType": "AUDIT", "hasProperties": false }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:MicrosoftGraphAPIScope",
+      "name": "MicrosoftGraphAPIScope",
+      "description": "Microsoft Graph API permission scope with PII exposure classification and consent requirements for M365 data access",
+      "termCode": "MGAS",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:DigitalDocument",
+      "properties": {
+        "scopeName": {
+          "type": "string",
+          "description": "Graph API scope identifier"
+        },
+        "scopeType": {
+          "type": "string",
+          "enum": ["Delegated", "Application"],
+          "description": "Permission flow type"
+        },
+        "consentType": {
+          "type": "string",
+          "enum": ["User", "Admin"],
+          "description": "Required consent level"
+        },
+        "description": {
+          "type": "string",
+          "description": "What access this scope provides"
+        },
+        "piiExposure": {
+          "type": "string",
+          "enum": ["NONE", "LOW", "MEDIUM", "HIGH"],
+          "description": "Level of PII accessible via this scope"
+        }
+      },
+      "instances": [
+        { "@id": "pii:MicrosoftGraphAPIScope-UserRead", "scopeName": "User.Read", "scopeType": "Delegated", "consentType": "User", "description": "Read user profile", "piiExposure": "MEDIUM" },
+        { "@id": "pii:MicrosoftGraphAPIScope-UserReadAll", "scopeName": "User.Read.All", "scopeType": "Application", "consentType": "Admin", "description": "Read all users' profiles", "piiExposure": "HIGH" },
+        { "@id": "pii:MicrosoftGraphAPIScope-FilesReadAll", "scopeName": "Files.Read.All", "scopeType": "Application", "consentType": "Admin", "description": "Read all files", "piiExposure": "HIGH" },
+        { "@id": "pii:MicrosoftGraphAPIScope-SitesReadAll", "scopeName": "Sites.Read.All", "scopeType": "Application", "consentType": "Admin", "description": "Read SharePoint sites", "piiExposure": "HIGH" }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:AzureOpenAIDeployment",
+      "name": "AzureOpenAIDeployment",
+      "description": "Azure OpenAI model deployment configuration with UK data residency and data usage policies ensuring no training on customer data",
+      "termCode": "AOAD",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:SoftwareApplication",
+      "properties": {
+        "deploymentName": {
+          "type": "string",
+          "description": "Azure deployment identifier"
+        },
+        "modelName": {
+          "type": "string",
+          "enum": ["gpt-4o", "gpt-4o-mini", "gpt-4", "gpt-35-turbo"],
+          "description": "OpenAI model version"
+        },
+        "deploymentType": {
+          "type": "string",
+          "enum": ["Regional", "DataZone", "Global"],
+          "description": "Azure deployment scope"
+        },
+        "region": {
+          "type": "string",
+          "description": "Azure region for data processing"
+        },
+        "ukDataResidency": {
+          "type": "boolean",
+          "description": "Whether data remains in UK"
+        },
+        "dataUsedForTraining": {
+          "type": "boolean",
+          "const": false,
+          "description": "Azure OpenAI never uses customer data for training"
+        }
+      },
+      "instances": [
+        { "@id": "pii:AzureOpenAIDeployment-gpt4o-uksouth", "deploymentName": "gpt-4o-uksouth", "modelName": "gpt-4o", "deploymentType": "Regional", "region": "uksouth", "ukDataResidency": true, "dataUsedForTraining": false },
+        { "@id": "pii:AzureOpenAIDeployment-gpt4omini-uksouth", "deploymentName": "gpt-4o-mini-uksouth", "modelName": "gpt-4o-mini", "deploymentType": "Regional", "region": "uksouth", "ukDataResidency": true, "dataUsedForTraining": false }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:PIIProtectionAction",
+      "name": "PIIProtectionAction",
+      "description": "Action taken when PII is detected in input or output, triggered by risk level classification and data sensitivity",
+      "termCode": "PPA",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:Action",
+      "properties": {
+        "actionCode": {
+          "type": "string",
+          "enum": ["ALLOWED", "ANONYMIZED", "BLOCKED", "ALERTED"],
+          "description": "Protection action type"
+        },
+        "triggerCondition": {
+          "type": "string",
+          "description": "Condition that triggers this action"
+        },
+        "riskLevelsAffected": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+          "description": "Risk levels that result in this action"
+        }
+      },
+      "instances": [
+        { "@id": "pii:PIIProtectionAction-ALLOWED", "actionCode": "ALLOWED", "triggerCondition": "No PII detected", "riskLevelsAffected": [] },
+        { "@id": "pii:PIIProtectionAction-ANONYMIZED", "actionCode": "ANONYMIZED", "triggerCondition": "Low/Medium risk PII detected", "riskLevelsAffected": ["LOW", "MEDIUM"] },
+        { "@id": "pii:PIIProtectionAction-BLOCKED", "actionCode": "BLOCKED", "triggerCondition": "High/Critical risk PII detected", "riskLevelsAffected": ["HIGH", "CRITICAL"] },
+        { "@id": "pii:PIIProtectionAction-ALERTED", "actionCode": "ALERTED", "triggerCondition": "PII detected in AI output (leakage)", "riskLevelsAffected": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:SensitivityLabel",
+      "name": "SensitivityLabel",
+      "description": "Microsoft Purview sensitivity label defining data classification levels with AI processing permissions and PII handling requirements",
+      "termCode": "SL",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:DefinedTerm",
+      "properties": {
+        "labelName": {
+          "type": "string",
+          "description": "Display name of sensitivity label"
+        },
+        "labelId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Purview label GUID"
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Label priority for conflicts"
+        },
+        "piiImplication": {
+          "type": "string",
+          "description": "Expected PII content at this classification"
+        },
+        "aiProcessingAllowed": {
+          "type": "boolean",
+          "description": "Whether AI can process documents at this level"
+        }
+      },
+      "instances": [
+        { "@id": "pii:SensitivityLabel-Public", "labelName": "Public", "priority": 0, "piiImplication": "No PII expected", "aiProcessingAllowed": true },
+        { "@id": "pii:SensitivityLabel-Internal", "labelName": "Internal", "priority": 25, "piiImplication": "May contain internal identifiers", "aiProcessingAllowed": true },
+        { "@id": "pii:SensitivityLabel-Confidential", "labelName": "Confidential", "priority": 50, "piiImplication": "Likely contains PII", "aiProcessingAllowed": true },
+        { "@id": "pii:SensitivityLabel-HighlyConfidential", "labelName": "Highly-Confidential", "priority": 75, "piiImplication": "Contains sensitive PII", "aiProcessingAllowed": false }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:MCSBv2AIControl",
+      "name": "MCSBv2AIControl",
+      "description": "Microsoft Cloud Security Benchmark v2 AI-specific security control with implementation mapping for PII protection in AI systems",
+      "termCode": "MCSB",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:DefinedTerm",
+      "properties": {
+        "controlId": {
+          "type": "string",
+          "pattern": "^AI-[1-7]$",
+          "description": "MCSB control identifier"
+        },
+        "controlName": {
+          "type": "string",
+          "description": "Control title"
+        },
+        "piiRelevance": {
+          "type": "string",
+          "description": "How this control relates to PII protection"
+        },
+        "implementationComponent": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Azure services implementing this control"
+        }
+      },
+      "instances": [
+        { "@id": "pii:MCSBv2AIControl-AI1", "controlId": "AI-1", "controlName": "Ensure Use of Approved Models", "piiRelevance": "Prevent PII exposure to unvetted models", "implementationComponent": ["Azure OpenAI UK South Regional", "Deployment policies"] },
+        { "@id": "pii:MCSBv2AIControl-AI2", "controlId": "AI-2", "controlName": "Multi-Layered Content Filtering", "piiRelevance": "Block PII in inputs/outputs", "implementationComponent": ["Presidio", "Azure AI Content Safety"] },
+        { "@id": "pii:MCSBv2AIControl-AI3", "controlId": "AI-3", "controlName": "Safety Meta-Prompts", "piiRelevance": "Inject PII protection instructions", "implementationComponent": ["System prompt templates"] },
+        { "@id": "pii:MCSBv2AIControl-AI4", "controlId": "AI-4", "controlName": "Least Privilege for Agent Functions", "piiRelevance": "Restrict agent access to PII", "implementationComponent": ["Azure SQL RLS", "Microsoft Graph permissions"] },
+        { "@id": "pii:MCSBv2AIControl-AI5", "controlId": "AI-5", "controlName": "Human-in-the-Loop", "piiRelevance": "Approval gates for PII operations", "implementationComponent": ["PII blocking", "Alert pipeline"] },
+        { "@id": "pii:MCSBv2AIControl-AI6", "controlId": "AI-6", "controlName": "Monitoring and Detection", "piiRelevance": "Detect PII exposure events", "implementationComponent": ["Azure Monitor", "PIIAuditLog", "Sentinel"] },
+        { "@id": "pii:MCSBv2AIControl-AI7", "controlId": "AI-7", "controlName": "Continuous AI Red Teaming", "piiRelevance": "Test PII exfiltration vectors", "implementationComponent": ["Penetration testing", "Security assessments"] }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:ComplianceFramework",
+      "name": "ComplianceFramework",
+      "description": "Regulatory compliance framework defining PII handling requirements, mapped to specific legal articles and implementation controls",
+      "termCode": "CF",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:Legislation",
+      "properties": {
+        "frameworkCode": {
+          "type": "string",
+          "description": "Short code for the framework"
+        },
+        "fullName": {
+          "type": "string",
+          "description": "Official framework name"
+        },
+        "jurisdiction": {
+          "type": "string",
+          "description": "Geographic scope of applicability"
+        },
+        "piiArticles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "articleNumber": { "type": "string" },
+              "requirement": { "type": "string" }
+            }
+          },
+          "description": "Specific articles related to PII handling"
+        }
+      },
+      "instances": [
+        {
+          "@id": "pii:ComplianceFramework-UKGDPR",
+          "frameworkCode": "UK-GDPR",
+          "fullName": "UK General Data Protection Regulation",
+          "jurisdiction": "United Kingdom",
+          "piiArticles": [
+            { "articleNumber": "5(1)(f)", "requirement": "Integrity and confidentiality" },
+            { "articleNumber": "17", "requirement": "Right to erasure" },
+            { "articleNumber": "25", "requirement": "Data protection by design" },
+            { "articleNumber": "30", "requirement": "Records of processing" },
+            { "articleNumber": "32", "requirement": "Security of processing" },
+            { "articleNumber": "33", "requirement": "Breach notification" }
+          ]
+        },
+        {
+          "@id": "pii:ComplianceFramework-GDPR",
+          "frameworkCode": "GDPR",
+          "fullName": "EU General Data Protection Regulation",
+          "jurisdiction": "European Union",
+          "piiArticles": [
+            { "articleNumber": "4", "requirement": "Personal data definition" },
+            { "articleNumber": "9", "requirement": "Special category data" },
+            { "articleNumber": "22", "requirement": "Automated decision-making" }
+          ]
+        },
+        {
+          "@id": "pii:ComplianceFramework-ISO27001",
+          "frameworkCode": "ISO27001",
+          "fullName": "ISO/IEC 27001:2022",
+          "jurisdiction": "International",
+          "piiArticles": [
+            { "articleNumber": "A.8.2", "requirement": "Information classification" },
+            { "articleNumber": "A.9.1", "requirement": "Access control" },
+            { "articleNumber": "A.10.1", "requirement": "Cryptographic controls" }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:ArchitectureLayer",
+      "name": "ArchitectureLayer",
+      "description": "Layer in the Microsoft-native PII protection architecture, defining component responsibilities and PII handling at each tier",
+      "termCode": "AL",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:SoftwareSourceCode",
+      "properties": {
+        "layerName": {
+          "type": "string",
+          "description": "Name of the architectural layer"
+        },
+        "layerOrder": {
+          "type": "integer",
+          "description": "Position in the architecture stack (1=top)"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "componentName": { "type": "string" },
+              "azureService": { "type": "string" },
+              "region": { "type": "string" },
+              "piiHandling": { "type": "string" }
+            }
+          },
+          "description": "Azure services in this layer"
+        }
+      },
+      "instances": [
+        { "@id": "pii:ArchitectureLayer-User", "layerName": "User Layer", "layerOrder": 1, "components": [{ "componentName": "Next.js Web App", "azureService": "App Service", "region": "uksouth", "piiHandling": "None" }] },
+        { "@id": "pii:ArchitectureLayer-Gateway", "layerName": "Gateway Layer", "layerOrder": 2, "components": [{ "componentName": "API Management", "azureService": "Azure APIM", "region": "uksouth", "piiHandling": "Logging (no PII)" }, { "componentName": "Authentication", "azureService": "Microsoft Entra ID", "region": "global", "piiHandling": "Token validation" }] },
+        { "@id": "pii:ArchitectureLayer-PIIProtection", "layerName": "PII Protection Layer", "layerOrder": 3, "components": [{ "componentName": "Presidio Service", "azureService": "Container Apps", "region": "uksouth", "piiHandling": "Detection + Anonymization" }, { "componentName": "Content Safety", "azureService": "Azure AI Content Safety", "region": "uksouth", "piiHandling": "Detection" }] },
+        { "@id": "pii:ArchitectureLayer-AIProcessing", "layerName": "AI Processing Layer", "layerOrder": 4, "components": [{ "componentName": "Azure OpenAI", "azureService": "Azure OpenAI", "region": "uksouth", "piiHandling": "Anonymized input only" }] },
+        { "@id": "pii:ArchitectureLayer-Data", "layerName": "Data Layer", "layerOrder": 5, "components": [{ "componentName": "Azure SQL Graph", "azureService": "Azure SQL Database", "region": "uksouth", "piiHandling": "Always Encrypted + RLS" }, { "componentName": "Microsoft Graph API", "azureService": "Microsoft Graph", "region": "EU Data Boundary", "piiHandling": "Permission-based access" }] },
+        { "@id": "pii:ArchitectureLayer-Governance", "layerName": "Governance Layer", "layerOrder": 6, "components": [{ "componentName": "Purview", "azureService": "Microsoft Purview", "region": "uksouth", "piiHandling": "Classification + Audit" }, { "componentName": "Azure Monitor", "azureService": "Log Analytics", "region": "uksouth", "piiHandling": "Metrics only" }, { "componentName": "Sentinel", "azureService": "Microsoft Sentinel", "region": "uksouth", "piiHandling": "Security alerts" }] }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:PIIProtectedWorkflow",
+      "name": "PIIProtectedWorkflow",
+      "description": "Complete workflow definition for PII-protected AI request processing through the Microsoft-native architecture stack",
+      "termCode": "PPW",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:HowTo",
+      "workflow": {
+        "name": "PIIProtectedAIRequest",
+        "description": "Complete workflow for PII-protected AI completion",
+        "steps": [
+          { "stepNumber": 1, "stepName": "Authentication", "component": "Microsoft Entra ID", "input": "User request with bearer token", "output": "Validated tenant_id, user_id", "piiHandling": "Token validation only" },
+          { "stepNumber": 2, "stepName": "Presidio Input Scan", "component": "Presidio Analyzer", "input": "Raw prompt text", "output": "PII entities detected", "piiHandling": "Detection" },
+          { "stepNumber": 3, "stepName": "Decision Gate", "component": "Application Logic", "input": "PII entities", "output": "BLOCK | ANONYMIZE | ALLOW", "piiHandling": "Risk classification" },
+          { "stepNumber": 4, "stepName": "Anonymization", "component": "Presidio Anonymizer", "input": "Prompt + PII entities", "output": "Anonymized prompt", "piiHandling": "Replace/Mask/Redact", "conditionalOn": "Decision = ANONYMIZE" },
+          { "stepNumber": 5, "stepName": "Content Safety Check", "component": "Azure AI Content Safety", "input": "Anonymized prompt", "output": "Safety classification", "piiHandling": "Secondary validation" },
+          { "stepNumber": 6, "stepName": "AI Completion", "component": "Azure OpenAI (UK South)", "input": "Anonymized prompt", "output": "AI response", "piiHandling": "No PII in input" },
+          { "stepNumber": 7, "stepName": "Output Scan", "component": "Presidio Analyzer", "input": "AI response", "output": "PII leakage detection", "piiHandling": "Leakage detection" },
+          { "stepNumber": 8, "stepName": "Audit Logging", "component": "Azure SQL Graph", "input": "Interaction + PII scan results", "output": "Audit record + Graph edges", "piiHandling": "Hash only (no raw PII)" },
+          { "stepNumber": 9, "stepName": "Response", "component": "API Gateway", "input": "AI response", "output": "User response", "piiHandling": "Scanned output" }
+        ]
+      }
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:PIIDecisionMatrix",
+      "name": "PIIDecisionMatrix",
+      "description": "Decision matrices for PII handling actions based on entity risk level and data classification, and operator selection by PII type",
+      "termCode": "PDM",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:ItemList",
+      "decisionMatrices": {
+        "PIIActionDecision": {
+          "description": "Decision matrix for PII handling actions",
+          "dimensions": ["entityRiskLevel", "dataClassification"],
+          "matrix": {
+            "CRITICAL": { "Public": "BLOCK", "Internal": "BLOCK", "Confidential": "BLOCK", "Highly-Confidential": "BLOCK" },
+            "HIGH": { "Public": "BLOCK", "Internal": "BLOCK", "Confidential": "ANONYMIZE", "Highly-Confidential": "BLOCK" },
+            "MEDIUM": { "Public": "ANONYMIZE", "Internal": "ANONYMIZE", "Confidential": "ANONYMIZE", "Highly-Confidential": "BLOCK" },
+            "LOW": { "Public": "ALLOW", "Internal": "ANONYMIZE", "Confidential": "ANONYMIZE", "Highly-Confidential": "ANONYMIZE" }
+          }
+        },
+        "AnonymizationOperatorSelection": {
+          "description": "Which Presidio operator to use for each PII type",
+          "mapping": {
+            "UK_NINO": "BLOCK (never anonymize)",
+            "UK_NHS_NUMBER": "BLOCK (never anonymize)",
+            "UK_BANK_ACCOUNT": "BLOCK (never anonymize)",
+            "CREDIT_CARD": "BLOCK (never anonymize)",
+            "PERSON": "replace",
+            "EMAIL_ADDRESS": "mask",
+            "PHONE_NUMBER": "replace",
+            "UK_POSTCODE": "mask",
+            "LOCATION": "replace",
+            "DEFAULT": "replace"
+          }
+        }
+      }
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:IntegrationEndpoint",
+      "name": "IntegrationEndpoint",
+      "description": "External system integration definitions including Microsoft Graph API, Azure SQL Graph, and Presidio with PII handling specifications",
+      "termCode": "IE",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:WebAPI",
+      "integrations": {
+        "MicrosoftGraphAPI": {
+          "description": "Integration with Microsoft Graph for M365 data",
+          "endpoints": [
+            { "endpoint": "/users/{id}", "purpose": "Sync user metadata", "piiFields": ["mail", "displayName"], "storageApproach": "Hash only" },
+            { "endpoint": "/drive/items/{id}/permissions", "purpose": "Check document access", "piiFields": ["grantedTo.user"], "storageApproach": "Reference ID only" },
+            { "endpoint": "/drive/items/{id}/extractSensitivityLabels", "purpose": "Get Purview labels", "piiFields": [], "storageApproach": "Label ID + name" }
+          ]
+        },
+        "AzureSQLGraph": {
+          "description": "Graph database using Azure SQL Database",
+          "features": ["Native MATCH syntax for traversals", "Always Encrypted for PII columns", "Row-Level Security for tenant isolation", "Transparent Data Encryption", "Purview scanner integration"],
+          "graphQueryExamples": [
+            "SELECT * FROM Person, HasAccess, Document WHERE MATCH(Person-(HasAccess)->Document)",
+            "SELECT * FROM Person, Initiated, AIInteraction, Referenced, Document WHERE MATCH(Person-(Initiated)->AIInteraction-(Referenced)->Document)"
+          ]
+        },
+        "Presidio": {
+          "description": "Microsoft open-source PII protection framework",
+          "deploymentModel": "Azure Container Apps",
+          "customRecognizers": ["UK_NINO", "UK_NHS_NUMBER", "UK_POSTCODE", "UK_DRIVING_LICENCE", "UK_BANK_ACCOUNT"],
+          "apiEndpoints": [
+            { "path": "/analyze", "method": "POST", "purpose": "Detect PII" },
+            { "path": "/anonymize", "method": "POST", "purpose": "Detect + anonymize PII" },
+            { "path": "/health", "method": "GET", "purpose": "Health check" }
+          ]
+        }
+      }
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:ComplianceMapping",
+      "name": "ComplianceMapping",
+      "description": "Mapping of regulatory requirements to implementation controls for UK-GDPR and MCSB compliance verification",
+      "termCode": "CM",
+      "inDefinedTermSet": "pii:pii-governance-microsoft-native",
+      "schemaType": "schema:ItemList",
+      "complianceMapping": {
+        "UK-GDPR-to-Implementation": {
+          "Article-5-1-f": ["Always Encrypted", "RLS", "TDE"],
+          "Article-17": ["sp_DeletePersonPII stored procedure", "Hash-only storage"],
+          "Article-25": ["PII never stored in plain text", "Defense-in-depth"],
+          "Article-30": ["PIIAuditLog table", "Graph edges for lineage"],
+          "Article-32": ["Multi-layer architecture", "Encryption at rest and transit"],
+          "Article-33": ["Sentinel alerts", "High-severity incident playbooks"]
+        },
+        "MCSB-to-Implementation": {
+          "AI-1": ["Azure OpenAI UK South Regional deployment only"],
+          "AI-2": ["Presidio + Azure AI Content Safety"],
+          "AI-3": ["System prompt templates with PII instructions"],
+          "AI-4": ["Azure SQL RLS", "Microsoft Graph permission scopes"],
+          "AI-5": ["PII blocking for CRITICAL entities", "Human review alerts"],
+          "AI-6": ["Azure Monitor", "PIIAuditLog", "Sentinel integration"],
+          "AI-7": ["Quarterly penetration testing"]
+        }
+      }
+    }
+  ],
+
+  "relationships": [
+    {
+      "@type": "Relationship",
+      "@id": "pii:rel-piitype-triggers-action",
+      "name": "triggers",
+      "description": "PII entity type detection triggers a protection action based on risk level",
+      "from": "pii:PIIEntityType",
+      "to": "pii:PIIProtectionAction",
+      "cardinality": "many-to-one"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "pii:rel-action-uses-operator",
+      "name": "usesOperator",
+      "description": "Protection action ANONYMIZE uses an anonymization operator",
+      "from": "pii:PIIProtectionAction",
+      "to": "pii:AnonymizationOperator",
+      "cardinality": "one-to-many"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "pii:rel-deployment-resides-in-region",
+      "name": "residesIn",
+      "description": "Azure OpenAI deployment is located in a specific data residency region",
+      "from": "pii:AzureOpenAIDeployment",
+      "to": "pii:DataResidencyRegion",
+      "cardinality": "many-to-one"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "pii:rel-label-determines-action",
+      "name": "determinesAction",
+      "description": "Sensitivity label classification influences PII protection action",
+      "from": "pii:SensitivityLabel",
+      "to": "pii:PIIProtectionAction",
+      "cardinality": "many-to-many"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "pii:rel-control-implements-framework",
+      "name": "implements",
+      "description": "MCSB control implements requirements from compliance framework",
+      "from": "pii:MCSBv2AIControl",
+      "to": "pii:ComplianceFramework",
+      "cardinality": "many-to-many"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "pii:rel-layer-contains-node",
+      "name": "contains",
+      "description": "Architecture layer contains graph node types for storage",
+      "from": "pii:ArchitectureLayer",
+      "to": "pii:AzureSQLGraphNode",
+      "cardinality": "one-to-many"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "pii:rel-node-connected-by-edge",
+      "name": "connectedBy",
+      "description": "Graph nodes are connected by graph edges",
+      "from": "pii:AzureSQLGraphNode",
+      "to": "pii:AzureSQLGraphEdge",
+      "cardinality": "many-to-many"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "pii:rel-scope-exposes-pii",
+      "name": "exposesPII",
+      "description": "Microsoft Graph API scope exposes PII of certain entity types",
+      "from": "pii:MicrosoftGraphAPIScope",
+      "to": "pii:PIIEntityType",
+      "cardinality": "many-to-many"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "pii:rel-workflow-uses-layer",
+      "name": "traverses",
+      "description": "PII protected workflow traverses architecture layers",
+      "from": "pii:PIIProtectedWorkflow",
+      "to": "pii:ArchitectureLayer",
+      "cardinality": "one-to-many"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "pii:rel-decision-matrix-references-action",
+      "name": "references",
+      "description": "Decision matrix references protection actions as outcomes",
+      "from": "pii:PIIDecisionMatrix",
+      "to": "pii:PIIProtectionAction",
+      "cardinality": "one-to-many"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "pii:rel-integration-requires-scope",
+      "name": "requiresScope",
+      "description": "Integration endpoint requires Microsoft Graph API scopes",
+      "from": "pii:IntegrationEndpoint",
+      "to": "pii:MicrosoftGraphAPIScope",
+      "cardinality": "many-to-many"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "pii:rel-mapping-validates-control",
+      "name": "validates",
+      "description": "Compliance mapping validates MCSB control implementation",
+      "from": "pii:ComplianceMapping",
+      "to": "pii:MCSBv2AIControl",
+      "cardinality": "one-to-many"
+    }
+  ],
+
+  "businessRules": [
+    {
+      "@id": "pii:rule-critical-pii-blocked",
+      "name": "CriticalPIIBlocking",
+      "description": "Critical risk PII must always be blocked, never anonymized",
+      "condition": "IF PIIEntityType.riskLevel = 'CRITICAL'",
+      "action": "THEN PIIProtectionAction = 'BLOCKED'",
+      "priority": 1,
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "pii:rule-highly-confidential-blocked",
+      "name": "HighlyConfidentialBlocking",
+      "description": "Highly confidential documents must not be processed by AI",
+      "condition": "IF SensitivityLabel.labelName = 'Highly-Confidential'",
+      "action": "THEN PIIProtectionAction = 'BLOCKED'",
+      "priority": 2,
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "pii:rule-uk-residency-required",
+      "name": "UKDataResidencyRequired",
+      "description": "Azure OpenAI deployments must maintain UK data residency for UK customer data",
+      "condition": "IF DataResidencyRegion.dataProtectionLaw = 'UK-GDPR'",
+      "action": "THEN AzureOpenAIDeployment.ukDataResidency = true",
+      "priority": 3,
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "pii:rule-no-training-data",
+      "name": "NoTrainingDataUsage",
+      "description": "Azure OpenAI must never use customer data for training",
+      "condition": "IF AzureOpenAIDeployment exists",
+      "action": "THEN AzureOpenAIDeployment.dataUsedForTraining = false",
+      "priority": 4,
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "pii:rule-output-scan-required",
+      "name": "OutputScanRequired",
+      "description": "All AI outputs must be scanned for PII leakage before returning to user",
+      "condition": "IF PIIProtectedWorkflow.step = 'AI Completion'",
+      "action": "THEN PIIProtectedWorkflow.nextStep = 'Output Scan'",
+      "priority": 5,
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "pii:rule-audit-logging-required",
+      "name": "AuditLoggingRequired",
+      "description": "All PII detection events must be logged to the audit table with hash only",
+      "condition": "IF PIIEntityType detected",
+      "action": "THEN create PIIAuditLog record with hash (no raw PII)",
+      "priority": 6,
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "pii:rule-rls-tenant-isolation",
+      "name": "RLSTenantIsolation",
+      "description": "Row-level security must be enabled for all tables with PII columns",
+      "condition": "IF AzureSQLGraphNode.hasPIIColumns = true",
+      "action": "THEN AzureSQLGraphNode.rlsEnabled = true",
+      "priority": 7,
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "pii:rule-admin-consent-high-exposure",
+      "name": "AdminConsentHighExposure",
+      "description": "High PII exposure scopes require admin consent",
+      "condition": "IF MicrosoftGraphAPIScope.piiExposure = 'HIGH'",
+      "action": "THEN MicrosoftGraphAPIScope.consentType = 'Admin'",
+      "priority": 8,
+      "enforcementLevel": "mandatory"
+    }
+  ],
+
+  "crossOntologyReferences": {
+    "securitySeries": ["mcsb:", "mcsb2:", "gdpr:"],
+    "foundationSeries": ["org:", "org-ctx:"],
+    "description": "This ontology bridges security compliance frameworks with organizational governance patterns"
+  }
+}

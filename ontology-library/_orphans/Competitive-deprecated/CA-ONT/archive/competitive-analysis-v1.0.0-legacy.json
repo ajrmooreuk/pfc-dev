@@ -1,0 +1,476 @@
+{
+  "@context": {
+    "@vocab": "https://platform.framework/ontology/competitive-analysis/v1/",
+    "schema": "https://schema.org/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "Ontology",
+  "identifier": "pf:ontology:competitive-analysis-v1",
+  "name": "PF Competitive Analysis Ontology",
+  "version": "1.0.0",
+  "description": "Generalized ontology for analyzing competitors across any market domain, configurable for specific organizations, sectors, and competitive contexts",
+  "domain": "Competitive Intelligence & Strategic Analysis",
+  "dateCreated": "2025-10-08",
+  "creator": "Platform Framework Architecture Team",
+  "status": "active",
+  
+  "configurationVariables": {
+    "TARGET_ORG_ID": "[organization identifier]",
+    "TARGET_ORG_NAME": "[organization name]", 
+    "MARKET_DOMAIN": "[primary market domain]",
+    "MARKET_SUBSECTOR": "[specific market subsector]",
+    "VALUE_PROPOSITION_ONTOLOGY": "[VSOM reference]",
+    "OKR_FRAMEWORK": "[organizational objectives reference]",
+    "STRATEGIC_CONTEXT": "[business strategy context]",
+    "GEOGRAPHICAL_SCOPE": "[market geographical boundaries]",
+    "COMPETITIVE_TIMEFRAME": "[analysis time horizon]",
+    "PRODUCT_CATEGORY": "[primary product/service category]"
+  },
+  
+  "entities": {
+    "TargetOrganization": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Organization",
+      "description": "The client organization for whom competitive analysis is being conducted in [MARKET_DOMAIN]",
+      "properties": [
+        "organizationMaturity",
+        "marketPosition", 
+        "domainReadiness",
+        "strategicObjectives",
+        "directCompetitors",
+        "valuePropositionProfile",
+        "okrFramework",
+        "marketingStrategy",
+        "competitiveAdvantages",
+        "organizationalCapabilities",
+        "geographicalPresence",
+        "targetCustomerSegments"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Organization",
+        "rationale": "Client organizations are fundamentally organizations with additional competitive context for [MARKET_DOMAIN]",
+        "extensions": ["organizationMaturity", "domainReadiness", "directCompetitors", "okrFramework"]
+      }
+    },
+    
+    "CompetitorOrganization": {
+      "@type": "rdfs:Class", 
+      "rdfs:subClassOf": "schema:Organization",
+      "description": "Organizations that compete in the [MARKET_DOMAIN] space within [MARKET_SUBSECTOR]",
+      "properties": [
+        "competitorType",
+        "marketShare",
+        "competitiveStrength", 
+        "domainCapabilities",
+        "threatLevel",
+        "competitiveAdvantages",
+        "marketPresence",
+        "customerSegments",
+        "pricingStrategy",
+        "partnershipNetwork",
+        "revenueModel",
+        "fundingStatus",
+        "teamSize",
+        "geographicalReach",
+        "technologyStack",
+        "marketEntryDate"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Organization",
+        "rationale": "Competitors are organizations with specific competitive attributes in [MARKET_DOMAIN]",
+        "extensions": ["competitorType", "threatLevel", "competitiveStrength", "domainCapabilities"]
+      }
+    },
+    
+    "MarketOffering": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Product", 
+      "description": "Products and services offered in the [MARKET_DOMAIN] within [MARKET_SUBSECTOR]",
+      "properties": [
+        "offeringCategory",
+        "domainFeatures",
+        "targetAudience",
+        "pricingModel",
+        "marketPosition",
+        "uniqueValueProposition",
+        "technicalCapabilities",
+        "integrationOptions",
+        "competitiveDifferentiators",
+        "deliveryModel",
+        "supportModel",
+        "scalabilityFactors",
+        "complianceFeatures"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Product",
+        "rationale": "[MARKET_DOMAIN] solutions are products/services with specialized domain features",
+        "extensions": ["domainFeatures", "competitiveDifferentiators", "deliveryModel"]
+      }
+    },
+    
+    "MarketSegment": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Distinct segments within the [MARKET_DOMAIN] market in [GEOGRAPHICAL_SCOPE]",
+      "properties": [
+        "segmentName",
+        "segmentSize", 
+        "growthRate",
+        "keyPlayers",
+        "barriers",
+        "opportunities",
+        "maturityLevel",
+        "customerNeeds",
+        "competitiveIntensity",
+        "regulatoryFactors",
+        "technologyTrends",
+        "buyingPatterns",
+        "seasonalityFactors"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Intangible", 
+        "rationale": "Market segments are abstract market concepts applicable to any domain",
+        "extensions": ["competitiveIntensity", "barriers", "opportunities", "regulatoryFactors"]
+      }
+    },
+    
+    "CompetitivePosition": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "An organization's position relative to competitors in [MARKET_DOMAIN]",
+      "properties": [
+        "marketLeadershipStatus",
+        "competitiveAdvantages",
+        "marketShare",
+        "brandStrength",
+        "customerLoyalty",
+        "innovationCapability",
+        "operationalEfficiency",
+        "financialStrength",
+        "strategicPartnerships",
+        "marketMomentum",
+        "thoughtLeadership",
+        "customerSatisfaction"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Intangible",
+        "rationale": "Competitive positions are abstract strategic concepts applicable across domains", 
+        "extensions": ["marketLeadershipStatus", "competitiveAdvantages", "marketMomentum"]
+      }
+    },
+    
+    "ValueProposition": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Intangible", 
+      "description": "The unique value offered by an organization or offering in [MARKET_DOMAIN]",
+      "properties": [
+        "coreValue",
+        "targetBenefits",
+        "differentiators",
+        "customerProblems",
+        "solutionOffering",
+        "valueMetrics",
+        "competitiveAdvantage",
+        "marketFit",
+        "vsomReference",
+        "painPointsAddressed",
+        "outcomePromises",
+        "deliveryMechanism"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Intangible",
+        "rationale": "Value propositions are abstract business concepts applicable across domains",
+        "extensions": ["coreValue", "differentiators", "competitiveAdvantage", "vsomReference"]
+      }
+    },
+    
+    "CompetitiveAnalysis": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "Analytical report or assessment of competitive landscape in [MARKET_DOMAIN]",
+      "properties": [
+        "analysisType",
+        "analysisScope",
+        "keyFindings",
+        "competitiveGaps",
+        "opportunities", 
+        "threats",
+        "recommendations",
+        "dataSource",
+        "analysisDate",
+        "confidenceLevel",
+        "methodologyUsed",
+        "timeHorizon",
+        "strategicImplications",
+        "actionablePriorities"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:CreativeWork",
+        "rationale": "Competitive analyses are structured documents/reports across any domain",
+        "extensions": ["competitiveGaps", "confidenceLevel", "strategicImplications"]
+      }
+    },
+    
+    "BlueOceanOpportunity": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Market opportunities with minimal direct competition in [MARKET_DOMAIN]",
+      "properties": [
+        "opportunityName",
+        "marketSize",
+        "accessibilityLevel",
+        "requiredCapabilities",
+        "timeToMarket",
+        "competitiveBarriers",
+        "customerDemand",
+        "strategicValue",
+        "riskLevel",
+        "investmentRequired",
+        "expectedROI",
+        "marketEducationNeeded",
+        "regulatoryConsiderations"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Intangible",
+        "rationale": "Blue ocean opportunities are strategic market concepts applicable across domains",
+        "extensions": ["accessibilityLevel", "competitiveBarriers", "marketEducationNeeded"]
+      }
+    },
+    
+    "CompetitiveIntelligence": {
+      "@type": "rdfs:Class", 
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "Structured intelligence about competitors and market dynamics in [MARKET_DOMAIN]",
+      "properties": [
+        "intelligenceType",
+        "dataPoints",
+        "sources",
+        "reliability",
+        "timestamp",
+        "competitorFocus",
+        "insightLevel",
+        "actionableRecommendations",
+        "verificationStatus",
+        "impactAssessment",
+        "urgencyLevel",
+        "distributionLevel"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:CreativeWork",
+        "rationale": "Intelligence reports are structured information products across domains",
+        "extensions": ["intelligenceType", "competitorFocus", "insightLevel", "verificationStatus"]
+      }
+    },
+    
+    "StrategicObjective": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Organizational objectives and key results (OKRs) driving competitive strategy in [MARKET_DOMAIN]",
+      "properties": [
+        "objectiveTitle",
+        "objectiveType",
+        "keyResults",
+        "measurementCriteria",
+        "timeline",
+        "ownerRole",
+        "competitiveRelevance",
+        "strategicPriority",
+        "resourceRequirements",
+        "successMetrics",
+        "riskFactors"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Intangible",
+        "rationale": "Strategic objectives are abstract organizational concepts",
+        "extensions": ["keyResults", "competitiveRelevance", "strategicPriority"]
+      }
+    }
+  },
+  
+  "relationships": {
+    "competes_with": {
+      "domain": "TargetOrganization",
+      "range": "CompetitorOrganization", 
+      "description": "Indicates direct competitive relationship between organizations in [MARKET_DOMAIN]",
+      "cardinality": "0..*",
+      "inverse": "competes_against"
+    },
+    
+    "direct_competitor": {
+      "domain": "TargetOrganization",
+      "range": "CompetitorOrganization",
+      "description": "Identifies the 3-5 most direct competitors requiring strategic focus in [MARKET_DOMAIN]",
+      "cardinality": "3..5",
+      "businessRule": "Must identify 3-5 primary competitors for strategic focus in [MARKET_DOMAIN]"
+    },
+    
+    "offers_solution": {
+      "domain": "CompetitorOrganization", 
+      "range": "MarketOffering",
+      "description": "Organization offers specific solutions in [MARKET_DOMAIN]",
+      "cardinality": "1..*"
+    },
+    
+    "operates_in_segment": {
+      "domain": "CompetitorOrganization",
+      "range": "MarketSegment", 
+      "description": "Organization operates within specific market segments in [MARKET_DOMAIN]",
+      "cardinality": "1..*"
+    },
+    
+    "has_position": {
+      "domain": "CompetitorOrganization",
+      "range": "CompetitivePosition",
+      "description": "Organization's current competitive positioning in [MARKET_DOMAIN]",
+      "cardinality": "1..1"
+    },
+    
+    "delivers_value": {
+      "domain": "MarketOffering",
+      "range": "ValueProposition",
+      "description": "Market offering delivers specific value proposition",
+      "cardinality": "1..*"
+    },
+    
+    "analyzes_competitor": {
+      "domain": "CompetitiveAnalysis", 
+      "range": "CompetitorOrganization",
+      "description": "Analysis focuses on specific competitors in [MARKET_DOMAIN]",
+      "cardinality": "1..*"
+    },
+    
+    "identifies_opportunity": {
+      "domain": "CompetitiveAnalysis",
+      "range": "BlueOceanOpportunity", 
+      "description": "Analysis identifies blue ocean opportunities in [MARKET_DOMAIN]",
+      "cardinality": "0..*"
+    },
+    
+    "supports_analysis": {
+      "domain": "CompetitiveIntelligence",
+      "range": "CompetitiveAnalysis",
+      "description": "Intelligence supports competitive analysis in [MARKET_DOMAIN]",
+      "cardinality": "0..*"
+    },
+    
+    "targets_segment": {
+      "domain": "ValueProposition",
+      "range": "MarketSegment",
+      "description": "Value proposition targets specific market segments", 
+      "cardinality": "1..*"
+    },
+    
+    "pursues_objective": {
+      "domain": "TargetOrganization",
+      "range": "StrategicObjective",
+      "description": "Organization pursues specific strategic objectives",
+      "cardinality": "1..*"
+    },
+    
+    "informs_objective": {
+      "domain": "CompetitiveAnalysis",
+      "range": "StrategicObjective",
+      "description": "Competitive analysis informs strategic objective decisions",
+      "cardinality": "0..*"
+    },
+    
+    "references_vsom": {
+      "domain": "ValueProposition", 
+      "range": "schema:CreativeWork",
+      "description": "Value proposition references Value Proposition Ontology (VSOM) framework",
+      "cardinality": "0..1"
+    }
+  },
+  
+  "businessRules": [
+    {
+      "id": "BR-001",
+      "description": "Every TargetOrganization must identify 3-5 direct competitors in [MARKET_DOMAIN]",
+      "rule": "TargetOrganization.directCompetitors.count >= 3 AND TargetOrganization.directCompetitors.count <= 5"
+    },
+    {
+      "id": "BR-002", 
+      "description": "BlueOceanOpportunity must have competitiveBarriers = 'Low' or 'None' to qualify as true blue ocean",
+      "rule": "BlueOceanOpportunity.competitiveBarriers IN ['Low', 'None']"
+    },
+    {
+      "id": "BR-003",
+      "description": "CompetitorOrganization must operate in at least one MarketSegment within [MARKET_DOMAIN]",
+      "rule": "CompetitorOrganization.operates_in_segment.count >= 1"
+    },
+    {
+      "id": "BR-004",
+      "description": "Direct competitors must be marked with threatLevel for prioritization",
+      "rule": "CompetitorOrganization.direct_competitor = true IMPLIES CompetitorOrganization.threatLevel IS NOT NULL"
+    },
+    {
+      "id": "BR-005",
+      "description": "StrategicObjective must have at least one measurable keyResult",
+      "rule": "StrategicObjective.keyResults.count >= 1"
+    }
+  ],
+  
+  "aiAgentCapabilities": {
+    "query_patterns": [
+      "Who are the direct competitors to [TARGET_ORG_NAME] in [MARKET_DOMAIN]?",
+      "What [PRODUCT_CATEGORY] offerings does [COMPETITOR_NAME] provide in [MARKET_SUBSECTOR]?", 
+      "Identify Blue Ocean opportunities in [MARKET_SEGMENT] within [GEOGRAPHICAL_SCOPE]",
+      "Compare competitive positioning between [ORG1] and [ORG2] in [MARKET_DOMAIN]",
+      "What are the key differentiators for [VALUE_PROPOSITION] in [MARKET_SUBSECTOR]?",
+      "How do [TARGET_ORG_NAME]'s OKRs align with competitive opportunities in [MARKET_DOMAIN]?",
+      "What VSOM elements support competitive advantage in [MARKET_SEGMENT]?"
+    ],
+    "reasoning_support": [
+      "Competitive gap analysis across any market domain",
+      "Market opportunity identification within specified geography", 
+      "Strategic positioning recommendations based on OKR alignment",
+      "Threat assessment and prioritization by market subsector",
+      "Value proposition optimization using VSOM framework",
+      "Blue ocean strategy development for specified timeframes"
+    ],
+    "graph_traversal": [
+      "Find all competitors in same market segment and geography",
+      "Trace value proposition to target segments and customer needs",
+      "Identify competitive clusters and partnership ecosystems",
+      "Map strategic objectives to competitive opportunities",
+      "Connect VSOM elements to competitive differentiators"
+    ]
+  },
+  
+  "configurationSchema": {
+    "targetOrganization": {
+      "orgId": "[TARGET_ORG_ID]",
+      "orgName": "[TARGET_ORG_NAME]",
+      "primaryDomain": "[MARKET_DOMAIN]", 
+      "subSector": "[MARKET_SUBSECTOR]",
+      "geographicalScope": "[GEOGRAPHICAL_SCOPE]",
+      "competitiveTimeframe": "[COMPETITIVE_TIMEFRAME]"
+    },
+    "strategicContext": {
+      "okrFramework": "[OKR_FRAMEWORK]",
+      "vsomReference": "[VALUE_PROPOSITION_ONTOLOGY]",
+      "marketingStrategy": "[STRATEGIC_CONTEXT]",
+      "primaryObjectives": ["[OBJECTIVE_1]", "[OBJECTIVE_2]", "[OBJECTIVE_3]"]
+    },
+    "marketContext": {
+      "primarySegments": ["[MARKET_SEGMENT_1]", "[MARKET_SEGMENT_2]", "[MARKET_SEGMENT_3]"],
+      "productCategories": ["[PRODUCT_CATEGORY_1]", "[PRODUCT_CATEGORY_2]"],
+      "competitorTiers": {
+        "direct": ["[DIRECT_COMPETITOR_1]", "[DIRECT_COMPETITOR_2]", "[DIRECT_COMPETITOR_3]"],
+        "indirect": ["[INDIRECT_COMPETITOR_1]", "[INDIRECT_COMPETITOR_2]"],
+        "emerging": ["[EMERGING_COMPETITOR_1]", "[EMERGING_COMPETITOR_2]"]
+      }
+    }
+  },
+  
+  "qualityMetrics": {
+    "entityReuseRate": 0.85,
+    "schemaOrgAlignment": 0.90,
+    "validationPassRate": 0.97,
+    "documentationCompleteness": 0.96,
+    "relationshipDensity": 4.5,
+    "configurabilityScore": 0.95,
+    "domainAgnosticScore": 0.92
+  }
+}

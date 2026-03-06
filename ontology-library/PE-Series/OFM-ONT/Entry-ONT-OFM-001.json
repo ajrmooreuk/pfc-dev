@@ -1,0 +1,84 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-OFM-001",
+  "name": "OFM Ontology (Order Fulfilment Management)",
+  "description": "Models demand-side order fulfilment across two layers: (1) warehouse/distribution — sales orders, stock allocation, storage cost, dispatch, and fulfilment risk; (2) customer/commercial — SLA management, breach detection, landed cost, margin analysis, complaint handling, customer satisfaction, and remediation. 8 LSC-ONT bridges and 9 VE-Series bridges with VP-RRR alignment.",
+  "version": "1.1.0",
+  "oaaVersion": "7.0.0",
+  "namespace": "https://oaa-ontology.org/v6/order-fulfilment/",
+  "prefix": "ofm:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate7": "pass"
+  },
+  "artifacts": {
+    "ontology": "./ofm-ontology-v1.1.0-oaa-v7.json",
+    "documentation": null,
+    "glossary": null,
+    "testData": null,
+    "validationReport": "./validation-report-v1.1.0.md",
+    "instanceData": [
+      "./instance-data/wwg/wwg-ofm-instances-v1.0.0.json"
+    ]
+  },
+  "components": {
+    "entities": "SalesOrder (hub, sameAs PurchaseOrder), OrderLine, StockAllocation, StorageEvent, DeliveryWindow, DispatchLeg, CustomerChange, MarginImpact, FulfilmentRisk, DemandPattern, CapacityForecast, ServiceLevelAgreement, OrderMilestone, CustomerNotification, LandedCost, MarginAnalysis, SLABreach, ComplaintCase, CustomerSatisfaction, RemediationAction",
+    "relationships": "64 relationships including 8 LSC-ONT bridges (F41.2), 9 VE-Series bridges (F41.3), and 15 internal customer/commercial relationships",
+    "businessRules": "28 rules (20 error, 8 warning severity) in IF-THEN format",
+    "competencyQuestions": "18 domain-specific CQs with targetEntities, targetRelationships, and targetRules",
+    "joinPatterns": "16 join patterns including 7 cross-ontology bridge patterns (LSC, VP, PMF, CRT, KPI)"
+  },
+  "dependencies": [
+    "Entry-ONT-LSC-001",
+    "Entry-ONT-PE-001",
+    "Entry-ONT-ORG-001",
+    "Entry-ONT-RRR-001",
+    "Entry-ONT-KPI-001",
+    "Entry-ONT-VP-001",
+    "Entry-ONT-PMF-001",
+    "Entry-ONT-CRT-001"
+  ],
+  "dependents": [],
+  "relationships": {
+    "crossOntology": [
+      { "target": "Entry-ONT-LSC-001", "type": "allocatedFromShipment", "direction": "outgoing" },
+      { "target": "Entry-ONT-LSC-001", "type": "incidentErodesMargin", "direction": "incoming" },
+      { "target": "Entry-ONT-LSC-001", "type": "bottleneckCreatesFulfilmentRisk", "direction": "incoming" },
+      { "target": "Entry-ONT-LSC-001", "type": "supplyPatternCorrelatesWithDemand", "direction": "bidirectional" },
+      { "target": "Entry-ONT-LSC-001", "type": "fulfilledByShipment", "direction": "outgoing" },
+      { "target": "Entry-ONT-LSC-001", "type": "orderUsesChain", "direction": "outgoing" },
+      { "target": "Entry-ONT-LSC-001", "type": "milestoneAtNode", "direction": "outgoing" },
+      { "target": "Entry-ONT-LSC-001", "type": "breachTriggeredByIncident", "direction": "outgoing" },
+      { "target": "Entry-ONT-LSC-001", "type": "breachCausedByBottleneck", "direction": "outgoing" },
+      { "target": "Entry-ONT-LSC-001", "type": "costImpactedBy", "direction": "outgoing" },
+      { "target": "Entry-ONT-LSC-001", "type": "complaintRootCauseIncident", "direction": "outgoing" },
+      { "target": "Entry-ONT-LSC-001", "type": "remediationInformsMitigation", "direction": "outgoing" },
+      { "target": "Entry-ONT-PE-001", "type": "mapsToProcess", "direction": "outgoing" },
+      { "target": "Entry-ONT-ORG-001", "type": "customerMapsToOrg", "direction": "outgoing" },
+      { "target": "Entry-ONT-RRR-001", "type": "roleHandlesOrder", "direction": "outgoing" },
+      { "target": "Entry-ONT-RRR-001", "type": "complaintOwnedByRole", "direction": "outgoing" },
+      { "target": "Entry-ONT-RRR-001", "type": "breachAccountableRole", "direction": "outgoing" },
+      { "target": "Entry-ONT-KPI-001", "type": "metricTracksPerformance", "direction": "outgoing" },
+      { "target": "Entry-ONT-KPI-001", "type": "satisfactionFeedsKPI", "direction": "outgoing" },
+      { "target": "Entry-ONT-KPI-001", "type": "breachFeedsKPI", "direction": "outgoing" },
+      { "target": "Entry-ONT-VP-001", "type": "complaintRevealsVPProblem", "direction": "outgoing" },
+      { "target": "Entry-ONT-VP-001", "type": "remediationMapsToVPSolution", "direction": "outgoing" },
+      { "target": "Entry-ONT-VP-001", "type": "satisfactionValidatesBenefit", "direction": "outgoing" },
+      { "target": "Entry-ONT-PMF-001", "type": "marginValidatesPMF", "direction": "outgoing" },
+      { "target": "Entry-ONT-CRT-001", "type": "orderPlacedByRole", "direction": "outgoing" }
+    ]
+  },
+  "layer": "PE-SERIES",
+  "domain": "Order Fulfilment / Distribution / Margin Management / Customer Experience",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-24",
+  "lastModified": "2026-03-02",
+  "notes": "v1.1.0: Customer/commercial layer added (F41.2 + F41.3). 9 new entities, 32 new relationships (15 internal + 8 LSC bridges + 9 VE bridges), 8 new business rules, 7 new join patterns. VP-RRR alignment on 3 VE bridges. SalesOrder marked sameAs PurchaseOrder. Totals: 20 entities, 64 relationships, 28 rules, 16 join patterns, 18 CQs."
+}

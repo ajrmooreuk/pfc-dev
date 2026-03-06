@@ -1,0 +1,46 @@
+{
+  "@context": "https://schema.org",
+  "@id": "baiv:test-non-compliant",
+  "name": "Test Non-Compliant Ontology",
+  "version": "1.0.0",
+  "description": "An intentionally non-compliant ontology for testing OAA v6.1.0 upgrade feature",
+  "entities": [
+    {
+      "@id": "Customer",
+      "name": "Customer",
+      "@type": "DefinedTerm",
+      "description": "A customer account in the system"
+    },
+    {
+      "@id": "Order",
+      "name": "Order",
+      "@type": "DefinedTerm",
+      "description": "A purchase order"
+    },
+    {
+      "@id": "Product",
+      "name": "Product",
+      "@type": "DefinedTerm"
+    },
+    {
+      "@id": "Invoice",
+      "name": "Invoice",
+      "@type": "DefinedTerm"
+    },
+    {
+      "@id": "Payment",
+      "name": "Payment",
+      "@type": "DefinedTerm"
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "places",
+      "name": "places",
+      "domainIncludes": ["Customer"],
+      "rangeIncludes": ["Order"],
+      "cardinality": "1..*",
+      "description": "Customer places orders"
+    }
+  ]
+}

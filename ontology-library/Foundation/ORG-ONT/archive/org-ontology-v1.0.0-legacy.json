@@ -1,0 +1,225 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "baiv": "https://baiv.co.uk/ontology/",
+    "pf": "https://platform.framework/ontology/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "Ontology",
+  "@id": "pf:ontology:organization-v1",
+
+  "metadata": {
+    "name": "Organization Ontology",
+    "version": "1.0.0",
+    "status": "Draft",
+    "description": "Core organization entity definition - simple structure for identifying organizations within the platform",
+    "dateCreated": "2026-01-20",
+    "dateModified": "2026-01-20",
+    "creator": "BAIV Platform Team",
+    "domain": "Organization Management",
+    "purpose": "Define the basic organization entity that all other ontologies reference",
+    "frameworkType": "Platform Framework (Domain-Agnostic)"
+  },
+
+  "schemaOrgAlignment": {
+    "baseTypes": ["Organization"],
+    "rationale": "Direct mapping to schema.org Organization with platform-specific type classifications",
+    "extensions": ["OrganizationType", "OrganizationSize"]
+  },
+
+  "entities": [
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:Organization",
+      "name": "Organization",
+      "schemaOrgBase": "schema:Organization",
+      "description": "Core organization entity representing any business or entity within the platform ecosystem",
+      "properties": [
+        {
+          "name": "organizationId",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "schema:identifier",
+          "description": "Unique identifier for the organization",
+          "pattern": "org:[a-z0-9-]+",
+          "example": "org:foot-scientific"
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "schema:name",
+          "description": "Organization display name",
+          "example": "Foot Scientific"
+        },
+        {
+          "name": "legalName",
+          "type": "Text",
+          "required": false,
+          "schemaOrgProperty": "schema:legalName",
+          "description": "Official legal name if different from display name",
+          "example": "Foot Scientific, LLC"
+        },
+        {
+          "name": "type",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "PFI",
+              "Agency",
+              "Client",
+              "Affiliate",
+              "Partner",
+              "Competitor"
+            ]
+          },
+          "description": "Organization's relationship type to the platform"
+        },
+        {
+          "name": "industry",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "schema:industry",
+          "description": "Primary industry sector",
+          "example": "Healthcare"
+        },
+        {
+          "name": "size",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "Startup (1-50)",
+              "SME (51-250)",
+              "Mid-Market (251-1000)",
+              "Enterprise (1000+)"
+            ]
+          },
+          "description": "Organization size classification"
+        },
+        {
+          "name": "website",
+          "type": "URL",
+          "required": false,
+          "schemaOrgProperty": "schema:url",
+          "description": "Primary website URL",
+          "example": "https://footscientific.com"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["active", "inactive", "archived"]
+          },
+          "default": "active",
+          "description": "Organization status in the platform"
+        }
+      ]
+    }
+  ],
+
+  "relationships": [
+    {
+      "@type": "Property",
+      "@id": "pf:hasContext",
+      "name": "Has Context",
+      "description": "Links organization to its rich context data",
+      "domainIncludes": ["pf:Organization"],
+      "rangeIncludes": ["pf:OrganizationContext"],
+      "cardinality": "0..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "pf:isClientOf",
+      "name": "Is Client Of",
+      "description": "Organization is a client of another organization (e.g., agency relationship)",
+      "domainIncludes": ["pf:Organization"],
+      "rangeIncludes": ["pf:Organization"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "pf:isCompetitorOf",
+      "name": "Is Competitor Of",
+      "description": "Organization competes with another organization",
+      "domainIncludes": ["pf:Organization"],
+      "rangeIncludes": ["pf:Organization"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "pf:isPartnerOf",
+      "name": "Is Partner Of",
+      "description": "Organization has partnership with another organization",
+      "domainIncludes": ["pf:Organization"],
+      "rangeIncludes": ["pf:Organization"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "pf:isAffiliateOf",
+      "name": "Is Affiliate Of",
+      "description": "Organization is an affiliate/referral partner",
+      "domainIncludes": ["pf:Organization"],
+      "rangeIncludes": ["pf:Organization"],
+      "cardinality": "0..*"
+    }
+  ],
+
+  "businessRules": [
+    {
+      "ruleId": "BR-ORG-001",
+      "name": "Unique Organization ID",
+      "description": "Each organization must have a unique organizationId",
+      "constraint": "organizationId MUST be unique across all organizations"
+    },
+    {
+      "ruleId": "BR-ORG-002",
+      "name": "Type Determines Relationships",
+      "description": "Organization type constrains which relationships are valid",
+      "constraint": "type='Competitor' cannot have isClientOf relationship"
+    }
+  ],
+
+  "examples": [
+    {
+      "@type": "pf:Organization",
+      "@id": "org:foot-scientific",
+      "organizationId": "org:foot-scientific",
+      "name": "Foot Scientific",
+      "legalName": "Foot Scientific, LLC",
+      "type": "Client",
+      "industry": "Healthcare",
+      "size": "SME (51-250)",
+      "website": "https://footscientific.com",
+      "status": "active"
+    },
+    {
+      "@type": "pf:Organization",
+      "@id": "org:shoe-carnival",
+      "organizationId": "org:shoe-carnival",
+      "name": "Shoe Carnival",
+      "legalName": "Shoe Carnival, Inc.",
+      "type": "Client",
+      "industry": "Retail",
+      "size": "Enterprise (1000+)",
+      "website": "https://shoecarnival.com",
+      "status": "active"
+    },
+    {
+      "@type": "pf:Organization",
+      "@id": "org:superfeet",
+      "organizationId": "org:superfeet",
+      "name": "Superfeet",
+      "type": "Competitor",
+      "industry": "Healthcare",
+      "size": "Mid-Market (251-1000)",
+      "website": "https://superfeet.com",
+      "status": "active"
+    }
+  ]
+}

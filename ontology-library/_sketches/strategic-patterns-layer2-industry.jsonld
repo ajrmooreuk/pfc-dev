@@ -1,0 +1,335 @@
+{
+  "@context": {
+    "sp": "https://pf-ontology.com/strategic-patterns/",
+    "vsom": "https://pf-ontology.com/vsom/",
+    "org": "https://pf-ontology.com/org/",
+    "orgctx": "https://pf-ontology.com/org-context/",
+    "kpi": "https://pf-ontology.com/kpi/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#"
+  },
+  "@id": "sp:StrategicPatterns-IndustryAnalysis",
+  "@type": "owl:Ontology",
+  "rdfs:label": "Strategic Patterns — Layer 2: Industry/Sector Context Analysis",
+  "description": "Porter's 5 Forces, SWOT, Ansoff Growth Matrix, and Industry Value Chain analysis — feeding sector-level intelligence into VSOM strategy formulation.",
+  "version": "0.1.0-sketch",
+
+  "entities": {
+    "PortersFiveForces": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Porter's Five Forces Analysis",
+      "description": "Industry attractiveness and competitive intensity analysis. Feeds into VSOM StrategyComponent (especially Corporate and Competitive strategy layers) and connects to orgctx:CompetitiveLandscape.",
+      "properties": {
+        "analysisId": { "type": "string", "required": true },
+        "contextRef": { "type": "string", "description": "→ orgctx:OrganizationContext" },
+        "competitiveLandscapeRef": { "type": "string", "description": "→ orgctx:CompetitiveLandscape" },
+        "analysisDate": { "type": "date" },
+        "industryAttractiveness": { "type": "number", "min": 1.0, "max": 5.0 },
+        "forces": {
+          "type": "object",
+          "properties": {
+            "competitiveRivalry": {
+              "intensity": "string:enum[very-high,high,moderate,low,very-low]",
+              "score": "number:1-5",
+              "drivers": "array:string",
+              "strategicResponse": "string → vsom:StrategyComponent"
+            },
+            "threatOfNewEntrants": {
+              "intensity": "string:enum",
+              "score": "number:1-5",
+              "barrierFactors": "array:string",
+              "strategicResponse": "string"
+            },
+            "threatOfSubstitutes": {
+              "intensity": "string:enum",
+              "score": "number:1-5",
+              "substituteTypes": "array:string",
+              "strategicResponse": "string"
+            },
+            "bargainingPowerOfBuyers": {
+              "intensity": "string:enum",
+              "score": "number:1-5",
+              "powerDrivers": "array:string",
+              "strategicResponse": "string"
+            },
+            "bargainingPowerOfSuppliers": {
+              "intensity": "string:enum",
+              "score": "number:1-5",
+              "powerDrivers": "array:string",
+              "strategicResponse": "string"
+            }
+          }
+        },
+        "overallAssessment": { "type": "string" },
+        "strategicImplications": {
+          "type": "array",
+          "items": "string",
+          "description": "Direct implications for VSOM strategy formulation"
+        }
+      }
+    },
+
+    "SWOTAnalysis": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "SWOT Analysis",
+      "description": "Strengths/Weaknesses (internal) + Opportunities/Threats (external) structured as a strategic input. SWOT quadrants map to VSOM components: Strengths → leverage in Strategy, Weaknesses → address in Objectives, Opportunities → shape Vision, Threats → constrain Strategy.",
+      "properties": {
+        "analysisId": { "type": "string", "required": true },
+        "contextRef": { "type": "string", "description": "→ orgctx:OrganizationContext" },
+        "analysisDate": { "type": "date" },
+        "scope": { "type": "string", "enum": ["corporate", "business-unit", "product-line", "brand"] },
+        "strengths": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "description": { "type": "string" },
+              "category": { "type": "string", "enum": ["capability", "resource", "market-position", "brand", "talent", "technology", "process", "culture"] },
+              "maturityDimensionRef": { "type": "string", "description": "→ orgctx:MaturitySubType (merged mat → context types)" },
+              "leveragedInStrategy": { "type": "string", "description": "→ vsom:StrategyComponent" },
+              "sustainabilityRisk": { "type": "string", "enum": ["durable", "moderate", "fragile"] }
+            }
+          }
+        },
+        "weaknesses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "description": { "type": "string" },
+              "category": { "type": "string" },
+              "maturityDimensionRef": { "type": "string", "description": "→ orgctx:MaturitySubType" },
+              "addressedByObjective": { "type": "string", "description": "→ vsom:ObjectivesComponent" },
+              "gapAnalysisRef": { "type": "string", "description": "→ ga:Gap" },
+              "severity": { "type": "string", "enum": ["critical", "significant", "moderate", "minor"] }
+            }
+          }
+        },
+        "opportunities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "description": { "type": "string" },
+              "source": { "type": "string", "enum": ["market", "technology", "regulatory", "social", "competitive-gap", "partnership"] },
+              "pestelFactorRef": { "type": "string", "description": "→ sp:PESTELFactor (from Layer 1)" },
+              "shapesVision": { "type": "string", "description": "→ vsom:VisionComponent" },
+              "timeWindow": { "type": "string" },
+              "estimatedValue": { "type": "string" }
+            }
+          }
+        },
+        "threats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "description": { "type": "string" },
+              "source": { "type": "string", "enum": ["competitive", "technological-disruption", "regulatory", "market-shift", "economic", "talent"] },
+              "pestelFactorRef": { "type": "string", "description": "→ sp:PESTELFactor" },
+              "portersForceRef": { "type": "string", "description": "→ sp:PortersFiveForces.forces.*" },
+              "constrainsStrategy": { "type": "string", "description": "→ vsom:StrategyComponent" },
+              "mitigationObjective": { "type": "string", "description": "→ vsom:ObjectivesComponent" },
+              "likelihood": { "type": "number", "min": 0.0, "max": 1.0 },
+              "impact": { "type": "string", "enum": ["existential", "major", "moderate", "minor"] }
+            }
+          }
+        }
+      },
+      "_vsomMapping": {
+        "Strengths": "→ leverage in vsom:StrategyComponent (what we build strategy ON)",
+        "Weaknesses": "→ address via vsom:ObjectivesComponent and ga:Gap (what we must fix)",
+        "Opportunities": "→ shape vsom:VisionComponent (what future we pursue)",
+        "Threats": "→ constrain vsom:StrategyComponent + trigger vsom:StrategicReviewCycle"
+      }
+    },
+
+    "TOWSSynthesis": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "TOWS Strategy Synthesis",
+      "description": "TOWS matrix — the action-oriented sibling of SWOT. Generates strategy options by crossing internal/external factors. Each quadrant produces candidate VSOM strategies.",
+      "properties": {
+        "synthesisId": { "type": "string", "required": true },
+        "swotRef": { "type": "string", "description": "→ sp:SWOTAnalysis" },
+        "soStrategies": {
+          "description": "Strength-Opportunity: Maxi-Maxi — aggressive growth strategies",
+          "type": "array",
+          "items": { "strategy": "string", "vsomStrategyRef": "string", "ansoffQuadrant": "string" }
+        },
+        "woStrategies": {
+          "description": "Weakness-Opportunity: Mini-Maxi — turnaround/capability-building strategies",
+          "type": "array",
+          "items": { "strategy": "string", "vsomStrategyRef": "string" }
+        },
+        "stStrategies": {
+          "description": "Strength-Threat: Maxi-Mini — defensive/diversification strategies",
+          "type": "array",
+          "items": { "strategy": "string", "vsomStrategyRef": "string" }
+        },
+        "wtStrategies": {
+          "description": "Weakness-Threat: Mini-Mini — survival/exit strategies",
+          "type": "array",
+          "items": { "strategy": "string", "vsomStrategyRef": "string" }
+        }
+      }
+    },
+
+    "AnsoffGrowthMatrix": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Ansoff Growth Matrix",
+      "description": "Growth direction analysis across Product (existing/new) × Market (existing/new). Each quadrant maps to different VSOM strategy types and risk profiles.",
+      "properties": {
+        "analysisId": { "type": "string", "required": true },
+        "contextRef": { "type": "string", "description": "→ orgctx:OrganizationContext" },
+        "quadrants": {
+          "type": "object",
+          "properties": {
+            "marketPenetration": {
+              "description": "Existing products × Existing markets — lowest risk",
+              "strategies": "array:string",
+              "riskLevel": "low",
+              "vsomStrategyType": "Operational/Marketing",
+              "kpiCategory": "Customer",
+              "relevantProducts": "array:string → orgctx:Product",
+              "targetSegments": "array:string → orgctx:MarketContext",
+              "growthTarget": "number:%"
+            },
+            "marketDevelopment": {
+              "description": "Existing products × New markets — moderate risk",
+              "strategies": "array:string",
+              "riskLevel": "moderate",
+              "vsomStrategyType": "Corporate/Marketing",
+              "newMarkets": "array:string",
+              "geographyExpansion": "array:string → orgctx:GeographyProfile",
+              "growthTarget": "number:%"
+            },
+            "productDevelopment": {
+              "description": "New products × Existing markets — moderate risk",
+              "strategies": "array:string",
+              "riskLevel": "moderate",
+              "vsomStrategyType": "Digital/Innovation",
+              "newProducts": "array:string",
+              "innovationWaveRef": "string → sp:InnovationWave (Layer 5)",
+              "growthTarget": "number:%"
+            },
+            "diversification": {
+              "description": "New products × New markets — highest risk",
+              "strategies": "array:string",
+              "riskLevel": "high",
+              "vsomStrategyType": "Corporate",
+              "diversificationType": "string:enum[related,unrelated,conglomerate]",
+              "growthTarget": "number:%"
+            }
+          }
+        },
+        "selectedGrowthPath": {
+          "type": "string",
+          "enum": ["penetrate", "develop-market", "develop-product", "diversify", "hybrid"],
+          "description": "Chosen primary growth direction → feeds vsom:StrategyComponent"
+        },
+        "vsomStrategyRef": { "type": "string", "description": "→ vsom:StrategyComponent aligned to growth choice" }
+      }
+    },
+
+    "IndustryValueChainAnalysis": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Industry Value Chain Analysis",
+      "description": "Porter's Value Chain applied at industry level. Maps primary and support activities, identifies where value is captured, and connects to org capability assessment.",
+      "properties": {
+        "analysisId": { "type": "string", "required": true },
+        "industryRef": { "type": "string", "description": "→ orgctx:SectorProfile (merged mat→context)" },
+        "primaryActivities": {
+          "type": "array",
+          "items": {
+            "activity": "string",
+            "valueContribution": "number:%",
+            "orgCapabilityRef": "string → ea:BusinessCapability",
+            "competitiveAdvantage": "string:enum[cost,differentiation,none]",
+            "maturityScore": "number:1-5"
+          }
+        },
+        "supportActivities": {
+          "type": "array",
+          "items": {
+            "activity": "string",
+            "enablesActivities": "array:string",
+            "orgCapabilityRef": "string → ea:BusinessCapability"
+          }
+        },
+        "valuePoolDistribution": {
+          "description": "Where margin concentrates across the value chain",
+          "type": "object",
+          "properties": {
+            "highMarginActivities": "array:string",
+            "commoditizedActivities": "array:string",
+            "emergingValuePools": "array:string"
+          }
+        },
+        "strategicPositioningRef": { "type": "string", "description": "→ vsom:StrategyComponent — where we choose to compete" }
+      }
+    }
+  },
+
+  "relationships": {
+    "assessesIndustryFor": {
+      "domain": "sp:PortersFiveForces",
+      "range": "orgctx:OrganizationContext",
+      "cardinality": "n:1"
+    },
+    "enrichesLandscape": {
+      "domain": "sp:PortersFiveForces",
+      "range": "orgctx:CompetitiveLandscape",
+      "cardinality": "1:1",
+      "description": "Porter's analysis enriches the competitive landscape with structural forces"
+    },
+    "informsStrategy": {
+      "domain": ["sp:SWOTAnalysis", "sp:AnsoffGrowthMatrix", "sp:PortersFiveForces"],
+      "range": "vsom:StrategyComponent",
+      "cardinality": "n:m"
+    },
+    "synthesizesTows": {
+      "domain": "sp:SWOTAnalysis",
+      "range": "sp:TOWSSynthesis",
+      "cardinality": "1:1"
+    },
+    "swotInformedByPestel": {
+      "domain": "sp:SWOTAnalysis",
+      "range": "sp:PESTELAnalysis",
+      "cardinality": "n:m",
+      "description": "SWOT external factors (O/T) are informed by PESTEL macro analysis"
+    },
+    "ansoffInformedBySwot": {
+      "domain": "sp:AnsoffGrowthMatrix",
+      "range": "sp:SWOTAnalysis",
+      "cardinality": "n:1",
+      "description": "Growth direction choice is informed by SWOT assessment"
+    },
+    "valueChainInformsCapability": {
+      "domain": "sp:IndustryValueChainAnalysis",
+      "range": "ea:BusinessCapability",
+      "cardinality": "n:m"
+    }
+  },
+
+  "joinPatterns": {
+    "JP-SP-010": {
+      "name": "Porter-to-VSOM Strategy Feed",
+      "path": "sp:PortersFiveForces → enrichesLandscape → orgctx:CompetitiveLandscape ← reviewsLandscape ← vsom:StrategicReviewCycle → triggeredByMetric → vsom:MetricsComponent",
+      "description": "Porter's forces feed into the competitive landscape that VSOM's review cycle monitors. When forces shift, metrics breach thresholds, triggering strategy review."
+    },
+    "JP-SP-011": {
+      "name": "SWOT-TOWS-VSOM Strategy Pipeline",
+      "path": "sp:PESTELAnalysis → swotInformedByPestel → sp:SWOTAnalysis → synthesizesTows → sp:TOWSSynthesis → vsomStrategyRef → vsom:StrategyComponent",
+      "description": "End-to-end: PESTEL feeds SWOT, SWOT generates TOWS options, TOWS produces candidate strategies for VSOM"
+    },
+    "JP-SP-012": {
+      "name": "Ansoff-to-Portfolio Alignment",
+      "path": "sp:AnsoffGrowthMatrix → selectedGrowthPath → vsom:StrategyComponent → alignsTo → ppm:Portfolio",
+      "description": "Growth direction choice flows through strategy into portfolio investment allocation"
+    }
+  }
+}

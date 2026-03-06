@@ -1,0 +1,80 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-CTX-001",
+  "name": "CTX Ontology (ContextTypes — Organisational Context Taxonomy)",
+  "description": "Extensible taxonomy of organisational context dimensions — market classification, size metrics, functional/technology/IT/AI maturity, culture, geography, market positioning, competitor bridging, and localization — enabling multi-dimensional context assignment via ORG-CONTEXT. RCSG framework entities extracted to RCSG-FW-ONT in v1.1.0.",
+  "version": "1.1.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://baiv.co.uk/ontology/",
+  "prefix": "ctx:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-10",
+  "gatesPassed": 8,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./contexttypes-ontology-v1.0.0.json"
+  },
+  "components": {
+    "ContextType": "Abstract base entity for all context dimensions with category and extensibility flag",
+    "MarketClassification": "Industry/market classification using SIC, NAICS, GICS, ICB, ISIC, NACE schemes",
+    "MarketSegment": "Market segment with sub-sector hierarchy, addressable market sizing, and growth metrics",
+    "OrganisationSize": "Multi-dimensional size: headcount, customers, revenue, KPI-linked metrics",
+    "FunctionalMaturity": "Per-function maturity assessment (16 standard functions + Custom) on 1-5 scale",
+    "TechnologyMaturity": "Cloud, digital transformation, automation maturity with IT and AI sub-types",
+    "ITMaturity": "IT infrastructure, DevOps, security, governance sub-maturity of TechnologyMaturity",
+    "AIReadiness": "AI data readiness, talent, deployment, ethics sub-maturity of TechnologyMaturity",
+    "CultureContext": "Innovation orientation, risk tolerance, collaboration style, decision-making patterns",
+    "GeoContext": "HQ location, operating regions, market reach, regulatory jurisdictions",
+    "MarketPositioning": "Competitive position, market share, brand strength, extensible positioning criteria",
+    "CompetitorContext": "Competitor bridging with threat level, overlap areas, strategic recommendations",
+    "LocalizationContext": "Currency, tax, data residency, content, date/number formatting, accessibility",
+    "ContextExtension": "User-defined custom context dimensions with schema and validation rules",
+    "ContextAssignment": "Junction entity linking organisations to context type instances with effective dates"
+  },
+  "relationships": {
+    "internal": 24,
+    "crossOntology": [
+      {
+        "name": "rcsgExtendsContextType",
+        "from": "rcsg-fw:RCSGContext",
+        "to": "ctx:ContextType",
+        "cardinality": "1..1",
+        "purpose": "CTX <- RCSG-FW: RCSGContext extends the abstract ContextType base"
+      }
+    ]
+  },
+  "dependencies": [],
+  "dependents": [
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-RCSG-FW-001"
+  ],
+  "layer": "FOUNDATION LAYER",
+  "domain": "Organisational Context Classification",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-10",
+  "lastModified": "2026-02-10",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-10",
+      "changes": "Initial release: 19 entities, 31 relationships, 14 business rules — extensible context taxonomy with market, size, maturity (functional/tech/IT/AI), culture, geo, positioning, competitor, RCSG, and localization dimensions"
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-02-10",
+      "changes": "Extracted 4 RCSG entities (RCSGContext, RegulatoryRequirement, ComplianceFramework, GovernanceModel), 7 RCSG relationships, and 3 RCSG business rules to RCSG-FW-ONT. CTX now 15 entities, 24 internal relationships + 1 cross-ontology bridge, 11 business rules."
+    }
+  ],
+  "notes": "Companion ontology to ORG-CONTEXT providing the typed context dimension taxonomy. ORG-CONTEXT references ContextTypes via cross-ontology bridges. RCSG framework entities extracted to RCSG-FW-ONT in v1.1.0. All context types extend the abstract ContextType base and support user-defined extension via ContextExtension."
+}

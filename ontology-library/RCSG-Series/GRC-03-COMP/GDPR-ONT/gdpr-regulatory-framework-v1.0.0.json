@@ -1,0 +1,931 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platformcore.io/ontology/",
+    "gdpr": "https://platformcore.io/ontology/gdpr/",
+    "oaa": "https://platformcore.io/ontology/oaa/"
+  },
+  "@type": "pf:Ontology",
+  "@id": "gdpr:gdpr-regulatory-framework",
+  "name": "GDPR Regulatory Framework Ontology",
+  "description": "Ontology defining EU/UK General Data Protection Regulation concepts including articles, principles, lawful bases, data subject rights, and compliance obligations. Provides the regulatory foundation that implementation ontologies (like PII Governance) reference.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "created": "2026-02-06",
+  "lastModified": "2026-02-06",
+  "author": "PF-Core Compliance Module",
+  "schemaOrgAlignment": 0.75,
+  "pfCoreModule": "RCSG",
+  "pfCoreInstances": [
+    "W4M-RCS",
+    "BAIV-SEC"
+  ],
+  "metadata": {
+    "domain": "Data Protection Regulation",
+    "purpose": "Define canonical GDPR regulatory concepts for cross-ontology reference",
+    "scope": "EU GDPR (2016/679) and UK GDPR (retained EU law)",
+    "targetAudience": [
+      "Data Protection Officers",
+      "Compliance Officers",
+      "Legal Teams",
+      "Security Architects"
+    ],
+    "regulatorySource": "Regulation (EU) 2016/679"
+  },
+  "hasDefinedTerm": [
+    {
+      "@type": "DefinedTerm",
+      "@id": "gdpr:DataProtectionPrinciple",
+      "name": "DataProtectionPrinciple",
+      "description": "Core principles for processing personal data as defined in GDPR Article 5, forming the foundation of lawful data processing",
+      "termCode": "DPP",
+      "inDefinedTermSet": "gdpr:gdpr-regulatory-framework",
+      "schemaType": "schema:DefinedTerm",
+      "properties": {
+        "articleReference": {
+          "type": "string",
+          "description": "GDPR article reference"
+        },
+        "principleCode": {
+          "type": "string",
+          "description": "Short code for the principle"
+        },
+        "description": {
+          "type": "string",
+          "description": "Full description of the principle"
+        },
+        "complianceRequirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Key requirements to demonstrate compliance"
+        }
+      },
+      "instances": [
+        {
+          "@id": "gdpr:Principle-Lawfulness",
+          "principleCode": "ART5-1-A",
+          "articleReference": "Article 5(1)(a)",
+          "description": "Processing must be lawful, fair and transparent",
+          "complianceRequirements": [
+            "Valid lawful basis",
+            "Privacy notice",
+            "Fair processing"
+          ]
+        },
+        {
+          "@id": "gdpr:Principle-PurposeLimitation",
+          "principleCode": "ART5-1-B",
+          "articleReference": "Article 5(1)(b)",
+          "description": "Data collected for specified, explicit and legitimate purposes only",
+          "complianceRequirements": [
+            "Documented purposes",
+            "No incompatible processing"
+          ]
+        },
+        {
+          "@id": "gdpr:Principle-DataMinimisation",
+          "principleCode": "ART5-1-C",
+          "articleReference": "Article 5(1)(c)",
+          "description": "Data must be adequate, relevant and limited to what is necessary",
+          "complianceRequirements": [
+            "Necessity assessment",
+            "No excessive collection"
+          ]
+        },
+        {
+          "@id": "gdpr:Principle-Accuracy",
+          "principleCode": "ART5-1-D",
+          "articleReference": "Article 5(1)(d)",
+          "description": "Personal data must be accurate and kept up to date",
+          "complianceRequirements": [
+            "Accuracy checks",
+            "Correction procedures"
+          ]
+        },
+        {
+          "@id": "gdpr:Principle-StorageLimitation",
+          "principleCode": "ART5-1-E",
+          "articleReference": "Article 5(1)(e)",
+          "description": "Data kept only as long as necessary for the purposes",
+          "complianceRequirements": [
+            "Retention policy",
+            "Deletion procedures"
+          ]
+        },
+        {
+          "@id": "gdpr:Principle-IntegrityConfidentiality",
+          "principleCode": "ART5-1-F",
+          "articleReference": "Article 5(1)(f)",
+          "description": "Appropriate security including protection against unauthorised processing, loss, destruction or damage",
+          "complianceRequirements": [
+            "Security measures",
+            "Access controls",
+            "Encryption"
+          ]
+        },
+        {
+          "@id": "gdpr:Principle-Accountability",
+          "principleCode": "ART5-2",
+          "articleReference": "Article 5(2)",
+          "description": "Controller must demonstrate compliance with all principles",
+          "complianceRequirements": [
+            "Documentation",
+            "Policies",
+            "Training",
+            "Audits"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "gdpr:LawfulBasis",
+      "name": "LawfulBasis",
+      "description": "Legal grounds for processing personal data as defined in GDPR Article 6. At least one must apply for processing to be lawful",
+      "termCode": "LB",
+      "inDefinedTermSet": "gdpr:gdpr-regulatory-framework",
+      "schemaType": "schema:DefinedTerm",
+      "properties": {
+        "articleReference": {
+          "type": "string",
+          "description": "GDPR article reference"
+        },
+        "basisCode": {
+          "type": "string",
+          "description": "Short code for the basis"
+        },
+        "requiresConsent": {
+          "type": "boolean",
+          "description": "Whether this basis requires explicit consent"
+        },
+        "applicableScenarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Common scenarios where this basis applies"
+        }
+      },
+      "instances": [
+        {
+          "@id": "gdpr:Basis-Consent",
+          "basisCode": "ART6-1-A",
+          "articleReference": "Article 6(1)(a)",
+          "description": "Data subject has given consent to processing",
+          "requiresConsent": true,
+          "applicableScenarios": [
+            "Marketing",
+            "Optional features",
+            "Analytics"
+          ]
+        },
+        {
+          "@id": "gdpr:Basis-Contract",
+          "basisCode": "ART6-1-B",
+          "articleReference": "Article 6(1)(b)",
+          "description": "Processing necessary for performance of a contract",
+          "requiresConsent": false,
+          "applicableScenarios": [
+            "Service delivery",
+            "Account management",
+            "Order fulfilment"
+          ]
+        },
+        {
+          "@id": "gdpr:Basis-LegalObligation",
+          "basisCode": "ART6-1-C",
+          "articleReference": "Article 6(1)(c)",
+          "description": "Processing necessary to comply with a legal obligation",
+          "requiresConsent": false,
+          "applicableScenarios": [
+            "Tax records",
+            "Employment law",
+            "Regulatory reporting"
+          ]
+        },
+        {
+          "@id": "gdpr:Basis-VitalInterests",
+          "basisCode": "ART6-1-D",
+          "articleReference": "Article 6(1)(d)",
+          "description": "Processing necessary to protect vital interests",
+          "requiresConsent": false,
+          "applicableScenarios": [
+            "Medical emergencies",
+            "Life-threatening situations"
+          ]
+        },
+        {
+          "@id": "gdpr:Basis-PublicTask",
+          "basisCode": "ART6-1-E",
+          "articleReference": "Article 6(1)(e)",
+          "description": "Processing necessary for public interest or official authority",
+          "requiresConsent": false,
+          "applicableScenarios": [
+            "Government functions",
+            "Public services"
+          ]
+        },
+        {
+          "@id": "gdpr:Basis-LegitimateInterests",
+          "basisCode": "ART6-1-F",
+          "articleReference": "Article 6(1)(f)",
+          "description": "Processing necessary for legitimate interests (requires balancing test)",
+          "requiresConsent": false,
+          "applicableScenarios": [
+            "Fraud prevention",
+            "Network security",
+            "Business operations"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "gdpr:DataSubjectRight",
+      "name": "DataSubjectRight",
+      "description": "Rights granted to individuals under GDPR Chapter III regarding their personal data",
+      "termCode": "DSR",
+      "inDefinedTermSet": "gdpr:gdpr-regulatory-framework",
+      "schemaType": "schema:DefinedTerm",
+      "properties": {
+        "articleReference": {
+          "type": "string",
+          "description": "GDPR article reference"
+        },
+        "rightCode": {
+          "type": "string",
+          "description": "Short code for the right"
+        },
+        "responseDeadline": {
+          "type": "string",
+          "description": "Time limit to respond to request"
+        },
+        "exemptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Situations where right may be limited"
+        }
+      },
+      "instances": [
+        {
+          "@id": "gdpr:Right-Information",
+          "rightCode": "ART13-14",
+          "articleReference": "Articles 13-14",
+          "description": "Right to be informed about data collection and use",
+          "responseDeadline": "At collection",
+          "exemptions": []
+        },
+        {
+          "@id": "gdpr:Right-Access",
+          "rightCode": "ART15",
+          "articleReference": "Article 15",
+          "description": "Right to access personal data and supplementary information",
+          "responseDeadline": "1 month",
+          "exemptions": [
+            "Manifestly unfounded",
+            "Excessive requests"
+          ]
+        },
+        {
+          "@id": "gdpr:Right-Rectification",
+          "rightCode": "ART16",
+          "articleReference": "Article 16",
+          "description": "Right to have inaccurate data corrected",
+          "responseDeadline": "1 month",
+          "exemptions": []
+        },
+        {
+          "@id": "gdpr:Right-Erasure",
+          "rightCode": "ART17",
+          "articleReference": "Article 17",
+          "description": "Right to have personal data deleted (right to be forgotten)",
+          "responseDeadline": "1 month",
+          "exemptions": [
+            "Legal obligation",
+            "Public interest",
+            "Legal claims"
+          ]
+        },
+        {
+          "@id": "gdpr:Right-RestrictProcessing",
+          "rightCode": "ART18",
+          "articleReference": "Article 18",
+          "description": "Right to restrict processing in certain circumstances",
+          "responseDeadline": "1 month",
+          "exemptions": [
+            "Storage only during restriction"
+          ]
+        },
+        {
+          "@id": "gdpr:Right-DataPortability",
+          "rightCode": "ART20",
+          "articleReference": "Article 20",
+          "description": "Right to receive data in structured, machine-readable format",
+          "responseDeadline": "1 month",
+          "exemptions": [
+            "Consent or contract basis only"
+          ]
+        },
+        {
+          "@id": "gdpr:Right-Object",
+          "rightCode": "ART21",
+          "articleReference": "Article 21",
+          "description": "Right to object to processing based on legitimate interests or public task",
+          "responseDeadline": "Immediately",
+          "exemptions": [
+            "Compelling legitimate grounds"
+          ]
+        },
+        {
+          "@id": "gdpr:Right-AutomatedDecisions",
+          "rightCode": "ART22",
+          "articleReference": "Article 22",
+          "description": "Right not to be subject to solely automated decision-making with legal effects",
+          "responseDeadline": "Immediately",
+          "exemptions": [
+            "Contract necessity",
+            "Explicit consent",
+            "Legal authorisation"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "gdpr:DataProtectionRole",
+      "name": "DataProtectionRole",
+      "description": "Key roles and responsibilities under GDPR for organisations processing personal data",
+      "termCode": "DPR",
+      "inDefinedTermSet": "gdpr:gdpr-regulatory-framework",
+      "schemaType": "schema:Role",
+      "properties": {
+        "articleReference": {
+          "type": "string",
+          "description": "GDPR article reference"
+        },
+        "roleCode": {
+          "type": "string",
+          "description": "Short code for the role"
+        },
+        "keyObligations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Primary obligations for this role"
+        }
+      },
+      "instances": [
+        {
+          "@id": "gdpr:Role-Controller",
+          "roleCode": "CTRL",
+          "articleReference": "Article 4(7)",
+          "description": "Determines purposes and means of processing personal data",
+          "keyObligations": [
+            "Compliance with principles",
+            "Implement appropriate measures",
+            "Demonstrate accountability",
+            "Notify breaches"
+          ]
+        },
+        {
+          "@id": "gdpr:Role-Processor",
+          "roleCode": "PROC",
+          "articleReference": "Article 4(8)",
+          "description": "Processes personal data on behalf of the controller",
+          "keyObligations": [
+            "Process only on documented instructions",
+            "Ensure confidentiality",
+            "Assist controller",
+            "Delete/return data"
+          ]
+        },
+        {
+          "@id": "gdpr:Role-JointController",
+          "roleCode": "JCTRL",
+          "articleReference": "Article 26",
+          "description": "Two or more controllers jointly determine purposes and means",
+          "keyObligations": [
+            "Transparent arrangement",
+            "Define responsibilities",
+            "Provide contact point"
+          ]
+        },
+        {
+          "@id": "gdpr:Role-DPO",
+          "roleCode": "DPO",
+          "articleReference": "Articles 37-39",
+          "description": "Data Protection Officer - independent advisor on data protection compliance",
+          "keyObligations": [
+            "Inform and advise",
+            "Monitor compliance",
+            "Cooperate with supervisory authority",
+            "Contact point for data subjects"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "gdpr:SpecialCategoryData",
+      "name": "SpecialCategoryData",
+      "description": "Categories of personal data requiring additional protection under GDPR Article 9",
+      "termCode": "SCD",
+      "inDefinedTermSet": "gdpr:gdpr-regulatory-framework",
+      "schemaType": "schema:DefinedTerm",
+      "properties": {
+        "categoryCode": {
+          "type": "string",
+          "description": "Short code for the category"
+        },
+        "additionalConditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Additional Article 9 conditions that may apply"
+        }
+      },
+      "instances": [
+        {
+          "@id": "gdpr:Category-RacialEthnic",
+          "categoryCode": "RACE",
+          "description": "Racial or ethnic origin",
+          "additionalConditions": [
+            "Explicit consent",
+            "Employment law",
+            "Vital interests"
+          ]
+        },
+        {
+          "@id": "gdpr:Category-PoliticalOpinions",
+          "categoryCode": "POLIT",
+          "description": "Political opinions",
+          "additionalConditions": [
+            "Explicit consent",
+            "Political activities"
+          ]
+        },
+        {
+          "@id": "gdpr:Category-ReligiousBeliefs",
+          "categoryCode": "RELIG",
+          "description": "Religious or philosophical beliefs",
+          "additionalConditions": [
+            "Explicit consent",
+            "Religious organisation"
+          ]
+        },
+        {
+          "@id": "gdpr:Category-TradeUnion",
+          "categoryCode": "UNION",
+          "description": "Trade union membership",
+          "additionalConditions": [
+            "Explicit consent",
+            "Employment law"
+          ]
+        },
+        {
+          "@id": "gdpr:Category-Genetic",
+          "categoryCode": "GENET",
+          "description": "Genetic data",
+          "additionalConditions": [
+            "Explicit consent",
+            "Healthcare",
+            "Research"
+          ]
+        },
+        {
+          "@id": "gdpr:Category-Biometric",
+          "categoryCode": "BIOM",
+          "description": "Biometric data for unique identification",
+          "additionalConditions": [
+            "Explicit consent",
+            "Employment necessity"
+          ]
+        },
+        {
+          "@id": "gdpr:Category-Health",
+          "categoryCode": "HEALTH",
+          "description": "Health data",
+          "additionalConditions": [
+            "Explicit consent",
+            "Healthcare provision",
+            "Public health"
+          ]
+        },
+        {
+          "@id": "gdpr:Category-SexualOrientation",
+          "categoryCode": "SEXOR",
+          "description": "Sex life or sexual orientation",
+          "additionalConditions": [
+            "Explicit consent",
+            "Legal claims"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "gdpr:TransferMechanism",
+      "name": "TransferMechanism",
+      "description": "Legal mechanisms for transferring personal data outside the EEA/UK under GDPR Chapter V",
+      "termCode": "TM",
+      "inDefinedTermSet": "gdpr:gdpr-regulatory-framework",
+      "schemaType": "schema:DefinedTerm",
+      "properties": {
+        "articleReference": {
+          "type": "string",
+          "description": "GDPR article reference"
+        },
+        "mechanismCode": {
+          "type": "string",
+          "description": "Short code for the mechanism"
+        },
+        "requiresApproval": {
+          "type": "boolean",
+          "description": "Whether supervisory authority approval is required"
+        }
+      },
+      "instances": [
+        {
+          "@id": "gdpr:Transfer-AdequacyDecision",
+          "mechanismCode": "ADEQ",
+          "articleReference": "Article 45",
+          "description": "Transfer to country with adequate protection level",
+          "requiresApproval": false
+        },
+        {
+          "@id": "gdpr:Transfer-SCCs",
+          "mechanismCode": "SCC",
+          "articleReference": "Article 46(2)(c)",
+          "description": "Standard Contractual Clauses adopted by Commission",
+          "requiresApproval": false
+        },
+        {
+          "@id": "gdpr:Transfer-BCRs",
+          "mechanismCode": "BCR",
+          "articleReference": "Article 47",
+          "description": "Binding Corporate Rules for intra-group transfers",
+          "requiresApproval": true
+        },
+        {
+          "@id": "gdpr:Transfer-Certification",
+          "mechanismCode": "CERT",
+          "articleReference": "Article 46(2)(f)",
+          "description": "Approved certification mechanism",
+          "requiresApproval": false
+        },
+        {
+          "@id": "gdpr:Transfer-CodesOfConduct",
+          "mechanismCode": "COC",
+          "articleReference": "Article 46(2)(e)",
+          "description": "Approved code of conduct with binding commitments",
+          "requiresApproval": false
+        },
+        {
+          "@id": "gdpr:Transfer-Derogation",
+          "mechanismCode": "DEROG",
+          "articleReference": "Article 49",
+          "description": "Specific derogations (consent, contract, legal claims, etc.)",
+          "requiresApproval": false
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "gdpr:ComplianceObligation",
+      "name": "ComplianceObligation",
+      "description": "Key compliance requirements and documentation obligations under GDPR",
+      "termCode": "CO",
+      "inDefinedTermSet": "gdpr:gdpr-regulatory-framework",
+      "schemaType": "schema:DefinedTerm",
+      "properties": {
+        "articleReference": {
+          "type": "string",
+          "description": "GDPR article reference"
+        },
+        "obligationCode": {
+          "type": "string",
+          "description": "Short code for the obligation"
+        },
+        "applicableTo": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Roles this obligation applies to"
+        }
+      },
+      "instances": [
+        {
+          "@id": "gdpr:Obligation-ROPA",
+          "obligationCode": "ROPA",
+          "articleReference": "Article 30",
+          "description": "Maintain Records of Processing Activities",
+          "applicableTo": [
+            "Controller",
+            "Processor"
+          ]
+        },
+        {
+          "@id": "gdpr:Obligation-DPIA",
+          "obligationCode": "DPIA",
+          "articleReference": "Article 35",
+          "description": "Conduct Data Protection Impact Assessment for high-risk processing",
+          "applicableTo": [
+            "Controller"
+          ]
+        },
+        {
+          "@id": "gdpr:Obligation-DPOAppointment",
+          "obligationCode": "DPO-APPT",
+          "articleReference": "Article 37",
+          "description": "Appoint Data Protection Officer where required",
+          "applicableTo": [
+            "Controller",
+            "Processor"
+          ]
+        },
+        {
+          "@id": "gdpr:Obligation-BreachNotification",
+          "obligationCode": "BREACH-N",
+          "articleReference": "Article 33",
+          "description": "Notify supervisory authority of personal data breach within 72 hours",
+          "applicableTo": [
+            "Controller"
+          ]
+        },
+        {
+          "@id": "gdpr:Obligation-BreachCommunication",
+          "obligationCode": "BREACH-C",
+          "articleReference": "Article 34",
+          "description": "Communicate breach to data subjects when high risk",
+          "applicableTo": [
+            "Controller"
+          ]
+        },
+        {
+          "@id": "gdpr:Obligation-SecurityMeasures",
+          "obligationCode": "SEC",
+          "articleReference": "Article 32",
+          "description": "Implement appropriate technical and organisational security measures",
+          "applicableTo": [
+            "Controller",
+            "Processor"
+          ]
+        },
+        {
+          "@id": "gdpr:Obligation-PrivacyByDesign",
+          "obligationCode": "PBD",
+          "articleReference": "Article 25",
+          "description": "Data protection by design and by default",
+          "applicableTo": [
+            "Controller"
+          ]
+        },
+        {
+          "@id": "gdpr:Obligation-ProcessorContract",
+          "obligationCode": "PROC-C",
+          "articleReference": "Article 28",
+          "description": "Binding contract/agreement with processors",
+          "applicableTo": [
+            "Controller"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "gdpr:GDPRArticle",
+      "name": "GDPRArticle",
+      "description": "Key GDPR articles referenced by other ontologies for compliance mapping",
+      "termCode": "ART",
+      "inDefinedTermSet": "gdpr:gdpr-regulatory-framework",
+      "schemaType": "schema:Legislation",
+      "properties": {
+        "articleNumber": {
+          "type": "string",
+          "description": "Article number"
+        },
+        "chapterNumber": {
+          "type": "integer",
+          "description": "Chapter number"
+        },
+        "title": {
+          "type": "string",
+          "description": "Article title"
+        }
+      },
+      "instances": [
+        {
+          "@id": "gdpr:Article-5",
+          "articleNumber": "5",
+          "chapterNumber": 2,
+          "title": "Principles relating to processing of personal data"
+        },
+        {
+          "@id": "gdpr:Article-6",
+          "articleNumber": "6",
+          "chapterNumber": 2,
+          "title": "Lawfulness of processing"
+        },
+        {
+          "@id": "gdpr:Article-9",
+          "articleNumber": "9",
+          "chapterNumber": 2,
+          "title": "Processing of special categories of personal data"
+        },
+        {
+          "@id": "gdpr:Article-17",
+          "articleNumber": "17",
+          "chapterNumber": 3,
+          "title": "Right to erasure ('right to be forgotten')"
+        },
+        {
+          "@id": "gdpr:Article-25",
+          "articleNumber": "25",
+          "chapterNumber": 4,
+          "title": "Data protection by design and by default"
+        },
+        {
+          "@id": "gdpr:Article-30",
+          "articleNumber": "30",
+          "chapterNumber": 4,
+          "title": "Records of processing activities"
+        },
+        {
+          "@id": "gdpr:Article-32",
+          "articleNumber": "32",
+          "chapterNumber": 4,
+          "title": "Security of processing"
+        },
+        {
+          "@id": "gdpr:Article-33",
+          "articleNumber": "33",
+          "chapterNumber": 4,
+          "title": "Notification of a personal data breach to the supervisory authority"
+        },
+        {
+          "@id": "gdpr:Article-35",
+          "articleNumber": "35",
+          "chapterNumber": 4,
+          "title": "Data protection impact assessment"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "rdf:Property",
+      "@id": "gdpr:requiresBasis",
+      "name": "requiresBasis",
+      "description": "Data processing requires at least one lawful basis",
+      "domainIncludes": "gdpr:DataProtectionPrinciple",
+      "rangeIncludes": "gdpr:LawfulBasis",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "gdpr:grantsRight",
+      "name": "grantsRight",
+      "description": "GDPR articles grant specific rights to data subjects",
+      "domainIncludes": "gdpr:GDPRArticle",
+      "rangeIncludes": "gdpr:DataSubjectRight",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "gdpr:imposesObligation",
+      "name": "imposesObligation",
+      "description": "GDPR articles impose compliance obligations on roles",
+      "domainIncludes": "gdpr:GDPRArticle",
+      "rangeIncludes": "gdpr:ComplianceObligation",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "gdpr:appliesToRole",
+      "name": "appliesToRole",
+      "description": "Compliance obligation applies to specific data protection roles",
+      "domainIncludes": "gdpr:ComplianceObligation",
+      "rangeIncludes": "gdpr:DataProtectionRole",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "gdpr:protectsCategory",
+      "name": "protectsCategory",
+      "description": "Additional conditions protect special category data",
+      "domainIncludes": "gdpr:LawfulBasis",
+      "rangeIncludes": "gdpr:SpecialCategoryData",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "gdpr:enablesTransfer",
+      "name": "enablesTransfer",
+      "description": "Transfer mechanism enables lawful cross-border data transfer",
+      "domainIncludes": "gdpr:TransferMechanism",
+      "rangeIncludes": "gdpr:ComplianceObligation",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "gdpr:exercisedAgainst",
+      "name": "exercisedAgainst",
+      "description": "Data subject rights are exercised against specific roles",
+      "domainIncludes": "gdpr:DataSubjectRight",
+      "rangeIncludes": "gdpr:DataProtectionRole",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "gdpr:enforcedBy",
+      "name": "enforcedBy",
+      "description": "Principles are enforced through compliance obligations",
+      "domainIncludes": "gdpr:DataProtectionPrinciple",
+      "rangeIncludes": "gdpr:ComplianceObligation",
+      "cardinality": "n:m"
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "gdpr:rule-lawful-basis-required",
+      "name": "LawfulBasisRequired",
+      "description": "All personal data processing must have at least one lawful basis",
+      "condition": "IF processing personal data",
+      "action": "THEN at least one gdpr:LawfulBasis must apply",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "gdpr:rule-special-category-conditions",
+      "name": "SpecialCategoryConditions",
+      "description": "Processing special category data requires Article 9 condition in addition to Article 6 basis",
+      "condition": "IF processing gdpr:SpecialCategoryData",
+      "action": "THEN both Article 6 basis AND Article 9 condition must apply",
+      "priority": 2,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "gdpr:rule-breach-notification-72h",
+      "name": "BreachNotification72Hours",
+      "description": "Personal data breaches must be notified to supervisory authority within 72 hours",
+      "condition": "IF personal data breach detected AND risk to rights and freedoms",
+      "action": "THEN notify supervisory authority within 72 hours",
+      "priority": 3,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "gdpr:rule-dpia-high-risk",
+      "name": "DPIAHighRisk",
+      "description": "Data Protection Impact Assessment required for high-risk processing",
+      "condition": "IF processing likely to result in high risk to rights and freedoms",
+      "action": "THEN conduct DPIA before processing",
+      "priority": 4,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "gdpr:rule-respond-dsar-1-month",
+      "name": "RespondDSAR1Month",
+      "description": "Data subject requests must be responded to within one month",
+      "condition": "IF gdpr:DataSubjectRight request received",
+      "action": "THEN respond within 1 month (extendable by 2 months for complex requests)",
+      "priority": 5,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "gdpr:rule-transfer-safeguards",
+      "name": "TransferSafeguards",
+      "description": "International transfers require appropriate safeguards",
+      "condition": "IF transferring personal data outside EEA/UK",
+      "action": "THEN gdpr:TransferMechanism must be in place",
+      "priority": 6,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    }
+  ],
+  "crossOntologyReferences": {
+    "implementedBy": [
+      "pii:",
+      "mcsb:",
+      "mcsb2:"
+    ],
+    "foundationDependencies": [
+      "org:"
+    ],
+    "description": "GDPR provides the regulatory framework that implementation ontologies (PII, MCSB) reference for compliance mapping"
+  },
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "GDPR-ONT",
+  "oaa:series": "RCSG-SERIES"
+}

@@ -1,0 +1,239 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-PII-001",
+  "name": "PII Governance Ontology (Microsoft Native Web Apps)",
+  "description": "Ontology for PII protection in web applications using Azure SQL Database Graph, Microsoft Graph API, Presidio, and Azure OpenAI. Provides comprehensive data governance framework for UK-based AI systems processing personal data.",
+  "version": "3.3.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/pii-governance/",
+  "prefix": "pii:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "skipped"
+  },
+  "artifacts": {
+    "folder": "./",
+    "ontology": "./pii-governance-microsoft-native-v3.3.0.json",
+    "glossary": null,
+    "documentation": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "summary": {
+    "entities": [
+      {
+        "id": "pii:DataResidencyRegion",
+        "name": "DataResidencyRegion",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:PIIEntityType",
+        "name": "PIIEntityType",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:AnonymizationOperator",
+        "name": "AnonymizationOperator",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:AzureSQLGraphNode",
+        "name": "AzureSQLGraphNode",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:AzureSQLGraphEdge",
+        "name": "AzureSQLGraphEdge",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:MicrosoftGraphAPIScope",
+        "name": "MicrosoftGraphAPIScope",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:AzureOpenAIDeployment",
+        "name": "AzureOpenAIDeployment",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:PIIProtectionAction",
+        "name": "PIIProtectionAction",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:SensitivityLabel",
+        "name": "SensitivityLabel",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:MCSBv2AIControl",
+        "name": "MCSBv2AIControl",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:ComplianceFramework",
+        "name": "ComplianceFramework",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:ArchitectureLayer",
+        "name": "ArchitectureLayer",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:PIIProtectedWorkflow",
+        "name": "PIIProtectedWorkflow",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:PIIDecisionMatrix",
+        "name": "PIIDecisionMatrix",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:IntegrationEndpoint",
+        "name": "IntegrationEndpoint",
+        "entityType": "class"
+      },
+      {
+        "id": "pii:ComplianceMapping",
+        "name": "ComplianceMapping",
+        "entityType": "class"
+      }
+    ],
+    "relationships": [
+      {
+        "name": "triggers",
+        "source": "PIIEntityType",
+        "target": "PIIProtectionAction"
+      },
+      {
+        "name": "usesOperator",
+        "source": "PIIProtectionAction",
+        "target": "AnonymizationOperator"
+      },
+      {
+        "name": "residesIn",
+        "source": "AzureOpenAIDeployment",
+        "target": "DataResidencyRegion"
+      },
+      {
+        "name": "determinesAction",
+        "source": "SensitivityLabel",
+        "target": "PIIProtectionAction"
+      },
+      {
+        "name": "implements",
+        "source": "MCSBv2AIControl",
+        "target": "ComplianceFramework"
+      },
+      {
+        "name": "contains",
+        "source": "ArchitectureLayer",
+        "target": "AzureSQLGraphNode"
+      },
+      {
+        "name": "connectedBy",
+        "source": "AzureSQLGraphNode",
+        "target": "AzureSQLGraphEdge"
+      },
+      {
+        "name": "exposesPII",
+        "source": "MicrosoftGraphAPIScope",
+        "target": "PIIEntityType"
+      },
+      {
+        "name": "traverses",
+        "source": "PIIProtectedWorkflow",
+        "target": "ArchitectureLayer"
+      },
+      {
+        "name": "references",
+        "source": "PIIDecisionMatrix",
+        "target": "PIIProtectionAction"
+      },
+      {
+        "name": "requiresScope",
+        "source": "IntegrationEndpoint",
+        "target": "MicrosoftGraphAPIScope"
+      },
+      {
+        "name": "validates",
+        "source": "ComplianceMapping",
+        "target": "MCSBv2AIControl"
+      },
+      {
+        "name": "processes",
+        "source": "PIIProtectedWorkflow",
+        "target": "PIIEntityType"
+      },
+      {
+        "name": "governs",
+        "source": "ComplianceFramework",
+        "target": "PIIEntityType"
+      },
+      {
+        "name": "enforcesResidency",
+        "source": "ComplianceFramework",
+        "target": "AzureOpenAIDeployment"
+      }
+    ]
+  },
+  "relationships": {
+    "crossOntology": 5,
+    "keyBridges": [
+      {
+        "to": "mcsb2:",
+        "entity": "MCSBv2AIControl",
+        "relationship": "extends"
+      },
+      {
+        "to": "gdpr:",
+        "entity": "ComplianceFramework",
+        "relationship": "implementsFramework",
+        "targetEntity": "gdpr:DataProtectionPrinciple"
+      },
+      {
+        "to": "gdpr:",
+        "entity": "PIIEntityType",
+        "relationship": "alignsWith",
+        "targetEntity": "gdpr:SpecialCategoryData"
+      },
+      {
+        "to": "gdpr:",
+        "entity": "PIIProtectionAction",
+        "relationship": "fulfills",
+        "targetEntity": "gdpr:DataSubjectRight"
+      },
+      {
+        "to": "org:",
+        "entity": "DataResidencyRegion",
+        "relationship": "references"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-MCSB2-001",
+    "Entry-ONT-GDPR-001",
+    "Entry-ONT-ORG-001"
+  ],
+  "dependents": [
+    "Entry-ONT-OKR-001",
+    "Entry-ONT-RCSG-FW-001"
+  ],
+  "layer": "RCSG-SERIES",
+  "domain": "Data Governance & Privacy",
+  "maintainer": "PF-Core Security Module",
+  "created": "2026-02-03",
+  "lastModified": "2026-02-06",
+  "notes": "Microsoft-native PII protection for UK/EU AI systems. Integrates Presidio, Azure SQL Graph, and Azure OpenAI with UK-GDPR compliance."
+}

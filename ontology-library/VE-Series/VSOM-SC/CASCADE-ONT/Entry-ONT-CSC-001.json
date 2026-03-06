@@ -1,0 +1,87 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-CSC-001",
+  "name": "CASCADE Ontology (Audience Translation & Fidelity Tracking)",
+  "description": "Audience cascade model for strategy communication: five cascade levels (Board → C-Suite → Leadership → Teams → Individuals), audience-appropriate translation rules, fidelity scoring between levels, channel mapping, and cascade effectiveness metrics. Ensures strategic intent is translated — not diluted — as it flows through organisational layers. Part of VE-Series VSOM-SC sub-series.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://oaa-ontology.org/v6/cascade/",
+  "prefix": "csc:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate7": "pass"
+  },
+  "validationDate": "2026-02-13",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./cascade-ontology-v1.0.0-oaa-v6.json",
+    "documentation": null,
+    "glossary": "../../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "AudienceCascade": "Container for a full cascade model linking narrative to audience levels",
+    "CascadeLevel": "One of five organisational audience tiers: Board, C-Suite, Leadership, Teams, Individuals",
+    "CascadeTranslation": "Audience-appropriate translation of a narrative for a specific cascade level",
+    "FidelityAssessment": "Fidelity score measuring accuracy of translation between adjacent levels",
+    "TranslationRule": "Detail depth, language register, and metric granularity rules per level",
+    "ChannelMapping": "Communication medium mapping per audience at each cadence point",
+    "CascadeMetric": "Effectiveness measurement: reach, comprehension, and alignment per level"
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "cascadeLevelMapsToRole",
+        "from": "csc:CascadeLevel",
+        "to": "rrr:ExecutiveRole",
+        "purpose": "Cascade levels map to RRR executive role hierarchy"
+      },
+      {
+        "name": "translationOfNarrative",
+        "from": "csc:CascadeTranslation",
+        "to": "nar:StrategicNarrative",
+        "purpose": "Translations are audience-specific versions of the core narrative"
+      },
+      {
+        "name": "cascadeConnectsToOKR",
+        "from": "csc:CascadeLevel",
+        "to": "okr:Objective",
+        "purpose": "Team and individual cascade levels connect to OKR objectives"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-NAR-001",
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-RRR-001",
+    "Entry-ONT-OKR-001",
+    "Entry-ONT-KPI-001",
+    "Entry-ONT-BSC-001"
+  ],
+  "dependents": [
+    "Entry-ONT-VIZ-001"
+  ],
+  "layer": "STRATEGIC LAYER (VE-Series / VSOM-SC)",
+  "subSeries": "VSOM-SC",
+  "domain": "Strategy Communication, Audience Management, Organisational Alignment",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-13",
+  "lastModified": "2026-02-13",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-13",
+      "changes": "Initial release — Audience Cascade, Translation Rules, Fidelity Scoring, Channel Mapping, Cascade Metrics"
+    }
+  ],
+  "notes": "Layer C2 (Cascade) of VSOM Strategy Communication. Ensures strategy is translated — not diluted — as it flows through five organisational audience tiers. Fidelity scores detect drift between intended and perceived strategy at each level."
+}

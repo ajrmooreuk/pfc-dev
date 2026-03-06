@@ -1,0 +1,690 @@
+{
+  "@context": {
+    "vsom": "https://platformcore.io/ontology/vsom/",
+    "bsc": "https://platformcore.io/ontology/bsc/",
+    "orgctx": "https://platformcore.io/ontology/org-context/",
+    "rrr": "https://platformcore.io/ontology/rrr/",
+    "pfc": "https://platformcore.io/ontology/"
+  },
+  "@type": "vsom:VSOMFramework",
+  "@id": "vsom:framework-wwg",
+  "vsom:organizationContextRef": "org:ctx-wwg",
+
+  "vsom:vision": {
+    "@type": "vsom:Vision",
+    "@id": "vsom:vision-wwg",
+    "vsom:visionStatement": "Transform World Wide Gourmet from a reactive food importer into a margin-intelligent, graph-driven business that sees every pound of exposure from container stuffing to customer delivery — and acts on that visibility to protect, price, and grow margin across every corridor and every order.",
+    "vsom:visionScope": "organizational",
+    "vsom:visionHorizon": 5,
+    "vsom:visionOwner": "rrr:exec-wwg-managing-director",
+    "vsom:status": "draft",
+    "vsom:keyInsight": "Today WWG operates two disconnected worlds: procurement watches inbound corridors, sales watches outbound fulfilment. Nobody owns the warehouse in between, where margin bleeds invisibly. The E2E graph eliminates this blind spot."
+  },
+
+  "vsom:strategies": [
+    {
+      "@type": "vsom:Strategy",
+      "@id": "vsom:strategy-wwg-1",
+      "vsom:strategyName": "Three-Layer Composed Graph — Supply, Bridge, Demand",
+      "vsom:strategyDescription": "Build a unified three-layer graph connecting 4 inbound corridors (LSC-ONT) through the UK warehouse margin pool to 5+ customer segments (OFM-ONT), with bidirectional traversal and 9 cross-layer join points.",
+      "vsom:strategyType": "transformation",
+      "vsom:strategicFocus": "Data infrastructure and operational visibility",
+      "vsom:timeHorizon": 2,
+      "vsom:strategyScope": "organizational",
+      "vsom:setByRole": "rrr:exec-wwg-managing-director",
+      "vsom:informedBy": ["vsom:vision-wwg"],
+      "vsom:status": "draft",
+      "vsom:keyDesignDecisions": [
+        "One graph, not two — LSC-ONT and OFM-ONT joined through 9 explicit join points",
+        "StockAllocation is the critical bridge entity connecting lsc:Shipment to ofm:OrderLine",
+        "Bidirectional cascades: supply disruption → customer impact AND demand change → supply exposure",
+        "4 EMC scope rules: product match, corridor scope, fulfilment scope, maturity threshold"
+      ]
+    },
+    {
+      "@type": "vsom:Strategy",
+      "@id": "vsom:strategy-wwg-2",
+      "vsom:strategyName": "Margin-at-Risk (MaR) — The Unifying Metric",
+      "vsom:strategyDescription": "Develop a single, real-time Margin-at-Risk metric aggregating active erosion, probabilistic erosion, and scenario exposure across every order, corridor, and time horizon.",
+      "vsom:strategyType": "operational_excellence",
+      "vsom:strategicFocus": "Financial visibility and risk quantification",
+      "vsom:timeHorizon": 2,
+      "vsom:strategyScope": "organizational",
+      "vsom:setByRole": "rrr:func-wwg-finance-analyst",
+      "vsom:informedBy": ["vsom:vision-wwg"],
+      "vsom:status": "draft",
+      "vsom:formula": "MaR = Σ(active_erosion_per_order) + Σ(P(risk_i) × impact_i) + max(scenario_exposure)"
+    },
+    {
+      "@type": "vsom:Strategy",
+      "@id": "vsom:strategy-wwg-3",
+      "vsom:strategyName": "Cross-Corridor Substitution Engine",
+      "vsom:strategyDescription": "Use the unified graph to automatically identify commodity-equivalent substitutions across corridors when a primary source is disrupted, with margin impact pre-calculated before the substitution is offered.",
+      "vsom:strategyType": "innovation",
+      "vsom:strategicFocus": "Supply chain resilience and customer retention",
+      "vsom:timeHorizon": 2,
+      "vsom:strategyScope": "organizational",
+      "vsom:setByRole": "rrr:func-wwg-procurement-mgr",
+      "vsom:informedBy": ["vsom:vision-wwg", "vsom:strategy-wwg-1"],
+      "vsom:status": "draft"
+    },
+    {
+      "@type": "vsom:Strategy",
+      "@id": "vsom:strategy-wwg-4",
+      "vsom:strategyName": "Proactive Customer Lifecycle Management",
+      "vsom:strategyDescription": "Use demand-side patterns and fulfilment risk scores to segment customers by behaviour, predict changes before they happen, and protect relationships through pre-emptive action.",
+      "vsom:strategyType": "customer_centricity",
+      "vsom:strategicFocus": "Customer experience and retention",
+      "vsom:timeHorizon": 2,
+      "vsom:strategyScope": "organizational",
+      "vsom:setByRole": "rrr:func-wwg-sales-account-mgr",
+      "vsom:informedBy": ["vsom:vision-wwg", "vsom:strategy-wwg-1"],
+      "vsom:status": "draft",
+      "vsom:riskBands": {
+        "green": "0-3: on track, stock allocated, dispatch scheduled",
+        "amber": "4-6: at risk — notify customer with revised ETA and alternatives",
+        "red": "7-10: fulfilment failure likely — escalate, activate substitution engine"
+      }
+    },
+    {
+      "@type": "vsom:Strategy",
+      "@id": "vsom:strategy-wwg-5",
+      "vsom:strategyName": "Warehouse Capacity Intelligence",
+      "vsom:strategyDescription": "Model the UK cold warehouse as a capacity-constrained bridge node, forecasting inbound arrivals against outbound dispatches to prevent storage overflow, minimise dwell time, and optimise dispatch consolidation.",
+      "vsom:strategyType": "operational_excellence",
+      "vsom:strategicFocus": "Warehouse cost control and capacity planning",
+      "vsom:timeHorizon": 1,
+      "vsom:strategyScope": "functional",
+      "vsom:setByRole": "rrr:func-wwg-warehouse-mgr",
+      "vsom:informedBy": ["vsom:vision-wwg"],
+      "vsom:status": "draft",
+      "vsom:warehouseProfile": {
+        "location": "Daventry, UK",
+        "frozenCapacity": "1,600 pallet positions @ -25°C",
+        "chilledCapacity": "800 pallet positions @ +2°C",
+        "frozenDailyCost": "GBP 1.80/pallet/day",
+        "chilledDailyCost": "GBP 2.40/pallet/day",
+        "breakEvenDwell": "5 days"
+      }
+    },
+    {
+      "@type": "vsom:Strategy",
+      "@id": "vsom:strategy-wwg-6",
+      "vsom:strategyName": "Unified Risk & Performance Reporting",
+      "vsom:strategyDescription": "Deliver a single BSC-structured performance view across all 4 corridors and all customer segments, with causal links from operational actions to financial outcomes.",
+      "vsom:strategyType": "operational_excellence",
+      "vsom:strategicFocus": "Performance measurement and strategic alignment",
+      "vsom:timeHorizon": 2,
+      "vsom:strategyScope": "organizational",
+      "vsom:setByRole": "rrr:func-wwg-finance-analyst",
+      "vsom:informedBy": ["vsom:vision-wwg"],
+      "vsom:status": "draft"
+    }
+  ],
+
+  "vsom:objectives": [
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-f1",
+      "vsom:objectiveName": "Maximise margin realisation",
+      "vsom:objectiveDescription": "Close the gap between booked margin and realised margin across all corridors and customer segments",
+      "vsom:bscPerspective": "Financial",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:func-wwg-finance-analyst",
+      "vsom:parentStrategy": "vsom:strategy-wwg-2",
+      "vsom:timeframe": "Multi-year",
+      "vsom:baseline": "72%",
+      "vsom:target": "88%",
+      "vsom:timeline": "18 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-f2",
+      "vsom:objectiveName": "Reduce annualised disruption cost",
+      "vsom:objectiveDescription": "Reduce total supply + demand disruption cost through predictive detection and pre-planned responses",
+      "vsom:bscPerspective": "Financial",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:func-wwg-finance-analyst",
+      "vsom:parentStrategy": "vsom:strategy-wwg-2",
+      "vsom:timeframe": "Multi-year",
+      "vsom:baseline": "GBP 480K",
+      "vsom:target": "GBP 180K",
+      "vsom:timeline": "24 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-f3",
+      "vsom:objectiveName": "Minimise storage cost per unit",
+      "vsom:objectiveDescription": "Reduce pallet-day weighted average cost through better dwell time management and dispatch consolidation",
+      "vsom:bscPerspective": "Financial",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:func-wwg-warehouse-mgr",
+      "vsom:parentStrategy": "vsom:strategy-wwg-5",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "GBP 2.10",
+      "vsom:target": "GBP 1.65",
+      "vsom:timeline": "12 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-f4",
+      "vsom:objectiveName": "Recover change costs",
+      "vsom:objectiveDescription": "Increase change-cost recovery rate through better contract terms and proactive management",
+      "vsom:bscPerspective": "Financial",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:func-wwg-sales-account-mgr",
+      "vsom:parentStrategy": "vsom:strategy-wwg-4",
+      "vsom:timeframe": "Multi-year",
+      "vsom:baseline": "30%",
+      "vsom:target": "65%",
+      "vsom:timeline": "18 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-f5",
+      "vsom:objectiveName": "Reduce spoilage and write-offs",
+      "vsom:objectiveDescription": "Minimise spoilage as percentage of landed value through shelf life tracking and proactive dispatch",
+      "vsom:bscPerspective": "Financial",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:func-wwg-quality-controller",
+      "vsom:parentStrategy": "vsom:strategy-wwg-5",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "4.2%",
+      "vsom:target": "1.0%",
+      "vsom:timeline": "12 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-f6",
+      "vsom:objectiveName": "Corridor margin transparency",
+      "vsom:objectiveDescription": "Full net-margin visibility per corridor per order, from landed cost to customer invoice",
+      "vsom:bscPerspective": "Financial",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:func-wwg-finance-analyst",
+      "vsom:parentStrategy": "vsom:strategy-wwg-1",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "None",
+      "vsom:target": "100% orders with full net-margin breakdown",
+      "vsom:timeline": "6 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-c1",
+      "vsom:objectiveName": "Achieve industry-leading OTIF",
+      "vsom:objectiveDescription": "On-Time In-Full delivery rate across all customer segments and corridors",
+      "vsom:bscPerspective": "Customer",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:func-wwg-sales-account-mgr",
+      "vsom:parentStrategy": "vsom:strategy-wwg-4",
+      "vsom:timeframe": "Multi-year",
+      "vsom:baseline": "88%",
+      "vsom:target": "97%",
+      "vsom:timeline": "18 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-c2",
+      "vsom:objectiveName": "Proactive disruption communication",
+      "vsom:objectiveDescription": "Percentage of disruptions where customer is notified before they discover the impact",
+      "vsom:bscPerspective": "Customer",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:func-wwg-sales-account-mgr",
+      "vsom:parentStrategy": "vsom:strategy-wwg-4",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "20%",
+      "vsom:target": "90%",
+      "vsom:timeline": "12 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-c3",
+      "vsom:objectiveName": "Guarantee shelf life at delivery",
+      "vsom:objectiveDescription": "100% of orders meet minimum shelf life commitment at point of customer delivery",
+      "vsom:bscPerspective": "Customer",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:func-wwg-quality-controller",
+      "vsom:parentStrategy": "vsom:strategy-wwg-5",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "85%",
+      "vsom:target": "100%",
+      "vsom:timeline": "12 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-c4",
+      "vsom:objectiveName": "Fastest substitution response",
+      "vsom:objectiveDescription": "Time to offer alternative sourcing after a disruption is detected",
+      "vsom:bscPerspective": "Customer",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:func-wwg-procurement-mgr",
+      "vsom:parentStrategy": "vsom:strategy-wwg-3",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "48+ hours",
+      "vsom:target": "4 hours",
+      "vsom:timeline": "12 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-p1",
+      "vsom:objectiveName": "Detect disruptions instantly",
+      "vsom:objectiveDescription": "Reduce Mean Time to Detect (MTTD) across all corridors through pattern-based early warning",
+      "vsom:bscPerspective": "InternalProcess",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:func-wwg-logistics-coord",
+      "vsom:parentStrategy": "vsom:strategy-wwg-1",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "18 hours",
+      "vsom:target": "2 hours",
+      "vsom:timeline": "6 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-p2",
+      "vsom:objectiveName": "Resolve disruptions rapidly",
+      "vsom:objectiveDescription": "Reduce Mean Time to Resolve (MTTR) through pre-planned response playbooks and substitution engine",
+      "vsom:bscPerspective": "InternalProcess",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:func-wwg-logistics-coord",
+      "vsom:parentStrategy": "vsom:strategy-wwg-3",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "72 hours",
+      "vsom:target": "12 hours",
+      "vsom:timeline": "12 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-p3",
+      "vsom:objectiveName": "Perfect document readiness",
+      "vsom:objectiveDescription": "Pre-flight compliance pass rate before shipment departure across all corridors",
+      "vsom:bscPerspective": "InternalProcess",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:func-wwg-compliance-officer",
+      "vsom:parentStrategy": "vsom:strategy-wwg-1",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "78%",
+      "vsom:target": "100%",
+      "vsom:timeline": "6 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-p4",
+      "vsom:objectiveName": "Fast stock allocation",
+      "vsom:objectiveDescription": "Stock allocation lead time from landing to customer order allocation",
+      "vsom:bscPerspective": "InternalProcess",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:func-wwg-warehouse-mgr",
+      "vsom:parentStrategy": "vsom:strategy-wwg-5",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "48 hours",
+      "vsom:target": "4 hours",
+      "vsom:timeline": "12 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-p5",
+      "vsom:objectiveName": "Consolidate dispatches",
+      "vsom:objectiveDescription": "Increase dispatch consolidation rate to reduce per-delivery cost",
+      "vsom:bscPerspective": "InternalProcess",
+      "vsom:priority": "P3-Medium",
+      "vsom:ownerRole": "rrr:func-wwg-warehouse-mgr",
+      "vsom:parentStrategy": "vsom:strategy-wwg-5",
+      "vsom:timeframe": "Multi-year",
+      "vsom:baseline": "45%",
+      "vsom:target": "80%",
+      "vsom:timeline": "18 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-l1",
+      "vsom:objectiveName": "Build pattern intelligence",
+      "vsom:objectiveDescription": "Build a library of validated predictive patterns from historical corridor data",
+      "vsom:bscPerspective": "LearningGrowth",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:func-wwg-logistics-coord",
+      "vsom:parentStrategy": "vsom:strategy-wwg-1",
+      "vsom:timeframe": "Multi-year",
+      "vsom:baseline": "0",
+      "vsom:target": "50+ validated patterns",
+      "vsom:timeline": "18 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-l2",
+      "vsom:objectiveName": "Test hypotheses continuously",
+      "vsom:objectiveDescription": "Maintain a continuous hypothesis testing cadence across all corridor and customer patterns",
+      "vsom:bscPerspective": "LearningGrowth",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:func-wwg-logistics-coord",
+      "vsom:parentStrategy": "vsom:strategy-wwg-1",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "0",
+      "vsom:target": "40+ per quarter",
+      "vsom:timeline": "Ongoing"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-l3",
+      "vsom:objectiveName": "Capture every lesson",
+      "vsom:objectiveDescription": "Post-incident learning capture rate — every disruption produces actionable lessons",
+      "vsom:bscPerspective": "LearningGrowth",
+      "vsom:priority": "P3-Medium",
+      "vsom:ownerRole": "rrr:func-wwg-warehouse-mgr",
+      "vsom:parentStrategy": "vsom:strategy-wwg-6",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "10%",
+      "vsom:target": "100%",
+      "vsom:timeline": "6 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-wwg-l4",
+      "vsom:objectiveName": "Forecast demand accurately",
+      "vsom:objectiveDescription": "30-day demand forecast accuracy across all customer segments",
+      "vsom:bscPerspective": "LearningGrowth",
+      "vsom:priority": "P3-Medium",
+      "vsom:ownerRole": "rrr:func-wwg-sales-account-mgr",
+      "vsom:parentStrategy": "vsom:strategy-wwg-4",
+      "vsom:timeframe": "Multi-year",
+      "vsom:baseline": "Unknown",
+      "vsom:target": "85%",
+      "vsom:timeline": "24 months"
+    }
+  ],
+
+  "vsom:metrics": [
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-wwg-f1-1",
+      "vsom:metricName": "Margin Realisation Ratio",
+      "vsom:metricType": "Lagging",
+      "vsom:formula": "Realised margin / Booked margin × 100%",
+      "vsom:unit": "%",
+      "vsom:baselineValue": 72,
+      "vsom:targetValue": 88,
+      "vsom:dataSource": "ERP margin reports + graph MarginImpact entities",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-wwg-f1"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-wwg-f2-1",
+      "vsom:metricName": "Annualised Disruption Cost",
+      "vsom:metricType": "Lagging",
+      "vsom:formula": "Σ(supply disruption cost + demand disruption cost) over trailing 12 months",
+      "vsom:unit": "GBP",
+      "vsom:baselineValue": 480000,
+      "vsom:targetValue": 180000,
+      "vsom:dataSource": "ImpactAssessment + MarginImpact entities",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-wwg-f2"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-wwg-f2-2",
+      "vsom:metricName": "Margin-at-Risk (MaR)",
+      "vsom:metricType": "Leading",
+      "vsom:formula": "Σ(active_erosion) + Σ(P(risk_i) × impact_i) + max(scenario_exposure)",
+      "vsom:unit": "GBP",
+      "vsom:baselineValue": null,
+      "vsom:targetValue": null,
+      "vsom:dataSource": "MarginImpact + FulfilmentRisk + Scenario entities",
+      "vsom:frequency": "Weekly",
+      "vsom:objectiveRef": "vsom:obj-wwg-f2"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-wwg-c1-1",
+      "vsom:metricName": "OTIF Rate",
+      "vsom:metricType": "Lagging",
+      "vsom:formula": "On-Time In-Full deliveries / Total deliveries × 100%",
+      "vsom:unit": "%",
+      "vsom:baselineValue": 88,
+      "vsom:targetValue": 97,
+      "vsom:dataSource": "DeliveryWindow + DispatchLeg entities",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-wwg-c1"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-wwg-c2-1",
+      "vsom:metricName": "Proactive Notification Rate",
+      "vsom:metricType": "Leading",
+      "vsom:formula": "Disruptions notified proactively / Total disruptions × 100%",
+      "vsom:unit": "%",
+      "vsom:baselineValue": 20,
+      "vsom:targetValue": 90,
+      "vsom:dataSource": "FulfilmentRisk + notification log",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-wwg-c2"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-wwg-p1-1",
+      "vsom:metricName": "Mean Time to Detect (MTTD)",
+      "vsom:metricType": "Leading",
+      "vsom:formula": "Average(time from incident occurrence to detection) across all corridors",
+      "vsom:unit": "hours",
+      "vsom:baselineValue": 18,
+      "vsom:targetValue": 2,
+      "vsom:dataSource": "Incident + PredictivePattern entities",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-wwg-p1"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-wwg-p2-1",
+      "vsom:metricName": "Mean Time to Resolve (MTTR)",
+      "vsom:metricType": "Lagging",
+      "vsom:formula": "Average(time from detection to resolution) across all corridors",
+      "vsom:unit": "hours",
+      "vsom:baselineValue": 72,
+      "vsom:targetValue": 12,
+      "vsom:dataSource": "Incident + Escalation entities",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-wwg-p2"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-wwg-l1-1",
+      "vsom:metricName": "Validated Pattern Count",
+      "vsom:metricType": "Leading",
+      "vsom:formula": "Count of PredictivePattern entities with reliability > 0.6",
+      "vsom:unit": "count",
+      "vsom:baselineValue": 0,
+      "vsom:targetValue": 50,
+      "vsom:dataSource": "PredictivePattern entity library",
+      "vsom:frequency": "Quarterly",
+      "vsom:objectiveRef": "vsom:obj-wwg-l1"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-wwg-cross-1",
+      "vsom:metricName": "Supply Disruption → Customer Impact Ratio",
+      "vsom:metricType": "Lagging",
+      "vsom:formula": "Customers affected / Supply-side incidents",
+      "vsom:unit": "ratio",
+      "vsom:baselineValue": null,
+      "vsom:targetValue": 3.0,
+      "vsom:dataSource": "Cross-graph traversal: Incident → CascadeEffect → MarginImpact → SalesOrder",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-wwg-f2"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-wwg-cross-2",
+      "vsom:metricName": "Demand Change → Supply Exposure Ratio",
+      "vsom:metricType": "Lagging",
+      "vsom:formula": "Unallocated stock value / Customer change events",
+      "vsom:unit": "GBP",
+      "vsom:baselineValue": null,
+      "vsom:targetValue": 5000,
+      "vsom:dataSource": "CustomerChange → StockAllocation → Shipment traversal",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-wwg-f4"
+    }
+  ],
+
+  "bsc:balancedScorecard": {
+    "@type": "bsc:BalancedScorecard",
+    "@id": "bsc:scorecard-wwg",
+    "bsc:perspectives": [
+      {
+        "@type": "bsc:BSCPerspective",
+        "bsc:perspectiveName": "Financial",
+        "bsc:perspectiveWeight": 0.30,
+        "bsc:perspectiveOwnedBy": "rrr:func-wwg-finance-analyst",
+        "bsc:objectives": ["vsom:obj-wwg-f1", "vsom:obj-wwg-f2", "vsom:obj-wwg-f3", "vsom:obj-wwg-f4", "vsom:obj-wwg-f5", "vsom:obj-wwg-f6"]
+      },
+      {
+        "@type": "bsc:BSCPerspective",
+        "bsc:perspectiveName": "Customer",
+        "bsc:perspectiveWeight": 0.25,
+        "bsc:perspectiveOwnedBy": "rrr:func-wwg-sales-account-mgr",
+        "bsc:objectives": ["vsom:obj-wwg-c1", "vsom:obj-wwg-c2", "vsom:obj-wwg-c3", "vsom:obj-wwg-c4"]
+      },
+      {
+        "@type": "bsc:BSCPerspective",
+        "bsc:perspectiveName": "InternalProcess",
+        "bsc:perspectiveWeight": 0.25,
+        "bsc:perspectiveOwnedBy": "rrr:func-wwg-logistics-coord",
+        "bsc:objectives": ["vsom:obj-wwg-p1", "vsom:obj-wwg-p2", "vsom:obj-wwg-p3", "vsom:obj-wwg-p4", "vsom:obj-wwg-p5"]
+      },
+      {
+        "@type": "bsc:BSCPerspective",
+        "bsc:perspectiveName": "LearningGrowth",
+        "bsc:perspectiveWeight": 0.20,
+        "bsc:perspectiveOwnedBy": "rrr:func-wwg-logistics-coord",
+        "bsc:objectives": ["vsom:obj-wwg-l1", "vsom:obj-wwg-l2", "vsom:obj-wwg-l3", "vsom:obj-wwg-l4"]
+      }
+    ]
+  },
+
+  "bsc:strategyMap": {
+    "@type": "bsc:StrategyMap",
+    "@id": "bsc:strategy-map-wwg",
+    "bsc:causalLinks": [
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-wwg-1",
+        "bsc:fromObjective": "vsom:obj-wwg-l1",
+        "bsc:toObjective": "vsom:obj-wwg-p1",
+        "bsc:hypothesis": "If we build a library of 50+ validated predictive patterns (L&G), then we will detect disruptions in 2 hours instead of 18 (Internal Process), because pattern-based early warning catches signals before they become incidents.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-wwg-2",
+        "bsc:fromObjective": "vsom:obj-wwg-l2",
+        "bsc:toObjective": "vsom:obj-wwg-p1",
+        "bsc:hypothesis": "If we test 40+ hypotheses per quarter (L&G), then our pattern library stays current and MTTD stays low (Internal Process), because untested patterns decay in reliability.",
+        "bsc:confidence": "Medium"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-wwg-3",
+        "bsc:fromObjective": "vsom:obj-wwg-l3",
+        "bsc:toObjective": "vsom:obj-wwg-p2",
+        "bsc:hypothesis": "If we capture lessons from every incident (L&G), then our resolution playbooks improve and MTTR reduces (Internal Process), because each lesson refines the response protocol.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-wwg-4",
+        "bsc:fromObjective": "vsom:obj-wwg-l4",
+        "bsc:toObjective": "vsom:obj-wwg-p4",
+        "bsc:hypothesis": "If we forecast demand accurately (L&G), then stock allocation lead time drops (Internal Process), because we can pre-position stock before orders arrive.",
+        "bsc:confidence": "Medium"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-wwg-5",
+        "bsc:fromObjective": "vsom:obj-wwg-p1",
+        "bsc:toObjective": "vsom:obj-wwg-c2",
+        "bsc:hypothesis": "If we detect disruptions in 2 hours (Internal Process), then we can notify customers proactively before they discover the impact (Customer), because early detection creates the window for proactive communication.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-wwg-6",
+        "bsc:fromObjective": "vsom:obj-wwg-p2",
+        "bsc:toObjective": "vsom:obj-wwg-c4",
+        "bsc:hypothesis": "If we resolve disruptions in 12 hours (Internal Process), then we can offer substitution alternatives in 4 hours (Customer), because rapid resolution includes the substitution engine as a primary response.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-wwg-7",
+        "bsc:fromObjective": "vsom:obj-wwg-p3",
+        "bsc:toObjective": "vsom:obj-wwg-c3",
+        "bsc:hypothesis": "If document pre-flight pass rate reaches 100% (Internal Process), then shelf life at delivery is guaranteed (Customer), because compliance delays are the primary cause of shelf life erosion in transit.",
+        "bsc:confidence": "Medium"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-wwg-8",
+        "bsc:fromObjective": "vsom:obj-wwg-p4",
+        "bsc:toObjective": "vsom:obj-wwg-c1",
+        "bsc:hypothesis": "If stock allocation lead time drops to 4 hours (Internal Process), then OTIF rate reaches 97% (Customer), because fast allocation is the critical path to on-time dispatch.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-wwg-9",
+        "bsc:fromObjective": "vsom:obj-wwg-c1",
+        "bsc:toObjective": "vsom:obj-wwg-f1",
+        "bsc:hypothesis": "If OTIF reaches 97% (Customer), then margin realisation improves to 88% (Financial), because on-time delivery eliminates credit notes, emergency dispatch premiums, and customer penalties.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-wwg-10",
+        "bsc:fromObjective": "vsom:obj-wwg-c2",
+        "bsc:toObjective": "vsom:obj-wwg-f2",
+        "bsc:hypothesis": "If proactive notification reaches 90% (Customer), then disruption cost drops to GBP 180K (Financial), because proactive communication enables cheaper mitigation than reactive firefighting.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-wwg-11",
+        "bsc:fromObjective": "vsom:obj-wwg-c3",
+        "bsc:toObjective": "vsom:obj-wwg-f5",
+        "bsc:hypothesis": "If shelf life compliance reaches 100% (Customer), then spoilage drops to 1% (Financial), because shelf life failures are the primary driver of write-offs.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-wwg-12",
+        "bsc:fromObjective": "vsom:obj-wwg-p5",
+        "bsc:toObjective": "vsom:obj-wwg-f3",
+        "bsc:hypothesis": "If dispatch consolidation reaches 80% (Internal Process), then storage cost per unit drops to GBP 1.65 (Financial), because consolidated dispatches reduce average dwell time.",
+        "bsc:confidence": "Medium"
+      }
+    ]
+  },
+
+  "pfc:version": "1.0.0",
+  "pfc:status": "draft",
+  "pfc:createdDate": "2026-03-01",
+  "pfc:generatedBy": "pfc-vsom (manual execution)",
+  "pfc:sourceDocuments": [
+    "Foundation/ORG-CONTEXT-ONT/instance-data/wwg/01-org-context-wwg.jsonld",
+    "PBS/PFI-WWG/STRATEGY/VSOM-E2E-Supply-Demand-Graph.md",
+    "PBS/PFI-WWG/STRATEGY/VSOM-LSC-UK-Importer-Adoption.md",
+    "PBS/PFI-WWG/STRATEGY/VSOM-SOP-Customer-Fulfillment-Risk.md",
+    "VE-Series/KPI-ONT/instance-data/wwg/wwg-kpi-bsc-instance-v1.0.0.jsonld"
+  ],
+  "pfc:vsomSummary": {
+    "vision": "Margin-intelligent, graph-driven food import business",
+    "visionHorizon": "5 years",
+    "strategies": 6,
+    "strategyTypes": ["transformation", "operational_excellence(×3)", "innovation", "customer_centricity"],
+    "objectives": 20,
+    "objectivesByPerspective": { "Financial": 6, "Customer": 4, "InternalProcess": 5, "LearningGrowth": 4 },
+    "metrics": 10,
+    "metricsLeading": 4,
+    "metricsLagging": 6,
+    "bscCausalChains": 12,
+    "saGrounding": { "MACRO": false, "INDUSTRY": false },
+    "note": "MACRO and INDUSTRY analysis not yet available. VSOM formulated from existing strategy documents. Recommend running pfc-macro-analysis and pfc-industry-analysis to strengthen analytical grounding."
+  }
+}

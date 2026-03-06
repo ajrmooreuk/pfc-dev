@@ -1,0 +1,474 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform-foundation.io/ontology/v1/",
+    "emc": "https://platform-foundation.io/ontology/v1/emc/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "pf:OntologySchema",
+  "@id": "pf:EMC-ONT-v1.0.0",
+  "name": "Enterprise Model Composition Ontology",
+  "version": "1.0.0",
+  "dateCreated": "2026-02-02",
+  "description": "Defines how to compose enterprise models by selecting and connecting ontologies based on PFC/PFI context, product scope, ORG-Context (client), and requirement categories. Acts as the 'wiring diagram' for building tech-agnostic data and information models.",
+  "conformsTo": "pf:OAA-ONT-v5.0",
+  "purpose": "Enable high-level scoping of requirements to automatically determine which ontologies to connect for a given enterprise model configuration",
+
+  "scopingDimensions": {
+    "@type": "emc:ScopingFramework",
+    "description": "Four dimensions that determine ontology composition",
+    "dimensions": [
+      {
+        "@id": "emc:dim:context-level",
+        "name": "Context Level",
+        "description": "PFC (Platform Foundation Core) vs PFI (Platform Foundation Instance)",
+        "values": [
+          {"code": "PFC", "name": "Platform Foundation Core", "description": "Core ontology schemas and templates"},
+          {"code": "PFI", "name": "Platform Foundation Instance", "description": "Product/client-specific implementations"}
+        ],
+        "determines": ["Which ontology layer to access", "Template vs Instance data"]
+      },
+      {
+        "@id": "emc:dim:product-context",
+        "name": "Product Context",
+        "description": "Specific product or solution being modeled",
+        "examples": ["BAIV-AIV", "Custom-Product"],
+        "determines": ["Product-specific ontology instances", "Domain customizations"]
+      },
+      {
+        "@id": "emc:dim:org-context",
+        "name": "Organization Context",
+        "description": "Client's organizational profile and maturity",
+        "attributes": ["orgSize", "orgMaturity", "industryVertical", "productPortfolio", "governanceModel"],
+        "determines": ["Role applicability", "Process complexity", "Maturity-appropriate ontologies"]
+      },
+      {
+        "@id": "emc:dim:requirement-scope",
+        "name": "Requirement Scope",
+        "description": "Category of requirements being addressed",
+        "determines": ["Which ontology series to activate", "Dependency chain"]
+      }
+    ]
+  },
+
+  "requirementCategories": {
+    "@type": "emc:RequirementTaxonomy",
+    "description": "High-level requirement categories that map to ontology compositions",
+    "categories": [
+      {
+        "@id": "emc:req:strategic-planning",
+        "code": "STRATEGIC",
+        "name": "Strategic Planning & Alignment",
+        "description": "Vision, strategy, objectives, and organizational alignment",
+        "useCases": ["Corporate strategy", "OKR planning", "KPI frameworks", "Strategic roadmaps"],
+        "ontologyComposition": {
+          "required": ["pf:ORG-ONT", "pf:VE-VSOM-ONT", "pf:VE-OKR-ONT"],
+          "recommended": ["pf:VE-KPI-ONT", "pf:VE-RRR-ONT"],
+          "optional": ["pf:ORG-MAT-ONT"]
+        }
+      },
+      {
+        "@id": "emc:req:product-development",
+        "code": "PRODUCT",
+        "name": "Product Development & Go-to-Market",
+        "description": "Value proposition, product-market fit, feature development",
+        "useCases": ["Product strategy", "Feature prioritization", "Market validation", "Launch planning"],
+        "ontologyComposition": {
+          "required": ["pf:VE-VP-ONT", "pf:VE-PMF-ONT", "pf:PE-EFS-ONT"],
+          "recommended": ["pf:VE-RRR-ONT", "pf:CA-ONT", "pf:CL-ONT"],
+          "optional": ["pf:GA-ONT"]
+        }
+      },
+      {
+        "@id": "emc:req:project-management",
+        "code": "PPM",
+        "name": "Portfolio, Program & Project Management",
+        "description": "Project execution, resource management, delivery tracking",
+        "useCases": ["Portfolio prioritization", "Program governance", "Project planning", "Agile delivery"],
+        "ontologyComposition": {
+          "required": ["pf:PE-PPM-ONT", "pf:PE-EFS-ONT", "pf:PE-Process-Engr-ONT"],
+          "recommended": ["pf:VE-RRR-ONT", "pf:VE-OKR-ONT"],
+          "optional": ["pf:VE-KPI-ONT"]
+        }
+      },
+      {
+        "@id": "emc:req:competitive-intelligence",
+        "code": "COMPETITIVE",
+        "name": "Competitive Intelligence & Analysis",
+        "description": "Market landscape, competitor analysis, gap identification",
+        "useCases": ["Market research", "Competitive positioning", "SWOT analysis", "Opportunity identification"],
+        "ontologyComposition": {
+          "required": ["pf:CL-ONT", "pf:CA-ONT", "pf:GA-ONT"],
+          "recommended": ["pf:VE-VP-ONT"],
+          "optional": ["pf:VE-PMF-ONT"]
+        }
+      },
+      {
+        "@id": "emc:req:organization-design",
+        "code": "ORG-DESIGN",
+        "name": "Organization Design & Governance",
+        "description": "Roles, responsibilities, RACI, RBAC, organizational structure",
+        "useCases": ["Role definition", "RACI matrices", "Access control", "Team structure"],
+        "ontologyComposition": {
+          "required": ["pf:ORG-ONT", "pf:ORG-MAT-ONT", "pf:VE-RRR-ONT"],
+          "recommended": ["pf:VE-VSOM-ONT"],
+          "optional": ["pf:ORG-CONTEXT-ONT"]
+        }
+      },
+      {
+        "@id": "emc:req:process-engineering",
+        "code": "PROCESS",
+        "name": "Process Engineering & Automation",
+        "description": "Process design, AI augmentation, workflow orchestration",
+        "useCases": ["Process optimization", "AI agent design", "Workflow automation", "Value chain analysis"],
+        "ontologyComposition": {
+          "required": ["pf:PE-Process-Engr-ONT"],
+          "recommended": ["pf:PE-PPM-ONT", "pf:VE-RRR-ONT"],
+          "optional": ["pf:VE-KPI-ONT"]
+        }
+      },
+      {
+        "@id": "emc:req:full-enterprise",
+        "code": "ENTERPRISE",
+        "name": "Full Enterprise Model",
+        "description": "Complete enterprise architecture with all ontology series",
+        "useCases": ["Digital transformation", "Enterprise architecture", "Platform development"],
+        "ontologyComposition": {
+          "required": ["pf:ORG-ONT", "pf:ORG-CONTEXT-ONT", "pf:VE-VSOM-ONT", "pf:VE-OKR-ONT", "pf:VE-VP-ONT", "pf:VE-PMF-ONT", "pf:VE-RRR-ONT", "pf:PE-Process-Engr-ONT", "pf:PE-PPM-ONT", "pf:PE-EFS-ONT"],
+          "recommended": ["pf:CL-ONT", "pf:CA-ONT", "pf:GA-ONT", "pf:ORG-MAT-ONT"],
+          "optional": ["Domain-specific ontologies"]
+        }
+      },
+      {
+        "@id": "emc:req:agentic-build",
+        "code": "AGENTIC",
+        "name": "Agentic AI Solution Build",
+        "description": "AI-augmented solutions using ontologies as tech-agnostic layer",
+        "useCases": ["AI agent development", "Ontology-driven apps", "Graph-based solutions"],
+        "ontologyComposition": {
+          "required": ["pf:PE-Process-Engr-ONT", "pf:PE-EFS-ONT", "pf:VE-RRR-ONT"],
+          "recommended": ["pf:VE-VP-ONT", "pf:PE-PPM-ONT"],
+          "optional": ["All VE-Series for context"],
+          "specialRequirements": ["AI Agent definitions", "Process orchestration patterns", "Graph composition rules"]
+        }
+      }
+    ]
+  },
+
+  "ontologyRegistry": {
+    "@type": "emc:OntologyRegistry",
+    "description": "Complete registry of available ontologies with metadata",
+    "series": [
+      {
+        "@id": "emc:series:foundation",
+        "name": "Foundation Layer",
+        "description": "Core organizational entities and context",
+        "ontologies": [
+          {
+            "@id": "pf:ORG-ONT",
+            "name": "Organization Foundation",
+            "version": "2.1.0",
+            "path": "pfc-ontologies/ORG-ONT/org-ontology-v2.1.0-oaa-v5.json",
+            "status": "Production",
+            "dependencies": []
+          },
+          {
+            "@id": "pf:ORG-CONTEXT-ONT",
+            "name": "Organization Context Hub",
+            "version": "1.0.1",
+            "path": "pfc-ontologies/ORG-CONTEXT/org-context-ontology-v1.0.1.json",
+            "status": "Production",
+            "dependencies": ["pf:ORG-ONT"]
+          },
+          {
+            "@id": "pf:ORG-MAT-ONT",
+            "name": "Organization Maturity",
+            "version": "1.0.0",
+            "path": "pfc-ontologies/ORG-CONTEXT/ORG-MAT-ONT/org-maturity-v1.0.0-oaa-v5.json",
+            "status": "Production",
+            "dependencies": ["pf:ORG-ONT"]
+          }
+        ]
+      },
+      {
+        "@id": "emc:series:ve",
+        "name": "VE-Series (Value Engineering)",
+        "description": "Strategic value and role definitions",
+        "ontologies": [
+          {
+            "@id": "pf:VE-VSOM-ONT",
+            "name": "Vision-Strategy-Objectives-Metrics",
+            "version": "2.1.0",
+            "path": "pfc-ontologies/VE-Series-ONT/VE-VSOM-ONT/vsom-ontology-v2.1.0-oaa-v5.json",
+            "status": "Production",
+            "dependencies": ["pf:ORG-ONT"]
+          },
+          {
+            "@id": "pf:VE-OKR-ONT",
+            "name": "Objectives & Key Results",
+            "version": "1.0.0",
+            "path": "pfc-ontologies/VE-Series-ONT/VE-OKR-ONT/PFC-ONT-OKR-v1_0_0.jsonld",
+            "status": "Partial",
+            "dependencies": ["pf:VE-VSOM-ONT"]
+          },
+          {
+            "@id": "pf:VE-KPI-ONT",
+            "name": "Key Performance Indicators",
+            "version": "Planned",
+            "status": "Placeholder",
+            "dependencies": ["pf:VE-OKR-ONT"]
+          },
+          {
+            "@id": "pf:VE-VP-ONT",
+            "name": "Value Proposition",
+            "version": "1.2.0",
+            "path": "pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-ontology-v1.2.0-oaa-v5.jsonld",
+            "status": "Production",
+            "dependencies": ["pf:VE-VSOM-ONT", "pf:VE-RRR-ONT"]
+          },
+          {
+            "@id": "pf:VE-PMF-ONT",
+            "name": "Product-Market Fit",
+            "version": "Draft",
+            "status": "Documentation",
+            "dependencies": ["pf:VE-VP-ONT"]
+          },
+          {
+            "@id": "pf:VE-RRR-ONT",
+            "name": "Roles-RACI-RBAC",
+            "version": "3.1.0",
+            "path": "pfc-ontologies/VE-Series-ONT/VE-RRR-ONT/pf-RRR-ONT-v3.1.0.jsonld",
+            "status": "Production",
+            "dependencies": ["pf:ORG-ONT"],
+            "dataFiles": [
+              "RRR-DATA-csuite-roles-v2.0.0.jsonld",
+              "RRR-DATA-architectural-roles-v1.0.0.jsonld"
+            ]
+          }
+        ]
+      },
+      {
+        "@id": "emc:series:pe",
+        "name": "PE-Series (Process Engineering)",
+        "description": "Process, project, and execution management",
+        "ontologies": [
+          {
+            "@id": "pf:PE-Process-Engr-ONT",
+            "name": "Process Engineering",
+            "version": "2.0.0",
+            "path": "pfc-ontologies/PE-Series-ONT/PE-Process-Engr-ONT/process-engineering-v2.0.0-oaa-v5.json",
+            "status": "Production",
+            "dependencies": ["pf:ORG-ONT"],
+            "aiAgentSupport": true
+          },
+          {
+            "@id": "pf:PE-PPM-ONT",
+            "name": "Portfolio-Programme-Project Management",
+            "version": "3.0.0",
+            "path": "pfc-ontologies/PE-Series-ONT/PE-PPM-ONT/ppm-module-v3.0.0-oaa-v5.json",
+            "status": "Production",
+            "dependencies": ["pf:PE-Process-Engr-ONT"],
+            "features": ["PBS/WBS structures", "Portfolio prioritization", "Programme governance"]
+          },
+          {
+            "@id": "pf:PE-EFS-ONT",
+            "name": "Epics-Features-Stories",
+            "version": "1.0.0",
+            "path": "pfc-ontologies/PE-Series-ONT/PE-EFS/efs-ontology.jsonld",
+            "status": "Near-Production",
+            "dependencies": ["pf:VE-VP-ONT", "pf:VE-PMF-ONT"],
+            "lineageMappings": ["Pains→Epics", "Gains→Features", "Benefits→Stories"]
+          }
+        ]
+      },
+      {
+        "@id": "emc:series:competitive",
+        "name": "Competitive Analysis Layer",
+        "description": "Market and competitive intelligence",
+        "ontologies": [
+          {
+            "@id": "pf:CL-ONT",
+            "name": "Competitive Landscape",
+            "version": "1.0.0",
+            "path": "pfc-ontologies/CL-ONT/competitive-landscape-v1.0.0-oaa-v5.json",
+            "status": "Production",
+            "dependencies": ["pf:ORG-ONT"]
+          },
+          {
+            "@id": "pf:CA-ONT",
+            "name": "Competitive Analysis",
+            "version": "2.1.0",
+            "path": "pfc-ontologies/CA-ONT/competitive-analysis-v2.1.0-oaa-v5.json",
+            "status": "Production",
+            "dependencies": ["pf:CL-ONT"]
+          },
+          {
+            "@id": "pf:GA-ONT",
+            "name": "Gap Analysis",
+            "version": "1.0.0",
+            "path": "pfc-ontologies/GA-ONT/gap-analysis-v1.0.0-oaa-v5.json",
+            "status": "Production",
+            "dependencies": ["pf:CA-ONT"]
+          }
+        ]
+      }
+    ]
+  },
+
+  "compositionRules": {
+    "@type": "emc:CompositionRulesEngine",
+    "description": "Rules for determining ontology composition based on scoping inputs",
+    "rules": [
+      {
+        "@id": "emc:rule:foundation-always",
+        "name": "Foundation Always Required",
+        "condition": "Any enterprise model",
+        "action": "Include pf:ORG-ONT as base",
+        "priority": 1
+      },
+      {
+        "@id": "emc:rule:dependency-chain",
+        "name": "Dependency Chain Resolution",
+        "condition": "When ontology X is required",
+        "action": "Include all ontologies in X.dependencies",
+        "priority": 2
+      },
+      {
+        "@id": "emc:rule:maturity-filter",
+        "name": "Maturity-Based Filtering",
+        "condition": "orgContext.maturityLevel < 3",
+        "action": "Exclude advanced ontologies (KPI-ONT, GA-ONT)",
+        "priority": 3
+      },
+      {
+        "@id": "emc:rule:pfi-instance",
+        "name": "PFI Instance Data Loading",
+        "condition": "contextLevel = PFI AND productContext specified",
+        "action": "Load product-specific instance data files",
+        "priority": 4
+      },
+      {
+        "@id": "emc:rule:agentic-requirements",
+        "name": "Agentic Build Requirements",
+        "condition": "requirementScope = AGENTIC",
+        "action": "Include PE-Process-Engr-ONT with AI agent definitions",
+        "priority": 5
+      }
+    ]
+  },
+
+  "pfiInstanceConfigurations": {
+    "@type": "emc:InstanceConfigurationRegistry",
+    "description": "Pre-defined configurations for PFI product instances",
+    "instances": [
+      {
+        "@id": "emc:instance:baiv-aiv",
+        "name": "BAIV AI Visibility",
+        "productCode": "BAIV-AIV",
+        "description": "AI Visibility and Brand Authority platform for B2B marketing",
+        "basePath": "pfi-BAIV-AIV-ONT/",
+        "ontologyConfiguration": {
+          "contextLevel": "PFI",
+          "requirementScopes": ["PRODUCT", "COMPETITIVE", "ORG-DESIGN"],
+          "requiredOntologies": [
+            "pf:VE-VP-ONT",
+            "pf:VE-RRR-ONT",
+            "pf:PE-EFS-ONT",
+            "pf:CA-ONT"
+          ],
+          "instanceDataFiles": [
+            {"ontology": "pf:VE-VP-ONT", "file": "baiv-ai-visibility-vp-instance-v1.0.0.jsonld"},
+            {"ontology": "pf:VE-RRR-ONT", "file": "RRR-DATA-BAIV-AIV-roles-v1.0.0.jsonld"},
+            {"ontology": "pf:PE-EFS-ONT", "file": "EFS-DATA-BAIV-AIV-security-v1.0.0.jsonld"},
+            {"ontology": "pf:CA-ONT", "file": "AIV-Competitive-ONT/ai-visibility-competitive-analysis-ontology.json"}
+          ]
+        },
+        "orgContextFiltering": {
+          "clientPerspectives": ["PlatformOperator", "AgencyPartner", "DirectClient", "LimitedAccess"],
+          "roleDataset": "RRR-DATA-csuite-roles-v2.0.0.jsonld",
+          "filterPath": "L4ApplicationRoleInstance_BAIV_AIV"
+        }
+      }
+    ]
+  },
+
+  "graphCompositionPatterns": {
+    "@type": "emc:GraphCompositionPatterns",
+    "description": "Patterns for composing ontologies into unified graph models",
+    "patterns": [
+      {
+        "@id": "emc:pattern:hub-spoke",
+        "name": "Hub-Spoke Pattern",
+        "description": "ORG-CONTEXT as central hub connecting domain ontologies",
+        "hub": "pf:ORG-CONTEXT-ONT",
+        "spokes": ["VE-Series", "PE-Series", "Competitive Layer"],
+        "useCase": "Full enterprise model with loose coupling"
+      },
+      {
+        "@id": "emc:pattern:lineage-chain",
+        "name": "Lineage Chain Pattern",
+        "description": "Sequential dependency from strategy to execution",
+        "chain": ["VSOM → OKR → VP → PMF → EFS"],
+        "useCase": "Strategy-to-execution traceability"
+      },
+      {
+        "@id": "emc:pattern:bridge-join",
+        "name": "Bridge Join Pattern",
+        "description": "Cross-ontology relationships via join points",
+        "joins": [
+          {"from": "VP.IdealCustomerProfile", "to": "RRR.Role", "via": "JP-VP-RRR-001"},
+          {"from": "EFS.Story", "to": "PPM.WorkPackage", "via": "JP-PE-001"},
+          {"from": "VSOM.Objective", "to": "OKR.Objective", "via": "JP-VE-001"}
+        ],
+        "useCase": "Cross-domain queries and reporting"
+      }
+    ]
+  },
+
+  "agenticBuildSupport": {
+    "@type": "emc:AgenticBuildFramework",
+    "description": "Support for AI-augmented solution builds using ontologies",
+    "capabilities": [
+      {
+        "@id": "emc:agentic:ontology-driven-agents",
+        "name": "Ontology-Driven AI Agents",
+        "description": "AI agents that use ontology schemas for context and reasoning",
+        "requiredOntologies": ["pf:PE-Process-Engr-ONT"],
+        "agentTypes": ["Discovery Agent", "Analysis Agent", "Orchestration Agent", "Validation Agent"]
+      },
+      {
+        "@id": "emc:agentic:graph-as-context",
+        "name": "Graph as Tech-Agnostic Layer",
+        "description": "Use ontology graph as data/information model independent of implementation",
+        "benefits": [
+          "Database-agnostic data modeling",
+          "Cross-system interoperability",
+          "Semantic reasoning support",
+          "Version-controlled schema evolution"
+        ]
+      },
+      {
+        "@id": "emc:agentic:ppm-integration",
+        "name": "PPM-Agentic Integration",
+        "description": "Connect portfolio priorities to agentic build pipelines",
+        "flow": "Portfolio → Programme → Project → EFS → AI Agent Tasks",
+        "ontologyChain": ["pf:PE-PPM-ONT", "pf:PE-EFS-ONT", "pf:PE-Process-Engr-ONT"]
+      }
+    ]
+  },
+
+  "validation": {
+    "conformsTo": "pf:OAA-ONT-v5.0",
+    "entityCount": 8,
+    "relationshipCount": 15,
+    "businessRulesCount": 5,
+    "oaaGates": {
+      "G1-EntityDescriptions": "PASS",
+      "G2-Cardinality": "PASS",
+      "G3-Connectivity": "PASS",
+      "G4-BusinessRules": "PASS",
+      "G5-TestData": "PENDING - Requires instance configurations",
+      "G6-Registry": "PENDING - Registration required"
+    }
+  }
+}

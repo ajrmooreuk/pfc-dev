@@ -1,0 +1,399 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v5/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "vsom": "https://oaa-ontology.org/v5/vsom/"
+  },
+  "@id": "https://oaa-ontology.org/v5/vsom/schema",
+  "@type": "owl:Ontology",
+  "name": "VSOM Core Capability Ontology",
+  "alternateName": "Vision-Strategy-Objectives-Metrics Framework",
+  "description": "Comprehensive ontology for Vision, Strategy, Objectives, and Metrics framework integrated with W4M Core Capability and Business Framework. Business Impact is the Driver, Outcomes the Goal, and Value the Measure.",
+  "oaa:schemaVersion": "5.0.0",
+  "oaa:moduleVersion": "2.0.0",
+  "oaa:previousVersion": "1.0.0",
+  "oaa:domain": "Strategic Management, Business Performance",
+  "oaa:status": "Production",
+  "dateCreated": "2025-11-14",
+  "dateModified": "2026-02-01",
+  "creator": {
+    "@type": "Organization",
+    "name": "W4M Core Capability Framework"
+  },
+
+  "entities": [
+    {
+      "@id": "vsom:Organization",
+      "@type": "rdfs:Class",
+      "name": "Organization",
+      "rdfs:subClassOf": "schema:Organization",
+      "description": "Business entity implementing VSOM framework - extends schema.org/Organization with maturity, size, and complexity attributes.",
+      "oaa:properties": [
+        {"name": "organizationId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier", "pattern": "ORG-{UUID}"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "legalName", "type": "xsd:string", "required": false, "schemaOrgMapping": "schema:legalName"},
+        {"name": "foundingDate", "type": "xsd:date", "required": false, "schemaOrgMapping": "schema:foundingDate"},
+        {"name": "numberOfEmployees", "type": "xsd:integer", "required": false, "schemaOrgMapping": "schema:numberOfEmployees"},
+        {"name": "maturityLevel", "type": "xsd:string", "required": false, "enum": ["Initial", "Repeatable", "Defined", "Managed", "Optimizing"]},
+        {"name": "organizationSize", "type": "xsd:string", "required": false, "enum": ["Micro", "Small", "Medium", "Large", "Enterprise"]},
+        {"name": "complexityLevel", "type": "xsd:string", "required": false, "enum": ["Simple", "Moderate", "Complex", "Very Complex"]},
+        {"name": "roles", "type": "xsd:string", "required": false, "enum": ["Customer", "Supplier", "Influencer", "Stakeholder", "Partner"]}
+      ]
+    },
+    {
+      "@id": "vsom:VSOMFramework",
+      "@type": "rdfs:Class",
+      "name": "VSOMFramework",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Complete Vision-Strategy-Objectives-Metrics implementation framework. Driver is BusinessImpact, Goal is Outcomes, Measure is Value.",
+      "oaa:properties": [
+        {"name": "frameworkId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "description", "type": "xsd:string", "required": false, "schemaOrgMapping": "schema:description"},
+        {"name": "driver", "type": "xsd:string", "required": true, "default": "BusinessImpact"},
+        {"name": "goal", "type": "xsd:string", "required": true, "default": "Outcomes"},
+        {"name": "measure", "type": "xsd:string", "required": true, "default": "Value"}
+      ]
+    },
+    {
+      "@id": "vsom:VisionComponent",
+      "@type": "rdfs:Class",
+      "name": "VisionComponent",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Long-term aspirational direction aligned with organizational purpose. Time horizon typically 3-10 years.",
+      "oaa:properties": [
+        {"name": "visionId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "visionStatement", "type": "xsd:string", "required": true, "description": "Aspirational future state description"},
+        {"name": "coreValues", "type": "xsd:string", "required": false, "description": "Fundamental organizational beliefs"},
+        {"name": "visionHorizon", "type": "xsd:duration", "required": false, "description": "Time horizon for realization"},
+        {"name": "aspirationalDirection", "type": "xsd:string", "required": false, "description": "Strategic direction aspired to"},
+        {"name": "purposeAlignment", "type": "xsd:string", "required": false, "description": "Alignment with organizational purpose"}
+      ]
+    },
+    {
+      "@id": "vsom:StrategyComponent",
+      "@type": "rdfs:Class",
+      "name": "StrategyComponent",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "Multi-layer strategic approach: Corporate, Marketing, Operational, Digital. Time horizon typically 1-3 years.",
+      "oaa:properties": [
+        {"name": "strategyId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "strategyType", "type": "xsd:string", "required": true, "enum": ["Corporate", "Marketing", "Operational", "Digital", "AIVisibility", "Growth", "Innovation"]},
+        {"name": "strategicThrust", "type": "xsd:string", "required": false, "description": "Primary direction and focus"},
+        {"name": "competitiveAdvantage", "type": "xsd:string", "required": false, "description": "Sustainable competitive positioning"},
+        {"name": "resourceRequirements", "type": "xsd:decimal", "required": false, "description": "Budget allocation"},
+        {"name": "actionStatus", "type": "xsd:string", "required": false, "schemaOrgMapping": "schema:actionStatus"}
+      ]
+    },
+    {
+      "@id": "vsom:ObjectivesComponent",
+      "@type": "rdfs:Class",
+      "name": "ObjectivesComponent",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Specific, measurable, achievable, relevant, time-bound goals. Quarterly to annual time horizon.",
+      "oaa:properties": [
+        {"name": "objectiveId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "objectiveType", "type": "xsd:string", "required": true, "enum": ["Strategic", "Tactical", "Operational", "Financial", "Customer", "Learning", "Internal"]},
+        {"name": "targetValue", "type": "xsd:decimal", "required": true, "description": "Target measurement"},
+        {"name": "baselineValue", "type": "xsd:decimal", "required": false, "description": "Starting measurement"},
+        {"name": "deadline", "type": "xsd:date", "required": true, "description": "Target completion date"},
+        {"name": "owner", "type": "xsd:string", "required": false, "description": "Accountable person"},
+        {"name": "status", "type": "xsd:string", "required": true, "enum": ["NotStarted", "InProgress", "OnTrack", "AtRisk", "Blocked", "Completed", "Cancelled"]},
+        {"name": "priority", "type": "xsd:integer", "required": false, "description": "Priority ranking (1=highest)"}
+      ]
+    },
+    {
+      "@id": "vsom:MetricsComponent",
+      "@type": "rdfs:Class",
+      "name": "MetricsComponent",
+      "rdfs:subClassOf": "schema:PropertyValue",
+      "description": "KPIs, OKRs, and performance indicators measuring value delivery.",
+      "oaa:properties": [
+        {"name": "metricId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "value", "type": "xsd:decimal", "required": false, "schemaOrgMapping": "schema:value"},
+        {"name": "unitCode", "type": "xsd:string", "required": false, "schemaOrgMapping": "schema:unitCode"},
+        {"name": "metricType", "type": "xsd:string", "required": true, "enum": ["Leading", "Lagging", "Diagnostic", "Outcome", "Process", "Financial", "Customer", "Operational"]},
+        {"name": "measurementFrequency", "type": "xsd:duration", "required": false, "description": "How often measured"},
+        {"name": "thresholdCritical", "type": "xsd:decimal", "required": false},
+        {"name": "thresholdWarning", "type": "xsd:decimal", "required": false},
+        {"name": "thresholdTarget", "type": "xsd:decimal", "required": false},
+        {"name": "dataSource", "type": "xsd:string", "required": false, "description": "Source system for data"},
+        {"name": "businessImpact", "type": "xsd:string", "required": false, "enum": ["Critical", "High", "Medium", "Low"]}
+      ]
+    },
+    {
+      "@id": "vsom:Market",
+      "@type": "rdfs:Class",
+      "name": "Market",
+      "rdfs:subClassOf": "schema:Place",
+      "description": "Market classification - vertical or horizontal orientation.",
+      "oaa:properties": [
+        {"name": "marketId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "marketType", "type": "xsd:string", "required": true, "enum": ["Vertical", "Horizontal"]},
+        {"name": "industryCode", "type": "xsd:string", "required": false, "description": "ISO industry classification"},
+        {"name": "marketSize", "type": "xsd:decimal", "required": false, "description": "Total addressable market"},
+        {"name": "growthRate", "type": "xsd:decimal", "required": false, "description": "Annual growth rate %"},
+        {"name": "maturityStage", "type": "xsd:string", "required": false, "enum": ["Emerging", "Growing", "Mature", "Declining"]}
+      ]
+    },
+    {
+      "@id": "vsom:BusinessModel",
+      "@type": "rdfs:Class",
+      "name": "BusinessModel",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "Adoptable business model framework applicable to client and market contexts.",
+      "oaa:properties": [
+        {"name": "modelId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "description", "type": "xsd:string", "required": false, "schemaOrgMapping": "schema:description"},
+        {"name": "modelType", "type": "xsd:string", "required": true, "description": "Business model pattern classification"},
+        {"name": "valueProposition", "type": "xsd:string", "required": false, "description": "Core value delivery mechanism"},
+        {"name": "revenueStreams", "type": "xsd:string", "required": false, "description": "Revenue generation methods"}
+      ]
+    },
+    {
+      "@id": "vsom:BusinessImpact",
+      "@type": "rdfs:Class",
+      "name": "BusinessImpact",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Driver of all VSOM activities - measures business effect. Role: Primary Driver.",
+      "oaa:properties": [
+        {"name": "impactId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "impactType", "type": "xsd:string", "required": true, "enum": ["Revenue", "Cost", "Risk", "Capability", "Market", "Customer", "Operational"]},
+        {"name": "impactMagnitude", "type": "xsd:decimal", "required": false, "description": "Quantified impact measurement"},
+        {"name": "impactTimeframe", "type": "xsd:duration", "required": false, "description": "Time to realize impact"},
+        {"name": "confidenceLevel", "type": "xsd:integer", "required": false, "description": "Confidence in estimate (0-100%)"}
+      ]
+    },
+    {
+      "@id": "vsom:Outcome",
+      "@type": "rdfs:Class",
+      "name": "Outcome",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Goal of VSOM framework - desired end state. Role: Primary Goal.",
+      "oaa:properties": [
+        {"name": "outcomeId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "outcomeType", "type": "xsd:string", "required": true, "enum": ["Financial", "Customer", "Operational", "Strategic", "Capability", "Market"]},
+        {"name": "targetState", "type": "xsd:string", "required": true, "description": "Desired end state description"},
+        {"name": "successCriteria", "type": "xsd:string", "required": false, "description": "Criteria for success"},
+        {"name": "measurableIndicators", "type": "xsd:string", "required": false, "description": "Quantifiable success indicators"}
+      ]
+    },
+    {
+      "@id": "vsom:ValueMeasure",
+      "@type": "rdfs:Class",
+      "name": "ValueMeasure",
+      "rdfs:subClassOf": "schema:PropertyValue",
+      "description": "Measurement of value delivered through VSOM implementation. Role: Primary Measure.",
+      "oaa:properties": [
+        {"name": "measureId", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "value", "type": "xsd:decimal", "required": false, "schemaOrgMapping": "schema:value"},
+        {"name": "valueType", "type": "xsd:string", "required": true, "enum": ["Financial", "Strategic", "Operational", "Customer", "Innovation", "Capability"]},
+        {"name": "roi", "type": "xsd:decimal", "required": false, "description": "Return on investment %"}
+      ]
+    }
+  ],
+
+  "relationships": [
+    {
+      "@id": "vsom:implementsVSOM",
+      "@type": "owl:ObjectProperty",
+      "name": "Implements VSOM",
+      "description": "Organization implements VSOM framework",
+      "domainIncludes": ["vsom:Organization"],
+      "rangeIncludes": ["vsom:VSOMFramework"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "vsom:hasVision",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Vision",
+      "description": "Framework has vision component",
+      "domainIncludes": ["vsom:VSOMFramework"],
+      "rangeIncludes": ["vsom:VisionComponent"],
+      "oaa:cardinality": {"min": 1, "max": 1}
+    },
+    {
+      "@id": "vsom:hasStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Strategy",
+      "description": "Framework has strategy components",
+      "domainIncludes": ["vsom:VSOMFramework"],
+      "rangeIncludes": ["vsom:StrategyComponent"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "vsom:hasObjective",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Objective",
+      "description": "Framework has objectives",
+      "domainIncludes": ["vsom:VSOMFramework"],
+      "rangeIncludes": ["vsom:ObjectivesComponent"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "vsom:hasMetric",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Metric",
+      "description": "Framework has metrics",
+      "domainIncludes": ["vsom:VSOMFramework"],
+      "rangeIncludes": ["vsom:MetricsComponent"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "vsom:drivesOutcome",
+      "@type": "owl:ObjectProperty",
+      "name": "Drives Outcome",
+      "description": "Business impact drives outcomes",
+      "domainIncludes": ["vsom:BusinessImpact"],
+      "rangeIncludes": ["vsom:Outcome"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "vsom:measuresValue",
+      "@type": "owl:ObjectProperty",
+      "name": "Measures Value",
+      "description": "Outcomes are measured by value",
+      "domainIncludes": ["vsom:Outcome"],
+      "rangeIncludes": ["vsom:ValueMeasure"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "vsom:operatesInMarket",
+      "@type": "owl:ObjectProperty",
+      "name": "Operates In Market",
+      "description": "Organization operates in market",
+      "domainIncludes": ["vsom:Organization"],
+      "rangeIncludes": ["vsom:Market"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "vsom:adoptsBusinessModel",
+      "@type": "owl:ObjectProperty",
+      "name": "Adopts Business Model",
+      "description": "Organization adopts business model",
+      "domainIncludes": ["vsom:Organization"],
+      "rangeIncludes": ["vsom:BusinessModel"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "vsom:alignedToStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "Aligned To Strategy",
+      "description": "Objective aligned to strategy",
+      "domainIncludes": ["vsom:ObjectivesComponent"],
+      "rangeIncludes": ["vsom:StrategyComponent"],
+      "oaa:cardinality": {"min": 1, "max": 1}
+    },
+    {
+      "@id": "vsom:trackedByMetric",
+      "@type": "owl:ObjectProperty",
+      "name": "Tracked By Metric",
+      "description": "Objective tracked by metrics",
+      "domainIncludes": ["vsom:ObjectivesComponent"],
+      "rangeIncludes": ["vsom:MetricsComponent"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "vsom:derivesFromVision",
+      "@type": "owl:ObjectProperty",
+      "name": "Derives From Vision",
+      "description": "Strategy derives from vision",
+      "domainIncludes": ["vsom:StrategyComponent"],
+      "rangeIncludes": ["vsom:VisionComponent"],
+      "oaa:cardinality": {"min": 1, "max": 1}
+    }
+  ],
+
+  "businessRules": [
+    {
+      "@id": "vsom:BR-001",
+      "name": "VSOM Framework Completeness",
+      "description": "A complete VSOM framework must have all four components",
+      "condition": "IF an Organization implements VSOMFramework",
+      "action": "THEN the framework MUST have at least one Vision, Strategy, Objective, and Metric component",
+      "severity": "error",
+      "appliesTo": ["vsom:VSOMFramework"]
+    },
+    {
+      "@id": "vsom:BR-002",
+      "name": "Objective Must Have Deadline",
+      "description": "All objectives must be time-bound",
+      "condition": "IF an ObjectivesComponent is created",
+      "action": "THEN deadline MUST be specified",
+      "severity": "error",
+      "appliesTo": ["vsom:ObjectivesComponent"]
+    },
+    {
+      "@id": "vsom:BR-003",
+      "name": "Metric Must Have Target",
+      "description": "Metrics must have target values for comparison",
+      "condition": "IF a MetricsComponent is created",
+      "action": "THEN thresholdTarget MUST be specified",
+      "severity": "warning",
+      "appliesTo": ["vsom:MetricsComponent"]
+    },
+    {
+      "@id": "vsom:BR-004",
+      "name": "Strategy Alignment",
+      "description": "Strategies must derive from vision",
+      "condition": "IF a StrategyComponent exists",
+      "action": "THEN it MUST have derivesFromVision relationship to VisionComponent",
+      "severity": "error",
+      "appliesTo": ["vsom:StrategyComponent"]
+    },
+    {
+      "@id": "vsom:BR-005",
+      "name": "Objective Tracking",
+      "description": "Objectives must be tracked by metrics",
+      "condition": "IF an ObjectivesComponent exists",
+      "action": "THEN it MUST have at least one trackedByMetric relationship",
+      "severity": "error",
+      "appliesTo": ["vsom:ObjectivesComponent"]
+    },
+    {
+      "@id": "vsom:BR-006",
+      "name": "Impact-Outcome-Value Chain",
+      "description": "Complete value chain must be established",
+      "condition": "IF BusinessImpact drives Outcome",
+      "action": "THEN Outcome MUST measure at least one ValueMeasure",
+      "severity": "warning",
+      "appliesTo": ["vsom:BusinessImpact", "vsom:Outcome", "vsom:ValueMeasure"]
+    },
+    {
+      "@id": "vsom:BR-007",
+      "name": "Organization Market Presence",
+      "description": "Organizations must operate in at least one market",
+      "condition": "IF an Organization implements VSOM",
+      "action": "THEN it MUST have at least one operatesInMarket relationship",
+      "severity": "warning",
+      "appliesTo": ["vsom:Organization", "vsom:Market"]
+    }
+  ],
+
+  "changeControl": {
+    "currentVersion": "2.0.0",
+    "oaaSchemaVersion": "5.0.0",
+    "lastModified": "2026-02-01",
+    "modifiedBy": "OAA v6.1.0 Migration",
+    "changeNotes": "Upgraded from legacy W4M format to OAA v5.0.0 JSON-LD compliance. Converted classes object to entities array, added proper relationships.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2025-11-14",
+        "notes": "Initial W4M VSOM ontology in legacy format",
+        "archivedPath": "archive/vsom-ontology-v1.0.0-legacy.json"
+      }
+    ]
+  }
+}

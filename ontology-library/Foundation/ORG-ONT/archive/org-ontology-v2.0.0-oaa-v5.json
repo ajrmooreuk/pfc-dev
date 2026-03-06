@@ -1,0 +1,247 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v5/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "org": "https://oaa-ontology.org/v5/org/"
+  },
+  "@id": "https://oaa-ontology.org/v5/org/schema",
+  "@type": "owl:Ontology",
+  "name": "Organization Ontology",
+  "description": "Core organization entity definition for identifying and managing organizations within the platform ecosystem. Provides foundational entity that all other ontologies reference.",
+  "oaa:schemaVersion": "5.0.0",
+  "oaa:moduleVersion": "2.0.0",
+  "oaa:previousVersion": "1.0.0",
+  "oaa:domain": "Organization Management",
+  "oaa:status": "Production",
+  "dateCreated": "2026-01-20",
+  "dateModified": "2026-02-01",
+  "creator": {
+    "@type": "Organization",
+    "name": "BAIV Platform Team"
+  },
+
+  "entities": [
+    {
+      "@id": "org:Organization",
+      "@type": "rdfs:Class",
+      "name": "Organization",
+      "rdfs:subClassOf": "schema:Organization",
+      "description": "Core organization entity representing any business or entity within the platform ecosystem. Maps directly to schema.org Organization.",
+      "oaa:properties": [
+        {
+          "name": "organizationId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for the organization",
+          "pattern": "org:[a-z0-9-]+",
+          "example": "org:foot-scientific"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name",
+          "description": "Organization display name"
+        },
+        {
+          "name": "legalName",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:legalName",
+          "description": "Official legal name if different from display name"
+        },
+        {
+          "name": "type",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Organization's relationship type to the platform",
+          "enum": ["PFI", "Agency", "Client", "Affiliate", "Partner", "Competitor"]
+        },
+        {
+          "name": "industry",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:industry",
+          "description": "Primary industry sector"
+        },
+        {
+          "name": "size",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Organization size classification",
+          "enum": ["Startup (1-50)", "SME (51-250)", "Mid-Market (251-1000)", "Enterprise (1000+)"]
+        },
+        {
+          "name": "website",
+          "type": "xsd:anyURI",
+          "required": false,
+          "schemaOrgMapping": "schema:url",
+          "description": "Primary website URL"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "default": "active",
+          "description": "Organization status in the platform",
+          "enum": ["active", "inactive", "archived"]
+        }
+      ]
+    },
+    {
+      "@id": "org:OrganizationContext",
+      "@type": "rdfs:Class",
+      "name": "OrganizationContext",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Rich context data associated with an organization including market positioning, strategic objectives, and operational details.",
+      "oaa:properties": [
+        {
+          "name": "contextId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for the context record"
+        },
+        {
+          "name": "marketPosition",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Organization's current market position"
+        },
+        {
+          "name": "strategicObjectives",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Key strategic objectives"
+        },
+        {
+          "name": "operationalNotes",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Operational context and notes"
+        }
+      ]
+    }
+  ],
+
+  "relationships": [
+    {
+      "@id": "org:hasContext",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Context",
+      "description": "Links organization to its rich context data containing market positioning and strategic information",
+      "domainIncludes": ["org:Organization"],
+      "rangeIncludes": ["org:OrganizationContext"],
+      "oaa:cardinality": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    {
+      "@id": "org:isClientOf",
+      "@type": "owl:ObjectProperty",
+      "name": "Is Client Of",
+      "description": "Organization is a client of another organization, typically representing an agency-client relationship",
+      "domainIncludes": ["org:Organization"],
+      "rangeIncludes": ["org:Organization"],
+      "oaa:cardinality": {
+        "min": 0,
+        "max": "*"
+      }
+    },
+    {
+      "@id": "org:isCompetitorOf",
+      "@type": "owl:ObjectProperty",
+      "name": "Is Competitor Of",
+      "description": "Organization competes with another organization in the same market space",
+      "domainIncludes": ["org:Organization"],
+      "rangeIncludes": ["org:Organization"],
+      "oaa:cardinality": {
+        "min": 0,
+        "max": "*"
+      }
+    },
+    {
+      "@id": "org:isPartnerOf",
+      "@type": "owl:ObjectProperty",
+      "name": "Is Partner Of",
+      "description": "Organization has a formal partnership relationship with another organization",
+      "domainIncludes": ["org:Organization"],
+      "rangeIncludes": ["org:Organization"],
+      "oaa:cardinality": {
+        "min": 0,
+        "max": "*"
+      }
+    },
+    {
+      "@id": "org:isAffiliateOf",
+      "@type": "owl:ObjectProperty",
+      "name": "Is Affiliate Of",
+      "description": "Organization is an affiliate or referral partner of another organization",
+      "domainIncludes": ["org:Organization"],
+      "rangeIncludes": ["org:Organization"],
+      "oaa:cardinality": {
+        "min": 0,
+        "max": "*"
+      }
+    }
+  ],
+
+  "businessRules": [
+    {
+      "@id": "org:BR-ORG-001",
+      "name": "Unique Organization ID",
+      "description": "Each organization must have a unique organizationId",
+      "condition": "IF an Organization entity exists",
+      "action": "THEN its organizationId MUST be unique across all organizations",
+      "severity": "error",
+      "appliesTo": ["org:Organization"]
+    },
+    {
+      "@id": "org:BR-ORG-002",
+      "name": "Type Determines Relationships",
+      "description": "Organization type constrains which relationships are valid",
+      "condition": "IF Organization.type equals 'Competitor'",
+      "action": "THEN the Organization MUST NOT have an isClientOf relationship",
+      "severity": "error",
+      "appliesTo": ["org:Organization"]
+    },
+    {
+      "@id": "org:BR-ORG-003",
+      "name": "Required Fields",
+      "description": "All required fields must be populated",
+      "condition": "IF an Organization entity is created",
+      "action": "THEN organizationId, name, type, industry, size, and status MUST be provided",
+      "severity": "error",
+      "appliesTo": ["org:Organization"]
+    },
+    {
+      "@id": "org:BR-ORG-004",
+      "name": "Status Validation",
+      "description": "Status must be a valid enum value",
+      "condition": "IF Organization.status is set",
+      "action": "THEN it MUST be one of: active, inactive, archived",
+      "severity": "error",
+      "appliesTo": ["org:Organization"]
+    }
+  ],
+
+  "changeControl": {
+    "currentVersion": "2.0.0",
+    "oaaSchemaVersion": "5.0.0",
+    "lastModified": "2026-02-01",
+    "modifiedBy": "OAA v6.1.0 Migration",
+    "changeNotes": "Upgraded from legacy format to OAA v5.0.0 JSON-LD compliance. Added OrganizationContext entity for graph connectivity.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-01-20",
+        "notes": "Initial creation in legacy format",
+        "archivedPath": "archive/org-ontology-v1.0.0-legacy.json"
+      }
+    ]
+  }
+}

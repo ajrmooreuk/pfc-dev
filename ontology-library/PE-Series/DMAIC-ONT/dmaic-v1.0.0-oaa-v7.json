@@ -1,0 +1,1375 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dmaic": "https://oaa-ontology.org/v6/six-sigma-dmaic/",
+    "pe": "https://oaa-ontology.org/v6/process-engineering/"
+  },
+  "@type": "owl:Ontology",
+  "@id": "dmaic:schema",
+  "name": "Six Sigma DMAIC Ontology (DMAIC-ONT)",
+  "description": "Ontology for modelling Six Sigma DMAIC — the standard 8-24 week project-based process improvement methodology with full statistical rigour. Models the Define-Measure-Analyze-Improve-Control lifecycle including SIPOC scoping, CTQ (Critical to Quality) trees, Gage R&R measurement system analysis, process capability (Cp/Cpk/sigma/DPMO), root cause analysis with hypothesis testing, design of experiments (DOE), and SPC control plans. Imports PE-ONT v4.0.0 for Process, ProcessMetric, AIAgent, Skill, Hypothesis, and ProcessPattern reuse.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:status": "compliant",
+  "oaa:series": "PE-Series",
+  "oaa:domain": "Six Sigma, DMAIC, Statistical Process Control, Process Capability, Design of Experiments",
+  "dateCreated": "2026-02-26",
+  "dateModified": "2026-02-26",
+  "creator": {
+    "@type": "Organization",
+    "name": "Platform Foundation Core - Ontology Architect Agent"
+  },
+  "oaa:imports": [
+    {
+      "ontology": "PE-ONT",
+      "version": "4.0.0",
+      "usedEntities": [
+        "pe:Process",
+        "pe:ProcessMetric",
+        "pe:AIAgent",
+        "pe:Skill",
+        "pe:Hypothesis",
+        "pe:ProcessPattern"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-D-001",
+      "name": "VOC-to-Sigma Pipeline",
+      "description": "Trace the full Define-Measure chain from customer voice through CTQ specification to validated measurement system and baseline process capability",
+      "joinPath": "dmaic:SixSigmaProject → hasSIPOC → dmaic:SIPOC ← ctqFromSIPOC ← dmaic:CriticalToQuality → validatedByMSA → dmaic:MeasurementSystem → msaForCapability → dmaic:ProcessCapability",
+      "useCase": "Answer: What is the baseline sigma level for the CTQs identified from the customer voice?"
+    },
+    {
+      "patternId": "JP-D-002",
+      "name": "Root-Cause-to-Proof Chain",
+      "description": "Trace from validated root cause through experimental confirmation to demonstrated capability improvement",
+      "joinPath": "dmaic:RootCauseAnalysis → testedByExperiment → dmaic:Experiment → confirmsImprovement → dmaic:ProcessCapability",
+      "useCase": "Answer: Which experiments confirmed the root causes and what capability improvement was achieved?"
+    },
+    {
+      "patternId": "JP-D-003",
+      "name": "Cross-Ontology Process Bridge",
+      "description": "Connect the Six Sigma project to the PE-ONT process it improves and the metrics that track improvement",
+      "joinPath": "dmaic:SixSigmaProject → appliesToProcess → pe:Process → pe:measures → pe:ProcessMetric ← improvesMeasure ← dmaic:SixSigmaProject",
+      "useCase": "Answer: Which PE process metrics improved as a result of this Six Sigma project?",
+      "oaa:crossOntologyRef": "PE-ONT"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "dmaic:SixSigmaProject",
+      "@type": "rdfs:Class",
+      "name": "SixSigmaProject",
+      "rdfs:subClassOf": "schema:Project",
+      "description": "A Six Sigma DMAIC improvement project spanning 8-24 weeks. Contains the project charter (problem statement, business case, scope, team), sigma targets, and tracks progression through Define-Measure-Analyze-Improve-Control phases. The central coordinating entity that owns all other DMAIC artefacts.",
+      "oaa:properties": [
+        {
+          "name": "projectId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "projectName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "problemStatement",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Clear statement of the problem being addressed — what, where, when, magnitude"
+        },
+        {
+          "name": "businessCase",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Financial or strategic justification for the project"
+        },
+        {
+          "name": "scope",
+          "type": "xsd:string",
+          "required": true,
+          "description": "In-scope and out-of-scope boundaries"
+        },
+        {
+          "name": "beltLevel",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "green-belt",
+            "black-belt",
+            "master-black-belt"
+          ],
+          "description": "Six Sigma belt level of the project lead"
+        },
+        {
+          "name": "teamLead",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Project lead (belt holder)"
+        },
+        {
+          "name": "champion",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Executive sponsor / champion authorising the project"
+        },
+        {
+          "name": "teamSize",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of cross-functional team members"
+        },
+        {
+          "name": "baselineSigma",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Sigma level at project start (populated after Measure phase)"
+        },
+        {
+          "name": "targetSigma",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Target sigma level the project aims to achieve"
+        },
+        {
+          "name": "currentSigma",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Current sigma level (updated through project lifecycle)"
+        },
+        {
+          "name": "startDate",
+          "type": "xsd:date",
+          "required": true,
+          "schemaOrgMapping": "schema:startDate"
+        },
+        {
+          "name": "targetEndDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Planned completion date (advisory 8-24 weeks per BR-D-007)"
+        },
+        {
+          "name": "actualEndDate",
+          "type": "xsd:date",
+          "required": false,
+          "schemaOrgMapping": "schema:endDate"
+        },
+        {
+          "name": "phase",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "define",
+            "measure",
+            "analyze",
+            "improve",
+            "control",
+            "closed"
+          ],
+          "description": "Current DMAIC phase"
+        },
+        {
+          "name": "estimatedSaving",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Estimated annual cost saving or revenue impact"
+        }
+      ]
+    },
+    {
+      "@id": "dmaic:SIPOC",
+      "@type": "rdfs:Class",
+      "name": "SIPOC",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "Supplier-Input-Process-Output-Customer diagram created during the Define phase. Provides a high-level view of the process boundaries and key stakeholders. Must be defined before any CTQ identification (BR-D-001).",
+      "oaa:properties": [
+        {
+          "name": "sipocId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "sipocName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "suppliers",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Entities providing inputs to the process (comma-separated or structured list)"
+        },
+        {
+          "name": "inputs",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Materials, information, or resources entering the process"
+        },
+        {
+          "name": "processSteps",
+          "type": "xsd:string",
+          "required": true,
+          "description": "High-level process steps (5-7 major steps)"
+        },
+        {
+          "name": "outputs",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Products, services, or deliverables produced"
+        },
+        {
+          "name": "customers",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Recipients of the process outputs"
+        }
+      ]
+    },
+    {
+      "@id": "dmaic:CriticalToQuality",
+      "@type": "rdfs:Class",
+      "name": "CriticalToQuality",
+      "rdfs:subClassOf": "schema:QuantitativeValue",
+      "description": "A Critical to Quality (CTQ) characteristic derived from the Voice of the Customer (VOC). Each CTQ has measurable specification limits (USL, LSL, target) that define acceptable quality. The CTQ tree traces from customer need → driver → measurable CTQ. Used to focus measurement and improvement efforts on what matters most to the customer.",
+      "oaa:properties": [
+        {
+          "name": "ctqId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "ctqName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "vocSource",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Voice of the Customer source (surveys, complaints, interviews, market data)"
+        },
+        {
+          "name": "driver",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Customer need or quality driver this CTQ addresses"
+        },
+        {
+          "name": "unit",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unit of measurement (e.g. mm, seconds, %, ppm)"
+        },
+        {
+          "name": "upperSpecLimit",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Upper Specification Limit (USL)"
+        },
+        {
+          "name": "lowerSpecLimit",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Lower Specification Limit (LSL)"
+        },
+        {
+          "name": "target",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Target value (nominal specification)"
+        },
+        {
+          "name": "priority",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "critical",
+            "major",
+            "minor"
+          ],
+          "description": "Priority based on impact to customer satisfaction"
+        }
+      ]
+    },
+    {
+      "@id": "dmaic:MeasurementSystem",
+      "@type": "rdfs:Class",
+      "name": "MeasurementSystem",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Measurement System Analysis (MSA) — a Gage R&R study validating that the measurement system is adequate for the CTQ being measured. %GRR must be ≤ 30% for the system to be acceptable (BR-D-002). Without a validated measurement system, capability data is unreliable.",
+      "oaa:properties": [
+        {
+          "name": "msaId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "msaName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "studyType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "gage-rr-crossed",
+            "gage-rr-nested",
+            "attribute-agreement",
+            "linearity-bias"
+          ],
+          "description": "Type of MSA study conducted"
+        },
+        {
+          "name": "operators",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of operators/appraisers in the study"
+        },
+        {
+          "name": "parts",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of parts/samples measured"
+        },
+        {
+          "name": "trials",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of measurement trials per operator-part combination"
+        },
+        {
+          "name": "repeatability",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Equipment variation (EV) — variation from the gauge itself"
+        },
+        {
+          "name": "reproducibility",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Appraiser variation (AV) — variation between operators"
+        },
+        {
+          "name": "percentGRR",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Total Gage R&R as percentage of tolerance. Must be ≤ 30% (BR-D-002). ≤ 10% ideal, 10-30% acceptable, > 30% unacceptable."
+        },
+        {
+          "name": "numberOfDistinctCategories",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "NDC — must be ≥ 5 for adequate discrimination"
+        },
+        {
+          "name": "acceptable",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether the measurement system passes the %GRR ≤ 30% threshold"
+        }
+      ]
+    },
+    {
+      "@id": "dmaic:ProcessCapability",
+      "@type": "rdfs:Class",
+      "name": "ProcessCapability",
+      "rdfs:subClassOf": "schema:QuantitativeValue",
+      "description": "Process capability assessment capturing sigma level, Cp, Cpk (short-term capability), Pp, Ppk (long-term performance), DPMO, and yield. Baseline capability is established during Measure phase; current capability is tracked through Improve and Control phases to demonstrate sustained improvement. Current sigma must exceed baseline for project closure (BR-D-008).",
+      "oaa:properties": [
+        {
+          "name": "capabilityId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "capabilityName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "capabilityType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "baseline",
+            "current",
+            "target"
+          ],
+          "description": "Whether this is the baseline measurement, current state, or target"
+        },
+        {
+          "name": "sigmaLevel",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Process sigma level (e.g. 3.2, 4.5, 6.0)"
+        },
+        {
+          "name": "cp",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Process Capability index (Cp) — potential capability assuming centred process"
+        },
+        {
+          "name": "cpk",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Process Capability index (Cpk) — actual capability accounting for centering. Cpk ≥ 1.33 is generally capable."
+        },
+        {
+          "name": "pp",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Process Performance index (Pp) — long-term potential"
+        },
+        {
+          "name": "ppk",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Process Performance index (Ppk) — long-term actual"
+        },
+        {
+          "name": "dpmo",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Defects Per Million Opportunities"
+        },
+        {
+          "name": "yield",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "First-pass yield as percentage (0-100)"
+        },
+        {
+          "name": "sampleSize",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of data points in the capability study"
+        },
+        {
+          "name": "collectionDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "When the capability data was collected"
+        }
+      ]
+    },
+    {
+      "@id": "dmaic:RootCauseAnalysis",
+      "@type": "rdfs:Class",
+      "name": "RootCauseAnalysis",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "Root cause identification and validation performed during the Analyze phase. Combines qualitative methods (fishbone/Ishikawa, 5-Why) with statistical hypothesis testing to confirm root causes. Only statistically validated root causes (p < 0.05) proceed to the Improve phase (BR-D-004). Requires baseline capability to exist first (BR-D-003).",
+      "oaa:properties": [
+        {
+          "name": "rcaId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "rcaName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "method",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "fishbone",
+            "5-why",
+            "hypothesis-test",
+            "regression",
+            "fmea",
+            "multi-vari"
+          ],
+          "description": "Root cause analysis method used"
+        },
+        {
+          "name": "suspectedCause",
+          "type": "xsd:string",
+          "required": true,
+          "description": "The suspected root cause being investigated"
+        },
+        {
+          "name": "category",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "man",
+            "machine",
+            "method",
+            "material",
+            "measurement",
+            "environment"
+          ],
+          "description": "Ishikawa 6M category of the root cause"
+        },
+        {
+          "name": "statisticalTest",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Statistical test used (e.g. t-test, chi-square, ANOVA, regression)"
+        },
+        {
+          "name": "pValue",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "p-value from hypothesis test. Must be < 0.05 for validation (BR-D-004)."
+        },
+        {
+          "name": "validated",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether the root cause has been statistically validated"
+        },
+        {
+          "name": "rpn",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Risk Priority Number from FMEA (Severity × Occurrence × Detection, 1-1000)"
+        }
+      ]
+    },
+    {
+      "@id": "dmaic:Experiment",
+      "@type": "rdfs:Class",
+      "name": "Experiment",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A Design of Experiments (DOE) study conducted during the Improve phase. Tests multiple factors simultaneously to identify optimal settings and interactions. Unlike Kaizen rapid experiments (hours), DOE runs over days/weeks with rigorous statistical design. At least one experiment must be completed before creating control plans (BR-D-005).",
+      "oaa:properties": [
+        {
+          "name": "experimentId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "experimentName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "designType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "full-factorial",
+            "fractional-factorial",
+            "screening",
+            "one-factor",
+            "response-surface",
+            "taguchi"
+          ],
+          "description": "Type of experimental design"
+        },
+        {
+          "name": "factors",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Factors (variables) being tested (comma-separated list)"
+        },
+        {
+          "name": "levels",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of levels per factor (typically 2 or 3)"
+        },
+        {
+          "name": "runs",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Total number of experimental runs"
+        },
+        {
+          "name": "replicates",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of replicates per run"
+        },
+        {
+          "name": "significantFactors",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Factors found to be statistically significant (p < 0.05)"
+        },
+        {
+          "name": "interactions",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Significant factor interactions identified"
+        },
+        {
+          "name": "optimalSettings",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Optimal factor settings determined from the experiment"
+        },
+        {
+          "name": "result",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "success",
+            "partial",
+            "inconclusive",
+            "fail"
+          ],
+          "description": "Overall experiment outcome"
+        },
+        {
+          "name": "rSquared",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "R-squared value from the experimental model (0-1)"
+        }
+      ]
+    },
+    {
+      "@id": "dmaic:ControlPlan",
+      "@type": "rdfs:Class",
+      "name": "ControlPlan",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A Statistical Process Control (SPC) plan created during the Control phase to sustain improvements. Specifies the SPC chart type, control limits (UCL/LCL), monitoring frequency, reaction plan for out-of-control conditions, and responsible owner. Every control plan must monitor at least one CTQ (BR-D-006).",
+      "oaa:properties": [
+        {
+          "name": "planId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "planName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "spcChartType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "xbar-r",
+            "xbar-s",
+            "i-mr",
+            "p-chart",
+            "np-chart",
+            "c-chart",
+            "u-chart",
+            "cusum"
+          ],
+          "description": "Type of SPC chart used for monitoring"
+        },
+        {
+          "name": "ucl",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Upper Control Limit"
+        },
+        {
+          "name": "lcl",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Lower Control Limit"
+        },
+        {
+          "name": "centerLine",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Center line (process mean or median)"
+        },
+        {
+          "name": "monitorFrequency",
+          "type": "xsd:string",
+          "required": true,
+          "description": "How often samples are taken (e.g. 'hourly', 'per-shift', 'daily', 'weekly')"
+        },
+        {
+          "name": "sampleSize",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of observations per sample"
+        },
+        {
+          "name": "reactionPlan",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Actions to take when an out-of-control condition is detected"
+        },
+        {
+          "name": "responsibleOwner",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Person or role responsible for monitoring and reacting"
+        },
+        {
+          "name": "effectiveDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date when control plan monitoring begins"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "dmaic:hasSIPOC",
+      "@type": "owl:ObjectProperty",
+      "name": "Has SIPOC",
+      "description": "A Six Sigma project defines its process boundaries via a SIPOC diagram. Must be completed before CTQ identification (BR-D-001).",
+      "domainIncludes": [
+        "dmaic:SixSigmaProject"
+      ],
+      "rangeIncludes": [
+        "dmaic:SIPOC"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "dmaic:definesCTQ",
+      "@type": "owl:ObjectProperty",
+      "name": "Defines CTQ",
+      "description": "A Six Sigma project identifies one or more Critical to Quality characteristics from the Voice of the Customer",
+      "domainIncludes": [
+        "dmaic:SixSigmaProject"
+      ],
+      "rangeIncludes": [
+        "dmaic:CriticalToQuality"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "dmaic:validatedByMSA",
+      "@type": "owl:ObjectProperty",
+      "name": "Validated By MSA",
+      "description": "A CTQ's measurement system is validated via a Gage R&R study before data collection begins",
+      "domainIncludes": [
+        "dmaic:CriticalToQuality"
+      ],
+      "rangeIncludes": [
+        "dmaic:MeasurementSystem"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "dmaic:baselineCapability",
+      "@type": "owl:ObjectProperty",
+      "name": "Baseline Capability",
+      "description": "The baseline process capability established during the Measure phase. Required before root cause analysis (BR-D-003).",
+      "domainIncludes": [
+        "dmaic:SixSigmaProject"
+      ],
+      "rangeIncludes": [
+        "dmaic:ProcessCapability"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "dmaic:currentCapability",
+      "@type": "owl:ObjectProperty",
+      "name": "Current Capability",
+      "description": "The current process capability tracked through Improve and Control phases",
+      "domainIncludes": [
+        "dmaic:SixSigmaProject"
+      ],
+      "rangeIncludes": [
+        "dmaic:ProcessCapability"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "dmaic:hasRootCause",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Root Cause",
+      "description": "A Six Sigma project identifies and validates root causes during the Analyze phase",
+      "domainIncludes": [
+        "dmaic:SixSigmaProject"
+      ],
+      "rangeIncludes": [
+        "dmaic:RootCauseAnalysis"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "dmaic:testedByExperiment",
+      "@type": "owl:ObjectProperty",
+      "name": "Tested By Experiment",
+      "description": "A root cause's countermeasure is tested through a formal Design of Experiments study",
+      "domainIncludes": [
+        "dmaic:RootCauseAnalysis"
+      ],
+      "rangeIncludes": [
+        "dmaic:Experiment"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "dmaic:confirmsImprovement",
+      "@type": "owl:ObjectProperty",
+      "name": "Confirms Improvement",
+      "description": "An experiment confirms capability improvement by producing a new ProcessCapability assessment",
+      "domainIncludes": [
+        "dmaic:Experiment"
+      ],
+      "rangeIncludes": [
+        "dmaic:ProcessCapability"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "dmaic:sustainedByControl",
+      "@type": "owl:ObjectProperty",
+      "name": "Sustained By Control",
+      "description": "A Six Sigma project sustains improvements through one or more SPC control plans",
+      "domainIncludes": [
+        "dmaic:SixSigmaProject"
+      ],
+      "rangeIncludes": [
+        "dmaic:ControlPlan"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "dmaic:controlMonitors",
+      "@type": "owl:ObjectProperty",
+      "name": "Control Monitors",
+      "description": "A control plan monitors one or more CTQ characteristics via SPC charts. Every control plan must monitor at least one CTQ (BR-D-006).",
+      "domainIncludes": [
+        "dmaic:ControlPlan"
+      ],
+      "rangeIncludes": [
+        "dmaic:CriticalToQuality"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "dmaic:msaForCapability",
+      "@type": "owl:ObjectProperty",
+      "name": "MSA For Capability",
+      "description": "A measurement system analysis validates the measurement system used for a specific capability study",
+      "domainIncludes": [
+        "dmaic:MeasurementSystem"
+      ],
+      "rangeIncludes": [
+        "dmaic:ProcessCapability"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "dmaic:ctqFromSIPOC",
+      "@type": "owl:ObjectProperty",
+      "name": "CTQ From SIPOC",
+      "description": "A CTQ traces back to the SIPOC that defined the process outputs and customer requirements",
+      "domainIncludes": [
+        "dmaic:CriticalToQuality"
+      ],
+      "rangeIncludes": [
+        "dmaic:SIPOC"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "dmaic:appliesToProcess",
+      "@type": "owl:ObjectProperty",
+      "name": "Applies To Process",
+      "description": "A Six Sigma project applies to (improves) a specific PE-ONT process. Cross-ontology bridge to PE-ONT.",
+      "domainIncludes": [
+        "dmaic:SixSigmaProject"
+      ],
+      "rangeIncludes": [
+        "pe:Process"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntology": "PE-ONT"
+    },
+    {
+      "@id": "dmaic:improvesMeasure",
+      "@type": "owl:ObjectProperty",
+      "name": "Improves Measure",
+      "description": "A Six Sigma project improves one or more PE-ONT process metrics. Cross-ontology bridge to PE-ONT.",
+      "domainIncludes": [
+        "dmaic:SixSigmaProject"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessMetric"
+      ],
+      "oaa:cardinality": "1..*",
+      "oaa:crossOntology": "PE-ONT"
+    },
+    {
+      "@id": "dmaic:augmentedByAgent",
+      "@type": "owl:ObjectProperty",
+      "name": "Augmented By Agent",
+      "description": "A Six Sigma project is augmented by AI agents for data analysis, capability calculation, or DOE optimisation. Cross-ontology bridge to PE-ONT.",
+      "domainIncludes": [
+        "dmaic:SixSigmaProject"
+      ],
+      "rangeIncludes": [
+        "pe:AIAgent"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntology": "PE-ONT"
+    },
+    {
+      "@id": "dmaic:invokesSkill",
+      "@type": "owl:ObjectProperty",
+      "name": "Invokes Skill",
+      "description": "An experiment invokes analytical skills during execution (e.g. DOE analysis, SPC calculation). Cross-ontology bridge to PE-ONT.",
+      "domainIncludes": [
+        "dmaic:Experiment"
+      ],
+      "rangeIncludes": [
+        "pe:Skill"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntology": "PE-ONT"
+    },
+    {
+      "@id": "dmaic:testsHypothesis",
+      "@type": "owl:ObjectProperty",
+      "name": "Tests Hypothesis",
+      "description": "A root cause analysis tests a formal PE-ONT hypothesis with statistical evidence. Cross-ontology bridge to PE-ONT.",
+      "domainIncludes": [
+        "dmaic:RootCauseAnalysis"
+      ],
+      "rangeIncludes": [
+        "pe:Hypothesis"
+      ],
+      "oaa:cardinality": "1..*",
+      "oaa:crossOntology": "PE-ONT"
+    },
+    {
+      "@id": "dmaic:followsPattern",
+      "@type": "owl:ObjectProperty",
+      "name": "Follows Pattern",
+      "description": "A Six Sigma project follows reusable process patterns (e.g. DMAIC cycle, tollgate reviews). Cross-ontology bridge to PE-ONT.",
+      "domainIncludes": [
+        "dmaic:SixSigmaProject"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessPattern"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntology": "PE-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "dmaic:BR-D-001",
+      "name": "SIPOC Before CTQ",
+      "description": "A SIPOC diagram must be defined before any CTQ characteristics are identified — you cannot define quality requirements without understanding the process boundaries.",
+      "condition": "IF a CriticalToQuality entity is created for a SixSigmaProject",
+      "action": "THEN the SixSigmaProject MUST already have a hasSIPOC relationship to a SIPOC entity",
+      "severity": "error",
+      "appliesTo": [
+        "dmaic:SixSigmaProject",
+        "dmaic:SIPOC",
+        "dmaic:CriticalToQuality"
+      ]
+    },
+    {
+      "@id": "dmaic:BR-D-002",
+      "name": "Measurement System Adequacy",
+      "description": "The measurement system must have %GRR ≤ 30% to be acceptable. Data collected with an inadequate measurement system cannot be trusted for capability analysis.",
+      "condition": "IF a MeasurementSystem is used for capability assessment",
+      "action": "THEN MeasurementSystem.percentGRR MUST be ≤ 30 AND MeasurementSystem.acceptable MUST be true",
+      "severity": "error",
+      "appliesTo": [
+        "dmaic:MeasurementSystem"
+      ]
+    },
+    {
+      "@id": "dmaic:BR-D-003",
+      "name": "Baseline Before Root Cause Analysis",
+      "description": "Baseline process capability must be established before root cause analysis begins — without a baseline, you cannot quantify the gap to close.",
+      "condition": "IF a RootCauseAnalysis entity is created for a SixSigmaProject",
+      "action": "THEN the SixSigmaProject MUST already have a baselineCapability relationship to a ProcessCapability entity with capabilityType='baseline'",
+      "severity": "error",
+      "appliesTo": [
+        "dmaic:SixSigmaProject",
+        "dmaic:ProcessCapability",
+        "dmaic:RootCauseAnalysis"
+      ]
+    },
+    {
+      "@id": "dmaic:BR-D-004",
+      "name": "Statistical Validation Required",
+      "description": "Root causes must be statistically validated (p < 0.05) before proceeding to the Improve phase. Opinion-based root causes are insufficient.",
+      "condition": "IF a RootCauseAnalysis has validated=true",
+      "action": "THEN RootCauseAnalysis.pValue MUST be < 0.05 OR method MUST be one of [fishbone, 5-why] with supporting evidence",
+      "severity": "error",
+      "appliesTo": [
+        "dmaic:RootCauseAnalysis"
+      ]
+    },
+    {
+      "@id": "dmaic:BR-D-005",
+      "name": "Experiment Before Control Plan",
+      "description": "At least one experiment must be completed before control plans can be created — you cannot control what you have not improved.",
+      "condition": "IF a ControlPlan entity is created for a SixSigmaProject",
+      "action": "THEN at least one Experiment MUST exist with result in ['success', 'partial']",
+      "severity": "error",
+      "appliesTo": [
+        "dmaic:ControlPlan",
+        "dmaic:Experiment"
+      ]
+    },
+    {
+      "@id": "dmaic:BR-D-006",
+      "name": "Control Plan Must Monitor CTQ",
+      "description": "Every control plan must monitor at least one CTQ characteristic — a control plan without a target metric is meaningless.",
+      "condition": "IF a ControlPlan exists",
+      "action": "THEN the ControlPlan MUST have at least one controlMonitors relationship to a CriticalToQuality entity",
+      "severity": "error",
+      "appliesTo": [
+        "dmaic:ControlPlan",
+        "dmaic:CriticalToQuality"
+      ]
+    },
+    {
+      "@id": "dmaic:BR-D-007",
+      "name": "Project Duration Advisory",
+      "description": "DMAIC projects typically span 8-24 weeks. Shorter projects may be better suited for Kaizen (K-DMAIC-ONT); longer projects may indicate scope creep.",
+      "condition": "IF a SixSigmaProject duration (targetEndDate minus startDate) is < 8 weeks OR > 24 weeks",
+      "action": "THEN system SHOULD generate advisory warning about atypical project duration",
+      "severity": "warning",
+      "appliesTo": [
+        "dmaic:SixSigmaProject"
+      ]
+    },
+    {
+      "@id": "dmaic:BR-D-008",
+      "name": "Sigma Improvement Required for Closure",
+      "description": "A project cannot be closed unless current sigma exceeds baseline sigma — the whole point of DMAIC is measurable improvement.",
+      "condition": "IF a SixSigmaProject phase transitions to 'closed'",
+      "action": "THEN SixSigmaProject.currentSigma MUST be greater than SixSigmaProject.baselineSigma",
+      "severity": "error",
+      "appliesTo": [
+        "dmaic:SixSigmaProject"
+      ]
+    }
+  ],
+  "competencyQuestions": [
+    {
+      "@id": "CQ-D-001",
+      "question": "What are the Critical to Quality characteristics and their specification limits (USL/LSL/target)?",
+      "targetEntities": [
+        "dmaic:CriticalToQuality"
+      ],
+      "targetRelationships": [
+        "dmaic:definesCTQ"
+      ],
+      "targetRules": [
+        "dmaic:BR-D-001"
+      ]
+    },
+    {
+      "@id": "CQ-D-002",
+      "question": "Is the measurement system adequate for the CTQ being measured (%GRR ≤ 30%)?",
+      "targetEntities": [
+        "dmaic:MeasurementSystem",
+        "dmaic:CriticalToQuality"
+      ],
+      "targetRelationships": [
+        "dmaic:validatedByMSA"
+      ],
+      "targetRules": [
+        "dmaic:BR-D-002"
+      ]
+    },
+    {
+      "@id": "CQ-D-003",
+      "question": "What is the baseline process capability (Cp, Cpk, sigma level, DPMO)?",
+      "targetEntities": [
+        "dmaic:ProcessCapability"
+      ],
+      "targetRelationships": [
+        "dmaic:baselineCapability",
+        "dmaic:msaForCapability"
+      ],
+      "targetRules": [
+        "dmaic:BR-D-003"
+      ]
+    },
+    {
+      "@id": "CQ-D-004",
+      "question": "What root causes were statistically validated (p < 0.05) and in which Ishikawa category?",
+      "targetEntities": [
+        "dmaic:RootCauseAnalysis"
+      ],
+      "targetRelationships": [
+        "dmaic:hasRootCause",
+        "dmaic:testsHypothesis"
+      ],
+      "targetRules": [
+        "dmaic:BR-D-004"
+      ]
+    },
+    {
+      "@id": "CQ-D-005",
+      "question": "What DOE experiments were run and which factors were statistically significant?",
+      "targetEntities": [
+        "dmaic:Experiment"
+      ],
+      "targetRelationships": [
+        "dmaic:testedByExperiment",
+        "dmaic:confirmsImprovement"
+      ],
+      "targetRules": [
+        "dmaic:BR-D-005"
+      ]
+    },
+    {
+      "@id": "CQ-D-006",
+      "question": "What is the before/after sigma improvement achieved by the project?",
+      "targetEntities": [
+        "dmaic:SixSigmaProject",
+        "dmaic:ProcessCapability"
+      ],
+      "targetRelationships": [
+        "dmaic:baselineCapability",
+        "dmaic:currentCapability"
+      ],
+      "targetRules": [
+        "dmaic:BR-D-008"
+      ]
+    },
+    {
+      "@id": "CQ-D-007",
+      "question": "Which SPC control plans sustain the improvements and what are their control limits?",
+      "targetEntities": [
+        "dmaic:ControlPlan"
+      ],
+      "targetRelationships": [
+        "dmaic:sustainedByControl",
+        "dmaic:controlMonitors"
+      ],
+      "targetRules": [
+        "dmaic:BR-D-006"
+      ]
+    },
+    {
+      "@id": "CQ-D-008",
+      "question": "What are the SIPOC boundaries and which PE-ONT process metrics improved?",
+      "targetEntities": [
+        "dmaic:SIPOC",
+        "dmaic:SixSigmaProject"
+      ],
+      "targetRelationships": [
+        "dmaic:hasSIPOC",
+        "dmaic:improvesMeasure",
+        "dmaic:appliesToProcess"
+      ],
+      "targetRules": []
+    }
+  ],
+  "testInstances": [
+    {
+      "@id": "dmaic:spc-xbar-r",
+      "@type": "dmaic:ControlPlan",
+      "planId": "spc-xbar-r",
+      "planName": "X-bar and R Chart",
+      "description": "Monitors subgroup means (X-bar) and ranges (R) for variable data with small subgroups (n=2-10). Most common SPC chart for manufacturing processes.",
+      "spcChartType": "xbar-r",
+      "ucl": 0,
+      "lcl": 0,
+      "centerLine": 0,
+      "monitorFrequency": "per-shift",
+      "sampleSize": 5,
+      "reactionPlan": "Stop production, identify assignable cause, correct before resuming",
+      "responsibleOwner": "Process Engineer",
+      "effectiveDate": "2026-02-26"
+    },
+    {
+      "@id": "dmaic:spc-xbar-s",
+      "@type": "dmaic:ControlPlan",
+      "planId": "spc-xbar-s",
+      "planName": "X-bar and S Chart",
+      "description": "Monitors subgroup means and standard deviations for variable data with larger subgroups (n>10). More powerful than X-bar R for larger samples.",
+      "spcChartType": "xbar-s",
+      "ucl": 0,
+      "lcl": 0,
+      "centerLine": 0,
+      "monitorFrequency": "per-shift",
+      "sampleSize": 25,
+      "reactionPlan": "Investigate shift in mean or variability, adjust process parameters",
+      "responsibleOwner": "Quality Engineer",
+      "effectiveDate": "2026-02-26"
+    },
+    {
+      "@id": "dmaic:spc-i-mr",
+      "@type": "dmaic:ControlPlan",
+      "planId": "spc-i-mr",
+      "planName": "Individual and Moving Range Chart",
+      "description": "Monitors individual measurements and moving ranges for processes where subgrouping is impractical (batch processes, slow output, destructive testing).",
+      "spcChartType": "i-mr",
+      "ucl": 0,
+      "lcl": 0,
+      "centerLine": 0,
+      "monitorFrequency": "per-batch",
+      "sampleSize": 1,
+      "reactionPlan": "Review batch conditions, isolate affected output, re-centre process",
+      "responsibleOwner": "Process Technician",
+      "effectiveDate": "2026-02-26"
+    },
+    {
+      "@id": "dmaic:spc-p-chart",
+      "@type": "dmaic:ControlPlan",
+      "planId": "spc-p-chart",
+      "planName": "p-Chart (Proportion Defective)",
+      "description": "Monitors the proportion of defective items in variable-size samples. Used for attribute data (pass/fail, go/no-go) where sample sizes may vary.",
+      "spcChartType": "p-chart",
+      "ucl": 0,
+      "lcl": 0,
+      "centerLine": 0,
+      "monitorFrequency": "daily",
+      "sampleSize": 100,
+      "reactionPlan": "Investigate spike in defective proportion, review incoming material quality",
+      "responsibleOwner": "Quality Inspector",
+      "effectiveDate": "2026-02-26"
+    },
+    {
+      "@id": "dmaic:spc-np-chart",
+      "@type": "dmaic:ControlPlan",
+      "planId": "spc-np-chart",
+      "planName": "np-Chart (Number Defective)",
+      "description": "Monitors the count of defective items in constant-size samples. Simpler than p-chart when sample size is fixed.",
+      "spcChartType": "np-chart",
+      "ucl": 0,
+      "lcl": 0,
+      "centerLine": 0,
+      "monitorFrequency": "daily",
+      "sampleSize": 50,
+      "reactionPlan": "If count exceeds UCL, quarantine lot and investigate root cause",
+      "responsibleOwner": "Quality Inspector",
+      "effectiveDate": "2026-02-26"
+    },
+    {
+      "@id": "dmaic:spc-c-chart",
+      "@type": "dmaic:ControlPlan",
+      "planId": "spc-c-chart",
+      "planName": "c-Chart (Count of Defects)",
+      "description": "Monitors the total count of defects per constant inspection unit. Used when multiple defects can occur on a single item (e.g. scratches per panel, errors per form).",
+      "spcChartType": "c-chart",
+      "ucl": 0,
+      "lcl": 0,
+      "centerLine": 0,
+      "monitorFrequency": "per-shift",
+      "sampleSize": 1,
+      "reactionPlan": "If defect count exceeds UCL, perform line inspection and tool check",
+      "responsibleOwner": "Line Supervisor",
+      "effectiveDate": "2026-02-26"
+    },
+    {
+      "@id": "dmaic:spc-u-chart",
+      "@type": "dmaic:ControlPlan",
+      "planId": "spc-u-chart",
+      "planName": "u-Chart (Defects per Unit)",
+      "description": "Monitors defects per unit when inspection area or sample size varies. Generalisation of c-chart for variable opportunity.",
+      "spcChartType": "u-chart",
+      "ucl": 0,
+      "lcl": 0,
+      "centerLine": 0,
+      "monitorFrequency": "daily",
+      "sampleSize": 10,
+      "reactionPlan": "Review variation in defect density, adjust process or materials",
+      "responsibleOwner": "Quality Engineer",
+      "effectiveDate": "2026-02-26"
+    },
+    {
+      "@id": "dmaic:spc-cusum",
+      "@type": "dmaic:ControlPlan",
+      "planId": "spc-cusum",
+      "planName": "CUSUM Chart (Cumulative Sum)",
+      "description": "Monitors cumulative deviations from the target mean. More sensitive to small, sustained shifts in process mean than Shewhart charts. Used for high-precision processes.",
+      "spcChartType": "cusum",
+      "ucl": 0,
+      "lcl": 0,
+      "centerLine": 0,
+      "monitorFrequency": "hourly",
+      "sampleSize": 1,
+      "reactionPlan": "Investigate gradual drift, adjust process to re-centre on target",
+      "responsibleOwner": "Process Engineer",
+      "effectiveDate": "2026-02-26"
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "7.0.0",
+    "lastModified": "2026-02-26",
+    "modifiedBy": "Ontology Architect Agent",
+    "changeNotes": "v1.0.0: Initial creation. 8 entity types (SixSigmaProject, SIPOC, CriticalToQuality, MeasurementSystem, ProcessCapability, RootCauseAnalysis, Experiment, ControlPlan). 18 relationships (12 internal + 6 cross-ontology to PE-ONT). 8 business rules. 8 competency questions. 3 join patterns. 8 predefined SPC chart type instances. Imports PE-ONT v4.0.0.",
+    "versionHistory": []
+  },
+  "oaa:ontologyId": "DMAIC-ONT",
+  "oaa:series": "PE-Series"
+}

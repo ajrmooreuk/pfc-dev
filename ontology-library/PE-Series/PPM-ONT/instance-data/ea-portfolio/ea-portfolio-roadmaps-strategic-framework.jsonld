@@ -1,0 +1,599 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v5/",
+    "vsem": "https://oaa-ontology.org/v5/vsem/",
+    "ppm": "https://oaa-ontology.org/v5/ppm/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "advisory": "urn:advisory:"
+  },
+  
+  "@id": "advisory:strategy/framework",
+  "name": "Advisory Transformation Strategic Framework",
+  "description": "VSEM-aligned strategic framework connecting vision through execution",
+  "oaa:schemaVersion": "5.0.0",
+  
+  "@graph": [
+    {
+      "@type": "vsem:StrategicVision",
+      "@id": "advisory:vision/ai-augmented-advisory",
+      "name": "AI-Augmented Advisory Excellence",
+      "description": "Transform into the leading AI-augmented insurance advisory firm where intelligent automation eliminates 60% of manual processes, enabling consultants to focus exclusively on high-value client engagement, insight generation, and strategic counsel—driving profitable growth through increased utilisation, faster delivery, and premium market positioning.",
+      "vsem:timeHorizon": "P3Y",
+      "vsem:northStarMetric": {
+        "@type": "vsem:StrategicKPI",
+        "name": "Manual Process Reduction",
+        "vsem:target": 0.60,
+        "vsem:baseline": 0.0,
+        "vsem:unit": "percentage"
+      },
+      "vsem:strategicPillars": [
+        {"@id": "advisory:pillar/delivery-automation"},
+        {"@id": "advisory:pillar/knowledge-enablement"},
+        {"@id": "advisory:pillar/platform-foundation"},
+        {"@id": "advisory:pillar/client-experience"}
+      ],
+      "vsem:successIndicators": [
+        "60% manual process reduction validated",
+        "120 FTE equivalent capacity redeployed to value-add",
+        "25%+ revenue per consultant increase",
+        "Top quartile NPS in insurance advisory"
+      ]
+    },
+
+    {
+      "@type": "vsem:StrategicPillar",
+      "@id": "advisory:pillar/delivery-automation",
+      "name": "Delivery Automation",
+      "description": "Systematically automate repetitive advisory delivery tasks—research, analysis, reporting, proposals—to eliminate low-value work and accelerate time-to-insight",
+      "vsem:parentVision": {"@id": "advisory:vision/ai-augmented-advisory"},
+      "vsem:strategicIntent": "Free consultants from administrative burden to focus on client value creation",
+      "vsem:contributionWeight": 0.35,
+      "vsem:primaryMetric": {
+        "@type": "vsem:StrategicKPI",
+        "name": "Delivery Task Automation Rate",
+        "vsem:target": 0.70,
+        "vsem:baseline": 0.05
+      },
+      "vsem:strategicObjectives": [
+        {"@id": "advisory:objective/DA-O1"},
+        {"@id": "advisory:objective/DA-O2"},
+        {"@id": "advisory:objective/DA-O3"},
+        {"@id": "advisory:objective/DA-O4"}
+      ],
+      "vsem:targetCapabilities": [
+        "Automated report generation",
+        "AI-assisted research and analysis",
+        "Intelligent proposal creation",
+        "Automated quality assurance"
+      ]
+    },
+    
+    {
+      "@type": "vsem:StrategicPillar",
+      "@id": "advisory:pillar/knowledge-enablement",
+      "name": "Knowledge Enablement",
+      "description": "Transform tacit institutional knowledge into accessible, reusable digital assets that amplify every consultant's effectiveness through AI-powered discovery and synthesis",
+      "vsem:parentVision": {"@id": "advisory:vision/ai-augmented-advisory"},
+      "vsem:strategicIntent": "Capitalise collective intelligence so every consultant operates with firm-wide expertise",
+      "vsem:contributionWeight": 0.30,
+      "vsem:primaryMetric": {
+        "@type": "vsem:StrategicKPI",
+        "name": "Knowledge Reuse Rate",
+        "vsem:target": 0.50,
+        "vsem:baseline": 0.10
+      },
+      "vsem:strategicObjectives": [
+        {"@id": "advisory:objective/KE-O1"},
+        {"@id": "advisory:objective/KE-O2"},
+        {"@id": "advisory:objective/KE-O3"}
+      ],
+      "vsem:targetCapabilities": [
+        "Enterprise knowledge graph",
+        "Semantic search and retrieval",
+        "Expert identification and matching",
+        "Precedent discovery"
+      ]
+    },
+    
+    {
+      "@type": "vsem:StrategicPillar",
+      "@id": "advisory:pillar/platform-foundation",
+      "name": "Platform Foundation",
+      "description": "Build secure, compliant, scalable cloud infrastructure that enables rapid AI capability deployment while meeting regulatory requirements for sensitive client data",
+      "vsem:parentVision": {"@id": "advisory:vision/ai-augmented-advisory"},
+      "vsem:strategicIntent": "Create the technical foundation that accelerates all other transformation initiatives",
+      "vsem:contributionWeight": 0.20,
+      "vsem:primaryMetric": {
+        "@type": "vsem:StrategicKPI",
+        "name": "AI Workload Enablement",
+        "vsem:target": 1.0,
+        "vsem:baseline": 0.0
+      },
+      "vsem:strategicObjectives": [
+        {"@id": "advisory:objective/PF-O1"},
+        {"@id": "advisory:objective/PF-O2"},
+        {"@id": "advisory:objective/PF-O3"}
+      ],
+      "vsem:targetCapabilities": [
+        "Secure Azure Landing Zone",
+        "Enterprise data platform",
+        "AI/ML infrastructure",
+        "Compliance automation"
+      ]
+    },
+    
+    {
+      "@type": "vsem:StrategicPillar",
+      "@id": "advisory:pillar/client-experience",
+      "name": "Client Experience",
+      "description": "Differentiate through superior digital client engagement—real-time visibility, self-service access, seamless collaboration—creating stickiness and premium positioning",
+      "vsem:parentVision": {"@id": "advisory:vision/ai-augmented-advisory"},
+      "vsem:strategicIntent": "Transform client relationships from periodic engagements to continuous value partnerships",
+      "vsem:contributionWeight": 0.15,
+      "vsem:primaryMetric": {
+        "@type": "vsem:StrategicKPI",
+        "name": "Client Digital Engagement Score",
+        "vsem:target": 0.80,
+        "vsem:baseline": 0.15
+      },
+      "vsem:strategicObjectives": [
+        {"@id": "advisory:objective/CX-O1"},
+        {"@id": "advisory:objective/CX-O2"}
+      ],
+      "vsem:targetCapabilities": [
+        "Client self-service portal",
+        "Real-time engagement visibility",
+        "Digital collaboration workspace",
+        "AI-powered client insights"
+      ]
+    },
+
+    {
+      "@type": "vsem:StrategicObjective",
+      "@id": "advisory:objective/DA-O1",
+      "name": "Automate Report Generation",
+      "description": "Achieve 70% automation of standard advisory report production through AI-powered template population, data integration, and quality checking",
+      "vsem:parentPillar": {"@id": "advisory:pillar/delivery-automation"},
+      "vsem:targetOutcome": "70% of report creation effort eliminated",
+      "vsem:keyResults": [
+        {"name": "Report generation time reduction", "target": "70%"},
+        {"name": "Reports automated per quarter", "target": "500+"},
+        {"name": "Quality score maintenance", "target": ">95%"}
+      ],
+      "vsem:deliveringInitiatives": [
+        {"@id": "advisory:init/DA-001"},
+        {"@id": "advisory:init/DA-008"},
+        {"@id": "advisory:init/DA-025"}
+      ],
+      "vsem:targetPhase": {"@id": "ppm:phase/y1q4"}
+    },
+    
+    {
+      "@type": "vsem:StrategicObjective",
+      "@id": "advisory:objective/DA-O2",
+      "name": "AI-Assisted Research & Analysis",
+      "description": "Deploy AI copilots that reduce research and analysis time by 60% while improving depth and accuracy of insights",
+      "vsem:parentPillar": {"@id": "advisory:pillar/delivery-automation"},
+      "vsem:targetOutcome": "60% research time reduction with improved insight quality",
+      "vsem:keyResults": [
+        {"name": "Research cycle time reduction", "target": "60%"},
+        {"name": "Analysis depth increase", "target": "2x coverage"},
+        {"name": "Consultant satisfaction with AI tools", "target": ">80%"}
+      ],
+      "vsem:deliveringInitiatives": [
+        {"@id": "advisory:init/DA-002"},
+        {"@id": "advisory:init/DA-003"},
+        {"@id": "advisory:init/DA-006"},
+        {"@id": "advisory:init/DA-007"},
+        {"@id": "advisory:init/DA-036"}
+      ],
+      "vsem:targetPhase": {"@id": "ppm:phase/y2q2"}
+    },
+    
+    {
+      "@type": "vsem:StrategicObjective",
+      "@id": "advisory:objective/DA-O3",
+      "name": "Intelligent Proposal Creation",
+      "description": "Reduce proposal turnaround from weeks to days through AI-powered content assembly, pricing optimisation, and quality assurance",
+      "vsem:parentPillar": {"@id": "advisory:pillar/delivery-automation"},
+      "vsem:targetOutcome": "50% proposal cycle time reduction with improved win rate",
+      "vsem:keyResults": [
+        {"name": "Proposal turnaround time", "target": "<5 days"},
+        {"name": "Win rate improvement", "target": "+10%"},
+        {"name": "Proposal quality score", "target": ">90%"}
+      ],
+      "vsem:deliveringInitiatives": [
+        {"@id": "advisory:init/DA-005"},
+        {"@id": "advisory:init/DA-012"},
+        {"@id": "advisory:init/DA-037"},
+        {"@id": "advisory:init/DA-039"}
+      ],
+      "vsem:targetPhase": {"@id": "ppm:phase/y2q4"}
+    },
+    
+    {
+      "@type": "vsem:StrategicObjective",
+      "@id": "advisory:objective/DA-O4",
+      "name": "Practice-Specific Automation",
+      "description": "Deploy specialised automation for each practice area addressing their unique high-volume manual processes",
+      "vsem:parentPillar": {"@id": "advisory:pillar/delivery-automation"},
+      "vsem:targetOutcome": "Practice-specific automation achieving 65% average reduction",
+      "vsem:keyResults": [
+        {"name": "Strategy practice automation", "target": "55%"},
+        {"name": "Operations practice automation", "target": "65%"},
+        {"name": "Risk & Actuarial automation", "target": "70%"},
+        {"name": "Regulatory practice automation", "target": "60%"},
+        {"name": "Transactions practice automation", "target": "55%"}
+      ],
+      "vsem:deliveringInitiatives": [
+        {"@id": "advisory:init/DA-009"},
+        {"@id": "advisory:init/DA-010"},
+        {"@id": "advisory:init/DA-011"},
+        {"@id": "advisory:init/DA-016"},
+        {"@id": "advisory:init/DA-017"},
+        {"@id": "advisory:init/DA-018"},
+        {"@id": "advisory:init/DA-019"},
+        {"@id": "advisory:init/DA-027"},
+        {"@id": "advisory:init/DA-040"},
+        {"@id": "advisory:init/DA-042"}
+      ],
+      "vsem:targetPhase": {"@id": "ppm:phase/y3q2"}
+    },
+    
+    {
+      "@type": "vsem:StrategicObjective",
+      "@id": "advisory:objective/KE-O1",
+      "name": "Enterprise Knowledge Graph",
+      "description": "Build comprehensive knowledge graph connecting experts, methodologies, engagements, clients, and market intelligence for AI-powered discovery",
+      "vsem:parentPillar": {"@id": "advisory:pillar/knowledge-enablement"},
+      "vsem:targetOutcome": "Single source of truth for firm knowledge enabling AI retrieval",
+      "vsem:keyResults": [
+        {"name": "Knowledge entities indexed", "target": "1M+"},
+        {"name": "Query response accuracy", "target": ">90%"},
+        {"name": "Knowledge graph coverage", "target": "100% practices"}
+      ],
+      "vsem:deliveringInitiatives": [
+        {"@id": "advisory:init/KE-001"},
+        {"@id": "advisory:init/KE-007"},
+        {"@id": "advisory:init/KE-009"},
+        {"@id": "advisory:init/KE-010"},
+        {"@id": "advisory:init/KE-014"},
+        {"@id": "advisory:init/KE-015"}
+      ],
+      "vsem:targetPhase": {"@id": "ppm:phase/y2q1"}
+    },
+    
+    {
+      "@type": "vsem:StrategicObjective",
+      "@id": "advisory:objective/KE-O2",
+      "name": "AI-Powered Knowledge Retrieval",
+      "description": "Deploy RAG and semantic search enabling consultants to find relevant precedents, methodologies, and expertise in seconds",
+      "vsem:parentPillar": {"@id": "advisory:pillar/knowledge-enablement"},
+      "vsem:targetOutcome": "80% reduction in time to find relevant knowledge",
+      "vsem:keyResults": [
+        {"name": "Knowledge retrieval time", "target": "<30 seconds"},
+        {"name": "Relevance accuracy", "target": ">85%"},
+        {"name": "Daily active users", "target": ">70% consultants"}
+      ],
+      "vsem:deliveringInitiatives": [
+        {"@id": "advisory:init/KE-002"},
+        {"@id": "advisory:init/KE-006"},
+        {"@id": "advisory:init/KE-016"}
+      ],
+      "vsem:targetPhase": {"@id": "ppm:phase/y1q4"}
+    },
+    
+    {
+      "@type": "vsem:StrategicObjective",
+      "@id": "advisory:objective/KE-O3",
+      "name": "Methodology & Expertise Activation",
+      "description": "Digitise methodologies and create expert finder enabling right-first-time delivery through methodology compliance and expertise matching",
+      "vsem:parentPillar": {"@id": "advisory:pillar/knowledge-enablement"},
+      "vsem:targetOutcome": "90% methodology compliance with optimal expertise allocation",
+      "vsem:keyResults": [
+        {"name": "Methodology compliance rate", "target": ">90%"},
+        {"name": "Expert match accuracy", "target": ">85%"},
+        {"name": "Team composition optimisation", "target": "+20% fit score"}
+      ],
+      "vsem:deliveringInitiatives": [
+        {"@id": "advisory:init/KE-003"},
+        {"@id": "advisory:init/KE-004"},
+        {"@id": "advisory:init/KE-005"}
+      ],
+      "vsem:targetPhase": {"@id": "ppm:phase/y1q4"}
+    },
+    
+    {
+      "@type": "vsem:StrategicObjective",
+      "@id": "advisory:objective/PF-O1",
+      "name": "Secure Cloud Foundation",
+      "description": "Deploy Azure Landing Zone with enterprise security controls meeting regulatory requirements for AI workloads processing sensitive client data",
+      "vsem:parentPillar": {"@id": "advisory:pillar/platform-foundation"},
+      "vsem:targetOutcome": "Production-ready secure cloud enabling AI deployment",
+      "vsem:keyResults": [
+        {"name": "Security benchmark compliance", "target": ">95%"},
+        {"name": "Platform availability", "target": "99.9%"},
+        {"name": "Audit findings", "target": "Zero critical"}
+      ],
+      "vsem:deliveringInitiatives": [
+        {"@id": "advisory:init/PF-001"},
+        {"@id": "advisory:init/PF-011"}
+      ],
+      "vsem:targetPhase": {"@id": "ppm:phase/foundation"},
+      "vsem:criticalPath": true
+    },
+    
+    {
+      "@type": "vsem:StrategicObjective",
+      "@id": "advisory:objective/PF-O2",
+      "name": "Enterprise Data Platform",
+      "description": "Build unified data platform enabling analytics, AI training, and knowledge management with proper governance",
+      "vsem:parentPillar": {"@id": "advisory:pillar/platform-foundation"},
+      "vsem:targetOutcome": "Single data platform serving all AI and analytics workloads",
+      "vsem:keyResults": [
+        {"name": "Data sources integrated", "target": ">50"},
+        {"name": "Data quality score", "target": ">90%"},
+        {"name": "Analytics query performance", "target": "<5s"}
+      ],
+      "vsem:deliveringInitiatives": [
+        {"@id": "advisory:init/PF-002"},
+        {"@id": "advisory:init/PF-004"},
+        {"@id": "advisory:init/PF-007"},
+        {"@id": "advisory:init/GOV-004"}
+      ],
+      "vsem:targetPhase": {"@id": "ppm:phase/y1q3"}
+    },
+    
+    {
+      "@type": "vsem:StrategicObjective",
+      "@id": "advisory:objective/PF-O3",
+      "name": "AI/ML Operations Platform",
+      "description": "Deploy MLOps platform enabling rapid model development, deployment, monitoring, and governance at scale",
+      "vsem:parentPillar": {"@id": "advisory:pillar/platform-foundation"},
+      "vsem:targetOutcome": "Industrialised AI/ML capability with full governance",
+      "vsem:keyResults": [
+        {"name": "Model deployment time", "target": "<1 day"},
+        {"name": "Models in production", "target": ">50"},
+        {"name": "Model governance compliance", "target": "100%"}
+      ],
+      "vsem:deliveringInitiatives": [
+        {"@id": "advisory:init/PF-003"},
+        {"@id": "advisory:init/PF-006"},
+        {"@id": "advisory:init/PF-008"},
+        {"@id": "advisory:init/PF-009"},
+        {"@id": "advisory:init/GOV-003"}
+      ],
+      "vsem:targetPhase": {"@id": "ppm:phase/y2q2"}
+    },
+    
+    {
+      "@type": "vsem:StrategicObjective",
+      "@id": "advisory:objective/CX-O1",
+      "name": "Digital Client Engagement",
+      "description": "Deploy client portal with real-time engagement visibility, document sharing, and self-service capabilities",
+      "vsem:parentPillar": {"@id": "advisory:pillar/client-experience"},
+      "vsem:targetOutcome": "60% of clients actively using digital engagement tools",
+      "vsem:keyResults": [
+        {"name": "Client portal adoption", "target": ">60%"},
+        {"name": "Self-service utilisation", "target": ">40%"},
+        {"name": "Client satisfaction (NPS)", "target": "+20 points"}
+      ],
+      "vsem:deliveringInitiatives": [
+        {"@id": "advisory:init/CX-001"},
+        {"@id": "advisory:init/CX-002"},
+        {"@id": "advisory:init/CX-003"},
+        {"@id": "advisory:init/CX-005"}
+      ],
+      "vsem:targetPhase": {"@id": "ppm:phase/y2q1"}
+    },
+    
+    {
+      "@type": "vsem:StrategicObjective",
+      "@id": "advisory:objective/CX-O2",
+      "name": "AI-Enhanced Client Intelligence",
+      "description": "Deploy AI capabilities that deepen client understanding and enable proactive value delivery",
+      "vsem:parentPillar": {"@id": "advisory:pillar/client-experience"},
+      "vsem:targetOutcome": "Predictive client engagement driving increased share of wallet",
+      "vsem:keyResults": [
+        {"name": "Cross-sell identification accuracy", "target": ">70%"},
+        {"name": "Proactive outreach conversion", "target": ">25%"},
+        {"name": "Client retention rate", "target": ">95%"}
+      ],
+      "vsem:deliveringInitiatives": [
+        {"@id": "advisory:init/CX-004"},
+        {"@id": "advisory:init/CX-006"},
+        {"@id": "advisory:init/CX-007"},
+        {"@id": "advisory:init/CX-008"},
+        {"@id": "advisory:init/CX-009"}
+      ],
+      "vsem:targetPhase": {"@id": "ppm:phase/y3q2"}
+    },
+
+    {
+      "@type": "ppm:Theme",
+      "@id": "advisory:theme/ai-native-delivery",
+      "name": "AI-Native Delivery",
+      "description": "Embed AI as a first-class participant in every advisory delivery process, not as an afterthought",
+      "ppm:strategicRationale": "AI augmentation is the core differentiator—it must be woven into delivery DNA, not bolted on",
+      "ppm:crossCutsPillars": [
+        {"@id": "advisory:pillar/delivery-automation"},
+        {"@id": "advisory:pillar/knowledge-enablement"},
+        {"@id": "advisory:pillar/client-experience"}
+      ],
+      "ppm:taggedInitiatives": [
+        "advisory:init/DA-003", "advisory:init/DA-005", "advisory:init/DA-006", "advisory:init/DA-007",
+        "advisory:init/DA-036", "advisory:init/DA-037", "advisory:init/DA-042", "advisory:init/DA-043",
+        "advisory:init/KE-002", "advisory:init/KE-003", "advisory:init/CX-007"
+      ],
+      "ppm:themeMetric": {
+        "name": "AI Tool Daily Active Usage",
+        "target": ">80% consultants"
+      }
+    },
+    
+    {
+      "@type": "ppm:Theme",
+      "@id": "advisory:theme/knowledge-capitalisation",
+      "name": "Knowledge Capitalisation",
+      "description": "Transform tacit knowledge locked in documents, heads, and past engagements into reusable, searchable digital assets",
+      "ppm:strategicRationale": "Institutional knowledge is the firm's core asset—failing to capitalise it means reinventing the wheel on every engagement",
+      "ppm:crossCutsPillars": [
+        {"@id": "advisory:pillar/knowledge-enablement"},
+        {"@id": "advisory:pillar/delivery-automation"}
+      ],
+      "ppm:taggedInitiatives": [
+        "advisory:init/KE-001", "advisory:init/KE-004", "advisory:init/KE-005", "advisory:init/KE-006",
+        "advisory:init/KE-011", "advisory:init/KE-012", "advisory:init/KE-015", "advisory:init/DA-021"
+      ],
+      "ppm:themeMetric": {
+        "name": "Knowledge Reuse Rate",
+        "target": ">50% deliverables leveraging precedent"
+      }
+    },
+    
+    {
+      "@type": "ppm:Theme",
+      "@id": "advisory:theme/consultant-leverage",
+      "name": "Consultant Leverage",
+      "description": "Multiply the effective capacity of every consultant through AI assistance, automation, and knowledge access",
+      "ppm:strategicRationale": "Consultant time is the scarce resource—every hour freed from admin is an hour available for client value",
+      "ppm:crossCutsPillars": [
+        {"@id": "advisory:pillar/delivery-automation"},
+        {"@id": "advisory:pillar/knowledge-enablement"},
+        {"@id": "advisory:pillar/client-experience"}
+      ],
+      "ppm:taggedInitiatives": [
+        "advisory:init/DA-001", "advisory:init/DA-002", "advisory:init/DA-005", "advisory:init/DA-008",
+        "advisory:init/KE-002", "advisory:init/KE-003", "advisory:init/KE-006", "advisory:init/GOV-001"
+      ],
+      "ppm:themeMetric": {
+        "name": "Consultant Utilisation on Value-Add",
+        "target": ">70% of time"
+      }
+    },
+    
+    {
+      "@type": "ppm:Theme",
+      "@id": "advisory:theme/compliance-by-design",
+      "name": "Compliance by Design",
+      "description": "Embed regulatory compliance, security controls, and governance into platforms so compliance is automatic, not an afterthought",
+      "ppm:strategicRationale": "Operating in regulated environments demands compliance—building it in is cheaper than retrofitting",
+      "ppm:crossCutsPillars": [
+        {"@id": "advisory:pillar/platform-foundation"},
+        {"@id": "advisory:pillar/delivery-automation"}
+      ],
+      "ppm:taggedInitiatives": [
+        "advisory:init/PF-001", "advisory:init/PF-011", "advisory:init/GOV-003", "advisory:init/GOV-004",
+        "advisory:init/DA-009", "advisory:init/DA-018", "advisory:init/DA-029", "advisory:init/DA-035"
+      ],
+      "ppm:themeMetric": {
+        "name": "Automated Compliance Coverage",
+        "target": ">90% of controls"
+      }
+    },
+    
+    {
+      "@type": "ppm:Theme",
+      "@id": "advisory:theme/client-intimacy",
+      "name": "Client Intimacy",
+      "description": "Deepen client relationships through digital transparency, proactive insights, and seamless collaboration",
+      "ppm:strategicRationale": "Advisory is a relationship business—digital tools should deepen intimacy, not create distance",
+      "ppm:crossCutsPillars": [
+        {"@id": "advisory:pillar/client-experience"},
+        {"@id": "advisory:pillar/delivery-automation"}
+      ],
+      "ppm:taggedInitiatives": [
+        "advisory:init/CX-001", "advisory:init/CX-002", "advisory:init/CX-003", "advisory:init/CX-007",
+        "advisory:init/CX-009", "advisory:init/KE-014", "advisory:init/DA-038"
+      ],
+      "ppm:themeMetric": {
+        "name": "Client Relationship Score",
+        "target": "Top quartile NPS"
+      }
+    },
+
+    {
+      "@type": "ppm:ValueChain",
+      "@id": "advisory:valuechain/proposal-excellence",
+      "name": "Proposal Excellence Value Chain",
+      "description": "How AI-powered proposal automation delivers strategic value",
+      "ppm:chain": [
+        {
+          "ppm:initiative": {"@id": "advisory:init/PF-001"},
+          "ppm:delivers": "Secure cloud infrastructure"
+        },
+        {
+          "ppm:initiative": {"@id": "advisory:init/KE-001"},
+          "ppm:delivers": "Structured knowledge graph with methodologies and precedents"
+        },
+        {
+          "ppm:initiative": {"@id": "advisory:init/KE-002"},
+          "ppm:delivers": "RAG pipeline for intelligent content retrieval"
+        },
+        {
+          "ppm:initiative": {"@id": "advisory:init/DA-005"},
+          "ppm:delivers": "AI-powered proposal generation capability"
+        },
+        {
+          "ppm:capability": "Automated proposal creation from templates and precedents",
+          "ppm:benefit": "50% reduction in proposal cycle time"
+        },
+        {
+          "ppm:objective": {"@id": "advisory:objective/DA-O3"},
+          "ppm:contributes": "Intelligent Proposal Creation"
+        },
+        {
+          "ppm:pillar": {"@id": "advisory:pillar/delivery-automation"},
+          "ppm:advances": "35% of portfolio value"
+        },
+        {
+          "ppm:vision": {"@id": "advisory:vision/ai-augmented-advisory"},
+          "ppm:realises": "AI-Augmented Advisory Excellence"
+        }
+      ]
+    },
+    
+    {
+      "@type": "ppm:ValueChain",
+      "@id": "advisory:valuechain/knowledge-leverage",
+      "name": "Knowledge Leverage Value Chain",
+      "description": "How knowledge enablement multiplies consultant effectiveness",
+      "ppm:chain": [
+        {
+          "ppm:initiative": {"@id": "advisory:init/KE-001"},
+          "ppm:delivers": "Enterprise knowledge graph foundation"
+        },
+        {
+          "ppm:initiative": {"@id": "advisory:init/KE-004"},
+          "ppm:delivers": "Digitised methodology library"
+        },
+        {
+          "ppm:initiative": {"@id": "advisory:init/KE-005"},
+          "ppm:delivers": "Mined engagement history"
+        },
+        {
+          "ppm:initiative": {"@id": "advisory:init/KE-006"},
+          "ppm:delivers": "Precedent search assistant"
+        },
+        {
+          "ppm:capability": "AI-powered precedent discovery in seconds",
+          "ppm:benefit": "80% reduction in knowledge search time"
+        },
+        {
+          "ppm:objective": {"@id": "advisory:objective/KE-O2"},
+          "ppm:contributes": "AI-Powered Knowledge Retrieval"
+        },
+        {
+          "ppm:pillar": {"@id": "advisory:pillar/knowledge-enablement"},
+          "ppm:advances": "30% of portfolio value"
+        },
+        {
+          "ppm:vision": {"@id": "advisory:vision/ai-augmented-advisory"},
+          "ppm:realises": "Every consultant with firm-wide expertise"
+        }
+      ]
+    }
+  ]
+}

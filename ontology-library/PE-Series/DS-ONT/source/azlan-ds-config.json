@@ -1,0 +1,159 @@
+{
+  "@context": "https://platformcore.io/context/ds-config/v1",
+  "@type": "DesignSystemConfiguration",
+  "@id": "azlan-ds-e2e-config",
+  "name": "Azlan DS-E2E Test Configuration",
+  "description": "Isolated DS-E2E test environment for PFI-BAIV-Product-Azlan",
+  "version": "1.0.0",
+  "created": "2026-01-30",
+
+  "deploymentContext": {
+    "pfiInstance": "PFI-BAIV",
+    "productName": "Azlan",
+    "repoUrl": "https://github.com/ajrmooreuk/Azlan-EA-AAA",
+    "branch": "main",
+    "environment": "test",
+    "isolation": "full"
+  },
+
+  "designSystemSource": {
+    "brand": "BAIV",
+    "tokensPath": "./tokens/baiv-tokens.css",
+    "providerPath": "./tokens/baiv-tokens.tsx",
+    "ontologyPath": "./design-system-ontology-v1.0.0.json",
+    "figmaFileKey": "bXCyfNwzc8Z9kEeFIeIB8C",
+    "figmaFileName": "BAIV Figma Variables v3"
+  },
+
+  "brandSwitching": {
+    "enabled": true,
+    "mechanism": "figma-file-url",
+    "envVarName": "DS_ACTIVE_BRAND",
+    "note": "DS_ACTIVE_BRAND points to Figma file URL - extraction pipeline pulls tokens from that source",
+    "supportedBrands": [
+      {
+        "brandId": "baiv",
+        "brandName": "Be AI Visible",
+        "figmaFileKey": "bXCyfNwzc8Z9kEeFIeIB8C",
+        "figmaFileUrl": "https://www.figma.com/design/bXCyfNwzc8Z9kEeFIeIB8C",
+        "active": true
+      },
+      {
+        "brandId": "w4m",
+        "brandName": "Work4Me",
+        "figmaFileKey": "${W4M_FIGMA_FILE_KEY}",
+        "figmaFileUrl": "${W4M_FIGMA_FILE_URL}",
+        "active": false,
+        "status": "configure-when-available"
+      },
+      {
+        "brandId": "azlan-pfc",
+        "brandName": "Azlan PFC",
+        "figmaFileKey": "${AZLAN_PFC_FIGMA_FILE_KEY}",
+        "figmaFileUrl": "${AZLAN_PFC_FIGMA_FILE_URL}",
+        "active": false,
+        "status": "configure-when-available"
+      },
+      {
+        "brandId": "vhf-viridian",
+        "brandName": "Viridian Health & Fitness",
+        "figmaFileKey": "CWQqQv1fk9SLYjZFQKA2lE",
+        "figmaFileUrl": "https://www.figma.com/design/CWQqQv1fk9SLYjZFQKA2lE/VHF-Design-System-v1.1",
+        "active": false,
+        "status": "instance-data-populated",
+        "instanceDataRepo": "ajrmooreuk/VHF-App-Mk3",
+        "instanceDataPath": "PBS/ONTOLOGIES/VHF-DESIGN-SYSTEM-ONT/vhf-viridian-ds-instance-v1.0.0.jsonld",
+        "extractedAt": "2026-02-10"
+      }
+    ],
+    "extractionPipeline": {
+      "shared": true,
+      "note": "Same extraction pipeline for all brands - just switch Figma source URL",
+      "outputPath": "./tokens/",
+      "outputFormat": ["css", "tsx"]
+    }
+  },
+
+  "supabaseConfig": {
+    "note": "Configure with your own free-tier Supabase project for testing",
+    "envVars": {
+      "NEXT_PUBLIC_SUPABASE_URL": "${AZLAN_SUPABASE_URL}",
+      "NEXT_PUBLIC_SUPABASE_ANON_KEY": "${AZLAN_SUPABASE_ANON_KEY}",
+      "SUPABASE_SERVICE_ROLE_KEY": "${AZLAN_SUPABASE_SERVICE_KEY}"
+    },
+    "tables": [
+      "design_system",
+      "design_tokens",
+      "token_versions",
+      "brand_variants"
+    ]
+  },
+
+  "e2eWorkflow": {
+    "stages": [
+      {
+        "stage": 1,
+        "name": "Figma Extraction",
+        "description": "Extract tokens from Figma via MCP",
+        "status": "ready",
+        "artifacts": ["tokens/*.css", "tokens/*.tsx"]
+      },
+      {
+        "stage": 2,
+        "name": "Supabase Setup",
+        "description": "Create DB tables and functions",
+        "status": "pending",
+        "blockedBy": "Supabase project creation"
+      },
+      {
+        "stage": 3,
+        "name": "Token Store",
+        "description": "Load tokens into Supabase JSONB",
+        "status": "pending",
+        "dependsOn": ["stage-2"]
+      },
+      {
+        "stage": 4,
+        "name": "React Integration",
+        "description": "Provider + hooks + CSS injection",
+        "status": "ready",
+        "artifacts": ["tokens/baiv-tokens.tsx"]
+      },
+      {
+        "stage": 5,
+        "name": "Component Rendering",
+        "description": "Token-driven components",
+        "status": "pending",
+        "dependsOn": ["stage-3", "stage-4"]
+      },
+      {
+        "stage": 6,
+        "name": "Brand Switching Test",
+        "description": "Switch between BAIV/W4M/Azlan-PFC",
+        "status": "future",
+        "dependsOn": ["stage-5"]
+      }
+    ]
+  },
+
+  "testing": {
+    "isolationLevel": "full",
+    "testTypes": ["unit", "integration", "e2e"],
+    "coverageTarget": 80,
+    "brandSwitchTests": true
+  },
+
+  "relatedDocs": {
+    "implementationPlan": "./ds-e2e-implementation-plan.md",
+    "productionArchitecture": "./baiv-production-architecture-consolidated.md",
+    "skillsPlan": "./baiv-design-system-skills-plan.md",
+    "e2eGuide": "./baiv-design-system-e2e-to-production.md"
+  },
+
+  "azlanSpecificNotes": [
+    "This is an ISOLATED test environment - changes here don't affect PF-Core-BAIV",
+    "Use your own Supabase free-tier project for database testing",
+    "BAIV tokens are the default design system - can swap to W4M for multi-brand testing",
+    "Azlan serves as PFI-BAIV-Product test bed before production deployment"
+  ]
+}

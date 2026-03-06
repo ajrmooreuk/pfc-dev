@@ -1,0 +1,240 @@
+{
+  "@context": {
+    "ds": "https://platformcore.io/ontology/ds/",
+    "pe": "https://platformcore.io/ontology/process-engineering/"
+  },
+  "@type": "pe:ClassificationRuleset",
+  "pe:rulesetId": "DS-CLASSIFY-001",
+  "pe:rulesetName": "DS-ONT Three-Tier Token Classification Rules",
+  "pe:version": "1.0.0",
+  "pe:date": "2026-02-13",
+  "pe:description": "Codified rules for classifying raw Figma get_variable_defs output into DS-ONT three-tier cascade (Primitive → Semantic → Component). Applied during PE-DS-EXTRACT-001 Phase 2.",
+  "pe:referencedBy": "PE-DS-EXTRACT-001 v2.1.0, PHASE-2-CLASSIFY",
+
+  "classificationStrategy": {
+    "primary": "sectionContext",
+    "secondary": "variableNamePattern",
+    "description": "Classification uses two signals: (1) which Figma section/frame the token was extracted from determines the default tier, (2) the variable name pattern confirms or overrides the section-based classification."
+  },
+
+  "sectionToTierMap": {
+    "description": "Maps Figma section names (from get_metadata) to default DS-ONT tier and semantic group. Section name matching is case-insensitive, prefix-based.",
+    "rules": [
+      {
+        "sectionPattern": "Primary",
+        "tier": "Semantic",
+        "group": "primary",
+        "tokenNamePrefix": "primary",
+        "entityType": "ds:SemanticToken"
+      },
+      {
+        "sectionPattern": "Secondary",
+        "tier": "Semantic",
+        "group": "secondary",
+        "tokenNamePrefix": "secondary",
+        "entityType": "ds:SemanticToken"
+      },
+      {
+        "sectionPattern": "Error",
+        "tier": "Semantic",
+        "group": "error",
+        "tokenNamePrefix": "error",
+        "entityType": "ds:SemanticToken"
+      },
+      {
+        "sectionPattern": "Warning",
+        "tier": "Semantic",
+        "group": "warning",
+        "tokenNamePrefix": "warning",
+        "entityType": "ds:SemanticToken"
+      },
+      {
+        "sectionPattern": "Success",
+        "tier": "Semantic",
+        "group": "success",
+        "tokenNamePrefix": "success",
+        "entityType": "ds:SemanticToken"
+      },
+      {
+        "sectionPattern": "Information",
+        "tier": "Semantic",
+        "group": "information",
+        "tokenNamePrefix": "information",
+        "entityType": "ds:SemanticToken"
+      },
+      {
+        "sectionPattern": "Accent",
+        "tier": "Semantic",
+        "group": "accent",
+        "tokenNamePrefix": "accent",
+        "entityType": "ds:SemanticToken"
+      },
+      {
+        "sectionPattern": "Greyscale|Neutral",
+        "tier": "Semantic",
+        "group": "neutral",
+        "tokenNamePrefix": "neutral",
+        "entityType": "ds:SemanticToken"
+      },
+      {
+        "sectionPattern": "Typography",
+        "tier": "Primitive",
+        "group": "typography",
+        "tokenNamePrefix": "typography",
+        "entityType": "ds:PrimitiveToken"
+      },
+      {
+        "sectionPattern": "Size|Radii|Borders|Spacing",
+        "tier": "Primitive",
+        "group": "dimensions",
+        "tokenNamePrefix": null,
+        "entityType": "ds:PrimitiveToken",
+        "subGroupRules": [
+          {"variablePattern": "^Radius|^var\\(--sds-size-radius", "tokenNamePrefix": "borderRadius", "valueType": "Radius"},
+          {"variablePattern": "^var\\(--sds-size-stroke|^var\\(--sds-color-border|^Border", "tokenNamePrefix": "border", "valueType": "Border"},
+          {"variablePattern": "^var\\(--sds-size-space|^xs$|^sml$|^med$|^lrg$|^xlrg$", "tokenNamePrefix": "spacing", "valueType": "Spacing"},
+          {"variablePattern": "^xxs$|^xsml$|^xxsml$|^full$", "tokenNamePrefix": "borderRadius", "valueType": "Radius"}
+        ]
+      },
+      {
+        "sectionPattern": "Colour Tokens",
+        "tier": "mixed",
+        "description": "Top-level colour section contains both semantic subsections and primitive colour scales. Classify children by their own section pattern match.",
+        "entityType": null
+      }
+    ]
+  },
+
+  "variableNameToTokenName": {
+    "description": "Maps Figma variable slash-path names to DS-ONT ds:tokenName dot-path format. Applied after section-based tier assignment.",
+    "semanticMappings": [
+      {"figmaPattern": "Surface/Subtle", "tokenSuffix": "surface.subtle"},
+      {"figmaPattern": "Surface/Lighter", "tokenSuffix": "surface.lighter"},
+      {"figmaPattern": "Surface/Default", "tokenSuffix": "surface.default"},
+      {"figmaPattern": "Surface/Darker", "tokenSuffix": "surface.darker"},
+      {"figmaPattern": "Surface/Disabled", "tokenSuffix": "surface.disabled"},
+      {"figmaPattern": "Border/Subtle", "tokenSuffix": "border.subtle"},
+      {"figmaPattern": "Border/Lighter", "tokenSuffix": "border.lighter"},
+      {"figmaPattern": "Border/Default", "tokenSuffix": "border.default"},
+      {"figmaPattern": "Border/Darker", "tokenSuffix": "border.darker"},
+      {"figmaPattern": "Border/Disabled", "tokenSuffix": "border.disabled"},
+      {"figmaPattern": "Text/Darker", "tokenSuffix": "text.label"},
+      {"figmaPattern": "Text/Headings", "tokenSuffix": "text.title", "group": "neutral"},
+      {"figmaPattern": "Text/Body", "tokenSuffix": "text.body", "group": "neutral"},
+      {"figmaPattern": "Text/Captions", "tokenSuffix": "text.caption", "group": "neutral"},
+      {"figmaPattern": "Text/Footnotes", "tokenSuffix": "text.footnote", "group": "neutral"},
+      {"figmaPattern": "Text/Negative", "tokenSuffix": "text.negative", "group": "neutral"},
+      {"figmaPattern": "Text/Disabled", "tokenSuffix": "text.disabled", "group": "neutral"}
+    ],
+    "primitiveMappings": [
+      {"figmaPattern": "Font Family/Font Headings", "tokenName": "typography.fontFamily.headings", "valueType": "Typography"},
+      {"figmaPattern": "Font Family/Font Body", "tokenName": "typography.fontFamily.body", "valueType": "Typography"},
+      {"figmaPattern": "Font Family/Font Captions", "tokenName": "typography.fontFamily.captions", "valueType": "Typography"},
+      {"figmaPattern": "Weight/Regular", "tokenName": "typography.fontWeight.regular", "valueType": "Typography"},
+      {"figmaPattern": "Weight/Bold", "tokenName": "typography.fontWeight.bold", "valueType": "Typography"},
+      {"figmaPattern": "Letter-spacing/Normal", "tokenName": "typography.letterSpacing.normal", "valueType": "Typography"},
+      {"figmaPattern": "Letter-spacing/Looser", "tokenName": "typography.letterSpacing.looser", "valueType": "Typography"},
+      {"figmaPattern": "Letter-spacing/Easy", "tokenName": "typography.letterSpacing.easy", "valueType": "Typography"},
+      {"figmaPattern": "^Size/(\\w+) \\((\\d+)\\)$", "tokenNameTemplate": "typography.fontSize.{1}", "valueType": "Typography", "valueField": "{2}"}
+    ]
+  },
+
+  "valueTypeInference": {
+    "description": "Infer ds:valueType from the token value format when not explicitly mapped.",
+    "rules": [
+      {"valuePattern": "^#[0-9a-fA-F]{6}$", "valueType": "Color"},
+      {"valuePattern": "^#[0-9a-fA-F]{8}$", "valueType": "Color"},
+      {"valuePattern": "^\\d+(\\.\\d+)?rem$", "valueType": "Typography"},
+      {"valuePattern": "^\\d+(\\.\\d+)?px$", "valueType": "Spacing"},
+      {"valuePattern": "^\\d{3,4}$", "valueType": "Spacing", "note": "Numeric-only values (4, 8, 12, 24) — context determines Spacing vs Radius"},
+      {"valuePattern": "^(Regular|Bold|Medium|SemiBold)$", "valueType": "Typography"},
+      {"valuePattern": "^[A-Z][a-z]+(\\s[A-Z][a-z]+)*$", "valueType": "Typography", "note": "Font family names like 'Open Sans'"}
+    ]
+  },
+
+  "excludePatterns": {
+    "description": "Variable names matching these patterns are excluded from classification (noise/duplicates).",
+    "patterns": [
+      {"pattern": "^lrg$", "reason": "Appears in every section as a size reference — duplicate of spacing.lg primitive"},
+      {"pattern": "^Background/", "reason": "Duplicate of Surface/ tokens in some Figma files — deduplicate by preferring Surface/ naming"},
+      {"pattern": "^var\\(--sds-", "reason": "Figma SDS system variables — map to explicit token names instead of preserving var() references"},
+      {"pattern": "YellowBdr/", "reason": "Warning-specific border strokes — already captured via Warning section Border/ tokens"}
+    ]
+  },
+
+  "componentTierRules": {
+    "description": "Component-tier tokens are not directly extractable from Figma get_variable_defs — they are authored via the DesignComponent editor in the visualiser (S7.6.4). Classification rule: any token with a component-scoped name (button.*, input.*, card.*, checkbox.*) is Component tier.",
+    "namePatterns": [
+      "^button\\.",
+      "^input\\.",
+      "^card\\.",
+      "^checkbox\\.",
+      "^select\\.",
+      "^modal\\.",
+      "^badge\\.",
+      "^tooltip\\."
+    ],
+    "entityType": "ds:ComponentToken",
+    "requiresSemanticRef": true,
+    "note": "Component tokens reference semantic tokens — BR-DS-002 enforces this cascade integrity."
+  },
+
+  "themeModeMapping": {
+    "description": "Rules for mapping extracted tokens to DS-ONT ThemeMode entities (light/dark). Most Figma brand files define only light mode values — dark mode is derived or pending.",
+    "version": "1.0.0",
+    "detectionStrategy": {
+      "step1": "Check if Figma file has separate 'Dark Mode' or 'Dark' section in get_metadata output.",
+      "step2": "If yes: extract dark mode section tokens and populate ds:darkModeValue on SemanticTokens.",
+      "step3": "If no (typical): set darkModeStatus='derived' and apply derivation rules below.",
+      "step4": "Generate ThemeMode entities: ds:mode-light (always), ds:mode-dark (if dark values present or derived)."
+    },
+    "darkModeDerivationRules": {
+      "description": "When Figma has no dark mode section, dark mode values can be derived from the primitive colour scale by inverting the scale position. These are approximate — design review recommended.",
+      "rules": [
+        {
+          "tokenPattern": "*.surface.subtle",
+          "derivation": "Use 900-step value from the same colour scale",
+          "example": "primary.surface.subtle light=#e2f7ff → dark=#00232b (teal/900)"
+        },
+        {
+          "tokenPattern": "*.surface.default",
+          "derivation": "Use 700-step value from the same colour scale",
+          "example": "primary.surface.default light=#00a4bf → dark=#005b6b (teal/700)"
+        },
+        {
+          "tokenPattern": "*.surface.darker",
+          "derivation": "Use 300-step value from the same colour scale",
+          "example": "primary.surface.darker light=#005b6b → dark=#00d0f2 (teal/300)"
+        },
+        {
+          "tokenPattern": "*.text.*",
+          "derivation": "Invert luminance — dark text on light bg becomes light text on dark bg",
+          "example": "neutral.text.title light=#1c1f1f → dark=#e9f3f3"
+        },
+        {
+          "tokenPattern": "neutral.surface.default",
+          "derivation": "Use near-black value from neutral scale (DR-CANVAS-001: luminance < 0.05)",
+          "example": "neutral.surface.default light=#d9ebeb → dark=#0f1117 (visualiser canvas)"
+        }
+      ]
+    },
+    "darkModeStatusValues": [
+      {"value": "extracted", "meaning": "Dark mode values extracted directly from a Figma dark mode section"},
+      {"value": "derived", "meaning": "Dark mode values computed from derivation rules — approximate, needs design review"},
+      {"value": "defined-in-css-pending-figma-extraction", "meaning": "Dark mode values exist in CSS but Figma dark section not yet created"},
+      {"value": "not-supported", "meaning": "Brand does not support dark mode (ds:themeModeSupport=false)"}
+    ],
+    "themeModeEntities": {
+      "light": {"@type": "ds:ThemeMode", "ds:modeName": "light", "ds:isDefault": true},
+      "dark": {"@type": "ds:ThemeMode", "ds:modeName": "dark", "ds:isDefault": false}
+    }
+  },
+
+  "expectedYields": {
+    "description": "Expected token counts per tier after classification and deduplication, based on verified BAIV extraction.",
+    "primitive": {"min": 30, "typical": 44, "categories": ["colors", "typography", "spacing", "borderRadius", "border"]},
+    "semantic": {"min": 50, "typical": 75, "categories": ["surface", "border", "text"], "groups": ["primary", "secondary", "error", "warning", "success", "information", "accent", "neutral"]},
+    "component": {"min": 0, "typical": 15, "categories": ["component"], "note": "Zero is valid for brands without component tokens — authored separately via S7.6.4"},
+    "totalDeduplicatedRange": [80, 150]
+  }
+}

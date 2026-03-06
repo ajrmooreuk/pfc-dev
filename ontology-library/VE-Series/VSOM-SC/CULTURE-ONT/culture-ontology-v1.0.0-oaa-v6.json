@@ -1,0 +1,848 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "cul": "https://oaa-ontology.org/v6/culture/",
+    "nar": "https://oaa-ontology.org/v6/narrative/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/",
+    "rrr": "https://oaa-ontology.org/v6/rrr/",
+    "orgctx": "https://oaa-ontology.org/v6/org-context/",
+    "bsc": "https://oaa-ontology.org/v6/bsc/"
+  },
+  "@id": "https://oaa-ontology.org/v6/culture/schema",
+  "@type": "owl:Ontology",
+  "name": "Strategic Culture Alignment Ontology",
+  "alternateName": "CULTURE-ONT — Culture-Strategy Alignment Matrix, Observable Signals & Shift Targets",
+  "description": "Formalizes the relationship between strategy and organisational culture as a measurable, assessable, and actionable domain. Culture is not a separate concern from strategy — it is the execution environment. If the culture contradicts the strategy, the culture wins. This ontology provides the four-quadrant alignment matrix (Aligned, Aspirational, Legacy, Conflicting), observable cultural signal taxonomy, measurable culture shift targets, and quadrant-specific communication response patterns. Each stated strategic value is mapped to observable cultural signals and classified into a quadrant, enabling targeted communication interventions. Part of VE-Series VSOM-SC (Strategy Communication).",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "Organisational Culture, Strategy Execution, Change Management",
+  "oaa:status": "Draft",
+  "dateCreated": "2026-02-13",
+  "dateModified": "2026-02-13",
+  "creator": {
+    "@type": "Organization",
+    "name": "W4M Strategic Patterns Framework"
+  },
+  "oaa:imports": [
+    {
+      "@id": "vsom:schema",
+      "name": "VSOM-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "vsom:VSOMFramework",
+        "vsom:VisionComponent"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "nar:schema",
+      "name": "NARRATIVE-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "nar:CommunicationPattern",
+        "nar:CommunicationObjective"
+      ],
+      "importedRelationships": [
+        "nar:patternAchievesObjective"
+      ]
+    },
+    {
+      "@id": "rrr:schema",
+      "name": "RRR-ONT",
+      "version": "4.0.0",
+      "importedEntities": [
+        "rrr:ExecutiveRole"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "orgctx:schema",
+      "name": "ORG-CONTEXT-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "orgctx:OrganizationContext"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "bsc:schema",
+      "name": "BSC-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "bsc:BSCPerspective"
+      ],
+      "importedRelationships": []
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-CUL-001",
+      "name": "Strategy-to-Culture Assessment",
+      "description": "Traverses from VSOM strategy through stated values to observable cultural signals, classifying each into an alignment quadrant. This is the core culture-strategy diagnostic.",
+      "joinPath": "vsom:VSOMFramework → cul:alignmentAssessesVSOM → cul:CultureStrategyAlignment → cul:hasAssessmentEntry → cul:CultureAssessmentEntry → cul:assessesValue → cul:CultureValue → cul:entryObservesSignal → cul:CulturalSignal",
+      "useCase": "Diagnose culture-strategy alignment for each stated strategic value"
+    },
+    {
+      "patternId": "JP-CUL-002",
+      "name": "Quadrant-to-Communication Response",
+      "description": "From each alignment quadrant, select the appropriate communication response pattern. Each quadrant demands a different approach: celebrate (Aligned), bridge (Aspirational), build awareness (Legacy), confront honestly (Conflicting).",
+      "joinPath": "cul:CultureAssessmentEntry → cul:entryInQuadrant → cul:AlignmentQuadrant → cul:quadrantHasResponse → cul:CommunicationResponse → cul:responseUsesPattern → nar:CommunicationPattern",
+      "useCase": "Select quadrant-appropriate communication strategy for culture gaps"
+    },
+    {
+      "patternId": "JP-CUL-003",
+      "name": "Culture Shift Measurement",
+      "description": "Track culture shift targets over time — from current quadrant toward target quadrant — with measurable signal changes as evidence of progress.",
+      "joinPath": "cul:CultureShiftTarget → cul:shiftTargetForEntry → cul:CultureAssessmentEntry → cul:entryInQuadrant → cul:AlignmentQuadrant [current vs target]",
+      "useCase": "Measure progress of culture change initiatives"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "cul:CultureStrategyAlignment",
+      "@type": "rdfs:Class",
+      "name": "CultureStrategyAlignment",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Container for a complete culture-strategy alignment assessment. Maps stated strategic values against observable cultural signals to produce a quadrant classification for each value. The assessment reveals where culture supports strategy (Aligned), where culture is willing but not yet there (Aspirational), where culture is indifferent (Legacy), and where culture actively contradicts strategy (Conflicting).",
+      "oaa:properties": [
+        {
+          "name": "assessmentId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "vsomFrameworkRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vsom:VSOMFramework @id being assessed"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "assessmentDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "assessedBy",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to rrr:ExecutiveRole @id or team who conducted assessment"
+        },
+        {
+          "name": "overallAlignmentScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Weighted alignment score (0-100). >80 = culturally aligned, <40 = significant culture-strategy gap"
+        },
+        {
+          "name": "quadrantDistribution",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Count of values in each quadrant: e.g. 'Aligned:3, Aspirational:2, Legacy:1, Conflicting:1'"
+        },
+        {
+          "name": "criticalConflicts",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Values classified as Conflicting that pose highest risk to strategy execution",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "nextAssessmentDate",
+          "type": "xsd:date",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "cul:AlignmentQuadrant",
+      "@type": "rdfs:Class",
+      "name": "AlignmentQuadrant",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "One of four quadrants in the culture-strategy alignment matrix. Each quadrant represents a different relationship between stated strategy and observable culture, and demands a different communication response. The matrix has two axes: stated strategy (horizontal) and observable culture (vertical).",
+      "oaa:properties": [
+        {
+          "name": "quadrantId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "quadrantType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Aligned",
+            "Aspirational",
+            "Legacy",
+            "Conflicting"
+          ],
+          "description": "Matrix quadrant classification"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "characterisation",
+          "type": "xsd:string",
+          "required": true,
+          "description": "How this quadrant manifests in the organisation"
+        },
+        {
+          "name": "riskLevel",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Low",
+            "Moderate",
+            "High",
+            "Critical"
+          ],
+          "description": "Risk to strategy execution"
+        },
+        {
+          "name": "communicationApproach",
+          "type": "xsd:string",
+          "required": true,
+          "description": "High-level communication approach for this quadrant"
+        }
+      ],
+      "_quadrantDefinitions": {
+        "Aligned": {
+          "characterisation": "Culture reinforces strategy — observable behaviours, incentives, and rituals actively support stated strategic values",
+          "riskLevel": "Low",
+          "communicationApproach": "Celebrate and reinforce — use case studies of strategy-culture alignment"
+        },
+        "Aspirational": {
+          "characterisation": "Culture says yes but behaviour says not yet — willingness without capability or habit",
+          "riskLevel": "Moderate",
+          "communicationApproach": "Bridge narratives — acknowledge the gap, show the path, celebrate early signals"
+        },
+        "Legacy": {
+          "characterisation": "Culture doesn't address strategy — not conflicting, just indifferent or unaware",
+          "riskLevel": "High",
+          "communicationApproach": "Awareness building — connect new strategy to existing cultural strengths"
+        },
+        "Conflicting": {
+          "characterisation": "Culture actively contradicts strategy — incentives, behaviours, or rituals work against stated values",
+          "riskLevel": "Critical",
+          "communicationApproach": "Honest confrontation — name the contradiction, define what must change, set measurable culture shift targets"
+        }
+      }
+    },
+    {
+      "@id": "cul:CulturalSignal",
+      "@type": "rdfs:Class",
+      "name": "CulturalSignal",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "An observable organisational signal that indicates cultural state. Signals are the evidence base for culture-strategy alignment assessment — they are what people actually do, reward, celebrate, and say, as opposed to what the strategy document declares. Five signal categories: behaviours, incentives, rituals, symbols, and language.",
+      "oaa:properties": [
+        {
+          "name": "signalId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "signalCategory",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Behaviour",
+            "Incentive",
+            "Ritual",
+            "Symbol",
+            "Language"
+          ],
+          "description": "Type of cultural signal"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What is observed (e.g. 'Managers publicly celebrate compliance over innovation')"
+        },
+        {
+          "name": "observedIn",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Where/when this signal is observable (e.g. 'quarterly reviews', 'Slack channels', 'promotion decisions')"
+        },
+        {
+          "name": "frequency",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Pervasive",
+            "Frequent",
+            "Occasional",
+            "Rare"
+          ],
+          "description": "How often this signal is observed"
+        },
+        {
+          "name": "strength",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Strong",
+            "Moderate",
+            "Weak"
+          ],
+          "description": "How strongly this signal indicates cultural state"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to orgctx:OrganizationContext @id where observed"
+        },
+        {
+          "name": "evidenceNotes",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Specific evidence or examples supporting this signal observation"
+        }
+      ]
+    },
+    {
+      "@id": "cul:CultureValue",
+      "@type": "rdfs:Class",
+      "name": "CultureValue",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "A stated strategic value being assessed for cultural alignment. Values are extracted from the VSOM strategy (Vision component) and represent what the organisation says it stands for. Each value is assessed against observable cultural signals to determine alignment quadrant.",
+      "oaa:properties": [
+        {
+          "name": "valueId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name",
+          "description": "The stated value (e.g. 'Innovation', 'Customer-First', 'Transparency')"
+        },
+        {
+          "name": "source",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Where this value is stated (e.g. 'VSOM Vision Component', 'Corporate Strategy Document')"
+        },
+        {
+          "name": "vsomVisionRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:VisionComponent @id if applicable"
+        },
+        {
+          "name": "strategicImportance",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Critical",
+            "High",
+            "Medium"
+          ],
+          "description": "How important this value is to strategy execution"
+        },
+        {
+          "name": "bscPerspectiveAlignment",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Which BSC perspective this value most closely aligns to"
+        }
+      ]
+    },
+    {
+      "@id": "cul:CultureAssessmentEntry",
+      "@type": "rdfs:Class",
+      "name": "CultureAssessmentEntry",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Individual mapping of a stated strategic value to observed cultural signals, resulting in a quadrant classification. This is the core unit of analysis: 'For value X, we observe signals Y, which places it in quadrant Z.' The entry includes both supporting signals (evidence of alignment) and contradicting signals (evidence of misalignment).",
+      "oaa:properties": [
+        {
+          "name": "entryId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "valueRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to cul:CultureValue @id being assessed"
+        },
+        {
+          "name": "quadrantRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to cul:AlignmentQuadrant @id classification result"
+        },
+        {
+          "name": "supportingSignalRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to cul:CulturalSignal @ids that support alignment",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "contradictingSignalRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to cul:CulturalSignal @ids that contradict alignment",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "alignmentScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Alignment score for this specific value (0-100)"
+        },
+        {
+          "name": "confidence",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "High",
+            "Moderate",
+            "Low"
+          ],
+          "description": "Confidence in the quadrant classification based on signal strength and coverage"
+        },
+        {
+          "name": "commentary",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Qualitative assessment of the alignment state for this value"
+        },
+        {
+          "name": "assessmentDate",
+          "type": "xsd:date",
+          "required": true
+        }
+      ]
+    },
+    {
+      "@id": "cul:CultureShiftTarget",
+      "@type": "rdfs:Class",
+      "name": "CultureShiftTarget",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "A measurable target for culture change linked to a specific value and quadrant. Defines what 'good' looks like: which signals should increase, which should decrease, and by when. Culture shift targets are reviewed at each VSOM review cycle — culture change is measured, not hoped for.",
+      "oaa:properties": [
+        {
+          "name": "targetId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "assessmentEntryRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to cul:CultureAssessmentEntry @id this target addresses"
+        },
+        {
+          "name": "currentQuadrant",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Aligned",
+            "Aspirational",
+            "Legacy",
+            "Conflicting"
+          ]
+        },
+        {
+          "name": "targetQuadrant",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Aligned",
+            "Aspirational"
+          ],
+          "description": "Target quadrant (always Aligned or Aspirational — never Legacy or Conflicting)"
+        },
+        {
+          "name": "signalsToIncrease",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Cultural signals that should become more frequent/stronger",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "signalsToDecrease",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Cultural signals that should become less frequent/weaker",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "measurementMethod",
+          "type": "xsd:string",
+          "required": true,
+          "description": "How progress will be measured (e.g. 'engagement survey', 'behaviour observation', 'incentive audit')"
+        },
+        {
+          "name": "targetDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "ownerRoleRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to rrr:ExecutiveRole @id accountable for culture shift"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "NotStarted",
+            "InProgress",
+            "OnTrack",
+            "AtRisk",
+            "Achieved"
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "cul:CommunicationResponse",
+      "@type": "rdfs:Class",
+      "name": "CommunicationResponse",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "A quadrant-specific communication approach for addressing culture-strategy alignment (or misalignment). Each quadrant has a fundamentally different communication need: Aligned values need celebration, Aspirational values need bridge narratives, Legacy values need awareness building, Conflicting values need honest confrontation. The response references a nar:CommunicationPattern for delivery.",
+      "oaa:properties": [
+        {
+          "name": "responseId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "quadrantRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to cul:AlignmentQuadrant @id this response addresses"
+        },
+        {
+          "name": "responseStrategy",
+          "type": "xsd:string",
+          "required": true,
+          "description": "High-level response approach (e.g. 'Celebrate and reinforce', 'Name the contradiction')"
+        },
+        {
+          "name": "patternRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to nar:CommunicationPattern @id recommended for this response"
+        },
+        {
+          "name": "keyMessages",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Core messages for this quadrant response",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "avoidances",
+          "type": "xsd:string",
+          "required": false,
+          "description": "What NOT to communicate (e.g. 'Don't blame individuals for systemic culture issues')",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "successIndicators",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Observable signals that the communication response is working",
+          "cardinality": "0..*"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "cul:alignmentAssessesVSOM",
+      "@type": "owl:ObjectProperty",
+      "name": "Alignment Assesses VSOM",
+      "description": "Culture-strategy alignment assessment evaluates alignment with a VSOM strategy",
+      "domainIncludes": [
+        "cul:CultureStrategyAlignment"
+      ],
+      "rangeIncludes": [
+        "vsom:VSOMFramework"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "cul:alignmentInContext",
+      "@type": "owl:ObjectProperty",
+      "name": "Alignment In Context",
+      "description": "Assessment conducted within an organisational context",
+      "domainIncludes": [
+        "cul:CultureStrategyAlignment"
+      ],
+      "rangeIncludes": [
+        "orgctx:OrganizationContext"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "cul:hasAssessmentEntry",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Assessment Entry",
+      "description": "Alignment assessment contains individual value-to-signal-to-quadrant entries",
+      "domainIncludes": [
+        "cul:CultureStrategyAlignment"
+      ],
+      "rangeIncludes": [
+        "cul:CultureAssessmentEntry"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "cul:assessesValue",
+      "@type": "owl:ObjectProperty",
+      "name": "Assesses Value",
+      "description": "Assessment entry evaluates a specific stated strategic value",
+      "domainIncludes": [
+        "cul:CultureAssessmentEntry"
+      ],
+      "rangeIncludes": [
+        "cul:CultureValue"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "cul:entryInQuadrant",
+      "@type": "owl:ObjectProperty",
+      "name": "Entry In Quadrant",
+      "description": "Assessment entry classified into an alignment quadrant",
+      "domainIncludes": [
+        "cul:CultureAssessmentEntry"
+      ],
+      "rangeIncludes": [
+        "cul:AlignmentQuadrant"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "cul:entryObservesSignal",
+      "@type": "owl:ObjectProperty",
+      "name": "Entry Observes Signal",
+      "description": "Assessment entry references observed cultural signals as evidence",
+      "domainIncludes": [
+        "cul:CultureAssessmentEntry"
+      ],
+      "rangeIncludes": [
+        "cul:CulturalSignal"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "cul:signalObservedInContext",
+      "@type": "owl:ObjectProperty",
+      "name": "Signal Observed In Context",
+      "description": "Cultural signal observed within an organisational context",
+      "domainIncludes": [
+        "cul:CulturalSignal"
+      ],
+      "rangeIncludes": [
+        "orgctx:OrganizationContext"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "cul:quadrantHasResponse",
+      "@type": "owl:ObjectProperty",
+      "name": "Quadrant Has Response",
+      "description": "Each alignment quadrant has a recommended communication response",
+      "domainIncludes": [
+        "cul:AlignmentQuadrant"
+      ],
+      "rangeIncludes": [
+        "cul:CommunicationResponse"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "cul:responseUsesPattern",
+      "@type": "owl:ObjectProperty",
+      "name": "Response Uses Pattern",
+      "description": "Communication response uses a narrative communication pattern for delivery",
+      "domainIncludes": [
+        "cul:CommunicationResponse"
+      ],
+      "rangeIncludes": [
+        "nar:CommunicationPattern"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "NARRATIVE-ONT"
+    },
+    {
+      "@id": "cul:shiftTargetForEntry",
+      "@type": "owl:ObjectProperty",
+      "name": "Shift Target For Entry",
+      "description": "Culture shift target addresses a specific assessment entry's quadrant gap",
+      "domainIncludes": [
+        "cul:CultureShiftTarget"
+      ],
+      "rangeIncludes": [
+        "cul:CultureAssessmentEntry"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "cul:shiftOwnedByRole",
+      "@type": "owl:ObjectProperty",
+      "name": "Shift Owned By Role",
+      "description": "Culture shift target is accountable to an executive role",
+      "domainIncludes": [
+        "cul:CultureShiftTarget"
+      ],
+      "rangeIncludes": [
+        "rrr:ExecutiveRole"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-CUL-001",
+      "name": "Assessment Must Reference VSOM",
+      "condition": "IF a CultureStrategyAlignment is created",
+      "action": "THEN vsomFrameworkRef MUST reference a valid vsom:VSOMFramework @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CUL-002",
+      "name": "Assessment Entry Must Have Signals",
+      "condition": "IF a CultureAssessmentEntry is created",
+      "action": "THEN at least one of supportingSignalRefs or contradictingSignalRefs MUST be non-empty — classification must be evidence-based",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CUL-003",
+      "name": "Conflicting Values Must Have Shift Target",
+      "condition": "IF a CultureAssessmentEntry has quadrant 'Conflicting'",
+      "action": "THEN a CultureShiftTarget SHOULD be created to address the conflict",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-CUL-004",
+      "name": "Shift Target Must Aim Higher",
+      "condition": "IF a CultureShiftTarget is created",
+      "action": "THEN targetQuadrant MUST be 'Aligned' or 'Aspirational' — culture shifts always aim toward alignment",
+      "severity": "error"
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-13",
+    "modifiedBy": "OAA v6.1.0 Agent",
+    "changeNotes": "Initial release of CULTURE-ONT as part of VE-Series VSOM-SC (Strategy Communication). Formalizes culture-strategy alignment assessment with four-quadrant matrix, cultural signal taxonomy, shift targets, and communication responses. Cross-references VSOM-ONT v3.0.0, NARRATIVE-ONT v1.0.0, RRR-ONT v4.0.0, ORG-CONTEXT-ONT v3.0.0, BSC-ONT v1.0.0.",
+    "versionHistory": []
+  },
+  "oaa:ontologyId": "CUL-ONT",
+  "oaa:series": "VE-Series / VSOM-SC",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of CultureStrategyAlignment within this ontology?",
+      "targetEntities": [
+        "cul:CultureStrategyAlignment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of AlignmentQuadrant within this ontology?",
+      "targetEntities": [
+        "cul:AlignmentQuadrant"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of CulturalSignal within this ontology?",
+      "targetEntities": [
+        "cul:CulturalSignal"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of CultureValue within this ontology?",
+      "targetEntities": [
+        "cul:CultureValue"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of CultureAssessmentEntry within this ontology?",
+      "targetEntities": [
+        "cul:CultureAssessmentEntry"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of CultureShiftTarget within this ontology?",
+      "targetEntities": [
+        "cul:CultureShiftTarget"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of CommunicationResponse within this ontology?",
+      "targetEntities": [
+        "cul:CommunicationResponse"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

@@ -1,0 +1,3079 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ds": "https://platformcore.io/ontology/ds/",
+    "emc": "https://platformcore.io/ontology/emc/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "ds:pfc-app-skeleton-v1.0.0",
+  "@type": "ds:AppSkeletonInstance",
+  "name": "PFC Base Application Skeleton",
+  "description": "PF-Core immutable base skeleton defining 21 AppZones, 4 NavLayers (L1–L4), ~40 NavItems, and ~25 ZoneComponent placements. This is the PFC tier of the 4-tier EMC cascade (PFC → PFI → Product → App). PFI instances inherit and extend this skeleton — they may add zones, nav items, and components but cannot modify PFC-tier entities.",
+  "version": "2.0.0",
+  "dateCreated": "2026-02-21",
+  "dateModified": "2026-03-04",
+  "ds:targetOntology": "ds-v3.0.0-oaa-v6.json",
+  "@graph": [
+    {
+      "@id": "ds:app-pfc-visualiser",
+      "@type": "ds:Application",
+      "ds:appId": "pfc-visualiser",
+      "ds:appName": "PF-Core Graph Workbench & Ontology Visualiser",
+      "ds:version": "4.5.0",
+      "ds:appType": "SPA",
+      "ds:rootRoute": "/",
+      "ds:cascadeTier": "PFC",
+      "ds:appUsesDesignSystem": {
+        "@id": "ds:pfc-design-system"
+      }
+    },
+    {
+      "@id": "ds:zone-Z1",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z1",
+      "ds:zoneName": "Header",
+      "ds:zoneType": "Fixed",
+      "ds:position": "top",
+      "ds:defaultWidth": "100%",
+      "ds:defaultVisible": true,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 100,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "header",
+      "description": "Top-level header bar — app title, ontology stats, version badge"
+    },
+    {
+      "@id": "ds:zone-Z2",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z2",
+      "ds:zoneName": "Toolbar",
+      "ds:zoneType": "Fixed",
+      "ds:position": "top",
+      "ds:defaultWidth": "100%",
+      "ds:defaultVisible": true,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 99,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#dynamic-nav-bar",
+      "description": "Primary toolbar hosting L1–L4 navigation layers — capabilities, view controls, context, PFI custom"
+    },
+    {
+      "@id": "ds:zone-Z2-dyn",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z2-dyn",
+      "ds:zoneName": "Dynamic Navigation Bar",
+      "ds:zoneType": "Fixed",
+      "ds:position": "top",
+      "ds:defaultWidth": "100%",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.dynamicNavEnabled === true",
+      "ds:zIndex": 99,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#dynamic-nav-bar",
+      "description": "Skeleton-driven dynamic toolbar (F40.17b). Renders NavItems from JSONLD via ontology-driven Action entities. Replaces Z2 as sole toolbar."
+    },
+    {
+      "@id": "ds:zone-Z3",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z3",
+      "ds:zoneName": "Context Identity Bar",
+      "ds:zoneType": "Conditional",
+      "ds:position": "top",
+      "ds:defaultWidth": "100%",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.isPFIMode === true",
+      "ds:zIndex": 98,
+      "ds:cascadeTier": "PFI",
+      "ds:domSelector": "#emc-nav-bar",
+      "description": "PFI brand identity bar — logo, instance name, brand colours. Only visible in PFI mode."
+    },
+    {
+      "@id": "ds:zone-Z4",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z4",
+      "ds:zoneName": "Authoring Toolbar",
+      "ds:zoneType": "Conditional",
+      "ds:position": "top",
+      "ds:defaultWidth": "100%",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:zIndex": 97,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#dynamic-authoring-bar",
+      "description": "Entity/relationship authoring toolbar — add entity, add relationship, validation actions"
+    },
+    {
+      "@id": "ds:zone-Z4b",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z4b",
+      "ds:zoneName": "Selection Toolbar",
+      "ds:zoneType": "Conditional",
+      "ds:position": "top",
+      "ds:defaultWidth": "100%",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.selectedNodes.length > 0",
+      "ds:zIndex": 96,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#dynamic-selection-bar",
+      "description": "Selection-context toolbar — appears when nodes are selected, shows selection actions"
+    },
+    {
+      "@id": "ds:zone-Z5",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z5",
+      "ds:zoneName": "Breadcrumb Bar",
+      "ds:zoneType": "Conditional",
+      "ds:position": "top",
+      "ds:defaultWidth": "100%",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.breadcrumbPath.length > 0",
+      "ds:zIndex": 95,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#breadcrumb-bar",
+      "description": "Navigation breadcrumb — ontology path, cascade tier gauge, series filter chips"
+    },
+    {
+      "@id": "ds:zone-Z6",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z6",
+      "ds:zoneName": "Graph Canvas",
+      "ds:zoneType": "Fixed",
+      "ds:position": "center",
+      "ds:defaultWidth": "100%",
+      "ds:defaultVisible": true,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 1,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#network",
+      "description": "Main content area — vis-network graph, Mermaid diagram, or Mindmap view depending on active view mode"
+    },
+    {
+      "@id": "ds:zone-Z7",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z7",
+      "ds:zoneName": "Legend",
+      "ds:zoneType": "Floating",
+      "ds:position": "bottom-left",
+      "ds:defaultWidth": "auto",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 50,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#legend",
+      "description": "Graph legend panel — entity archetype colour key, edge type key"
+    },
+    {
+      "@id": "ds:zone-Z8",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z8",
+      "ds:zoneName": "Layer Panel",
+      "ds:zoneType": "Floating",
+      "ds:position": "bottom-right",
+      "ds:defaultWidth": "auto",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 50,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#layer-panel",
+      "description": "Semantic layer filter panel — toggle entity groups by layer/category"
+    },
+    {
+      "@id": "ds:zone-Z9",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z9",
+      "ds:zoneName": "Sidebar Details",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultWidth": "380px",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 60,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#sidebar",
+      "description": "Right sidebar — entity details, connections, schema inspector, raw data tabs"
+    },
+    {
+      "@id": "ds:zone-Z10",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z10",
+      "ds:zoneName": "Audit Panel",
+      "ds:zoneType": "Sliding",
+      "ds:position": "left",
+      "ds:defaultWidth": "340px",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 60,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#audit-panel",
+      "description": "OAA compliance audit panel — gate results, validation findings, fix suggestions"
+    },
+    {
+      "@id": "ds:zone-Z11",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z11",
+      "ds:zoneName": "Library Panel",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultWidth": "420px",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 60,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#library-panel",
+      "description": "Ontology library browser — registry, dependencies, saved configs, recent loads"
+    },
+    {
+      "@id": "ds:zone-Z12",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z12",
+      "ds:zoneName": "DS Panel",
+      "ds:zoneType": "Sliding",
+      "ds:position": "left",
+      "ds:defaultWidth": "380px",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 60,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#ds-panel",
+      "description": "Design system token browser — cascade visualisation, token search, brand comparison"
+    },
+    {
+      "@id": "ds:zone-Z13",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z13",
+      "ds:zoneName": "Backlog Panel",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultWidth": "480px",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 60,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#backlog-panel",
+      "description": "Backlog manager panel — epic/feature/story hierarchy, status tracking, requirement cards"
+    },
+    {
+      "@id": "ds:zone-Z14",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z14",
+      "ds:zoneName": "Mermaid Editor",
+      "ds:zoneType": "Sliding",
+      "ds:position": "left",
+      "ds:defaultWidth": "380px",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.currentView === 'mermaid'",
+      "ds:zIndex": 60,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#mermaid-editor",
+      "description": "Mermaid diagram editor — code editor, preview, export controls"
+    },
+    {
+      "@id": "ds:zone-Z15",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z15",
+      "ds:zoneName": "Mindmap Properties",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultWidth": "320px",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.currentView === 'mindmap'",
+      "ds:zIndex": 60,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#mindmap-properties",
+      "description": "Mindmap property editor — node properties, styling, hierarchy controls"
+    },
+    {
+      "@id": "ds:zone-Z16",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z16",
+      "ds:zoneName": "Context Drawer",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultWidth": "380px",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.isPFIMode === true",
+      "ds:zIndex": 60,
+      "ds:cascadeTier": "PFI",
+      "ds:domSelector": "#dynamic-nav-bar",
+      "description": "PFI context drawer — instance switcher, brand settings, PFI-specific config"
+    },
+    {
+      "@id": "ds:zone-Z17",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z17",
+      "ds:zoneName": "Category Panel",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultWidth": "380px",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 60,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#category-panel",
+      "description": "Category filter panel — maturity levels, compliance status, entity categories"
+    },
+    {
+      "@id": "ds:zone-Z18",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z18",
+      "ds:zoneName": "Modal/Dialog",
+      "ds:zoneType": "Overlay",
+      "ds:position": "center",
+      "ds:defaultWidth": "auto",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 200,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": ".modal-overlay",
+      "description": "Modal dialog system — confirmations, forms, multi-step wizards, overlay content"
+    },
+    {
+      "@id": "ds:zone-Z19",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z19",
+      "ds:zoneName": "Tooltip/Hover",
+      "ds:zoneType": "Overlay",
+      "ds:position": "cursor",
+      "ds:defaultWidth": "auto",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 300,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": ".tooltip",
+      "description": "Tooltip and hover card system — entity previews, relationship summaries, quick info"
+    },
+    {
+      "@id": "ds:zone-Z20",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z20",
+      "ds:zoneName": "Drop Zone",
+      "ds:zoneType": "Conditional",
+      "ds:position": "center",
+      "ds:defaultWidth": "100%",
+      "ds:defaultVisible": true,
+      "ds:visibilityCondition": "state.isDragOver === true || state.ontologyCount === 0",
+      "ds:zIndex": 2,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#drop-zone",
+      "description": "File drop landing zone — drag-and-drop JSON/JSONLD file loading area, initial empty state"
+    },
+    {
+      "@id": "ds:zone-Z21",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z21",
+      "ds:zoneName": "PFI Lifecycle Panel",
+      "ds:zoneType": "Sliding",
+      "ds:position": "left",
+      "ds:defaultWidth": "420px",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.isPFIMode === true",
+      "ds:zIndex": 60,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#pfi-lifecycle-panel",
+      "description": "PFI lifecycle control centre — 10-step pipeline status, scope rule evaluation, snapshot management, binding inspector"
+    },
+    {
+      "@id": "ds:zone-Z22",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z22",
+      "ds:zoneName": "Skeleton Inspector",
+      "ds:zoneType": "Sliding",
+      "ds:position": "left",
+      "ds:defaultWidth": "440px",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": null,
+      "ds:zIndex": 13,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#skeleton-panel",
+      "description": "Application skeleton inspector panel — browse zones, zone-component mappings, and navigation layers with a spatial wireframe diagram"
+    },
+    {
+      "@id": "ds:zone-Z-source",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-source",
+      "ds:zoneName": "Source Panel",
+      "ds:zoneType": "Flyout",
+      "ds:position": "top",
+      "ds:defaultWidth": "320px",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.sourcePanelOpen === true",
+      "ds:zIndex": 95,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#source-panel",
+      "description": "Source/load panel — open file, GitHub, URL, registry, new, fork, save. Toggled from Z2 source trigger button."
+    },
+    {
+      "@id": "ds:zone-Z-admin",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-admin",
+      "ds:zoneName": "Admin Drawer",
+      "ds:zoneType": "Sliding",
+      "ds:position": "right",
+      "ds:defaultWidth": "280px",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.adminDrawerOpen === true",
+      "ds:zIndex": 94,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#admin-drawer",
+      "description": "Admin/dev drawer — DS tokens, token map, skeleton, OAA upgrade, GitHub settings, test data. Slides from right edge."
+    },
+    {
+      "@id": "ds:zone-Z-context",
+      "@type": "ds:AppZone",
+      "ds:zoneId": "Z-context",
+      "ds:zoneName": "Secondary Context Bar",
+      "ds:zoneType": "Conditional",
+      "ds:position": "top",
+      "ds:defaultWidth": "100%",
+      "ds:defaultVisible": false,
+      "ds:visibilityCondition": "state.contextBarHasVisibleItems === true",
+      "ds:zIndex": 93,
+      "ds:cascadeTier": "PFC",
+      "ds:domSelector": "#context-secondary-bar",
+      "description": "Secondary context bar below Z2 — glossary, backlog, view-specific tools. Auto-hides when no items visible."
+    },
+    {
+      "@id": "ds:navlayer-L1",
+      "@type": "ds:NavLayer",
+      "ds:layerId": "L1",
+      "ds:layerName": "Main Capabilities",
+      "ds:layerLevel": 1,
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFC",
+      "ds:navLayerInZone": {
+        "@id": "ds:zone-Z2"
+      },
+      "description": "Primary capability actions — ontology loading, audit, library, categories, layers, export"
+    },
+    {
+      "@id": "ds:navlayer-L2",
+      "@type": "ds:NavLayer",
+      "ds:layerId": "L2",
+      "ds:layerName": "View Controls",
+      "ds:layerLevel": 2,
+      "ds:renderOrder": 2,
+      "ds:cascadeTier": "PFC",
+      "ds:navLayerInZone": {
+        "@id": "ds:zone-Z2"
+      },
+      "description": "Graph view manipulation — physics toggle, fit/reset view, details panel"
+    },
+    {
+      "@id": "ds:navlayer-L3-context",
+      "@type": "ds:NavLayer",
+      "ds:layerId": "L3-context",
+      "ds:layerName": "Context/Mode",
+      "ds:layerLevel": 3,
+      "ds:renderOrder": 3,
+      "ds:cascadeTier": "PFC",
+      "ds:navLayerInZone": {
+        "@id": "ds:zone-Z2"
+      },
+      "description": "View mode tabs and context-specific tools — graph/DS/mermaid/mindmap tabs, backlog, mermaid editor"
+    },
+    {
+      "@id": "ds:navlayer-L3-admin",
+      "@type": "ds:NavLayer",
+      "ds:layerId": "L3-admin",
+      "ds:layerName": "Admin/Config",
+      "ds:layerLevel": 3,
+      "ds:renderOrder": 4,
+      "ds:cascadeTier": "PFC",
+      "ds:navLayerInZone": {
+        "@id": "ds:zone-Z2"
+      },
+      "description": "Administrative controls — DS tokens, token map, PFC/PFI toggle, instance picker, brand variant"
+    },
+    {
+      "@id": "ds:navlayer-L4",
+      "@type": "ds:NavLayer",
+      "ds:layerId": "L4",
+      "ds:layerName": "PFI Custom",
+      "ds:layerLevel": 4,
+      "ds:renderOrder": 5,
+      "ds:cascadeTier": "PFI",
+      "ds:navLayerInZone": {
+        "@id": "ds:zone-Z2"
+      },
+      "description": "PFI instance custom navigation — empty at PFC level, PFI instances add their own items here"
+    },
+    {
+      "@id": "ds:navlayer-L5-authoring",
+      "@type": "ds:NavLayer",
+      "ds:layerId": "L5-authoring",
+      "ds:layerName": "Authoring Tools",
+      "ds:layerLevel": 5,
+      "ds:renderOrder": 6,
+      "ds:cascadeTier": "PFC",
+      "ds:navLayerInZone": {
+        "@id": "ds:zone-Z4"
+      },
+      "description": "Entity/relationship authoring toolbar — visible when authoring mode active"
+    },
+    {
+      "@id": "ds:navlayer-L6-selection",
+      "@type": "ds:NavLayer",
+      "ds:layerId": "L6-selection",
+      "ds:layerName": "Selection Tools",
+      "ds:layerLevel": 6,
+      "ds:renderOrder": 7,
+      "ds:cascadeTier": "PFC",
+      "ds:navLayerInZone": {
+        "@id": "ds:zone-Z4b"
+      },
+      "description": "Selection-context toolbar — visible when nodes are selected in authoring mode"
+    },
+    {
+      "@id": "ds:navlayer-L1-source",
+      "@type": "ds:NavLayer",
+      "ds:layerId": "L1-source",
+      "ds:layerName": "Source Actions",
+      "ds:layerLevel": 1,
+      "ds:renderOrder": 8,
+      "ds:cascadeTier": "PFC",
+      "ds:navLayerInZone": {
+        "@id": "ds:zone-Z-source"
+      },
+      "description": "Source/load/create actions — open file, GitHub, URL, registry, new ontology, fork, save"
+    },
+    {
+      "@id": "ds:navlayer-L3-admin-drawer",
+      "@type": "ds:NavLayer",
+      "ds:layerId": "L3-admin-drawer",
+      "ds:layerName": "Admin Tools",
+      "ds:layerLevel": 3,
+      "ds:renderOrder": 9,
+      "ds:cascadeTier": "PFC",
+      "ds:navLayerInZone": {
+        "@id": "ds:zone-Z-admin"
+      },
+      "description": "Admin/dev tools — DS tokens, token map, skeleton inspector, OAA upgrade, GitHub settings, test data"
+    },
+    {
+      "@id": "ds:navlayer-L3-context-secondary",
+      "@type": "ds:NavLayer",
+      "ds:layerId": "L3-context-secondary",
+      "ds:layerName": "Secondary Context",
+      "ds:layerLevel": 3,
+      "ds:renderOrder": 10,
+      "ds:cascadeTier": "PFC",
+      "ds:navLayerInZone": {
+        "@id": "ds:zone-Z-context"
+      },
+      "description": "Secondary context tools — glossary, backlog, view-specific actions below main toolbar"
+    },
+    {
+      "@id": "ds:navlayer-L3-identity",
+      "@type": "ds:NavLayer",
+      "ds:layerId": "L3-identity",
+      "ds:layerName": "PFI Identity",
+      "ds:layerLevel": 3,
+      "ds:renderOrder": 11,
+      "ds:cascadeTier": "PFI",
+      "ds:navLayerInZone": {
+        "@id": "ds:zone-Z3"
+      },
+      "description": "PFI context identity controls — PFC/PFI toggle, instance picker, brand, lifecycle, snapshots"
+    },
+    {
+      "@id": "ds:nav-L1-ontology",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-ontology",
+      "ds:label": "Ontology",
+      "ds:itemType": "Dropdown",
+      "ds:action": "toggleOntologyMenu",
+      "ds:icon": "database",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleOntologyMenu"
+      },
+      "description": "Ontology loading dropdown — Load from registry, GitHub, URL, local file"
+    },
+    {
+      "@id": "ds:nav-L1-audit",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-audit",
+      "ds:label": "OAA Audit",
+      "ds:itemType": "Button",
+      "ds:action": "toggleAuditPanel",
+      "ds:icon": "clipboard-check",
+      "ds:shortcut": "Ctrl+Shift+A",
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 2,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleAuditPanel"
+      },
+      "description": "Toggle OAA compliance audit panel (Z10)"
+    },
+    {
+      "@id": "ds:nav-L1-library",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-library",
+      "ds:label": "Library",
+      "ds:itemType": "Button",
+      "ds:action": "toggleLibraryPanel",
+      "ds:icon": "book-open",
+      "ds:shortcut": "Ctrl+Shift+L",
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 3,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleLibraryPanel"
+      },
+      "description": "Toggle ontology library browser panel (Z11)"
+    },
+    {
+      "@id": "ds:nav-L1-categories",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-categories",
+      "ds:label": "Categories",
+      "ds:itemType": "Button",
+      "ds:action": "toggleCategoryPanel",
+      "ds:icon": "tag",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 4,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleCategoryPanel"
+      },
+      "description": "Toggle category filter panel (Z17)"
+    },
+    {
+      "@id": "ds:nav-L1-layers",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-layers",
+      "ds:label": "Layers",
+      "ds:itemType": "Button",
+      "ds:action": "toggleLayerPanel",
+      "ds:icon": "layers",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 5,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleLayerPanel"
+      },
+      "description": "Toggle semantic layer filter panel (Z8)"
+    },
+    {
+      "@id": "ds:nav-L1-export",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-export",
+      "ds:label": "Export ▼",
+      "ds:itemType": "Dropdown",
+      "ds:action": "noop",
+      "ds:icon": "download",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 6,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1"
+      },
+      "ds:children": [
+        {
+          "ds:label": "PNG Image",
+          "ds:action": "exportPNG",
+          "ds:executesAction": {
+            "@id": "ds:action-exportPNG"
+          },
+          "ds:parentNavItem": {
+            "@id": "ds:nav-L1-export"
+          }
+        },
+        {
+          "ds:label": "SVG Image",
+          "ds:action": "exportSVG",
+          "ds:executesAction": {
+            "@id": "ds:action-exportSVG"
+          },
+          "ds:parentNavItem": {
+            "@id": "ds:nav-L1-export"
+          }
+        },
+        {
+          "ds:label": "Mermaid Diagram",
+          "ds:action": "exportMermaid",
+          "ds:executesAction": {
+            "@id": "ds:action-exportMermaid"
+          },
+          "ds:parentNavItem": {
+            "@id": "ds:nav-L1-export"
+          }
+        },
+        {
+          "ds:label": "D3.js JSON",
+          "ds:action": "exportD3JSON",
+          "ds:executesAction": {
+            "@id": "ds:action-exportD3JSON"
+          },
+          "ds:parentNavItem": {
+            "@id": "ds:nav-L1-export"
+          }
+        },
+        {
+          "ds:label": "Neo4j Cypher",
+          "ds:action": "exportCypher",
+          "ds:executesAction": {
+            "@id": "ds:action-exportCypher"
+          },
+          "ds:parentNavItem": {
+            "@id": "ds:nav-L1-export"
+          }
+        },
+        {
+          "ds:label": "---"
+        },
+        {
+          "ds:label": "Validation Report (MD)",
+          "ds:action": "exportGateReport",
+          "ds:executesAction": {
+            "@id": "ds:action-exportGateReport"
+          },
+          "ds:parentNavItem": {
+            "@id": "ds:nav-L1-export"
+          }
+        },
+        {
+          "ds:label": "Audit Report (JSON)",
+          "ds:action": "exportAuditFile",
+          "ds:executesAction": {
+            "@id": "ds:action-exportAuditFile"
+          },
+          "ds:parentNavItem": {
+            "@id": "ds:nav-L1-export"
+          }
+        },
+        {
+          "ds:label": "Full Report (PDF)",
+          "ds:action": "exportPDF",
+          "ds:executesAction": {
+            "@id": "ds:action-exportPDF"
+          },
+          "ds:parentNavItem": {
+            "@id": "ds:nav-L1-export"
+          }
+        },
+        {
+          "ds:label": "Ontology Catalogue (PDF)",
+          "ds:action": "exportCataloguePDF",
+          "ds:executesAction": {
+            "@id": "ds:action-exportCataloguePDF"
+          },
+          "ds:parentNavItem": {
+            "@id": "ds:nav-L1-export"
+          }
+        },
+        {
+          "ds:label": "---"
+        },
+        {
+          "ds:label": "Compare Versions...",
+          "ds:action": "showDiffModal",
+          "ds:executesAction": {
+            "@id": "ds:action-showDiffModal"
+          },
+          "ds:parentNavItem": {
+            "@id": "ds:nav-L1-export"
+          }
+        },
+        {
+          "ds:label": "---"
+        },
+        {
+          "ds:label": "DS Bundle (JSON)",
+          "ds:action": "downloadDSBundle",
+          "ds:executesAction": {
+            "@id": "ds:action-downloadDSBundle"
+          },
+          "ds:parentNavItem": {
+            "@id": "ds:nav-L1-export"
+          }
+        }
+      ],
+      "ds:executesAction": {
+        "@id": "ds:action-noop"
+      },
+      "description": "Export dropdown — graph config, PNG, SVG, JSON export formats"
+    },
+    {
+      "@id": "ds:nav-L1-glossary",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-glossary",
+      "ds:label": "Glossary",
+      "ds:itemType": "Button",
+      "ds:action": "toggleGlossary",
+      "ds:icon": "book",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-context-secondary"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleGlossary"
+      },
+      "description": "View and search unified glossary"
+    },
+    {
+      "@id": "ds:nav-L1-open-file",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-open-file",
+      "ds:label": "Open File",
+      "ds:itemType": "Button",
+      "ds:action": "openFileDialog",
+      "ds:icon": "folder-open",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1-source"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-openFileDialog"
+      },
+      "description": "Open a local JSON/JSONLD/Mermaid file"
+    },
+    {
+      "@id": "ds:nav-L1-load-github",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-load-github",
+      "ds:label": "GitHub",
+      "ds:itemType": "Button",
+      "ds:action": "loadFromGitHub",
+      "ds:icon": "github",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 2,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1-source"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-loadFromGitHub"
+      },
+      "description": "Load ontology from a GitHub repository"
+    },
+    {
+      "@id": "ds:nav-L1-load-url",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-load-url",
+      "ds:label": "Load URL",
+      "ds:itemType": "Button",
+      "ds:action": "loadFromURL",
+      "ds:icon": "link",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 3,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1-source"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-loadFromURL"
+      },
+      "description": "Load ontology from a URL"
+    },
+    {
+      "@id": "ds:nav-L1-load-registry",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-load-registry",
+      "ds:label": "Load Registry",
+      "ds:itemType": "Button",
+      "ds:action": "loadFromRegistry",
+      "ds:icon": "database",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 4,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1-source"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-loadFromRegistry"
+      },
+      "description": "Load all ontologies from unified registry into merged graph"
+    },
+    {
+      "@id": "ds:nav-L1-new-ontology",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-new-ontology",
+      "ds:label": "+ New",
+      "ds:itemType": "Button",
+      "ds:action": "createNewOntology",
+      "ds:icon": "plus",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 5,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1-source"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-createNewOntology"
+      },
+      "description": "Create a new blank ontology (authoring mode)"
+    },
+    {
+      "@id": "ds:nav-L1-fork",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-fork",
+      "ds:label": "Fork",
+      "ds:itemType": "Button",
+      "ds:action": "forkOntology",
+      "ds:icon": "git-branch",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 6,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1-source"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-forkOntology"
+      },
+      "description": "Fork the current ontology (authoring mode)"
+    },
+    {
+      "@id": "ds:nav-L1-save-library",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-save-library",
+      "ds:label": "Save",
+      "ds:itemType": "Button",
+      "ds:action": "saveToLibrary",
+      "ds:icon": "save",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:renderOrder": 7,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1-source"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-saveToLibrary"
+      },
+      "description": "Save compliant ontology to library (authoring mode)"
+    },
+    {
+      "@id": "ds:nav-L1-source-trigger",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-source-trigger",
+      "ds:label": "Sources",
+      "ds:itemType": "Toggle",
+      "ds:action": "toggleSourcePanel",
+      "ds:icon": "folder-open",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 7,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L1"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleSourcePanel"
+      },
+      "ds:stateBinding": "state.sourcePanelOpen",
+      "description": "Toggle source panel — open file, GitHub, URL, registry, new, fork, save"
+    },
+    {
+      "@id": "ds:nav-L2-physics",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-physics",
+      "ds:label": "Physics",
+      "ds:itemType": "Toggle",
+      "ds:action": "togglePhysics",
+      "ds:icon": "zap",
+      "ds:shortcut": "P",
+      "ds:visibilityCondition": "state.currentView === 'graph'",
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L2"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-togglePhysics"
+      },
+      "ds:stateBinding": "state.physicsEnabled",
+      "description": "Toggle vis-network physics simulation on/off"
+    },
+    {
+      "@id": "ds:nav-L2-fit",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-fit",
+      "ds:label": "Fit View",
+      "ds:itemType": "Button",
+      "ds:action": "fitGraphToView",
+      "ds:icon": "maximize",
+      "ds:shortcut": "F",
+      "ds:visibilityCondition": "state.currentView === 'graph'",
+      "ds:renderOrder": 2,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L2"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-fitGraphToView"
+      },
+      "description": "Fit graph to fill the viewport"
+    },
+    {
+      "@id": "ds:nav-L2-reset",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-reset",
+      "ds:label": "Reset View",
+      "ds:itemType": "Button",
+      "ds:action": "resetGraphView",
+      "ds:icon": "refresh-cw",
+      "ds:shortcut": "R",
+      "ds:visibilityCondition": "state.currentView === 'graph'",
+      "ds:renderOrder": 3,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L2"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-resetGraphView"
+      },
+      "description": "Reset zoom and pan to default position"
+    },
+    {
+      "@id": "ds:nav-L2-details",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-details",
+      "ds:label": "Details",
+      "ds:itemType": "Button",
+      "ds:action": "toggleDetailsPanel",
+      "ds:icon": "info",
+      "ds:shortcut": "D",
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 4,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L2"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleDetailsPanel"
+      },
+      "description": "Toggle sidebar details panel (Z9)"
+    },
+    {
+      "@id": "ds:nav-L2-layout-select",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-layout-select",
+      "ds:label": "Layout",
+      "ds:itemType": "Select",
+      "ds:action": "changeLayout",
+      "ds:icon": "grid",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.currentView === 'graph'",
+      "ds:renderOrder": 5,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L2"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-changeLayout"
+      },
+      "description": "Graph layout algorithm selector (Force-directed, Hierarchical, Circular)"
+    },
+    {
+      "@id": "ds:nav-L2-mermaid-fit",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-mermaid-fit",
+      "ds:label": "Fit",
+      "ds:itemType": "Button",
+      "ds:action": "fitMermaidToView",
+      "ds:icon": "maximize",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.currentView === 'mermaid'",
+      "ds:renderOrder": 6,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L2"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-fitMermaidToView"
+      },
+      "description": "Fit Mermaid diagram to viewport (mermaid view only)"
+    },
+    {
+      "@id": "ds:nav-L3-tab-graph",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-tab-graph",
+      "ds:label": "Graph",
+      "ds:itemType": "Chip",
+      "ds:action": "switchToGraphTab",
+      "ds:icon": "share-2",
+      "ds:shortcut": "1",
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-context"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-switchToGraphTab"
+      },
+      "ds:stateBinding": "graph",
+      "description": "Switch to graph (vis-network) view mode"
+    },
+    {
+      "@id": "ds:nav-L3-tab-ds",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-tab-ds",
+      "ds:label": "DS Cascade",
+      "ds:itemType": "Chip",
+      "ds:action": "switchToDSCascadeTab",
+      "ds:icon": "paintbrush",
+      "ds:shortcut": "2",
+      "ds:visibilityCondition": null,
+      "ds:enabledCondition": "state.activeDSBrand !== null",
+      "ds:renderOrder": 2,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-context"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-switchToDSCascadeTab"
+      },
+      "ds:stateBinding": "ds-cascade",
+      "description": "Switch to design system cascade view — requires DS brand loaded"
+    },
+    {
+      "@id": "ds:nav-L3-tab-mermaid",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-tab-mermaid",
+      "ds:label": "Mermaid",
+      "ds:itemType": "Chip",
+      "ds:action": "switchToMermaidTab",
+      "ds:icon": "code",
+      "ds:shortcut": "3",
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 3,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-context"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-switchToMermaidTab"
+      },
+      "ds:stateBinding": "mermaid",
+      "description": "Switch to Mermaid diagram view"
+    },
+    {
+      "@id": "ds:nav-L3-tab-mindmap",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-tab-mindmap",
+      "ds:label": "Mindmap",
+      "ds:itemType": "Chip",
+      "ds:action": "switchToMindmapTab",
+      "ds:icon": "git-branch",
+      "ds:shortcut": "4",
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 4,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-context"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-switchToMindmapTab"
+      },
+      "ds:stateBinding": "mindmap",
+      "description": "Switch to mindmap view"
+    },
+    {
+      "@id": "ds:nav-L3-tab-skeleton",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-tab-skeleton",
+      "ds:label": "Skeleton",
+      "ds:itemType": "Chip",
+      "ds:action": "switchToSkeletonTab",
+      "ds:icon": "sitemap",
+      "ds:shortcut": "5",
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 5,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-context"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-switchToSkeletonTab"
+      },
+      "ds:stateBinding": "skeleton",
+      "description": "Switch to skeleton graph view — visual navigation editor"
+    },
+    {
+      "@id": "ds:nav-L3-decision-tree",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-tab-decision-tree",
+      "ds:label": "Decision Tree",
+      "ds:itemType": "Chip",
+      "ds:action": "switchToDecisionTreeTab",
+      "ds:icon": "git-merge",
+      "ds:shortcut": "6",
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 6,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-context"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-switchToDecisionTreeTab"
+      },
+      "ds:stateBinding": "decision-tree",
+      "description": "Switch to extensibility decision tree — hypothesis-testing engine for automation pattern selection"
+    },
+    {
+      "@id": "ds:nav-L3-registry-browser",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-tab-registry-browser",
+      "ds:label": "Registry",
+      "ds:itemType": "Chip",
+      "ds:action": "switchToRegistryBrowserTab",
+      "ds:icon": "database",
+      "ds:shortcut": "7",
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 7,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-context"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-switchToRegistryBrowserTab"
+      },
+      "ds:stateBinding": "registry-browser",
+      "description": "Switch to registry browser — full-screen ontology registry with series tree, cascade tiers, and PFI scoping"
+    },
+    {
+      "@id": "ds:nav-L3-sep-context",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-sep-context",
+      "ds:label": "",
+      "ds:itemType": "Separator",
+      "ds:action": "noop",
+      "ds:icon": null,
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 8,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-context"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-noop"
+      },
+      "description": "Visual separator between view tabs and context tools"
+    },
+    {
+      "@id": "ds:nav-L3-backlog",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-backlog",
+      "ds:label": "Backlog",
+      "ds:itemType": "Button",
+      "ds:action": "toggleBacklogPanel",
+      "ds:icon": "list",
+      "ds:shortcut": "B",
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 2,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-context-secondary"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleBacklogPanel"
+      },
+      "description": "Toggle backlog manager panel (Z13)"
+    },
+    {
+      "@id": "ds:nav-L3-mermaid-edit",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-mermaid-edit",
+      "ds:label": "Mermaid Edit",
+      "ds:itemType": "Button",
+      "ds:action": "toggleMermaidEditor",
+      "ds:icon": "edit-3",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.currentView === 'mermaid'",
+      "ds:renderOrder": 3,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-context-secondary"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleMermaidEditor"
+      },
+      "description": "Toggle Mermaid code editor panel (Z14) — only visible in mermaid view"
+    },
+    {
+      "@id": "ds:nav-L3-ds-tokens",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-ds-tokens",
+      "ds:label": "DS Tokens",
+      "ds:itemType": "Button",
+      "ds:action": "toggleDSPanel",
+      "ds:icon": "palette",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-admin-drawer"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleDSPanel"
+      },
+      "description": "Toggle design system token browser panel (Z12)"
+    },
+    {
+      "@id": "ds:nav-L3-token-map",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-token-map",
+      "ds:label": "Token Map",
+      "ds:itemType": "Button",
+      "ds:action": "toggleTokenMapPanel",
+      "ds:icon": "map",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 2,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-admin-drawer"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleTokenMapPanel"
+      },
+      "description": "Toggle admin design token tree panel"
+    },
+    {
+      "@id": "ds:nav-L3-sep-admin",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-sep-admin",
+      "ds:label": "",
+      "ds:itemType": "Separator",
+      "ds:action": "noop",
+      "ds:icon": null,
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-admin"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-noop"
+      },
+      "description": "Visual separator between admin tools and config controls"
+    },
+    {
+      "@id": "ds:nav-L3-pfc-pfi-toggle",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-pfc-pfi-toggle",
+      "ds:label": "PFC/PFI",
+      "ds:itemType": "Toggle",
+      "ds:action": "togglePFCPFIMode",
+      "ds:icon": "toggle-left",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-identity"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-togglePFCPFIMode"
+      },
+      "ds:stateBinding": "state.isPFIMode",
+      "description": "Toggle between PF-Core and PFI instance mode"
+    },
+    {
+      "@id": "ds:nav-L3-instance-picker",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-instance-picker",
+      "ds:label": "Instance",
+      "ds:itemType": "Select",
+      "ds:action": "selectPFIInstance",
+      "ds:icon": "briefcase",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.isPFIMode === true",
+      "ds:renderOrder": 2,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-identity"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-selectPFIInstance"
+      },
+      "description": "PFI instance selection dropdown — BAIV, W4M-WWG, AIRL, VHF etc."
+    },
+    {
+      "@id": "ds:nav-L3-brand-variant",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-brand-variant",
+      "ds:label": "Brand",
+      "ds:itemType": "Select",
+      "ds:action": "selectBrandVariant",
+      "ds:icon": "droplet",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.isPFIMode === true",
+      "ds:renderOrder": 3,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-identity"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-selectBrandVariant"
+      },
+      "description": "Brand variant selection — switches DS token set (BAIV, RCS, Pand, WWG, VHF)"
+    },
+    {
+      "@id": "ds:nav-L3-pfi-lifecycle",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-pfi-lifecycle",
+      "ds:label": "Lifecycle",
+      "ds:itemType": "Button",
+      "ds:action": "togglePFILifecyclePanel",
+      "ds:icon": "list-checks",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.isPFIMode === true",
+      "ds:renderOrder": 4,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-identity"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-togglePFILifecyclePanel"
+      },
+      "description": "PFI lifecycle panel — 10-step pipeline status from instance creation to canonical freeze"
+    },
+    {
+      "@id": "ds:nav-L3-snapshots",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-snapshots",
+      "ds:label": "Snapshots",
+      "ds:itemType": "Button",
+      "ds:action": "showSnapshotManager",
+      "ds:icon": "camera",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.isPFIMode === true",
+      "ds:renderOrder": 5,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-identity"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-showSnapshotManager"
+      },
+      "description": "Snapshot manager — freeze composed graph, version history, inherit, diff comparison"
+    },
+    {
+      "@id": "ds:nav-L3-skeleton",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-skeleton",
+      "ds:label": "Skeleton",
+      "ds:itemType": "Button",
+      "ds:action": "toggleSkeletonPanel",
+      "ds:icon": "layout",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 3,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-admin-drawer"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleSkeletonPanel"
+      },
+      "description": "Toggle application skeleton inspector panel (Z22) — zones, components, navigation"
+    },
+    {
+      "@id": "ds:nav-L3-run-oaa",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-run-oaa",
+      "ds:label": "Upgrade OAA",
+      "ds:itemType": "Button",
+      "ds:action": "runOAAUpgrade",
+      "ds:icon": "arrow-up-circle",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 4,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-admin-drawer"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-runOAAUpgrade"
+      },
+      "description": "Generate Claude Code command to upgrade this ontology with OAA v7"
+    },
+    {
+      "@id": "ds:nav-L3-github-settings",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-github-settings",
+      "ds:label": "GitHub Settings",
+      "ds:itemType": "Button",
+      "ds:action": "showGitHubSettings",
+      "ds:icon": "settings",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 5,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-admin-drawer"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-showGitHubSettings"
+      },
+      "description": "GitHub repository connection settings"
+    },
+    {
+      "@id": "ds:nav-L3-test-data",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-test-data",
+      "ds:label": "Test Data",
+      "ds:itemType": "Button",
+      "ds:action": "loadTestData",
+      "ds:icon": "database",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 6,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-admin-drawer"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-loadTestData"
+      },
+      "description": "Load test/sample data file for development"
+    },
+    {
+      "@id": "ds:nav-L3-admin-trigger",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-admin-trigger",
+      "ds:label": "Admin",
+      "ds:itemType": "Toggle",
+      "ds:action": "toggleAdminDrawer",
+      "ds:icon": "settings",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": null,
+      "ds:renderOrder": 2,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L3-admin"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleAdminDrawer"
+      },
+      "ds:stateBinding": "state.adminDrawerOpen",
+      "description": "Toggle admin drawer — DS tokens, token map, skeleton, OAA upgrade, GitHub settings, test data"
+    },
+    {
+      "@id": "ds:nav-L5-add-entity",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-add-entity",
+      "ds:label": "+ Entity",
+      "ds:itemType": "Button",
+      "ds:action": "showEntityEditor",
+      "ds:icon": "plus-circle",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L5-authoring"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-showEntityEditor"
+      },
+      "description": "Add a new entity to the ontology (authoring mode)"
+    },
+    {
+      "@id": "ds:nav-L5-add-relationship",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-add-relationship",
+      "ds:label": "+ Relationship",
+      "ds:itemType": "Button",
+      "ds:action": "showRelationshipEditor",
+      "ds:icon": "link",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:renderOrder": 2,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L5-authoring"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-showRelationshipEditor"
+      },
+      "description": "Add a new relationship to the ontology (authoring mode)"
+    },
+    {
+      "@id": "ds:nav-L5-undo",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-undo",
+      "ds:label": "Undo",
+      "ds:itemType": "Button",
+      "ds:action": "doUndo",
+      "ds:icon": "corner-up-left",
+      "ds:shortcut": "Ctrl+Z",
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:renderOrder": 3,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L5-authoring"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-doUndo"
+      },
+      "ds:stateBinding": "state.authoringUndoLength === 0",
+      "description": "Undo last authoring action"
+    },
+    {
+      "@id": "ds:nav-L5-redo",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-redo",
+      "ds:label": "Redo",
+      "ds:itemType": "Button",
+      "ds:action": "doRedo",
+      "ds:icon": "corner-up-right",
+      "ds:shortcut": "Ctrl+Y",
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:renderOrder": 4,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L5-authoring"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-doRedo"
+      },
+      "ds:stateBinding": "state.authoringRedoLength === 0",
+      "description": "Redo last undone authoring action"
+    },
+    {
+      "@id": "ds:nav-L5-new-revision",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-new-revision",
+      "ds:label": "New Revision",
+      "ds:itemType": "Button",
+      "ds:action": "showVersionBumpModal",
+      "ds:icon": "tag",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:renderOrder": 5,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L5-authoring"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-showVersionBumpModal"
+      },
+      "description": "Create a new version bump (patch/minor/major)"
+    },
+    {
+      "@id": "ds:nav-L5-revision-history",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-revision-history",
+      "ds:label": "History",
+      "ds:itemType": "Button",
+      "ds:action": "showRevisionHistory",
+      "ds:icon": "clock",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:renderOrder": 6,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L5-authoring"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-showRevisionHistory"
+      },
+      "description": "Show revision history panel"
+    },
+    {
+      "@id": "ds:nav-L5-authoring-glossary",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-authoring-glossary",
+      "ds:label": "Glossary",
+      "ds:itemType": "Button",
+      "ds:action": "showGlossaryEditor",
+      "ds:icon": "book",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:renderOrder": 7,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L5-authoring"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-showGlossaryEditor"
+      },
+      "description": "Open glossary editor (authoring mode)"
+    },
+    {
+      "@id": "ds:nav-L5-authoring-save",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-authoring-save",
+      "ds:label": "Save",
+      "ds:itemType": "Button",
+      "ds:action": "saveAuthoredOntology",
+      "ds:icon": "save",
+      "ds:shortcut": "Ctrl+S",
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:renderOrder": 8,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L5-authoring"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-saveAuthoredOntology"
+      },
+      "description": "Save authored ontology with validation"
+    },
+    {
+      "@id": "ds:nav-L5-generate-ai",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-generate-ai",
+      "ds:label": "Generate with AI",
+      "ds:itemType": "Button",
+      "ds:action": "showGenerationModal",
+      "ds:icon": "cpu",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:renderOrder": 9,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L5-authoring"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-showGenerationModal"
+      },
+      "description": "Generate ontology content with AI assistance"
+    },
+    {
+      "@id": "ds:nav-L5-selection-mode",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-selection-mode",
+      "ds:label": "Selection",
+      "ds:itemType": "Toggle",
+      "ds:action": "toggleSelectionMode",
+      "ds:icon": "mouse-pointer",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:renderOrder": 10,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L5-authoring"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-toggleSelectionMode"
+      },
+      "ds:stateBinding": "state.selectionMode",
+      "description": "Toggle node/edge selection mode for batch operations"
+    },
+    {
+      "@id": "ds:nav-L5-exit-authoring",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-exit-authoring",
+      "ds:label": "Exit Authoring",
+      "ds:itemType": "Button",
+      "ds:action": "exitAuthoringMode",
+      "ds:icon": "x-circle",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:renderOrder": 11,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L5-authoring"
+      },
+      "ds:cssClass": "nav-exit-warning",
+      "ds:executesAction": {
+        "@id": "ds:action-exitAuthoringMode"
+      },
+      "description": "Exit authoring mode (prompts to save unsaved changes)"
+    },
+    {
+      "@id": "ds:nav-L6-select-all",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-select-all",
+      "ds:label": "Select All",
+      "ds:itemType": "Button",
+      "ds:action": "selectAllNodes",
+      "ds:icon": "check-square",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.selectionMode === true",
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L6-selection"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-selectAllNodes"
+      },
+      "description": "Select all nodes in the graph"
+    },
+    {
+      "@id": "ds:nav-L6-clear-selection",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-clear-selection",
+      "ds:label": "Clear",
+      "ds:itemType": "Button",
+      "ds:action": "clearSelection",
+      "ds:icon": "x",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.selectionMode === true",
+      "ds:renderOrder": 2,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L6-selection"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-clearSelection"
+      },
+      "description": "Clear current selection"
+    },
+    {
+      "@id": "ds:nav-L6-export-selection",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-export-selection",
+      "ds:label": "Export JSON",
+      "ds:itemType": "Button",
+      "ds:action": "exportSelectionJSON",
+      "ds:icon": "download",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.selectionMode === true",
+      "ds:renderOrder": 3,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L6-selection"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-exportSelectionJSON"
+      },
+      "description": "Export selected nodes/edges as JSON"
+    },
+    {
+      "@id": "ds:nav-L6-save-selection",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-save-selection",
+      "ds:label": "Save Selection",
+      "ds:itemType": "Button",
+      "ds:action": "showSaveSelectionModal",
+      "ds:icon": "save",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.selectionMode === true",
+      "ds:renderOrder": 4,
+      "ds:cascadeTier": "PFC",
+      "ds:belongsToLayer": {
+        "@id": "ds:navlayer-L6-selection"
+      },
+      "ds:executesAction": {
+        "@id": "ds:action-showSaveSelectionModal"
+      },
+      "description": "Save current selection for later use"
+    },
+    {
+      "@id": "ds:action-toggleOntologyMenu",
+      "@type": "ds:Action",
+      "ds:actionId": "action-toggleOntologyMenu",
+      "ds:actionName": "Toggle Ontology Menu",
+      "ds:functionRef": "toggleLibrary",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Toggle ontology loading menu"
+    },
+    {
+      "@id": "ds:action-toggleAuditPanel",
+      "@type": "ds:Action",
+      "ds:actionId": "action-toggleAuditPanel",
+      "ds:actionName": "Toggle Audit Panel",
+      "ds:functionRef": "toggleAudit",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Toggle OAA compliance audit panel"
+    },
+    {
+      "@id": "ds:action-toggleLibraryPanel",
+      "@type": "ds:Action",
+      "ds:actionId": "action-toggleLibraryPanel",
+      "ds:actionName": "Toggle Library Panel",
+      "ds:functionRef": "toggleLibrary",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Toggle ontology library browser"
+    },
+    {
+      "@id": "ds:action-toggleCategoryPanel",
+      "@type": "ds:Action",
+      "ds:actionId": "action-toggleCategoryPanel",
+      "ds:actionName": "Toggle Category Panel",
+      "ds:functionRef": "toggleCategoryPanel",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Toggle category filter panel"
+    },
+    {
+      "@id": "ds:action-toggleLayerPanel",
+      "@type": "ds:Action",
+      "ds:actionId": "action-toggleLayerPanel",
+      "ds:actionName": "Toggle Layer Panel",
+      "ds:functionRef": "toggleLayerPanel",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Toggle semantic layer filter panel"
+    },
+    {
+      "@id": "ds:action-exportPNG",
+      "@type": "ds:Action",
+      "ds:actionId": "action-exportPNG",
+      "ds:actionName": "Export PNG",
+      "ds:functionRef": "exportPNG",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Export graph as PNG image"
+    },
+    {
+      "@id": "ds:action-exportSVG",
+      "@type": "ds:Action",
+      "ds:actionId": "action-exportSVG",
+      "ds:actionName": "Export SVG",
+      "ds:functionRef": "exportSVG",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Export graph as SVG image"
+    },
+    {
+      "@id": "ds:action-exportMermaid",
+      "@type": "ds:Action",
+      "ds:actionId": "action-exportMermaid",
+      "ds:actionName": "Export Mermaid",
+      "ds:functionRef": "exportMermaid",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Export as Mermaid diagram"
+    },
+    {
+      "@id": "ds:action-exportD3JSON",
+      "@type": "ds:Action",
+      "ds:actionId": "action-exportD3JSON",
+      "ds:actionName": "Export D3 JSON",
+      "ds:functionRef": "exportD3JSON",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Export as D3.js JSON"
+    },
+    {
+      "@id": "ds:action-exportCypher",
+      "@type": "ds:Action",
+      "ds:actionId": "action-exportCypher",
+      "ds:actionName": "Export Cypher",
+      "ds:functionRef": "exportCypher",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Export as Neo4j Cypher"
+    },
+    {
+      "@id": "ds:action-exportGateReport",
+      "@type": "ds:Action",
+      "ds:actionId": "action-exportGateReport",
+      "ds:actionName": "Export Gate Report",
+      "ds:functionRef": "exportGateReport",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Export validation report as Markdown"
+    },
+    {
+      "@id": "ds:action-exportAuditFile",
+      "@type": "ds:Action",
+      "ds:actionId": "action-exportAuditFile",
+      "ds:actionName": "Export Audit File",
+      "ds:functionRef": "exportAuditFile",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Export audit report as JSON"
+    },
+    {
+      "@id": "ds:action-exportPDF",
+      "@type": "ds:Action",
+      "ds:actionId": "action-exportPDF",
+      "ds:actionName": "Export PDF",
+      "ds:functionRef": "exportPDF",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Export full report as PDF"
+    },
+    {
+      "@id": "ds:action-exportCataloguePDF",
+      "@type": "ds:Action",
+      "ds:actionId": "action-exportCataloguePDF",
+      "ds:actionName": "Export Ontology Catalogue PDF",
+      "ds:functionRef": "exportCataloguePDF",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Export full ontology catalogue as PDF — entities, relationships, rules, enums and scope"
+    },
+    {
+      "@id": "ds:action-showDiffModal",
+      "@type": "ds:Action",
+      "ds:actionId": "action-showDiffModal",
+      "ds:actionName": "Show Diff Modal",
+      "ds:functionRef": "showDiffModal",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Compare ontology versions"
+    },
+    {
+      "@id": "ds:action-downloadDSBundle",
+      "@type": "ds:Action",
+      "ds:actionId": "action-downloadDSBundle",
+      "ds:actionName": "Download DS Bundle",
+      "ds:functionRef": "downloadDSBundle",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Download design system bundle as JSON"
+    },
+    {
+      "@id": "ds:action-toggleGlossary",
+      "@type": "ds:Action",
+      "ds:actionId": "action-toggleGlossary",
+      "ds:actionName": "Toggle Glossary",
+      "ds:functionRef": "showGlossaryEditor",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "View and search unified glossary"
+    },
+    {
+      "@id": "ds:action-openFileDialog",
+      "@type": "ds:Action",
+      "ds:actionId": "action-openFileDialog",
+      "ds:actionName": "Open File Dialog",
+      "ds:functionRef": "openFileDialog",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Open a local JSON or JSONLD file"
+    },
+    {
+      "@id": "ds:action-loadFromGitHub",
+      "@type": "ds:Action",
+      "ds:actionId": "action-loadFromGitHub",
+      "ds:actionName": "Load From GitHub",
+      "ds:functionRef": "loadFromGitHub",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Load ontology from GitHub repository"
+    },
+    {
+      "@id": "ds:action-loadFromURL",
+      "@type": "ds:Action",
+      "ds:actionId": "action-loadFromURL",
+      "ds:actionName": "Load From URL",
+      "ds:functionRef": "showURLModal",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Load ontology from a URL"
+    },
+    {
+      "@id": "ds:action-loadFromRegistry",
+      "@type": "ds:Action",
+      "ds:actionId": "action-loadFromRegistry",
+      "ds:actionName": "Load From Registry",
+      "ds:functionRef": "loadRegistry",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Load all ontologies from unified registry"
+    },
+    {
+      "@id": "ds:action-createNewOntology",
+      "@type": "ds:Action",
+      "ds:actionId": "action-createNewOntology",
+      "ds:actionName": "Create New Ontology",
+      "ds:functionRef": "showCreateOntologyModal",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Create a new blank ontology"
+    },
+    {
+      "@id": "ds:action-forkOntology",
+      "@type": "ds:Action",
+      "ds:actionId": "action-forkOntology",
+      "ds:actionName": "Fork Ontology",
+      "ds:functionRef": "showForkModal",
+      "ds:parameterType": "None",
+      "ds:guardCondition": "state.currentData != null",
+      "ds:guardMessage": "Load an ontology first",
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Fork the current ontology"
+    },
+    {
+      "@id": "ds:action-saveToLibrary",
+      "@type": "ds:Action",
+      "ds:actionId": "action-saveToLibrary",
+      "ds:actionName": "Save To Library",
+      "ds:functionRef": "showSaveToLibrary",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Save compliant ontology to library"
+    },
+    {
+      "@id": "ds:action-togglePhysics",
+      "@type": "ds:Action",
+      "ds:actionId": "action-togglePhysics",
+      "ds:actionName": "Toggle Physics",
+      "ds:functionRef": "togglePhysics",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": true,
+      "ds:accessibilityHint": "Toggle physics simulation on or off"
+    },
+    {
+      "@id": "ds:action-fitGraphToView",
+      "@type": "ds:Action",
+      "ds:actionId": "action-fitGraphToView",
+      "ds:actionName": "Fit Graph To View",
+      "ds:functionRef": "fitGraph",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Fit graph to fill viewport"
+    },
+    {
+      "@id": "ds:action-resetGraphView",
+      "@type": "ds:Action",
+      "ds:actionId": "action-resetGraphView",
+      "ds:actionName": "Reset Graph View",
+      "ds:functionRef": "resetGraph",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Reset zoom and pan to default"
+    },
+    {
+      "@id": "ds:action-toggleDetailsPanel",
+      "@type": "ds:Action",
+      "ds:actionId": "action-toggleDetailsPanel",
+      "ds:actionName": "Toggle Details Panel",
+      "ds:functionRef": "toggleSidebar",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Toggle entity details sidebar"
+    },
+    {
+      "@id": "ds:action-changeLayout",
+      "@type": "ds:Action",
+      "ds:actionId": "action-changeLayout",
+      "ds:actionName": "Change Layout",
+      "ds:functionRef": "changeLayout",
+      "ds:parameterType": "Select",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Change graph layout algorithm"
+    },
+    {
+      "@id": "ds:action-fitMermaidToView",
+      "@type": "ds:Action",
+      "ds:actionId": "action-fitMermaidToView",
+      "ds:actionName": "Fit Mermaid To View",
+      "ds:functionRef": "fitMermaid",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Fit Mermaid diagram to viewport"
+    },
+    {
+      "@id": "ds:action-switchToGraphTab",
+      "@type": "ds:Action",
+      "ds:actionId": "action-switchToGraphTab",
+      "ds:actionName": "Switch To Graph Tab",
+      "ds:functionRef": "switchToGraphTab",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Switch to graph view"
+    },
+    {
+      "@id": "ds:action-switchToDSCascadeTab",
+      "@type": "ds:Action",
+      "ds:actionId": "action-switchToDSCascadeTab",
+      "ds:actionName": "Switch To DS Cascade Tab",
+      "ds:functionRef": "switchToDSCascadeTab",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Switch to design system cascade view"
+    },
+    {
+      "@id": "ds:action-switchToMermaidTab",
+      "@type": "ds:Action",
+      "ds:actionId": "action-switchToMermaidTab",
+      "ds:actionName": "Switch To Mermaid Tab",
+      "ds:functionRef": "switchToMermaidTab",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Switch to Mermaid diagram view"
+    },
+    {
+      "@id": "ds:action-switchToMindmapTab",
+      "@type": "ds:Action",
+      "ds:actionId": "action-switchToMindmapTab",
+      "ds:actionName": "Switch To Mindmap Tab",
+      "ds:functionRef": "switchToMindmapTab",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Switch to mindmap view"
+    },
+    {
+      "@id": "ds:action-switchToSkeletonTab",
+      "@type": "ds:Action",
+      "ds:actionId": "action-switchToSkeletonTab",
+      "ds:actionName": "Switch To Skeleton Tab",
+      "ds:functionRef": "switchToSkeletonTab",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": true,
+      "ds:accessibilityHint": "Switch to skeleton graph view"
+    },
+    {
+      "@id": "ds:action-switchToDecisionTreeTab",
+      "@type": "ds:Action",
+      "ds:actionId": "action-switchToDecisionTreeTab",
+      "ds:actionName": "Switch To Decision Tree Tab",
+      "ds:functionRef": "switchToDecisionTreeTab",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Switch to extensibility decision tree view"
+    },
+    {
+      "@id": "ds:action-switchToRegistryBrowserTab",
+      "@type": "ds:Action",
+      "ds:actionId": "action-switchToRegistryBrowserTab",
+      "ds:actionName": "Switch To Registry Browser Tab",
+      "ds:functionRef": "switchToRegistryBrowserTab",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Switch to registry browser view"
+    },
+    {
+      "@id": "ds:action-toggleBacklogPanel",
+      "@type": "ds:Action",
+      "ds:actionId": "action-toggleBacklogPanel",
+      "ds:actionName": "Toggle Backlog Panel",
+      "ds:functionRef": "toggleBacklogPanel",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Toggle backlog manager panel"
+    },
+    {
+      "@id": "ds:action-toggleMermaidEditor",
+      "@type": "ds:Action",
+      "ds:actionId": "action-toggleMermaidEditor",
+      "ds:actionName": "Toggle Mermaid Editor",
+      "ds:functionRef": "toggleMermaidEditor",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Toggle Mermaid code editor"
+    },
+    {
+      "@id": "ds:action-toggleDSPanel",
+      "@type": "ds:Action",
+      "ds:actionId": "action-toggleDSPanel",
+      "ds:actionName": "Toggle DS Panel",
+      "ds:functionRef": "toggleDSPanel",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Toggle design system token browser"
+    },
+    {
+      "@id": "ds:action-toggleTokenMapPanel",
+      "@type": "ds:Action",
+      "ds:actionId": "action-toggleTokenMapPanel",
+      "ds:actionName": "Toggle Token Map Panel",
+      "ds:functionRef": "toggleAdminPanel",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Toggle admin design token tree"
+    },
+    {
+      "@id": "ds:action-togglePFCPFIMode",
+      "@type": "ds:Action",
+      "ds:actionId": "action-togglePFCPFIMode",
+      "ds:actionName": "Toggle PFC PFI Mode",
+      "ds:functionRef": "togglePFCPFIMode",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": true,
+      "ds:accessibilityHint": "Toggle between PF-Core and PFI instance mode"
+    },
+    {
+      "@id": "ds:action-selectPFIInstance",
+      "@type": "ds:Action",
+      "ds:actionId": "action-selectPFIInstance",
+      "ds:actionName": "Select PFI Instance",
+      "ds:functionRef": "selectPFIInstance",
+      "ds:parameterType": "Select",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Select PFI instance"
+    },
+    {
+      "@id": "ds:action-selectBrandVariant",
+      "@type": "ds:Action",
+      "ds:actionId": "action-selectBrandVariant",
+      "ds:actionName": "Select Brand Variant",
+      "ds:functionRef": "switchDSBrand",
+      "ds:parameterType": "Select",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Select brand variant"
+    },
+    {
+      "@id": "ds:action-togglePFILifecyclePanel",
+      "@type": "ds:Action",
+      "ds:actionId": "action-togglePFILifecyclePanel",
+      "ds:actionName": "Toggle PFI Lifecycle Panel",
+      "ds:functionRef": "togglePFILifecyclePanel",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Toggle PFI lifecycle panel"
+    },
+    {
+      "@id": "ds:action-showSnapshotManager",
+      "@type": "ds:Action",
+      "ds:actionId": "action-showSnapshotManager",
+      "ds:actionName": "Show Snapshot Manager",
+      "ds:functionRef": "showSnapshotManager",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Open snapshot manager"
+    },
+    {
+      "@id": "ds:action-toggleSkeletonPanel",
+      "@type": "ds:Action",
+      "ds:actionId": "action-toggleSkeletonPanel",
+      "ds:actionName": "Toggle Skeleton Panel",
+      "ds:functionRef": "toggleSkeletonPanel",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Toggle application skeleton inspector"
+    },
+    {
+      "@id": "ds:action-runOAAUpgrade",
+      "@type": "ds:Action",
+      "ds:actionId": "action-runOAAUpgrade",
+      "ds:actionName": "Run OAA Upgrade",
+      "ds:functionRef": "runOAAUpgrade",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Generate OAA upgrade command"
+    },
+    {
+      "@id": "ds:action-showGitHubSettings",
+      "@type": "ds:Action",
+      "ds:actionId": "action-showGitHubSettings",
+      "ds:actionName": "Show GitHub Settings",
+      "ds:functionRef": "showGitHubSettings",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Open GitHub repository settings"
+    },
+    {
+      "@id": "ds:action-loadTestData",
+      "@type": "ds:Action",
+      "ds:actionId": "action-loadTestData",
+      "ds:actionName": "Load Test Data",
+      "ds:functionRef": "loadTestDataFile",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Load test data file"
+    },
+    {
+      "@id": "ds:action-showEntityEditor",
+      "@type": "ds:Action",
+      "ds:actionId": "action-showEntityEditor",
+      "ds:actionName": "Show Entity Editor",
+      "ds:functionRef": "showEntityEditor",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Add a new entity"
+    },
+    {
+      "@id": "ds:action-showRelationshipEditor",
+      "@type": "ds:Action",
+      "ds:actionId": "action-showRelationshipEditor",
+      "ds:actionName": "Show Relationship Editor",
+      "ds:functionRef": "showRelationshipEditor",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Add a new relationship"
+    },
+    {
+      "@id": "ds:action-doUndo",
+      "@type": "ds:Action",
+      "ds:actionId": "action-doUndo",
+      "ds:actionName": "Undo",
+      "ds:functionRef": "doUndo",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Undo last authoring action"
+    },
+    {
+      "@id": "ds:action-doRedo",
+      "@type": "ds:Action",
+      "ds:actionId": "action-doRedo",
+      "ds:actionName": "Redo",
+      "ds:functionRef": "doRedo",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Redo last undone action"
+    },
+    {
+      "@id": "ds:action-showVersionBumpModal",
+      "@type": "ds:Action",
+      "ds:actionId": "action-showVersionBumpModal",
+      "ds:actionName": "Show Version Bump Modal",
+      "ds:functionRef": "showVersionBumpModal",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Create new version"
+    },
+    {
+      "@id": "ds:action-showRevisionHistory",
+      "@type": "ds:Action",
+      "ds:actionId": "action-showRevisionHistory",
+      "ds:actionName": "Show Revision History",
+      "ds:functionRef": "showRevisionHistoryPanel",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Show revision history"
+    },
+    {
+      "@id": "ds:action-showGlossaryEditor",
+      "@type": "ds:Action",
+      "ds:actionId": "action-showGlossaryEditor",
+      "ds:actionName": "Show Glossary Editor",
+      "ds:functionRef": "showGlossaryEditor",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Open glossary editor"
+    },
+    {
+      "@id": "ds:action-saveAuthoredOntology",
+      "@type": "ds:Action",
+      "ds:actionId": "action-saveAuthoredOntology",
+      "ds:actionName": "Save Authored Ontology",
+      "ds:functionRef": "showSaveWithValidation",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Save with validation"
+    },
+    {
+      "@id": "ds:action-showGenerationModal",
+      "@type": "ds:Action",
+      "ds:actionId": "action-showGenerationModal",
+      "ds:actionName": "Show Generation Modal",
+      "ds:functionRef": "showGenerationModal",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Generate ontology content with AI"
+    },
+    {
+      "@id": "ds:action-toggleSelectionMode",
+      "@type": "ds:Action",
+      "ds:actionId": "action-toggleSelectionMode",
+      "ds:actionName": "Toggle Selection Mode",
+      "ds:functionRef": "toggleSelectionMode",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": true,
+      "ds:accessibilityHint": "Toggle node selection mode"
+    },
+    {
+      "@id": "ds:action-exitAuthoringMode",
+      "@type": "ds:Action",
+      "ds:actionId": "action-exitAuthoringMode",
+      "ds:actionName": "Exit Authoring Mode",
+      "ds:functionRef": "exitAuthoringMode",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": true,
+      "ds:accessibilityHint": "Exit authoring mode"
+    },
+    {
+      "@id": "ds:action-selectAllNodes",
+      "@type": "ds:Action",
+      "ds:actionId": "action-selectAllNodes",
+      "ds:actionName": "Select All Nodes",
+      "ds:functionRef": "selectAllNodes",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Select all nodes in graph"
+    },
+    {
+      "@id": "ds:action-clearSelection",
+      "@type": "ds:Action",
+      "ds:actionId": "action-clearSelection",
+      "ds:actionName": "Clear Selection",
+      "ds:functionRef": "clearSelection",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": true,
+      "ds:accessibilityHint": "Clear current selection"
+    },
+    {
+      "@id": "ds:action-exportSelectionJSON",
+      "@type": "ds:Action",
+      "ds:actionId": "action-exportSelectionJSON",
+      "ds:actionName": "Export Selection JSON",
+      "ds:functionRef": "exportSelectionJSON",
+      "ds:parameterType": "None",
+      "ds:guardCondition": "state.selectedNodeIds && state.selectedNodeIds.size > 0",
+      "ds:guardMessage": "No nodes selected",
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Export selected nodes as JSON"
+    },
+    {
+      "@id": "ds:action-showSaveSelectionModal",
+      "@type": "ds:Action",
+      "ds:actionId": "action-showSaveSelectionModal",
+      "ds:actionName": "Show Save Selection Modal",
+      "ds:functionRef": "showSaveSelectionModal",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": "Save current selection"
+    },
+    {
+      "@id": "ds:action-noop",
+      "@type": "ds:Action",
+      "ds:actionId": "action-noop",
+      "ds:actionName": "No Operation",
+      "ds:functionRef": "noop",
+      "ds:parameterType": "None",
+      "ds:guardCondition": null,
+      "ds:guardMessage": null,
+      "ds:triggersSyncAfter": false,
+      "ds:accessibilityHint": null
+    },
+    {
+      "@id": "ds:cmp-glb-header",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-glb-header",
+      "ds:renderOrder": 1,
+      "ds:slotName": "header-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z1"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-header"
+      },
+      "description": "Global header component — app title, ontology name/stats, version badge"
+    },
+    {
+      "@id": "ds:cmp-glb-toolbar",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-glb-toolbar",
+      "ds:renderOrder": 1,
+      "ds:slotName": "toolbar-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z2"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-toolbar"
+      },
+      "description": "Global toolbar component — hosts L1–L4 nav layers rendered from NavItem data"
+    },
+    {
+      "@id": "ds:cmp-glb-breadcrumb",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-glb-breadcrumb",
+      "ds:renderOrder": 1,
+      "ds:slotName": "breadcrumb-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": "state.breadcrumbPath.length > 0",
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z5"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-breadcrumb"
+      },
+      "description": "Breadcrumb component — navigation path, tier gauge, series filter chips"
+    },
+    {
+      "@id": "ds:cmp-glb-canvas",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-glb-canvas",
+      "ds:renderOrder": 1,
+      "ds:slotName": "canvas-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z6"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-graph-canvas"
+      },
+      "description": "Graph canvas component — vis-network container, mermaid container, mindmap container"
+    },
+    {
+      "@id": "ds:cmp-glb-legend",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-glb-legend",
+      "ds:renderOrder": 1,
+      "ds:slotName": "legend-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z7"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-legend"
+      },
+      "description": "Legend component — entity archetype colour key, edge type key"
+    },
+    {
+      "@id": "ds:cmp-glb-modal",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-glb-modal",
+      "ds:renderOrder": 1,
+      "ds:slotName": "modal-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z18"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-modal"
+      },
+      "description": "Modal dialog system component — confirmation, form, wizard containers"
+    },
+    {
+      "@id": "ds:cmp-glb-tooltip",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-glb-tooltip",
+      "ds:renderOrder": 1,
+      "ds:slotName": "tooltip-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z19"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-tooltip"
+      },
+      "description": "Tooltip/hover card system — entity preview, relationship summary"
+    },
+    {
+      "@id": "ds:cmp-glb-dropzone",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-glb-dropzone",
+      "ds:renderOrder": 1,
+      "ds:slotName": "dropzone-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z20"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-dropzone"
+      },
+      "description": "File drop zone component — drag-and-drop JSON/JSONLD file loader"
+    },
+    {
+      "@id": "ds:cmp-pfi-lifecycle",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-pfi-lifecycle",
+      "ds:renderOrder": 1,
+      "ds:slotName": "lifecycle-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": "state.isPFIMode === true",
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z21"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-pfi-lifecycle"
+      },
+      "description": "PFI lifecycle panel component — 10-step pipeline tracker with action buttons"
+    },
+    {
+      "@id": "ds:cmp-viz-skeleton-inspector",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-viz-skeleton-inspector",
+      "ds:renderOrder": 1,
+      "ds:slotName": "skeleton-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z22"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-skeleton-inspector"
+      },
+      "description": "App skeleton inspector panel component — spatial zone diagram, zone/component/nav introspection"
+    },
+    {
+      "@id": "ds:cmp-viz-sidebar",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-viz-sidebar",
+      "ds:renderOrder": 1,
+      "ds:slotName": "sidebar-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z9"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-sidebar-details"
+      },
+      "description": "Sidebar details component — entity details, connections, schema inspector, raw data tabs"
+    },
+    {
+      "@id": "ds:cmp-viz-audit",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-viz-audit",
+      "ds:renderOrder": 1,
+      "ds:slotName": "audit-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z10"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-audit-panel"
+      },
+      "description": "OAA audit panel component — gate results, validation findings"
+    },
+    {
+      "@id": "ds:cmp-viz-library",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-viz-library",
+      "ds:renderOrder": 1,
+      "ds:slotName": "library-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z11"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-library-panel"
+      },
+      "description": "Library browser component — registry, dependencies, saved, recent"
+    },
+    {
+      "@id": "ds:cmp-viz-ds-panel",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-viz-ds-panel",
+      "ds:renderOrder": 1,
+      "ds:slotName": "ds-panel-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z12"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-ds-panel"
+      },
+      "description": "Design system token browser — cascade tree, token search, brand comparison"
+    },
+    {
+      "@id": "ds:cmp-viz-backlog",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-viz-backlog",
+      "ds:renderOrder": 1,
+      "ds:slotName": "backlog-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z13"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-backlog-panel"
+      },
+      "description": "Backlog manager component — epic/feature/story hierarchy"
+    },
+    {
+      "@id": "ds:cmp-viz-mermaid",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-viz-mermaid",
+      "ds:renderOrder": 1,
+      "ds:slotName": "mermaid-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": "state.currentView === 'mermaid'",
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z14"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-mermaid-editor"
+      },
+      "description": "Mermaid diagram editor — code editor, preview, export"
+    },
+    {
+      "@id": "ds:cmp-viz-mindmap",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-viz-mindmap",
+      "ds:renderOrder": 1,
+      "ds:slotName": "mindmap-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": "state.currentView === 'mindmap'",
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z15"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-mindmap-props"
+      },
+      "description": "Mindmap property editor — node properties, styling, hierarchy"
+    },
+    {
+      "@id": "ds:cmp-viz-category",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-viz-category",
+      "ds:renderOrder": 1,
+      "ds:slotName": "category-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z17"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-category-panel"
+      },
+      "description": "Category filter component — maturity, compliance, entity categories"
+    },
+    {
+      "@id": "ds:cmp-viz-layer",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-viz-layer",
+      "ds:renderOrder": 1,
+      "ds:slotName": "layer-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z8"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-layer-panel"
+      },
+      "description": "Semantic layer filter component — toggle entity groups by layer"
+    },
+    {
+      "@id": "ds:cmp-viz-token-map",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-viz-token-map",
+      "ds:renderOrder": 1,
+      "ds:slotName": "token-map-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": null,
+      "ds:cascadeTier": "PFC",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z12"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-token-map"
+      },
+      "description": "Admin design token tree panel — token audit, coverage analysis"
+    },
+    {
+      "@id": "ds:cmp-pfi-context-bar",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-pfi-context-bar",
+      "ds:renderOrder": 1,
+      "ds:slotName": "context-bar-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": "state.isPFIMode === true",
+      "ds:cascadeTier": "PFI",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z3"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-context-bar"
+      },
+      "description": "PFI context identity bar — brand logo, instance name, brand accent"
+    },
+    {
+      "@id": "ds:cmp-pfi-context-drawer",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-pfi-context-drawer",
+      "ds:renderOrder": 1,
+      "ds:slotName": "context-drawer-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": "state.isPFIMode === true",
+      "ds:cascadeTier": "PFI",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z16"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-context-drawer"
+      },
+      "description": "PFI context drawer — instance switcher, brand settings, PFI config"
+    },
+    {
+      "@id": "ds:cmp-pfi-authoring",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-pfi-authoring",
+      "ds:renderOrder": 1,
+      "ds:slotName": "authoring-content",
+      "ds:tokenOverrides": null,
+      "ds:visibilityCondition": "state.authoringMode === true",
+      "ds:cascadeTier": "PFI",
+      "ds:placedInZone": {
+        "@id": "ds:zone-Z4"
+      },
+      "ds:placesComponent": {
+        "@id": "ds:dc-authoring-toolbar"
+      },
+      "description": "PFI authoring toolbar — entity/relationship authoring for instance data"
+    }
+  ]
+}

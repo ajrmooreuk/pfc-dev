@@ -1,0 +1,510 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v7/",
+    "kano": "https://oaa-ontology.org/v7/kano/",
+    "vp": "https://oaa-ontology.org/v6/value-proposition/",
+    "pmf": "https://oaa-ontology.org/v6/pmf/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/"
+  },
+  "@id": "https://oaa-ontology.org/v7/kano/instances/wwg",
+  "@type": "oaa:InstanceData",
+  "name": "W4M-WWG Kano Model Instance Data",
+  "description": "Kano feature classification for W4M World Wide Gourmet (WWG) — UK specialist food importer. 4 features classified across 3 customer segments: Restaurant Chains, Wholesalers, Foodservice Distributors.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "KANO-ONT",
+  "oaa:series": "VE-Series / VSOM-SA",
+  "oaa:pfiInstance": "PFI-W4M-WWG",
+  "oaa:instanceVersion": "1.0.0",
+  "dateCreated": "2026-02-28",
+  "dateModified": "2026-02-28",
+
+  "oaa:featureManifest": {
+    "description": "4 WWG product/service features under Kano evaluation",
+    "features": [
+      {
+        "featureId": "wwg-feat-001",
+        "name": "Disruption Notification",
+        "vpRef": "vp:wwg-benefit-disruption-notify",
+        "description": "Real-time alerts when supply corridor disruptions affect order fulfilment (weather, customs, logistics)"
+      },
+      {
+        "featureId": "wwg-feat-002",
+        "name": "Cross-Corridor Substitution",
+        "vpRef": "vp:wwg-solution-cross-corridor-sub",
+        "description": "Automated suggestion of equivalent products from alternative source corridors (AU/NZ/IS/IE) when primary supply is disrupted"
+      },
+      {
+        "featureId": "wwg-feat-003",
+        "name": "Shelf-Life Transparency",
+        "vpRef": "vp:wwg-benefit-shelf-life",
+        "description": "Full visibility of remaining shelf life at point of delivery, with cold-chain integrity scoring"
+      },
+      {
+        "featureId": "wwg-feat-004",
+        "name": "Margin Dashboard",
+        "vpRef": "vp:wwg-solution-margin-dashboard",
+        "description": "Real-time gross margin visibility per product line, corridor, and customer segment with trend analysis"
+      }
+    ]
+  },
+
+  "oaa:segmentManifest": {
+    "description": "3 WWG customer segments surveyed",
+    "segments": [
+      {
+        "segmentId": "wwg-seg-rc",
+        "name": "Restaurant Chains",
+        "icpRef": "vp:wwg-icp-restaurant-chains",
+        "pmfSegmentRef": "pmf:wwg-csf-restaurant-chains",
+        "description": "UK restaurant chains requiring consistent specialty ingredient supply with predictable pricing"
+      },
+      {
+        "segmentId": "wwg-seg-ws",
+        "name": "Wholesalers",
+        "icpRef": "vp:wwg-icp-wholesalers",
+        "pmfSegmentRef": "pmf:wwg-csf-wholesalers",
+        "description": "Food wholesalers redistributing specialty imports to independent retailers and food halls"
+      },
+      {
+        "segmentId": "wwg-seg-fs",
+        "name": "Foodservice Distributors",
+        "icpRef": "vp:wwg-icp-foodservice",
+        "pmfSegmentRef": "pmf:wwg-csf-foodservice",
+        "description": "Contract catering and institutional food service distributors with high volume/low margin requirements"
+      }
+    ]
+  },
+
+  "@graph": [
+    {
+      "@id": "kano:wwg-survey-001",
+      "@type": "kano:KanoSurvey",
+      "kano:surveyId": "KANO-WWG-2026-Q1",
+      "name": "WWG Q1 2026 Kano Feature Survey — Restaurant Chains",
+      "kano:targetICPRef": "vp:wwg-icp-restaurant-chains",
+      "kano:surveyDate": "2026-01-15",
+      "kano:sampleSize": 42,
+      "kano:confidenceLevel": 0.92,
+      "kano:segmentRef": "pmf:wwg-csf-restaurant-chains",
+      "kano:status": "Completed"
+    },
+    {
+      "@id": "kano:wwg-survey-002",
+      "@type": "kano:KanoSurvey",
+      "kano:surveyId": "KANO-WWG-2026-Q1-WS",
+      "name": "WWG Q1 2026 Kano Feature Survey — Wholesalers",
+      "kano:targetICPRef": "vp:wwg-icp-wholesalers",
+      "kano:surveyDate": "2026-01-20",
+      "kano:sampleSize": 35,
+      "kano:confidenceLevel": 0.88,
+      "kano:segmentRef": "pmf:wwg-csf-wholesalers",
+      "kano:status": "Completed"
+    },
+    {
+      "@id": "kano:wwg-survey-003",
+      "@type": "kano:KanoSurvey",
+      "kano:surveyId": "KANO-WWG-2026-Q1-FS",
+      "name": "WWG Q1 2026 Kano Feature Survey — Foodservice",
+      "kano:targetICPRef": "vp:wwg-icp-foodservice",
+      "kano:surveyDate": "2026-01-25",
+      "kano:sampleSize": 31,
+      "kano:confidenceLevel": 0.85,
+      "kano:segmentRef": "pmf:wwg-csf-foodservice",
+      "kano:status": "Completed"
+    },
+
+    {
+      "@id": "kano:wwg-q-001",
+      "@type": "kano:KanoQuestion",
+      "kano:questionId": "Q-WWG-DN-001",
+      "kano:featureRef": "vp:wwg-benefit-disruption-notify",
+      "kano:functionalQuestion": "How would you feel if WWG provided real-time alerts when supply disruptions affect your orders?",
+      "kano:dysfunctionalQuestion": "How would you feel if WWG did NOT provide any notification when supply disruptions affect your orders?",
+      "kano:surveyRef": "kano:wwg-survey-001",
+      "kano:responseScale": "FivePointKano",
+      "kano:featureDescription": "Real-time disruption notification service covering weather events, customs delays, and logistics failures across AU/NZ/IS/IE corridors"
+    },
+    {
+      "@id": "kano:wwg-q-002",
+      "@type": "kano:KanoQuestion",
+      "kano:questionId": "Q-WWG-CCS-001",
+      "kano:featureRef": "vp:wwg-solution-cross-corridor-sub",
+      "kano:functionalQuestion": "How would you feel if WWG automatically suggested equivalent products from alternative source countries when your usual supply is disrupted?",
+      "kano:dysfunctionalQuestion": "How would you feel if WWG offered no alternative product suggestions when your usual supply corridor is disrupted?",
+      "kano:surveyRef": "kano:wwg-survey-001",
+      "kano:responseScale": "FivePointKano",
+      "kano:featureDescription": "Automated cross-corridor substitution engine suggesting equivalent specialty products from AU, NZ, Iceland, or Ireland when primary source is unavailable"
+    },
+    {
+      "@id": "kano:wwg-q-003",
+      "@type": "kano:KanoQuestion",
+      "kano:questionId": "Q-WWG-SLT-001",
+      "kano:featureRef": "vp:wwg-benefit-shelf-life",
+      "kano:functionalQuestion": "How would you feel if WWG provided full shelf-life visibility and cold-chain integrity scores at point of delivery?",
+      "kano:dysfunctionalQuestion": "How would you feel if WWG did NOT provide any shelf-life or cold-chain information at point of delivery?",
+      "kano:surveyRef": "kano:wwg-survey-001",
+      "kano:responseScale": "FivePointKano",
+      "kano:featureDescription": "Remaining shelf life in days plus cold-chain integrity score (0-100) visible on delivery documentation and portal"
+    },
+    {
+      "@id": "kano:wwg-q-004",
+      "@type": "kano:KanoQuestion",
+      "kano:questionId": "Q-WWG-MD-001",
+      "kano:featureRef": "vp:wwg-solution-margin-dashboard",
+      "kano:functionalQuestion": "How would you feel if WWG provided a real-time dashboard showing your gross margin per product line and source corridor?",
+      "kano:dysfunctionalQuestion": "How would you feel if WWG did NOT provide any margin visibility or trend analysis for your purchases?",
+      "kano:surveyRef": "kano:wwg-survey-001",
+      "kano:responseScale": "FivePointKano",
+      "kano:featureDescription": "Real-time gross margin dashboard per product line, corridor (AU/NZ/IS/IE→UK), and customer segment with 12-month trend analysis"
+    },
+
+    {
+      "@id": "kano:wwg-cls-rc-dn",
+      "@type": "kano:KanoClassification",
+      "kano:classificationId": "CLS-WWG-RC-DN-001",
+      "kano:featureRef": "vp:wwg-benefit-disruption-notify",
+      "kano:category": "MustBe",
+      "kano:confidence": 0.88,
+      "kano:sampleSize": 42,
+      "kano:classificationDate": "2026-02-01",
+      "kano:surveyRef": "kano:wwg-survey-001",
+      "kano:segmentRef": "pmf:wwg-csf-restaurant-chains",
+      "kano:evidenceStrength": "Strong",
+      "kano:categoryDistribution": "{\"MustBe\":0.88,\"Performance\":0.07,\"Attractive\":0.02,\"Indifferent\":0.02,\"Reverse\":0.01}"
+    },
+    {
+      "@id": "kano:wwg-cls-rc-ccs",
+      "@type": "kano:KanoClassification",
+      "kano:classificationId": "CLS-WWG-RC-CCS-001",
+      "kano:featureRef": "vp:wwg-solution-cross-corridor-sub",
+      "kano:category": "Attractive",
+      "kano:confidence": 0.76,
+      "kano:sampleSize": 42,
+      "kano:classificationDate": "2026-02-01",
+      "kano:surveyRef": "kano:wwg-survey-001",
+      "kano:segmentRef": "pmf:wwg-csf-restaurant-chains",
+      "kano:evidenceStrength": "Moderate",
+      "kano:categoryDistribution": "{\"MustBe\":0.05,\"Performance\":0.12,\"Attractive\":0.76,\"Indifferent\":0.05,\"Reverse\":0.02}"
+    },
+    {
+      "@id": "kano:wwg-cls-rc-slt",
+      "@type": "kano:KanoClassification",
+      "kano:classificationId": "CLS-WWG-RC-SLT-001",
+      "kano:featureRef": "vp:wwg-benefit-shelf-life",
+      "kano:category": "Performance",
+      "kano:confidence": 0.82,
+      "kano:sampleSize": 42,
+      "kano:classificationDate": "2026-02-01",
+      "kano:surveyRef": "kano:wwg-survey-001",
+      "kano:segmentRef": "pmf:wwg-csf-restaurant-chains",
+      "kano:evidenceStrength": "Strong",
+      "kano:categoryDistribution": "{\"MustBe\":0.10,\"Performance\":0.82,\"Attractive\":0.05,\"Indifferent\":0.02,\"Reverse\":0.01}"
+    },
+    {
+      "@id": "kano:wwg-cls-rc-md",
+      "@type": "kano:KanoClassification",
+      "kano:classificationId": "CLS-WWG-RC-MD-001",
+      "kano:featureRef": "vp:wwg-solution-margin-dashboard",
+      "kano:category": "Indifferent",
+      "kano:confidence": 0.71,
+      "kano:sampleSize": 42,
+      "kano:classificationDate": "2026-02-01",
+      "kano:surveyRef": "kano:wwg-survey-001",
+      "kano:segmentRef": "pmf:wwg-csf-restaurant-chains",
+      "kano:evidenceStrength": "Moderate",
+      "kano:categoryDistribution": "{\"MustBe\":0.02,\"Performance\":0.14,\"Attractive\":0.10,\"Indifferent\":0.71,\"Reverse\":0.03}"
+    },
+
+    {
+      "@id": "kano:wwg-cls-ws-dn",
+      "@type": "kano:KanoClassification",
+      "kano:classificationId": "CLS-WWG-WS-DN-001",
+      "kano:featureRef": "vp:wwg-benefit-disruption-notify",
+      "kano:category": "Performance",
+      "kano:confidence": 0.79,
+      "kano:sampleSize": 35,
+      "kano:classificationDate": "2026-02-05",
+      "kano:surveyRef": "kano:wwg-survey-002",
+      "kano:segmentRef": "pmf:wwg-csf-wholesalers",
+      "kano:evidenceStrength": "Moderate",
+      "kano:categoryDistribution": "{\"MustBe\":0.11,\"Performance\":0.79,\"Attractive\":0.06,\"Indifferent\":0.03,\"Reverse\":0.01}"
+    },
+    {
+      "@id": "kano:wwg-cls-ws-ccs",
+      "@type": "kano:KanoClassification",
+      "kano:classificationId": "CLS-WWG-WS-CCS-001",
+      "kano:featureRef": "vp:wwg-solution-cross-corridor-sub",
+      "kano:category": "Performance",
+      "kano:confidence": 0.73,
+      "kano:sampleSize": 35,
+      "kano:classificationDate": "2026-02-05",
+      "kano:surveyRef": "kano:wwg-survey-002",
+      "kano:segmentRef": "pmf:wwg-csf-wholesalers",
+      "kano:evidenceStrength": "Moderate",
+      "kano:categoryDistribution": "{\"MustBe\":0.09,\"Performance\":0.73,\"Attractive\":0.11,\"Indifferent\":0.06,\"Reverse\":0.01}"
+    },
+    {
+      "@id": "kano:wwg-cls-ws-slt",
+      "@type": "kano:KanoClassification",
+      "kano:classificationId": "CLS-WWG-WS-SLT-001",
+      "kano:featureRef": "vp:wwg-benefit-shelf-life",
+      "kano:category": "MustBe",
+      "kano:confidence": 0.91,
+      "kano:sampleSize": 35,
+      "kano:classificationDate": "2026-02-05",
+      "kano:surveyRef": "kano:wwg-survey-002",
+      "kano:segmentRef": "pmf:wwg-csf-wholesalers",
+      "kano:evidenceStrength": "Strong",
+      "kano:categoryDistribution": "{\"MustBe\":0.91,\"Performance\":0.06,\"Attractive\":0.02,\"Indifferent\":0.01,\"Reverse\":0.00}"
+    },
+    {
+      "@id": "kano:wwg-cls-ws-md",
+      "@type": "kano:KanoClassification",
+      "kano:classificationId": "CLS-WWG-WS-MD-001",
+      "kano:featureRef": "vp:wwg-solution-margin-dashboard",
+      "kano:category": "Attractive",
+      "kano:confidence": 0.68,
+      "kano:sampleSize": 35,
+      "kano:classificationDate": "2026-02-05",
+      "kano:surveyRef": "kano:wwg-survey-002",
+      "kano:segmentRef": "pmf:wwg-csf-wholesalers",
+      "kano:evidenceStrength": "Moderate",
+      "kano:categoryDistribution": "{\"MustBe\":0.03,\"Performance\":0.17,\"Attractive\":0.68,\"Indifferent\":0.09,\"Reverse\":0.03}"
+    },
+
+    {
+      "@id": "kano:wwg-cls-fs-dn",
+      "@type": "kano:KanoClassification",
+      "kano:classificationId": "CLS-WWG-FS-DN-001",
+      "kano:featureRef": "vp:wwg-benefit-disruption-notify",
+      "kano:category": "MustBe",
+      "kano:confidence": 0.85,
+      "kano:sampleSize": 31,
+      "kano:classificationDate": "2026-02-10",
+      "kano:surveyRef": "kano:wwg-survey-003",
+      "kano:segmentRef": "pmf:wwg-csf-foodservice",
+      "kano:evidenceStrength": "Strong",
+      "kano:categoryDistribution": "{\"MustBe\":0.85,\"Performance\":0.10,\"Attractive\":0.03,\"Indifferent\":0.02,\"Reverse\":0.00}"
+    },
+    {
+      "@id": "kano:wwg-cls-fs-ccs",
+      "@type": "kano:KanoClassification",
+      "kano:classificationId": "CLS-WWG-FS-CCS-001",
+      "kano:featureRef": "vp:wwg-solution-cross-corridor-sub",
+      "kano:category": "Attractive",
+      "kano:confidence": 0.81,
+      "kano:sampleSize": 31,
+      "kano:classificationDate": "2026-02-10",
+      "kano:surveyRef": "kano:wwg-survey-003",
+      "kano:segmentRef": "pmf:wwg-csf-foodservice",
+      "kano:evidenceStrength": "Strong",
+      "kano:categoryDistribution": "{\"MustBe\":0.03,\"Performance\":0.10,\"Attractive\":0.81,\"Indifferent\":0.06,\"Reverse\":0.00}"
+    },
+    {
+      "@id": "kano:wwg-cls-fs-slt",
+      "@type": "kano:KanoClassification",
+      "kano:classificationId": "CLS-WWG-FS-SLT-001",
+      "kano:featureRef": "vp:wwg-benefit-shelf-life",
+      "kano:category": "MustBe",
+      "kano:confidence": 0.93,
+      "kano:sampleSize": 31,
+      "kano:classificationDate": "2026-02-10",
+      "kano:surveyRef": "kano:wwg-survey-003",
+      "kano:segmentRef": "pmf:wwg-csf-foodservice",
+      "kano:evidenceStrength": "Strong",
+      "kano:categoryDistribution": "{\"MustBe\":0.93,\"Performance\":0.05,\"Attractive\":0.02,\"Indifferent\":0.00,\"Reverse\":0.00}"
+    },
+    {
+      "@id": "kano:wwg-cls-fs-md",
+      "@type": "kano:KanoClassification",
+      "kano:classificationId": "CLS-WWG-FS-MD-001",
+      "kano:featureRef": "vp:wwg-solution-margin-dashboard",
+      "kano:category": "Performance",
+      "kano:confidence": 0.74,
+      "kano:sampleSize": 31,
+      "kano:classificationDate": "2026-02-10",
+      "kano:surveyRef": "kano:wwg-survey-003",
+      "kano:segmentRef": "pmf:wwg-csf-foodservice",
+      "kano:evidenceStrength": "Moderate",
+      "kano:categoryDistribution": "{\"MustBe\":0.06,\"Performance\":0.74,\"Attractive\":0.10,\"Indifferent\":0.06,\"Reverse\":0.04}"
+    },
+
+    {
+      "@id": "kano:wwg-curve-mustbe",
+      "@type": "kano:SatisfactionCurve",
+      "kano:curveId": "CURVE-WWG-MUSTBE-001",
+      "name": "WWG Must-Be Satisfaction Curve (Disruption Notification for Restaurant Chains)",
+      "kano:categoryType": "MustBe",
+      "kano:curveFunction": "Asymptotic",
+      "kano:inflectionPoints": ["20", "50"],
+      "kano:customerSegment": "Restaurant Chains",
+      "kano:implementationLevel": 75,
+      "kano:satisfactionLevel": 48,
+      "kano:kpiRef": "kpi:wwg-kpi-disruption-notify-coverage"
+    },
+    {
+      "@id": "kano:wwg-curve-performance",
+      "@type": "kano:SatisfactionCurve",
+      "kano:curveId": "CURVE-WWG-PERF-001",
+      "name": "WWG Performance Satisfaction Curve (Shelf-Life Transparency for Restaurant Chains)",
+      "kano:categoryType": "Performance",
+      "kano:curveFunction": "Linear",
+      "kano:inflectionPoints": [],
+      "kano:customerSegment": "Restaurant Chains",
+      "kano:implementationLevel": 60,
+      "kano:satisfactionLevel": 62,
+      "kano:kpiRef": "kpi:wwg-kpi-shelf-life-accuracy"
+    },
+    {
+      "@id": "kano:wwg-curve-attractive",
+      "@type": "kano:SatisfactionCurve",
+      "kano:curveId": "CURVE-WWG-ATTR-001",
+      "name": "WWG Attractive Satisfaction Curve (Cross-Corridor Substitution for Restaurant Chains)",
+      "kano:categoryType": "Attractive",
+      "kano:curveFunction": "Exponential",
+      "kano:inflectionPoints": ["40", "70"],
+      "kano:customerSegment": "Restaurant Chains",
+      "kano:implementationLevel": 30,
+      "kano:satisfactionLevel": 72,
+      "kano:kpiRef": "kpi:wwg-kpi-substitution-acceptance-rate"
+    },
+    {
+      "@id": "kano:wwg-curve-indifferent",
+      "@type": "kano:SatisfactionCurve",
+      "kano:curveId": "CURVE-WWG-IND-001",
+      "name": "WWG Indifferent Satisfaction Curve (Margin Dashboard for Restaurant Chains)",
+      "kano:categoryType": "Indifferent",
+      "kano:curveFunction": "Flat",
+      "kano:inflectionPoints": [],
+      "kano:customerSegment": "Restaurant Chains",
+      "kano:implementationLevel": 50,
+      "kano:satisfactionLevel": 45,
+      "kano:kpiRef": "kpi:wwg-kpi-margin-dashboard-usage"
+    },
+
+    {
+      "@id": "kano:wwg-decay-001",
+      "@type": "kano:KanoDecay",
+      "kano:decayId": "DECAY-WWG-DN-WS-001",
+      "kano:featureRef": "vp:wwg-benefit-disruption-notify",
+      "kano:fromCategory": "Performance",
+      "kano:toCategory": "MustBe",
+      "kano:decayPeriodMonths": 18,
+      "kano:detectionDate": "2026-02-10",
+      "kano:evidence": "Wholesaler segment repeat survey shows disruption notification has shifted from Performance to Must-Be over 18 months. Three major competitors (FreshDirect, SpecialtyLine, GourmetConnect) now offer equivalent notification services. Feature commoditised.",
+      "kano:competitivePressure": "High",
+      "kano:recommendedAction": "Accept",
+      "kano:pivotAssessmentRef": "pmf:wwg-pivot-disruption-commodity-001"
+    },
+    {
+      "@id": "kano:wwg-decay-002",
+      "@type": "kano:KanoDecay",
+      "kano:decayId": "DECAY-WWG-CCS-WS-001",
+      "kano:featureRef": "vp:wwg-solution-cross-corridor-sub",
+      "kano:fromCategory": "Attractive",
+      "kano:toCategory": "Performance",
+      "kano:decayPeriodMonths": 12,
+      "kano:detectionDate": "2026-02-10",
+      "kano:evidence": "Wholesaler segment shows cross-corridor substitution migrating from Attractive to Performance. Two competitors beginning to offer similar multi-origin sourcing. Feature differentiation eroding but still ahead of market.",
+      "kano:competitivePressure": "Medium",
+      "kano:recommendedAction": "Accelerate"
+    },
+
+    {
+      "@id": "kano:wwg-priority-001",
+      "@type": "kano:FeaturePriority",
+      "kano:priorityId": "PRI-WWG-001",
+      "name": "Disruption Notification Priority",
+      "kano:featureRef": "vp:wwg-benefit-disruption-notify",
+      "kano:priorityRank": 2,
+      "kano:investmentRecommendation": "Maintain",
+      "kano:kanoEvidenceRefs": [
+        "kano:wwg-cls-rc-dn",
+        "kano:wwg-cls-ws-dn",
+        "kano:wwg-cls-fs-dn"
+      ],
+      "kano:wtpElasticity": 0.3,
+      "kano:hasSegmentVariation": true,
+      "kano:strategicAction": "Maintain as hygiene factor for RC/FS (Must-Be). Monitor WS segment where it is still Performance. No new investment — ensure uptime and coverage SLAs are met."
+    },
+    {
+      "@id": "kano:wwg-priority-002",
+      "@type": "kano:FeaturePriority",
+      "kano:priorityId": "PRI-WWG-002",
+      "name": "Cross-Corridor Substitution Priority",
+      "kano:featureRef": "vp:wwg-solution-cross-corridor-sub",
+      "kano:priorityRank": 1,
+      "kano:investmentRecommendation": "Invest",
+      "kano:kanoEvidenceRefs": [
+        "kano:wwg-cls-rc-ccs",
+        "kano:wwg-cls-ws-ccs",
+        "kano:wwg-cls-fs-ccs"
+      ],
+      "kano:wtpElasticity": 1.4,
+      "kano:hasSegmentVariation": true,
+      "kano:strategicAction": "Highest priority — Attractive for RC/FS but decaying to Performance for WS. Invest now to maximise delight window before commoditisation. Extend AU/NZ/IS/IE substitution engine with quality-matching algorithm and speed premium options.",
+      "kano:pmfWTPRef": "pmf:wwg-wtp-cross-corridor-001"
+    },
+    {
+      "@id": "kano:wwg-priority-003",
+      "@type": "kano:FeaturePriority",
+      "kano:priorityId": "PRI-WWG-003",
+      "name": "Shelf-Life Transparency Priority",
+      "kano:featureRef": "vp:wwg-benefit-shelf-life",
+      "kano:priorityRank": 3,
+      "kano:investmentRecommendation": "Maintain",
+      "kano:kanoEvidenceRefs": [
+        "kano:wwg-cls-rc-slt",
+        "kano:wwg-cls-ws-slt",
+        "kano:wwg-cls-fs-slt"
+      ],
+      "kano:wtpElasticity": 0.5,
+      "kano:hasSegmentVariation": true,
+      "kano:strategicAction": "Performance for RC but Must-Be for WS/FS. Wholesalers and foodservice treat shelf-life visibility as non-negotiable. Maintain existing cold-chain scoring system, ensure 100% coverage on all corridors."
+    },
+    {
+      "@id": "kano:wwg-priority-004",
+      "@type": "kano:FeaturePriority",
+      "kano:priorityId": "PRI-WWG-004",
+      "name": "Margin Dashboard Priority",
+      "kano:featureRef": "vp:wwg-solution-margin-dashboard",
+      "kano:priorityRank": 4,
+      "kano:investmentRecommendation": "Deprioritise",
+      "kano:kanoEvidenceRefs": [
+        "kano:wwg-cls-rc-md",
+        "kano:wwg-cls-ws-md",
+        "kano:wwg-cls-fs-md"
+      ],
+      "kano:wtpElasticity": 0.8,
+      "kano:hasSegmentVariation": true,
+      "kano:strategicAction": "Indifferent for RC (their procurement teams use internal tools). Attractive for WS and Performance for FS. Deprioritise for RC segment but consider segment-specific rollout for WS/FS where there is pull. Low overall priority due to mixed signals."
+    }
+  ],
+
+  "oaa:classificationSummary": {
+    "description": "Cross-segment Kano classification matrix for 4 WWG features",
+    "matrix": {
+      "headers": ["Feature", "Restaurant Chains", "Wholesalers", "Foodservice"],
+      "rows": [
+        ["Disruption Notification", "MustBe (0.88)", "Performance (0.79)", "MustBe (0.85)"],
+        ["Cross-Corridor Substitution", "Attractive (0.76)", "Performance (0.73)", "Attractive (0.81)"],
+        ["Shelf-Life Transparency", "Performance (0.82)", "MustBe (0.91)", "MustBe (0.93)"],
+        ["Margin Dashboard", "Indifferent (0.71)", "Attractive (0.68)", "Performance (0.74)"]
+      ]
+    },
+    "keyInsights": [
+      "Disruption Notification: Must-Be for 2/3 segments (RC, FS) — table stakes. Wholesalers still see linear value (Performance). Decay observed in WS segment.",
+      "Cross-Corridor Substitution: #1 investment priority — Attractive for RC/FS (delight window open). WS already shifting to Performance. Highest WTP elasticity (1.4). Competitive moat opportunity.",
+      "Shelf-Life Transparency: Must-Be for WS/FS (non-negotiable for redistribution and contract catering). Performance for RC (proportional value). No decay expected — structural requirement.",
+      "Margin Dashboard: Most segment-varied feature. Indifferent for RC (use own tools), Attractive for WS (differentiation), Performance for FS (operational need). Low aggregate priority but segment-specific opportunity."
+    ],
+    "segmentVariationFeatures": [
+      "Disruption Notification",
+      "Cross-Corridor Substitution",
+      "Shelf-Life Transparency",
+      "Margin Dashboard"
+    ],
+    "segmentVariationRate": "4/4 (100% — all features have cross-segment category variation, confirming BR-KANO-007)"
+  }
+}

@@ -1,0 +1,2355 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v7/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "nut": "https://oaa-ontology.org/v7/nutrition/",
+    "pe": "https://oaa-ontology.org/v6/process-engineering/",
+    "crt": "https://oaa-ontology.org/v6/customer-role/",
+    "ind": "https://platformcore.io/ontology/individual/",
+    "pf": "https://oaa-ontology.org/v5/rrr/",
+    "vp": "https://oaa-ontology.org/v6/vp/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/"
+  },
+  "@type": "owl:Ontology",
+  "@id": "nut:schema",
+  "name": "Nutrition Coaching Ontology (NUT-ONT)",
+  "description": "Models nutrition coaching workflows: recipes, meal plans, client profiles, dietary constraints, allergen management, macro targeting, theme-driven curation, and coaching protocols. Designed for B2C nutrition platforms with Schema.org dual-typing. Part of PE-Series process engineering.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:status": "compliant",
+  "oaa:series": "PE-Series",
+  "oaa:domain": "Nutrition Coaching / Meal Plan Generation / Dietary Management",
+  "oaa:imports": [
+    {
+      "ontology": "PE-ONT",
+      "version": "4.0.0",
+      "usedEntities": ["pe:Process"]
+    },
+    {
+      "ontology": "CRT-ONT",
+      "version": "1.0.0",
+      "usedEntities": ["crt:CustomerRole"]
+    },
+    {
+      "ontology": "IND-ONT",
+      "version": "1.0.0",
+      "usedEntities": ["ind:Individual"]
+    },
+    {
+      "ontology": "RRR-ONT",
+      "version": "4.0.0",
+      "usedEntities": ["pf:FunctionalRole"]
+    },
+    {
+      "ontology": "VP-ONT",
+      "version": "4.0.0",
+      "usedEntities": ["vp:Benefit"]
+    },
+    {
+      "ontology": "KPI-ONT",
+      "version": "1.0.0",
+      "usedEntities": ["kpi:KPI", "kpi:Measurement"]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-NUT-001",
+      "name": "Client-to-Plan Traversal",
+      "description": "Walk the full nutrition chain from client profile through macro targets, meal plan, daily structure, individual meals, and recipes",
+      "joinPath": "nut:Client -> hasProfile -> nut:HealthProfile; nut:Client -> hasMacroTarget -> nut:MacroTarget; nut:Client -> assignedToClient (inverse) <- nut:MealPlan -> containsMealPlanDay -> nut:MealPlanDay -> containsMeal -> nut:Meal -> containsRecipe -> nut:Recipe",
+      "useCase": "Trace the complete nutrition journey for a client from their health profile through to the recipes they eat"
+    },
+    {
+      "patternId": "JP-NUT-002",
+      "name": "Recipe Constraint Resolution",
+      "description": "Resolve whether a recipe is safe and suitable for a client by intersecting recipe diet/allergen tags with client constraints",
+      "joinPath": "nut:Recipe -> suitableForDietType -> nut:DietType; nut:Recipe -> excludesAllergen -> nut:Allergen; INTERSECT WITH nut:Client -> followsDiet -> nut:DietType; nut:Client -> hasAllergen -> nut:Allergen",
+      "useCase": "Answer 'is this recipe safe for this client?' by checking allergen exclusions and diet compatibility"
+    },
+    {
+      "patternId": "JP-NUT-003",
+      "name": "Theme-Driven Curation",
+      "description": "Navigate from meal themes through their goal alignment to matching client profiles, and from themes to their curated recipe collections",
+      "joinPath": "nut:MealTheme -> targetsGoal -> nut:Goal <- hasGoal <- nut:Client; nut:MealTheme <- belongsToTheme <- nut:Recipe",
+      "useCase": "Given a client's goal, discover which themes align and which recipes belong to those themes"
+    },
+    {
+      "patternId": "JP-NUT-004",
+      "name": "Macro Target Tracking",
+      "description": "Track macro compliance from daily totals through weekly aggregation to variance calculation against targets",
+      "joinPath": "nut:MacroTarget -> (target values); nut:MealPlanDay -> hasDailyTotals -> nut:DailyTotals -> (actual values); nut:MealPlan -> hasWeeklyTotals -> nut:WeeklyTotals -> (averaged values); variance = |actual - target| / target",
+      "useCase": "Calculate daily and weekly macro variance against client targets for coaching dashboards",
+      "oaa:crossOntologyRef": "KPI-ONT"
+    },
+    {
+      "patternId": "JP-NUT-005",
+      "name": "Shopping List Generation",
+      "description": "Aggregate all ingredients across a meal plan into a consolidated shopping list grouped by supermarket aisle",
+      "joinPath": "nut:MealPlan -> containsMealPlanDay -> nut:MealPlanDay -> containsMeal -> nut:Meal -> containsRecipe -> nut:Recipe -> containsIngredient -> nut:Ingredient -> (aggregate by aisle) -> nut:ShoppingList",
+      "useCase": "Generate a consolidated, aisle-grouped shopping list for a 7-day meal plan with UK availability checking"
+    },
+    {
+      "patternId": "JP-NUT-006",
+      "name": "Coach Workflow",
+      "description": "Coach management workflow from client caseload through plan approval to protocol authoring",
+      "joinPath": "nut:Coach -> manages -> nut:Client; nut:Coach -> approvedByCoach (inverse) <- nut:MealPlan; nut:Coach -> authors -> nut:Protocol",
+      "useCase": "View a coach's caseload, pending plans for approval, and authored protocols",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    },
+    {
+      "patternId": "JP-NUT-007",
+      "name": "Client Value Bridge",
+      "description": "Cross-ontology bridge from client goals to VP-ONT benefits for value proposition alignment",
+      "joinPath": "nut:Client -> hasGoal -> nut:Goal -> goalMapsToBenefit -> vp:Benefit",
+      "useCase": "Map nutrition coaching outcomes to measurable customer benefits for value proposition reporting",
+      "oaa:crossOntologyRef": "VP-ONT"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "nut:Recipe",
+      "@type": "rdfs:Class",
+      "name": "Recipe",
+      "rdfs:subClassOf": "schema:Recipe",
+      "description": "A nutritionally-profiled recipe in the platform database. Schema.org Recipe compliant with clinical nutrition extensions. Hub entity for the recipe subgraph connecting ingredients, nutrition, instructions, diet suitability, and allergen exclusions.",
+      "oaa:properties": [
+        {
+          "name": "recipeId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this recipe"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Human-readable recipe name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Short description of the recipe and its nutritional highlights"
+        },
+        {
+          "name": "prepTime",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Preparation time in ISO 8601 duration format (e.g. PT15M)"
+        },
+        {
+          "name": "cookTime",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Cooking time in ISO 8601 duration format (e.g. PT30M)"
+        },
+        {
+          "name": "totalTime",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Total time including prep and cook in ISO 8601 duration format"
+        },
+        {
+          "name": "recipeYield",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Number of servings or portions (e.g. 4 servings)"
+        },
+        {
+          "name": "recipeCategory",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["Breakfast", "Lunch", "Dinner", "Snack", "Dessert"],
+          "description": "Primary meal category for this recipe"
+        },
+        {
+          "name": "recipeCuisine",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Cuisine classification (e.g. British, Mediterranean, Asian, Middle Eastern)"
+        },
+        {
+          "name": "difficulty",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["easy", "medium", "hard"],
+          "description": "Cooking difficulty level"
+        },
+        {
+          "name": "ukAvailable",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether all ingredients are readily available in UK supermarkets"
+        },
+        {
+          "name": "costPerServing",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Estimated cost per serving in GBP (e.g. GBP 2.50)"
+        },
+        {
+          "name": "seasonal",
+          "type": "xsd:boolean",
+          "required": false,
+          "description": "Whether this recipe uses seasonal ingredients with peak availability windows"
+        },
+        {
+          "name": "seasonalMonths",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Comma-separated month numbers (1-12) when seasonal ingredients peak"
+        },
+        {
+          "name": "keywords",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Comma-separated keywords for search and theme matching"
+        }
+      ]
+    },
+    {
+      "@id": "nut:Ingredient",
+      "@type": "rdfs:Class",
+      "name": "Ingredient",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A food ingredient with UK availability, allergen classification, and nutritional contribution. Used in recipes and aggregated into shopping lists.",
+      "oaa:properties": [
+        {
+          "name": "ingredientId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this ingredient"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Ingredient name (e.g. chicken breast, brown rice, olive oil)"
+        },
+        {
+          "name": "quantity",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Amount required with unit (e.g. 200g, 2 tbsp, 1 medium)"
+        },
+        {
+          "name": "category",
+          "type": "xsd:string",
+          "required": false,
+          "enum": ["Protein", "Carbohydrate", "Fat", "Vegetable", "Fruit", "Dairy", "Spice", "Condiment", "Other"],
+          "description": "Macro food group category"
+        },
+        {
+          "name": "supermarketAisle",
+          "type": "xsd:string",
+          "required": false,
+          "description": "UK supermarket aisle grouping for shopping list generation"
+        },
+        {
+          "name": "ukAvailable",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether this ingredient is available in UK supermarkets"
+        },
+        {
+          "name": "containsAllergen",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Comma-separated allergen names from UK 14 major allergens if applicable"
+        },
+        {
+          "name": "caloriesPer100g",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Energy content per 100g in kcal"
+        }
+      ]
+    },
+    {
+      "@id": "nut:NutritionProfile",
+      "@type": "rdfs:Class",
+      "name": "NutritionProfile",
+      "rdfs:subClassOf": "schema:NutritionInformation",
+      "description": "Macro and micronutrient breakdown per serving for a recipe. Schema.org NutritionInformation compliant.",
+      "oaa:properties": [
+        {
+          "name": "calories",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Energy content per serving in kcal"
+        },
+        {
+          "name": "proteinContent",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Protein per serving in grams"
+        },
+        {
+          "name": "carbohydrateContent",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Carbohydrates per serving in grams"
+        },
+        {
+          "name": "fatContent",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Total fat per serving in grams"
+        },
+        {
+          "name": "fiberContent",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Dietary fibre per serving in grams"
+        },
+        {
+          "name": "sugarContent",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Total sugars per serving in grams"
+        },
+        {
+          "name": "sodiumContent",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Sodium per serving in milligrams"
+        },
+        {
+          "name": "saturatedFatContent",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Saturated fat per serving in grams"
+        },
+        {
+          "name": "servingSize",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Serving size description (e.g. 1 portion, 350g)"
+        }
+      ]
+    },
+    {
+      "@id": "nut:Instruction",
+      "@type": "rdfs:Class",
+      "name": "Instruction",
+      "rdfs:subClassOf": "schema:HowToStep",
+      "description": "A single step in a recipe's preparation method. Ordered sequence of cooking instructions.",
+      "oaa:properties": [
+        {
+          "name": "stepNumber",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Sequential step number within the recipe"
+        },
+        {
+          "name": "text",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Instruction text describing the cooking action"
+        },
+        {
+          "name": "duration",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Time for this step in ISO 8601 duration format"
+        },
+        {
+          "name": "tip",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Optional coaching tip or technique note"
+        }
+      ]
+    },
+    {
+      "@id": "nut:Substitution",
+      "@type": "rdfs:Class",
+      "name": "Substitution",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "An alternative ingredient for dietary restriction or allergen avoidance. Links an original ingredient to its replacement with reason and nutritional impact.",
+      "oaa:properties": [
+        {
+          "name": "substitutionId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this substitution"
+        },
+        {
+          "name": "originalIngredient",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Name of the ingredient being substituted"
+        },
+        {
+          "name": "replacementIngredient",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Name of the substitute ingredient"
+        },
+        {
+          "name": "reason",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["AllergenAvoidance", "DietCompliance", "Availability", "CostReduction", "Preference"],
+          "description": "Reason for the substitution"
+        },
+        {
+          "name": "nutritionalImpact",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Description of how the substitution affects the nutrition profile"
+        },
+        {
+          "name": "ratioAdjustment",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Quantity adjustment ratio (e.g. 1:1, 1:0.75)"
+        }
+      ]
+    },
+    {
+      "@id": "nut:MealPlan",
+      "@type": "rdfs:Class",
+      "name": "MealPlan",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A structured meal plan generated for a specific client, aligned to their goals, dietary restrictions, and preferred themes. Typically 7 days. The top-level container for the meal planning subgraph.",
+      "oaa:properties": [
+        {
+          "name": "planId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this meal plan"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Human-readable plan name (e.g. Week 12 - High Protein Mediterranean)"
+        },
+        {
+          "name": "dateCreated",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date the plan was generated"
+        },
+        {
+          "name": "startDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "First day of the meal plan"
+        },
+        {
+          "name": "endDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Last day of the meal plan"
+        },
+        {
+          "name": "planStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["pending", "approved", "active", "completed", "archived"],
+          "description": "Current lifecycle status of the plan"
+        },
+        {
+          "name": "durationDays",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of days in the plan (typically 7)"
+        },
+        {
+          "name": "assignedToClient",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to the client this plan is generated for"
+        },
+        {
+          "name": "approvedByCoach",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to the coach who approved this plan"
+        },
+        {
+          "name": "approvalDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Date the coach approved the plan"
+        },
+        {
+          "name": "coachNotes",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Coach annotations or adjustments to the AI-generated plan"
+        }
+      ]
+    },
+    {
+      "@id": "nut:MealPlanDay",
+      "@type": "rdfs:Class",
+      "name": "MealPlanDay",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A single day within a meal plan containing breakfast, lunch, dinner, and optional snacks with their associated recipes and nutrition totals.",
+      "oaa:properties": [
+        {
+          "name": "dayNumber",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Day number within the plan (1-7 for a weekly plan)"
+        },
+        {
+          "name": "date",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Calendar date for this plan day"
+        },
+        {
+          "name": "dayOfWeek",
+          "type": "xsd:string",
+          "required": false,
+          "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "description": "Day of the week"
+        }
+      ]
+    },
+    {
+      "@id": "nut:Meal",
+      "@type": "rdfs:Class",
+      "name": "Meal",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A single meal slot (breakfast, lunch, dinner, snack) within a plan day, referencing a specific recipe and serving size.",
+      "oaa:properties": [
+        {
+          "name": "mealSlot",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["Breakfast", "Lunch", "Dinner", "Snack"],
+          "description": "Which meal slot this occupies"
+        },
+        {
+          "name": "servings",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Number of servings of the referenced recipe"
+        },
+        {
+          "name": "portionAdjustment",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Any portion adjustment notes from the coach"
+        }
+      ]
+    },
+    {
+      "@id": "nut:MealType",
+      "@type": "rdfs:Class",
+      "name": "MealType",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Classification of meal slots: breakfast, lunch, dinner, snack. Defines timing and typical macro distribution.",
+      "oaa:properties": [
+        {
+          "name": "typeName",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["Breakfast", "Lunch", "Dinner", "Snack"],
+          "description": "Name of the meal type"
+        },
+        {
+          "name": "typicalTimeWindow",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Typical time window (e.g. 07:00-09:00)"
+        },
+        {
+          "name": "calorieSharePercent",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Typical percentage of daily calories allocated to this meal type"
+        }
+      ]
+    },
+    {
+      "@id": "nut:DailyTotals",
+      "@type": "rdfs:Class",
+      "name": "DailyTotals",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Aggregated nutrition totals for a single plan day. Compared against client MacroTarget for variance tracking.",
+      "oaa:properties": [
+        {
+          "name": "totalCalories",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Total calories for the day in kcal"
+        },
+        {
+          "name": "totalProteinG",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Total protein for the day in grams"
+        },
+        {
+          "name": "totalCarbsG",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Total carbohydrates for the day in grams"
+        },
+        {
+          "name": "totalFatG",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Total fat for the day in grams"
+        },
+        {
+          "name": "totalFiberG",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Total dietary fibre for the day in grams"
+        },
+        {
+          "name": "calorieVariancePercent",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Percentage variance from MacroTarget dailyCalories"
+        },
+        {
+          "name": "proteinVariancePercent",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Percentage variance from MacroTarget proteinGrams"
+        }
+      ]
+    },
+    {
+      "@id": "nut:WeeklyTotals",
+      "@type": "rdfs:Class",
+      "name": "WeeklyTotals",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Aggregated nutrition totals for the full meal plan period (typically 7 days). Averaged for weekly variance calculation.",
+      "oaa:properties": [
+        {
+          "name": "avgDailyCalories",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Average daily calories across the plan period"
+        },
+        {
+          "name": "avgDailyProteinG",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Average daily protein in grams"
+        },
+        {
+          "name": "avgDailyCarbsG",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Average daily carbohydrates in grams"
+        },
+        {
+          "name": "avgDailyFatG",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Average daily fat in grams"
+        },
+        {
+          "name": "weeklyCalorieVariancePercent",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Weekly average calorie variance from MacroTarget"
+        },
+        {
+          "name": "uniqueRecipeCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of distinct recipes used in the plan (variety metric)"
+        },
+        {
+          "name": "uniqueProteinSourceCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of distinct protein sources used (variety metric)"
+        }
+      ]
+    },
+    {
+      "@id": "nut:ShoppingList",
+      "@type": "rdfs:Class",
+      "name": "ShoppingList",
+      "rdfs:subClassOf": "schema:ItemList",
+      "description": "Consolidated ingredient list for a meal plan, aggregated across all recipes, grouped by supermarket aisle, with UK availability checking.",
+      "oaa:properties": [
+        {
+          "name": "listId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this shopping list"
+        },
+        {
+          "name": "generatedDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date the shopping list was generated"
+        },
+        {
+          "name": "totalItems",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Total number of unique items on the list"
+        },
+        {
+          "name": "estimatedTotalCost",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Estimated total cost in GBP"
+        },
+        {
+          "name": "allUKAvailable",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether all items are available in UK supermarkets"
+        }
+      ]
+    },
+    {
+      "@id": "nut:MealPrepGuide",
+      "@type": "rdfs:Class",
+      "name": "MealPrepGuide",
+      "rdfs:subClassOf": "schema:HowTo",
+      "description": "Batch cooking and prep instructions to minimise daily effort. Generated from the meal plan's recipe set with shared prep steps consolidated.",
+      "oaa:properties": [
+        {
+          "name": "guideId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this prep guide"
+        },
+        {
+          "name": "prepDay",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Recommended prep day (e.g. Sunday, Wednesday)"
+        },
+        {
+          "name": "totalPrepTime",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Total batch prep time in ISO 8601 duration format"
+        },
+        {
+          "name": "storageInstructions",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How to store prepped items (fridge days, freezer suitability)"
+        },
+        {
+          "name": "coversDays",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of plan days covered by this prep session"
+        }
+      ]
+    },
+    {
+      "@id": "nut:PlanStatus",
+      "@type": "rdfs:Class",
+      "name": "PlanStatus",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Lifecycle state of a meal plan with transition rules. Plans move through: pending -> approved -> active -> completed -> archived.",
+      "oaa:properties": [
+        {
+          "name": "statusName",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["pending", "approved", "active", "completed", "archived"],
+          "description": "Name of the plan status"
+        },
+        {
+          "name": "transitionsTo",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Comma-separated list of valid next statuses"
+        },
+        {
+          "name": "requiresCoachAction",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether transitioning from this status requires coach involvement"
+        }
+      ]
+    },
+    {
+      "@id": "nut:Client",
+      "@type": "rdfs:Class",
+      "name": "Client",
+      "rdfs:subClassOf": "schema:Patient",
+      "description": "An individual receiving nutrition coaching. Schema.org Patient compliant with clinical nutrition extensions. Hub entity connecting health profile, goals, dietary constraints, allergens, meal plans, and coaching relationship.",
+      "oaa:properties": [
+        {
+          "name": "clientId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this client"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Client full name"
+        },
+        {
+          "name": "email",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Client email address"
+        },
+        {
+          "name": "age",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Client age in years"
+        },
+        {
+          "name": "gender",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["male", "female", "non-binary", "prefer-not-to-say"],
+          "description": "Client gender for TDEE and macro calculation"
+        },
+        {
+          "name": "heightCm",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Height in centimetres"
+        },
+        {
+          "name": "weightKg",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Weight in kilograms"
+        },
+        {
+          "name": "bmi",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Body mass index (calculated: weightKg / (heightCm/100)^2)"
+        },
+        {
+          "name": "activityLevel",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["sedentary", "lightly_active", "moderately_active", "very_active"],
+          "description": "Physical activity level for TDEE calculation"
+        },
+        {
+          "name": "registrationDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date the client registered on the platform"
+        },
+        {
+          "name": "clientStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["active", "paused", "archived"],
+          "description": "Current client account status"
+        }
+      ]
+    },
+    {
+      "@id": "nut:HealthProfile",
+      "@type": "rdfs:Class",
+      "name": "HealthProfile",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Client health data including biometrics, medical conditions, allergens, and dietary restrictions. Updated by the client and validated by the coach.",
+      "oaa:properties": [
+        {
+          "name": "profileId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this health profile"
+        },
+        {
+          "name": "lastUpdated",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date the profile was last updated"
+        },
+        {
+          "name": "bloodPressure",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Blood pressure reading (e.g. 120/80)"
+        },
+        {
+          "name": "restingHeartRate",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Resting heart rate in BPM"
+        },
+        {
+          "name": "bodyFatPercent",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Body fat percentage if measured"
+        },
+        {
+          "name": "waistCircumferenceCm",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Waist circumference in centimetres"
+        },
+        {
+          "name": "medications",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Current medications that may affect nutrition planning"
+        },
+        {
+          "name": "coachValidated",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether a coach has reviewed and validated this profile"
+        }
+      ]
+    },
+    {
+      "@id": "nut:Goal",
+      "@type": "rdfs:Class",
+      "name": "Goal",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A nutrition or fitness goal that drives meal plan generation, theme selection, and macro target calculation.",
+      "oaa:properties": [
+        {
+          "name": "goalId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this goal"
+        },
+        {
+          "name": "goalType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["weight_loss", "muscle_gain", "maintenance", "medical_management", "sports_performance"],
+          "description": "Classification of the nutrition goal"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Detailed description of the goal and approach"
+        },
+        {
+          "name": "targetDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Target date for achieving this goal"
+        },
+        {
+          "name": "defaultMacroSplit",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Default macro split for this goal type (e.g. protein:30%/carbs:35%/fats:35%)"
+        },
+        {
+          "name": "calorieAdjustment",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Calorie adjustment from TDEE (e.g. -500kcal for weight loss, +300kcal for muscle gain)"
+        }
+      ]
+    },
+    {
+      "@id": "nut:MacroTarget",
+      "@type": "rdfs:Class",
+      "name": "MacroTarget",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Daily macronutrient targets set by the coach or calculated from the client's goal, TDEE, and activity level. The benchmark against which meal plan totals are measured.",
+      "oaa:properties": [
+        {
+          "name": "targetId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this macro target"
+        },
+        {
+          "name": "dailyCalories",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Target daily calorie intake in kcal"
+        },
+        {
+          "name": "proteinGrams",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Target daily protein in grams"
+        },
+        {
+          "name": "carbsGrams",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Target daily carbohydrates in grams"
+        },
+        {
+          "name": "fatGrams",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Target daily fat in grams"
+        },
+        {
+          "name": "fiberGrams",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Target daily fibre in grams"
+        },
+        {
+          "name": "effectiveDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date these targets became effective"
+        },
+        {
+          "name": "setByCoach",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether these targets were manually set by a coach (true) or auto-calculated (false)"
+        }
+      ]
+    },
+    {
+      "@id": "nut:DietaryRestriction",
+      "@type": "rdfs:Class",
+      "name": "DietaryRestriction",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A dietary constraint applied to a client, referencing a specific DietType. Tracks the reason and severity of the restriction.",
+      "oaa:properties": [
+        {
+          "name": "restrictionId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this restriction"
+        },
+        {
+          "name": "restrictionReason",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["Medical", "Ethical", "Religious", "Preference", "Allergy"],
+          "description": "Reason for the dietary restriction"
+        },
+        {
+          "name": "severity",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["Strict", "Moderate", "Flexible"],
+          "description": "How strictly the restriction must be enforced"
+        },
+        {
+          "name": "notes",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Additional notes from coach or client"
+        }
+      ]
+    },
+    {
+      "@id": "nut:Allergen",
+      "@type": "rdfs:Class",
+      "name": "Allergen",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A food allergen from the UK 14 major allergens (Food Information Regulations 2014). Used for recipe safety checking and client constraint matching.",
+      "oaa:properties": [
+        {
+          "name": "allergenId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this allergen"
+        },
+        {
+          "name": "allergenName",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Celery",
+            "Cereals containing gluten",
+            "Crustaceans",
+            "Eggs",
+            "Fish",
+            "Lupin",
+            "Milk",
+            "Molluscs",
+            "Mustard",
+            "Tree nuts",
+            "Peanuts",
+            "Sesame",
+            "Soya",
+            "Sulphur dioxide and sulphites"
+          ],
+          "description": "Name of the allergen per UK 14 major allergen list"
+        },
+        {
+          "name": "severity",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["Anaphylaxis", "Severe", "Moderate", "Mild", "Intolerance"],
+          "description": "Severity of the client's reaction to this allergen"
+        },
+        {
+          "name": "diagnosed",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether the allergy has been clinically diagnosed"
+        }
+      ]
+    },
+    {
+      "@id": "nut:MedicalCondition",
+      "@type": "rdfs:Class",
+      "name": "MedicalCondition",
+      "rdfs:subClassOf": "schema:MedicalCondition",
+      "description": "A diagnosed medical condition affecting nutrition planning. Includes ICD-10 coding for clinical interoperability.",
+      "oaa:properties": [
+        {
+          "name": "conditionId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this condition record"
+        },
+        {
+          "name": "conditionName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Name of the medical condition (e.g. Type 2 Diabetes, PCOS, IBS)"
+        },
+        {
+          "name": "icd10Code",
+          "type": "xsd:string",
+          "required": false,
+          "description": "ICD-10 code for clinical classification (e.g. E11 for Type 2 Diabetes)"
+        },
+        {
+          "name": "diagnosedDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Date of diagnosis"
+        },
+        {
+          "name": "managedByDiet",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether this condition is partially or fully managed through dietary intervention"
+        },
+        {
+          "name": "nutritionImplications",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How this condition affects nutrition planning (e.g. low GI for diabetes, low FODMAP for IBS)"
+        }
+      ]
+    },
+    {
+      "@id": "nut:ProgressLog",
+      "@type": "rdfs:Class",
+      "name": "ProgressLog",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Daily or periodic tracking of client progress: weight, adherence, energy, and qualitative notes. Feeds into KPI measurement for coaching effectiveness.",
+      "oaa:properties": [
+        {
+          "name": "logId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this log entry"
+        },
+        {
+          "name": "logDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date of the log entry"
+        },
+        {
+          "name": "weightKg",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Client weight on this date in kilograms"
+        },
+        {
+          "name": "adherenceScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Meal plan adherence score 0-100%"
+        },
+        {
+          "name": "energyLevel",
+          "type": "xsd:string",
+          "required": false,
+          "enum": ["very_low", "low", "moderate", "high", "very_high"],
+          "description": "Self-reported energy level"
+        },
+        {
+          "name": "moodRating",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Self-reported mood rating 1-10"
+        },
+        {
+          "name": "notes",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Free-text notes from client or coach"
+        }
+      ]
+    },
+    {
+      "@id": "nut:DietType",
+      "@type": "rdfs:Class",
+      "name": "DietType",
+      "rdfs:subClassOf": "schema:RestrictedDiet",
+      "description": "A named dietary pattern or restriction. Covers ethical, religious, medical, macronutrient, and lifestyle diets. Schema.org RestrictedDiet compliant.",
+      "oaa:properties": [
+        {
+          "name": "dietId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this diet type"
+        },
+        {
+          "name": "dietName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Name of the diet (e.g. Vegetarian, Keto, Halal, Low-FODMAP)"
+        },
+        {
+          "name": "category",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["Ethical", "Religious", "Medical", "Macronutrient", "Lifestyle", "AllergenFree"],
+          "description": "Diet motivation category"
+        },
+        {
+          "name": "schemaOrgUri",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Schema.org RestrictedDiet URI if one exists (e.g. https://schema.org/VeganDiet)"
+        },
+        {
+          "name": "exclusions",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Comma-separated list of excluded food categories"
+        },
+        {
+          "name": "requiresCertification",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Whether ingredients require certification (e.g. Halal, Kosher)"
+        }
+      ]
+    },
+    {
+      "@id": "nut:EthicalDiet",
+      "@type": "rdfs:Class",
+      "name": "EthicalDiet",
+      "rdfs:subClassOf": "nut:DietType",
+      "description": "Diets motivated by animal welfare or environmental ethics (e.g. Vegetarian, Vegan, Pescatarian, Flexitarian, Plant-Based).",
+      "oaa:properties": [
+        {
+          "name": "ethicalMotivation",
+          "type": "xsd:string",
+          "required": false,
+          "enum": ["AnimalWelfare", "Environmental", "Both"],
+          "description": "Primary ethical motivation for this diet"
+        }
+      ]
+    },
+    {
+      "@id": "nut:ReligiousDiet",
+      "@type": "rdfs:Class",
+      "name": "ReligiousDiet",
+      "rdfs:subClassOf": "nut:DietType",
+      "description": "Diets governed by religious dietary law (e.g. Halal, Kosher, Hindu Vegetarian, Jain).",
+      "oaa:properties": [
+        {
+          "name": "religion",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Religion associated with this dietary law"
+        },
+        {
+          "name": "certificationBody",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Certification authority for compliance verification"
+        }
+      ]
+    },
+    {
+      "@id": "nut:MedicalDiet",
+      "@type": "rdfs:Class",
+      "name": "MedicalDiet",
+      "rdfs:subClassOf": "nut:DietType",
+      "description": "Diets prescribed or recommended for medical conditions (e.g. Diabetic, Low-FODMAP, Anti-Inflammatory, Renal, Low-Sodium).",
+      "oaa:properties": [
+        {
+          "name": "targetCondition",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Medical condition this diet addresses"
+        },
+        {
+          "name": "evidenceBase",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Clinical evidence supporting this dietary approach"
+        }
+      ]
+    },
+    {
+      "@id": "nut:MacroDiet",
+      "@type": "rdfs:Class",
+      "name": "MacroDiet",
+      "rdfs:subClassOf": "nut:DietType",
+      "description": "Diets defined by macronutrient ratios (e.g. Keto, Low Carb, High Protein, Low Fat, Carnivore).",
+      "oaa:properties": [
+        {
+          "name": "proteinPercent",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Target protein percentage of total calories"
+        },
+        {
+          "name": "carbsPercent",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Target carbohydrate percentage of total calories"
+        },
+        {
+          "name": "fatPercent",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Target fat percentage of total calories"
+        }
+      ]
+    },
+    {
+      "@id": "nut:LifestyleDiet",
+      "@type": "rdfs:Class",
+      "name": "LifestyleDiet",
+      "rdfs:subClassOf": "nut:DietType",
+      "description": "Diets adopted as a lifestyle philosophy rather than strict medical or ethical requirement (e.g. Mediterranean, Paleo, Whole30, Intermittent Fasting, Raw Food).",
+      "oaa:properties": [
+        {
+          "name": "durationBased",
+          "type": "xsd:boolean",
+          "required": false,
+          "description": "Whether this diet is intended as a time-limited protocol (e.g. Whole30)"
+        },
+        {
+          "name": "typicalDurationDays",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Typical duration if time-limited"
+        }
+      ]
+    },
+    {
+      "@id": "nut:AllergenFreeDiet",
+      "@type": "rdfs:Class",
+      "name": "AllergenFreeDiet",
+      "rdfs:subClassOf": "nut:DietType",
+      "description": "Diets that exclude specific allergens (e.g. Gluten-Free, Dairy-Free, Egg-Free, Nut-Free, Soya-Free, Shellfish-Free).",
+      "oaa:properties": [
+        {
+          "name": "relatedAllergen",
+          "type": "xsd:string",
+          "required": true,
+          "description": "The UK 14 allergen(s) this diet addresses"
+        },
+        {
+          "name": "crossContaminationStrict",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether cross-contamination avoidance is required (e.g. coeliac vs preference)"
+        }
+      ]
+    },
+    {
+      "@id": "nut:MealTheme",
+      "@type": "rdfs:Class",
+      "name": "MealTheme",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A curated collection of recipes grouped by dietary philosophy, season, cuisine, or wellness goal. Themes drive meal plan generation and recipe discovery.",
+      "oaa:properties": [
+        {
+          "name": "themeId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this theme"
+        },
+        {
+          "name": "themeName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Human-readable theme name (e.g. High Protein, Mediterranean, Spring Fresh)"
+        },
+        {
+          "name": "themeType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["Goal", "Cuisine", "Seasonal", "Lifestyle", "Clinical"],
+          "description": "Classification of the theme type"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Description of the theme and its nutritional philosophy"
+        },
+        {
+          "name": "filterCriteria",
+          "type": "xsd:string",
+          "required": false,
+          "description": "JSON filter criteria for recipe matching"
+        },
+        {
+          "name": "isActive",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether this theme is currently available for selection"
+        }
+      ]
+    },
+    {
+      "@id": "nut:SeasonalTheme",
+      "@type": "rdfs:Class",
+      "name": "SeasonalTheme",
+      "rdfs:subClassOf": "nut:MealTheme",
+      "description": "Theme tied to UK seasonal produce availability: spring, summer, autumn, winter.",
+      "oaa:properties": [
+        {
+          "name": "season",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["spring", "summer", "autumn", "winter"],
+          "description": "Season this theme targets"
+        },
+        {
+          "name": "seasonalMonths",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Comma-separated month numbers when this season's produce peaks (e.g. 3,4,5 for spring)"
+        }
+      ]
+    },
+    {
+      "@id": "nut:CuisineTheme",
+      "@type": "rdfs:Class",
+      "name": "CuisineTheme",
+      "rdfs:subClassOf": "nut:MealTheme",
+      "description": "Theme by cuisine tradition: British Comfort, Mediterranean, Asian Fusion, Middle Eastern, Latin American.",
+      "oaa:properties": [
+        {
+          "name": "cuisineName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Name of the cuisine tradition"
+        },
+        {
+          "name": "typicalIngredients",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Comma-separated list of typical ingredients for this cuisine"
+        }
+      ]
+    },
+    {
+      "@id": "nut:GoalTheme",
+      "@type": "rdfs:Class",
+      "name": "GoalTheme",
+      "rdfs:subClassOf": "nut:MealTheme",
+      "description": "Theme aligned to a fitness or health goal: High Protein, Low Carb, Anti-Inflammatory, Gut Health, Energy Boost.",
+      "oaa:properties": [
+        {
+          "name": "nutritionFocus",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Primary nutritional focus of this theme (e.g. high protein, low carb, anti-inflammatory)"
+        },
+        {
+          "name": "minimumProteinPerServing",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Minimum protein grams per serving for recipes in this theme"
+        },
+        {
+          "name": "maximumCarbsPerServing",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Maximum carbohydrate grams per serving for recipes in this theme"
+        }
+      ]
+    },
+    {
+      "@id": "nut:LifestyleTheme",
+      "@type": "rdfs:Class",
+      "name": "LifestyleTheme",
+      "rdfs:subClassOf": "nut:MealTheme",
+      "description": "Theme by lifestyle pattern: Quick Weeknight, Batch Cook Sunday, Budget Friendly, Family Meals, Desk Lunch.",
+      "oaa:properties": [
+        {
+          "name": "maxPrepTimeMinutes",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Maximum total recipe time in minutes for this theme"
+        },
+        {
+          "name": "maxCostPerServing",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Maximum cost per serving in GBP for budget themes"
+        },
+        {
+          "name": "familyFriendly",
+          "type": "xsd:boolean",
+          "required": false,
+          "description": "Whether recipes in this theme are suitable for family cooking"
+        }
+      ]
+    },
+    {
+      "@id": "nut:ClinicalTheme",
+      "@type": "rdfs:Class",
+      "name": "ClinicalTheme",
+      "rdfs:subClassOf": "nut:MealTheme",
+      "description": "Coach-curated theme for medical conditions: Diabetic Friendly, PCOS Support, IBS Low-FODMAP, Thyroid Support.",
+      "oaa:properties": [
+        {
+          "name": "targetCondition",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Medical condition this theme supports"
+        },
+        {
+          "name": "evidenceBased",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether this theme is backed by clinical evidence"
+        },
+        {
+          "name": "requiresCoachApproval",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether selecting this theme requires coach approval"
+        }
+      ]
+    },
+    {
+      "@id": "nut:Coach",
+      "@type": "rdfs:Class",
+      "name": "Coach",
+      "rdfs:subClassOf": "schema:Person",
+      "description": "A clinical nutrition coach who manages clients, approves AI-generated meal plans, and authors evidence-based protocols for the RAG knowledge base.",
+      "oaa:properties": [
+        {
+          "name": "coachId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this coach"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Coach full name"
+        },
+        {
+          "name": "qualifications",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Professional qualifications (e.g. BSc Nutrition, ANutr, RD)"
+        },
+        {
+          "name": "specialisms",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Comma-separated areas of specialism (e.g. diabetes, sports nutrition, eating disorders)"
+        },
+        {
+          "name": "maxCaseload",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Maximum number of active clients this coach can manage"
+        },
+        {
+          "name": "currentCaseload",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Current number of active clients"
+        },
+        {
+          "name": "coachStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["active", "on_leave", "archived"],
+          "description": "Current availability status"
+        }
+      ]
+    },
+    {
+      "@id": "nut:Protocol",
+      "@type": "rdfs:Class",
+      "name": "Protocol",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "An evidence-based nutrition protocol authored by a coach, used by AI agents via RAG for meal plan generation and client recommendations.",
+      "oaa:properties": [
+        {
+          "name": "protocolId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this protocol"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Protocol name (e.g. Type 2 Diabetes Nutrition Protocol v2)"
+        },
+        {
+          "name": "targetCondition",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Medical condition this protocol addresses"
+        },
+        {
+          "name": "targetGoal",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Goal type this protocol supports"
+        },
+        {
+          "name": "version",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Protocol version number"
+        },
+        {
+          "name": "datePublished",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date the protocol was published"
+        },
+        {
+          "name": "evidenceReferences",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Comma-separated clinical evidence references supporting this protocol"
+        },
+        {
+          "name": "protocolStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["draft", "published", "superseded", "archived"],
+          "description": "Current lifecycle status of the protocol"
+        }
+      ]
+    },
+    {
+      "@id": "nut:MealPlanGenerationFlow",
+      "@type": "rdfs:Class",
+      "name": "MealPlanGenerationFlow",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "The AI-driven process flow from client profile assembly through recipe search, plan generation, nutrition calculation, shopping list creation, coach review, to client delivery.",
+      "oaa:properties": [
+        {
+          "name": "flowId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this flow instance"
+        },
+        {
+          "name": "flowStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["initiated", "context_assembled", "recipes_searched", "plan_generated", "totals_calculated", "shopping_list_generated", "pending_review", "approved", "delivered", "failed"],
+          "description": "Current step status in the generation flow"
+        },
+        {
+          "name": "initiatedDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date and time the flow was triggered"
+        },
+        {
+          "name": "completedDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Date and time the flow completed"
+        },
+        {
+          "name": "triggerType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["scheduled", "manual", "coach_initiated", "client_requested"],
+          "description": "What triggered this flow execution"
+        }
+      ]
+    },
+    {
+      "@id": "nut:ProcessStep",
+      "@type": "rdfs:Class",
+      "name": "ProcessStep",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A single step within the MealPlanGenerationFlow. Maps to a specific agent or tool action in the AI pipeline.",
+      "oaa:properties": [
+        {
+          "name": "stepNumber",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Sequential step number within the flow"
+        },
+        {
+          "name": "action",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Description of the action performed at this step"
+        },
+        {
+          "name": "agentOrTool",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Name of the AI agent or tool responsible for this step"
+        },
+        {
+          "name": "stepStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["pending", "running", "completed", "failed", "skipped"],
+          "description": "Current status of this step"
+        },
+        {
+          "name": "durationMs",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Execution duration in milliseconds"
+        },
+        {
+          "name": "errorMessage",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Error message if step failed"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "nut:containsIngredient",
+      "@type": "owl:ObjectProperty",
+      "name": "Contains Ingredient",
+      "description": "Recipe contains this ingredient with specified quantity",
+      "domainIncludes": ["nut:Recipe"],
+      "rangeIncludes": ["nut:Ingredient"],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "nut:hasNutrition",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Nutrition",
+      "description": "Recipe has this per-serving nutrition profile",
+      "domainIncludes": ["nut:Recipe"],
+      "rangeIncludes": ["nut:NutritionProfile"],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "nut:hasInstruction",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Instruction",
+      "description": "Recipe has this preparation step",
+      "domainIncludes": ["nut:Recipe"],
+      "rangeIncludes": ["nut:Instruction"],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "nut:suitableForDietType",
+      "@type": "owl:ObjectProperty",
+      "name": "Suitable For Diet Type",
+      "description": "Recipe is suitable for this dietary pattern",
+      "domainIncludes": ["nut:Recipe"],
+      "rangeIncludes": ["nut:DietType"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:excludesAllergen",
+      "@type": "owl:ObjectProperty",
+      "name": "Excludes Allergen",
+      "description": "Recipe is confirmed free from this allergen",
+      "domainIncludes": ["nut:Recipe"],
+      "rangeIncludes": ["nut:Allergen"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:belongsToTheme",
+      "@type": "owl:ObjectProperty",
+      "name": "Belongs To Theme",
+      "description": "Recipe is curated into this meal theme collection",
+      "domainIncludes": ["nut:Recipe"],
+      "rangeIncludes": ["nut:MealTheme"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:substitutableWith",
+      "@type": "owl:ObjectProperty",
+      "name": "Substitutable With",
+      "description": "Ingredient can be substituted with this alternative",
+      "domainIncludes": ["nut:Ingredient"],
+      "rangeIncludes": ["nut:Substitution"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:containsMealPlanDay",
+      "@type": "owl:ObjectProperty",
+      "name": "Contains Meal Plan Day",
+      "description": "Meal plan contains this daily plan",
+      "domainIncludes": ["nut:MealPlan"],
+      "rangeIncludes": ["nut:MealPlanDay"],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "nut:containsMeal",
+      "@type": "owl:ObjectProperty",
+      "name": "Contains Meal",
+      "description": "Meal plan day contains this meal slot",
+      "domainIncludes": ["nut:MealPlanDay"],
+      "rangeIncludes": ["nut:Meal"],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "nut:containsRecipe",
+      "@type": "owl:ObjectProperty",
+      "name": "Contains Recipe",
+      "description": "Meal slot references this recipe",
+      "domainIncludes": ["nut:Meal"],
+      "rangeIncludes": ["nut:Recipe"],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "nut:hasDailyTotals",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Daily Totals",
+      "description": "Meal plan day has this aggregated nutrition totals",
+      "domainIncludes": ["nut:MealPlanDay"],
+      "rangeIncludes": ["nut:DailyTotals"],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "nut:hasWeeklyTotals",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Weekly Totals",
+      "description": "Meal plan has this aggregated weekly nutrition totals",
+      "domainIncludes": ["nut:MealPlan"],
+      "rangeIncludes": ["nut:WeeklyTotals"],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "nut:hasShoppingList",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Shopping List",
+      "description": "Meal plan has this consolidated shopping list",
+      "domainIncludes": ["nut:MealPlan"],
+      "rangeIncludes": ["nut:ShoppingList"],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "nut:hasMealPrepGuide",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Meal Prep Guide",
+      "description": "Meal plan has this batch cooking and prep guide",
+      "domainIncludes": ["nut:MealPlan"],
+      "rangeIncludes": ["nut:MealPrepGuide"],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "nut:assignedToClient",
+      "@type": "owl:ObjectProperty",
+      "name": "Assigned To Client",
+      "description": "Meal plan is assigned to this client",
+      "domainIncludes": ["nut:MealPlan"],
+      "rangeIncludes": ["nut:Client"],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "nut:approvedByCoach",
+      "@type": "owl:ObjectProperty",
+      "name": "Approved By Coach",
+      "description": "Meal plan was approved by this coach",
+      "domainIncludes": ["nut:MealPlan"],
+      "rangeIncludes": ["nut:Coach"],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "nut:derivedFromTheme",
+      "@type": "owl:ObjectProperty",
+      "name": "Derived From Theme",
+      "description": "Meal plan was generated using this theme as a primary curation driver",
+      "domainIncludes": ["nut:MealPlan"],
+      "rangeIncludes": ["nut:MealTheme"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:targetsGoal",
+      "@type": "owl:ObjectProperty",
+      "name": "Targets Goal",
+      "description": "Meal plan or theme targets this client goal",
+      "domainIncludes": ["nut:MealPlan", "nut:MealTheme"],
+      "rangeIncludes": ["nut:Goal"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:hasProfile",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Profile",
+      "description": "Client has this health profile",
+      "domainIncludes": ["nut:Client"],
+      "rangeIncludes": ["nut:HealthProfile"],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "nut:hasGoal",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Goal",
+      "description": "Client has this active nutrition goal",
+      "domainIncludes": ["nut:Client"],
+      "rangeIncludes": ["nut:Goal"],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "nut:hasMacroTarget",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Macro Target",
+      "description": "Client has this active daily macro target",
+      "domainIncludes": ["nut:Client"],
+      "rangeIncludes": ["nut:MacroTarget"],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "nut:followsDiet",
+      "@type": "owl:ObjectProperty",
+      "name": "Follows Diet",
+      "description": "Client follows this dietary pattern",
+      "domainIncludes": ["nut:Client"],
+      "rangeIncludes": ["nut:DietType"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:hasAllergen",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Allergen",
+      "description": "Client has this declared allergen",
+      "domainIncludes": ["nut:Client"],
+      "rangeIncludes": ["nut:Allergen"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:hasCondition",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Condition",
+      "description": "Client has this diagnosed medical condition affecting nutrition planning",
+      "domainIncludes": ["nut:Client"],
+      "rangeIncludes": ["nut:MedicalCondition"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:hasDietaryRestriction",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Dietary Restriction",
+      "description": "Client has this dietary restriction applied",
+      "domainIncludes": ["nut:Client"],
+      "rangeIncludes": ["nut:DietaryRestriction"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:prefersTheme",
+      "@type": "owl:ObjectProperty",
+      "name": "Prefers Theme",
+      "description": "Client prefers this meal theme for plan curation",
+      "domainIncludes": ["nut:Client"],
+      "rangeIncludes": ["nut:MealTheme"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:coachedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Coached By",
+      "description": "Client is coached by this nutrition coach",
+      "domainIncludes": ["nut:Client"],
+      "rangeIncludes": ["nut:Coach"],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "nut:hasProgressLog",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Progress Log",
+      "description": "Client has this progress tracking log entry",
+      "domainIncludes": ["nut:Client"],
+      "rangeIncludes": ["nut:ProgressLog"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:manages",
+      "@type": "owl:ObjectProperty",
+      "name": "Manages",
+      "description": "Coach manages this client in their caseload (inverse of coachedBy)",
+      "domainIncludes": ["nut:Coach"],
+      "rangeIncludes": ["nut:Client"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:authors",
+      "@type": "owl:ObjectProperty",
+      "name": "Authors",
+      "description": "Coach authored this evidence-based protocol",
+      "domainIncludes": ["nut:Coach"],
+      "rangeIncludes": ["nut:Protocol"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nut:hasProcessStep",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Process Step",
+      "description": "Meal plan generation flow contains this process step",
+      "domainIncludes": ["nut:MealPlanGenerationFlow"],
+      "rangeIncludes": ["nut:ProcessStep"],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "nut:clientMapsToCustomerRole",
+      "@type": "owl:ObjectProperty",
+      "name": "Client Maps To Customer Role",
+      "description": "NUT-ONT client maps to a CRT-ONT customer role for cross-ontology customer segmentation",
+      "domainIncludes": ["nut:Client"],
+      "rangeIncludes": ["crt:CustomerRole"],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "CRT-ONT"
+    },
+    {
+      "@id": "nut:clientMapsToIndividual",
+      "@type": "owl:ObjectProperty",
+      "name": "Client Maps To Individual",
+      "description": "NUT-ONT client maps to an IND-ONT individual for cross-ontology identity resolution",
+      "domainIncludes": ["nut:Client"],
+      "rangeIncludes": ["ind:Individual"],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "IND-ONT"
+    },
+    {
+      "@id": "nut:coachMapsToRole",
+      "@type": "owl:ObjectProperty",
+      "name": "Coach Maps To Role",
+      "description": "NUT-ONT coach maps to an RRR-ONT functional role for cross-ontology role governance",
+      "domainIncludes": ["nut:Coach"],
+      "rangeIncludes": ["pf:FunctionalRole"],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    },
+    {
+      "@id": "nut:flowMapsToProcess",
+      "@type": "owl:ObjectProperty",
+      "name": "Flow Maps To Process",
+      "description": "Meal plan generation flow maps to a PE-ONT process definition for cross-ontology process governance",
+      "domainIncludes": ["nut:MealPlanGenerationFlow"],
+      "rangeIncludes": ["pe:Process"],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "PE-ONT"
+    },
+    {
+      "@id": "nut:goalMapsToBenefit",
+      "@type": "owl:ObjectProperty",
+      "name": "Goal Maps To Benefit",
+      "description": "NUT-ONT client goal maps to a VP-ONT benefit for cross-ontology value proposition alignment",
+      "domainIncludes": ["nut:Goal"],
+      "rangeIncludes": ["vp:Benefit"],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "VP-ONT"
+    },
+    {
+      "@id": "nut:macroTargetMapsToKPI",
+      "@type": "owl:ObjectProperty",
+      "name": "Macro Target Maps To KPI",
+      "description": "NUT-ONT macro target maps to a KPI-ONT KPI for cross-ontology performance measurement",
+      "domainIncludes": ["nut:MacroTarget"],
+      "rangeIncludes": ["kpi:KPI"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "KPI-ONT"
+    },
+    {
+      "@id": "nut:progressMapsToMeasurement",
+      "@type": "owl:ObjectProperty",
+      "name": "Progress Maps To Measurement",
+      "description": "NUT-ONT progress log maps to a KPI-ONT measurement for cross-ontology outcome tracking",
+      "domainIncludes": ["nut:ProgressLog"],
+      "rangeIncludes": ["kpi:Measurement"],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "KPI-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-NUT-001",
+      "name": "ClientHeightRequired",
+      "condition": "IF Client.heightCm IS NULL OR Client.heightCm <= 0",
+      "action": "THEN BLOCK meal plan generation — height is required for TDEE and BMI calculation",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-NUT-002",
+      "name": "MinimumCalorieFloor",
+      "condition": "IF Client.gender = female AND MacroTarget.dailyCalories < 1200 OR Client.gender = male AND MacroTarget.dailyCalories < 1500",
+      "action": "THEN BLOCK plan generation — calorie target is dangerously low and requires clinical override",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-NUT-003",
+      "name": "MacroCalorieConsistency",
+      "condition": "IF (MacroTarget.proteinGrams * 4) + (MacroTarget.carbsGrams * 4) + (MacroTarget.fatGrams * 9) differs from MacroTarget.dailyCalories by more than 5%",
+      "action": "THEN WARN — macro gram targets do not sum to the stated calorie target within tolerance",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-NUT-004",
+      "name": "MutuallyExclusiveDiets",
+      "condition": "IF Client.followsDiet contains mutually exclusive diet combinations (e.g. vegan AND carnivore, halal AND pork-inclusive, kosher AND shellfish-included)",
+      "action": "THEN BLOCK — conflicting dietary patterns cannot be simultaneously active",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-NUT-005",
+      "name": "GoalRequired",
+      "condition": "IF Client.hasGoal IS NULL (no goal assigned)",
+      "action": "THEN BLOCK meal plan generation — a goal is required to determine macro targets and theme selection",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-NUT-006",
+      "name": "MedicalConditionICD10",
+      "condition": "IF MedicalCondition.icd10Code IS NULL",
+      "action": "THEN WARN — medical conditions should have ICD-10 codes for clinical interoperability",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-NUT-007",
+      "name": "AllergenSafetyCheck",
+      "condition": "IF Recipe.excludesAllergen does NOT contain ALL allergens declared in Client.hasAllergen",
+      "action": "THEN the recipe is UNSAFE for this client and MUST NOT be included in their meal plan",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-NUT-008",
+      "name": "MinimumRecipePool",
+      "condition": "IF the number of matching recipes after allergen, diet, and theme filtering is less than 15",
+      "action": "THEN WARN — recipe pool is too small for variety; expand with generated or substituted recipes",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-NUT-009",
+      "name": "RecipeRepetitionLimit",
+      "condition": "IF the same recipe is used more than 2 times in a 7-day meal plan",
+      "action": "THEN WARN — recipe variety violation; aim for maximum 2 repetitions per recipe per week",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-NUT-010",
+      "name": "ProteinSourceVariety",
+      "condition": "IF fewer than 4 distinct protein sources are used across a 7-day meal plan",
+      "action": "THEN WARN — protein source variety violation; diversify protein across the week",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-NUT-011",
+      "name": "DailyCalorieVariance",
+      "condition": "IF DailyTotals.calorieVariancePercent exceeds 10% from MacroTarget.dailyCalories on any single day",
+      "action": "THEN WARN — daily calorie variance exceeds acceptable threshold",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-NUT-012",
+      "name": "WeeklyAverageVariance",
+      "condition": "IF WeeklyTotals.weeklyCalorieVariancePercent exceeds 5% from MacroTarget.dailyCalories",
+      "action": "THEN WARN — weekly average calorie variance exceeds acceptable threshold",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-NUT-013",
+      "name": "MonthlyAverageVariance",
+      "condition": "IF 30-day rolling average calorie variance exceeds 3% from MacroTarget.dailyCalories",
+      "action": "THEN BLOCK — sustained calorie drift requires macro target review with coach",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-NUT-014",
+      "name": "AllergenViolationBlocksApproval",
+      "condition": "IF allergen violation count > 0 in a generated meal plan (any recipe contains a client-declared allergen)",
+      "action": "THEN BLOCK plan approval — zero-tolerance allergen safety policy",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-NUT-015",
+      "name": "WeightUnitConversion",
+      "condition": "IF Client.weight is provided in stones or pounds (non-metric input)",
+      "action": "THEN convert to kilograms automatically AND WARN the client that metric units are used internally",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-NUT-016",
+      "name": "CuisineVariety",
+      "condition": "IF more than 2 consecutive days in a meal plan feature the same cuisine type",
+      "action": "THEN WARN — cuisine variety violation; rotate cuisine themes across the week",
+      "severity": "warning"
+    }
+  ],
+  "changeControl": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-26",
+      "author": "PF-Core",
+      "changes": [
+        "Initial release - 39 entities, 38 relationships, 16 business rules, 7 join patterns, 18 competency questions",
+        "Converted from VHF-Recipe-MealPlan-Ontology v1.0.0 (jsonld) to OAA v7.0.0 format",
+        "39 entities across 7 groups: Recipe (5), Meal Planning (9), Client (8), Diet (7), Theme (6), Coaching (2), Process (2)",
+        "7 cross-ontology relationships bridging to PE-ONT, CRT-ONT, IND-ONT, RRR-ONT, VP-ONT, KPI-ONT",
+        "Schema.org dual-typing: Recipe, NutritionProfile, Client (Patient), Coach (Person), MedicalCondition, DietType (RestrictedDiet)",
+        "UK-specific: 14 major allergens (Food Information Regulations 2014), UK supermarket aisle grouping, seasonal UK produce",
+        "Diet type taxonomy: 6 categories (Ethical, Religious, Medical, Macronutrient, Lifestyle, AllergenFree) with 26+ named diets",
+        "Theme system: 5 theme types (Goal, Cuisine, Seasonal, Lifestyle, Clinical) driving AI meal plan curation",
+        "8-step AI meal plan generation flow: context assembly -> theme resolution -> recipe search -> plan generation -> totals -> shopping list -> coach review -> delivery",
+        "Designed for B2C clinical nutrition coaching platforms (VHF instance) but generalisable to any nutrition/meal planning domain"
+      ]
+    }
+  ],
+  "oaa:ontologyId": "NUT-ONT",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-NUT-001",
+      "question": "Which recipes are safe for a client with specific allergens and diet types, after applying all constraint filters?",
+      "targetEntities": ["nut:Recipe", "nut:Client", "nut:Allergen", "nut:DietType"],
+      "targetRelationships": ["nut:excludesAllergen", "nut:suitableForDietType", "nut:hasAllergen", "nut:followsDiet"],
+      "targetRules": ["BR-NUT-007", "BR-NUT-004"]
+    },
+    {
+      "@id": "CQ-NUT-002",
+      "question": "What is the 7-day and 30-day macro variance for a generated meal plan compared to the client's macro targets?",
+      "targetEntities": ["nut:MacroTarget", "nut:DailyTotals", "nut:WeeklyTotals"],
+      "targetRelationships": ["nut:hasMacroTarget", "nut:hasDailyTotals", "nut:hasWeeklyTotals"],
+      "targetRules": ["BR-NUT-011", "BR-NUT-012", "BR-NUT-013"]
+    },
+    {
+      "@id": "CQ-NUT-003",
+      "question": "Which clients have conflicting or mutually exclusive diet combinations that need resolution?",
+      "targetEntities": ["nut:Client", "nut:DietType"],
+      "targetRelationships": ["nut:followsDiet"],
+      "targetRules": ["BR-NUT-004"]
+    },
+    {
+      "@id": "CQ-NUT-004",
+      "question": "What is the complete client-to-recipe traversal path for a given meal plan, including all intermediate entities?",
+      "targetEntities": ["nut:Client", "nut:MealPlan", "nut:MealPlanDay", "nut:Meal", "nut:Recipe"],
+      "targetRelationships": ["nut:assignedToClient", "nut:containsMealPlanDay", "nut:containsMeal", "nut:containsRecipe"],
+      "targetRules": ["BR-NUT-005"]
+    },
+    {
+      "@id": "CQ-NUT-005",
+      "question": "Which themes align with a client's active goal, and which recipes belong to those themes?",
+      "targetEntities": ["nut:MealTheme", "nut:Goal", "nut:Recipe"],
+      "targetRelationships": ["nut:targetsGoal", "nut:belongsToTheme", "nut:hasGoal"],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-NUT-006",
+      "question": "What is the consolidated shopping list for a meal plan, grouped by supermarket aisle with UK availability status?",
+      "targetEntities": ["nut:MealPlan", "nut:Recipe", "nut:Ingredient", "nut:ShoppingList"],
+      "targetRelationships": ["nut:hasShoppingList", "nut:containsRecipe", "nut:containsIngredient"],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-NUT-007",
+      "question": "Which clients does a given coach manage, what plans are pending approval, and what protocols has the coach authored?",
+      "targetEntities": ["nut:Coach", "nut:Client", "nut:MealPlan", "nut:Protocol"],
+      "targetRelationships": ["nut:manages", "nut:approvedByCoach", "nut:authors"],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-NUT-008",
+      "question": "Are any clients' calorie targets below the minimum safe floor (1200 female / 1500 male)?",
+      "targetEntities": ["nut:Client", "nut:MacroTarget"],
+      "targetRelationships": ["nut:hasMacroTarget"],
+      "targetRules": ["BR-NUT-002"]
+    },
+    {
+      "@id": "CQ-NUT-009",
+      "question": "Which clients are missing required profile data (height, weight, goal) that blocks plan generation?",
+      "targetEntities": ["nut:Client", "nut:HealthProfile", "nut:Goal"],
+      "targetRelationships": ["nut:hasProfile", "nut:hasGoal"],
+      "targetRules": ["BR-NUT-001", "BR-NUT-005"]
+    },
+    {
+      "@id": "CQ-NUT-010",
+      "question": "Which medical conditions in the client base lack ICD-10 codes?",
+      "targetEntities": ["nut:MedicalCondition"],
+      "targetRelationships": ["nut:hasCondition"],
+      "targetRules": ["BR-NUT-006"]
+    },
+    {
+      "@id": "CQ-NUT-011",
+      "question": "What ingredient substitutions are available for a recipe to accommodate a specific allergen or dietary restriction?",
+      "targetEntities": ["nut:Ingredient", "nut:Substitution", "nut:Allergen"],
+      "targetRelationships": ["nut:substitutableWith", "nut:containsIngredient"],
+      "targetRules": ["BR-NUT-007"]
+    },
+    {
+      "@id": "CQ-NUT-012",
+      "question": "Does a generated meal plan have sufficient recipe variety (fewer than 2 repeats) and protein source diversity (at least 4 sources)?",
+      "targetEntities": ["nut:MealPlan", "nut:Recipe", "nut:WeeklyTotals"],
+      "targetRelationships": ["nut:containsRecipe", "nut:hasWeeklyTotals"],
+      "targetRules": ["BR-NUT-009", "BR-NUT-010"]
+    },
+    {
+      "@id": "CQ-NUT-013",
+      "question": "Do a client's macro gram targets (protein*4 + carbs*4 + fat*9) match the stated calorie target within 5% tolerance?",
+      "targetEntities": ["nut:MacroTarget"],
+      "targetRelationships": ["nut:hasMacroTarget"],
+      "targetRules": ["BR-NUT-003"]
+    },
+    {
+      "@id": "CQ-NUT-014",
+      "question": "What is the recipe pool size after applying all client constraints, and is it above the minimum threshold of 15?",
+      "targetEntities": ["nut:Recipe", "nut:Client", "nut:DietType", "nut:Allergen"],
+      "targetRelationships": ["nut:suitableForDietType", "nut:excludesAllergen", "nut:followsDiet", "nut:hasAllergen"],
+      "targetRules": ["BR-NUT-008"]
+    },
+    {
+      "@id": "CQ-NUT-015",
+      "question": "What is the status of the meal plan generation flow for a given client, and which step is currently executing?",
+      "targetEntities": ["nut:MealPlanGenerationFlow", "nut:ProcessStep"],
+      "targetRelationships": ["nut:hasProcessStep", "nut:flowMapsToProcess"],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-NUT-016",
+      "question": "How does a client's nutrition goal map to VP-ONT benefits for value proposition reporting?",
+      "targetEntities": ["nut:Goal", "nut:Client"],
+      "targetRelationships": ["nut:hasGoal", "nut:goalMapsToBenefit"],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-NUT-017",
+      "question": "What is a client's progress trajectory over the last 30 days (weight trend, adherence, energy levels)?",
+      "targetEntities": ["nut:ProgressLog", "nut:Client"],
+      "targetRelationships": ["nut:hasProgressLog", "nut:progressMapsToMeasurement"],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-NUT-018",
+      "question": "Does a meal plan violate cuisine variety rules (more than 2 consecutive days with the same cuisine)?",
+      "targetEntities": ["nut:MealPlan", "nut:MealPlanDay", "nut:Recipe"],
+      "targetRelationships": ["nut:containsMealPlanDay", "nut:containsMeal", "nut:containsRecipe"],
+      "targetRules": ["BR-NUT-016"]
+    }
+  ]
+}

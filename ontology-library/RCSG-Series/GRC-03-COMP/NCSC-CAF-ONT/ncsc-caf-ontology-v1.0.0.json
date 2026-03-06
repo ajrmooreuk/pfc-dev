@@ -1,0 +1,1641 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ncsc-caf": "https://platformcore.io/ontology/ncsc-caf/",
+    "grc-fw": "https://platformcore.io/ontology/grc-fw/",
+    "mcsb": "https://platformcore.io/ontology/mcsb/",
+    "gdpr": "https://platformcore.io/ontology/gdpr/",
+    "rmf": "https://platformcore.io/ontology/rmf/",
+    "dspt": "https://platformcore.io/ontology/dspt/"
+  },
+  "@id": "https://platformcore.io/ontology/ncsc-caf/schema",
+  "@type": "owl:Ontology",
+  "name": "NCSC Cyber Assessment Framework (CAF) v4.0 Ontology",
+  "description": "Comprehensive ontology representing the UK National Cyber Security Centre (NCSC) Cyber Assessment Framework v4.0, enabling AI agents to reason about cyber security governance, risk management, protection controls, detection capabilities, and incident response across UK public sector and critical national infrastructure organisations. Models the full CAF hierarchy of 4 Objectives, 14 Principles, 41 Contributing Outcomes, and ~559 Indicators of Good Practice (IGPs) with three-tier achievement assessment (Not Achieved, Partially Achieved, Achieved). Supports CAF Profile customisation for sector-specific target outcomes as mandated by NIS Regulations and the UK Government Cyber Security Strategy.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "UK Public Sector Cyber Security & Compliance",
+  "oaa:status": "Production",
+  "version": "1.0.0",
+  "dateCreated": "2026-02-14",
+  "dateModified": "2026-02-14",
+  "creator": {
+    "@type": "Organization",
+    "name": "Azlan EA-AAA",
+    "description": "Enterprise Architecture Advisory & Automation"
+  },
+  "oaa:sourceFramework": {
+    "name": "NCSC Cyber Assessment Framework",
+    "version": "4.0",
+    "publisher": "UK National Cyber Security Centre (NCSC)",
+    "publishDate": "2025-08-06",
+    "uri": "https://www.ncsc.gov.uk/collection/cyber-assessment-framework",
+    "pdfUri": "https://www.ncsc.gov.uk/files/NCSC-Cyber-Assessment-Framework-4.0.pdf",
+    "applicability": [
+      "UK Critical National Infrastructure (CNI) operators",
+      "Operators of Essential Services (OES) under NIS Regulations 2018",
+      "UK Government departments (GovAssure programme)",
+      "UK Local Government (CAF for Local Government profile)",
+      "NHS Trusts and health sector organisations",
+      "UK Defence supply chain",
+      "Organisations seeking alignment with UK cyber resilience expectations"
+    ]
+  },
+  "oaa:imports": [
+    {
+      "@id": "grc-fw:schema",
+      "name": "GRC-FW-ONT",
+      "version": "1.0.0",
+      "description": "RCSG Framework providing ComplianceFramework entity for CAF certification tracking and GRCContext for organisational compliance posture",
+      "importedEntities": [
+        "grc-fw:ComplianceFramework",
+        "grc-fw:GRCContext"
+      ]
+    },
+    {
+      "@id": "mcsb:schema",
+      "name": "MCSB-ONT",
+      "version": "2.0.0",
+      "description": "Microsoft Cloud Security Benchmark providing SecurityControl for cross-framework control mapping between CAF and Azure/cloud security controls",
+      "importedEntities": [
+        "mcsb:SecurityControl",
+        "mcsb:ControlDomain"
+      ]
+    },
+    {
+      "@id": "rmf:schema",
+      "name": "RMF-IS27005-ONT",
+      "version": "1.0.0",
+      "description": "Risk Management Framework providing Risk and Control entities for CAF Objective A risk management alignment",
+      "importedEntities": [
+        "rmf:Risk",
+        "rmf:Control",
+        "rmf:RiskAssessment"
+      ]
+    },
+    {
+      "@id": "dspt:schema",
+      "name": "DSPT-ONT",
+      "version": "1.0.0",
+      "description": "NHS Data Security and Protection Toolkit providing DSPTStandard and DSPTAssertion entities for health sector compliance alignment — DSPT standards map to CAF contributing outcomes for NHS organisations",
+      "importedEntities": [
+        "dspt:DSPTStandard",
+        "dspt:DSPTAssertion",
+        "dspt:CAFDSPTMapping"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-CAF-001",
+      "name": "CAF Compliance Framework Bridge",
+      "description": "CAF assessments link to GRC-FW ComplianceFramework for organisational compliance posture tracking",
+      "joinPath": "ncsc-caf:CAFAssessment → ncsc-caf:assessedUnderFramework → grc-fw:ComplianceFramework",
+      "useCase": "Track CAF assessment status within organisational RCSG compliance landscape"
+    },
+    {
+      "patternId": "JP-CAF-002",
+      "name": "CAF to MCSB Control Bridge",
+      "description": "CAF Contributing Outcomes in Objective B map to MCSB SecurityControls for cloud-specific implementation guidance",
+      "joinPath": "ncsc-caf:ContributingOutcome → ncsc-caf:mapsToSecurityControl → mcsb:SecurityControl",
+      "useCase": "Map CAF protection outcomes to Azure/cloud security benchmark controls"
+    },
+    {
+      "patternId": "JP-CAF-003",
+      "name": "CAF Risk Management Bridge",
+      "description": "CAF Objective A risk management outcomes align to RMF risk assessment and treatment entities",
+      "joinPath": "ncsc-caf:ContributingOutcome → ncsc-caf:alignsToRiskFramework → rmf:RiskAssessment",
+      "useCase": "Align CAF risk governance expectations with ISO 27005 risk management practices"
+    },
+    {
+      "patternId": "JP-CAF-004",
+      "name": "CAF RCSG Context Bridge",
+      "description": "CAF assessments operate within the organisation's overarching RCSG governance context for holistic compliance posture tracking",
+      "joinPath": "ncsc-caf:CAFAssessment → ncsc-caf:operatesWithinContext → grc-fw:GRCContext",
+      "useCase": "Embed CAF assessment within organisational risk, compliance, security, and governance posture"
+    },
+    {
+      "patternId": "JP-CAF-005",
+      "name": "CAF to RMF Risk Bridge",
+      "description": "CAF outcome assessment gaps trace to identified information security risks in the RMF risk register for risk-based prioritisation",
+      "joinPath": "ncsc-caf:OutcomeAssessment → ncsc-caf:mitigatesRisk → rmf:Risk",
+      "useCase": "Link CAF assessment gaps to identified risks for risk-based remediation prioritisation"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "ncsc-caf:CAFObjective",
+      "@type": "rdfs:Class",
+      "name": "CAFObjective",
+      "description": "One of the four top-level objectives of the NCSC Cyber Assessment Framework v4.0. Objectives define the overarching security outcomes an organisation must achieve: (A) Managing Security Risk, (B) Protecting Against Cyber Attack, (C) Detecting Cyber Security Events, and (D) Minimising the Impact of Cyber Security Incidents.",
+      "oaa:properties": [
+        {
+          "name": "objectiveCode",
+          "type": "xsd:string",
+          "description": "Single-letter objective identifier (A, B, C, or D)",
+          "required": true,
+          "constraints": {
+            "pattern": "^[A-D]$"
+          }
+        },
+        {
+          "name": "objectiveName",
+          "type": "xsd:string",
+          "description": "Full name of the objective",
+          "required": true
+        },
+        {
+          "name": "objectiveDescription",
+          "type": "xsd:string",
+          "description": "Detailed description of what the objective covers and why it matters for organisational cyber resilience",
+          "required": true
+        },
+        {
+          "name": "principleCount",
+          "type": "xsd:integer",
+          "description": "Number of principles under this objective",
+          "required": true
+        }
+      ],
+      "oaa:instances": [
+        {
+          "@id": "ncsc-caf:objective-A",
+          "objectiveCode": "A",
+          "objectiveName": "Managing Security Risk",
+          "objectiveDescription": "Appropriate organisational structures, policies, and processes are in place to understand, assess, and systematically manage security risks to the network and information systems supporting essential functions.",
+          "principleCount": 4
+        },
+        {
+          "@id": "ncsc-caf:objective-B",
+          "objectiveCode": "B",
+          "objectiveName": "Protecting Against Cyber Attack",
+          "objectiveDescription": "Proportionate security measures are in place to protect essential functions and systems from cyber attack, including identity management, data protection, system hardening, resilience, and staff training.",
+          "principleCount": 6
+        },
+        {
+          "@id": "ncsc-caf:objective-C",
+          "objectiveCode": "C",
+          "objectiveName": "Detecting Cyber Security Events",
+          "objectiveDescription": "Security monitoring and proactive threat hunting capabilities ensure that cyber security events affecting essential functions are detected in a timely manner.",
+          "principleCount": 2
+        },
+        {
+          "@id": "ncsc-caf:objective-D",
+          "objectiveCode": "D",
+          "objectiveName": "Minimising the Impact of Cyber Security Incidents",
+          "objectiveDescription": "Capabilities exist to minimise the adverse impact of a cyber security incident on the operation of essential functions, including response planning, recovery, and lessons learned.",
+          "principleCount": 2
+        }
+      ]
+    },
+    {
+      "@id": "ncsc-caf:CAFPrinciple",
+      "@type": "rdfs:Class",
+      "name": "CAFPrinciple",
+      "description": "One of 14 principles within the CAF that group related contributing outcomes under an objective. Each principle represents a distinct area of cyber security practice that organisations must address.",
+      "oaa:properties": [
+        {
+          "name": "principleCode",
+          "type": "xsd:string",
+          "description": "Principle identifier in format ObjectiveLetter + Number (e.g., A1, B2, C1, D2)",
+          "required": true,
+          "constraints": {
+            "pattern": "^[A-D][1-6]$"
+          }
+        },
+        {
+          "name": "principleName",
+          "type": "xsd:string",
+          "description": "Full name of the principle",
+          "required": true
+        },
+        {
+          "name": "principleDescription",
+          "type": "xsd:string",
+          "description": "Description of the security practice area this principle covers",
+          "required": true
+        },
+        {
+          "name": "contributingOutcomeCount",
+          "type": "xsd:integer",
+          "description": "Number of contributing outcomes under this principle",
+          "required": true
+        }
+      ],
+      "oaa:instances": [
+        {
+          "@id": "ncsc-caf:principle-A1",
+          "principleCode": "A1",
+          "principleName": "Governance",
+          "principleDescription": "The organisation has appropriate management policies and processes in place to govern its approach to the security of network and information systems.",
+          "contributingOutcomeCount": 3
+        },
+        {
+          "@id": "ncsc-caf:principle-A2",
+          "principleCode": "A2",
+          "principleName": "Risk Management",
+          "principleDescription": "The organisation takes appropriate steps to identify, assess, and understand security risks and to select appropriate and proportionate security measures.",
+          "contributingOutcomeCount": 3
+        },
+        {
+          "@id": "ncsc-caf:principle-A3",
+          "principleCode": "A3",
+          "principleName": "Asset Management",
+          "principleDescription": "Everything required to deliver, maintain, or support networks and information systems for essential functions is determined, understood, and managed.",
+          "contributingOutcomeCount": 1
+        },
+        {
+          "@id": "ncsc-caf:principle-A4",
+          "principleCode": "A4",
+          "principleName": "Supply Chain",
+          "principleDescription": "The organisation understands and manages security risks to network and information systems arising from the supply chain, including secure software development and support.",
+          "contributingOutcomeCount": 2
+        },
+        {
+          "@id": "ncsc-caf:principle-B1",
+          "principleCode": "B1",
+          "principleName": "Service Protection Policies, Processes and Procedures",
+          "principleDescription": "The organisation defines, implements, communicates, and enforces appropriate policies, processes, and procedures to protect essential functions.",
+          "contributingOutcomeCount": 2
+        },
+        {
+          "@id": "ncsc-caf:principle-B2",
+          "principleCode": "B2",
+          "principleName": "Identity and Access Control",
+          "principleDescription": "The organisation understands, documents, and manages access to network and information systems supporting essential functions.",
+          "contributingOutcomeCount": 4
+        },
+        {
+          "@id": "ncsc-caf:principle-B3",
+          "principleCode": "B3",
+          "principleName": "Data Security",
+          "principleDescription": "Data stored on or transmitted across network and information systems supporting essential functions is protected from actions that may cause an adverse impact.",
+          "contributingOutcomeCount": 5
+        },
+        {
+          "@id": "ncsc-caf:principle-B4",
+          "principleCode": "B4",
+          "principleName": "System Security",
+          "principleDescription": "Network and information systems supporting essential functions are protected from cyber attack through secure design, configuration, management, and vulnerability handling.",
+          "contributingOutcomeCount": 4
+        },
+        {
+          "@id": "ncsc-caf:principle-B5",
+          "principleCode": "B5",
+          "principleName": "Resilient Networks and Systems",
+          "principleDescription": "The organisation builds resilience against cyber attack into the design, implementation, operation, and management of network and information systems.",
+          "contributingOutcomeCount": 3
+        },
+        {
+          "@id": "ncsc-caf:principle-B6",
+          "principleCode": "B6",
+          "principleName": "Staff Awareness and Training",
+          "principleDescription": "Staff are appropriately supported with cyber security awareness, training, and exercising, enabling a security-positive culture across the organisation.",
+          "contributingOutcomeCount": 2
+        },
+        {
+          "@id": "ncsc-caf:principle-C1",
+          "principleCode": "C1",
+          "principleName": "Security Monitoring",
+          "principleDescription": "The organisation monitors the security status of network and information systems in order to detect potential security problems and track the effectiveness of existing security measures.",
+          "contributingOutcomeCount": 6
+        },
+        {
+          "@id": "ncsc-caf:principle-C2",
+          "principleCode": "C2",
+          "principleName": "Threat Hunting",
+          "principleDescription": "The organisation proactively searches for indicators of compromise and actively hunts for threats that may have bypassed existing detection mechanisms.",
+          "contributingOutcomeCount": 1
+        },
+        {
+          "@id": "ncsc-caf:principle-D1",
+          "principleCode": "D1",
+          "principleName": "Response and Recovery Planning",
+          "principleDescription": "The organisation maintains an effective incident response plan and capability, with defined processes, roles, and tested recovery procedures.",
+          "contributingOutcomeCount": 3
+        },
+        {
+          "@id": "ncsc-caf:principle-D2",
+          "principleCode": "D2",
+          "principleName": "Lessons Learned",
+          "principleDescription": "When cyber security incidents occur, lessons are identified and acted upon to improve the security of network and information systems.",
+          "contributingOutcomeCount": 2
+        }
+      ]
+    },
+    {
+      "@id": "ncsc-caf:ContributingOutcome",
+      "@type": "rdfs:Class",
+      "name": "ContributingOutcome",
+      "description": "A specific measurable outcome within a CAF Principle, assessed against Indicators of Good Practice (IGPs) at three achievement levels. There are 41 Contributing Outcomes across the 14 principles in CAF v4.0. Each outcome represents a concrete security capability or practice that an organisation must demonstrate.",
+      "oaa:properties": [
+        {
+          "name": "outcomeCode",
+          "type": "xsd:string",
+          "description": "Contributing Outcome identifier in format PrincipleCode.letter (e.g., A1.a, B2.c, D1.b)",
+          "required": true,
+          "constraints": {
+            "pattern": "^[A-D][1-6]\\.[a-f]$"
+          }
+        },
+        {
+          "name": "outcomeName",
+          "type": "xsd:string",
+          "description": "Short name describing the outcome area",
+          "required": true
+        },
+        {
+          "name": "outcomeDescription",
+          "type": "xsd:string",
+          "description": "Detailed description of the expected security outcome",
+          "required": false
+        },
+        {
+          "name": "igpCountNotAchieved",
+          "type": "xsd:integer",
+          "description": "Number of IGPs at Not Achieved level — any single 'true' means outcome is Not Achieved",
+          "required": false
+        },
+        {
+          "name": "igpCountPartiallyAchieved",
+          "type": "xsd:integer",
+          "description": "Number of IGPs at Partially Achieved level — ALL must be 'true' with no Not Achieved indicators",
+          "required": false
+        },
+        {
+          "name": "igpCountAchieved",
+          "type": "xsd:integer",
+          "description": "Number of IGPs at Achieved level — ALL must be 'true' with no Not Achieved indicators",
+          "required": false
+        },
+        {
+          "name": "isNewInV4",
+          "type": "xsd:boolean",
+          "description": "Whether this contributing outcome is new or significantly revised in CAF v4.0",
+          "required": false
+        }
+      ],
+      "oaa:instances": [
+        {
+          "@id": "ncsc-caf:co-A1a",
+          "outcomeCode": "A1.a",
+          "outcomeName": "Board Direction"
+        },
+        {
+          "@id": "ncsc-caf:co-A1b",
+          "outcomeCode": "A1.b",
+          "outcomeName": "Roles and Responsibilities"
+        },
+        {
+          "@id": "ncsc-caf:co-A1c",
+          "outcomeCode": "A1.c",
+          "outcomeName": "Decision-making"
+        },
+        {
+          "@id": "ncsc-caf:co-A2a",
+          "outcomeCode": "A2.a",
+          "outcomeName": "Risk Management Process"
+        },
+        {
+          "@id": "ncsc-caf:co-A2b",
+          "outcomeCode": "A2.b",
+          "outcomeName": "Understanding Threat"
+        },
+        {
+          "@id": "ncsc-caf:co-A2c",
+          "outcomeCode": "A2.c",
+          "outcomeName": "Assurance"
+        },
+        {
+          "@id": "ncsc-caf:co-A3a",
+          "outcomeCode": "A3.a",
+          "outcomeName": "Asset Management"
+        },
+        {
+          "@id": "ncsc-caf:co-A4a",
+          "outcomeCode": "A4.a",
+          "outcomeName": "Supply Chain"
+        },
+        {
+          "@id": "ncsc-caf:co-A4b",
+          "outcomeCode": "A4.b",
+          "outcomeName": "Secure Software Development and Support",
+          "isNewInV4": true
+        },
+        {
+          "@id": "ncsc-caf:co-B1a",
+          "outcomeCode": "B1.a",
+          "outcomeName": "Policy, Process and Procedure Development"
+        },
+        {
+          "@id": "ncsc-caf:co-B1b",
+          "outcomeCode": "B1.b",
+          "outcomeName": "Policy, Process and Procedure Implementation"
+        },
+        {
+          "@id": "ncsc-caf:co-B2a",
+          "outcomeCode": "B2.a",
+          "outcomeName": "Identity Verification, Authentication and Authorisation"
+        },
+        {
+          "@id": "ncsc-caf:co-B2b",
+          "outcomeCode": "B2.b",
+          "outcomeName": "Device Management"
+        },
+        {
+          "@id": "ncsc-caf:co-B2c",
+          "outcomeCode": "B2.c",
+          "outcomeName": "Privileged User Management"
+        },
+        {
+          "@id": "ncsc-caf:co-B2d",
+          "outcomeCode": "B2.d",
+          "outcomeName": "Identity and Access Management (IdAM)"
+        },
+        {
+          "@id": "ncsc-caf:co-B3a",
+          "outcomeCode": "B3.a",
+          "outcomeName": "Understanding Data"
+        },
+        {
+          "@id": "ncsc-caf:co-B3b",
+          "outcomeCode": "B3.b",
+          "outcomeName": "Data in Transit"
+        },
+        {
+          "@id": "ncsc-caf:co-B3c",
+          "outcomeCode": "B3.c",
+          "outcomeName": "Stored Data"
+        },
+        {
+          "@id": "ncsc-caf:co-B3d",
+          "outcomeCode": "B3.d",
+          "outcomeName": "Mobile Data"
+        },
+        {
+          "@id": "ncsc-caf:co-B3e",
+          "outcomeCode": "B3.e",
+          "outcomeName": "Media / Equipment Sanitisation"
+        },
+        {
+          "@id": "ncsc-caf:co-B4a",
+          "outcomeCode": "B4.a",
+          "outcomeName": "Secure by Design"
+        },
+        {
+          "@id": "ncsc-caf:co-B4b",
+          "outcomeCode": "B4.b",
+          "outcomeName": "Secure Configuration"
+        },
+        {
+          "@id": "ncsc-caf:co-B4c",
+          "outcomeCode": "B4.c",
+          "outcomeName": "Secure Management"
+        },
+        {
+          "@id": "ncsc-caf:co-B4d",
+          "outcomeCode": "B4.d",
+          "outcomeName": "Vulnerability Management"
+        },
+        {
+          "@id": "ncsc-caf:co-B5a",
+          "outcomeCode": "B5.a",
+          "outcomeName": "Resilience Preparation"
+        },
+        {
+          "@id": "ncsc-caf:co-B5b",
+          "outcomeCode": "B5.b",
+          "outcomeName": "Design for Resilience"
+        },
+        {
+          "@id": "ncsc-caf:co-B5c",
+          "outcomeCode": "B5.c",
+          "outcomeName": "Backups"
+        },
+        {
+          "@id": "ncsc-caf:co-B6a",
+          "outcomeCode": "B6.a",
+          "outcomeName": "Cyber Security Culture"
+        },
+        {
+          "@id": "ncsc-caf:co-B6b",
+          "outcomeCode": "B6.b",
+          "outcomeName": "Cyber Security Training"
+        },
+        {
+          "@id": "ncsc-caf:co-C1a",
+          "outcomeCode": "C1.a",
+          "outcomeName": "Sources and Tools for Logging and Monitoring"
+        },
+        {
+          "@id": "ncsc-caf:co-C1b",
+          "outcomeCode": "C1.b",
+          "outcomeName": "Securing Logs"
+        },
+        {
+          "@id": "ncsc-caf:co-C1c",
+          "outcomeCode": "C1.c",
+          "outcomeName": "Generating Alerts"
+        },
+        {
+          "@id": "ncsc-caf:co-C1d",
+          "outcomeCode": "C1.d",
+          "outcomeName": "Triage of Security Alerts"
+        },
+        {
+          "@id": "ncsc-caf:co-C1e",
+          "outcomeCode": "C1.e",
+          "outcomeName": "Personnel Skills for Monitoring and Detection"
+        },
+        {
+          "@id": "ncsc-caf:co-C1f",
+          "outcomeCode": "C1.f",
+          "outcomeName": "Understanding Users and Systems Behaviour, and Threat Intelligence",
+          "isNewInV4": true
+        },
+        {
+          "@id": "ncsc-caf:co-C2a",
+          "outcomeCode": "C2.a",
+          "outcomeName": "Threat Hunting",
+          "isNewInV4": true
+        },
+        {
+          "@id": "ncsc-caf:co-D1a",
+          "outcomeCode": "D1.a",
+          "outcomeName": "Response Plan"
+        },
+        {
+          "@id": "ncsc-caf:co-D1b",
+          "outcomeCode": "D1.b",
+          "outcomeName": "Response and Recovery Capability"
+        },
+        {
+          "@id": "ncsc-caf:co-D1c",
+          "outcomeCode": "D1.c",
+          "outcomeName": "Testing and Exercising"
+        },
+        {
+          "@id": "ncsc-caf:co-D2a",
+          "outcomeCode": "D2.a",
+          "outcomeName": "Post Incident Analysis"
+        },
+        {
+          "@id": "ncsc-caf:co-D2b",
+          "outcomeCode": "D2.b",
+          "outcomeName": "Using Incidents to Drive Improvements"
+        }
+      ]
+    },
+    {
+      "@id": "ncsc-caf:IndicatorOfGoodPractice",
+      "@type": "rdfs:Class",
+      "name": "IndicatorOfGoodPractice",
+      "description": "An individual assessment statement (IGP) within a Contributing Outcome at a specific achievement level. IGPs provide the concrete criteria against which organisations are assessed. CAF v4.0 contains approximately 559 IGPs across all contributing outcomes. Assessment logic: if ANY 'Not Achieved' IGP is true, the outcome is Not Achieved. To reach 'Partially Achieved' or 'Achieved', ALL IGPs at that level must be true with no 'Not Achieved' indicators being true.",
+      "oaa:properties": [
+        {
+          "name": "igpId",
+          "type": "xsd:string",
+          "description": "Unique identifier for the IGP within its contributing outcome and achievement level",
+          "required": true
+        },
+        {
+          "name": "igpText",
+          "type": "xsd:string",
+          "description": "The full text of the indicator statement describing good or poor practice",
+          "required": true
+        },
+        {
+          "name": "achievementLevel",
+          "type": "ncsc-caf:AchievementLevel",
+          "description": "The achievement level this IGP belongs to: NotAchieved, PartiallyAchieved, or Achieved",
+          "required": true
+        },
+        {
+          "name": "isNegativeIndicator",
+          "type": "xsd:boolean",
+          "description": "True for 'Not Achieved' IGPs which describe poor practice — if any are true, the outcome fails",
+          "required": true
+        }
+      ]
+    },
+    {
+      "@id": "ncsc-caf:CAFAssessment",
+      "@type": "rdfs:Class",
+      "name": "CAFAssessment",
+      "description": "A structured assessment exercise evaluating an organisation against the CAF framework, producing outcome-level results across all or a subset of contributing outcomes. Assessments may be self-assessments, peer reviews, regulator-led, or conducted by third-party assessors under GovAssure or NIS competent authority programmes.",
+      "oaa:properties": [
+        {
+          "name": "assessmentId",
+          "type": "xsd:string",
+          "description": "Unique identifier for this assessment exercise",
+          "required": true
+        },
+        {
+          "name": "organisationName",
+          "type": "xsd:string",
+          "description": "Name of the organisation being assessed",
+          "required": true
+        },
+        {
+          "name": "assessmentDate",
+          "type": "xsd:date",
+          "description": "Date the assessment was conducted or completed",
+          "required": true
+        },
+        {
+          "name": "assessmentType",
+          "type": "ncsc-caf:AssessmentType",
+          "description": "Type of assessment conducted",
+          "required": true
+        },
+        {
+          "name": "assessor",
+          "type": "xsd:string",
+          "description": "Individual or organisation conducting the assessment",
+          "required": true
+        },
+        {
+          "name": "cafVersion",
+          "type": "xsd:string",
+          "description": "Version of the CAF framework used (e.g., 4.0)",
+          "required": true
+        },
+        {
+          "name": "profileApplied",
+          "type": "xsd:string",
+          "description": "CAF Profile applied if sector-specific (e.g., Local Government, CNI-Energy)",
+          "required": false
+        },
+        {
+          "name": "scope",
+          "type": "xsd:string",
+          "description": "Essential function(s) or systems in scope for this assessment",
+          "required": true
+        },
+        {
+          "name": "overallComplianceScore",
+          "type": "xsd:decimal",
+          "description": "Percentage of contributing outcomes assessed as Achieved or Partially Achieved (0.0-100.0)",
+          "required": false
+        },
+        {
+          "name": "outcomesAchieved",
+          "type": "xsd:integer",
+          "description": "Count of contributing outcomes assessed as Achieved",
+          "required": false
+        },
+        {
+          "name": "outcomesPartiallyAchieved",
+          "type": "xsd:integer",
+          "description": "Count of contributing outcomes assessed as Partially Achieved",
+          "required": false
+        },
+        {
+          "name": "outcomesNotAchieved",
+          "type": "xsd:integer",
+          "description": "Count of contributing outcomes assessed as Not Achieved",
+          "required": false
+        },
+        {
+          "name": "status",
+          "type": "ncsc-caf:AssessmentStatus",
+          "description": "Current status of the assessment",
+          "required": true
+        },
+        {
+          "name": "nextReviewDate",
+          "type": "xsd:date",
+          "description": "Recommended date for reassessment",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ncsc-caf:OutcomeAssessment",
+      "@type": "rdfs:Class",
+      "name": "OutcomeAssessment",
+      "description": "The assessment result for a single Contributing Outcome within a CAF Assessment, recording the achievement level, evidence, gaps, and remediation actions. This is the primary audit artefact for compliance verification.",
+      "oaa:properties": [
+        {
+          "name": "outcomeCode",
+          "type": "xsd:string",
+          "description": "The Contributing Outcome code being assessed (e.g., A1.a, B4.d)",
+          "required": true,
+          "constraints": {
+            "pattern": "^[A-D][1-6]\\.[a-f]$"
+          }
+        },
+        {
+          "name": "achievementLevel",
+          "type": "ncsc-caf:AchievementLevel",
+          "description": "Assessed achievement level for this outcome",
+          "required": true
+        },
+        {
+          "name": "igpsNotAchievedTrue",
+          "type": "xsd:integer",
+          "description": "Number of 'Not Achieved' IGPs found to be true (any > 0 means outcome fails)",
+          "required": true
+        },
+        {
+          "name": "igpsPartiallyAchievedTrue",
+          "type": "xsd:integer",
+          "description": "Number of 'Partially Achieved' IGPs confirmed true",
+          "required": false
+        },
+        {
+          "name": "igpsAchievedTrue",
+          "type": "xsd:integer",
+          "description": "Number of 'Achieved' IGPs confirmed true",
+          "required": false
+        },
+        {
+          "name": "evidenceSummary",
+          "type": "xsd:string",
+          "description": "Summary of evidence supporting the assessment determination",
+          "required": true
+        },
+        {
+          "name": "gaps",
+          "type": "xsd:string",
+          "description": "Identified gaps preventing a higher achievement level",
+          "required": false
+        },
+        {
+          "name": "remediationPlan",
+          "type": "xsd:string",
+          "description": "Planned actions to address gaps and improve achievement level",
+          "required": false
+        },
+        {
+          "name": "remediationPriority",
+          "type": "ncsc-caf:RemediationPriority",
+          "description": "Priority level for remediation if gaps exist",
+          "required": false
+        },
+        {
+          "name": "remediationOwner",
+          "type": "xsd:string",
+          "description": "Individual or team accountable for remediation delivery",
+          "required": false
+        },
+        {
+          "name": "targetAchievementLevel",
+          "type": "ncsc-caf:AchievementLevel",
+          "description": "Target achievement level set by the applicable CAF Profile",
+          "required": false
+        },
+        {
+          "name": "targetDate",
+          "type": "xsd:date",
+          "description": "Target date for achieving the target achievement level",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ncsc-caf:CAFProfile",
+      "@type": "rdfs:Class",
+      "name": "CAFProfile",
+      "description": "A sector-specific or regulator-defined target set of achievement levels for Contributing Outcomes. CAF Profiles allow competent authorities to set minimum acceptable outcomes for their regulated sector. Examples include the GovAssure profile for central government, the Local Government CAF Profile, and sector-specific CNI profiles for energy, water, transport, and health.",
+      "oaa:properties": [
+        {
+          "name": "profileId",
+          "type": "xsd:string",
+          "description": "Unique identifier for this CAF Profile",
+          "required": true
+        },
+        {
+          "name": "profileName",
+          "type": "xsd:string",
+          "description": "Name of the CAF Profile (e.g., GovAssure 2025, Local Government Baseline)",
+          "required": true
+        },
+        {
+          "name": "sectorApplicability",
+          "type": "xsd:string",
+          "description": "Sector(s) this profile applies to (e.g., Central Government, Local Government, NHS, Energy, Water)",
+          "required": true
+        },
+        {
+          "name": "competentAuthority",
+          "type": "xsd:string",
+          "description": "Regulator or competent authority that defined this profile",
+          "required": true
+        },
+        {
+          "name": "minimumAchievementDefault",
+          "type": "ncsc-caf:AchievementLevel",
+          "description": "Default minimum achievement level expected for all outcomes unless overridden",
+          "required": true
+        },
+        {
+          "name": "profileVersion",
+          "type": "xsd:string",
+          "description": "Version of the profile",
+          "required": true
+        },
+        {
+          "name": "cafVersion",
+          "type": "xsd:string",
+          "description": "CAF version this profile is aligned to",
+          "required": true
+        },
+        {
+          "name": "effectiveDate",
+          "type": "xsd:date",
+          "description": "Date from which this profile takes effect",
+          "required": true
+        }
+      ]
+    },
+    {
+      "@id": "ncsc-caf:ProfileOutcomeTarget",
+      "@type": "rdfs:Class",
+      "name": "ProfileOutcomeTarget",
+      "description": "A specific target achievement level within a CAF Profile for a particular Contributing Outcome, overriding the profile default where sector-specific requirements demand a higher or different standard.",
+      "oaa:properties": [
+        {
+          "name": "outcomeCode",
+          "type": "xsd:string",
+          "description": "The Contributing Outcome code targeted",
+          "required": true
+        },
+        {
+          "name": "targetAchievementLevel",
+          "type": "ncsc-caf:AchievementLevel",
+          "description": "Required achievement level for this outcome in this profile",
+          "required": true
+        },
+        {
+          "name": "justification",
+          "type": "xsd:string",
+          "description": "Reason for setting this specific target (e.g., regulatory mandate, threat landscape)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ncsc-caf:ComplianceMapping",
+      "@type": "rdfs:Class",
+      "name": "ComplianceMapping",
+      "description": "Cross-framework mapping linking a CAF Contributing Outcome to controls, requirements, or clauses in other compliance frameworks (ISO 27001, NIST CSF, Cyber Essentials, MCSB, GDPR). Enables multi-framework audit evidence reuse and gap analysis.",
+      "oaa:properties": [
+        {
+          "name": "mappingId",
+          "type": "xsd:string",
+          "description": "Unique identifier for this mapping",
+          "required": true
+        },
+        {
+          "name": "targetFramework",
+          "type": "xsd:string",
+          "description": "Name of the target compliance framework",
+          "required": true
+        },
+        {
+          "name": "targetControlId",
+          "type": "xsd:string",
+          "description": "Control or clause identifier in the target framework",
+          "required": true
+        },
+        {
+          "name": "targetControlName",
+          "type": "xsd:string",
+          "description": "Name or title of the control in the target framework",
+          "required": false
+        },
+        {
+          "name": "mappingType",
+          "type": "ncsc-caf:MappingType",
+          "description": "Strength of the mapping relationship",
+          "required": true
+        },
+        {
+          "name": "mappingNotes",
+          "type": "xsd:string",
+          "description": "Additional context about how the frameworks relate",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "grc-fw:ComplianceFramework",
+      "@type": "rdfs:Class",
+      "name": "ComplianceFramework",
+      "description": "External GRC-FW entity representing an organisational compliance certification tracked within the RCSG context.",
+      "oaa:externalOntology": "grc-fw:GRCFrameworkOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@id": "grc-fw:GRCContext",
+      "@type": "rdfs:Class",
+      "name": "GRCContext",
+      "description": "External GRC-FW entity representing the organisation's overarching risk, compliance, security, and governance posture.",
+      "oaa:externalOntology": "grc-fw:GRCFrameworkOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@id": "mcsb:SecurityControl",
+      "@type": "rdfs:Class",
+      "name": "SecurityControl",
+      "description": "External MCSB entity representing an individual cloud security benchmark control for cross-framework control mapping.",
+      "oaa:externalOntology": "mcsb:MCSBOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@id": "mcsb:ControlDomain",
+      "@type": "rdfs:Class",
+      "name": "ControlDomain",
+      "description": "External MCSB entity representing a high-level security control domain for aggregate mapping.",
+      "oaa:externalOntology": "mcsb:MCSBOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@id": "rmf:Risk",
+      "@type": "rdfs:Class",
+      "name": "Risk",
+      "description": "External RMF-IS27005 entity representing an identified information security risk for risk-outcome traceability.",
+      "oaa:externalOntology": "rmf:RMFOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@id": "rmf:Control",
+      "@type": "rdfs:Class",
+      "name": "Control",
+      "description": "External RMF-IS27005 entity representing an ISO 27001 Annex A security control for risk treatment alignment.",
+      "oaa:externalOntology": "rmf:RMFOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@id": "rmf:RiskAssessment",
+      "@type": "rdfs:Class",
+      "name": "RiskAssessment",
+      "description": "External RMF-IS27005 entity representing a structured risk assessment exercise for CAF Objective A alignment.",
+      "oaa:externalOntology": "rmf:RMFOntology",
+      "oaa:stubEntity": true
+    }
+  ],
+  "oaa:enumerations": [
+    {
+      "@id": "ncsc-caf:AchievementLevel",
+      "@type": "rdfs:Datatype",
+      "name": "Achievement Level",
+      "description": "Three-tier assessment scale for CAF Contributing Outcomes. Not Achieved indicates poor practice is evident. Partially Achieved indicates basic security measures are in place against common threats. Achieved indicates comprehensive security measures are in place against capable and well-resourced threat actors.",
+      "values": [
+        {
+          "@id": "ncsc-caf:level-not-achieved",
+          "name": "Not Achieved",
+          "description": "Poor practice is evident — one or more 'Not Achieved' IGPs are true, indicating fundamental security deficiencies that must be addressed urgently",
+          "ncsc-caf:rank": 0
+        },
+        {
+          "@id": "ncsc-caf:level-partially-achieved",
+          "name": "Partially Achieved",
+          "description": "Basic security measures are in place against common threats — all 'Partially Achieved' IGPs are true and no 'Not Achieved' indicators are present",
+          "ncsc-caf:rank": 1
+        },
+        {
+          "@id": "ncsc-caf:level-achieved",
+          "name": "Achieved",
+          "description": "Comprehensive security measures are in place proportionate to capable and well-resourced threat actors — all 'Achieved' IGPs are true and no 'Not Achieved' indicators are present",
+          "ncsc-caf:rank": 2
+        }
+      ]
+    },
+    {
+      "@id": "ncsc-caf:AssessmentType",
+      "@type": "rdfs:Datatype",
+      "name": "Assessment Type",
+      "description": "Classification of CAF assessment exercises by conducting authority",
+      "values": [
+        {
+          "@id": "ncsc-caf:assess-type-self",
+          "name": "Self-Assessment",
+          "description": "Organisation-led assessment for internal assurance and improvement"
+        },
+        {
+          "@id": "ncsc-caf:assess-type-peer",
+          "name": "Peer Review",
+          "description": "Assessment conducted by peer organisation or sector group"
+        },
+        {
+          "@id": "ncsc-caf:assess-type-third-party",
+          "name": "Third-Party Assessment",
+          "description": "Independent assessment by NCSC-assured or qualified third party"
+        },
+        {
+          "@id": "ncsc-caf:assess-type-regulator",
+          "name": "Regulator-Led Assessment",
+          "description": "Assessment conducted by or on behalf of a NIS competent authority"
+        },
+        {
+          "@id": "ncsc-caf:assess-type-govassure",
+          "name": "GovAssure Assessment",
+          "description": "Central government assessment under the GovAssure programme"
+        }
+      ]
+    },
+    {
+      "@id": "ncsc-caf:AssessmentStatus",
+      "@type": "rdfs:Datatype",
+      "name": "Assessment Status",
+      "description": "Lifecycle status of a CAF assessment",
+      "values": [
+        {
+          "@id": "ncsc-caf:assess-status-planned",
+          "name": "Planned",
+          "description": "Assessment scheduled but not yet started"
+        },
+        {
+          "@id": "ncsc-caf:assess-status-in-progress",
+          "name": "In Progress",
+          "description": "Assessment underway, evidence being gathered"
+        },
+        {
+          "@id": "ncsc-caf:assess-status-completed",
+          "name": "Completed",
+          "description": "Assessment complete, results finalised"
+        },
+        {
+          "@id": "ncsc-caf:assess-status-remediation",
+          "name": "Remediation",
+          "description": "Assessment complete, remediation actions underway"
+        },
+        {
+          "@id": "ncsc-caf:assess-status-closed",
+          "name": "Closed",
+          "description": "Assessment cycle complete, all actions resolved or accepted"
+        }
+      ]
+    },
+    {
+      "@id": "ncsc-caf:RemediationPriority",
+      "@type": "rdfs:Datatype",
+      "name": "Remediation Priority",
+      "description": "Priority levels for addressing gaps identified in CAF assessment",
+      "values": [
+        {
+          "@id": "ncsc-caf:priority-critical",
+          "name": "Critical",
+          "ncsc-caf:rank": 1,
+          "description": "Not Achieved outcome in a profile-mandated area — immediate action required"
+        },
+        {
+          "@id": "ncsc-caf:priority-high",
+          "name": "High",
+          "ncsc-caf:rank": 2,
+          "description": "Not Achieved outcome or significant gap in Achieved target — action within 30 days"
+        },
+        {
+          "@id": "ncsc-caf:priority-medium",
+          "name": "Medium",
+          "ncsc-caf:rank": 3,
+          "description": "Partially Achieved where Achieved is targeted — action within 90 days"
+        },
+        {
+          "@id": "ncsc-caf:priority-low",
+          "name": "Low",
+          "ncsc-caf:rank": 4,
+          "description": "Improvement opportunity, not a compliance gap — action within next assessment cycle"
+        }
+      ]
+    },
+    {
+      "@id": "ncsc-caf:MappingType",
+      "@type": "rdfs:Datatype",
+      "name": "Mapping Type",
+      "description": "Strength of cross-framework control mapping relationship",
+      "values": [
+        {
+          "@id": "ncsc-caf:mapping-full",
+          "name": "Full",
+          "description": "The CAF outcome and target control are directly equivalent in scope and intent"
+        },
+        {
+          "@id": "ncsc-caf:mapping-partial",
+          "name": "Partial",
+          "description": "The CAF outcome covers a subset of the target control or vice versa"
+        },
+        {
+          "@id": "ncsc-caf:mapping-related",
+          "name": "Related",
+          "description": "The CAF outcome and target control address similar but not identical security concerns"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:hasPrinciple",
+      "name": "hasPrinciple",
+      "description": "A CAFObjective contains one or more CAFPrinciples that define specific security practice areas",
+      "domainIncludes": "ncsc-caf:CAFObjective",
+      "rangeIncludes": "ncsc-caf:CAFPrinciple",
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:belongsToObjective",
+      "name": "belongsToObjective",
+      "description": "A CAFPrinciple belongs to exactly one CAFObjective",
+      "domainIncludes": "ncsc-caf:CAFPrinciple",
+      "rangeIncludes": "ncsc-caf:CAFObjective",
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:hasContributingOutcome",
+      "name": "hasContributingOutcome",
+      "description": "A CAFPrinciple contains one or more ContributingOutcomes that define measurable security capabilities",
+      "domainIncludes": "ncsc-caf:CAFPrinciple",
+      "rangeIncludes": "ncsc-caf:ContributingOutcome",
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:belongsToPrinciple",
+      "name": "belongsToPrinciple",
+      "description": "A ContributingOutcome belongs to exactly one CAFPrinciple",
+      "domainIncludes": "ncsc-caf:ContributingOutcome",
+      "rangeIncludes": "ncsc-caf:CAFPrinciple",
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:hasIGP",
+      "name": "hasIGP",
+      "description": "A ContributingOutcome is assessed via one or more Indicators of Good Practice across achievement levels",
+      "domainIncludes": "ncsc-caf:ContributingOutcome",
+      "rangeIncludes": "ncsc-caf:IndicatorOfGoodPractice",
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:assessesOutcome",
+      "name": "assessesOutcome",
+      "description": "An OutcomeAssessment evaluates a specific ContributingOutcome within a CAFAssessment",
+      "domainIncludes": "ncsc-caf:OutcomeAssessment",
+      "rangeIncludes": "ncsc-caf:ContributingOutcome",
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:hasOutcomeAssessment",
+      "name": "hasOutcomeAssessment",
+      "description": "A CAFAssessment contains one or more OutcomeAssessments covering the contributing outcomes in scope",
+      "domainIncludes": "ncsc-caf:CAFAssessment",
+      "rangeIncludes": "ncsc-caf:OutcomeAssessment",
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:appliesProfile",
+      "name": "appliesProfile",
+      "description": "A CAFAssessment applies a specific CAFProfile defining the target achievement levels for the assessed sector",
+      "domainIncludes": "ncsc-caf:CAFAssessment",
+      "rangeIncludes": "ncsc-caf:CAFProfile",
+      "cardinality": "0..1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:hasOutcomeTarget",
+      "name": "hasOutcomeTarget",
+      "description": "A CAFProfile defines specific ProfileOutcomeTargets for contributing outcomes that override the profile default",
+      "domainIncludes": "ncsc-caf:CAFProfile",
+      "rangeIncludes": "ncsc-caf:ProfileOutcomeTarget",
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:hasComplianceMapping",
+      "name": "hasComplianceMapping",
+      "description": "A ContributingOutcome has cross-framework ComplianceMappings to other security standards and frameworks",
+      "domainIncludes": "ncsc-caf:ContributingOutcome",
+      "rangeIncludes": "ncsc-caf:ComplianceMapping",
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:assessedUnderFramework",
+      "name": "assessedUnderFramework",
+      "description": "Links a CAFAssessment to the GRC-FW ComplianceFramework entity for organisational compliance posture tracking",
+      "domainIncludes": "ncsc-caf:CAFAssessment",
+      "rangeIncludes": "grc-fw:ComplianceFramework",
+      "cardinality": "0..1",
+      "oaa:crossOntologyRef": "GRC-FW"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:mapsToSecurityControl",
+      "name": "mapsToSecurityControl",
+      "description": "A ContributingOutcome maps to one or more MCSB SecurityControls for Azure/cloud-specific implementation alignment",
+      "domainIncludes": "ncsc-caf:ContributingOutcome",
+      "rangeIncludes": "mcsb:SecurityControl",
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "MCSB"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:mapsToControlDomain",
+      "name": "mapsToControlDomain",
+      "description": "A CAFPrinciple maps to one or more MCSB ControlDomains at the aggregate level",
+      "domainIncludes": "ncsc-caf:CAFPrinciple",
+      "rangeIncludes": "mcsb:ControlDomain",
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "MCSB"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:alignsToRiskFramework",
+      "name": "alignsToRiskFramework",
+      "description": "CAF Objective A outcomes align to RMF-IS27005 RiskAssessment entities for ISO 27005 risk management practices",
+      "domainIncludes": "ncsc-caf:ContributingOutcome",
+      "rangeIncludes": "rmf:RiskAssessment",
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "RMF-IS27005"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:treatedByControl",
+      "name": "treatedByControl",
+      "description": "A ContributingOutcome gap may be treated by implementing RMF-IS27005 Controls for risk mitigation",
+      "domainIncludes": "ncsc-caf:OutcomeAssessment",
+      "rangeIncludes": "rmf:Control",
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "RMF-IS27005"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:operatesWithinContext",
+      "name": "operatesWithinContext",
+      "description": "A CAFAssessment operates within the organisation's overarching RCSG governance context for compliance posture alignment",
+      "domainIncludes": "ncsc-caf:CAFAssessment",
+      "rangeIncludes": "grc-fw:GRCContext",
+      "cardinality": "0..1",
+      "oaa:crossOntologyRef": "GRC-FW"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ncsc-caf:mitigatesRisk",
+      "name": "mitigatesRisk",
+      "description": "An OutcomeAssessment gap or remediation action addresses an identified information security risk from the RMF risk register",
+      "domainIncludes": "ncsc-caf:OutcomeAssessment",
+      "rangeIncludes": "rmf:Risk",
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "RMF-IS27005"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-CAF-001",
+      "name": "Not Achieved Overrides All",
+      "condition": "IF any IndicatorOfGoodPractice with achievementLevel='NotAchieved' is assessed as TRUE for a ContributingOutcome",
+      "action": "THEN the OutcomeAssessment.achievementLevel MUST be 'Not Achieved' regardless of other IGP results",
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "ruleId": "BR-CAF-002",
+      "name": "Partially Achieved Requires All Partial IGPs",
+      "condition": "IF OutcomeAssessment.achievementLevel = 'Partially Achieved'",
+      "action": "THEN ALL IndicatorOfGoodPractice at PartiallyAchieved level MUST be TRUE AND zero NotAchieved IGPs are TRUE",
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "ruleId": "BR-CAF-003",
+      "name": "Achieved Requires All Achieved IGPs",
+      "condition": "IF OutcomeAssessment.achievementLevel = 'Achieved'",
+      "action": "THEN ALL IndicatorOfGoodPractice at Achieved level MUST be TRUE AND zero NotAchieved IGPs are TRUE",
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "ruleId": "BR-CAF-004",
+      "name": "Assessment Must Cover All Profiled Outcomes",
+      "condition": "IF CAFAssessment.profileApplied IS NOT NULL",
+      "action": "THEN OutcomeAssessments MUST exist for ALL ContributingOutcomes referenced in the applied CAFProfile",
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "ruleId": "BR-CAF-005",
+      "name": "Not Achieved Requires Remediation Plan",
+      "condition": "IF OutcomeAssessment.achievementLevel = 'Not Achieved'",
+      "action": "THEN OutcomeAssessment.remediationPlan MUST NOT be NULL AND OutcomeAssessment.remediationPriority MUST be 'Critical' or 'High'",
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "ruleId": "BR-CAF-006",
+      "name": "Below Profile Target Requires Remediation",
+      "condition": "IF OutcomeAssessment.achievementLevel < ProfileOutcomeTarget.targetAchievementLevel for the same outcomeCode",
+      "action": "THEN OutcomeAssessment.remediationPlan MUST NOT be NULL AND OutcomeAssessment.targetDate MUST be set",
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "ruleId": "BR-CAF-007",
+      "name": "Assessment Must Have Evidence",
+      "condition": "IF OutcomeAssessment exists",
+      "action": "THEN OutcomeAssessment.evidenceSummary MUST NOT be NULL or empty",
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "ruleId": "BR-CAF-008",
+      "name": "Completed Assessment Must Have All Outcomes",
+      "condition": "IF CAFAssessment.status = 'Completed'",
+      "action": "THEN COUNT(OutcomeAssessment) MUST equal the total contributing outcomes in scope (41 for full CAF, or profile-specified count)",
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "ruleId": "BR-CAF-009",
+      "name": "GovAssure Assessment Requires Third Party",
+      "condition": "IF CAFAssessment.assessmentType = 'GovAssure Assessment'",
+      "action": "THEN CAFAssessment.assessor MUST reference an NCSC-assured assessor organisation",
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "ruleId": "BR-CAF-010",
+      "name": "Reassessment Cadence",
+      "condition": "IF CAFAssessment.status = 'Completed' or 'Closed'",
+      "action": "THEN CAFAssessment.nextReviewDate SHOULD be within 12 months of assessmentDate for NIS-regulated entities",
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "ruleId": "BR-CAF-011",
+      "name": "UK Public Sector Minimum Baseline",
+      "condition": "IF CAFAssessment.profileApplied references a UK public sector CAF Profile",
+      "action": "THEN ALL Objective A and Objective D outcomes SHOULD achieve at minimum 'Partially Achieved' to meet baseline governance and incident response expectations",
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "ruleId": "BR-CAF-012",
+      "name": "Cross-Framework Mapping Completeness",
+      "condition": "IF organisation holds ISO 27001 certification or MCSB compliance",
+      "action": "THEN ComplianceMappings SHOULD exist linking relevant ContributingOutcomes to ISO 27001 controls or MCSB SecurityControls to enable audit evidence reuse",
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    }
+  ],
+  "crossOntologyReferences": {
+    "grcFramework": [
+      "grc-fw:"
+    ],
+    "grcImplementations": [
+      "mcsb:",
+      "rmf:"
+    ],
+    "description": "NCSC-CAF-ONT is the UK public sector compliance overlay within the RCSG-Series, bridging the NCSC Cyber Assessment Framework to GRC-FW for organisational compliance posture, MCSB for Azure/cloud security control mapping, and RMF-IS27005 for risk management alignment. CAF assessments register as ComplianceFramework entries in GRC-FW. Objective B outcomes map to MCSB security control domains for cloud-specific implementation. Objective A outcomes align to RMF risk assessment and treatment practices.",
+    "lineageAlignment": {
+      "grc-fw:ComplianceFramework": "GRC-FW ComplianceFramework tracks CAF assessment certification status and expiry within organisational compliance landscape",
+      "grc-fw:GRCContext": "GRC-FW GRCContext provides the overarching governance context in which CAF assessments operate",
+      "mcsb:SecurityControl": "MCSB SecurityControl provides Azure/cloud-specific implementation controls mapped to CAF Objective B outcomes",
+      "mcsb:ControlDomain": "MCSB ControlDomain provides aggregate domain-level mapping to CAF Principles",
+      "rmf:Risk": "RMF Risk represents identified information security risks that CAF outcome assessment gaps mitigate or address",
+      "rmf:RiskAssessment": "RMF RiskAssessment aligns to CAF Objective A risk management contributing outcomes",
+      "rmf:Control": "RMF Control provides ISO 27001 Annex A controls for CAF gap remediation treatment"
+    },
+    "keyBridges": [
+      {
+        "from": "ncsc-caf:CAFAssessment",
+        "to": "grc-fw:ComplianceFramework",
+        "relationship": "assessedUnderFramework"
+      },
+      {
+        "from": "ncsc-caf:ContributingOutcome",
+        "to": "mcsb:SecurityControl",
+        "relationship": "mapsToSecurityControl"
+      },
+      {
+        "from": "ncsc-caf:CAFPrinciple",
+        "to": "mcsb:ControlDomain",
+        "relationship": "mapsToControlDomain"
+      },
+      {
+        "from": "ncsc-caf:ContributingOutcome",
+        "to": "rmf:RiskAssessment",
+        "relationship": "alignsToRiskFramework"
+      },
+      {
+        "from": "ncsc-caf:OutcomeAssessment",
+        "to": "rmf:Control",
+        "relationship": "treatedByControl"
+      },
+      {
+        "from": "ncsc-caf:CAFAssessment",
+        "to": "grc-fw:GRCContext",
+        "relationship": "operatesWithinContext"
+      },
+      {
+        "from": "ncsc-caf:OutcomeAssessment",
+        "to": "rmf:Risk",
+        "relationship": "mitigatesRisk"
+      }
+    ],
+    "ukPublicSectorFrameworkMappings": {
+      "description": "Key UK public sector frameworks that CAF outcomes map to for multi-framework compliance",
+      "frameworks": [
+        {
+          "name": "ISO/IEC 27001:2022",
+          "relevance": "Information security management system — CAF outcomes map to Annex A controls across all 4 objectives",
+          "mappingCoverage": "high"
+        },
+        {
+          "name": "NIST Cybersecurity Framework (CSF) v2.0",
+          "relevance": "US framework widely used in UK — Identify/Protect/Detect/Respond/Recover functions directly align to CAF objectives A-D",
+          "mappingCoverage": "high"
+        },
+        {
+          "name": "Cyber Essentials / Cyber Essentials Plus",
+          "relevance": "UK baseline certification scheme — CAF Objective B outcomes subsume Cyber Essentials requirements (firewalls, secure config, access control, malware, patching)",
+          "mappingCoverage": "partial"
+        },
+        {
+          "name": "NCSC 10 Steps to Cyber Security",
+          "relevance": "NCSC foundational guidance — maps to CAF principles as a simplified view of the same security areas",
+          "mappingCoverage": "partial"
+        },
+        {
+          "name": "NIS Regulations 2018 (UK)",
+          "relevance": "Legal basis for CAF — NIS competent authorities use CAF to assess Operators of Essential Services",
+          "mappingCoverage": "full"
+        },
+        {
+          "name": "GovAssure",
+          "relevance": "Central government assurance programme using CAF as the assessment framework",
+          "mappingCoverage": "full"
+        },
+        {
+          "name": "Microsoft Cloud Security Benchmark (MCSB)",
+          "relevance": "Azure-specific controls — CAF Objective B maps directly to MCSB control domains for cloud-deployed essential services",
+          "mappingCoverage": "high"
+        },
+        {
+          "name": "GDPR / UK GDPR / Data Protection Act 2018",
+          "relevance": "Data protection regulation — CAF B3 (Data Security) and A4 (Supply Chain) outcomes align with GDPR obligations",
+          "mappingCoverage": "partial"
+        }
+      ]
+    }
+  },
+  "oaa:ontologyId": "NCSC-CAF-ONT",
+  "oaa:series": "RCSG-SERIES",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of CAFObjective within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:CAFObjective"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of CAFPrinciple within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:CAFPrinciple"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of ContributingOutcome within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:ContributingOutcome"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of IndicatorOfGoodPractice within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:IndicatorOfGoodPractice"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of CAFAssessment within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:CAFAssessment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of OutcomeAssessment within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:OutcomeAssessment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of CAFProfile within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:CAFProfile"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of ProfileOutcomeTarget within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:ProfileOutcomeTarget"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of ComplianceMapping within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:ComplianceMapping"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of ComplianceFramework within this ontology?",
+      "targetEntities": [
+        "grc-fw:ComplianceFramework"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the role and purpose of GRCContext within this ontology?",
+      "targetEntities": [
+        "grc-fw:GRCContext"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-012",
+      "question": "What is the role and purpose of SecurityControl within this ontology?",
+      "targetEntities": [
+        "mcsb:SecurityControl"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-013",
+      "question": "What is the role and purpose of ControlDomain within this ontology?",
+      "targetEntities": [
+        "mcsb:ControlDomain"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-014",
+      "question": "What is the role and purpose of Risk within this ontology?",
+      "targetEntities": [
+        "rmf:Risk"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-015",
+      "question": "What is the role and purpose of Control within this ontology?",
+      "targetEntities": [
+        "rmf:Control"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-016",
+      "question": "What is the role and purpose of RiskAssessment within this ontology?",
+      "targetEntities": [
+        "rmf:RiskAssessment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

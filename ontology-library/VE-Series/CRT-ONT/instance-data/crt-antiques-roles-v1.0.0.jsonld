@@ -1,0 +1,976 @@
+{
+  "@context": {
+    "crt": "https://platformcore.io/ontology/crt/",
+    "vp": "https://pbs.azlan.me/ontology/vp#",
+    "rrr": "https://platform-foundation.io/ontology/v1/rrr/",
+    "org": "https://pbs.azlan.me/ontology/org#",
+    "oaa": "https://pbs.azlan.me/oaa#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "crt:antiques-roles-instance",
+  "@type": "crt:InstanceDataSet",
+  "oaa:schemaRef": "pf-CRT-ONT-v1.0.0.jsonld",
+  "oaa:instanceVersion": "1.0.0",
+  "oaa:schemaVersion": "1.0.0",
+  "oaa:brand": "antiques",
+  "oaa:brandFullName": "Antiques Domain",
+  "oaa:organizationContextRef": "org:ctx-antiques-domain",
+  "oaa:created": "2026-02-20",
+  "oaa:createdBy": "PFI Instance Generator",
+  "oaa:description": "Antiques domain customer role taxonomy — 19 role archetypes across B2B (10), B2C (7), and B2B2C (2) channels. Covers the full antiques trade ecosystem: auction infrastructure, dealer and trade intermediaries, institutional buyers, professional advisors, and private collectors through to decorative home buyers. Includes RRR-ONT role references for all B2B roles and Section 6 qualification examples for Serious Collector, Insurance Underwriter, and Inheritor roles.",
+  "oaa:domainContext": "Antiques, fine art, and decorative arts trade — UK/EU auction houses, antique dealers, trade fairs, private sales, and estate administration. Covers physical and online auction channels.",
+
+  "@graph": [
+
+    {
+      "@id": "crt:ant-auction-director",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-auction-director",
+      "crt:name": "Auction Director",
+      "crt:channel": "B2B",
+      "crt:category": "B2B_Executive",
+      "crt:description": "Senior executive responsible for the strategic direction, specialist department leadership, and commercial performance of an auction house or major specialist auction department. Shapes consignment strategy, vendor relationships, specialist expertise deployment, and sale calendar. Accountable for hammer prices, buyer's premiums, and department profitability. Operates at regional or national level within the auction hierarchy.",
+      "crt:motivations": "Maximising consignment pipeline and hammer total, competitive positioning against rival auction houses, attracting high-value single-owner collections, specialist reputation development, building long-term vendor and estate executor relationships, expanding into new collecting categories",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "DecisionMaker",
+      "crt:typicalEngagement": "High",
+      "crt:decisionStyle": "StrategicCommercial",
+      "crt:buyerJourneyType": "Relationship",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "Low",
+      "crt:purchaseFrequency": "Continuous",
+      "crt:rrrRoleRef": "rrr:exec-commercial-director",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Auction House Seniority",
+          "crt:operator": "equals",
+          "crt:value": "Head of department, regional director, or managing director within an auction house"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Consignment Accountability",
+          "crt:operator": "equals",
+          "crt:value": "Directly accountable for consignment targets and sale-room profitability metrics"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Sale Value Authority",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "Annual sale room total under management exceeds GBP 500,000"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-specialist-valuer",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-specialist-valuer",
+      "crt:name": "Specialist Valuer",
+      "crt:channel": "B2B",
+      "crt:category": "B2B_Specialist",
+      "crt:description": "Accredited expert in one or more collecting categories (ceramics, silver, jewellery, furniture, paintings, etc.) who provides professional valuations for sale, insurance, probate, or division purposes. May work within an auction house, independent valuation practice, or as a specialist consultant to estates and institutions. Their valuation opinions directly determine reserve prices, insurance sums assured, and estate settlements.",
+      "crt:motivations": "Maintaining and growing specialist expertise recognition, attracting high-quality valuation instructions, professional accreditation currency, accuracy and defensibility of opinions, building referral networks with solicitors and estate managers, avoiding professional liability exposure",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "Influencer",
+      "crt:typicalEngagement": "High",
+      "crt:decisionStyle": "ExpertiseDriven",
+      "crt:buyerJourneyType": "Relationship",
+      "crt:budgetAuthority": "None",
+      "crt:priceElasticity": "Low",
+      "crt:purchaseFrequency": "Continuous",
+      "crt:rrrRoleRef": "rrr:func-specialist-advisor",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Professional Accreditation",
+          "crt:operator": "equals",
+          "crt:value": "Member of RICS, ICAEW (probate), CIVA, AAT, or equivalent professional valuation body"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Specialist Category Coverage",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "Recognised specialist in at least one collecting category with demonstrable sale room or valuation track record"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Valuation Volume",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "Provides at least 20 formal written valuations per year"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-estate-executor",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-estate-executor",
+      "crt:name": "Estate Executor",
+      "crt:channel": "B2B",
+      "crt:category": "B2B_Fiduciary",
+      "crt:description": "Solicitor, accountant, or private individual acting as executor or administrator of a deceased estate containing antiques, fine art, jewellery, or household effects. Responsible for valuing, liquidating, or distributing contents in accordance with the will or intestacy rules. Typically a one-off or infrequent buyer/seller driven by legal and fiduciary duty rather than collecting passion. Requires probate-compliant valuations and transparent sale processes.",
+      "crt:motivations": "Fiduciary duty fulfilment, probate valuation compliance (HMRC IHT400), achieving fair market value for beneficiaries, minimising personal liability as executor, efficient estate clearance within administration timeline, transparent and documented sale process",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "EconomicBuyer",
+      "crt:typicalEngagement": "Low",
+      "crt:decisionStyle": "ComplianceDriven",
+      "crt:buyerJourneyType": "EventDriven",
+      "crt:budgetAuthority": "Delegated",
+      "crt:priceElasticity": "Medium",
+      "crt:purchaseFrequency": "Rare",
+      "crt:rrrRoleRef": "rrr:func-legal-executor",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Legal",
+          "crt:criteriaName": "Executor Status",
+          "crt:operator": "equals",
+          "crt:value": "Appointed executor or administrator of a deceased estate by Grant of Probate or Letters of Administration"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Contextual",
+          "crt:criteriaName": "Estate Content",
+          "crt:operator": "equals",
+          "crt:value": "Estate includes chattels requiring specialist valuation or disposal (antiques, jewellery, art, or household effects with aggregate value exceeding GBP 5,000)"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Engagement Trigger",
+          "crt:operator": "equals",
+          "crt:value": "Engagement triggered by death of testator requiring estate administration services"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-trade-dealer",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-trade-dealer",
+      "crt:name": "Trade Dealer",
+      "crt:channel": "B2B",
+      "crt:category": "B2B_Trader",
+      "crt:description": "Professional antiques dealer who buys and sells stock through multiple channels: auction rooms, trade fairs, private purchase, and retail gallery or shop. Trades primarily for commercial resale rather than personal collecting. Deep specialist knowledge in one or more categories. Operates within the trade ecosystem of buying and selling to and from other dealers, collectors, and the general public. May hold LAPADA, BADA, or CINOA membership.",
+      "crt:motivations": "Margin on stock turn, sourcing undervalued or misattributed items for resale at a premium, building repeat collector relationships, specialist reputation as a trusted source, trade fair and fair presence, managing stock liquidity and capital tied up in inventory",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "EconomicBuyer",
+      "crt:typicalEngagement": "High",
+      "crt:decisionStyle": "CommercialInstinct",
+      "crt:buyerJourneyType": "OpportunisticRepeat",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "Medium",
+      "crt:purchaseFrequency": "Frequent",
+      "crt:rrrRoleRef": "rrr:func-commercial-trader",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Trade Registration",
+          "crt:operator": "equals",
+          "crt:value": "Registered as a business trading in antiques (VAT registered where applicable) or member of LAPADA, BADA, or equivalent trade association"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Trading Volume",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "Buys or sells at least 12 antique items per year through professional trade channels"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Spending",
+          "crt:criteriaName": "Annual Stock Investment",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "GBP 10,000 annual expenditure on stock acquisition"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-insurance-underwriter",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-insurance-underwriter",
+      "crt:name": "Insurance Underwriter",
+      "crt:channel": "B2B",
+      "crt:category": "B2B_RiskProfessional",
+      "crt:description": "Specialist insurance professional responsible for assessing, pricing, and placing insurance risk for private collections, antiques trade stock, or institutional art holdings. Requires accurate current market valuations, provenance clarity, condition assessments, and appropriate security measures to underwrite risk effectively. Works within Lloyd's of London market, specialist art and collectibles insurers, or private client teams of major brokers.",
+      "crt:motivations": "Accurate risk assessment to price premiums correctly, avoiding adverse selection from undervalued or inadequately described items, maintaining profitable book of specialist risks, building relationships with valuers and collectors for repeat business, compliance with regulatory solvency requirements",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "EconomicBuyer",
+      "crt:typicalEngagement": "Moderate",
+      "crt:decisionStyle": "RiskAnalytical",
+      "crt:buyerJourneyType": "Annual",
+      "crt:budgetAuthority": "Delegated",
+      "crt:priceElasticity": "Low",
+      "crt:purchaseFrequency": "Annual",
+      "crt:rrrRoleRef": "rrr:func-risk-underwriter",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Insurance Qualification",
+          "crt:operator": "equals",
+          "crt:value": "Qualified underwriter (CII ACII/FCII or Lloyd's approved) with specialism in fine art, jewellery, or high-value personal possessions lines"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Portfolio Specialism",
+          "crt:operator": "equals",
+          "crt:value": "Underwrites or brokers fine art, antiques, or jewellery insurance policies as primary or significant book component"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Valuation Dependency",
+          "crt:operator": "equals",
+          "crt:value": "Requires third-party professional valuations (RICS, CIVA, or equivalent) to complete risk assessment for items over GBP 5,000"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-museum-curator",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-museum-curator",
+      "crt:name": "Museum Curator",
+      "crt:channel": "B2B",
+      "crt:category": "B2B_Institutional",
+      "crt:description": "Professional curator or collections manager within a public museum, heritage institution, or historic house trust. Responsible for acquisition, care, interpretation, and display of antiques and decorative arts within institutional collections. Purchase decisions involve long acquisition processes, ethics committee approval, funding applications, and compliance with acquisition policies (Spoliation Advisory Panel, 1970 UNESCO Convention). Enduring, non-commercial relationship with objects.",
+      "crt:motivations": "Filling collection gaps with significant objects, acquiring items of scholarly or historical importance, ethical provenance clarity, donor relationship and bequest cultivation, public access and educational impact, collection care standards, access to grant funding (V&A Purchase Grant, HLF)",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "Champion",
+      "crt:typicalEngagement": "Moderate",
+      "crt:decisionStyle": "CollaborativeInstitutional",
+      "crt:buyerJourneyType": "Considered",
+      "crt:budgetAuthority": "Delegated",
+      "crt:priceElasticity": "High",
+      "crt:purchaseFrequency": "Rare",
+      "crt:rrrRoleRef": "rrr:func-institutional-curator",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Institutional Role",
+          "crt:operator": "equals",
+          "crt:value": "Employed as curator, assistant curator, or collections manager within a public museum, national trust property, or Registered Museum"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "MA Qualification",
+          "crt:operator": "equals",
+          "crt:value": "Holds degree or postgraduate qualification in museum studies, art history, decorative arts, or related discipline"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Acquisition Involvement",
+          "crt:operator": "equals",
+          "crt:value": "Directly involved in object acquisition proposals, collections review, or deaccession decisions"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-private-equity-collector",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-private-equity-collector",
+      "crt:name": "Private Equity Collector",
+      "crt:channel": "B2B",
+      "crt:category": "B2B_Investor",
+      "crt:description": "High-net-worth or ultra-high-net-worth individual or family office treating antiques and fine art as an alternative asset class within a diversified investment portfolio. Acquisition decisions are influenced by asset preservation, tax efficiency (HMRC chattels exemption, SIPP-excluded assets), capital appreciation potential, and portfolio diversification. May use professional advisors including art advisors, valuers, and family office managers. Investment horizon typically 5-20 years.",
+      "crt:motivations": "Capital appreciation of antiques portfolio, alternative asset class diversification, HMRC chattel tax planning (wasting asset exemption), portfolio legacy and estate planning, prestige and social capital from significant collection, risk-adjusted returns compared to financial markets",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "EconomicBuyer",
+      "crt:typicalEngagement": "Moderate",
+      "crt:decisionStyle": "InvestmentRational",
+      "crt:buyerJourneyType": "Considered",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "VeryLow",
+      "crt:purchaseFrequency": "Annual",
+      "crt:rrrRoleRef": "rrr:exec-investment-director",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Financial",
+          "crt:criteriaName": "Net Worth Indicator",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "Individual or family office with investable assets exceeding GBP 2,000,000"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Investment Framing",
+          "crt:operator": "equals",
+          "crt:value": "Frames antique or art acquisitions in terms of investment return, portfolio allocation, or estate planning rather than purely aesthetic appreciation"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Spending",
+          "crt:criteriaName": "Annual Acquisition Budget",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "GBP 50,000 annual acquisition budget for antiques or fine art"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-art-advisor",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-art-advisor",
+      "crt:name": "Art Advisor",
+      "crt:channel": "B2B",
+      "crt:category": "B2B_Advisor",
+      "crt:description": "Independent professional who advises private collectors, corporate collectors, and institutions on acquisition strategy, collection curation, market navigation, and portfolio management. Acts as trusted intermediary between client and the market (auction houses, dealers, private sales). May receive retainer fees, acquisition commissions, or advisory fees. Critical influencer on high-value acquisition decisions — their recommendation or veto substantially determines outcomes.",
+      "crt:motivations": "Building reputation as a trusted market guide for high-net-worth clients, growing advisory fee income and commission on acquisitions, maintaining exclusive market access and information advantage, deepening collector relationships across generations, specialisation in specific collecting categories",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "Influencer",
+      "crt:typicalEngagement": "High",
+      "crt:decisionStyle": "RelationshipExpert",
+      "crt:buyerJourneyType": "Relationship",
+      "crt:budgetAuthority": "None",
+      "crt:priceElasticity": "Low",
+      "crt:purchaseFrequency": "Frequent",
+      "crt:rrrRoleRef": "rrr:func-specialist-advisor",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Advisory Practice",
+          "crt:operator": "equals",
+          "crt:value": "Operates as an independent art or antiques advisor with active paying clients, or within a family office advisory capacity"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Acquisition Influence",
+          "crt:operator": "equals",
+          "crt:value": "Directly advises clients on individual acquisition decisions above GBP 10,000"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Market Access",
+          "crt:operator": "equals",
+          "crt:value": "Maintains working relationships with at least 3 auction houses or major dealers and attends trade fairs or private views on behalf of clients"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-probate-solicitor",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-probate-solicitor",
+      "crt:name": "Probate Solicitor",
+      "crt:channel": "B2B",
+      "crt:category": "B2B_Legal",
+      "crt:description": "Qualified solicitor or legal executive specialising in estate administration (probate) who regularly instructs valuers, auctioneers, and dealers in the course of winding up estates containing antiques, art, or chattels. Provides professional instructions to valuation and disposal services, and ensures estate administration meets HMRC, Companies House, and court requirements. Critical source of valuation instructions and disposal mandates.",
+      "crt:motivations": "Efficient and compliant estate administration for clients, protecting beneficiary interests, avoiding negligence claims through defensible valuation instructions, building trusted supplier panel relationships with valuers and auction houses, streamlining chattel disposal to reduce administration burden",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "Gatekeeper",
+      "crt:typicalEngagement": "Moderate",
+      "crt:decisionStyle": "ComplianceDriven",
+      "crt:buyerJourneyType": "Relationship",
+      "crt:budgetAuthority": "Delegated",
+      "crt:priceElasticity": "Medium",
+      "crt:purchaseFrequency": "Frequent",
+      "crt:rrrRoleRef": "rrr:func-legal-professional",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Legal Qualification",
+          "crt:operator": "equals",
+          "crt:value": "Qualified solicitor or legal executive (CILEX) regulated by SRA or equivalent, with private client or probate practice area"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Probate Volume",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "Administers at least 10 estates per year requiring chattel valuation or disposal instructions"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Valuation Instruction Pattern",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "Issues at least 5 formal valuation instructions to auctioneers or valuers per year on behalf of estates"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-logistics-specialist",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-logistics-specialist",
+      "crt:name": "Logistics Specialist",
+      "crt:channel": "B2B",
+      "crt:category": "B2B_ServiceProvider",
+      "crt:description": "Specialist fine art and antiques logistics provider or project manager within a logistics company responsible for packing, shipping, installation, storage, and customs clearance of high-value antiques and decorative arts. Acts as a critical operational partner to auction houses, dealers, museums, and private collectors. Expertise in handling fragile, oversized, or historically sensitive items. CITES documentation, ATA carnet, and international shipping compliance required.",
+      "crt:motivations": "Building and maintaining auction house and dealer service contracts, demonstrating specialist handling capability beyond generic logistics, expanding cross-border and international fine art shipping capacity, CITES and customs compliance expertise, climate-controlled storage and collection management services",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "PrimaryUser",
+      "crt:typicalEngagement": "Moderate",
+      "crt:decisionStyle": "OperationalPragmatic",
+      "crt:buyerJourneyType": "Contract",
+      "crt:budgetAuthority": "Delegated",
+      "crt:priceElasticity": "Medium",
+      "crt:purchaseFrequency": "Continuous",
+      "crt:rrrRoleRef": "rrr:func-operations-specialist",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Fine Art Logistics Specialism",
+          "crt:operator": "equals",
+          "crt:value": "Operates or manages fine art and antiques packing, shipping, or storage as a primary business activity"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Regulatory Compliance",
+          "crt:operator": "equals",
+          "crt:value": "Holds appropriate customs authorisation, CITES documentation capability, and liability insurance for fine art transit"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Sector Client Base",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "At least 30% of annual revenue from antiques, fine art, or museum sector clients"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-serious-collector",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-serious-collector",
+      "crt:name": "Serious Collector",
+      "crt:channel": "B2C",
+      "crt:category": "B2C_Enthusiast",
+      "crt:description": "Knowledgeable private individual who collects antiques with genuine depth of expertise, passion, and long-term commitment within one or more specialist areas (e.g., 18th-century English furniture, Arts and Crafts metalwork, Victorian Staffordshire ceramics). Buys at auction and from dealers with discernment. Seeks museum-quality pieces, rare examples, and items with strong provenance or exhibition history. May lend to museum exhibitions and participates in collector societies.",
+      "crt:motivations": "Acquiring the finest or rarest examples within a specialist collecting area, deepening scholarly knowledge and expertise, the intellectual and aesthetic satisfaction of forming a coherent collection, recognition within the collector community, building a collection worthy of eventual museum donation or sale",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "DecisionMaker",
+      "crt:typicalEngagement": "High",
+      "crt:decisionStyle": "ConnoisseurDriven",
+      "crt:buyerJourneyType": "Considered",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "Low",
+      "crt:purchaseFrequency": "Frequent",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Collection Depth",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "Owns a collection of at least 20 antique items with thematic or categorical coherence in a specialist collecting area"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Spending",
+          "crt:criteriaName": "Annual Acquisition Spend",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "GBP 5,000 annually on antique acquisitions through auction or dealer channels"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Psychographic",
+          "crt:criteriaName": "Specialist Knowledge",
+          "crt:operator": "equals",
+          "crt:value": "Demonstrates specialist knowledge of at least one collecting category sufficient to evaluate attribution, condition, and rarity independently"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-occasional-buyer",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-occasional-buyer",
+      "crt:name": "Occasional Buyer",
+      "crt:channel": "B2C",
+      "crt:category": "B2C_Casual",
+      "crt:description": "General member of the public who buys antiques occasionally for pleasure, home furnishing, or as one-off gifts. Limited specialist knowledge — relies on auction house descriptions, dealer assurances, and general aesthetic appeal. Primarily attracted by accessible price points, interesting stories, and decorative quality rather than scholarly significance. May visit antique fairs, charity auctions, or online platforms without systematic collecting intent.",
+      "crt:motivations": "Finding something attractive, interesting, or unusual at an accessible price, the enjoyment of the auction or fair experience, discovering an unexpected treasure, purchasing gifts with character and history, furnishing a home with individual pieces rather than mass-produced alternatives",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "PrimaryUser",
+      "crt:typicalEngagement": "Low",
+      "crt:decisionStyle": "AestheticImpulse",
+      "crt:buyerJourneyType": "Impulse",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "High",
+      "crt:purchaseFrequency": "Rare",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Purchase Frequency",
+          "crt:operator": "lessThanOrEqual",
+          "crt:value": "Purchases antiques fewer than 4 times per year"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Spending",
+          "crt:criteriaName": "Typical Transaction Value",
+          "crt:operator": "between",
+          "crt:value": "GBP 20 to GBP 500 per purchase"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Psychographic",
+          "crt:criteriaName": "Collecting Intent",
+          "crt:operator": "equals",
+          "crt:value": "No systematic collecting strategy — purchases are opportunistic and driven by immediate attraction rather than collection development"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-inheritor",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-inheritor",
+      "crt:name": "Inheritor",
+      "crt:channel": "B2C",
+      "crt:category": "B2C_Casual",
+      "crt:description": "Individual who has inherited antiques, art, jewellery, or household effects from a deceased relative, and must decide whether to keep, sell, or donate them. Often inexperienced in the antiques market, emotionally attached to objects, and unsure of their value or the appropriate disposal route. Requires sensitive guidance on valuation options, the auction process, and realistic price expectations. A significant source of consignment for auction houses.",
+      "crt:motivations": "Understanding what they have inherited and its monetary value, making informed decisions about keeping vs. selling, achieving fair prices for items they decide to sell, managing the emotional complexity of dispersing family possessions, completing estate administration obligations",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "EconomicBuyer",
+      "crt:typicalEngagement": "Low",
+      "crt:decisionStyle": "EmotionalPragmatic",
+      "crt:buyerJourneyType": "EventDriven",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "Medium",
+      "crt:purchaseFrequency": "Rare",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Contextual",
+          "crt:criteriaName": "Inheritance Trigger",
+          "crt:operator": "equals",
+          "crt:value": "Has recently inherited or is in the process of administering an inheritance that includes antiques, art, jewellery, or household effects"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Psychographic",
+          "crt:criteriaName": "Market Inexperience",
+          "crt:operator": "equals",
+          "crt:value": "Has limited or no prior experience buying or selling through auction houses or specialist dealers"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Disposal Consideration",
+          "crt:operator": "equals",
+          "crt:value": "Actively considering selling at least some inherited items rather than retaining all"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-gift-buyer",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-gift-buyer",
+      "crt:name": "Gift Buyer",
+      "crt:channel": "B2C",
+      "crt:category": "B2C_Casual",
+      "crt:description": "Consumer purchasing antiques or vintage items specifically as gifts for others — often for significant occasions such as weddings, significant birthdays, retirements, or anniversaries. Attracted by the narrative, history, and individuality of antique gifts versus mass-produced alternatives. May have limited personal knowledge of antiques but values the distinctiveness, craftsmanship, and story behind individual objects. Price-conscious relative to the occasion budget.",
+      "crt:motivations": "Finding a gift with personal meaning and story, standing out from generic gift options, the narrative value of an object with history, matching the recipient's known interests or tastes, staying within an occasion-specific budget, the pleasure of giving something unique and memorable",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "EconomicBuyer",
+      "crt:typicalEngagement": "Low",
+      "crt:decisionStyle": "EmotionalNarrative",
+      "crt:buyerJourneyType": "OccasionDriven",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "Medium",
+      "crt:purchaseFrequency": "Rare",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Purchase Occasion",
+          "crt:operator": "equals",
+          "crt:value": "Primary motivation for purchase is gifting to a named recipient for a specific occasion"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Spending",
+          "crt:criteriaName": "Gift Budget",
+          "crt:operator": "between",
+          "crt:value": "GBP 30 to GBP 500 for the gift item"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Psychographic",
+          "crt:criteriaName": "Narrative Value Motivation",
+          "crt:operator": "equals",
+          "crt:value": "Specifically seeks antique or vintage item because of its story, history, or individuality as a gifting differentiator"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-young-collector",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-young-collector",
+      "crt:name": "Young Collector",
+      "crt:channel": "B2C",
+      "crt:category": "B2C_Enthusiast",
+      "crt:description": "Emerging collector typically aged 20-40, building their first collection on a limited budget, often attracted to the antiques market through online platforms, social media discovery, or sustainability motivations (buy secondhand/vintage). Highly digitally engaged, uses online auction platforms and Instagram accounts of dealers. Collecting areas often skew to 20th-century design, mid-century modern, studio pottery, or vernacular antiques accessible at lower price points.",
+      "crt:motivations": "Sustainability and ethical consumption (buying pre-owned), building a distinctive personal aesthetic at affordable prices, the excitement of discovering undervalued pieces, entry into the collector community, supporting independent dealers, digital-first discovery and purchasing experience",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "PrimaryUser",
+      "crt:typicalEngagement": "Moderate",
+      "crt:decisionStyle": "AestheticSustainability",
+      "crt:buyerJourneyType": "Digital",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "High",
+      "crt:purchaseFrequency": "Frequent",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Demographic",
+          "crt:criteriaName": "Age Range",
+          "crt:operator": "between",
+          "crt:value": "Age 20 to 40"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Digital Channel Preference",
+          "crt:operator": "equals",
+          "crt:value": "Primarily discovers and researches antiques through online platforms, social media, or apps rather than physical fairs or auction rooms"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Spending",
+          "crt:criteriaName": "Typical Transaction Value",
+          "crt:operator": "between",
+          "crt:value": "GBP 20 to GBP 500 per purchase"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-home-decorator",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-home-decorator",
+      "crt:name": "Home Decorator",
+      "crt:channel": "B2C",
+      "crt:category": "B2C_Casual",
+      "crt:description": "Consumer who buys antiques and vintage items primarily for decorative home furnishing purposes, mixing antique pieces with contemporary furniture and accessories to create an individually styled interior. Quality of appearance and decorative impact takes priority over provenance, scholarly significance, or investment value. Typically purchases from antique fairs, online marketplaces, or charity shops. Price-conscious with a strong eye for decorative effect.",
+      "crt:motivations": "Creating a distinctive and individually styled home interior, mixing antique character with modern living, finding pieces that fit a specific aesthetic vision (maximalist, country house, scandi-vintage, mid-century), achieving a characterful look at lower cost than designer alternatives, sustainable home decoration",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "PrimaryUser",
+      "crt:typicalEngagement": "Low",
+      "crt:decisionStyle": "AestheticPractical",
+      "crt:buyerJourneyType": "Impulse",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "High",
+      "crt:purchaseFrequency": "Occasional",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Psychographic",
+          "crt:criteriaName": "Decorative Motivation",
+          "crt:operator": "equals",
+          "crt:value": "Primary motivation is decorative home use — not collecting, investment, or gifting"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Spending",
+          "crt:criteriaName": "Typical Transaction Value",
+          "crt:operator": "between",
+          "crt:value": "GBP 10 to GBP 300 per purchase"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Purchase Channel",
+          "crt:operator": "equals",
+          "crt:value": "Primarily buys from antique fairs, charity shops, online marketplaces, or junk shops rather than specialist dealers or auction rooms"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-interior-designer",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-interior-designer",
+      "crt:name": "Interior Designer",
+      "crt:channel": "B2B2C",
+      "crt:category": "B2B2C_Intermediary",
+      "crt:description": "Professional interior designer or decorator who sources and specifies antique and vintage pieces for client residential or commercial projects. Acts as a B2B2C intermediary — purchasing on behalf of private or commercial clients, often with a design fee or trade discount margin. Relationship with auction houses and dealers is professional and transactional, built on speed of access, trade pricing, condition reliability, and the breadth of sourcing capability. Their specification decisions drive purchasing by wealthy clients who follow their creative direction.",
+      "crt:motivations": "Sourcing distinctive statement pieces that differentiate their design projects, accessing trade pricing and priority viewing, reliable condition and sizing information to avoid costly mistakes, building trusted supplier relationships for repeat sourcing, expanding the range of antique categories they can confidently specify, professional credibility for curating period-appropriate pieces",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "Influencer",
+      "crt:typicalEngagement": "Moderate",
+      "crt:decisionStyle": "AestheticCommercial",
+      "crt:buyerJourneyType": "ProjectDriven",
+      "crt:budgetAuthority": "Delegated",
+      "crt:priceElasticity": "Medium",
+      "crt:purchaseFrequency": "Frequent",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Design Practice",
+          "crt:operator": "equals",
+          "crt:value": "Operates as a professional interior designer or decorator, member of BIID, RIBA, or similar, or trading as a design practice with client projects"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Antique Sourcing Pattern",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "Specifies or sources antique or vintage pieces for client projects at least 4 times per year"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Financial",
+          "crt:criteriaName": "Client Budget Managed",
+          "crt:operator": "greaterThanOrEqual",
+          "crt:value": "Manages furniture and antique sourcing budgets of at least GBP 20,000 per project"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:ant-dealer-retail",
+      "@type": "crt:CustomerRole",
+      "crt:roleId": "crt:ant-dealer-retail",
+      "crt:name": "Retail Dealer",
+      "crt:channel": "B2B2C",
+      "crt:category": "B2B2C_Intermediary",
+      "crt:description": "Antiques dealer who operates a physical retail gallery, shop, or market stall selling primarily to the general public (end consumers), but who also participates in the trade market by buying from auction houses, trade fairs, and fellow dealers. Sits at the B2B2C interface — trade buyer on the acquisition side, consumer retailer on the sales side. Typically operates at accessible price points, relies on footfall, passing trade, and online marketplace presence. May also exhibit at general antique fairs or centres.",
+      "crt:motivations": "Stock turn at sustainable margin, customer footfall and return business, online marketplace visibility (1stDibs, Etsy, Vinterior, Chairish), sourcing stock at trade prices from auction or peer dealers, building a retail brand and reputation within a specialist niche, geographic catchment of their gallery location",
+      "crt:vpStakeholderType": "vp:Stakeholder",
+      "crt:vpStakeholderRole": "PrimaryUser",
+      "crt:typicalEngagement": "High",
+      "crt:decisionStyle": "CommercialRetail",
+      "crt:buyerJourneyType": "OpportunisticRepeat",
+      "crt:budgetAuthority": "Full",
+      "crt:priceElasticity": "Medium",
+      "crt:purchaseFrequency": "Frequent",
+      "crt:qualifiers": [
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Professional",
+          "crt:criteriaName": "Retail Operation",
+          "crt:operator": "equals",
+          "crt:value": "Operates a physical retail antiques gallery, shop, antique centre stall, or active online retail presence selling antiques to the general public"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Behavioural",
+          "crt:criteriaName": "Dual-Channel Trading",
+          "crt:operator": "equals",
+          "crt:value": "Buys stock from auction, trade sources, or fellow dealers (B2B) and sells to end consumers (B2C) in the same trading entity"
+        },
+        {
+          "@type": "crt:RoleQualifier",
+          "crt:criteriaType": "Spending",
+          "crt:criteriaName": "Annual Stock Investment",
+          "crt:operator": "between",
+          "crt:value": "GBP 5,000 to GBP 100,000 annual stock acquisition spend"
+        }
+      ]
+    },
+
+    {
+      "@id": "crt:antiques-section6-qualification-examples",
+      "@type": "crt:QualificationExampleSet",
+      "crt:exampleSetId": "crt:antiques-qualification-examples-s6",
+      "crt:description": "Section 6 qualification examples — three worked examples demonstrating how RoleQualifier instances are applied to real individuals during customer role assignment. Each example shows a full qualifier evaluation stack.",
+
+      "crt:examples": [
+        {
+          "@type": "crt:QualificationExample",
+          "crt:exampleId": "crt:ex-s6-serious-collector",
+          "crt:exampleTitle": "Section 6.1 — Serious Collector Qualification Example",
+          "crt:candidateDescription": "Margaret, age 68, retired professor, has been collecting 18th-century English delftware for 35 years. Owns 47 pieces in a coherent collection, spends approximately GBP 12,000 per year at specialist auctions and dealers, contributes scholarly notes to the English Ceramic Circle journal, and was approached by a regional museum to loan 8 pieces for a recent exhibition.",
+          "crt:targetRoleId": "crt:ant-serious-collector",
+          "crt:qualifierEvaluations": [
+            {
+              "@type": "crt:QualifierEvaluation",
+              "crt:criteriaName": "Collection Depth",
+              "crt:criteriaType": "Behavioural",
+              "crt:operator": "greaterThanOrEqual",
+              "crt:value": "Owns a collection of at least 20 antique items with thematic or categorical coherence",
+              "crt:candidateEvidence": "Owns 47 pieces of 18th-century English delftware — a highly coherent specialist collection accumulated over 35 years",
+              "crt:evaluationOutcome": "PASS",
+              "crt:confidence": "High"
+            },
+            {
+              "@type": "crt:QualifierEvaluation",
+              "crt:criteriaName": "Annual Acquisition Spend",
+              "crt:criteriaType": "Spending",
+              "crt:operator": "greaterThanOrEqual",
+              "crt:value": "GBP 5,000 annually on antique acquisitions",
+              "crt:candidateEvidence": "Spends approximately GBP 12,000 per year through auction and dealer channels",
+              "crt:evaluationOutcome": "PASS",
+              "crt:confidence": "High"
+            },
+            {
+              "@type": "crt:QualifierEvaluation",
+              "crt:criteriaName": "Specialist Knowledge",
+              "crt:criteriaType": "Psychographic",
+              "crt:operator": "equals",
+              "crt:value": "Demonstrates specialist knowledge sufficient to evaluate attribution, condition, and rarity independently",
+              "crt:candidateEvidence": "Contributes scholarly articles to the English Ceramic Circle journal; peer group recognition of expertise; capable of museum-standard object assessment",
+              "crt:evaluationOutcome": "PASS",
+              "crt:confidence": "High"
+            }
+          ],
+          "crt:overallOutcome": "QUALIFIED",
+          "crt:assignedRole": "crt:ant-serious-collector",
+          "crt:notes": "Margaret is an exemplary Serious Collector — 3/3 qualifiers pass with high confidence. Her scholarly engagement and museum loan activity place her at the upper end of this role category."
+        },
+
+        {
+          "@type": "crt:QualificationExample",
+          "crt:exampleId": "crt:ex-s6-insurance-underwriter",
+          "crt:exampleTitle": "Section 6.2 — Insurance Underwriter Qualification Example",
+          "crt:candidateDescription": "James, age 44, is a senior underwriter at a Lloyd's syndicate. Holds ACII qualification (Chartered Insurance Institute). Manages a book of fine art, jewellery, and private collection insurance risks with total insured value of approximately GBP 180 million. Instructs 15-20 formal RICS and CIVA valuations per year for items above GBP 10,000. Attends Masterpiece London and TEFAF Maastricht annually for market intelligence.",
+          "crt:targetRoleId": "crt:ant-insurance-underwriter",
+          "crt:qualifierEvaluations": [
+            {
+              "@type": "crt:QualifierEvaluation",
+              "crt:criteriaName": "Insurance Qualification",
+              "crt:criteriaType": "Professional",
+              "crt:operator": "equals",
+              "crt:value": "Qualified underwriter (CII ACII/FCII or Lloyd's approved) with specialism in fine art, jewellery, or high-value personal possessions lines",
+              "crt:candidateEvidence": "Holds ACII, is an approved Lloyd's underwriter, specialism in fine art and private collection risks",
+              "crt:evaluationOutcome": "PASS",
+              "crt:confidence": "High"
+            },
+            {
+              "@type": "crt:QualifierEvaluation",
+              "crt:criteriaName": "Portfolio Specialism",
+              "crt:criteriaType": "Behavioural",
+              "crt:operator": "equals",
+              "crt:value": "Underwrites or brokers fine art, antiques, or jewellery insurance policies as primary or significant book component",
+              "crt:candidateEvidence": "Fine art, jewellery, and private collection risks form the primary book — GBP 180M total insured value under management",
+              "crt:evaluationOutcome": "PASS",
+              "crt:confidence": "High"
+            },
+            {
+              "@type": "crt:QualifierEvaluation",
+              "crt:criteriaName": "Valuation Dependency",
+              "crt:criteriaType": "Professional",
+              "crt:operator": "equals",
+              "crt:value": "Requires third-party professional valuations for items over GBP 5,000",
+              "crt:candidateEvidence": "Instructs 15-20 formal RICS and CIVA valuations per year for items above GBP 10,000 — standard underwriting practice for his book",
+              "crt:evaluationOutcome": "PASS",
+              "crt:confidence": "High"
+            }
+          ],
+          "crt:overallOutcome": "QUALIFIED",
+          "crt:assignedRole": "crt:ant-insurance-underwriter",
+          "crt:notes": "James qualifies on all three criteria with high confidence. His annual valuation instruction volume (15-20) is above average for this role, indicating a high-value customer relationship opportunity."
+        },
+
+        {
+          "@type": "crt:QualificationExample",
+          "crt:exampleId": "crt:ex-s6-inheritor",
+          "crt:exampleTitle": "Section 6.3 — Inheritor Qualification Example",
+          "crt:candidateDescription": "Sarah, age 52, has recently lost her mother. The estate includes approximately 200 items — furniture, silver, paintings, ceramics, and jewellery — accumulated by her parents over 60 years. Sarah has never bought or sold at auction. She is overwhelmed by the volume and variety of items, emotionally attached to many of them, and unsure which (if any) to keep versus sell. Her solicitor has suggested she seek a valuation before making decisions.",
+          "crt:targetRoleId": "crt:ant-inheritor",
+          "crt:qualifierEvaluations": [
+            {
+              "@type": "crt:QualifierEvaluation",
+              "crt:criteriaName": "Inheritance Trigger",
+              "crt:criteriaType": "Contextual",
+              "crt:operator": "equals",
+              "crt:value": "Has recently inherited or is in the process of administering an inheritance that includes antiques, art, jewellery, or household effects",
+              "crt:candidateEvidence": "Recently bereaved — mother's estate contains approximately 200 items across furniture, silver, paintings, ceramics, and jewellery",
+              "crt:evaluationOutcome": "PASS",
+              "crt:confidence": "High"
+            },
+            {
+              "@type": "crt:QualifierEvaluation",
+              "crt:criteriaName": "Market Inexperience",
+              "crt:criteriaType": "Psychographic",
+              "crt:operator": "equals",
+              "crt:value": "Has limited or no prior experience buying or selling through auction houses or specialist dealers",
+              "crt:candidateEvidence": "Has never bought or sold at auction; no experience of the specialist antiques or fine art market",
+              "crt:evaluationOutcome": "PASS",
+              "crt:confidence": "High"
+            },
+            {
+              "@type": "crt:QualifierEvaluation",
+              "crt:criteriaName": "Disposal Consideration",
+              "crt:criteriaType": "Behavioural",
+              "crt:operator": "equals",
+              "crt:value": "Actively considering selling at least some inherited items rather than retaining all",
+              "crt:candidateEvidence": "Solicitor has recommended valuation as first step; Sarah is considering her options and is not planning to retain all 200 items",
+              "crt:evaluationOutcome": "PASS",
+              "crt:confidence": "Medium",
+              "crt:confidenceNote": "Disposal intent is likely but not yet confirmed — medium confidence pending clearer expression of selling intent at initial consultation"
+            }
+          ],
+          "crt:overallOutcome": "QUALIFIED",
+          "crt:assignedRole": "crt:ant-inheritor",
+          "crt:notes": "Sarah qualifies as an Inheritor. Note the medium confidence on Disposal Consideration — this is typical for early-stage Inheritor interactions where emotional processing is still ongoing. Recommended initial engagement: a sensitive, no-obligation free valuation consultation to build trust before any selling conversation."
+        }
+      ]
+    }
+
+  ],
+
+  "crt:instanceMetadata": {
+    "crt:totalRoles": 19,
+    "crt:channelBreakdown": {
+      "B2B": 10,
+      "B2C": 7,
+      "B2B2C": 2
+    },
+    "crt:categoryBreakdown": {
+      "B2B_Executive": 1,
+      "B2B_Specialist": 1,
+      "B2B_Fiduciary": 1,
+      "B2B_Trader": 1,
+      "B2B_RiskProfessional": 1,
+      "B2B_Institutional": 1,
+      "B2B_Investor": 1,
+      "B2B_Advisor": 1,
+      "B2B_Legal": 1,
+      "B2B_ServiceProvider": 1,
+      "B2C_Enthusiast": 2,
+      "B2C_Casual": 4,
+      "B2C_Investor": 0,
+      "B2B2C_Intermediary": 2
+    },
+    "crt:rrrRoleRefs": {
+      "crt:ant-auction-director": "rrr:exec-commercial-director",
+      "crt:ant-specialist-valuer": "rrr:func-specialist-advisor",
+      "crt:ant-estate-executor": "rrr:func-legal-executor",
+      "crt:ant-trade-dealer": "rrr:func-commercial-trader",
+      "crt:ant-insurance-underwriter": "rrr:func-risk-underwriter",
+      "crt:ant-museum-curator": "rrr:func-institutional-curator",
+      "crt:ant-private-equity-collector": "rrr:exec-investment-director",
+      "crt:ant-art-advisor": "rrr:func-specialist-advisor",
+      "crt:ant-probate-solicitor": "rrr:func-legal-professional",
+      "crt:ant-logistics-specialist": "rrr:func-operations-specialist"
+    },
+    "crt:section6QualificationExamples": [
+      "crt:ex-s6-serious-collector",
+      "crt:ex-s6-insurance-underwriter",
+      "crt:ex-s6-inheritor"
+    ],
+    "crt:industryContext": "Antiques, fine art, and decorative arts trade — UK/EU auction houses, dealers, trade fairs, private sales, estate administration",
+    "crt:geographicScope": "UK primary, EU secondary",
+    "crt:notes": "Antiques domain instance v1.0.0. Nineteen role archetypes spanning the full antiques trade ecosystem. B2B roles cover the professional and institutional buyer/seller market (auction directors, valuers, estate executors, trade dealers, insurance underwriters, museum curators, private equity collectors, art advisors, probate solicitors, logistics specialists). B2C roles cover the private buyer spectrum from expert Serious Collector to casual Home Decorator, including Inheritor and Gift Buyer as event-triggered archetypes and Young Collector as an emerging digital-first segment. B2B2C roles (Interior Designer, Retail Dealer) sit at channel boundaries. Section 6 qualification examples provide full worked evaluations for three archetypal edge-case or illustrative scenarios."
+  }
+}

@@ -1,0 +1,1059 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ppm": "https://platformcore.io/ontology/ppm/",
+    "vsom": "https://platformcore.io/ontology/vsom/",
+    "ga": "https://platformcore.io/ontology/ga/",
+    "efs": "https://platformcore.io/ontology/efs/",
+    "org": "https://platformcore.io/ontology/org/",
+    "gdpr": "https://platformcore.io/ontology/gdpr/",
+    "mcsb": "https://platformcore.io/ontology/mcsb/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "oaa": "https://platformcore.io/ontology/oaa/"
+  },
+  "@id": "ppm:PortfolioProgrammeProjectOntology",
+  "@type": "DefinedTermSet",
+  "name": "Portfolio-Programme-Project Management Ontology",
+  "description": "Enterprise Architecture portfolio management ontology for initiative tracking, dependency management, strategic pillar alignment, practice area assignment, benefit and effort metrics, and value realisation across multi-year transformation horizons.",
+  "version": "2.0.0",
+  "oaa:version": "6.1.0",
+  "dateCreated": "2026-01-31",
+  "dateModified": "2026-02-07",
+  "creator": {
+    "@type": "Organization",
+    "@id": "ppm:AzlanEAAA"
+  },
+  "hasDefinedTerm": [
+    {
+      "@id": "ppm:Portfolio",
+      "@type": "DefinedTerm",
+      "name": "Portfolio",
+      "description": "Collection of programmes delivering strategic vision within an investment envelope, representing the highest level of organisational investment management with defined governance and resource boundaries.",
+      "ppm:properties": [
+        {
+          "@id": "ppm:prop-portfolio-name",
+          "@type": "PropertyValue",
+          "name": "name",
+          "description": "Portfolio name identifying the strategic investment grouping"
+        },
+        {
+          "@id": "ppm:prop-portfolio-vision",
+          "@type": "PropertyValue",
+          "name": "vision",
+          "description": "Reference to the strategic vision this portfolio realises"
+        },
+        {
+          "@id": "ppm:prop-portfolio-horizon",
+          "@type": "PropertyValue",
+          "name": "horizon",
+          "description": "Portfolio time horizon as ISO 8601 duration (e.g., P3Y)",
+          "valueReference": "xsd:duration"
+        },
+        {
+          "@id": "ppm:prop-portfolio-investmentEnvelope",
+          "@type": "PropertyValue",
+          "name": "investmentEnvelope",
+          "description": "Total investment budget boundary for the portfolio"
+        },
+        {
+          "@id": "ppm:prop-portfolio-valueTarget",
+          "@type": "PropertyValue",
+          "name": "valueTarget",
+          "description": "Target value outcome for the portfolio investment"
+        },
+        {
+          "@id": "ppm:prop-portfolio-governanceModel",
+          "@type": "PropertyValue",
+          "name": "governanceModel",
+          "description": "Governance structure overseeing portfolio execution"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:Programme",
+      "@type": "DefinedTerm",
+      "name": "Programme",
+      "description": "Coherent set of initiatives delivering programme benefits aligned to a strategic pillar, coordinating cross-initiative dependencies and shared resources to achieve transformational outcomes.",
+      "ppm:properties": [
+        {
+          "@id": "ppm:prop-programme-name",
+          "@type": "PropertyValue",
+          "name": "name",
+          "description": "Programme name describing the transformation domain"
+        },
+        {
+          "@id": "ppm:prop-programme-strategicPillar",
+          "@type": "PropertyValue",
+          "name": "strategicPillar",
+          "description": "Strategic pillar this programme aligns to"
+        },
+        {
+          "@id": "ppm:prop-programme-benefitProfile",
+          "@type": "PropertyValue",
+          "name": "benefitProfile",
+          "description": "Expected benefits profile for programme delivery"
+        },
+        {
+          "@id": "ppm:prop-programme-contributionWeight",
+          "@type": "PropertyValue",
+          "name": "contributionWeight",
+          "description": "Weighted contribution to portfolio target value (0.0–1.0)",
+          "valueReference": "xsd:decimal"
+        },
+        {
+          "@id": "ppm:prop-programme-owner",
+          "@type": "PropertyValue",
+          "name": "owner",
+          "description": "Programme sponsor or accountable executive"
+        },
+        {
+          "@id": "ppm:prop-programme-status",
+          "@type": "PropertyValue",
+          "name": "status",
+          "description": "Current programme lifecycle status",
+          "valueReference": "ppm:ProgrammeStatus"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:Initiative",
+      "@type": "DefinedTerm",
+      "name": "Initiative",
+      "description": "Discrete transformation initiative with defined outcomes, dependencies, timeline, and resource requirements that contributes to programme-level benefits realisation within the portfolio.",
+      "ppm:properties": [
+        {
+          "@id": "ppm:prop-initiative-code",
+          "@type": "PropertyValue",
+          "name": "code",
+          "description": "Unique initiative code for tracking (e.g., DA-001)",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ppm:prop-initiative-name",
+          "@type": "PropertyValue",
+          "name": "name",
+          "description": "Initiative name describing the transformation effort"
+        },
+        {
+          "@id": "ppm:prop-initiative-phase",
+          "@type": "PropertyValue",
+          "name": "phase",
+          "description": "Target delivery phase from the portfolio horizon",
+          "valueReference": "ppm:Phase"
+        },
+        {
+          "@id": "ppm:prop-initiative-status",
+          "@type": "PropertyValue",
+          "name": "status",
+          "description": "Current lifecycle status of the initiative",
+          "valueReference": "ppm:InitiativeStatus"
+        },
+        {
+          "@id": "ppm:prop-initiative-priority",
+          "@type": "PropertyValue",
+          "name": "priority",
+          "description": "Priority level for resource allocation decisions",
+          "valueReference": "ppm:Priority"
+        },
+        {
+          "@id": "ppm:prop-initiative-valueEstimate",
+          "@type": "PropertyValue",
+          "name": "valueEstimate",
+          "description": "Estimated annual benefit value from initiative delivery"
+        },
+        {
+          "@id": "ppm:prop-initiative-effortEstimate",
+          "@type": "PropertyValue",
+          "name": "effortEstimate",
+          "description": "Estimated effort in person-days for delivery",
+          "valueReference": "xsd:integer"
+        },
+        {
+          "@id": "ppm:prop-initiative-percentComplete",
+          "@type": "PropertyValue",
+          "name": "percentComplete",
+          "description": "Delivery progress as decimal (0.0–1.0)",
+          "valueReference": "xsd:decimal"
+        },
+        {
+          "@id": "ppm:prop-initiative-startDate",
+          "@type": "PropertyValue",
+          "name": "startDate",
+          "description": "Planned or actual start date of the initiative"
+        },
+        {
+          "@id": "ppm:prop-initiative-endDate",
+          "@type": "PropertyValue",
+          "name": "endDate",
+          "description": "Planned or actual end date of the initiative"
+        },
+        {
+          "@id": "ppm:prop-initiative-owner",
+          "@type": "PropertyValue",
+          "name": "owner",
+          "description": "Initiative lead or accountable project manager"
+        },
+        {
+          "@id": "ppm:prop-initiative-tags",
+          "@type": "PropertyValue",
+          "name": "tags",
+          "description": "Classification tags for filtering and grouping",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:Workstream",
+      "@type": "DefinedTerm",
+      "name": "Workstream",
+      "description": "Sub-component of an initiative for complex delivery, representing a self-contained work package within a larger initiative that can be independently managed by a dedicated team.",
+      "ppm:properties": [
+        {
+          "@id": "ppm:prop-workstream-name",
+          "@type": "PropertyValue",
+          "name": "name",
+          "description": "Workstream name describing the work package"
+        },
+        {
+          "@id": "ppm:prop-workstream-team",
+          "@type": "PropertyValue",
+          "name": "team",
+          "description": "Team responsible for workstream delivery"
+        },
+        {
+          "@id": "ppm:prop-workstream-status",
+          "@type": "PropertyValue",
+          "name": "status",
+          "description": "Current workstream delivery status",
+          "valueReference": "ppm:InitiativeStatus"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:Dependency",
+      "@type": "DefinedTerm",
+      "name": "Dependency",
+      "description": "Typed relationship between initiatives defining sequencing and enablement constraints, capturing predecessor-successor links with classification and critical path indicators.",
+      "ppm:properties": [
+        {
+          "@id": "ppm:prop-dependency-type",
+          "@type": "PropertyValue",
+          "name": "dependencyType",
+          "description": "Classification of the dependency relationship",
+          "valueReference": "ppm:DependencyType"
+        },
+        {
+          "@id": "ppm:prop-dependency-lag",
+          "@type": "PropertyValue",
+          "name": "lag",
+          "description": "Time lag between predecessor and successor events"
+        },
+        {
+          "@id": "ppm:prop-dependency-isCriticalPath",
+          "@type": "PropertyValue",
+          "name": "isCriticalPath",
+          "description": "Whether this dependency is on the critical path",
+          "valueReference": "xsd:boolean"
+        },
+        {
+          "@id": "ppm:prop-dependency-description",
+          "@type": "PropertyValue",
+          "name": "description",
+          "description": "Free-text description of the dependency rationale"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:Milestone",
+      "@type": "DefinedTerm",
+      "name": "Milestone",
+      "description": "Significant achievement point within an initiative marking delivery progress, representing a gate or checkpoint with defined success criteria and a target date.",
+      "ppm:properties": [
+        {
+          "@id": "ppm:prop-milestone-name",
+          "@type": "PropertyValue",
+          "name": "name",
+          "description": "Milestone name describing the achievement point"
+        },
+        {
+          "@id": "ppm:prop-milestone-targetDate",
+          "@type": "PropertyValue",
+          "name": "targetDate",
+          "description": "Target date for milestone achievement"
+        },
+        {
+          "@id": "ppm:prop-milestone-successCriteria",
+          "@type": "PropertyValue",
+          "name": "successCriteria",
+          "description": "Criteria that must be met for milestone completion"
+        },
+        {
+          "@id": "ppm:prop-milestone-isGate",
+          "@type": "PropertyValue",
+          "name": "isGate",
+          "description": "Whether milestone is a governance gate requiring approval",
+          "valueReference": "xsd:boolean"
+        },
+        {
+          "@id": "ppm:prop-milestone-status",
+          "@type": "PropertyValue",
+          "name": "status",
+          "description": "Current milestone completion status",
+          "valueReference": "ppm:InitiativeStatus"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:PracticeArea",
+      "@type": "DefinedTerm",
+      "name": "PracticeArea",
+      "description": "Business unit or advisory practice contributing to the transformation portfolio, representing an organisational capability area with manual reduction targets and resource allocations.",
+      "ppm:properties": [
+        {
+          "@id": "ppm:prop-practicearea-name",
+          "@type": "PropertyValue",
+          "name": "name",
+          "description": "Practice area name (e.g., Advisory, Audit, Tax)"
+        },
+        {
+          "@id": "ppm:prop-practicearea-manualReductionTarget",
+          "@type": "PropertyValue",
+          "name": "manualReductionTarget",
+          "description": "Target manual process reduction (0.0–1.0)",
+          "valueReference": "xsd:decimal"
+        },
+        {
+          "@id": "ppm:prop-practicearea-headcount",
+          "@type": "PropertyValue",
+          "name": "headcount",
+          "description": "Number of staff in the practice area"
+        },
+        {
+          "@id": "ppm:prop-practicearea-practiceHead",
+          "@type": "PropertyValue",
+          "name": "practiceHead",
+          "description": "Leader or head of the practice area"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:BenefitMetric",
+      "@type": "DefinedTerm",
+      "name": "BenefitMetric",
+      "description": "Quantified benefit measurement with baseline, target, and actual values for tracking initiative value realisation against planned outcomes and strategic targets.",
+      "ppm:properties": [
+        {
+          "@id": "ppm:prop-benefitmetric-name",
+          "@type": "PropertyValue",
+          "name": "name",
+          "description": "Benefit metric name (e.g., Revenue Uplift, Cost Reduction)"
+        },
+        {
+          "@id": "ppm:prop-benefitmetric-target",
+          "@type": "PropertyValue",
+          "name": "target",
+          "description": "Target value for the benefit metric"
+        },
+        {
+          "@id": "ppm:prop-benefitmetric-baseline",
+          "@type": "PropertyValue",
+          "name": "baseline",
+          "description": "Baseline value before initiative delivery"
+        },
+        {
+          "@id": "ppm:prop-benefitmetric-actual",
+          "@type": "PropertyValue",
+          "name": "actual",
+          "description": "Actual measured value of the benefit"
+        },
+        {
+          "@id": "ppm:prop-benefitmetric-unit",
+          "@type": "PropertyValue",
+          "name": "unit",
+          "description": "Unit of measurement (e.g., GBP, %, hours)"
+        },
+        {
+          "@id": "ppm:prop-benefitmetric-measurementFrequency",
+          "@type": "PropertyValue",
+          "name": "measurementFrequency",
+          "description": "How often the metric is measured (e.g., monthly, quarterly)"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:EffortMetric",
+      "@type": "DefinedTerm",
+      "name": "EffortMetric",
+      "description": "Resource consumption measurement tracking estimated versus actual effort for initiatives, enabling capacity planning and delivery forecasting across the portfolio.",
+      "ppm:properties": [
+        {
+          "@id": "ppm:prop-effortmetric-name",
+          "@type": "PropertyValue",
+          "name": "name",
+          "description": "Effort metric name (e.g., Development Days, Consulting Hours)"
+        },
+        {
+          "@id": "ppm:prop-effortmetric-estimate",
+          "@type": "PropertyValue",
+          "name": "estimate",
+          "description": "Estimated effort for the work"
+        },
+        {
+          "@id": "ppm:prop-effortmetric-actual",
+          "@type": "PropertyValue",
+          "name": "actual",
+          "description": "Actual effort consumed"
+        },
+        {
+          "@id": "ppm:prop-effortmetric-unit",
+          "@type": "PropertyValue",
+          "name": "unit",
+          "description": "Unit of effort measurement (e.g., person-days, hours)"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:Risk",
+      "@type": "DefinedTerm",
+      "name": "Risk",
+      "description": "Identified risk to initiative delivery with probability, impact assessment, and mitigation strategy, tracked within the RAID log for active risk management.",
+      "ppm:properties": [
+        {
+          "@id": "ppm:prop-risk-name",
+          "@type": "PropertyValue",
+          "name": "name",
+          "description": "Risk name or short description"
+        },
+        {
+          "@id": "ppm:prop-risk-probability",
+          "@type": "PropertyValue",
+          "name": "probability",
+          "description": "Likelihood of risk materialising (Low/Medium/High/Critical)"
+        },
+        {
+          "@id": "ppm:prop-risk-impact",
+          "@type": "PropertyValue",
+          "name": "impact",
+          "description": "Impact severity if risk materialises (Low/Medium/High/Critical)"
+        },
+        {
+          "@id": "ppm:prop-risk-mitigation",
+          "@type": "PropertyValue",
+          "name": "mitigation",
+          "description": "Planned mitigation actions to reduce risk exposure"
+        },
+        {
+          "@id": "ppm:prop-risk-owner",
+          "@type": "PropertyValue",
+          "name": "owner",
+          "description": "Person accountable for risk mitigation"
+        },
+        {
+          "@id": "ppm:prop-risk-status",
+          "@type": "PropertyValue",
+          "name": "status",
+          "description": "Current risk status (Open/Mitigated/Closed/Accepted)"
+        }
+      ]
+    },
+    {
+      "@id": "vsom:StrategicVision",
+      "@type": "DefinedTerm",
+      "name": "StrategicVision",
+      "description": "External VSOM entity representing the organisation's long-term strategic vision statement that drives portfolio direction and investment envelope decisions.",
+      "oaa:externalOntology": "vsom:VisionStrategyOperatingModelOntology"
+    },
+    {
+      "@id": "vsom:StrategyComponent",
+      "@type": "DefinedTerm",
+      "name": "StrategyComponent",
+      "description": "External VSOM entity representing a discrete strategic pillar or component that provides alignment anchors for programme-level transformation planning.",
+      "oaa:externalOntology": "vsom:VisionStrategyOperatingModelOntology"
+    },
+    {
+      "@id": "ga:Recommendation",
+      "@type": "DefinedTerm",
+      "name": "Recommendation",
+      "description": "External GA entity representing an actionable recommendation arising from gap analysis that spawns transformation initiatives for remediation.",
+      "oaa:externalOntology": "ga:GapAnalysisOntology"
+    },
+    {
+      "@id": "efs:Epic",
+      "@type": "DefinedTerm",
+      "name": "Epic",
+      "description": "External EFS entity representing a large agile work item that receives decomposed initiative scope for detailed specification and iterative delivery execution.",
+      "oaa:externalOntology": "efs:EpicFeatureStoryOntology"
+    },
+    {
+      "@id": "gdpr:ComplianceObligation",
+      "@type": "DefinedTerm",
+      "name": "ComplianceObligation",
+      "description": "External GDPR entity representing a regulatory compliance obligation that transformation initiatives must address to ensure legal and regulatory conformance.",
+      "oaa:externalOntology": "gdpr:GDPRRegulatoryFrameworkOntology"
+    },
+    {
+      "@id": "mcsb:SecurityControl",
+      "@type": "DefinedTerm",
+      "name": "SecurityControl",
+      "description": "External MCSB entity representing a cloud security benchmark control that initiatives implement to mitigate security risks and maintain compliance posture.",
+      "oaa:externalOntology": "mcsb:MCSBOntology"
+    }
+  ],
+  "ppm:enumerations": [
+    {
+      "@id": "ppm:Phase",
+      "@type": "DefinedTermSet",
+      "name": "Initiative Phase",
+      "description": "Temporal phases for initiative scheduling across 3-year transformation horizon",
+      "hasDefinedTerm": [
+        {
+          "@id": "ppm:phase/foundation",
+          "name": "Foundation",
+          "ppm:startDate": "2026-02-01",
+          "ppm:endDate": "2026-04-30"
+        },
+        {
+          "@id": "ppm:phase/y1q2",
+          "name": "Year 1 Q2",
+          "ppm:startDate": "2026-05-01",
+          "ppm:endDate": "2026-07-31"
+        },
+        {
+          "@id": "ppm:phase/y1q3",
+          "name": "Year 1 Q3",
+          "ppm:startDate": "2026-08-01",
+          "ppm:endDate": "2026-10-31"
+        },
+        {
+          "@id": "ppm:phase/y1q4",
+          "name": "Year 1 Q4",
+          "ppm:startDate": "2026-11-01",
+          "ppm:endDate": "2027-01-31"
+        },
+        {
+          "@id": "ppm:phase/y2q1",
+          "name": "Year 2 Q1",
+          "ppm:startDate": "2027-02-01",
+          "ppm:endDate": "2027-04-30"
+        },
+        {
+          "@id": "ppm:phase/y2q2",
+          "name": "Year 2 Q2",
+          "ppm:startDate": "2027-05-01",
+          "ppm:endDate": "2027-07-31"
+        },
+        {
+          "@id": "ppm:phase/y2q3",
+          "name": "Year 2 Q3",
+          "ppm:startDate": "2027-08-01",
+          "ppm:endDate": "2027-10-31"
+        },
+        {
+          "@id": "ppm:phase/y2q4",
+          "name": "Year 2 Q4",
+          "ppm:startDate": "2027-11-01",
+          "ppm:endDate": "2028-01-31"
+        },
+        {
+          "@id": "ppm:phase/y3q1",
+          "name": "Year 3 Q1",
+          "ppm:startDate": "2028-02-01",
+          "ppm:endDate": "2028-04-30"
+        },
+        {
+          "@id": "ppm:phase/y3q2",
+          "name": "Year 3 Q2",
+          "ppm:startDate": "2028-05-01",
+          "ppm:endDate": "2028-07-31"
+        },
+        {
+          "@id": "ppm:phase/y3q3",
+          "name": "Year 3 Q3",
+          "ppm:startDate": "2028-08-01",
+          "ppm:endDate": "2028-10-31"
+        },
+        {
+          "@id": "ppm:phase/y3q4",
+          "name": "Year 3 Q4",
+          "ppm:startDate": "2028-11-01",
+          "ppm:endDate": "2029-01-31"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:InitiativeStatus",
+      "@type": "DefinedTermSet",
+      "name": "Initiative Status",
+      "description": "Lifecycle status values for initiative tracking from proposal through completion",
+      "hasDefinedTerm": [
+        {
+          "@id": "ppm:status/proposed",
+          "name": "Proposed",
+          "description": "Initiative identified, not yet approved"
+        },
+        {
+          "@id": "ppm:status/approved",
+          "name": "Approved",
+          "description": "Approved for delivery, not yet started"
+        },
+        {
+          "@id": "ppm:status/in-progress",
+          "name": "In Progress",
+          "description": "Active delivery underway with resources allocated"
+        },
+        {
+          "@id": "ppm:status/on-hold",
+          "name": "On Hold",
+          "description": "Paused pending resolution of blocking issue"
+        },
+        {
+          "@id": "ppm:status/completed",
+          "name": "Completed",
+          "description": "Delivery complete, benefits realising"
+        },
+        {
+          "@id": "ppm:status/cancelled",
+          "name": "Cancelled",
+          "description": "Initiative terminated, resources released"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:Priority",
+      "@type": "DefinedTermSet",
+      "name": "Priority Level",
+      "description": "Initiative priority levels for resource allocation and sequencing decisions",
+      "hasDefinedTerm": [
+        {
+          "@id": "ppm:priority/critical",
+          "name": "Critical",
+          "ppm:rank": 1,
+          "description": "Must deliver, blocks portfolio progress"
+        },
+        {
+          "@id": "ppm:priority/high",
+          "name": "High",
+          "ppm:rank": 2,
+          "description": "Important, significant value contribution"
+        },
+        {
+          "@id": "ppm:priority/medium",
+          "name": "Medium",
+          "ppm:rank": 3,
+          "description": "Valuable, can flex timing if constrained"
+        },
+        {
+          "@id": "ppm:priority/low",
+          "name": "Low",
+          "ppm:rank": 4,
+          "description": "Nice to have, defer if resource constrained"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:DependencyType",
+      "@type": "DefinedTermSet",
+      "name": "Dependency Type",
+      "description": "Classification of inter-initiative dependency relationships for scheduling",
+      "hasDefinedTerm": [
+        {
+          "@id": "ppm:dep-type/finish-to-start",
+          "name": "Finish to Start",
+          "ppm:notation": "FS",
+          "description": "Successor cannot start until predecessor finishes"
+        },
+        {
+          "@id": "ppm:dep-type/start-to-start",
+          "name": "Start to Start",
+          "ppm:notation": "SS",
+          "description": "Successor cannot start until predecessor starts"
+        },
+        {
+          "@id": "ppm:dep-type/finish-to-finish",
+          "name": "Finish to Finish",
+          "ppm:notation": "FF",
+          "description": "Successor cannot finish until predecessor finishes"
+        },
+        {
+          "@id": "ppm:dep-type/enables",
+          "name": "Enables",
+          "ppm:notation": "EN",
+          "description": "Predecessor creates capability successor requires"
+        },
+        {
+          "@id": "ppm:dep-type/blocks",
+          "name": "Blocks",
+          "ppm:notation": "BL",
+          "description": "Predecessor must complete before successor viable"
+        },
+        {
+          "@id": "ppm:dep-type/informed-by",
+          "name": "Informed By",
+          "ppm:notation": "IB",
+          "description": "Soft dependency, successor benefits from predecessor output"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:ProgrammeStatus",
+      "@type": "DefinedTermSet",
+      "name": "Programme Status",
+      "description": "Programme lifecycle status values from initial definition through closure",
+      "hasDefinedTerm": [
+        {
+          "@id": "ppm:prog-status/defining",
+          "name": "Defining",
+          "description": "Programme scope and benefits being defined"
+        },
+        {
+          "@id": "ppm:prog-status/approved",
+          "name": "Approved",
+          "description": "Programme approved for delivery and funded"
+        },
+        {
+          "@id": "ppm:prog-status/delivering",
+          "name": "Delivering",
+          "description": "Active delivery of programme initiatives"
+        },
+        {
+          "@id": "ppm:prog-status/closing",
+          "name": "Closing",
+          "description": "Programme winding down, benefits handover"
+        },
+        {
+          "@id": "ppm:prog-status/closed",
+          "name": "Closed",
+          "description": "Programme closed, all benefits realised or transferred"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:hasProgramme",
+      "name": "hasProgramme",
+      "description": "A Portfolio contains one or more Programmes delivering coordinated transformation benefits",
+      "domainIncludes": "ppm:Portfolio",
+      "rangeIncludes": "ppm:Programme",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:belongsToPortfolio",
+      "name": "belongsToPortfolio",
+      "description": "A Programme belongs to exactly one Portfolio for investment governance and strategic alignment",
+      "domainIncludes": "ppm:Programme",
+      "rangeIncludes": "ppm:Portfolio",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:hasInitiative",
+      "name": "hasInitiative",
+      "description": "A Programme contains one or more Initiatives delivering discrete transformation outcomes",
+      "domainIncludes": "ppm:Programme",
+      "rangeIncludes": "ppm:Initiative",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:belongsToProgramme",
+      "name": "belongsToProgramme",
+      "description": "An Initiative belongs to exactly one Programme for scope and benefit tracking",
+      "domainIncludes": "ppm:Initiative",
+      "rangeIncludes": "ppm:Programme",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:hasWorkstream",
+      "name": "hasWorkstream",
+      "description": "An Initiative may decompose into Workstreams for complex delivery management",
+      "domainIncludes": "ppm:Initiative",
+      "rangeIncludes": "ppm:Workstream",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:parentInitiative",
+      "name": "parentInitiative",
+      "description": "A Workstream belongs to a parent Initiative as a sub-component of delivery",
+      "domainIncludes": "ppm:Workstream",
+      "rangeIncludes": "ppm:Initiative",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:hasDependency",
+      "name": "hasDependency",
+      "description": "An Initiative has Dependencies on other Initiatives for sequencing and enablement",
+      "domainIncludes": "ppm:Initiative",
+      "rangeIncludes": "ppm:Dependency",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:dependencySource",
+      "name": "dependencySource",
+      "description": "A Dependency specifies a predecessor Initiative that must deliver first",
+      "domainIncludes": "ppm:Dependency",
+      "rangeIncludes": "ppm:Initiative",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:dependencyTarget",
+      "name": "dependencyTarget",
+      "description": "A Dependency specifies a successor Initiative that depends on the predecessor",
+      "domainIncludes": "ppm:Dependency",
+      "rangeIncludes": "ppm:Initiative",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:hasMilestone",
+      "name": "hasMilestone",
+      "description": "An Initiative has Milestones marking significant delivery checkpoints or gates",
+      "domainIncludes": "ppm:Initiative",
+      "rangeIncludes": "ppm:Milestone",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:hasRisk",
+      "name": "hasRisk",
+      "description": "An Initiative has identified Risks that may impede delivery or value realisation",
+      "domainIncludes": "ppm:Initiative",
+      "rangeIncludes": "ppm:Risk",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:assignedToPracticeArea",
+      "name": "assignedToPracticeArea",
+      "description": "An Initiative is assigned to a PracticeArea as the primary benefiting business unit",
+      "domainIncludes": "ppm:Initiative",
+      "rangeIncludes": "ppm:PracticeArea",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:tracksBenefitMetric",
+      "name": "tracksBenefitMetric",
+      "description": "An Initiative tracks one or more BenefitMetrics for value realisation measurement",
+      "domainIncludes": "ppm:Initiative",
+      "rangeIncludes": "ppm:BenefitMetric",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:tracksEffortMetric",
+      "name": "tracksEffortMetric",
+      "description": "An Initiative tracks EffortMetrics for resource consumption and capacity planning",
+      "domainIncludes": "ppm:Initiative",
+      "rangeIncludes": "ppm:EffortMetric",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:alignsToVision",
+      "name": "alignsToVision",
+      "description": "A Portfolio aligns to a VSOM StrategicVision ensuring strategic direction coherence",
+      "domainIncludes": "ppm:Portfolio",
+      "rangeIncludes": "vsom:StrategicVision",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:alignsToStrategicPillar",
+      "name": "alignsToStrategicPillar",
+      "description": "A Programme aligns to a VSOM StrategyComponent for strategic pillar traceability",
+      "domainIncludes": "ppm:Programme",
+      "rangeIncludes": "vsom:StrategyComponent",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:spawnsFromRecommendation",
+      "name": "spawnsFromRecommendation",
+      "description": "Initiatives may be spawned from GA Recommendations following gap analysis outcomes",
+      "domainIncludes": "ga:Recommendation",
+      "rangeIncludes": "ppm:Initiative",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:decomposesToEpic",
+      "name": "decomposesToEpic",
+      "description": "An Initiative decomposes into EFS Epics for agile specification and delivery execution",
+      "domainIncludes": "ppm:Initiative",
+      "rangeIncludes": "efs:Epic",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:addressesObligation",
+      "name": "addressesObligation",
+      "description": "An Initiative addresses GDPR compliance obligations ensuring regulatory conformance during transformation delivery",
+      "domainIncludes": "ppm:Initiative",
+      "rangeIncludes": "gdpr:ComplianceObligation",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ppm:mitigatedByControl",
+      "name": "mitigatedByControl",
+      "description": "An Initiative is mitigated by MCSB security controls that reduce cloud security risk during implementation",
+      "domainIncludes": "ppm:Initiative",
+      "rangeIncludes": "mcsb:SecurityControl",
+      "cardinality": "n:m"
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "ppm:rule-portfolio-must-have-programme",
+      "name": "PortfolioMustHaveProgramme",
+      "description": "Every Portfolio must contain at least one Programme to constitute a governed investment grouping",
+      "condition": "IF ppm:Portfolio exists",
+      "action": "THEN COUNT(ppm:hasProgramme) >= 1",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "ppm:rule-programme-must-belong-to-portfolio",
+      "name": "ProgrammeMustBelongToPortfolio",
+      "description": "Every Programme must belong to exactly one Portfolio for investment governance",
+      "condition": "IF ppm:Programme exists",
+      "action": "THEN ppm:belongsToPortfolio IS NOT NULL AND COUNT(ppm:belongsToPortfolio) = 1",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "ppm:rule-initiative-must-belong-to-programme",
+      "name": "InitiativeMustBelongToProgramme",
+      "description": "Every Initiative must belong to exactly one Programme for scope and benefit tracking",
+      "condition": "IF ppm:Initiative exists",
+      "action": "THEN ppm:belongsToProgramme IS NOT NULL AND COUNT(ppm:belongsToProgramme) = 1",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "ppm:rule-no-circular-dependencies",
+      "name": "NoCircularDependencies",
+      "description": "Dependency chains must not form cycles to prevent scheduling deadlocks",
+      "condition": "IF ppm:Dependency chain exists via ppm:dependencySource and ppm:dependencyTarget",
+      "action": "THEN no cycle exists in the dependency graph",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "ppm:rule-critical-path-needs-dates",
+      "name": "CriticalPathNeedsDates",
+      "description": "Dependencies marked as critical path must have date-bound initiatives for schedule tracking",
+      "condition": "IF ppm:Dependency.isCriticalPath = true",
+      "action": "THEN ppm:dependencySource.startDate IS NOT NULL AND ppm:dependencyTarget.endDate IS NOT NULL",
+      "priority": 2,
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "@id": "ppm:rule-completed-no-open-milestones",
+      "name": "CompletedNoOpenMilestones",
+      "description": "Completed initiatives should not have milestones still in open status",
+      "condition": "IF ppm:Initiative.status = 'Completed'",
+      "action": "THEN ALL ppm:hasMilestone.status IN ('Completed', 'Cancelled')",
+      "priority": 2,
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "@id": "ppm:rule-high-impact-risk-needs-mitigation",
+      "name": "HighImpactRiskNeedsMitigation",
+      "description": "Risks with high or critical impact must have a documented mitigation strategy",
+      "condition": "IF ppm:Risk.impact IN ('High', 'Critical')",
+      "action": "THEN ppm:Risk.mitigation IS NOT NULL",
+      "priority": 2,
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "@id": "ppm:rule-pillar-weights-sum",
+      "name": "PillarWeightsSum",
+      "description": "Programme contribution weights within a portfolio should sum to approximately 1.0",
+      "condition": "IF ppm:Portfolio has multiple ppm:Programme with contributionWeight",
+      "action": "THEN SUM(ppm:Programme.contributionWeight) BETWEEN 0.95 AND 1.05",
+      "priority": 3,
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    }
+  ],
+  "crossOntologyReferences": {
+    "veSeries": [
+      "vsom:"
+    ],
+    "peSeries": [
+      "efs:"
+    ],
+    "competitiveSeries": [
+      "ga:"
+    ],
+    "foundationSeries": [
+      "org:"
+    ],
+    "rcsgSeries": [
+      "gdpr:",
+      "mcsb:"
+    ],
+    "description": "PPM/EA is the PE-Series entry point receiving GA Recommendations and feeding EFS Epics. Portfolios align to VSOM StrategicVision, Programmes align to VSOM StrategyComponents, Initiatives spawn from GA Recommendations, decompose into EFS Epics for agile delivery, and address GDPR compliance obligations and MCSB security controls.",
+    "lineageAlignment": {
+      "vsom:StrategicVision": "VSOM strategic vision drives Portfolio direction and investment envelope",
+      "vsom:StrategyComponent": "VSOM strategy pillars provide Programme alignment anchors",
+      "ga:Recommendation": "GA recommendations spawn Initiatives for gap remediation",
+      "efs:Epic": "EFS Epics receive decomposed Initiative scope for agile specification",
+      "gdpr:ComplianceObligation": "GDPR compliance obligations addressed by transformation initiatives",
+      "mcsb:SecurityControl": "MCSB security controls mitigating cloud security risks during implementation"
+    },
+    "keyBridges": [
+      {
+        "from": "ppm:Portfolio",
+        "to": "vsom:StrategicVision",
+        "relationship": "alignsToVision"
+      },
+      {
+        "from": "ppm:Programme",
+        "to": "vsom:StrategyComponent",
+        "relationship": "alignsToStrategicPillar"
+      },
+      {
+        "from": "ga:Recommendation",
+        "to": "ppm:Initiative",
+        "relationship": "spawnsFromRecommendation"
+      },
+      {
+        "from": "ppm:Initiative",
+        "to": "efs:Epic",
+        "relationship": "decomposesToEpic"
+      },
+      {
+        "from": "ppm:Initiative",
+        "to": "gdpr:ComplianceObligation",
+        "relationship": "addressesObligation"
+      },
+      {
+        "from": "ppm:Initiative",
+        "to": "mcsb:SecurityControl",
+        "relationship": "mitigatedByControl"
+      }
+    ]
+  },
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "EA-ONT",
+  "oaa:series": "PE-Series"
+}

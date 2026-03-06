@@ -1,0 +1,523 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ea": "https://ontology.enterprise-architecture.io/azure/",
+    "azure": "https://ontology.enterprise-architecture.io/azure/cloud/",
+    "ai": "https://ontology.enterprise-architecture.io/azure/ai/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+  },
+  "@graph": [
+    {
+      "@id": "ai:AIArchitectureOntology",
+      "@type": "DefinedTermSet",
+      "name": "Azure AI/ML Architecture Ontology Extension",
+      "description": "AI and Machine Learning architecture patterns for Azure including GenAI, MLOps, and Agentic AI",
+      "version": "2.0.0-pre-oaav5"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:AIWorkload",
+      "rdfs:subClassOf": {"@id": "ea:Application"},
+      "rdfs:label": "AI Workload",
+      "rdfs:comment": "An application leveraging AI/ML capabilities"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:MLModel",
+      "rdfs:subClassOf": {"@id": "schema:SoftwareSourceCode"},
+      "rdfs:label": "ML Model",
+      "rdfs:comment": "A trained machine learning model"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:LLMDeployment",
+      "rdfs:subClassOf": {"@id": "ai:MLModel"},
+      "rdfs:label": "LLM Deployment",
+      "rdfs:comment": "A deployed large language model instance"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:AIAgent",
+      "rdfs:subClassOf": {"@id": "ai:AIWorkload"},
+      "rdfs:label": "AI Agent",
+      "rdfs:comment": "An autonomous AI agent with tool-use capabilities"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:RAGSystem",
+      "rdfs:subClassOf": {"@id": "ai:AIWorkload"},
+      "rdfs:label": "RAG System",
+      "rdfs:comment": "Retrieval-Augmented Generation system"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:MLPipeline",
+      "rdfs:subClassOf": {"@id": "ea:DataPipeline"},
+      "rdfs:label": "ML Pipeline",
+      "rdfs:comment": "A pipeline for ML model training and deployment"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:PromptTemplate",
+      "rdfs:subClassOf": {"@id": "schema:CreativeWork"},
+      "rdfs:label": "Prompt Template",
+      "rdfs:comment": "A reusable prompt template for LLM interactions"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:VectorStore",
+      "rdfs:subClassOf": {"@id": "ea:DataEntity"},
+      "rdfs:label": "Vector Store",
+      "rdfs:comment": "A database for storing and querying embeddings"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:EmbeddingModel",
+      "rdfs:subClassOf": {"@id": "ai:MLModel"},
+      "rdfs:label": "Embedding Model",
+      "rdfs:comment": "A model that generates vector embeddings"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:ContentFilter",
+      "rdfs:subClassOf": {"@id": "ea:SecurityControl"},
+      "rdfs:label": "Content Filter",
+      "rdfs:comment": "AI content safety filtering configuration"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:AICapability",
+      "rdfs:subClassOf": {"@id": "ea:BusinessCapability"},
+      "rdfs:label": "AI Capability",
+      "rdfs:comment": "A business capability enabled by AI"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:AgentTool",
+      "rdfs:subClassOf": {"@id": "ea:ApplicationService"},
+      "rdfs:label": "Agent Tool",
+      "rdfs:comment": "A tool or function callable by an AI agent"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:AgentOrchestrator",
+      "rdfs:subClassOf": {"@id": "ai:AIWorkload"},
+      "rdfs:label": "Agent Orchestrator",
+      "rdfs:comment": "System for orchestrating multiple AI agents"
+    },
+
+    {
+      "@type": "ai:AICapability",
+      "@id": "ai:ConversationalAI",
+      "name": "Conversational AI",
+      "description": "Natural language conversation and dialogue management",
+      "ai:azureServices": ["Azure OpenAI", "Copilot Studio", "Azure Bot Service"]
+    },
+
+    {
+      "@type": "ai:AICapability",
+      "@id": "ai:DocumentIntelligence",
+      "name": "Document Intelligence",
+      "description": "Document processing, extraction, and understanding",
+      "ai:azureServices": ["Azure Document Intelligence", "Azure OpenAI"]
+    },
+
+    {
+      "@type": "ai:AICapability",
+      "@id": "ai:KnowledgeMining",
+      "name": "Knowledge Mining",
+      "description": "Extract insights from large document collections",
+      "ai:azureServices": ["Azure AI Search", "Azure OpenAI", "Cognitive Skills"]
+    },
+
+    {
+      "@type": "ai:AICapability",
+      "@id": "ai:PredictiveAnalytics",
+      "name": "Predictive Analytics",
+      "description": "Forecast and predict outcomes using ML",
+      "ai:azureServices": ["Azure Machine Learning", "Azure Databricks"]
+    },
+
+    {
+      "@type": "ai:AICapability",
+      "@id": "ai:AnomalyDetection",
+      "name": "Anomaly Detection",
+      "description": "Detect unusual patterns and outliers",
+      "ai:azureServices": ["Azure Anomaly Detector", "Azure Stream Analytics"]
+    },
+
+    {
+      "@type": "ai:AICapability",
+      "@id": "ai:ImageAnalysis",
+      "name": "Image Analysis",
+      "description": "Analyze and understand images and video",
+      "ai:azureServices": ["Azure Computer Vision", "Azure Custom Vision"]
+    },
+
+    {
+      "@type": "ai:AICapability",
+      "@id": "ai:SpeechProcessing",
+      "name": "Speech Processing",
+      "description": "Speech-to-text, text-to-speech, and translation",
+      "ai:azureServices": ["Azure Speech Services", "Azure Translator"]
+    },
+
+    {
+      "@type": "ai:AICapability",
+      "@id": "ai:CodeGeneration",
+      "name": "Code Generation",
+      "description": "AI-assisted code generation and completion",
+      "ai:azureServices": ["Azure OpenAI", "GitHub Copilot"]
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:AIArchitecturePattern",
+      "rdfs:subClassOf": {"@id": "ea:ArchitecturePattern"},
+      "rdfs:label": "AI Architecture Pattern",
+      "rdfs:comment": "A reusable AI solution architecture pattern"
+    },
+
+    {
+      "@type": "ai:AIArchitecturePattern",
+      "@id": "ai:BasicRAGPattern",
+      "name": "Basic RAG Pattern",
+      "description": "Retrieve relevant documents, augment prompt, generate response",
+      "ai:components": [
+        "Document Ingestion Pipeline",
+        "Embedding Model",
+        "Vector Store",
+        "LLM",
+        "Prompt Template"
+      ],
+      "ai:azureImplementation": [
+        "Azure Blob Storage",
+        "Azure OpenAI Embeddings",
+        "Azure AI Search",
+        "Azure OpenAI GPT-4",
+        "Semantic Kernel"
+      ]
+    },
+
+    {
+      "@type": "ai:AIArchitecturePattern",
+      "@id": "ai:AdvancedRAGPattern",
+      "name": "Advanced RAG Pattern",
+      "description": "RAG with query rewriting, reranking, and multi-step retrieval",
+      "ai:components": [
+        "Query Rewriter",
+        "Hybrid Search",
+        "Cross-Encoder Reranker",
+        "Context Compression",
+        "Citation Tracking"
+      ],
+      "ai:azureImplementation": [
+        "Azure OpenAI",
+        "Azure AI Search Semantic Ranking",
+        "Azure Functions",
+        "Prompt Flow"
+      ]
+    },
+
+    {
+      "@type": "ai:AIArchitecturePattern",
+      "@id": "ai:SingleAgentPattern",
+      "name": "Single Agent Pattern",
+      "description": "Autonomous agent with tool use and planning",
+      "ai:components": [
+        "LLM Brain",
+        "Tool Registry",
+        "Planning Module",
+        "Memory Store",
+        "Action Executor"
+      ],
+      "ai:azureImplementation": [
+        "Azure OpenAI GPT-4",
+        "Semantic Kernel",
+        "Azure Functions",
+        "Cosmos DB"
+      ]
+    },
+
+    {
+      "@type": "ai:AIArchitecturePattern",
+      "@id": "ai:MultiAgentPattern",
+      "name": "Multi-Agent Pattern",
+      "description": "Multiple specialized agents collaborating on tasks",
+      "ai:components": [
+        "Orchestrator Agent",
+        "Specialist Agents",
+        "Message Bus",
+        "Shared Memory",
+        "Consensus Mechanism"
+      ],
+      "ai:azureImplementation": [
+        "Azure OpenAI",
+        "AutoGen/Semantic Kernel",
+        "Azure Service Bus",
+        "Redis Cache"
+      ]
+    },
+
+    {
+      "@type": "ai:AIArchitecturePattern",
+      "@id": "ai:CopilotPattern",
+      "name": "Copilot Pattern",
+      "description": "AI assistant embedded in business application",
+      "ai:components": [
+        "Application Frontend",
+        "Copilot Backend",
+        "Context Manager",
+        "Skills/Plugins",
+        "Responsible AI Layer"
+      ],
+      "ai:azureImplementation": [
+        "Copilot Studio",
+        "Azure OpenAI",
+        "Microsoft Graph",
+        "Power Platform Connectors"
+      ]
+    },
+
+    {
+      "@type": "ai:AIArchitecturePattern",
+      "@id": "ai:FineTuningPattern",
+      "name": "Fine-Tuning Pattern",
+      "description": "Custom model training for domain-specific use cases",
+      "ai:components": [
+        "Training Data Pipeline",
+        "Base Model",
+        "Training Infrastructure",
+        "Evaluation Framework",
+        "Model Registry"
+      ],
+      "ai:azureImplementation": [
+        "Azure Data Factory",
+        "Azure OpenAI Fine-tuning",
+        "Azure ML",
+        "MLflow"
+      ]
+    },
+
+    {
+      "@type": "ai:AIArchitecturePattern",
+      "@id": "ai:BatchInferencePattern",
+      "name": "Batch Inference Pattern",
+      "description": "Process large volumes of data asynchronously",
+      "ai:components": [
+        "Job Queue",
+        "Batch Processor",
+        "Model Endpoint",
+        "Result Store",
+        "Progress Tracker"
+      ],
+      "ai:azureImplementation": [
+        "Azure Batch",
+        "Azure ML Batch Endpoints",
+        "Azure Storage",
+        "Azure Functions"
+      ]
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:ResponsibleAIControl",
+      "rdfs:subClassOf": {"@id": "ea:SecurityControl"},
+      "rdfs:label": "Responsible AI Control",
+      "rdfs:comment": "A control for responsible and ethical AI use"
+    },
+
+    {
+      "@type": "ai:ResponsibleAIControl",
+      "@id": "ai:ContentSafety",
+      "name": "Content Safety",
+      "description": "Filter harmful or inappropriate content",
+      "ai:azureService": "Azure Content Safety",
+      "ai:categories": ["Hate", "Violence", "Sexual", "Self-harm"]
+    },
+
+    {
+      "@type": "ai:ResponsibleAIControl",
+      "@id": "ai:GroundednessCheck",
+      "name": "Groundedness Check",
+      "description": "Verify responses are grounded in source documents",
+      "ai:implementation": "Prompt Flow Groundedness Evaluation"
+    },
+
+    {
+      "@type": "ai:ResponsibleAIControl",
+      "@id": "ai:JailbreakProtection",
+      "name": "Jailbreak Protection",
+      "description": "Prevent prompt injection and jailbreak attempts",
+      "ai:azureService": "Azure OpenAI Content Filtering"
+    },
+
+    {
+      "@type": "ai:ResponsibleAIControl",
+      "@id": "ai:PIIRedaction",
+      "name": "PII Redaction",
+      "description": "Detect and redact personally identifiable information",
+      "ai:azureService": "Azure AI Language PII Detection"
+    },
+
+    {
+      "@type": "ai:ResponsibleAIControl",
+      "@id": "ai:ModelTransparency",
+      "name": "Model Transparency",
+      "description": "Document model capabilities, limitations, and intended use",
+      "ai:implementation": "Model Card Documentation"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ai:MLOpsStage",
+      "rdfs:subClassOf": {"@id": "schema:Action"},
+      "rdfs:label": "MLOps Stage",
+      "rdfs:comment": "A stage in the MLOps lifecycle"
+    },
+
+    {
+      "@type": "ai:MLOpsStage",
+      "@id": "ai:DataPreparation",
+      "name": "Data Preparation",
+      "ai:activities": ["Data collection", "Data labeling", "Feature engineering", "Data validation"],
+      "ai:azureServices": ["Azure Data Factory", "Azure Databricks", "Azure ML Data Assets"]
+    },
+
+    {
+      "@type": "ai:MLOpsStage",
+      "@id": "ai:ModelDevelopment",
+      "name": "Model Development",
+      "ai:activities": ["Experimentation", "Training", "Hyperparameter tuning", "Model selection"],
+      "ai:azureServices": ["Azure ML", "Azure Databricks", "MLflow"]
+    },
+
+    {
+      "@type": "ai:MLOpsStage",
+      "@id": "ai:ModelValidation",
+      "name": "Model Validation",
+      "ai:activities": ["Model evaluation", "Bias detection", "Performance testing", "Responsible AI review"],
+      "ai:azureServices": ["Azure ML", "Responsible AI Dashboard"]
+    },
+
+    {
+      "@type": "ai:MLOpsStage",
+      "@id": "ai:ModelDeployment",
+      "name": "Model Deployment",
+      "ai:activities": ["Containerization", "Endpoint creation", "A/B testing", "Canary deployment"],
+      "ai:azureServices": ["Azure ML Managed Endpoints", "AKS", "Azure Container Apps"]
+    },
+
+    {
+      "@type": "ai:MLOpsStage",
+      "@id": "ai:ModelMonitoring",
+      "name": "Model Monitoring",
+      "ai:activities": ["Performance monitoring", "Drift detection", "Usage tracking", "Alerting"],
+      "ai:azureServices": ["Azure ML Model Monitoring", "Application Insights"]
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ai:modelFamily",
+      "rdfs:label": "model family",
+      "rdfs:comment": "The family of the ML model (e.g., GPT-4, Claude, Llama)",
+      "rdfs:domain": {"@id": "ai:LLMDeployment"},
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ai:contextWindow",
+      "rdfs:label": "context window",
+      "rdfs:comment": "Maximum context length in tokens",
+      "rdfs:domain": {"@id": "ai:LLMDeployment"},
+      "rdfs:range": {"@id": "xsd:integer"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ai:deploymentType",
+      "rdfs:label": "deployment type",
+      "rdfs:comment": "Standard, Provisioned Throughput, or Global",
+      "rdfs:domain": {"@id": "ai:LLMDeployment"},
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ai:tokensPerMinute",
+      "rdfs:label": "tokens per minute",
+      "rdfs:comment": "Rate limit in tokens per minute",
+      "rdfs:domain": {"@id": "ai:LLMDeployment"},
+      "rdfs:range": {"@id": "xsd:integer"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ai:embeddingDimension",
+      "rdfs:label": "embedding dimension",
+      "rdfs:comment": "Vector dimension size",
+      "rdfs:domain": {"@id": "ai:EmbeddingModel"},
+      "rdfs:range": {"@id": "xsd:integer"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ai:usesModel",
+      "rdfs:label": "uses model",
+      "rdfs:comment": "The AI model used by this workload",
+      "rdfs:domain": {"@id": "ai:AIWorkload"},
+      "rdfs:range": {"@id": "ai:MLModel"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ai:hasTools",
+      "rdfs:label": "has tools",
+      "rdfs:comment": "Tools available to the AI agent",
+      "rdfs:domain": {"@id": "ai:AIAgent"},
+      "rdfs:range": {"@id": "ai:AgentTool"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ai:vectorIndex",
+      "rdfs:label": "vector index",
+      "rdfs:comment": "The vector store used for retrieval",
+      "rdfs:domain": {"@id": "ai:RAGSystem"},
+      "rdfs:range": {"@id": "ai:VectorStore"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ai:contentFilterLevel",
+      "rdfs:label": "content filter level",
+      "rdfs:comment": "Content filtering severity (Low, Medium, High)",
+      "rdfs:domain": {"@id": "ai:ContentFilter"},
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ai:azureServices",
+      "rdfs:label": "Azure services",
+      "rdfs:comment": "Azure services implementing this capability",
+      "rdfs:domain": {"@id": "ai:AICapability"},
+      "rdfs:range": {"@id": "xsd:string"}
+    }
+  ]
+}

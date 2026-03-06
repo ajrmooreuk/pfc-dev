@@ -1,0 +1,1100 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "mac": "https://oaa-ontology.org/v6/macro/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/",
+    "ind": "https://oaa-ontology.org/v6/industry/",
+    "orgctx": "https://oaa-ontology.org/v6/org-context/",
+    "okr": "https://oaa-ontology.org/v6/okr/"
+  },
+  "@id": "https://oaa-ontology.org/v6/macro/schema",
+  "@type": "owl:Ontology",
+  "name": "Macro Environment & Futures Analysis Ontology",
+  "alternateName": "MACRO-ONT — PESTEL, Scenario Planning, Futures Funnel & Backcasting",
+  "description": "The outermost strategic analysis layer. Formalizes macro-environment scanning (PESTEL) and futures thinking frameworks (Scenario Planning, Futures Funnel, Backcasting). These shape VSOM VisionComponent by identifying external forces, plausible futures, and reverse-engineered milestone paths. PESTEL factors enrich existing orgctx:Trend entities with structured scoring. Scenarios stress-test VSOM strategies for robustness. Part of VE-Series VSOM-SA (Strategy Analysis).",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "Strategic Foresight, Environmental Analysis, Futures Planning",
+  "oaa:status": "Draft",
+  "dateCreated": "2026-02-12",
+  "dateModified": "2026-02-12",
+  "creator": {
+    "@type": "Organization",
+    "name": "W4M Strategic Patterns Framework"
+  },
+  "oaa:imports": [
+    {
+      "@id": "vsom:schema",
+      "name": "VSOM-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "vsom:VSOMFramework",
+        "vsom:VisionComponent",
+        "vsom:StrategyComponent",
+        "vsom:ObjectivesComponent",
+        "vsom:StrategicReviewCycle"
+      ],
+      "importedRelationships": [
+        "vsom:hasVision",
+        "vsom:hasStrategy",
+        "vsom:informsStrategy"
+      ]
+    },
+    {
+      "@id": "ind:schema",
+      "name": "INDUSTRY-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "ind:SWOTAnalysis",
+        "ind:SWOTFactor"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "orgctx:schema",
+      "name": "ORG-CONTEXT-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "orgctx:OrganizationContext",
+        "orgctx:Trend",
+        "orgctx:CompetitiveLandscape"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "okr:schema",
+      "name": "OKR-ONT",
+      "version": "2.0.0",
+      "importedEntities": [
+        "okr:Initiative"
+      ],
+      "importedRelationships": []
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-MAC-001",
+      "name": "PESTEL-to-VSOM Vision Feed",
+      "description": "PESTEL analysis flows through organization context into VSOM framework, shaping strategic vision with macro-level signals.",
+      "joinPath": "mac:PESTELAnalysis → mac:conductedFor → orgctx:OrganizationContext → vsom:hasStrategicContext → vsom:VSOMFramework → vsom:hasVision → vsom:VisionComponent",
+      "useCase": "Macro environment shapes strategic vision"
+    },
+    {
+      "patternId": "JP-MAC-002",
+      "name": "PESTEL-to-SWOT External Feed",
+      "description": "PESTEL factors feed SWOT Opportunities and Threats in INDUSTRY-ONT, providing evidence-based external analysis.",
+      "joinPath": "mac:PESTELFactor → mac:feedsSWOTFactor → ind:SWOTFactor [quadrant=Opportunity|Threat]",
+      "useCase": "Macro analysis provides structured evidence for SWOT external factors"
+    },
+    {
+      "patternId": "JP-MAC-003",
+      "name": "Scenario-Strategy Robustness",
+      "description": "Scenarios stress-test VSOM strategies — robust strategies perform well across multiple plausible futures.",
+      "joinPath": "mac:ScenarioSet → mac:stressTestsStrategy → vsom:StrategyComponent",
+      "useCase": "Strategy validation: does our strategy hold across different futures?"
+    },
+    {
+      "patternId": "JP-MAC-004",
+      "name": "Backcasting-to-Execution",
+      "description": "Backcasting reverse-engineers from desired vision through milestones to executable initiatives.",
+      "joinPath": "mac:BackcastingPlan → mac:backcastsFrom → vsom:VisionComponent; mac:BackcastMilestone → mac:milestoneAligns → vsom:ObjectivesComponent → okr:Objective → okr:Initiative",
+      "useCase": "Reverse-engineer from aspirational future to concrete quarterly actions"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "mac:PESTELAnalysis",
+      "@type": "rdfs:Class",
+      "name": "PESTELAnalysis",
+      "rdfs:subClassOf": "schema:Report",
+      "description": "Structured environmental scan across six macro dimensions: Political, Economic, Social, Technological, Environmental, Legal. Enriches existing orgctx:Trend entities with structured scoring and impact assessment. Feeds macro-level signals into VSOM VisionComponent and StrategicReviewCycle. High-impact factors can trigger strategy review and shape SWOT external factors.",
+      "oaa:properties": [
+        {
+          "name": "analysisId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "analysisDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "timeHorizon",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "NearTerm1Y",
+            "Medium3Y",
+            "Long5Y",
+            "Strategic10Y"
+          ],
+          "description": "How far out the scan looks"
+        },
+        {
+          "name": "geographicScope",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Geographic scope of the analysis"
+        },
+        {
+          "name": "industryScope",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Industry focus of the analysis"
+        },
+        {
+          "name": "overallImpactScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Weighted overall macro-environment impact (1.0=benign, 5.0=highly turbulent)"
+        },
+        {
+          "name": "strategicImplications",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Key implications for VSOM strategy formulation",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "reviewCycleRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:StrategicReviewCycle @id triggered by findings"
+        },
+        {
+          "name": "validUntil",
+          "type": "xsd:date",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "mac:PESTELFactor",
+      "@type": "rdfs:Class",
+      "name": "PESTELFactor",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Individual factor within a PESTEL dimension. References existing orgctx:Trend entities and adds structured impact/probability scoring, time-to-impact, and strategic classification (opportunity vs threat). Factors can feed directly into SWOT external analysis via INDUSTRY-ONT.",
+      "oaa:properties": [
+        {
+          "name": "factorId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "dimension",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Political",
+            "Economic",
+            "Social",
+            "Technological",
+            "Environmental",
+            "Legal"
+          ]
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "trendRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to orgctx:Trend @id this factor enriches"
+        },
+        {
+          "name": "impactLevel",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Critical",
+            "High",
+            "Medium",
+            "Low"
+          ]
+        },
+        {
+          "name": "probability",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Probability of materializing (0.0-1.0)"
+        },
+        {
+          "name": "timeToImpact",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Imminent",
+            "NearTerm",
+            "MediumTerm",
+            "LongTerm"
+          ]
+        },
+        {
+          "name": "trend",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Accelerating",
+            "Stable",
+            "Decelerating",
+            "Emerging",
+            "Declining"
+          ]
+        },
+        {
+          "name": "strategicClassification",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Opportunity",
+            "Threat",
+            "Both",
+            "Neutral"
+          ]
+        },
+        {
+          "name": "affectedVSOMLayers",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Which VSOM layers this factor impacts: Vision, Strategy, Objectives, Metrics",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "swotFactorRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to ind:SWOTFactor @id this factor feeds"
+        },
+        {
+          "name": "evidenceSources",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Data sources supporting this factor",
+          "cardinality": "0..*"
+        }
+      ]
+    },
+    {
+      "@id": "mac:ScenarioSet",
+      "@type": "rdfs:Class",
+      "name": "ScenarioSet",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "A collection of 3-5 plausible future scenarios constructed across two critical uncertainties (2x2 matrix). Scenarios stress-test VSOM strategies for robustness — strategies that perform well across multiple scenarios are more resilient. The set identifies robust strategies (good across all scenarios) and hedging actions (valuable regardless of which scenario unfolds).",
+      "oaa:properties": [
+        {
+          "name": "scenarioSetId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "analysisDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "timeHorizon",
+          "type": "xsd:string",
+          "required": true,
+          "description": "How far ahead scenarios project (e.g. '2030', '5 years')"
+        },
+        {
+          "name": "uncertaintyAxisX",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Primary critical uncertainty dimension"
+        },
+        {
+          "name": "uncertaintyAxisY",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Secondary critical uncertainty dimension"
+        },
+        {
+          "name": "pestelAnalysisRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to mac:PESTELAnalysis @id that informed uncertainty selection"
+        },
+        {
+          "name": "robustStrategies",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to vsom:StrategyComponent @ids performing well across ALL scenarios",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "hedgingActions",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Actions to take regardless of which scenario unfolds",
+          "cardinality": "0..*"
+        }
+      ]
+    },
+    {
+      "@id": "mac:Scenario",
+      "@type": "rdfs:Class",
+      "name": "Scenario",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "A single plausible future with narrative, assumptions, early warning signals, and impact assessment on VSOM components. Positioned within the 2x2 uncertainty matrix. Each scenario assesses: is the current vision viable? Which strategies are effective? What new threats/opportunities emerge?",
+      "oaa:properties": [
+        {
+          "name": "scenarioId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "narrative",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Rich description of this plausible future"
+        },
+        {
+          "name": "quadrant",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Position on the 2x2 uncertainty matrix (e.g. 'High-X / High-Y')"
+        },
+        {
+          "name": "probability",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Estimated probability of this scenario (0.0-1.0, sum across set ≈ 1.0)"
+        },
+        {
+          "name": "keyAssumptions",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Assumptions that define this future",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "earlyWarningSignals",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Observable signals indicating this scenario is unfolding",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "pestelFactorRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to mac:PESTELFactor @ids amplified in this scenario",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "visionViability",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Reinforced",
+            "Challenged",
+            "Invalidated"
+          ],
+          "description": "Impact on current VSOM VisionComponent"
+        },
+        {
+          "name": "visionAdaptations",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How vision would need to adapt in this scenario",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "visionRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:VisionComponent @id being tested"
+        }
+      ]
+    },
+    {
+      "@id": "mac:ScenarioStrategyAssessment",
+      "@type": "rdfs:Class",
+      "name": "ScenarioStrategyAssessment",
+      "rdfs:subClassOf": "schema:Rating",
+      "description": "Assessment of how a specific VSOM strategy performs within a specific scenario. The combination of all assessments across scenarios reveals strategy robustness. Strategies with 'High' effectiveness across most scenarios are robust; those with mixed results need hedging or contingency.",
+      "oaa:properties": [
+        {
+          "name": "assessmentId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "scenarioRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to mac:Scenario @id"
+        },
+        {
+          "name": "strategyRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vsom:StrategyComponent @id being assessed"
+        },
+        {
+          "name": "effectiveness",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "High",
+            "Moderate",
+            "Low",
+            "Counterproductive"
+          ]
+        },
+        {
+          "name": "rationale",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Why this strategy performs at this level in this scenario"
+        },
+        {
+          "name": "requiredAdaptations",
+          "type": "xsd:string",
+          "required": false,
+          "description": "What changes the strategy would need in this scenario",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "contingencyActions",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Specific contingency actions for this strategy-scenario combination",
+          "cardinality": "0..*"
+        }
+      ]
+    },
+    {
+      "@id": "mac:FuturesFunnel",
+      "@type": "rdfs:Class",
+      "name": "FuturesFunnel",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Cone of plausibility from Possible → Plausible → Probable → Preferable futures. Maps directly to VSOM vision time horizons. The 'preferable' layer IS the strategic vision — it represents the future the organization chooses to pursue. The funnel narrows from wide (everything conceivable) to focused (the chosen future).",
+      "oaa:properties": [
+        {
+          "name": "funnelId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "timeHorizon",
+          "type": "xsd:string",
+          "required": true,
+          "description": "How far the funnel projects (e.g. '2035', '10 years')"
+        },
+        {
+          "name": "possibleFutures",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Wide cone — everything conceivable",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "plausibleFutures",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Could happen based on current knowledge",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "probableFutures",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Likely based on current trends",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "preferableFutures",
+          "type": "xsd:string",
+          "required": false,
+          "description": "The desired future — aligns to VSOM VisionComponent",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "scenarioSetRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to mac:ScenarioSet @id exploring the plausible range"
+        },
+        {
+          "name": "preferredVisionRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:VisionComponent @id — the preferable future IS the strategic vision"
+        }
+      ]
+    },
+    {
+      "@id": "mac:BackcastingPlan",
+      "@type": "rdfs:Class",
+      "name": "BackcastingPlan",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Works backward from a desired future state (VSOM VisionComponent) to identify required milestones, capabilities, and actions. The desired state IS the vision; milestones map to VSOM ObjectivesComponent; actions map to OKR Initiatives. Backcasting complements forecasting — instead of projecting forward from today, it reverse-engineers from the target future.",
+      "oaa:properties": [
+        {
+          "name": "planId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "desiredFutureStateRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vsom:VisionComponent @id — the future we're backcasting FROM"
+        },
+        {
+          "name": "targetYear",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Year of the desired future state"
+        },
+        {
+          "name": "currentYear",
+          "type": "xsd:integer",
+          "required": true
+        },
+        {
+          "name": "funnelRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to mac:FuturesFunnel @id if linked to futures analysis"
+        },
+        {
+          "name": "milestoneCount",
+          "type": "xsd:integer",
+          "required": false
+        },
+        {
+          "name": "criticalPathSummary",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Narrative summary of the critical path from future to present"
+        }
+      ]
+    },
+    {
+      "@id": "mac:BackcastMilestone",
+      "@type": "rdfs:Class",
+      "name": "BackcastMilestone",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A milestone in the backcasting plan — a required state that must be achieved by a specific year on the path from present to desired future. Each milestone maps to a VSOM ObjectivesComponent and identifies required capabilities and conditions.",
+      "oaa:properties": [
+        {
+          "name": "milestoneId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "targetYear",
+          "type": "xsd:integer",
+          "required": true
+        },
+        {
+          "name": "sequenceOrder",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Order from future (highest) to present (lowest)"
+        },
+        {
+          "name": "requiredCapabilities",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Capabilities that must be in place by this milestone",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "requiredConditions",
+          "type": "xsd:string",
+          "required": false,
+          "description": "External conditions needed",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "objectiveRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:ObjectivesComponent @id this milestone maps to"
+        },
+        {
+          "name": "dependsOnMilestoneRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to other BackcastMilestone @ids that must complete first",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "initiativeRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to okr:Initiative @ids driving this milestone",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Future",
+            "InProgress",
+            "Achieved",
+            "AtRisk"
+          ]
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "mac:conductedFor",
+      "@type": "owl:ObjectProperty",
+      "name": "Conducted For Context",
+      "description": "PESTEL analysis is conducted within an organization's context",
+      "domainIncludes": [
+        "mac:PESTELAnalysis"
+      ],
+      "rangeIncludes": [
+        "orgctx:OrganizationContext"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "mac:hasPESTELFactor",
+      "@type": "owl:ObjectProperty",
+      "name": "Has PESTEL Factor",
+      "description": "PESTEL analysis contains factors across six dimensions",
+      "domainIncludes": [
+        "mac:PESTELAnalysis"
+      ],
+      "rangeIncludes": [
+        "mac:PESTELFactor"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "mac:enrichesTrend",
+      "@type": "owl:ObjectProperty",
+      "name": "Enriches Trend",
+      "description": "PESTEL factor enriches an existing orgctx:Trend with structured scoring",
+      "domainIncludes": [
+        "mac:PESTELFactor"
+      ],
+      "rangeIncludes": [
+        "orgctx:Trend"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "mac:informsVision",
+      "@type": "owl:ObjectProperty",
+      "name": "Informs Vision",
+      "description": "PESTEL analysis informs VSOM vision by surfacing macro forces that shape the future",
+      "domainIncludes": [
+        "mac:PESTELAnalysis"
+      ],
+      "rangeIncludes": [
+        "vsom:VisionComponent"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "mac:triggersReview",
+      "@type": "owl:ObjectProperty",
+      "name": "Triggers Review",
+      "description": "High-impact PESTEL factors trigger VSOM strategic review cycle",
+      "domainIncludes": [
+        "mac:PESTELFactor"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategicReviewCycle"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "mac:feedsSWOTFactor",
+      "@type": "owl:ObjectProperty",
+      "name": "Feeds SWOT Factor",
+      "description": "PESTEL factor provides evidence for SWOT external factors (Opportunities/Threats)",
+      "domainIncludes": [
+        "mac:PESTELFactor"
+      ],
+      "rangeIncludes": [
+        "ind:SWOTFactor"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "INDUSTRY-ONT"
+    },
+    {
+      "@id": "mac:hasScenario",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Scenario",
+      "description": "Scenario set contains individual scenarios (3-5)",
+      "domainIncludes": [
+        "mac:ScenarioSet"
+      ],
+      "rangeIncludes": [
+        "mac:Scenario"
+      ],
+      "oaa:cardinality": "3..5"
+    },
+    {
+      "@id": "mac:stressTestsStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "Stress Tests Strategy",
+      "description": "Scenario set stress-tests VSOM strategies for robustness",
+      "domainIncludes": [
+        "mac:ScenarioSet"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategyComponent"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "mac:hasStrategyAssessment",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Strategy Assessment",
+      "description": "Scenario has strategy-scenario effectiveness assessments",
+      "domainIncludes": [
+        "mac:Scenario"
+      ],
+      "rangeIncludes": [
+        "mac:ScenarioStrategyAssessment"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "mac:assessesStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "Assesses Strategy In Scenario",
+      "description": "Strategy assessment evaluates a VSOM strategy within a scenario",
+      "domainIncludes": [
+        "mac:ScenarioStrategyAssessment"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategyComponent"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "mac:shapesVision",
+      "@type": "owl:ObjectProperty",
+      "name": "Shapes Vision",
+      "description": "Futures funnel preferable layer shapes VSOM vision — the preferable future IS the strategic vision",
+      "domainIncludes": [
+        "mac:FuturesFunnel"
+      ],
+      "rangeIncludes": [
+        "vsom:VisionComponent"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "mac:backcastsFrom",
+      "@type": "owl:ObjectProperty",
+      "name": "Backcasts From Vision",
+      "description": "Backcasting plan works backward from VSOM vision",
+      "domainIncludes": [
+        "mac:BackcastingPlan"
+      ],
+      "rangeIncludes": [
+        "vsom:VisionComponent"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "mac:hasMilestone",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Milestone",
+      "description": "Backcasting plan contains milestones from future to present",
+      "domainIncludes": [
+        "mac:BackcastingPlan"
+      ],
+      "rangeIncludes": [
+        "mac:BackcastMilestone"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "mac:milestoneAligns",
+      "@type": "owl:ObjectProperty",
+      "name": "Milestone Aligns To Objective",
+      "description": "Backcast milestone aligns to a VSOM strategic objective",
+      "domainIncludes": [
+        "mac:BackcastMilestone"
+      ],
+      "rangeIncludes": [
+        "vsom:ObjectivesComponent"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-MAC-001",
+      "name": "PESTEL Must Cover All Six Dimensions",
+      "condition": "IF a PESTELAnalysis is created",
+      "action": "THEN it MUST have at least one PESTELFactor in each of the six dimensions (Political, Economic, Social, Technological, Environmental, Legal)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-MAC-002",
+      "name": "PESTEL Factor Should Enrich Existing Trend",
+      "condition": "IF a PESTELFactor overlaps with an existing orgctx:Trend",
+      "action": "THEN trendRef SHOULD reference the existing Trend @id to avoid duplication",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-MAC-003",
+      "name": "Critical PESTEL Factor Triggers Review",
+      "condition": "IF a PESTELFactor has impactLevel 'Critical' and timeToImpact 'Imminent' or 'NearTerm'",
+      "action": "THEN a vsom:StrategicReviewCycle SHOULD be triggered",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-MAC-004",
+      "name": "Scenario Set Must Have 3-5 Scenarios",
+      "condition": "IF a ScenarioSet is created",
+      "action": "THEN it MUST contain between 3 and 5 Scenario instances",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-MAC-005",
+      "name": "Scenario Set Must Define Two Uncertainties",
+      "condition": "IF a ScenarioSet is created",
+      "action": "THEN uncertaintyAxisX and uncertaintyAxisY MUST be specified",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-MAC-006",
+      "name": "Each Scenario Must Assess Strategy",
+      "condition": "IF strategies are being stress-tested",
+      "action": "THEN each Scenario SHOULD have at least one ScenarioStrategyAssessment for each strategy being tested",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-MAC-007",
+      "name": "Scenario Probabilities Should Sum to ~1.0",
+      "condition": "IF Scenario.probability values are specified within a ScenarioSet",
+      "action": "THEN the sum of all scenario probabilities SHOULD approximately equal 1.0",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-MAC-008",
+      "name": "Futures Funnel Must Narrow",
+      "condition": "IF a FuturesFunnel is created",
+      "action": "THEN the count of items SHOULD decrease from possible to plausible to probable to preferable",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-MAC-009",
+      "name": "Backcasting Must Start From Vision",
+      "condition": "IF a BackcastingPlan is created",
+      "action": "THEN desiredFutureStateRef MUST reference a valid vsom:VisionComponent @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-MAC-010",
+      "name": "Backcasting Milestones Must Be Ordered",
+      "condition": "IF a BackcastingPlan has milestones",
+      "action": "THEN milestones MUST have sequenceOrder values forming a coherent reverse-chronological chain from targetYear to currentYear",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-MAC-011",
+      "name": "Milestone Dependencies Must Respect Order",
+      "condition": "IF a BackcastMilestone has dependsOnMilestoneRefs",
+      "action": "THEN referenced milestones MUST have earlier targetYear (closer to present)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-MAC-012",
+      "name": "Near-Term Milestones Should Have Initiatives",
+      "condition": "IF a BackcastMilestone has targetYear within 2 years of currentYear",
+      "action": "THEN initiativeRefs SHOULD reference executable okr:Initiative @ids",
+      "severity": "warning"
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-12",
+    "modifiedBy": "OAA v6.1.0 Agent",
+    "changeNotes": "Initial release of MACRO-ONT as part of VE-Series VSOM-SA (Strategy Analysis). Provides PESTEL environmental scanning, Scenario Planning with strategy stress-testing, Futures Funnel (cone of plausibility), and Backcasting (reverse-engineering from vision). PESTEL enriches existing orgctx:Trend entities. Feeds into VSOM VisionComponent and INDUSTRY-ONT SWOT external factors. Cross-references VSOM-ONT v3.0.0, INDUSTRY-ONT v1.0.0, ORG-CONTEXT-ONT v3.0.0, OKR-ONT v2.0.0.",
+    "versionHistory": []
+  },
+  "oaa:ontologyId": "MAC-ONT",
+  "oaa:series": "VE-Series / VSOM-SA",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of PESTELAnalysis within this ontology?",
+      "targetEntities": [
+        "mac:PESTELAnalysis"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of PESTELFactor within this ontology?",
+      "targetEntities": [
+        "mac:PESTELFactor"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of ScenarioSet within this ontology?",
+      "targetEntities": [
+        "mac:ScenarioSet"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of Scenario within this ontology?",
+      "targetEntities": [
+        "mac:Scenario"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of ScenarioStrategyAssessment within this ontology?",
+      "targetEntities": [
+        "mac:ScenarioStrategyAssessment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of FuturesFunnel within this ontology?",
+      "targetEntities": [
+        "mac:FuturesFunnel"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of BackcastingPlan within this ontology?",
+      "targetEntities": [
+        "mac:BackcastingPlan"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of BackcastMilestone within this ontology?",
+      "targetEntities": [
+        "mac:BackcastMilestone"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

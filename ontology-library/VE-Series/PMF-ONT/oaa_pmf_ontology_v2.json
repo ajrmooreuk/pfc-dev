@@ -1,0 +1,641 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@base": "https://baiv.ai/ontology/pmf-process/v2/",
+    "schema": "https://schema.org/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "pmf": "https://baiv.ai/ontology/pmf-process/v2/",
+    "org": "https://baiv.ai/ontology/organization/",
+    "okr": "https://baiv.ai/ontology/okr/",
+    "oaa": "https://baiv.ai/ontology/oaa-registry/",
+    "vsom": "https://baiv.ai/ontology/vsom/"
+  },
+  "@graph": [
+    {
+      "@id": "pmf:BAIV_PMF_Process_Ontology_v2",
+      "@type": "owl:Ontology",
+      "rdfs:label": "BAIV PMF Process Ontology v2.0.0",
+      "rdfs:comment": "OAA-compliant Product-Market Fit process ontology with organization bridging and registry integration",
+      "schema:version": "2.0.0",
+      "schema:dateCreated": "2025-01-20",
+      "schema:dateModified": "2025-01-20",
+      "schema:creator": "BAIV Ontology Architect Agent",
+      "oaa:registryId": "baiv:ontology:pmf-process-v2",
+      "oaa:registryStatus": "active",
+      "oaa:governanceLevel": "enterprise",
+      "owl:versionInfo": "PMF Process Ontology v2.0.0 - OAA Registry Compliant",
+      "pmf:purpose": "Enable systematic PMF achievement with multi-organization support and strategic alignment",
+      "pmf:schemaOrgAlignment": "85%",
+      "pmf:dependencies": [
+        "baiv:ontology:organization-v1",
+        "baiv:ontology:okr-v1",
+        "baiv:ontology:vsom-v1",
+        "baiv:ontology:oaa-registry-v1"
+      ]
+    },
+    {
+      "@id": "pmf:OrganizationContext",
+      "@type": "owl:Class",
+      "rdfs:label": "Organization Context",
+      "rdfs:comment": "Polymorphic organization entity supporting multiple organizational roles in PMF process",
+      "rdfs:subClassOf": "schema:Organization",
+      "oaa:schemaOrgBase": "schema:Organization",
+      "oaa:extensionRationale": "Extended to support multiple organizational roles and PMF context",
+      "pmf:organizationTypes": {
+        "platformOwner": {
+          "description": "Organization owning and operating the PMF platform",
+          "examples": ["BAIV", "AIR", "W4M"],
+          "role": "Platform provider and PMF framework implementer"
+        },
+        "targetCustomer": {
+          "description": "Prospective customer organization in PMF discovery phase",
+          "role": "Subject of customer discovery and problem validation research"
+        },
+        "actualClient": {
+          "description": "Active customer organization using product/service",
+          "role": "PMF validation and optimization participant"
+        },
+        "competitor": {
+          "description": "Competing organization in target market",
+          "role": "Competitive analysis and differentiation reference"
+        },
+        "supplyChainPartner": {
+          "description": "Partner organization in value delivery chain",
+          "role": "Ecosystem participant affecting PMF delivery"
+        },
+        "marketAnalog": {
+          "description": "Similar organization in adjacent or reference market",
+          "role": "Market validation and pattern recognition reference"
+        }
+      },
+      "pmf:requiredAttributes": {
+        "orgId": "Unique organization identifier linking to org:Organization",
+        "orgType": "One or more organization types from defined taxonomy",
+        "pmfRole": "Current role in PMF process",
+        "relationshipType": "Relationship to platform owner"
+      }
+    },
+    {
+      "@id": "pmf:OrganizationBridge",
+      "@type": "owl:Class",
+      "rdfs:label": "Organization Bridge Entity",
+      "rdfs:comment": "Bridging entity connecting OAA Organization Ontology to PMF Process",
+      "rdfs:subClassOf": "schema:Intangible",
+      "oaa:bridgePattern": "EntityBridge",
+      "pmf:bridgeFunction": "Maps organization entities from org:Organization to pmf:OrganizationContext while preserving referential integrity",
+      "pmf:attributes": {
+        "sourceOrgId": {
+          "type": "org:organizationId",
+          "description": "Foreign key to OAA Organization Ontology",
+          "constraint": "MUST exist in org:Organization registry",
+          "cardinality": "1..1"
+        },
+        "pmfContextId": {
+          "type": "pmf:contextId",
+          "description": "PMF-specific context identifier",
+          "constraint": "Unique within PMF process instance",
+          "cardinality": "1..1"
+        },
+        "bridgeMetadata": {
+          "establishedDate": "schema:Date",
+          "relationshipStrength": "enum[weak|moderate|strong]",
+          "dataFlowDirection": "enum[unidirectional|bidirectional]"
+        }
+      }
+    },
+    {
+      "@id": "pmf:StrategyBridge",
+      "@type": "owl:Class",
+      "rdfs:label": "Strategy Bridge Entity",
+      "rdfs:comment": "Connects organizational strategy/VSOM to PMF value proposition and product",
+      "rdfs:subClassOf": "schema:Plan",
+      "oaa:bridgePattern": "StrategyAlignment",
+      "pmf:bridgeFunction": "Links org:Strategy → vsom:VSOM → pmf:ValueProposition → pmf:Product chain",
+      "pmf:attributes": {
+        "strategyId": {
+          "type": "org:strategyId",
+          "description": "Foreign key to organizational strategy",
+          "constraint": "MUST exist in org:Strategy registry"
+        },
+        "vsomId": {
+          "type": "vsom:vsomId", 
+          "description": "Vision-Strategy-Objectives-Metrics identifier",
+          "constraint": "Links to VSOM framework"
+        },
+        "valuePropositionId": {
+          "type": "pmf:valuePropositionId",
+          "description": "Resulting value proposition from strategy",
+          "constraint": "Derived from strategic objectives"
+        }
+      }
+    },
+    {
+      "@id": "pmf:ProductBridge",
+      "@type": "owl:Class",
+      "rdfs:label": "Product Bridge Entity",
+      "rdfs:comment": "Connects value proposition to product implementation and PMF assessment",
+      "rdfs:subClassOf": "schema:Product",
+      "oaa:bridgePattern": "ProductAlignment",
+      "pmf:bridgeFunction": "Links pmf:ValueProposition → pmf:Product → pmf:PMFProcess chain",
+      "pmf:attributes": {
+        "valuePropositionId": {
+          "type": "pmf:valuePropositionId",
+          "description": "Parent value proposition",
+          "constraint": "MUST exist before product instantiation"
+        },
+        "productId": {
+          "type": "schema:productId",
+          "description": "Product identifier",
+          "constraint": "Unique within organization context"
+        },
+        "pmfProcessId": {
+          "type": "pmf:processId",
+          "description": "Associated PMF process instance",
+          "constraint": "One-to-many relationship (product can have multiple PMF cycles)"
+        }
+      }
+    },
+    {
+      "@id": "pmf:BusinessRules",
+      "@type": "owl:Class",
+      "rdfs:label": "PMF Business Rules Framework",
+      "rdfs:comment": "Comprehensive business rules governing PMF process execution and validation",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "oaa:ruleCategory": "ProcessGovernance",
+      "pmf:ruleCategories": {
+        "organizationRules": {
+          "OR-001": {
+            "rule": "Platform Owner MUST be identified before PMF process instantiation",
+            "severity": "ERROR",
+            "enforcement": "Pre-process validation"
+          },
+          "OR-002": {
+            "rule": "Target Customer organizations MUST have valid orgId from org:Organization",
+            "severity": "ERROR",
+            "enforcement": "Organization bridge creation"
+          },
+          "OR-003": {
+            "rule": "Competitor analysis REQUIRES minimum n competitor organizations identified",
+            "severity": "WARNING",
+            "enforcement": "Customer Discovery phase gate"
+          }
+        },
+        "strategyRules": {
+          "SR-001": {
+            "rule": "Value Proposition MUST trace to organizational VSOM",
+            "severity": "ERROR",
+            "enforcement": "Strategy bridge validation"
+          },
+          "SR-002": {
+            "rule": "Product development MUST align with strategic objectives from okr:OKR",
+            "severity": "ERROR",
+            "enforcement": "Solution Development phase gate"
+          },
+          "SR-003": {
+            "rule": "PMF metrics MUST cascade to organizational OKR key results",
+            "severity": "WARNING",
+            "enforcement": "PMF Testing phase"
+          }
+        },
+        "processRules": {
+          "PR-001": {
+            "rule": "Customer Discovery MUST complete before Problem Validation",
+            "severity": "ERROR",
+            "enforcement": "Phase sequencing validation"
+          },
+          "PR-002": {
+            "rule": "Sharpest Problems prioritization MUST be completed before MVP development",
+            "severity": "ERROR",
+            "enforcement": "Solution Development gate"
+          },
+          "PR-003": {
+            "rule": "3X-5X improvement validation MUST occur in PMF Testing phase",
+            "severity": "ERROR",
+            "enforcement": "PMF score calculation"
+          },
+          "PR-004": {
+            "rule": "Ellis Score >=w% AND Retention >=x% required for PMF achievement declaration",
+            "severity": "ERROR",
+            "enforcement": "PMF Testing completion gate"
+          }
+        },
+        "dataRules": {
+          "DR-001": {
+            "rule": "Customer interview count MUST be >=n per segment",
+            "severity": "WARNING",
+            "enforcement": "Customer Discovery completion"
+          },
+          "DR-002": {
+            "rule": "WTP analysis MUST cite Monetizing Innovation methodology",
+            "severity": "INFO",
+            "enforcement": "Problem Validation documentation"
+          },
+          "DR-003": {
+            "rule": "PMF metrics MUST be measured with >=m% statistical confidence",
+            "severity": "ERROR",
+            "enforcement": "All metric calculations"
+          }
+        }
+      }
+    },
+    {
+      "@id": "pmf:DependencyFramework",
+      "@type": "owl:Class",
+      "rdfs:label": "PMF Dependency Framework",
+      "rdfs:comment": "Defines all dependencies between PMF ontology and external ontologies",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "oaa:dependencyType": "CrossOntology",
+      "pmf:dependencies": {
+        "organizationOntology": {
+          "ontologyId": "baiv:ontology:organization-v1",
+          "dependencyType": "REQUIRED",
+          "entities": [
+            "org:Organization",
+            "org:Strategy", 
+            "org:OrganizationalUnit"
+          ],
+          "relationshipType": "foreignKey",
+          "constraint": "orgId MUST exist in org:Organization before PMF process creation"
+        },
+        "okrOntology": {
+          "ontologyId": "baiv:ontology:okr-v1",
+          "dependencyType": "REQUIRED",
+          "entities": [
+            "okr:Objective",
+            "okr:KeyResult",
+            "okr:OKRFramework"
+          ],
+          "relationshipType": "alignment",
+          "constraint": "PMF metrics SHOULD cascade to OKR key results"
+        },
+        "vsomOntology": {
+          "ontologyId": "baiv:ontology:vsom-v1",
+          "dependencyType": "REQUIRED",
+          "entities": [
+            "vsom:Vision",
+            "vsom:Strategy",
+            "vsom:Objective",
+            "vsom:Metric"
+          ],
+          "relationshipType": "strategyAlignment",
+          "constraint": "Value Proposition MUST derive from VSOM strategy"
+        },
+        "oaaRegistry": {
+          "ontologyId": "baiv:ontology:oaa-registry-v1",
+          "dependencyType": "REQUIRED",
+          "entities": [
+            "oaa:OntologyEntry",
+            "oaa:VersionControl",
+            "oaa:ChangeHistory"
+          ],
+          "relationshipType": "registration",
+          "constraint": "PMF ontology MUST be registered in OAA Registry before use"
+        }
+      }
+    },
+    {
+      "@id": "pmf:ConstraintFramework",
+      "@type": "owl:Class",
+      "rdfs:label": "PMF Constraint Framework",
+      "rdfs:comment": "Defines all constraints for PMF process execution and data integrity",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "oaa:constraintType": "DataIntegrity",
+      "pmf:constraints": {
+        "cardinalityConstraints": {
+          "CC-001": "Organization MUST have 1..1 orgId",
+          "CC-002": "Organization MAY have 0..* pmfProcesses",
+          "CC-003": "Product MUST have 1..1 valueProposition",
+          "CC-004": "PMFProcess MUST have 1..1 organization (platform owner)",
+          "CC-005": "PMFProcess MAY have 0..* targetCustomerOrgs",
+          "CC-006": "ValueProposition MUST have 1..1 strategy reference",
+          "CC-007": "SharpestProblem MUST have 1..1 prioritizationScore"
+        },
+        "referentialIntegrityConstraints": {
+          "RI-001": "orgId in pmf:OrganizationContext MUST exist in org:Organization",
+          "RI-002": "strategyId in pmf:StrategyBridge MUST exist in org:Strategy",
+          "RI-003": "vsomId in pmf:StrategyBridge MUST exist in vsom:VSOM",
+          "RI-004": "productId MUST be unique within organization scope",
+          "RI-005": "pmfProcessId MUST be unique globally"
+        },
+        "temporalConstraints": {
+          "TC-001": "CustomerDiscovery.startDate < ProblemValidation.startDate",
+          "TC-002": "ProblemValidation.endDate <= SolutionDevelopment.startDate",
+          "TC-003": "SolutionDevelopment.endDate <= PMFTesting.startDate",
+          "TC-004": "PMF Assessment timestamp MUST be <= current_timestamp",
+          "TC-005": "Version timestamp MUST be monotonically increasing"
+        },
+        "valueConstraints": {
+          "VC-001": "ellisScore MUST be decimal between 0.00 and 1.00",
+          "VC-002": "retentionRate MUST be decimal between 0.00 and 1.00",
+          "VC-003": "improvementMultiplier MUST be >= 3.0 for 3X-5X requirement",
+          "VC-004": "prioritizationScore MUST be positive integer",
+          "VC-005": "confidenceLevel MUST be decimal between 0.00 and 1.00"
+        }
+      }
+    },
+    {
+      "@id": "pmf:ProductMarketFit",
+      "@type": "owl:Class",
+      "rdfs:label": "Product-Market Fit",
+      "rdfs:comment": "OAA-compliant PMF definition with organization context and measurement framework",
+      "rdfs:subClassOf": "schema:Intangible",
+      "oaa:schemaOrgBase": "schema:Intangible",
+      "pmf:definition": "Product-Market Fit occurs when a product delivers significant value to a clearly defined market segment, evidenced by sustainable customer acquisition, high retention rates, strong user engagement, and customers' willingness to pay premium pricing",
+      "pmf:coreComponents": [
+        "Customer Problem Validation",
+        "Solution-Problem Fit Verification",
+        "Market Size Qualification", 
+        "Value Proposition Optimization",
+        "Customer Acquisition Scalability",
+        "Revenue Model Validation"
+      ],
+      "pmf:measurementCriteria": {
+        "ellisScore": ">=w% customers very disappointed if product unavailable",
+        "retentionRate": ">=x% monthly retention for activated users",
+        "netPromoterScore": ">=y NPS indicating strong advocacy",
+        "customerAcquisitionCost": "<z% of customer lifetime value",
+        "premiumPricing": ">=aa% price premium vs alternatives",
+        "organicGrowth": ">=bb% new customers from referrals"
+      },
+      "pmf:organizationContext": {
+        "platformOwner": "Organization implementing PMF process (BAIV, AIR, W4M)",
+        "targetMarket": "Customer organizations being analyzed",
+        "competitors": "Alternative solution providers",
+        "ecosystem": "Supply chain and partner organizations"
+      }
+    },
+    {
+      "@id": "pmf:PMFProcess",
+      "@type": "owl:Class",
+      "rdfs:label": "PMF Process",
+      "rdfs:comment": "Systematic OAA-governed methodology for achieving product-market fit",
+      "rdfs:subClassOf": "schema:DefinedProcess",
+      "oaa:schemaOrgBase": "schema:DefinedProcess",
+      "oaa:governanceFramework": "OAA Process Governance v1",
+      "pmf:processStages": [
+        "Customer Discovery",
+        "Problem Validation",
+        "Solution Development", 
+        "PMF Testing",
+        "PMF Optimization",
+        "PMF Maintenance"
+      ],
+      "pmf:organizationBindings": {
+        "platformOwner": {
+          "required": true,
+          "cardinality": "1..1",
+          "constraint": "MUST be identified before process instantiation"
+        },
+        "targetCustomers": {
+          "required": true,
+          "cardinality": "1..*",
+          "constraint": "Minimum n organizations for valid market analysis"
+        },
+        "competitors": {
+          "required": true,
+          "cardinality": "1..*",
+          "constraint": "Required for competitive analysis in Customer Discovery"
+        },
+        "partners": {
+          "required": false,
+          "cardinality": "0..*",
+          "constraint": "Optional supply chain context"
+        }
+      }
+    },
+    {
+      "@id": "pmf:CustomerDiscovery",
+      "@type": "owl:Class",
+      "rdfs:label": "Customer Discovery",
+      "rdfs:comment": "Phase 1: Systematic identification and analysis using three-layer framework",
+      "rdfs:subClassOf": "pmf:PMFProcess",
+      "pmf:duration": "[x weeks]",
+      "pmf:phaseNumber": 1,
+      "pmf:organizationRoles": {
+        "platformOwner": "Executes discovery process",
+        "targetCustomers": "Subject of research and interviews",
+        "competitors": "Analyzed for alternative solutions",
+        "marketAnalogs": "Reference for market validation"
+      },
+      "pmf:heuristicRules": {
+        "threeLayerFramework": {
+          "layer1": "Business Layer - CX and Monetization Model",
+          "layer2": "Solution Layer - Product form/function solving problems",
+          "layer3": "Technology Layer - Core infrastructure and capabilities"
+        },
+        "improvementThreshold": "3X-5X better than current solutions",
+        "prioritization": "Sharpest Problems First (2x2 matrix)"
+      },
+      "pmf:keyQuestions": {
+        "section11": "Key Questions to Ask Team",
+        "section131": "What are the alternatives? (Competitors)",
+        "section132": "How prevalent is the problem? (Market size, growth, frequency)",
+        "section14": "What is potential value? (WTP from Monetizing Innovation)"
+      },
+      "pmf:deliverables": [
+        "ICP with orgId mappings",
+        "Customer Journey Maps with org context",
+        "Sharpest Problems Matrix",
+        "Competitive Analysis (competitor orgs)",
+        "Market Size Assessment",
+        "3X-5X Improvement Opportunities"
+      ],
+      "pmf:successCriteria": ">=n validated interviews with orgId-mapped organizations",
+      "oaa:validationRules": ["OR-002", "OR-003", "DR-001"]
+    },
+    {
+      "@id": "pmf:ProblemValidation",
+      "@type": "owl:Class",
+      "rdfs:label": "Problem Validation",
+      "rdfs:comment": "Phase 2: Verify sharpest problems with WTP analysis and 3X-5X validation",
+      "rdfs:subClassOf": "pmf:PMFProcess",
+      "pmf:duration": "[y weeks]",
+      "pmf:phaseNumber": 2,
+      "pmf:organizationRoles": {
+        "platformOwner": "Conducts WTP research",
+        "targetCustomers": "Provides WTP and problem severity data",
+        "competitors": "Benchmark for 3X-5X improvement gap"
+      },
+      "pmf:willingnessToPayAnalysis": {
+        "methodology": "9 Rules of Pricing framework",
+        "citation": "Monetizing Innovation by Madhavan Ramanujam and Georg Tacke",
+        "approach": "Value-based pricing research"
+      },
+      "pmf:deliverables": [
+        "Problem Validation Report with orgId context",
+        "Sharpest Problems Prioritization",
+        "WTP Analysis citing Monetizing Innovation",
+        "3X-5X Improvement Gap Analysis vs competitors",
+        "Latent Demand Assessment"
+      ],
+      "pmf:successCriteria": ">=p% of target orgs rate as critical + confirmed WTP",
+      "oaa:validationRules": ["PR-001", "DR-002", "SR-001"]
+    },
+    {
+      "@id": "pmf:SolutionDevelopment",
+      "@type": "owl:Class",
+      "rdfs:label": "Solution Development",
+      "rdfs:comment": "Phase 3: Build MVP targeting sharpest problems with 3X-5X improvement",
+      "rdfs:subClassOf": "pmf:PMFProcess",
+      "pmf:duration": "[z weeks]",
+      "pmf:phaseNumber": 3,
+      "pmf:organizationRoles": {
+        "platformOwner": "Develops MVP",
+        "targetCustomers": "Provides feedback and testing",
+        "partners": "May contribute to solution components"
+      },
+      "pmf:strategicAlignment": {
+        "vsomLink": "Solution MUST align with vsom:Strategy",
+        "valuePropositionLink": "Features derive from pmf:ValueProposition",
+        "okrLink": "Development OKRs cascade from org OKRs"
+      },
+      "pmf:deliverables": [
+        "MVP with orgId attribution",
+        "Feature Specs with 3X-5X rationale",
+        "User Testing Results from target orgs",
+        "Technical Architecture",
+        "Product Roadmap aligned with strategy"
+      ],
+      "pmf:successCriteria": "MVP demonstrates 3X-5X with >=q% satisfaction",
+      "oaa:validationRules": ["PR-002", "SR-002"]
+    },
+    {
+      "@id": "pmf:PMFTesting",
+      "@type": "owl:Class",
+      "rdfs:label": "PMF Testing",
+      "rdfs:comment": "Phase 4: Measure PMF with org-segmented metrics",
+      "rdfs:subClassOf": "pmf:PMFProcess",
+      "pmf:duration": "[a weeks]",
+      "pmf:phaseNumber": 4,
+      "pmf:organizationRoles": {
+        "platformOwner": "Analyzes PMF metrics",
+        "actualClients": "Provide usage and satisfaction data",
+        "targetCustomers": "Beta testing and early validation"
+      },
+      "pmf:metricsByOrgType": {
+        "actualClients": ["Retention", "NPS", "Usage Depth"],
+        "targetCustomers": ["Ellis Score", "WTP Confirmation"],
+        "aggregate": ["Market Share", "Organic Growth"]
+      },
+      "pmf:deliverables": [
+        "PMF Score Dashboard by org type",
+        "Retention Analysis by org segment",
+        "3X-5X Validation Report",
+        "Usage Analytics by org"
+      ],
+      "pmf:successCriteria": "Ellis >=r% + Retention >=s% + 3X-5X validated",
+      "oaa:validationRules": ["PR-003", "PR-004", "SR-003"]
+    },
+    {
+      "@id": "pmf:PMFOptimization",
+      "@type": "owl:Class",
+      "rdfs:label": "PMF Optimization",
+      "rdfs:comment": "Phase 5: Continuous improvement maintaining 3X-5X advantage",
+      "rdfs:subClassOf": "pmf:PMFProcess",
+      "pmf:duration": "[Ongoing]",
+      "pmf:phaseNumber": 5,
+      "pmf:organizationRoles": {
+        "platformOwner": "Executes optimization cycles",
+        "actualClients": "Feedback and usage data",
+        "competitors": "Benchmark for maintaining advantage"
+      },
+      "pmf:deliverables": [
+        "A/B Test Results by org segment",
+        "Pricing Optimization using WTP",
+        "Feature Impact Analysis",
+        "Market Expansion Strategy"
+      ],
+      "pmf:successCriteria": ">=t% quarterly improvement maintaining 3X-5X"
+    },
+    {
+      "@id": "pmf:PMFMaintenance",
+      "@type": "owl:Class",
+      "rdfs:label": "PMF Maintenance",
+      "rdfs:comment": "Phase 6: Monitor and preserve PMF across org ecosystem",
+      "rdfs:subClassOf": "pmf:PMFProcess",
+      "pmf:duration": "[Continuous]",
+      "pmf:phaseNumber": 6,
+      "pmf:organizationRoles": {
+        "platformOwner": "Continuous monitoring",
+        "actualClients": "Health tracking",
+        "competitors": "Threat monitoring",
+        "marketAnalogs": "Trend identification"
+      },
+      "pmf:deliverables": [
+        "Market Intelligence by org type",
+        "Competitive Analysis Updates",
+        "Customer Health by org segment",
+        "Strategic Adaptation Plans"
+      ],
+      "pmf:successCriteria": "Metrics maintained >=u months adapting to evolving problems"
+    },
+    {
+      "@id": "pmf:OAARegistryEntry",
+      "@type": "owl:Class",
+      "rdfs:label": "OAA Registry Entry for PMF Ontology",
+      "rdfs:comment": "Metadata entry in OAA Ontology Schema Registry",
+      "rdfs:subClassOf": "oaa:OntologyEntry",
+      "oaa:registryMetadata": {
+        "ontologyId": "baiv:ontology:pmf-process-v2",
+        "version": "2.0.0",
+        "status": "active",
+        "domain": "Product Management",
+        "subDomains": ["Product-Market Fit", "Customer Discovery", "Value Proposition"],
+        "entityCount": 45,
+        "relationshipCount": 28,
+        "businessRuleCount": 18,
+        "dependencyCount": 4,
+        "schemaOrgAlignment": 85,
+        "qualityMetrics": {
+          "entityReuseRate": 82,
+          "validationPassRate": 98,
+          "documentationCompleteness": 96,
+          "namingConventionCompliance": 100
+        },
+        "consumers": [
+          "BAIV Platform",
+          "AIR Platform",
+          "W4M Platform"
+        ],
+        "maintainers": [
+          "BAIV Ontology Team",
+          "Product Management Team"
+        ]
+      }
+    }
+  ],
+  "pmf:changeHistory": {
+    "v2.0.0": {
+      "date": "2025-01-20",
+      "type": "MAJOR",
+      "changes": [
+        "Added OAA compliance and registry integration",
+        "Introduced polymorphic Organization entity with multiple roles",
+        "Created bridging entities (OrganizationBridge, StrategyBridge, ProductBridge)",
+        "Implemented comprehensive business rules framework",
+        "Added dependency and constraint frameworks",
+        "Linked to OAA Organization Ontology via orgId",
+        "Integrated VSOM strategic alignment",
+        "Connected to OKR framework for metrics cascade",
+        "Enhanced with OAA governance and validation rules"
+      ],
+      "breakingChanges": [
+        "Organization entity restructured - migration required",
+        "New mandatory orgId field - existing data requires orgId assignment",
+        "Business rules enforcement - may flag previously valid processes"
+      ],
+      "migrationGuide": "See BAIV_PMF_v1_to_v2_Migration_Guide.md"
+    },
+    "v1.2.0": {
+      "date": "2025-01-20",
+      "type": "MINOR",
+      "changes": [
+        "Added three-layer framework",
+        "Introduced sharpest problems prioritization",
+        "Added WTP methodology with Monetizing Innovation citation",
+        "Parameterized duration and thresholds"
+      ]
+    }
+  }
+}

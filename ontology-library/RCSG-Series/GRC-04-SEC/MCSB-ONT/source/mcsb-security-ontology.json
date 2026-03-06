@@ -1,0 +1,691 @@
+{
+  "@context": {
+    "schema": "https://schema.org/",
+    "mcsb": "https://ontology.pf-core.ai/mcsb/",
+    "security": "https://ontology.pf-core.ai/security/",
+    "compliance": "https://ontology.pf-core.ai/compliance/",
+    "mitre": "https://attack.mitre.org/"
+  },
+  "@type": "mcsb:MCSBSecurityOntology",
+  "version": "1.0.0",
+  "description": "Microsoft Cloud Security Benchmark v2 ontology for AI workloads readiness assessment - W4M-RCS PF-Instance",
+  
+  "metadata": {
+    "version": "1.0.0",
+    "created": "2026-01-23",
+    "platform": "PF-Core",
+    "instance": "W4M-RCS",
+    "oaaRegistryVersion": "3.0.0",
+    "schemaOrgGrounded": true,
+    "changeLog": {
+      "1.0.0": {
+        "date": "2026-01-23",
+        "changes": [
+          "Initial MCSB v2 ontology creation",
+          "AI Security domain with 7 controls",
+          "Compliance framework mappings (NIST, ISO, PCI, CIS)",
+          "MITRE ATT&CK/ATLAS threat mappings",
+          "Readiness assessment framework"
+        ]
+      }
+    }
+  },
+
+  "securityDomains": {
+    "@type": "mcsb:SecurityDomainRegistry",
+    "description": "MCSB v2 security domains organized by function",
+    
+    "domains": [
+      {
+        "@type": "mcsb:SecurityDomain",
+        "domainId": "AI",
+        "name": "Artificial Intelligence Security",
+        "abbreviation": "AI",
+        "description": "Security controls specific to AI platform, application, and monitoring",
+        "isNew": true,
+        "version": "v2",
+        "pillars": [
+          {
+            "name": "AI Platform Security",
+            "focus": "Protecting underlying infrastructure, models, and training data",
+            "controls": ["AI-1"]
+          },
+          {
+            "name": "AI Application Security",
+            "focus": "Securing AI applications throughout lifecycle",
+            "controls": ["AI-2", "AI-3", "AI-4", "AI-5"]
+          },
+          {
+            "name": "Monitor & Respond",
+            "focus": "Continuous monitoring and threat detection",
+            "controls": ["AI-6", "AI-7"]
+          }
+        ]
+      },
+      {
+        "@type": "mcsb:SecurityDomain",
+        "domainId": "NS",
+        "name": "Network Security",
+        "abbreviation": "NS",
+        "description": "Virtual network configuration, traffic protection, and network-based threat detection"
+      },
+      {
+        "@type": "mcsb:SecurityDomain",
+        "domainId": "IM",
+        "name": "Identity Management",
+        "abbreviation": "IM",
+        "description": "Authentication, authorization, and identity protection"
+      },
+      {
+        "@type": "mcsb:SecurityDomain",
+        "domainId": "PA",
+        "name": "Privileged Access",
+        "abbreviation": "PA",
+        "description": "Privileged identity management and access controls"
+      },
+      {
+        "@type": "mcsb:SecurityDomain",
+        "domainId": "DP",
+        "name": "Data Protection",
+        "abbreviation": "DP",
+        "description": "Encryption, key management, and data loss prevention"
+      },
+      {
+        "@type": "mcsb:SecurityDomain",
+        "domainId": "AM",
+        "name": "Asset Management",
+        "abbreviation": "AM",
+        "description": "Resource inventory, tagging, and governance"
+      },
+      {
+        "@type": "mcsb:SecurityDomain",
+        "domainId": "LT",
+        "name": "Logging & Threat Detection",
+        "abbreviation": "LT",
+        "description": "Centralized logging, alerting, and SIEM integration"
+      },
+      {
+        "@type": "mcsb:SecurityDomain",
+        "domainId": "IR",
+        "name": "Incident Response",
+        "abbreviation": "IR",
+        "description": "Playbooks, automation, and escalation workflows"
+      },
+      {
+        "@type": "mcsb:SecurityDomain",
+        "domainId": "PV",
+        "name": "Posture & Vulnerability Management",
+        "abbreviation": "PV",
+        "description": "Continuous security assessment and vulnerability management"
+      },
+      {
+        "@type": "mcsb:SecurityDomain",
+        "domainId": "ES",
+        "name": "Endpoint Security",
+        "abbreviation": "ES",
+        "description": "Endpoint detection and response"
+      },
+      {
+        "@type": "mcsb:SecurityDomain",
+        "domainId": "BC",
+        "name": "Backup & Recovery",
+        "abbreviation": "BC",
+        "description": "Business continuity and disaster recovery"
+      },
+      {
+        "@type": "mcsb:SecurityDomain",
+        "domainId": "DS",
+        "name": "DevOps Security",
+        "abbreviation": "DS",
+        "description": "Secure development and deployment practices"
+      }
+    ]
+  },
+
+  "aiSecurityControls": {
+    "@type": "mcsb:AISecurityControlSet",
+    "description": "The 7 AI Security controls from MCSB v2",
+    
+    "controls": [
+      {
+        "@type": "mcsb:SecurityControl",
+        "controlId": "AI-1",
+        "name": "Ensure use of approved models",
+        "domain": "AI",
+        "pillar": "AI Platform Security",
+        "criticality": "must_have",
+        "securityPrinciple": "Only deploy AI models that have been formally approved through a trusted verification process, ensuring they meet security, compliance, and operational requirements before production use.",
+        "risksToMitigate": [
+          "Supply chain attacks through compromised third-party models",
+          "Deployment of malicious or backdoored models",
+          "Lack of model traceability and accountability"
+        ],
+        "mitreMappings": [
+          {
+            "id": "AML.T0050",
+            "name": "Backdoor Model",
+            "description": "Adversaries embed backdoors in AI models"
+          },
+          {
+            "id": "AML.T0020",
+            "name": "Compromise Model Supply Chain",
+            "description": "Poisoned models uploaded to marketplaces"
+          },
+          {
+            "id": "T1195",
+            "name": "Supply Chain Compromise",
+            "description": "Compromise AI components like libraries or datasets"
+          }
+        ],
+        "implementationGuidance": {
+          "keyActions": [
+            "Deploy centralized model registry",
+            "Integrate automated security validation",
+            "Enforce role-based access control",
+            "Establish approval workflows",
+            "Maintain audit trails"
+          ],
+          "azureServices": [
+            "Azure Machine Learning model registry",
+            "Microsoft Entra ID RBAC",
+            "Azure Monitor"
+          ]
+        },
+        "complianceMappings": {
+          "nist_800_53": ["SA-3", "SA-10", "SA-15"],
+          "pci_dss_v4": ["6.3.2", "6.5.5"],
+          "cis_v8": ["16.7"],
+          "nist_csf_v2": ["ID.SC-04", "GV.SC-06"],
+          "iso_27001_2022": ["A.5.19", "A.5.20"],
+          "soc2": ["CC7.1"]
+        }
+      },
+      {
+        "@type": "mcsb:SecurityControl",
+        "controlId": "AI-2",
+        "name": "Implement multi-layered content filtering",
+        "domain": "AI",
+        "pillar": "AI Application Security",
+        "criticality": "must_have",
+        "securityPrinciple": "Implement comprehensive content validation and filtering across all stages of AI interaction to detect and block malicious content, adversarial inputs, and harmful outputs.",
+        "risksToMitigate": [
+          "Prompt injection attacks",
+          "Harmful content in inputs and outputs",
+          "Data poisoning during training or fine-tuning"
+        ],
+        "mitreMappings": [
+          {
+            "id": "AML.T0011",
+            "name": "Prompt Injection",
+            "description": "Crafting malicious prompts to bypass controls"
+          },
+          {
+            "id": "AML.T0013",
+            "name": "LLM Jailbreak",
+            "description": "Bypassing LLM security controls"
+          },
+          {
+            "id": "AML.T0022",
+            "name": "Data Poisoning",
+            "description": "Introducing malicious data during training"
+          }
+        ],
+        "implementationGuidance": {
+          "layers": [
+            {
+              "name": "Input Filtering",
+              "actions": ["Content moderation", "Input sanitization", "API gateway controls"]
+            },
+            {
+              "name": "Internal Processing",
+              "actions": ["Model monitoring", "Runtime security scanning", "Robustness testing"]
+            },
+            {
+              "name": "Output Filtering",
+              "actions": ["Response filtering", "Policy validation", "Audit logging"]
+            }
+          ],
+          "azureServices": [
+            "Azure AI Content Safety",
+            "Azure Machine Learning pipelines",
+            "Azure API Management",
+            "Azure Defender for Cloud"
+          ]
+        },
+        "complianceMappings": {
+          "nist_800_53": ["SI-3", "SI-4", "AC-2"],
+          "pci_dss_v4": ["6.4.3", "11.6.1"],
+          "cis_v8": ["8.3", "13.2"],
+          "nist_csf_v2": ["PR.DS-05", "DE.CM-04"],
+          "iso_27001_2022": ["A.8.16", "A.8.7"],
+          "soc2": ["CC7.2"]
+        }
+      },
+      {
+        "@type": "mcsb:SecurityControl",
+        "controlId": "AI-3",
+        "name": "Adopt safety meta-prompts",
+        "domain": "AI",
+        "pillar": "AI Application Security",
+        "criticality": "must_have",
+        "securityPrinciple": "Use safety meta-prompts or system instructions to guide AI models toward intended, secure, and ethical behavior while enhancing resistance to prompt injection attacks.",
+        "risksToMitigate": [
+          "Prompt injection attacks overriding model behavior",
+          "Jailbreaking to bypass restrictions",
+          "Generation of harmful or unethical outputs"
+        ],
+        "mitreMappings": [
+          {
+            "id": "AML.T0051",
+            "name": "LLM Prompt Injection",
+            "description": "Manipulating LLM by overriding system prompts"
+          },
+          {
+            "id": "AML.T0054",
+            "name": "LLM Jailbreak - Direct",
+            "description": "Crafting inputs to bypass safety protocols"
+          },
+          {
+            "id": "AML.T0024",
+            "name": "Execute Unauthorized Commands",
+            "description": "Using prompt injection for unauthorized actions"
+          }
+        ],
+        "implementationGuidance": {
+          "keyActions": [
+            "Design explicit role definitions",
+            "Embed prompts in system context",
+            "Validate prompt effectiveness",
+            "Configure prompt prioritization",
+            "Implement input validation layers",
+            "Conduct adversarial testing",
+            "Use spotlighting techniques"
+          ],
+          "azureServices": [
+            "Azure Machine Learning",
+            "Microsoft Prompt Shields",
+            "Azure Monitor",
+            "PYRIT"
+          ]
+        },
+        "complianceMappings": {
+          "nist_800_53": ["SA-8", "SI-16"],
+          "pci_dss_v4": ["6.5.1", "6.5.10"],
+          "cis_v8": ["18.5"],
+          "nist_csf_v2": ["PR.IP-03", "PR.AT-01"],
+          "iso_27001_2022": ["A.8.28", "A.8.15"],
+          "soc2": ["CC8.1"]
+        }
+      },
+      {
+        "@type": "mcsb:SecurityControl",
+        "controlId": "AI-4",
+        "name": "Apply least privilege for agent functions",
+        "domain": "AI",
+        "pillar": "AI Application Security",
+        "criticality": "must_have",
+        "securityPrinciple": "Restrict the capabilities and access permissions of agent functions or plugins to the minimum required for their intended purpose.",
+        "risksToMitigate": [
+          "Privilege escalation through overpermissioned agents",
+          "Unauthorized data access via plugins",
+          "Lateral movement through compromised functions"
+        ],
+        "mitreMappings": [
+          {
+            "id": "T1078",
+            "name": "Valid Accounts",
+            "description": "Exploiting overly privileged AI agent accounts"
+          },
+          {
+            "id": "T1570",
+            "name": "Lateral Movement",
+            "description": "Using excessive AI agent privileges"
+          },
+          {
+            "id": "T1567",
+            "name": "Exfiltration",
+            "description": "Extracting data via overly privileged functions"
+          }
+        ],
+        "implementationGuidance": {
+          "keyActions": [
+            "Capability restriction via manifests",
+            "Sandboxed execution environments",
+            "RBAC/ABAC access control",
+            "Token-based authentication with scoping",
+            "Network segmentation",
+            "Comprehensive logging and auditing"
+          ],
+          "azureServices": [
+            "Microsoft Entra Agent ID",
+            "Azure API Management",
+            "Azure Functions (isolated)",
+            "Azure Key Vault",
+            "Azure Virtual Network"
+          ]
+        },
+        "complianceMappings": {
+          "nist_800_53": ["AC-6", "AC-3", "CM-7"],
+          "pci_dss_v4": ["7.2.1", "7.3.1"],
+          "cis_v8": ["5.4", "6.8"],
+          "nist_csf_v2": ["PR.AC-04", "PR.PT-03"],
+          "iso_27001_2022": ["A.5.15", "A.8.3"],
+          "soc2": ["CC6.3"]
+        }
+      },
+      {
+        "@type": "mcsb:SecurityControl",
+        "controlId": "AI-5",
+        "name": "Ensure human-in-the-loop",
+        "domain": "AI",
+        "pillar": "AI Application Security",
+        "criticality": "must_have",
+        "securityPrinciple": "Implement human review and approval for critical actions or decisions taken by the AI application, especially when interacting with external systems or sensitive data.",
+        "risksToMitigate": [
+          "Erroneous or hallucinated AI outputs causing harm",
+          "Unauthorized system interactions without validation",
+          "Adversarial exploitation without human checkpoint"
+        ],
+        "mitreMappings": [
+          {
+            "id": "AML.TA0010",
+            "name": "Exfiltration",
+            "description": "Human approval prevents unauthorized data outflows"
+          },
+          {
+            "id": "AML.TA0009",
+            "name": "Impact",
+            "description": "Human-in-the-loop mitigates harmful outcomes"
+          }
+        ],
+        "implementationGuidance": {
+          "keyActions": [
+            "Define critical actions requiring review",
+            "Establish approval mechanisms",
+            "Train reviewers on AI behavior and risks",
+            "Optimize review processes for efficiency",
+            "Incorporate feedback loops",
+            "Secure HITL interfaces",
+            "Conduct regular testing"
+          ],
+          "azureServices": [
+            "Azure Logic Apps",
+            "Power Automate",
+            "Azure Monitor",
+            "Microsoft Entra ID",
+            "PYRIT"
+          ]
+        },
+        "complianceMappings": {
+          "nist_800_53": ["IA-9", "AC-2", "AU-6"],
+          "pci_dss_v4": ["10.2.2", "12.10.1"],
+          "cis_v8": ["6.7", "8.11"],
+          "nist_csf_v2": ["PR.AC-07", "DE.AE-02"],
+          "iso_27001_2022": ["A.5.17", "A.6.8"],
+          "soc2": ["CC6.1"]
+        }
+      },
+      {
+        "@type": "mcsb:SecurityControl",
+        "controlId": "AI-6",
+        "name": "Establish monitoring and detection",
+        "domain": "AI",
+        "pillar": "Monitor & Respond",
+        "criticality": "must_have",
+        "securityPrinciple": "Implement robust monitoring solutions to detect suspicious activity, investigate risks, identify jailbreak attempts, and correlate findings with threat intelligence.",
+        "risksToMitigate": [
+          "Undetected jailbreaking and prompt injection",
+          "Data exfiltration through AI interactions",
+          "Anomalous behavior indicating attacks or misconfig"
+        ],
+        "mitreMappings": [
+          {
+            "id": "AML.TA0001",
+            "name": "Initial Access",
+            "description": "Identifying compromised credentials or unauthorized API calls"
+          },
+          {
+            "id": "AML.TA0010",
+            "name": "Exfiltration",
+            "description": "Identifying unauthorized data transfers"
+          },
+          {
+            "id": "AML.TA0009",
+            "name": "Impact",
+            "description": "Detecting harmful outcomes or system disruptions"
+          }
+        ],
+        "implementationGuidance": {
+          "keyActions": [
+            "Implement AI-specific threat detection",
+            "Enable real-time behavioral monitoring",
+            "Deploy data security monitoring",
+            "Integrate threat intelligence",
+            "Implement anomaly detection",
+            "Centralize logging and analysis",
+            "Automate alerting and escalation",
+            "Conduct regular testing and validation"
+          ],
+          "azureServices": [
+            "Microsoft Defender for AI Services",
+            "Azure Machine Learning model monitoring",
+            "Microsoft Purview",
+            "Azure Sentinel",
+            "Azure AI Anomaly Detector",
+            "Azure Log Analytics",
+            "Azure Monitor"
+          ]
+        },
+        "complianceMappings": {
+          "nist_800_53": ["SI-4", "AU-6", "IR-4"],
+          "pci_dss_v4": ["10.6.2", "11.5.1"],
+          "cis_v8": ["8.5", "13.1"],
+          "nist_csf_v2": ["DE.CM-01", "DE.AE-03"],
+          "iso_27001_2022": ["A.8.16", "A.8.15"],
+          "soc2": ["CC7.2"]
+        }
+      },
+      {
+        "@type": "mcsb:SecurityControl",
+        "controlId": "AI-7",
+        "name": "Perform continuous AI Red Teaming",
+        "domain": "AI",
+        "pillar": "Monitor & Respond",
+        "criticality": "must_have",
+        "securityPrinciple": "Proactively test AI systems using adversarial techniques to discover vulnerabilities, adversarial paths, and potential harmful outcomes.",
+        "risksToMitigate": [
+          "Undiscovered prompt injection vulnerabilities",
+          "Adversarial examples causing misclassification",
+          "Jailbreaking techniques bypassing safeguards"
+        ],
+        "mitreMappings": [
+          {
+            "id": "AML.TA0001",
+            "name": "Initial Access",
+            "description": "Simulating prompt injection or jailbreaking"
+          },
+          {
+            "id": "AML.TA0010",
+            "name": "Exfiltration",
+            "description": "Simulating data leakage through inference attacks"
+          },
+          {
+            "id": "AML.TA0009",
+            "name": "Impact",
+            "description": "Assessing potential for harmful outcomes"
+          }
+        ],
+        "implementationGuidance": {
+          "keyActions": [
+            "Define red teaming objectives",
+            "Leverage specialized tools (PYRIT, Azure AI Red Teaming Agent)",
+            "Integrate open-source frameworks (ART, MITRE ATLAS)",
+            "Simulate real-world adversarial scenarios",
+            "Integrate with CI/CD pipelines",
+            "Involve cross-functional teams",
+            "Monitor and analyze results",
+            "Iterate and remediate vulnerabilities",
+            "Adopt continuous testing cadence"
+          ],
+          "azureServices": [
+            "Azure AI Red Teaming Agent",
+            "PYRIT",
+            "Azure DevOps",
+            "GitHub Actions",
+            "Azure Monitor",
+            "Azure Sentinel",
+            "Azure Blob Storage"
+          ]
+        },
+        "complianceMappings": {
+          "nist_800_53": ["CA-8", "SI-2", "RA-5"],
+          "pci_dss_v4": ["11.4.1", "11.4.7"],
+          "cis_v8": ["15.1", "18.5"],
+          "nist_csf_v2": ["ID.RA-01", "RS.AN-03"],
+          "iso_27001_2022": ["A.8.8", "A.5.7"],
+          "soc2": ["CC7.1"]
+        }
+      }
+    ]
+  },
+
+  "readinessAssessment": {
+    "@type": "mcsb:ReadinessAssessmentFramework",
+    "description": "Framework for assessing AI workloads readiness",
+    
+    "assessmentPhases": [
+      {
+        "phase": 1,
+        "name": "Discovery",
+        "activities": [
+          "Asset inventory",
+          "Workload classification",
+          "Security baseline identification"
+        ]
+      },
+      {
+        "phase": 2,
+        "name": "Control Assessment",
+        "activities": [
+          "AI Security controls evaluation (AI-1 to AI-7)",
+          "Platform controls assessment (NS, IM, DP)",
+          "Governance controls review (AM, GS)"
+        ]
+      },
+      {
+        "phase": 3,
+        "name": "Gap Analysis",
+        "activities": [
+          "Compliance score calculation",
+          "Control gap identification",
+          "Risk-based prioritization"
+        ]
+      },
+      {
+        "phase": 4,
+        "name": "Reporting",
+        "activities": [
+          "Readiness report generation",
+          "Remediation roadmap creation",
+          "Compliance evidence packaging"
+        ]
+      }
+    ],
+    
+    "scoringModel": {
+      "domainWeights": {
+        "AI_Security": 0.30,
+        "Data_Protection": 0.20,
+        "Identity_Management": 0.15,
+        "Network_Security": 0.15,
+        "Other_Domains": 0.20
+      },
+      "scoreClassification": {
+        "not_ready": {
+          "range": "0-49",
+          "status": "red",
+          "description": "Critical gaps requiring immediate remediation"
+        },
+        "partial_ready": {
+          "range": "50-74",
+          "status": "yellow",
+          "description": "Remediation needed before production"
+        },
+        "ready": {
+          "range": "75-100",
+          "status": "green",
+          "description": "Production deployment approved"
+        }
+      },
+      "calculation": "Σ(Domain Score × Domain Weight) where Domain Score = Σ(Control Status × Evidence Quality × Coverage)"
+    }
+  },
+
+  "platformIntegration": {
+    "@type": "mcsb:PlatformIntegration",
+    "description": "Azure platform integration points",
+    
+    "integrations": [
+      {
+        "service": "Microsoft Defender for Cloud",
+        "purpose": "Regulatory compliance monitoring",
+        "capabilities": [
+          "MCSB compliance dashboard",
+          "Secure Score tracking",
+          "Recommendation management"
+        ]
+      },
+      {
+        "service": "Azure Policy",
+        "purpose": "Control enforcement",
+        "capabilities": [
+          "Built-in MCSB initiatives",
+          "Custom policy definitions",
+          "Compliance reporting"
+        ]
+      },
+      {
+        "service": "Azure Sentinel",
+        "purpose": "Threat detection and response",
+        "capabilities": [
+          "AI-specific threat detection",
+          "Incident investigation",
+          "Automated response"
+        ]
+      },
+      {
+        "service": "Microsoft Purview",
+        "purpose": "Data governance",
+        "capabilities": [
+          "Data classification",
+          "Sensitivity labeling",
+          "DLP integration"
+        ]
+      }
+    ]
+  },
+
+  "usageGuidelines": {
+    "@type": "mcsb:UsageGuidelines",
+    "description": "Best practices for using this ontology",
+    
+    "bestPractices": [
+      "Always assess all 7 AI Security controls for AI workloads",
+      "Map controls to relevant compliance frameworks for your industry",
+      "Use MITRE ATT&CK/ATLAS mappings for threat modeling",
+      "Integrate with Azure Policy for automated enforcement",
+      "Conduct continuous red teaming using recommended tools",
+      "Maintain comprehensive audit trails for compliance evidence"
+    ],
+    
+    "implementationOrder": [
+      "1. Deploy centralized model registry (AI-1)",
+      "2. Implement content filtering layers (AI-2)",
+      "3. Configure safety meta-prompts (AI-3)",
+      "4. Apply least privilege to agents (AI-4)",
+      "5. Establish HITL workflows (AI-5)",
+      "6. Deploy monitoring solutions (AI-6)",
+      "7. Initiate continuous red teaming (AI-7)"
+    ]
+  }
+}

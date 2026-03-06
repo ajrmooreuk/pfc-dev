@@ -1,0 +1,922 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "rmf": "https://baiv.co.uk/ontology/",
+    "pf": "https://platformcore.io/ontology/",
+    "oaa": "https://platformcore.io/ontology/oaa/",
+    "grc-fw": "https://platformcore.io/ontology/grc-fw/",
+    "gdpr": "https://platformcore.io/ontology/gdpr/",
+    "mcsb": "https://platformcore.io/ontology/mcsb/"
+  },
+  "@type": "Ontology",
+  "@id": "rmf:ontology:rmf-is27005-v1.0",
+  "metadata": {
+    "name": "RMF-IS27005 Risk Management Framework Ontology",
+    "version": "1.0.0",
+    "description": "Risk Management Framework ontology aligned with ISO/IEC 27005 information security risk management. Provides comprehensive risk identification, assessment, treatment, and monitoring capabilities that bridge to RCSG-Series compliance and security ontologies.",
+    "domain": "Information Security Risk Management",
+    "purpose": "Define canonical risk management concepts for ISO 27005-aligned risk assessment workflows, enabling full risk-to-RCSG-scope management across regulatory, compliance, security and governance dimensions",
+    "oaaVersion": "6.1.0",
+    "series": "RCSG-Series",
+    "dateCreated": "2026-02-10",
+    "creator": "OAA Generator v6.1.0"
+  },
+  "entities": [
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:RiskContext",
+      "name": "RiskContext",
+      "description": "The organisational and information security context establishing scope, boundaries, and criteria for risk management activities",
+      "properties": [
+        {
+          "name": "contextId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the risk context"
+        },
+        {
+          "name": "scope",
+          "type": "Text",
+          "required": true,
+          "description": "Boundaries and scope of risk management"
+        },
+        {
+          "name": "organisationUnit",
+          "type": "Text",
+          "required": true,
+          "description": "Organisation unit or business area in scope"
+        },
+        {
+          "name": "regulatoryEnvironment",
+          "type": "Text",
+          "required": false,
+          "description": "Applicable regulatory and legal requirements"
+        },
+        {
+          "name": "riskAppetiteStatement",
+          "type": "Text",
+          "required": true,
+          "description": "Organisational risk appetite and tolerance levels"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:Asset",
+      "name": "Asset",
+      "description": "An information asset, system, or resource of value to the organisation that requires protection from security threats",
+      "properties": [
+        {
+          "name": "assetId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the asset"
+        },
+        {
+          "name": "assetName",
+          "type": "Text",
+          "required": true,
+          "description": "Human-readable name for the asset"
+        },
+        {
+          "name": "assetType",
+          "type": "Text",
+          "required": true,
+          "description": "Classification type: information, software, physical, service, person, or intangible"
+        },
+        {
+          "name": "criticality",
+          "type": "Text",
+          "required": true,
+          "description": "Business criticality rating: critical, high, medium, or low"
+        },
+        {
+          "name": "owner",
+          "type": "Text",
+          "required": true,
+          "description": "Person or team responsible for the asset"
+        },
+        {
+          "name": "classificationLevel",
+          "type": "Text",
+          "required": false,
+          "description": "Data classification: public, internal, confidential, or restricted"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:Threat",
+      "name": "Threat",
+      "description": "A potential cause of an unwanted incident that may result in harm to an asset or the organisation as a whole",
+      "properties": [
+        {
+          "name": "threatId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the threat"
+        },
+        {
+          "name": "threatName",
+          "type": "Text",
+          "required": true,
+          "description": "Descriptive name of the threat"
+        },
+        {
+          "name": "threatCategory",
+          "type": "Text",
+          "required": true,
+          "description": "Category: deliberate, accidental, environmental, or structural"
+        },
+        {
+          "name": "threatSource",
+          "type": "Text",
+          "required": true,
+          "description": "Origin of the threat: external attacker, insider, natural event, etc."
+        },
+        {
+          "name": "likelihood",
+          "type": "Text",
+          "required": true,
+          "description": "Assessed likelihood of occurrence: very-low, low, medium, high, very-high"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:Vulnerability",
+      "name": "Vulnerability",
+      "description": "A weakness in an asset or control that can be exploited by one or more threats to cause harm to the organisation",
+      "properties": [
+        {
+          "name": "vulnerabilityId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the vulnerability"
+        },
+        {
+          "name": "vulnerabilityName",
+          "type": "Text",
+          "required": true,
+          "description": "Descriptive name of the vulnerability"
+        },
+        {
+          "name": "severity",
+          "type": "Text",
+          "required": true,
+          "description": "Severity rating: critical, high, medium, low, informational"
+        },
+        {
+          "name": "exploitability",
+          "type": "Text",
+          "required": true,
+          "description": "Ease of exploitation: trivial, moderate, difficult"
+        },
+        {
+          "name": "affectedLayer",
+          "type": "Text",
+          "required": false,
+          "description": "Technology layer affected: network, application, physical, process, or personnel"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:Risk",
+      "name": "Risk",
+      "description": "A potential event where a threat exploits a vulnerability to adversely affect an asset, expressed as likelihood and impact",
+      "properties": [
+        {
+          "name": "riskId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the risk"
+        },
+        {
+          "name": "riskTitle",
+          "type": "Text",
+          "required": true,
+          "description": "Short descriptive title of the risk scenario"
+        },
+        {
+          "name": "riskDescription",
+          "type": "Text",
+          "required": true,
+          "description": "Detailed description of the risk scenario"
+        },
+        {
+          "name": "inherentLikelihood",
+          "type": "Text",
+          "required": true,
+          "description": "Likelihood before controls: very-low, low, medium, high, very-high"
+        },
+        {
+          "name": "inherentImpact",
+          "type": "Text",
+          "required": true,
+          "description": "Impact before controls: negligible, minor, moderate, major, catastrophic"
+        },
+        {
+          "name": "inherentRiskLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Calculated inherent risk level: low, medium, high, critical"
+        },
+        {
+          "name": "residualRiskLevel",
+          "type": "Text",
+          "required": false,
+          "description": "Risk level after treatment controls are applied"
+        },
+        {
+          "name": "riskStatus",
+          "type": "Text",
+          "required": true,
+          "description": "Current status: identified, assessed, treating, accepted, closed"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:RiskAssessment",
+      "name": "RiskAssessment",
+      "description": "A structured evaluation exercise that identifies, analyses, and evaluates information security risks within a defined context",
+      "properties": [
+        {
+          "name": "assessmentId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the risk assessment"
+        },
+        {
+          "name": "assessmentDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date the risk assessment was conducted"
+        },
+        {
+          "name": "methodology",
+          "type": "Text",
+          "required": true,
+          "description": "Risk assessment methodology used (e.g., qualitative, quantitative, semi-quantitative)"
+        },
+        {
+          "name": "assessmentStatus",
+          "type": "Text",
+          "required": true,
+          "description": "Status of the assessment: planned, in-progress, completed, approved"
+        },
+        {
+          "name": "assessor",
+          "type": "Text",
+          "required": true,
+          "description": "Person or team conducting the assessment"
+        },
+        {
+          "name": "nextReviewDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Scheduled date for the next periodic review"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:RiskTreatment",
+      "name": "RiskTreatment",
+      "description": "A planned response to an identified risk specifying the treatment strategy and actions to reduce risk to acceptable levels",
+      "properties": [
+        {
+          "name": "treatmentId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the treatment plan"
+        },
+        {
+          "name": "treatmentStrategy",
+          "type": "Text",
+          "required": true,
+          "description": "Strategy: mitigate, accept, transfer, avoid"
+        },
+        {
+          "name": "treatmentDescription",
+          "type": "Text",
+          "required": true,
+          "description": "Detailed description of treatment actions"
+        },
+        {
+          "name": "implementationDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Target date for treatment implementation"
+        },
+        {
+          "name": "treatmentStatus",
+          "type": "Text",
+          "required": true,
+          "description": "Status: planned, in-progress, implemented, verified"
+        },
+        {
+          "name": "costEstimate",
+          "type": "Text",
+          "required": false,
+          "description": "Estimated cost of implementing the treatment"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:Control",
+      "name": "Control",
+      "description": "A security control or safeguard implemented to reduce the likelihood or impact of a risk, aligned with ISO 27001 Annex A",
+      "properties": [
+        {
+          "name": "controlId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the control (e.g., ISO 27001 Annex A reference)"
+        },
+        {
+          "name": "controlName",
+          "type": "Text",
+          "required": true,
+          "description": "Name of the security control"
+        },
+        {
+          "name": "controlType",
+          "type": "Text",
+          "required": true,
+          "description": "Type: preventive, detective, corrective, deterrent, compensating"
+        },
+        {
+          "name": "controlCategory",
+          "type": "Text",
+          "required": true,
+          "description": "Category: technical, organisational, physical, or legal"
+        },
+        {
+          "name": "effectiveness",
+          "type": "Text",
+          "required": false,
+          "description": "Assessed effectiveness: effective, partially-effective, ineffective, not-tested"
+        },
+        {
+          "name": "implementationStatus",
+          "type": "Text",
+          "required": true,
+          "description": "Status: planned, in-progress, implemented, operational"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:RiskOwner",
+      "name": "RiskOwner",
+      "description": "A person or organisational role accountable for the management and treatment decisions of assigned information security risks",
+      "properties": [
+        {
+          "name": "ownerId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the risk owner"
+        },
+        {
+          "name": "ownerName",
+          "type": "Text",
+          "required": true,
+          "description": "Name of the risk owner or role title"
+        },
+        {
+          "name": "ownerRole",
+          "type": "Text",
+          "required": true,
+          "description": "Organisational role of the risk owner"
+        },
+        {
+          "name": "authorityLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Decision authority level: executive, senior-management, management, operational"
+        },
+        {
+          "name": "contactEmail",
+          "type": "Text",
+          "required": false,
+          "description": "Contact email for risk escalation and communication"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:RiskCriteria",
+      "name": "RiskCriteria",
+      "description": "The criteria and thresholds used to evaluate the significance of risks and determine whether they require treatment",
+      "properties": [
+        {
+          "name": "criteriaId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the risk criteria set"
+        },
+        {
+          "name": "impactScale",
+          "type": "Text",
+          "required": true,
+          "description": "Definition of impact levels: negligible, minor, moderate, major, catastrophic"
+        },
+        {
+          "name": "likelihoodScale",
+          "type": "Text",
+          "required": true,
+          "description": "Definition of likelihood levels: very-low, low, medium, high, very-high"
+        },
+        {
+          "name": "riskAcceptanceThreshold",
+          "type": "Text",
+          "required": true,
+          "description": "Risk level at or below which risks are accepted without treatment"
+        },
+        {
+          "name": "escalationThreshold",
+          "type": "Text",
+          "required": true,
+          "description": "Risk level at or above which risks must be escalated to senior management"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:ComplianceMapping",
+      "name": "ComplianceMapping",
+      "description": "A mapping that links identified risks and controls to regulatory compliance frameworks within the RCSG scope",
+      "properties": [
+        {
+          "name": "mappingId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the compliance mapping"
+        },
+        {
+          "name": "targetFramework",
+          "type": "Text",
+          "required": true,
+          "description": "Target compliance framework (e.g., GDPR, MCSB, ISO 27001, NIST)"
+        },
+        {
+          "name": "frameworkReference",
+          "type": "Text",
+          "required": true,
+          "description": "Specific clause, article, or control reference within the framework"
+        },
+        {
+          "name": "complianceStatus",
+          "type": "Text",
+          "required": true,
+          "description": "Status: compliant, partially-compliant, non-compliant, not-assessed"
+        },
+        {
+          "name": "evidenceReference",
+          "type": "URL",
+          "required": false,
+          "description": "Link to compliance evidence or documentation"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:RiskMonitoringPlan",
+      "name": "RiskMonitoringPlan",
+      "description": "An ongoing plan for monitoring, reviewing, and communicating risk status to ensure treatment effectiveness and detect new risks",
+      "properties": [
+        {
+          "name": "monitoringPlanId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the monitoring plan"
+        },
+        {
+          "name": "reviewFrequency",
+          "type": "Text",
+          "required": true,
+          "description": "How often risks are reviewed: weekly, monthly, quarterly, annually"
+        },
+        {
+          "name": "keyRiskIndicators",
+          "type": "Text",
+          "required": true,
+          "description": "Key risk indicators used for ongoing monitoring"
+        },
+        {
+          "name": "reportingChannel",
+          "type": "Text",
+          "required": true,
+          "description": "Reporting and communication channel for risk updates"
+        },
+        {
+          "name": "lastReviewDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Date of the most recent monitoring review"
+        },
+        {
+          "name": "planStatus",
+          "type": "Text",
+          "required": true,
+          "description": "Status: draft, active, suspended, archived"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "Property",
+      "@id": "rmf:assessesContext",
+      "name": "Assesses Context",
+      "description": "Links a risk assessment to the organisational context that defines its scope and boundaries",
+      "domainIncludes": [
+        "rmf:RiskAssessment"
+      ],
+      "rangeIncludes": [
+        "rmf:RiskContext"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "rmf:identifiesRisk",
+      "name": "Identifies Risk",
+      "description": "Links a risk assessment to the individual risks discovered and evaluated during the assessment",
+      "domainIncludes": [
+        "rmf:RiskAssessment"
+      ],
+      "rangeIncludes": [
+        "rmf:Risk"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "rmf:affectsAsset",
+      "name": "Affects Asset",
+      "description": "Links a risk to the information assets that would be adversely impacted if the risk materialises",
+      "domainIncludes": [
+        "rmf:Risk"
+      ],
+      "rangeIncludes": [
+        "rmf:Asset"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "rmf:exploitsThreat",
+      "name": "Exploits Threat",
+      "description": "Links a risk to the specific threat that could exploit a vulnerability and cause the unwanted incident",
+      "domainIncludes": [
+        "rmf:Risk"
+      ],
+      "rangeIncludes": [
+        "rmf:Threat"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "rmf:exploitsVulnerability",
+      "name": "Exploits Vulnerability",
+      "description": "Links a risk to the specific vulnerability that a threat may exploit to impact the asset",
+      "domainIncludes": [
+        "rmf:Risk"
+      ],
+      "rangeIncludes": [
+        "rmf:Vulnerability"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "rmf:ownedByRiskOwner",
+      "name": "Owned By Risk Owner",
+      "description": "Links a risk to the person or role accountable for its management and treatment decisions",
+      "domainIncludes": [
+        "rmf:Risk"
+      ],
+      "rangeIncludes": [
+        "rmf:RiskOwner"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "rmf:evaluatedAgainst",
+      "name": "Evaluated Against",
+      "description": "Links a risk to the criteria and thresholds used to determine its significance and treatment priority",
+      "domainIncludes": [
+        "rmf:Risk"
+      ],
+      "rangeIncludes": [
+        "rmf:RiskCriteria"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "rmf:treatedBy",
+      "name": "Treated By",
+      "description": "Links a risk to the treatment plan specifying the response strategy to reduce it to acceptable levels",
+      "domainIncludes": [
+        "rmf:Risk"
+      ],
+      "rangeIncludes": [
+        "rmf:RiskTreatment"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "rmf:implementsControl",
+      "name": "Implements Control",
+      "description": "Links a risk treatment to the specific security controls deployed to mitigate the associated risk",
+      "domainIncludes": [
+        "rmf:RiskTreatment"
+      ],
+      "rangeIncludes": [
+        "rmf:Control"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "rmf:mappedToCompliance",
+      "name": "Mapped To Compliance",
+      "description": "Links a risk to the regulatory and compliance framework mappings within the RCSG scope",
+      "domainIncludes": [
+        "rmf:Risk"
+      ],
+      "rangeIncludes": [
+        "rmf:ComplianceMapping"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "rmf:hasMonitoringPlan",
+      "name": "Has Monitoring Plan",
+      "description": "Links a risk assessment to its ongoing monitoring and review plan for continuous risk oversight",
+      "domainIncludes": [
+        "rmf:RiskAssessment"
+      ],
+      "rangeIncludes": [
+        "rmf:RiskMonitoringPlan"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "rmf:monitorsRisk",
+      "name": "Monitors Risk",
+      "description": "Links a monitoring plan to the specific risks under its ongoing review and surveillance scope",
+      "domainIncludes": [
+        "rmf:RiskMonitoringPlan"
+      ],
+      "rangeIncludes": [
+        "rmf:Risk"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "rmf:contextDefinesCriteria",
+      "name": "Context Defines Criteria",
+      "description": "Links the organisational risk context to the risk evaluation criteria it establishes for assessments",
+      "domainIncludes": [
+        "rmf:RiskContext"
+      ],
+      "rangeIncludes": [
+        "rmf:RiskCriteria"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "rmf:controlMapsToCompliance",
+      "name": "Control Maps To Compliance",
+      "description": "Links a security control to the compliance framework requirements it satisfies or addresses",
+      "domainIncludes": [
+        "rmf:Control"
+      ],
+      "rangeIncludes": [
+        "rmf:ComplianceMapping"
+      ],
+      "cardinality": "0..*"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-RMF-001",
+      "name": "Risk Requires Owner",
+      "condition": "IF a Risk is identified in a RiskAssessment",
+      "action": "THEN it MUST have exactly one ownedByRiskOwner relationship to a RiskOwner",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RMF-002",
+      "name": "Risk Must Reference Asset",
+      "condition": "IF a Risk exists",
+      "action": "THEN it MUST have at least one affectsAsset relationship to an Asset",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RMF-003",
+      "name": "Risk Requires Threat And Vulnerability",
+      "condition": "IF a Risk is assessed",
+      "action": "THEN it MUST link to at least one Threat via exploitsThreat AND at least one Vulnerability via exploitsVulnerability",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RMF-004",
+      "name": "High Risk Must Have Treatment",
+      "condition": "IF a Risk has inherentRiskLevel of high or critical",
+      "action": "THEN it MUST have at least one treatedBy relationship to a RiskTreatment with strategy other than accept",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RMF-005",
+      "name": "Treatment Must Implement Controls",
+      "condition": "IF a RiskTreatment has treatmentStrategy of mitigate",
+      "action": "THEN it MUST have at least one implementsControl relationship to a Control",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RMF-006",
+      "name": "Assessment Requires Context",
+      "condition": "IF a RiskAssessment is created",
+      "action": "THEN it MUST have exactly one assessesContext relationship to a RiskContext",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RMF-007",
+      "name": "Assessment Requires Monitoring Plan",
+      "condition": "IF a RiskAssessment status is completed",
+      "action": "THEN it MUST have a hasMonitoringPlan relationship to a RiskMonitoringPlan with status active",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-RMF-008",
+      "name": "Risk Evaluation Criteria Required",
+      "condition": "IF a Risk is evaluated",
+      "action": "THEN it MUST be evaluatedAgainst a RiskCriteria that defines the impact and likelihood scales",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-RMF-009",
+      "name": "Compliance Mapping For Regulated Risks",
+      "condition": "IF a RiskContext has a regulatoryEnvironment defined",
+      "action": "THEN identified Risks SHOULD have at least one mappedToCompliance relationship to a ComplianceMapping",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-RMF-010",
+      "name": "Risk Acceptance Requires Approval",
+      "condition": "IF a RiskTreatment has treatmentStrategy of accept",
+      "action": "THEN the associated RiskOwner MUST have authorityLevel of senior-management or executive",
+      "severity": "error"
+    }
+  ],
+  "crossOntologyReferences": {
+    "bridges": [
+      {
+        "to": "grc-fw:",
+        "entity": "GRCContext",
+        "relationship": "riskContextAlignsWith",
+        "description": "RMF RiskContext aligns with the RCSG Framework context for governance scope"
+      },
+      {
+        "to": "gdpr:",
+        "entity": "ComplianceObligation",
+        "relationship": "mapsToGDPRObligation",
+        "description": "ComplianceMapping bridges to GDPR compliance obligations for data protection risks"
+      },
+      {
+        "to": "mcsb:",
+        "entity": "SecurityControl",
+        "relationship": "controlAlignsWith",
+        "description": "Controls align with MCSB security benchmark controls"
+      }
+    ],
+    "description": "RMF-IS27005 provides ISO 27005 risk management that bridges to GRC-FW for governance scope, GDPR for data protection compliance mapping, and MCSB for security control alignment"
+  },
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "RMF-ONT",
+  "oaa:series": "RCSG-SERIES",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of RiskContext within this ontology?",
+      "targetEntities": [
+        "rmf:RiskContext"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of Asset within this ontology?",
+      "targetEntities": [
+        "rmf:Asset"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of Threat within this ontology?",
+      "targetEntities": [
+        "rmf:Threat"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of Vulnerability within this ontology?",
+      "targetEntities": [
+        "rmf:Vulnerability"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of Risk within this ontology?",
+      "targetEntities": [
+        "rmf:Risk"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of RiskAssessment within this ontology?",
+      "targetEntities": [
+        "rmf:RiskAssessment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of RiskTreatment within this ontology?",
+      "targetEntities": [
+        "rmf:RiskTreatment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of Control within this ontology?",
+      "targetEntities": [
+        "rmf:Control"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of RiskOwner within this ontology?",
+      "targetEntities": [
+        "rmf:RiskOwner"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of RiskCriteria within this ontology?",
+      "targetEntities": [
+        "rmf:RiskCriteria"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the role and purpose of ComplianceMapping within this ontology?",
+      "targetEntities": [
+        "rmf:ComplianceMapping"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-012",
+      "question": "What is the role and purpose of RiskMonitoringPlan within this ontology?",
+      "targetEntities": [
+        "rmf:RiskMonitoringPlan"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

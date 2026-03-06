@@ -1,0 +1,1283 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform-foundation.ai/ontology/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "Ontology",
+  "@id": "pf:ontology:process-engineering",
+  "name": "Process Engineering Ontology",
+  "version": "1.0.0",
+  "description": "Comprehensive ontology for defining, orchestrating, and optimizing business processes with agentic AI augmentation, supporting cradle-to-grave process management from vision through execution and continuous improvement",
+  "dateCreated": "2026-01-18",
+  "dateModified": "2026-01-18",
+  "creator": "Platform Foundation Core - Ontology Architect Agent",
+  "domain": "Business Process Management, Process Engineering, Agentic Orchestration",
+  "purpose": "Enable systematic process definition, AI-augmented execution, quality gate enforcement, hypothesis validation, and continuous process optimization across PF-Core platform instances",
+  
+  "schemaOrgAlignment": {
+    "baseTypes": ["Action", "Project", "Event", "Thing", "DefinedTermSet"],
+    "rationale": "schema.org Action provides foundational process execution model; Project captures initiatives; Event models process instances; Thing serves as base for artifacts; DefinedTermSet for classifications",
+    "extensions": ["ProcessPhase", "ProcessGate", "ProcessMetric", "AIAgent", "Hypothesis", "ValueChain"]
+  },
+  
+  "strategicAlignment": {
+    "vsom": {
+      "vision": "Enable AI-driven business transformation through systematic process engineering",
+      "strategicObjective": "pf:vsom:so-operational-excellence",
+      "metrics": ["process-cycle-time", "automation-percentage", "quality-score"],
+      "bscPerspective": "Internal Business Processes"
+    },
+    "integrations": [
+      "pf:ontology:vsom (Vision/Strategy/Objectives/Metrics)",
+      "pf:ontology:organization (Tenant/Team/Role)",
+      "pf:ontology:bsc (Balanced Scorecard)",
+      "pf:ontology:okr (Objectives & Key Results)",
+      "pf:ontology:customer-organization (ICP Context)"
+    ]
+  },
+  
+  "entities": [
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:Process",
+      "name": "Process",
+      "schemaOrgBase": "Action",
+      "description": "A structured, repeatable sequence of activities and decision points that transforms inputs into outputs to achieve specific business outcomes, optimized through AI augmentation and continuous improvement",
+      "properties": [
+        {
+          "name": "processId",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "identifier",
+          "description": "Unique identifier for the process definition",
+          "example": "PROC-APP-SCAFFOLD-001"
+        },
+        {
+          "name": "processName",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "name",
+          "description": "Human-readable name of the process",
+          "example": "Application Scaffold Process"
+        },
+        {
+          "name": "processType",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "development",
+              "discovery",
+              "analysis",
+              "deployment",
+              "optimization",
+              "governance",
+              "custom"
+            ]
+          },
+          "propertyRationale": "Custom property needed to classify process categories beyond schema.org Action types",
+          "description": "Classification of process purpose and domain"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "description",
+          "description": "Comprehensive description of process purpose, scope, and expected outcomes",
+          "constraints": {
+            "minLength": 50
+          }
+        },
+        {
+          "name": "businessObjective",
+          "type": "Text",
+          "required": true,
+          "propertyRationale": "Links to VSOM strategic objectives for alignment",
+          "description": "Strategic business objective this process supports",
+          "example": "Reduce time-to-MVP from 90 days to 14 days through AI-augmented development"
+        },
+        {
+          "name": "scope",
+          "type": "Text",
+          "required": true,
+          "description": "Boundaries and coverage of the process - what's included and excluded",
+          "example": "Covers domain definition through deployment; excludes ongoing maintenance"
+        },
+        {
+          "name": "owner",
+          "type": "Person",
+          "required": true,
+          "schemaOrgProperty": "agent",
+          "description": "Person or role accountable for process definition and outcomes"
+        },
+        {
+          "name": "stakeholders",
+          "type": "ItemList",
+          "required": false,
+          "schemaOrgProperty": "participant",
+          "description": "List of stakeholders involved or impacted by the process"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["draft", "active", "deprecated", "archived"]
+          },
+          "description": "Current lifecycle status of the process definition"
+        },
+        {
+          "name": "version",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "version",
+          "description": "Semantic version of process definition (MAJOR.MINOR.PATCH)"
+        },
+        {
+          "name": "estimatedDuration",
+          "type": "Duration",
+          "required": false,
+          "schemaOrgProperty": "duration",
+          "description": "Expected duration for complete process execution",
+          "example": "P14D (14 days)"
+        },
+        {
+          "name": "automationLevel",
+          "type": "Number",
+          "required": false,
+          "constraints": {
+            "minimum": 0,
+            "maximum": 100
+          },
+          "propertyRationale": "Custom metric for AI augmentation percentage",
+          "description": "Percentage of process activities augmented or automated by AI (0-100)",
+          "example": 80
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:ProcessPhase",
+      "name": "ProcessPhase",
+      "schemaOrgBase": "Action",
+      "description": "A distinct stage within a process that groups related activities, has specific deliverables, and includes quality gates for progression control",
+      "properties": [
+        {
+          "name": "phaseId",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "identifier",
+          "description": "Unique identifier for the phase within process",
+          "example": "PHASE-001-DOMAIN-DEF"
+        },
+        {
+          "name": "phaseName",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "name",
+          "description": "Human-readable phase name",
+          "example": "Domain Definition & Requirements"
+        },
+        {
+          "name": "phaseNumber",
+          "type": "Integer",
+          "required": true,
+          "propertyRationale": "Custom property for phase sequencing in process flow",
+          "description": "Sequential position in process (1, 2, 3...)",
+          "constraints": {
+            "minimum": 1
+          }
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "description",
+          "description": "Detailed description of phase purpose, activities, and expected outcomes",
+          "constraints": {
+            "minLength": 30
+          }
+        },
+        {
+          "name": "entryConditions",
+          "type": "ItemList",
+          "required": true,
+          "propertyRationale": "Custom property for gate conditions not in schema.org",
+          "description": "Prerequisites that must be satisfied before phase can begin",
+          "example": ["Previous phase completed", "Resources allocated", "Stakeholder approval obtained"]
+        },
+        {
+          "name": "exitConditions",
+          "type": "ItemList",
+          "required": true,
+          "propertyRationale": "Custom property for completion criteria",
+          "description": "Criteria that must be met to complete phase and progress",
+          "example": ["All deliverables produced", "Quality gates passed", "Stakeholder sign-off"]
+        },
+        {
+          "name": "activities",
+          "type": "ItemList",
+          "required": true,
+          "description": "List of specific activities performed in this phase",
+          "example": ["Gather requirements", "Map to schema.org", "Create configuration"]
+        },
+        {
+          "name": "estimatedDuration",
+          "type": "Duration",
+          "required": false,
+          "schemaOrgProperty": "duration",
+          "description": "Expected duration for phase completion",
+          "example": "P2D (2 days)"
+        },
+        {
+          "name": "parallelExecution",
+          "type": "Boolean",
+          "required": false,
+          "propertyRationale": "Custom property to indicate concurrent phase execution capability",
+          "description": "Whether this phase can execute in parallel with other phases",
+          "default": false
+        },
+        {
+          "name": "parallelWith",
+          "type": "ItemList",
+          "required": false,
+          "description": "List of phase IDs that can execute concurrently with this phase",
+          "example": ["PHASE-004B-UI-COMPONENTS"]
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:ProcessArtifact",
+      "name": "ProcessArtifact",
+      "schemaOrgBase": "CreativeWork",
+      "description": "Tangible output or deliverable produced by a process phase, serving as evidence of completion and input to downstream activities",
+      "properties": [
+        {
+          "name": "artifactId",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "identifier",
+          "description": "Unique identifier for the artifact",
+          "example": "ART-DOMAIN-CONFIG-001"
+        },
+        {
+          "name": "artifactName",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "name",
+          "description": "Human-readable artifact name",
+          "example": "Domain Configuration Document"
+        },
+        {
+          "name": "artifactType",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "document",
+              "code",
+              "configuration",
+              "schema",
+              "test-suite",
+              "deployment-package",
+              "report",
+              "other"
+            ]
+          },
+          "propertyRationale": "Custom classification for artifact types relevant to process engineering",
+          "description": "Classification of artifact format and purpose"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "description",
+          "description": "Description of artifact content, purpose, and usage",
+          "constraints": {
+            "minLength": 30
+          }
+        },
+        {
+          "name": "format",
+          "type": "Text",
+          "required": false,
+          "schemaOrgProperty": "encodingFormat",
+          "description": "File format or media type of the artifact",
+          "example": "application/json", 
+          "possibleValues": ["text/markdown", "application/json", "text/html", "application/zip"]
+        },
+        {
+          "name": "location",
+          "type": "URL",
+          "required": false,
+          "schemaOrgProperty": "url",
+          "description": "Storage location or access URL for the artifact"
+        },
+        {
+          "name": "version",
+          "type": "Text",
+          "required": false,
+          "schemaOrgProperty": "version",
+          "description": "Version identifier for artifact versioning"
+        },
+        {
+          "name": "mandatory",
+          "type": "Boolean",
+          "required": true,
+          "propertyRationale": "Custom property to indicate if artifact is required for process completion",
+          "description": "Whether artifact is mandatory for process completion",
+          "default": true
+        },
+        {
+          "name": "qualityCriteria",
+          "type": "ItemList",
+          "required": false,
+          "description": "Specific quality standards the artifact must meet",
+          "example": ["Schema valid", "Test coverage >80%", "Stakeholder approved"]
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:ProcessGate",
+      "name": "ProcessGate",
+      "schemaOrgBase": "Action",
+      "description": "Decision point or quality checkpoint that controls progression between process phases, enforcing quality standards and completion criteria",
+      "properties": [
+        {
+          "name": "gateId",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "identifier",
+          "description": "Unique identifier for the gate",
+          "example": "GATE-001-DOMAIN-APPROVAL"
+        },
+        {
+          "name": "gateName",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "name",
+          "description": "Human-readable gate name",
+          "example": "Domain Approval Gate"
+        },
+        {
+          "name": "gateType",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "quality",
+              "approval",
+              "completeness",
+              "compliance",
+              "risk-assessment",
+              "go-no-go"
+            ]
+          },
+          "propertyRationale": "Custom classification for different gate purposes",
+          "description": "Type of gate and evaluation criteria"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "description",
+          "description": "Description of gate purpose, criteria, and decision process",
+          "constraints": {
+            "minLength": 30
+          }
+        },
+        {
+          "name": "criteria",
+          "type": "ItemList",
+          "required": true,
+          "propertyRationale": "Custom property for gate pass/fail criteria",
+          "description": "Specific criteria that must be satisfied to pass the gate",
+          "example": ["Requirements complete", "Schema.org mappings validated", "Stakeholder sign-off"]
+        },
+        {
+          "name": "threshold",
+          "type": "Number",
+          "required": false,
+          "constraints": {
+            "minimum": 0,
+            "maximum": 100
+          },
+          "propertyRationale": "Custom property for quantitative gate thresholds",
+          "description": "Percentage threshold for passing (0-100)",
+          "example": 95
+        },
+        {
+          "name": "automated",
+          "type": "Boolean",
+          "required": true,
+          "propertyRationale": "Custom property to indicate if gate evaluation is automated",
+          "description": "Whether gate evaluation can be fully automated",
+          "default": false
+        },
+        {
+          "name": "approver",
+          "type": "Person",
+          "required": false,
+          "schemaOrgProperty": "agent",
+          "description": "Person or role responsible for gate approval decision"
+        },
+        {
+          "name": "escalationPath",
+          "type": "Text",
+          "required": false,
+          "description": "Escalation process if gate fails multiple times",
+          "example": "After 2 failures, escalate to Process Owner"
+        },
+        {
+          "name": "blockingFactor",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["blocking", "warning", "informational"]
+          },
+          "propertyRationale": "Custom property for gate severity level",
+          "description": "Impact level if gate fails - blocking prevents progression"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:ProcessMetric",
+      "name": "ProcessMetric",
+      "schemaOrgBase": "PropertyValue",
+      "description": "Measurable indicator that tracks process performance, efficiency, quality, or business outcome achievement",
+      "properties": [
+        {
+          "name": "metricId",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "identifier",
+          "description": "Unique identifier for the metric",
+          "example": "METRIC-TIME-TO-MVP"
+        },
+        {
+          "name": "metricName",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "name",
+          "description": "Human-readable metric name",
+          "example": "Time to MVP"
+        },
+        {
+          "name": "metricType",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "duration",
+              "quality",
+              "efficiency",
+              "cost",
+              "satisfaction",
+              "outcome",
+              "leading-indicator",
+              "lagging-indicator"
+            ]
+          },
+          "propertyRationale": "Custom classification for metric categorization",
+          "description": "Classification of metric purpose and measurement type"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "description",
+          "description": "Description of what the metric measures and why it matters",
+          "constraints": {
+            "minLength": 30
+          }
+        },
+        {
+          "name": "formula",
+          "type": "Text",
+          "required": false,
+          "propertyRationale": "Custom property for metric calculation logic",
+          "description": "Calculation formula or measurement methodology",
+          "example": "(End Date - Start Date) in days"
+        },
+        {
+          "name": "unit",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "unitText",
+          "description": "Unit of measurement for the metric",
+          "example": "days"
+        },
+        {
+          "name": "target",
+          "type": "Number",
+          "required": true,
+          "schemaOrgProperty": "value",
+          "description": "Target value or goal for the metric",
+          "example": 14
+        },
+        {
+          "name": "threshold",
+          "type": "Object",
+          "required": false,
+          "propertyRationale": "Custom property for multi-level thresholds (green/yellow/red)",
+          "description": "Threshold values for status indication",
+          "example": {
+            "excellent": "<=10",
+            "good": "<=14",
+            "acceptable": "<=21",
+            "poor": ">21"
+          }
+        },
+        {
+          "name": "collectionMethod",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["automated", "manual", "hybrid"]
+          },
+          "propertyRationale": "Custom property for data collection approach",
+          "description": "Method used to collect metric data"
+        },
+        {
+          "name": "frequency",
+          "type": "Text",
+          "required": true,
+          "description": "How often the metric is measured or reported",
+          "example": "Per process execution"
+        },
+        {
+          "name": "okrAlignment",
+          "type": "Text",
+          "required": false,
+          "propertyRationale": "Links metric to OKR framework for strategic alignment",
+          "description": "Reference to aligned OKR or Key Result",
+          "example": "pf:okr:kr-reduce-cycle-time"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:AIAgent",
+      "name": "AIAgent",
+      "schemaOrgBase": "SoftwareApplication",
+      "description": "Artificial intelligence agent that augments or automates process activities, with defined capabilities, autonomy levels, and coordination protocols",
+      "properties": [
+        {
+          "name": "agentId",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "identifier",
+          "description": "Unique identifier for the AI agent",
+          "example": "AGENT-CODE-GENERATOR"
+        },
+        {
+          "name": "agentName",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "name",
+          "description": "Human-readable agent name",
+          "example": "Code Generator Agent"
+        },
+        {
+          "name": "agentType",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "analysis",
+              "generation",
+              "optimization",
+              "orchestration",
+              "validation",
+              "monitoring",
+              "custom"
+            ]
+          },
+          "propertyRationale": "Custom classification for agent specialization",
+          "description": "Primary function category of the agent"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "description",
+          "description": "Description of agent capabilities, scope, and intended use",
+          "constraints": {
+            "minLength": 30
+          }
+        },
+        {
+          "name": "capabilities",
+          "type": "ItemList",
+          "required": true,
+          "propertyRationale": "Custom property for specific agent skills",
+          "description": "List of specific capabilities and skills the agent possesses",
+          "example": ["type-generation", "schema-creation", "validation-logic"]
+        },
+        {
+          "name": "autonomyLevel",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "highly-autonomous",
+              "supervised",
+              "manual",
+              "hybrid"
+            ]
+          },
+          "propertyRationale": "Custom property for agent autonomy classification",
+          "description": "Level of independence in agent operation"
+        },
+        {
+          "name": "model",
+          "type": "Text",
+          "required": false,
+          "propertyRationale": "Custom property for underlying AI model identification",
+          "description": "Underlying AI model or technology",
+          "example": "claude-sonnet-4-5-20250929"
+        },
+        {
+          "name": "coordinationProtocol",
+          "type": "Text",
+          "required": false,
+          "propertyRationale": "Custom property for multi-agent coordination patterns",
+          "description": "Protocol for coordinating with other agents",
+          "example": "Hub-and-spoke with master orchestrator"
+        },
+        {
+          "name": "inputRequirements",
+          "type": "ItemList",
+          "required": false,
+          "description": "Required inputs for agent operation",
+          "example": ["Domain requirements", "Schema.org mappings"]
+        },
+        {
+          "name": "outputFormats",
+          "type": "ItemList",
+          "required": false,
+          "description": "Formats and types of outputs produced by agent",
+          "example": ["TypeScript types", "JSON schemas", "Validation rules"]
+        },
+        {
+          "name": "qualityThreshold",
+          "type": "Number",
+          "required": false,
+          "constraints": {
+            "minimum": 0,
+            "maximum": 100
+          },
+          "propertyRationale": "Custom property for agent output quality requirements",
+          "description": "Minimum quality score for agent outputs (0-100)",
+          "example": 95
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:ProcessInstance",
+      "name": "ProcessInstance",
+      "schemaOrgBase": "Event",
+      "description": "Specific execution of a process definition, tracking actual progress, performance, and outcomes for a particular initiative or project",
+      "properties": [
+        {
+          "name": "instanceId",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "identifier",
+          "description": "Unique identifier for this process execution",
+          "example": "INST-APP-SCAFFOLD-2026-001"
+        },
+        {
+          "name": "instanceName",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "name",
+          "description": "Human-readable name for this execution",
+          "example": "BAIV Platform v12 Development"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "initiated",
+              "in-progress",
+              "blocked",
+              "completed",
+              "failed",
+              "cancelled"
+            ]
+          },
+          "propertyRationale": "Custom property for process execution status tracking",
+          "description": "Current execution status of process instance"
+        },
+        {
+          "name": "currentPhase",
+          "type": "Text",
+          "required": false,
+          "description": "Phase currently being executed",
+          "example": "PHASE-003-DATABASE-SETUP"
+        },
+        {
+          "name": "startDate",
+          "type": "DateTime",
+          "required": true,
+          "schemaOrgProperty": "startDate",
+          "description": "Date and time when process instance was initiated"
+        },
+        {
+          "name": "endDate",
+          "type": "DateTime",
+          "required": false,
+          "schemaOrgProperty": "endDate",
+          "description": "Date and time when process instance completed or failed"
+        },
+        {
+          "name": "progress",
+          "type": "Number",
+          "required": false,
+          "constraints": {
+            "minimum": 0,
+            "maximum": 100
+          },
+          "propertyRationale": "Custom property for overall completion percentage",
+          "description": "Overall completion percentage (0-100)"
+        },
+        {
+          "name": "actualMetrics",
+          "type": "Object",
+          "required": false,
+          "propertyRationale": "Custom property for storing actual performance data",
+          "description": "Actual metric values achieved during execution",
+          "example": {
+            "timeToMvp": 12,
+            "aiAutomation": 85,
+            "codeQuality": 97
+          }
+        },
+        {
+          "name": "blockers",
+          "type": "ItemList",
+          "required": false,
+          "description": "Current blockers preventing progress",
+          "example": ["Resource unavailable", "Dependency not met"]
+        },
+        {
+          "name": "risks",
+          "type": "ItemList",
+          "required": false,
+          "description": "Identified risks to successful completion",
+          "example": ["Timeline deviation >20%", "Quality metrics below threshold"]
+        },
+        {
+          "name": "lessons",
+          "type": "ItemList",
+          "required": false,
+          "propertyRationale": "Custom property for continuous improvement insights",
+          "description": "Lessons learned during execution for process improvement",
+          "example": ["Early schema.org validation reduced rework by 40%"]
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:Hypothesis",
+      "name": "Hypothesis",
+      "schemaOrgBase": "Claim",
+      "description": "Testable assumption about process improvement or outcome prediction, validated through systematic measurement during process execution",
+      "properties": [
+        {
+          "name": "hypothesisId",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "identifier",
+          "description": "Unique identifier for the hypothesis",
+          "example": "HYP-001-SCAFFOLD-TIME"
+        },
+        {
+          "name": "statement",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "text",
+          "description": "Clear statement of the hypothesis being tested",
+          "example": "AI-generated scaffolds reduce development time by 60%",
+          "constraints": {
+            "minLength": 20
+          }
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "description",
+          "description": "Detailed description of hypothesis rationale and expected impact",
+          "constraints": {
+            "minLength": 50
+          }
+        },
+        {
+          "name": "measurementMethod",
+          "type": "Text",
+          "required": true,
+          "propertyRationale": "Custom property for validation methodology",
+          "description": "How the hypothesis will be measured and validated",
+          "example": "Measure time from requirements to working prototype"
+        },
+        {
+          "name": "target",
+          "type": "Text",
+          "required": true,
+          "description": "Target outcome that would validate the hypothesis",
+          "example": "<3 days for basic CRUD application"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "proposed",
+              "active",
+              "validated",
+              "invalidated",
+              "inconclusive"
+            ]
+          },
+          "propertyRationale": "Custom property for hypothesis lifecycle tracking",
+          "description": "Current validation status of the hypothesis"
+        },
+        {
+          "name": "evidence",
+          "type": "ItemList",
+          "required": false,
+          "description": "Collected evidence supporting or refuting the hypothesis",
+          "example": ["Instance 1: 2.5 days", "Instance 2: 2.8 days", "Instance 3: 2.3 days"]
+        },
+        {
+          "name": "confidence",
+          "type": "Number",
+          "required": false,
+          "constraints": {
+            "minimum": 0,
+            "maximum": 100
+          },
+          "propertyRationale": "Custom property for statistical confidence level",
+          "description": "Statistical confidence in hypothesis validation (0-100%)",
+          "example": 95
+        },
+        {
+          "name": "linkedMetrics",
+          "type": "ItemList",
+          "required": false,
+          "description": "Process metrics used to validate this hypothesis",
+          "example": ["METRIC-TIME-TO-MVP", "METRIC-DEVELOPMENT-EFFICIENCY"]
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:ValueChain",
+      "name": "ValueChain",
+      "schemaOrgBase": "Thing",
+      "description": "Sequence of value-adding activities that transform inputs through processes to create customer value and business outcomes",
+      "properties": [
+        {
+          "name": "valueChainId",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "identifier",
+          "description": "Unique identifier for the value chain",
+          "example": "VC-PLATFORM-DEV"
+        },
+        {
+          "name": "valueChainName",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "name",
+          "description": "Human-readable value chain name",
+          "example": "Platform Development Value Chain"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "description",
+          "description": "Description of value created and customer needs addressed",
+          "constraints": {
+            "minLength": 50
+          }
+        },
+        {
+          "name": "customerValue",
+          "type": "Text",
+          "required": true,
+          "propertyRationale": "Custom property for explicit value proposition",
+          "description": "Explicit statement of value delivered to customers",
+          "example": "Enable rapid MVP development with 10x faster time-to-market"
+        },
+        {
+          "name": "inputs",
+          "type": "ItemList",
+          "required": true,
+          "description": "Required inputs at start of value chain",
+          "example": ["Customer requirements", "Business objectives", "Resource allocation"]
+        },
+        {
+          "name": "outputs",
+          "type": "ItemList",
+          "required": true,
+          "description": "Outputs delivered at end of value chain",
+          "example": ["Deployed MVP", "Production documentation", "Performance metrics"]
+        },
+        {
+          "name": "strategicAlignment",
+          "type": "Text",
+          "required": false,
+          "propertyRationale": "Links value chain to VSOM strategic objectives",
+          "description": "Reference to strategic objective this value chain supports",
+          "example": "pf:vsom:so-competitive-advantage"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:ProcessPattern",
+      "name": "ProcessPattern",
+      "schemaOrgBase": "HowTo",
+      "description": "Reusable process template or best practice pattern that can be adapted across different contexts, capturing proven approaches and lessons learned",
+      "properties": [
+        {
+          "name": "patternId",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "identifier",
+          "description": "Unique identifier for the process pattern",
+          "example": "PATTERN-AGILE-SPRINT"
+        },
+        {
+          "name": "patternName",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "name",
+          "description": "Human-readable pattern name",
+          "example": "Agile Sprint Process Pattern"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "description",
+          "description": "Description of pattern purpose, context, and benefits",
+          "constraints": {
+            "minLength": 50
+          }
+        },
+        {
+          "name": "context",
+          "type": "Text",
+          "required": true,
+          "propertyRationale": "Custom property for pattern applicability context",
+          "description": "Situation or context where this pattern is most effective",
+          "example": "Iterative development with frequent stakeholder feedback"
+        },
+        {
+          "name": "problem",
+          "type": "Text",
+          "required": true,
+          "description": "Problem or challenge this pattern addresses",
+          "example": "Managing changing requirements and ensuring continuous delivery"
+        },
+        {
+          "name": "solution",
+          "type": "Text",
+          "required": true,
+          "description": "Solution approach defined by the pattern",
+          "example": "Time-boxed iterations with planning, execution, review, and retrospective"
+        },
+        {
+          "name": "benefits",
+          "type": "ItemList",
+          "required": true,
+          "description": "Key benefits achieved by applying this pattern",
+          "example": ["Faster feedback cycles", "Reduced risk", "Better stakeholder engagement"]
+        },
+        {
+          "name": "antiPatterns",
+          "type": "ItemList",
+          "required": false,
+          "propertyRationale": "Custom property for common mistakes to avoid",
+          "description": "Common anti-patterns or mistakes to avoid",
+          "example": ["Skipping retrospectives", "Changing sprint scope mid-sprint"]
+        },
+        {
+          "name": "relatedPatterns",
+          "type": "ItemList",
+          "required": false,
+          "description": "Related patterns that complement or extend this pattern",
+          "example": ["PATTERN-CONTINUOUS-INTEGRATION", "PATTERN-HYPOTHESIS-DRIVEN"]
+        }
+      ]
+    }
+  ],
+  
+  "relationships": [
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "Process",
+      "predicate": "hasPhase",
+      "target": "ProcessPhase",
+      "cardinality": "1..*",
+      "description": "A process contains one or more ordered phases that structure its execution",
+      "inverseRelationship": "partOf",
+      "mandatory": true
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "ProcessPhase",
+      "predicate": "produces",
+      "target": "ProcessArtifact",
+      "cardinality": "0..*",
+      "description": "A phase produces zero or more artifacts as deliverables",
+      "inverseRelationship": "producedBy",
+      "mandatory": false
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "ProcessPhase",
+      "predicate": "hasGate",
+      "target": "ProcessGate",
+      "cardinality": "0..*",
+      "description": "A phase has zero or more quality gates controlling progression",
+      "inverseRelationship": "controls",
+      "mandatory": false
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "Process",
+      "predicate": "measures",
+      "target": "ProcessMetric",
+      "cardinality": "1..*",
+      "description": "A process tracks one or more metrics to measure performance and outcomes",
+      "inverseRelationship": "measuredBy",
+      "mandatory": true
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "ProcessPhase",
+      "predicate": "augmentedBy",
+      "target": "AIAgent",
+      "cardinality": "0..*",
+      "description": "A phase can be augmented or automated by zero or more AI agents",
+      "inverseRelationship": "augments",
+      "mandatory": false
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "ProcessPhase",
+      "predicate": "dependsOn",
+      "target": "ProcessPhase",
+      "cardinality": "0..*",
+      "description": "A phase can have dependencies on zero or more other phases that must complete first",
+      "inverseRelationship": "requiredBy",
+      "mandatory": false
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "Process",
+      "predicate": "instantiates",
+      "target": "ProcessInstance",
+      "cardinality": "0..*",
+      "description": "A process definition can have zero or more execution instances",
+      "inverseRelationship": "instanceOf",
+      "mandatory": false
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "Process",
+      "predicate": "validates",
+      "target": "Hypothesis",
+      "cardinality": "0..*",
+      "description": "A process can validate zero or more hypotheses through measurement",
+      "inverseRelationship": "validatedBy",
+      "mandatory": false
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "Hypothesis",
+      "predicate": "measuredBy",
+      "target": "ProcessMetric",
+      "cardinality": "1..*",
+      "description": "A hypothesis is measured by one or more process metrics",
+      "inverseRelationship": "measures",
+      "mandatory": true
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "Process",
+      "predicate": "partOfValueChain",
+      "target": "ValueChain",
+      "cardinality": "0..1",
+      "description": "A process can be part of zero or one value chain",
+      "inverseRelationship": "includes",
+      "mandatory": false
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "ValueChain",
+      "predicate": "includes",
+      "target": "Process",
+      "cardinality": "1..*",
+      "description": "A value chain includes one or more processes",
+      "inverseRelationship": "partOfValueChain",
+      "mandatory": true
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "Process",
+      "predicate": "implementsPattern",
+      "target": "ProcessPattern",
+      "cardinality": "0..*",
+      "description": "A process can implement zero or more reusable patterns",
+      "inverseRelationship": "implementedBy",
+      "mandatory": false
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "ProcessArtifact",
+      "predicate": "inputTo",
+      "target": "ProcessPhase",
+      "cardinality": "0..*",
+      "description": "An artifact can serve as input to zero or more downstream phases",
+      "inverseRelationship": "consumes",
+      "mandatory": false
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "AIAgent",
+      "predicate": "coordinatesWith",
+      "target": "AIAgent",
+      "cardinality": "0..*",
+      "description": "An AI agent can coordinate with zero or more other agents",
+      "inverseRelationship": "coordinatesWith",
+      "mandatory": false
+    },
+    {
+      "@type": "pf:RelationshipDefinition",
+      "source": "Process",
+      "predicate": "supports",
+      "target": "Thing",
+      "cardinality": "0..*",
+      "description": "A process supports external entities like VSOM objectives, OKRs, or organizational initiatives",
+      "inverseRelationship": "supportedBy",
+      "mandatory": false,
+      "note": "Links to pf:ontology:vsom, pf:ontology:okr, pf:ontology:organization"
+    }
+  ],
+  
+  "businessRules": [
+    {
+      "ruleId": "BR-001",
+      "name": "Phase Sequence Validation",
+      "description": "IF a phase has dependencies THEN all dependency phases must be completed before this phase can begin",
+      "category": "dependency",
+      "priority": "critical",
+      "enforcement": "blocking"
+    },
+    {
+      "ruleId": "BR-002",
+      "name": "Gate Enforcement",
+      "description": "IF a phase has blocking gates THEN all blocking gates must pass before phase can complete and next phase can begin",
+      "category": "quality",
+      "priority": "critical",
+      "enforcement": "blocking"
+    },
+    {
+      "ruleId": "BR-003",
+      "name": "Mandatory Artifact Production",
+      "description": "IF an artifact is marked as mandatory THEN phase cannot complete until artifact is produced and validated",
+      "category": "completeness",
+      "priority": "high",
+      "enforcement": "blocking"
+    },
+    {
+      "ruleId": "BR-004",
+      "name": "Metric Threshold Monitoring",
+      "description": "IF actual metric value falls below threshold THEN generate alert and trigger escalation path",
+      "category": "performance",
+      "priority": "high",
+      "enforcement": "warning"
+    },
+    {
+      "ruleId": "BR-005",
+      "name": "Automation Level Target",
+      "description": "IF automation level falls below target THEN identify manual activities for AI augmentation opportunities",
+      "category": "optimization",
+      "priority": "medium",
+      "enforcement": "informational"
+    },
+    {
+      "ruleId": "BR-006",
+      "name": "Hypothesis Validation",
+      "description": "IF hypothesis status is active THEN collect evidence from each process instance execution",
+      "category": "measurement",
+      "priority": "medium",
+      "enforcement": "informational"
+    },
+    {
+      "ruleId": "BR-007",
+      "name": "Parallel Phase Execution",
+      "description": "IF phase has parallelExecution=true AND dependencies are met THEN phase can execute concurrently with other parallel phases",
+      "category": "execution",
+      "priority": "medium",
+      "enforcement": "permissive"
+    },
+    {
+      "ruleId": "BR-008",
+      "name": "Agent Autonomy Supervision",
+      "description": "IF AI agent has autonomyLevel=supervised THEN agent outputs require human review before downstream use",
+      "category": "governance",
+      "priority": "high",
+      "enforcement": "blocking"
+    },
+    {
+      "ruleId": "BR-009",
+      "name": "Process Instance Blockers",
+      "description": "IF process instance has blockers THEN status must be 'blocked' until blockers are resolved",
+      "category": "status",
+      "priority": "critical",
+      "enforcement": "blocking"
+    },
+    {
+      "ruleId": "BR-010",
+      "name": "Value Chain Completeness",
+      "description": "IF process is part of value chain THEN all upstream processes in value chain must be defined",
+      "category": "completeness",
+      "priority": "medium",
+      "enforcement": "warning"
+    },
+    {
+      "ruleId": "BR-011",
+      "name": "Circular Dependency Prevention",
+      "description": "IF phase A depends on phase B AND phase B depends on phase A THEN reject configuration as circular dependency",
+      "category": "validation",
+      "priority": "critical",
+      "enforcement": "blocking"
+    },
+    {
+      "ruleId": "BR-012",
+      "name": "Process Pattern Compliance",
+      "description": "IF process implements pattern THEN process structure should align with pattern's solution approach",
+      "category": "governance",
+      "priority": "medium",
+      "enforcement": "warning"
+    }
+  ]
+}

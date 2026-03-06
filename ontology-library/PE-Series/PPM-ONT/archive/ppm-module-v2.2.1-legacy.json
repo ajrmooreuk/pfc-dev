@@ -1,0 +1,1492 @@
+{
+  "ontology_metadata": {
+    "ontology_name": "Portfolio, Program & Project Management Module",
+    "ontology_id": "ppm-module-v2.2.1",
+    "module_type": "core",
+    "version": "2.2.1",
+    "status": "active",
+    "created_date": "2025-10-02T09:00:00Z",
+    "last_modified": "2025-10-02T18:00:00Z",
+    "namespace": "https://ppm.ontology.org/modules/ppm/",
+    "description": "Core PPM module for managing portfolios, programs, and projects with Product Breakdown Structure (PBS) and Work Breakdown Structure (WBS). Localization handled via bridge relationships to Localization Module.",
+    "dependencies": {
+      "required_modules": [
+        {
+          "module_id": "localization-module-v1.0.0",
+          "module_name": "Localization Module",
+          "relationship": "uses_for_regional_settings"
+        },
+        {
+          "module_id": "change-control-module-v1.0.0",
+          "module_name": "Change Control Module",
+          "relationship": "tracked_by"
+        }
+      ],
+      "optional_modules": [
+        {
+          "module_id": "platform-ontology-v1.0.0",
+          "module_name": "Platform Ontology",
+          "relationship": "deployed_on"
+        }
+      ]
+    },
+    "ownership": {
+      "primary_owner": {
+        "name": "Enterprise Architecture Team",
+        "role": "Ontology Steward",
+        "email": "architecture@organisation.example.com"
+      },
+      "contributors": [
+        {
+          "name": "PMO Director",
+          "role": "Subject Matter Expert",
+          "contribution": "PPM Process Design"
+        },
+        {
+          "name": "Data Architect",
+          "role": "Technical Lead",
+          "contribution": "Schema Design and Modularization"
+        }
+      ],
+      "approval_authority": "Enterprise Architecture Review Board",
+      "review_cycle": "Quarterly"
+    },
+    "change_summary_v2_2_1": {
+      "change_request": "CR-2025-003",
+      "version_from": "2.2.0",
+      "version_to": "2.2.1",
+      "change_type": "major_refactoring",
+      "summary": "Extracted localization into separate module, added PBS/WBS entities, implemented graph-style bridge relationships",
+      "breaking_changes": true,
+      "migration_required": true,
+      "key_changes": [
+        "Removed all embedded localization fields from entities",
+        "Added org_type enum: platform_owner, client, agency, affiliate",
+        "Added Product Breakdown Structure (PBS) entity",
+        "Added Work Breakdown Structure (WBS) entity",
+        "Implemented graph-style relationship bridges to Localization Module",
+        "Refactored platform entity to separate Platform Ontology",
+        "Enhanced self-documenting glossary with bridge concepts",
+        "Added 3 good + 3 bad examples per entity showing bridge usage"
+      ]
+    }
+  },
+  "glossary": {
+    "purpose": "Standardized definitions for all PPM module terms with references to related modules and bridge relationships",
+    "terms": {
+      "organisation": {
+        "definition": "A legal entity or business unit that participates in the platform ecosystem. Can be a Platform Owner, Client subscriber, Agency partner, or Affiliate partner. The root entity in the PPM hierarchy for that organization's portfolio management.",
+        "synonyms": ["company", "enterprise", "business unit", "organization (US spelling)"],
+        "related_terms": ["org_type", "platform_owner", "client", "agency", "affiliate"],
+        "module": "PPM",
+        "entity_type": "organisation",
+        "business_context": "Organizations establish strategic objectives and allocate resources across their portfolio of investments. They subscribe to platform products and have localization settings applied via bridge relationships.",
+        "technical_note": "Every entity in the PPM module must reference a valid organisation via org_id. Localization settings applied via ppm_localization_bridge. Regional settings no longer embedded in entity.",
+        "bridge_relationships": [
+          "Uses localization via ppm_localization_bridge",
+          "Tracked by change_control_bridge",
+          "May own products (if org_type=platform_owner)",
+          "May subscribe to products (if org_type=client)"
+        ]
+      },
+      "org_type": {
+        "definition": "Classification of organization role in the platform ecosystem",
+        "values": {
+          "platform_owner": "Organization that owns and operates the platform, creates products/services",
+          "client": "Organization that subscribes to platform products/services and uses PPM for their own projects",
+          "agency": "Partner organization that provides services to clients using the platform",
+          "affiliate": "Partner organization with referral or revenue-sharing relationship"
+        },
+        "module": "PPM",
+        "business_context": "Determines organization's capabilities, access rights, and relationship to products",
+        "technical_note": "Enum value that determines which bridge relationships are valid for the organization"
+      },
+      "portfolio": {
+        "definition": "A collection of programmes, projects, and operational activities grouped together to facilitate effective management and achieve strategic business objectives.",
+        "synonyms": ["investment portfolio", "strategic portfolio"],
+        "related_terms": ["programme", "project", "strategic_objective"],
+        "module": "PPM",
+        "entity_type": "portfolio",
+        "business_context": "Portfolios align organizational strategy with execution and optimize resource allocation across initiatives.",
+        "technical_note": "Portfolios inherit localization from parent organisation unless explicitly overridden via bridge relationship.",
+        "bridge_relationships": [
+          "Inherits localization from organisation (default)",
+          "Can override via ppm_localization_bridge",
+          "Tracked by change_control_bridge"
+        ]
+      },
+      "programme": {
+        "definition": "A group of related projects, subsidiary programmes, and programme activities managed in a coordinated manner to obtain benefits not available from managing them individually.",
+        "synonyms": ["program (US spelling)", "initiative", "transformation programme"],
+        "related_terms": ["project", "benefits_management", "portfolio"],
+        "module": "PPM",
+        "entity_type": "programme",
+        "business_context": "Programmes deliver transformational change and realize strategic benefits through coordinated project delivery.",
+        "technical_note": "Programmes bridge strategic intent (portfolio) with tactical execution (projects). Localization cascades from portfolio unless overridden.",
+        "bridge_relationships": [
+          "Inherits localization from portfolio (default)",
+          "Can override via ppm_localization_bridge",
+          "Tracked by change_control_bridge"
+        ]
+      },
+      "project": {
+        "definition": "A temporary endeavour undertaken to create a unique product, service, or result with defined beginning and end dates, specific objectives, and constrained resources.",
+        "synonyms": ["initiative", "work package"],
+        "related_terms": ["deliverable", "milestone", "programme", "pbs", "wbs"],
+        "module": "PPM",
+        "entity_type": "project",
+        "business_context": "Projects are the primary execution vehicle for delivering specific outputs within time, cost, and quality constraints.",
+        "technical_note": "Projects are the lowest level in the PPM hierarchy where actual work is performed. Can have independent PBS and WBS. Localization can be overridden at project level for multi-regional delivery.",
+        "bridge_relationships": [
+          "Inherits localization from programme (default)",
+          "Can override via ppm_localization_bridge",
+          "Has one or more PBS (product_breakdown_structure)",
+          "Has one or more WBS (work_breakdown_structure)",
+          "Tracked by change_control_bridge"
+        ]
+      },
+      "pbs": {
+        "definition": "Product Breakdown Structure - A hierarchical decomposition of products, deliverables, or services. Can represent products marketed by Platform Owner OR Client organization, OR deliverables from PPM projects.",
+        "synonyms": ["product structure", "deliverable hierarchy", "product decomposition"],
+        "related_terms": ["deliverable", "work_package", "wbs", "product", "service"],
+        "module": "PPM",
+        "entity_type": "product_breakdown_structure",
+        "business_context": "PBS defines WHAT will be delivered. Used for product discovery, marketing, and project deliverable definition. Platform owners use PBS for their product catalog. Client organizations use PBS for their own products/services discovery. Projects use PBS for deliverable breakdown.",
+        "technical_note": "PBS is independent of HOW work is done (that's WBS). A PBS node can relate to: (1) Platform product (platform_product_id), (2) Client marketed product (client_product_id), OR (3) Project deliverable (project_id). Can have independent localization per PBS node.",
+        "bridge_relationships": [
+          "Can inherit localization from project/organisation OR override",
+          "Links to platform products via product_bridge",
+          "Links to client products via product_bridge",
+          "Links to project deliverables via project relationship",
+          "Tracked by change_control_bridge"
+        ]
+      },
+      "wbs": {
+        "definition": "Work Breakdown Structure - A hierarchical decomposition of work to be executed by the organization (Platform Owner, Client, Agency, or Affiliate) to accomplish project objectives and create deliverables.",
+        "synonyms": ["task hierarchy", "work decomposition", "activity breakdown"],
+        "related_terms": ["task", "activity", "work_package", "pbs", "resource"],
+        "module": "PPM",
+        "entity_type": "work_breakdown_structure",
+        "business_context": "WBS defines HOW work will be organized and executed. Each organization type (platform_owner, client, agency, affiliate) maintains their own WBS for work they perform. Used for effort estimation, scheduling, and resource allocation.",
+        "technical_note": "WBS is specific to the organization doing the work (org_id). Multiple organizations may have different WBS structures for the same project (e.g., client WBS for their work, agency WBS for their deliverables). Can have independent localization per WBS node for distributed teams.",
+        "bridge_relationships": [
+          "Inherits localization from organisation (default)",
+          "Can override via ppm_localization_bridge per WBS node",
+          "Links to organisation via org_id",
+          "Links to project via project_id (optional)",
+          "Tracked by change_control_bridge"
+        ]
+      },
+      "stakeholder": {
+        "definition": "An individual, group, or organisation that may affect, be affected by, or perceive itself to be affected by a decision, activity, or outcome of a portfolio, programme, or project.",
+        "synonyms": ["participant", "team member", "interested party"],
+        "related_terms": ["raci", "governance", "organisation"],
+        "module": "PPM",
+        "entity_type": "stakeholder",
+        "business_context": "Stakeholders have varying levels of authority, interest, and influence in PPM activities and outcomes.",
+        "technical_note": "Stakeholders are linked to PPM entities through roles and RACI assignments. Can have personal localization preferences that override organizational defaults.",
+        "bridge_relationships": [
+          "Can have personal localization preferences via ppm_localization_bridge",
+          "Tracked by change_control_bridge"
+        ]
+      },
+      "localization_bridge": {
+        "definition": "A graph-style relationship that connects PPM entities to localization configurations, enabling flexible cascade and override of regional settings.",
+        "synonyms": ["localization_link", "regional_settings_relationship"],
+        "related_terms": ["localization", "regional_settings", "inheritance", "override"],
+        "module": "PPM (Bridge)",
+        "entity_type": "relationship",
+        "business_context": "Enables granular control of localization settings at any level of the PPM hierarchy, supporting multi-regional and multi-jurisdictional operations.",
+        "technical_note": "Graph relationship with precedence rules: entity-specific > parent-inherited > organizational default. See ppm_localization_bridge.json for full specification.",
+        "relationship_properties": [
+          "precedence: inherit|override|merge",
+          "effective_from: datetime",
+          "effective_to: datetime (optional)",
+          "justification: text"
+        ]
+      },
+      "change_control_bridge": {
+        "definition": "A graph-style relationship that connects PPM entities to change control records, enabling comprehensive audit trail and version tracking.",
+        "synonyms": ["change_tracking_link", "audit_relationship"],
+        "related_terms": ["change_control", "version_history", "audit_trail"],
+        "module": "PPM (Bridge)",
+        "entity_type": "relationship",
+        "business_context": "Ensures all modifications to PPM entities, configurations, and relationships are tracked for compliance and governance.",
+        "technical_note": "Graph relationship linking PPM entities to change_control_module. See ppm_change_control_bridge.json for full specification.",
+        "relationship_properties": [
+          "change_type: schema|data|configuration|relationship",
+          "changed_by: stakeholder_id",
+          "changed_date: datetime",
+          "change_reason: text"
+        ]
+      },
+      "financial_value": {
+        "definition": "Monetary amounts in PPM entities (budgets, costs, benefits) stored in base currency (USD) with display currency determined by localization configuration.",
+        "module": "PPM",
+        "technical_note": "All financial values stored as 'amount_usd' field. Display currency and formatting determined by localization_bridge relationship. No currency fields embedded in PPM entities.",
+        "bridge_relationships": [
+          "Display currency via localization_bridge",
+          "Exchange rates managed by localization_module"
+        ]
+      },
+      "datetime_value": {
+        "definition": "Date and time values in PPM entities stored in ISO 8601 format with UTC offset. Display format and timezone determined by localization configuration.",
+        "module": "PPM",
+        "technical_note": "All datetime values stored in ISO 8601 format: YYYY-MM-DDTHH:mm:ssZ. Display format and timezone conversion determined by localization_bridge relationship. No date_format or timezone fields embedded in PPM entities.",
+        "bridge_relationships": [
+          "Display format via localization_bridge",
+          "Timezone conversion via localization_module"
+        ]
+      }
+    }
+  },
+  "entities": {
+    "organisation": {
+      "entity_type": "organisation",
+      "schema_org_type": "Organization",
+      "primary_key": "org_id",
+      "module": "PPM",
+      "version": "2.2.1",
+      "foreign_keys": {
+        "parent_org_id": "organisation.org_id"
+      },
+      "bridge_relationships": [
+        {
+          "bridge_type": "ppm_localization_bridge",
+          "target_module": "localization",
+          "cardinality": "one_to_many",
+          "description": "Organisation can have multiple localization configurations (e.g., headquarters, regional offices)"
+        },
+        {
+          "bridge_type": "change_control_bridge",
+          "target_module": "change_control",
+          "cardinality": "one_to_many",
+          "description": "All changes to organisation tracked"
+        }
+      ],
+      "definition": "The root entity representing a legal entity or business unit that participates in the platform ecosystem. Supports four organization types: platform_owner, client, agency, affiliate. Every PPM entity must belong to an organisation.",
+      "purpose": "To provide multi-tenant isolation, establish organizational context, serve as the root for all PPM hierarchies, and define organization role in platform ecosystem.",
+      "business_rules": [
+        "Every PPM entity must reference a valid organisation",
+        "Organisations can have hierarchical parent-child relationships",
+        "org_type must be: platform_owner, client, agency, or affiliate",
+        "platform_owner organizations can create products/services",
+        "client organizations subscribe to and use products/services",
+        "agency organizations provide services to clients",
+        "affiliate organizations have referral/revenue relationships",
+        "Localization settings applied via ppm_localization_bridge (not embedded)",
+        "Strategic objectives defined at organisation level cascade to portfolios"
+      ],
+      "best_practices": {
+        "naming": "Use official legal name or recognized business unit name",
+        "hierarchy": "Model organizational structure accurately to reflect reporting lines",
+        "org_type": "Set correctly based on organization role in platform ecosystem",
+        "localization": "Apply via bridge relationships, allowing multiple configs per organization",
+        "objectives": "Define 3-7 strategic objectives aligned with corporate strategy"
+      },
+      "validation_rules": [
+        {
+          "rule": "org_name must be unique within parent organisation",
+          "severity": "error"
+        },
+        {
+          "rule": "org_type must be valid enum value",
+          "severity": "error"
+        },
+        {
+          "rule": "parent_org_id must reference valid organisation",
+          "severity": "error"
+        },
+        {
+          "rule": "ppm_maturity_level must be between 1 and 5",
+          "severity": "error"
+        },
+        {
+          "rule": "Must have at least one localization_bridge relationship",
+          "severity": "warning"
+        },
+        {
+          "rule": "platform_owner orgs should have product catalog",
+          "severity": "warning"
+        },
+        {
+          "rule": "client orgs should have product subscriptions",
+          "severity": "warning"
+        }
+      ],
+      "attributes": {
+        "org_id": {
+          "type": "string",
+          "format": "uuid",
+          "required": true,
+          "description": "Unique identifier for the organisation"
+        },
+        "org_name": {
+          "type": "string",
+          "required": true,
+          "description": "Official name of the organisation"
+        },
+        "legal_name": {
+          "type": "string",
+          "description": "Full legal name including entity type (Ltd, Corp, etc.)"
+        },
+        "org_type": {
+          "type": "enum",
+          "values": ["platform_owner", "client", "agency", "affiliate"],
+          "required": true,
+          "description": "Organization's role in the platform ecosystem"
+        },
+        "parent_org_id": {
+          "type": "string",
+          "format": "uuid",
+          "foreign_key": "organisation.org_id",
+          "description": "Parent organisation for hierarchical structures"
+        },
+        "industry_sector": {
+          "type": "string",
+          "description": "Primary industry or sector"
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief description of organization and its purpose"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Primary website URL"
+        },
+        "address": {
+          "type": "object",
+          "schema_org_type": "PostalAddress",
+          "description": "Physical address (format determined by localization_bridge)"
+        },
+        "employee_count": {
+          "type": "integer",
+          "description": "Number of employees"
+        },
+        "annual_revenue_usd": {
+          "type": "number",
+          "description": "Annual revenue stored in USD base currency. Display currency via localization_bridge."
+        },
+        "strategic_objectives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "objective_id": {"type": "string", "format": "uuid"},
+              "objective_name": {"type": "string"},
+              "description": {"type": "string"},
+              "priority": {"type": "integer"},
+              "target_date": {"type": "string", "format": "datetime"},
+              "owner_id": {"type": "string", "format": "uuid"}
+            }
+          }
+        },
+        "ppm_maturity_level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "PMI/APM maturity assessment level"
+        },
+        "governance_framework": {
+          "type": "string",
+          "description": "Governance framework used (e.g., APM, PMBOK, PRINCE2)"
+        },
+        "status": {
+          "type": "enum",
+          "values": ["active", "inactive", "pending", "dissolved"],
+          "required": true
+        },
+        "localization_bridge_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "bridge_id": {"type": "string", "format": "uuid"},
+              "localization_config_id": {"type": "string", "format": "uuid"},
+              "precedence": {"type": "enum", "values": ["primary", "secondary", "fallback"]},
+              "applies_to": {"type": "string", "description": "Scope: all|specific_portfolio|specific_project"}
+            }
+          },
+          "description": "References to localization configurations via bridge relationships"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "created_by": {"type": "string", "format": "uuid"},
+            "created_date": {"type": "string", "format": "datetime"},
+            "modified_by": {"type": "string", "format": "uuid"},
+            "modified_date": {"type": "string", "format": "datetime"},
+            "version": {"type": "string"}
+          }
+        }
+      },
+      "examples": {
+        "good_examples": [
+          {
+            "example_id": "org_good_001",
+            "description": "Platform Owner organisation with localization bridge",
+            "data": {
+              "org_id": "550e8400-e29b-41d4-a716-446655440000",
+              "org_name": "W4M Platform Ltd",
+              "legal_name": "Work For Me Platform Limited",
+              "org_type": "platform_owner",
+              "parent_org_id": null,
+              "industry_sector": "Technology - Platform Services",
+              "description": "AI-powered workflow automation platform provider",
+              "url": "https://w4m.example.com",
+              "address": {
+                "type": "PostalAddress",
+                "streetAddress": "123 Tech Park",
+                "addressLocality": "London",
+                "addressCountry": "GB"
+              },
+              "employee_count": 250,
+              "annual_revenue_usd": 50000000.00,
+              "ppm_maturity_level": 4,
+              "governance_framework": "APM Body of Knowledge",
+              "status": "active",
+              "localization_bridge_refs": [
+                {
+                  "bridge_id": "bridge-001",
+                  "localization_config_id": "loc-uk-headquarters",
+                  "precedence": "primary",
+                  "applies_to": "all"
+                }
+              ]
+            },
+            "why_good": "Clean separation of concerns - no embedded localization. Uses bridge reference to localization module. Platform owner type correctly set. Financial values in USD base currency."
+          },
+          {
+            "example_id": "org_good_002",
+            "description": "Client organisation with multi-region localization",
+            "data": {
+              "org_id": "550e8400-e29b-41d4-a716-446655440100",
+              "org_name": "GlobalTech Solutions",
+              "legal_name": "GlobalTech Solutions Corporation",
+              "org_type": "client",
+              "parent_org_id": null,
+              "industry_sector": "Technology Consulting",
+              "description": "International technology consulting firm",
+              "url": "https://globaltech.example.com",
+              "employee_count": 5000,
+              "annual_revenue_usd": 500000000.00,
+              "ppm_maturity_level": 3,
+              "status": "active",
+              "localization_bridge_refs": [
+                {
+                  "bridge_id": "bridge-101",
+                  "localization_config_id": "loc-us-headquarters",
+                  "precedence": "primary",
+                  "applies_to": "all"
+                },
+                {
+                  "bridge_id": "bridge-102",
+                  "localization_config_id": "loc-uk-regional",
+                  "precedence": "secondary",
+                  "applies_to": "portfolio:port-uk-001"
+                },
+                {
+                  "bridge_id": "bridge-103",
+                  "localization_config_id": "loc-eu-regional",
+                  "precedence": "secondary",
+                  "applies_to": "portfolio:port-eu-001"
+                }
+              ]
+            },
+            "why_good": "Demonstrates multi-region capability via multiple bridge relationships. Primary HQ localization plus regional overrides for specific portfolios. Client type allows subscription to platform products."
+          },
+          {
+            "example_id": "org_good_003",
+            "description": "Agency organisation serving clients",
+            "data": {
+              "org_id": "550e8400-e29b-41d4-a716-446655440200",
+              "org_name": "Digital Delivery Partners",
+              "legal_name": "Digital Delivery Partners LLP",
+              "org_type": "agency",
+              "parent_org_id": null,
+              "industry_sector": "Digital Agency",
+              "description": "Full-service digital delivery agency",
+              "url": "https://digitaldelivery.example.com",
+              "employee_count": 150,
+              "annual_revenue_usd": 15000000.00,
+              "ppm_maturity_level": 4,
+              "status": "active",
+              "localization_bridge_refs": [
+                {
+                  "bridge_id": "bridge-201",
+                  "localization_config_id": "loc-uk-agency",
+                  "precedence": "primary",
+                  "applies_to": "all"
+                }
+              ]
+            },
+            "why_good": "Agency type correctly set. Can provide services to client organizations using platform. Single localization for agency operations."
+          }
+        ],
+        "bad_examples": [
+          {
+            "example_id": "org_bad_001",
+            "description": "Organisation with embedded localization (v2.2.0 style) - INCORRECT",
+            "data": {
+              "org_id": "550e8400-e29b-41d4-a716-446655440999",
+              "org_name": "Old Style Org",
+              "org_type": "client",
+              "operational_region": "UK",
+              "display_currency": "GBP",
+              "regional_settings": {
+                "timezone": "Europe/London",
+                "date_format": "DD/MM/YYYY"
+              }
+            },
+            "why_bad": "Contains embedded localization fields (operational_region, display_currency, regional_settings) that should be removed in v2.2.1. These must be in separate localization module and linked via bridge.",
+            "validation_errors": [
+              "operational_region field no longer exists in v2.2.1 - use localization_bridge",
+              "display_currency field no longer exists - currency handled by localization module",
+              "regional_settings object no longer embedded - must use localization_bridge_refs",
+              "Missing localization_bridge_refs array",
+              "Migration from v2.2.0 required"
+            ]
+          },
+          {
+            "example_id": "org_bad_002",
+            "description": "Invalid org_type and missing bridge - INCORRECT",
+            "data": {
+              "org_id": "550e8400-e29b-41d4-a716-446655440998",
+              "org_name": "Bad Org",
+              "org_type": "vendor",
+              "status": "active"
+            },
+            "why_bad": "Invalid org_type (must be platform_owner, client, agency, or affiliate). Missing required localization_bridge_refs. No financial or descriptive data.",
+            "validation_errors": [
+              "org_type 'vendor' is invalid - must be: platform_owner, client, agency, affiliate",
+              "localization_bridge_refs missing - organisation must have localization",
+              "industry_sector recommended but missing",
+              "description recommended but missing",
+              "ppm_maturity_level missing - should be set for proper capability assessment"
+            ]
+          },
+          {
+            "example_id": "org_bad_003",
+            "description": "Currency field in wrong format - INCORRECT",
+            "data": {
+              "org_id": "550e8400-e29b-41d4-a716-446655440997",
+              "org_name": "Wrong Currency Org",
+              "org_type": "client",
+              "annual_revenue": 1000000,
+              "currency": "GBP",
+              "status": "active"
+            },
+            "why_bad": "Uses 'annual_revenue' instead of 'annual_revenue_usd'. Includes 'currency' field which should not exist. All financial values must be in USD base currency with display currency via localization bridge.",
+            "validation_errors": [
+              "Use 'annual_revenue_usd' not 'annual_revenue' - all financial values in USD base",
+              "currency field should not exist - currency display handled by localization module",
+              "Missing localization_bridge_refs",
+              "Financial value should be stored in USD (base currency)"
+            ]
+          }
+        ]
+      },
+      "guidance": {
+        "when_to_create": "Create organisation entity when establishing a new tenant, business unit, or organizational entity that will participate in the platform ecosystem as owner, client, agency, or affiliate.",
+        "common_mistakes": [
+          "Embedding localization settings in organisation entity (use bridge instead)",
+          "Using wrong org_type (must be platform_owner, client, agency, or affiliate)",
+          "Storing financial values in local currency (always use USD base)",
+          "Including date_format or timezone fields (use localization bridge)",
+          "Not creating localization_bridge_refs",
+          "Mixing v2.2.0 and v2.2.1 schemas"
+        ],
+        "tips": [
+          "Always set org_type based on organization's role in platform",
+          "Use localization_bridge_refs to link to localization configurations",
+          "Store all financial values in annual_revenue_usd (base currency)",
+          "Create multiple bridge refs for multi-region organizations",
+          "Use precedence (primary/secondary/fallback) for localization cascade",
+          "Set applies_to scope for portfolio/project-specific localizations",
+          "Maintain clean separation between PPM and localization concerns"
+        ]
+      }
+    },
+    "product_breakdown_structure": {
+      "entity_type": "product_breakdown_structure",
+      "schema_org_type": "Product",
+      "primary_key": "pbs_id",
+      "module": "PPM",
+      "version": "2.2.1",
+      "foreign_keys": {
+        "parent_pbs_id": "product_breakdown_structure.pbs_id",
+        "org_id": "organisation.org_id",
+        "project_id": "project.project_id"
+      },
+      "bridge_relationships": [
+        {
+          "bridge_type": "ppm_localization_bridge",
+          "target_module": "localization",
+          "cardinality": "one_to_many",
+          "description": "PBS node can have localization for documentation/marketing in different regions"
+        },
+        {
+          "bridge_type": "product_bridge",
+          "target_module": "platform",
+          "cardinality": "many_to_one",
+          "description": "PBS can link to platform products or client products"
+        },
+        {
+          "bridge_type": "change_control_bridge",
+          "target_module": "change_control",
+          "cardinality": "one_to_many",
+          "description": "PBS structure changes tracked"
+        }
+      ],
+      "definition": "Product Breakdown Structure - A hierarchical decomposition defining WHAT will be delivered. Can represent: (1) Products marketed by Platform Owner, (2) Products/services marketed by Client organization, OR (3) Deliverables from PPM projects. Independent of HOW work is organized (see WBS).",
+      "purpose": "To define product structure, deliverables hierarchy, and output organization. Supports product discovery, marketing, and project deliverable definition across platform owner and client contexts.",
+      "business_rules": [
+        "PBS defines WHAT (outputs) not HOW (work organization)",
+        "Must belong to an organisation via org_id",
+        "Can be hierarchical (parent_pbs_id for sub-components)",
+        "Can link to platform products (platform_product_id)",
+        "Can link to client marketed products (client_product_id)",
+        "Can link to project deliverables (project_id)",
+        "Can have independent localization per node (multi-region products)",
+        "Version controlled for product evolution"
+      ],
+      "best_practices": {
+        "structure": "Organize by logical product components, not work packages",
+        "naming": "Use customer-facing product/deliverable names",
+        "versioning": "Track PBS versions as products evolve",
+        "localization": "Apply per-node localization for global products",
+        "relationships": "Clearly link to platform products OR client products OR project deliverables"
+      },
+      "validation_rules": [
+        {
+          "rule": "pbs_name must be descriptive and unique within parent",
+          "severity": "error"
+        },
+        {
+          "rule": "org_id must reference valid organisation",
+          "severity": "error"
+        },
+        {
+          "rule": "parent_pbs_id must reference valid PBS in same hierarchy",
+          "severity": "error"
+        },
+        {
+          "rule": "Must have at least one of: platform_product_id, client_product_id, or project_id",
+          "severity": "warning"
+        },
+        {
+          "rule": "Circular references not allowed in PBS hierarchy",
+          "severity": "error"
+        }
+      ],
+      "attributes": {
+        "pbs_id": {
+          "type": "string",
+          "format": "uuid",
+          "required": true,
+          "description": "Unique identifier for PBS node"
+        },
+        "pbs_name": {
+          "type": "string",
+          "required": true,
+          "description": "Name of product/deliverable component"
+        },
+        "pbs_code": {
+          "type": "string",
+          "description": "Hierarchical code (e.g., 1.2.3 for Product > Module > Component)"
+        },
+        "parent_pbs_id": {
+          "type": "string",
+          "format": "uuid",
+          "foreign_key": "product_breakdown_structure.pbs_id",
+          "description": "Parent PBS node for hierarchical structure"
+        },
+        "org_id": {
+          "type": "string",
+          "format": "uuid",
+          "foreign_key": "organisation.org_id",
+          "required": true,
+          "description": "Organization that owns this PBS (platform_owner or client)"
+        },
+        "pbs_type": {
+          "type": "enum",
+          "values": ["platform_product", "client_product", "project_deliverable", "component", "feature"],
+          "required": true,
+          "description": "Type of PBS node"
+        },
+        "platform_product_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Link to platform product (if PBS represents platform offering)"
+        },
+        "client_product_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Link to client's marketed product (if PBS represents client offering)"
+        },
+        "project_id": {
+          "type": "string",
+          "format": "uuid",
+          "foreign_key": "project.project_id",
+          "description": "Link to PPM project (if PBS represents project deliverable)"
+        },
+        "description": {
+          "type": "string",
+          "required": true,
+          "description": "Detailed description of product/deliverable"
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Criteria for accepting this deliverable"
+        },
+        "status": {
+          "type": "enum",
+          "values": ["planned", "in_development", "testing", "released", "deprecated"],
+          "required": true
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of this PBS component (semantic versioning)"
+        },
+        "estimated_value_usd": {
+          "type": "number",
+          "description": "Estimated value in USD base currency"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "depends_on_pbs_id": {"type": "string", "format": "uuid"},
+              "dependency_type": {"type": "enum", "values": ["requires", "enhances", "optional"]}
+            }
+          },
+          "description": "Dependencies on other PBS components"
+        },
+        "localization_bridge_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "bridge_id": {"type": "string", "format": "uuid"},
+              "localization_config_id": {"type": "string", "format": "uuid"},
+              "applies_to_markets": {"type": "array", "items": {"type": "string"}}
+            }
+          },
+          "description": "Localization for product marketing in different regions"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "created_by": {"type": "string", "format": "uuid"},
+            "created_date": {"type": "string", "format": "datetime"},
+            "modified_by": {"type": "string", "format": "uuid"},
+            "modified_date": {"type": "string", "format": "datetime"}
+          }
+        }
+      },
+      "examples": {
+        "good_examples": [
+          {
+            "example_id": "pbs_good_001",
+            "description": "Platform product PBS with multi-region localization",
+            "data": {
+              "pbs_id": "pbs-001",
+              "pbs_name": "W4M PPM Suite",
+              "pbs_code": "1.0",
+              "parent_pbs_id": null,
+              "org_id": "550e8400-e29b-41d4-a716-446655440000",
+              "pbs_type": "platform_product",
+              "platform_product_id": "prod-ppm-001",
+              "description": "Complete portfolio, programme, and project management solution",
+              "status": "released",
+              "version": "2.2.1",
+              "estimated_value_usd": 5000000.00,
+              "localization_bridge_refs": [
+                {
+                  "bridge_id": "pbs-bridge-001",
+                  "localization_config_id": "loc-uk-product-marketing",
+                  "applies_to_markets": ["UK", "IE"]
+                },
+                {
+                  "bridge_id": "pbs-bridge-002",
+                  "localization_config_id": "loc-us-product-marketing",
+                  "applies_to_markets": ["US", "CA"]
+                },
+                {
+                  "bridge_id": "pbs-bridge-003",
+                  "localization_config_id": "loc-eu-product-marketing",
+                  "applies_to_markets": ["DE", "FR", "NL", "BE"]
+                }
+              ]
+            },
+            "why_good": "Platform owner's product PBS with multiple localization configs for different markets. Clean separation of product structure from work organization. Links to platform product catalog."
+          },
+          {
+            "example_id": "pbs_good_002",
+            "description": "Client product PBS for service discovery",
+            "data": {
+              "pbs_id": "pbs-101",
+              "pbs_name": "AI Consulting Services",
+              "pbs_code": "1.0",
+              "parent_pbs_id": null,
+              "org_id": "550e8400-e29b-41d4-a716-446655440100",
+              "pbs_type": "client_product",
+              "client_product_id": "client-prod-001",
+              "description": "Comprehensive AI strategy and implementation consulting",
+              "status": "released",
+              "version": "1.0.0",
+              "estimated_value_usd": 250000.00,
+              "localization_bridge_refs": [
+                {
+                  "bridge_id": "pbs-bridge-101",
+                  "localization_config_id": "loc-us-services",
+                  "applies_to_markets": ["US"]
+                }
+              ]
+            },
+            "why_good": "Client organization's marketed product/service PBS. Used for service discovery and positioning. Independent of any specific project delivery."
+          },
+          {
+            "example_id": "pbs_good_003",
+            "description": "Project deliverable PBS with components",
+            "data": {
+              "pbs_id": "pbs-201",
+              "pbs_name": "Mobile App",
+              "pbs_code": "1.0",
+              "parent_pbs_id": null,
+              "org_id": "550e8400-e29b-41d4-a716-446655440100",
+              "pbs_type": "project_deliverable",
+              "project_id": "proj-001",
+              "description": "Customer-facing mobile application for iOS and Android",
+              "acceptance_criteria": [
+                "App store approved and published",
+                "All user acceptance tests passed",
+                "Performance benchmarks met"
+              ],
+              "status": "in_development",
+              "version": "1.0.0",
+              "dependencies": [
+                {
+                  "depends_on_pbs_id": "pbs-202",
+                  "dependency_type": "requires"
+                }
+              ],
+              "localization_bridge_refs": [
+                {
+                  "bridge_id": "pbs-bridge-201",
+                  "localization_config_id": "loc-us-dev-team",
+                  "applies_to_markets": ["US"]
+                }
+              ]
+            },
+            "why_good": "Project deliverable PBS with acceptance criteria and dependencies. Links to specific project. Can have sub-components (UI, backend, etc.) as child PBS nodes."
+          }
+        ],
+        "bad_examples": [
+          {
+            "example_id": "pbs_bad_001",
+            "description": "PBS confused with WBS (work activities) - INCORRECT",
+            "data": {
+              "pbs_id": "pbs-bad-001",
+              "pbs_name": "Development Sprint 1",
+              "org_id": "550e8400-e29b-41d4-a716-446655440100",
+              "pbs_type": "project_deliverable",
+              "description": "Two weeks of development work"
+            },
+            "why_bad": "PBS should define WHAT (deliverables/products) not HOW (work activities). 'Development Sprint 1' is a work activity and belongs in WBS, not PBS. PBS should be 'Mobile App' or 'API Module' etc.",
+            "validation_errors": [
+              "PBS name describes work activity (sprint) not product/deliverable",
+              "This should be in WBS (Work Breakdown Structure) not PBS",
+              "PBS defines outputs, not work organization",
+              "Missing actual product/deliverable name",
+              "Confusion between WHAT is delivered vs HOW work is organized"
+            ]
+          },
+          {
+            "example_id": "pbs_bad_002",
+            "description": "Missing org context and relationships - INCORRECT",
+            "data": {
+              "pbs_id": "pbs-bad-002",
+              "pbs_name": "Some Product",
+              "pbs_type": "platform_product",
+              "status": "planned"
+            },
+            "why_bad": "Missing org_id (which organization owns this PBS?). Missing links to platform_product_id or project_id. No description or localization. Vague name.",
+            "validation_errors": [
+              "org_id missing - required field",
+              "platform_product_id missing - PBS marked as platform_product but no link",
+              "description missing - required field",
+              "pbs_name too vague - 'Some Product' not descriptive",
+              "localization_bridge_refs missing",
+              "Cannot determine context - platform product? client product? project deliverable?"
+            ]
+          },
+          {
+            "example_id": "pbs_bad_003",
+            "description": "Embedded localization instead of bridge - INCORRECT",
+            "data": {
+              "pbs_id": "pbs-bad-003",
+              "pbs_name": "Global Product",
+              "org_id": "550e8400-e29b-41d4-a716-446655440000",
+              "pbs_type": "platform_product",
+              "description": "Product for global markets",
+              "region": "UK",
+              "currency": "GBP",
+              "date_format": "DD/MM/YYYY"
+            },
+            "why_bad": "Contains embedded localization fields (region, currency, date_format) that should be in localization module and linked via bridge. In v2.2.1, all localization is external.",
+            "validation_errors": [
+              "region field should not exist - use localization_bridge_refs",
+              "currency field should not exist - currency via localization module",
+              "date_format field should not exist - formatting via localization module",
+              "Missing localization_bridge_refs array",
+              "For global product, should have multiple localization bridges for different markets",
+              "Migration from earlier schema version required"
+            ]
+          }
+        ]
+      },
+      "guidance": {
+        "when_to_create": "Create PBS when defining products, deliverables, or output structures. Use for: (1) Platform product catalog, (2) Client service offerings, (3) Project deliverable hierarchy. Focus on WHAT is delivered, not HOW work is organized.",
+        "common_mistakes": [
+          "Confusing PBS with WBS (products vs work activities)",
+          "Using work-oriented names (sprints, phases) instead of deliverable names",
+          "Not linking to platform products or projects",
+          "Embedding localization instead of using bridges",
+          "Creating flat lists instead of hierarchical structures",
+          "Mixing product components with work packages"
+        ],
+        "tips": [
+          "PBS = WHAT is delivered (outputs, products, services)",
+          "WBS = HOW work is organized (activities, tasks)",
+          "Use customer-facing product/deliverable names",
+          "Create hierarchies for complex products (Product > Modules > Features)",
+          "Link to platform_product_id for platform offerings",
+          "Link to client_product_id for client marketed products",
+          "Link to project_id for project deliverables",
+          "Use multiple localization bridges for global products",
+          "Version PBS as products evolve",
+          "Define clear acceptance criteria for deliverables"
+        ]
+      }
+    },
+    "work_breakdown_structure": {
+      "entity_type": "work_breakdown_structure",
+      "schema_org_type": "Action",
+      "primary_key": "wbs_id",
+      "module": "PPM",
+      "version": "2.2.1",
+      "foreign_keys": {
+        "parent_wbs_id": "work_breakdown_structure.wbs_id",
+        "org_id": "organisation.org_id",
+        "project_id": "project.project_id",
+        "assigned_to": "stakeholder.stakeholder_id"
+      },
+      "bridge_relationships": [
+        {
+          "bridge_type": "ppm_localization_bridge",
+          "target_module": "localization",
+          "cardinality": "one_to_many",
+          "description": "WBS node can have localization for distributed teams"
+        },
+        {
+          "bridge_type": "change_control_bridge",
+          "target_module": "change_control",
+          "cardinality": "one_to_many",
+          "description": "WBS structure changes tracked"
+        }
+      ],
+      "definition": "Work Breakdown Structure - A hierarchical decomposition defining HOW work will be organized and executed by the organization. Specific to the organization performing the work (platform_owner, client, agency, or affiliate). Defines work organization, not deliverables (see PBS for deliverables).",
+      "purpose": "To organize and decompose work to be performed, enable effort estimation, support scheduling and resource allocation. Each organization maintains their own WBS for work they perform. Supports distributed and multi-organizational project delivery.",
+      "business_rules": [
+        "WBS defines HOW (work organization) not WHAT (deliverables)",
+        "Must belong to an organisation via org_id (organization doing the work)",
+        "Can be hierarchical (parent_wbs_id for work decomposition)",
+        "Can link to project (project_id) or be organizational standard",
+        "Multiple organizations can have different WBS for same project",
+        "Can have independent localization per node (distributed teams)",
+        "Tracks effort, duration, and resources",
+        "Work packages at lowest level are assignable to stakeholders"
+      ],
+      "best_practices": {
+        "structure": "Organize by work packages, phases, or functional areas",
+        "naming": "Use action-oriented work package names (verb + object)",
+        "granularity": "Decompose to manageable work packages (8-80 hours)",
+        "assignment": "Assign work packages to specific stakeholders",
+        "estimation": "Estimate effort and duration at work package level",
+        "localization": "Apply per-node localization for distributed teams"
+      },
+      "validation_rules": [
+        {
+          "rule": "wbs_name must be descriptive and action-oriented",
+          "severity": "error"
+        },
+        {
+          "rule": "org_id must reference valid organisation",
+          "severity": "error"
+        },
+        {
+          "rule": "parent_wbs_id must reference valid WBS in same hierarchy",
+          "severity": "error"
+        },
+        {
+          "rule": "estimated_effort_hours should be 8-80 for work packages",
+          "severity": "warning"
+        },
+        {
+          "rule": "Circular references not allowed in WBS hierarchy",
+          "severity": "error"
+        },
+        {
+          "rule": "Work packages (lowest level) should have assigned_to",
+          "severity": "warning"
+        }
+      ],
+      "attributes": {
+        "wbs_id": {
+          "type": "string",
+          "format": "uuid",
+          "required": true,
+          "description": "Unique identifier for WBS node"
+        },
+        "wbs_name": {
+          "type": "string",
+          "required": true,
+          "description": "Name of work package or activity (action-oriented)"
+        },
+        "wbs_code": {
+          "type": "string",
+          "description": "Hierarchical code (e.g., 1.2.3 for Phase > Activity > Task)"
+        },
+        "parent_wbs_id": {
+          "type": "string",
+          "format": "uuid",
+          "foreign_key": "work_breakdown_structure.wbs_id",
+          "description": "Parent WBS node for hierarchical work decomposition"
+        },
+        "org_id": {
+          "type": "string",
+          "format": "uuid",
+          "foreign_key": "organisation.org_id",
+          "required": true,
+          "description": "Organization performing this work (owner of WBS)"
+        },
+        "project_id": {
+          "type": "string",
+          "format": "uuid",
+          "foreign_key": "project.project_id",
+          "description": "Link to PPM project (if WBS is project-specific)"
+        },
+        "wbs_type": {
+          "type": "enum",
+          "values": ["phase", "activity", "work_package", "milestone"],
+          "required": true,
+          "description": "Type of WBS node"
+        },
+        "description": {
+          "type": "string",
+          "required": true,
+          "description": "Detailed description of work to be performed"
+        },
+        "deliverable_pbs_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Link to PBS deliverable this work produces (optional cross-reference)"
+        },
+        "assigned_to": {
+          "type": "string",
+          "format": "uuid",
+          "foreign_key": "stakeholder.stakeholder_id",
+          "description": "Stakeholder assigned to this work package"
+        },
+        "estimated_effort_hours": {
+          "type": "number",
+          "description": "Estimated effort in hours"
+        },
+        "actual_effort_hours": {
+          "type": "number",
+          "description": "Actual effort spent in hours"
+        },
+        "estimated_duration_days": {
+          "type": "number",
+          "description": "Estimated duration in working days"
+        },
+        "planned_start_date": {
+          "type": "string",
+          "format": "datetime",
+          "description": "Planned start date (ISO 8601, display format via localization)"
+        },
+        "planned_end_date": {
+          "type": "string",
+          "format": "datetime",
+          "description": "Planned end date (ISO 8601, display format via localization)"
+        },
+        "actual_start_date": {
+          "type": "string",
+          "format": "datetime",
+          "description": "Actual start date"
+        },
+        "actual_end_date": {
+          "type": "string",
+          "format": "datetime",
+          "description": "Actual end date"
+        },
+        "status": {
+          "type": "enum",
+          "values": ["not_started", "in_progress", "on_hold", "completed", "cancelled"],
+          "required": true
+        },
+        "completion_percentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Work completion percentage"
+        },
+        "estimated_cost_usd": {
+          "type": "number",
+          "description": "Estimated cost in USD base currency"
+        },
+        "actual_cost_usd": {
+          "type": "number",
+          "description": "Actual cost in USD base currency"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "depends_on_wbs_id": {"type": "string", "format": "uuid"},
+              "dependency_type": {"type": "enum", "values": ["finish_to_start", "start_to_start", "finish_to_finish", "start_to_finish"]},
+              "lag_days": {"type": "number"}
+            }
+          },
+          "description": "Dependencies on other WBS work packages"
+        },
+        "localization_bridge_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "bridge_id": {"type": "string", "format": "uuid"},
+              "localization_config_id": {"type": "string", "format": "uuid"},
+              "applies_to_team": {"type": "string", "description": "Team/location this localization applies to"}
+            }
+          },
+          "description": "Localization for work performed by distributed teams"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "created_by": {"type": "string", "format": "uuid"},
+            "created_date": {"type": "string", "format": "datetime"},
+            "modified_by": {"type": "string", "format": "uuid"},
+            "modified_date": {"type": "string", "format": "datetime"}
+          }
+        }
+      },
+      "examples": {
+        "good_examples": [
+          {
+            "example_id": "wbs_good_001",
+            "description": "Client organization WBS with distributed team localization",
+            "data": {
+              "wbs_id": "wbs-001",
+              "wbs_name": "Design User Interface",
+              "wbs_code": "1.2.1",
+              "parent_wbs_id": "wbs-parent-001",
+              "org_id": "550e8400-e29b-41d4-a716-446655440100",
+              "project_id": "proj-001",
+              "wbs_type": "work_package",
+              "description": "Create wireframes, mockups, and interactive prototypes for mobile app UI",
+              "deliverable_pbs_id": "pbs-201",
+              "assigned_to": "stakeholder-design-lead",
+              "estimated_effort_hours": 80,
+              "estimated_duration_days": 10,
+              "planned_start_date": "2025-10-15T09:00:00Z",
+              "planned_end_date": "2025-10-29T17:00:00Z",
+              "status": "not_started",
+              "estimated_cost_usd": 8000.00,
+              "localization_bridge_refs": [
+                {
+                  "bridge_id": "wbs-bridge-001",
+                  "localization_config_id": "loc-us-design-team",
+                  "applies_to_team": "US Design Team"
+                }
+              ]
+            },
+            "why_good": "Clear work package with action-oriented name. Links to organization doing work (client). Links to project and deliverable PBS. Includes effort/duration estimates. Has localization for specific team location."
+          },
+          {
+            "example_id": "wbs_good_002",
+            "description": "Agency WBS for work performed on client's project",
+            "data": {
+              "wbs_id": "wbs-101",
+              "wbs_name": "Develop Backend API",
+              "wbs_code": "2.1",
+              "parent_wbs_id": null,
+              "org_id": "550e8400-e29b-41d4-a716-446655440200",
+              "project_id": "proj-001",
+              "wbs_type": "activity",
+              "description": "Agency's backend development work for client project",
+              "assigned_to": "stakeholder-agency-tech-lead",
+              "estimated_effort_hours": 320,
+              "estimated_duration_days": 40,
+              "planned_start_date": "2025-11-01T09:00:00Z",
+              "planned_end_date": "2025-12-20T17:00:00Z",
+              "status": "not_started",
+              "estimated_cost_usd": 32000.00,
+              "localization_bridge_refs": [
+                {
+                  "bridge_id": "wbs-bridge-101",
+                  "localization_config_id": "loc-uk-agency-team",
+                  "applies_to_team": "UK Agency Development Team"
+                }
+              ]
+            },
+            "why_good": "Demonstrates multi-organizational project. Agency has their own WBS for work they perform on client's project. Same project can have client WBS and agency WBS. Clear organizational ownership."
+          },
+          {
+            "example_id": "wbs_good_003",
+            "description": "Multi-region WBS with team-specific localization",
+            "data": {
+              "wbs_id": "wbs-201",
+              "wbs_name": "Conduct User Research",
+              "wbs_code": "1.1.1",
+              "parent_wbs_id": "wbs-parent-201",
+              "org_id": "550e8400-e29b-41d4-a716-446655440100",
+              "project_id": "proj-002",
+              "wbs_type": "work_package",
+              "description": "Conduct user interviews and usability testing across UK and US markets",
+              "assigned_to": "stakeholder-ux-lead",
+              "estimated_effort_hours": 120,
+              "estimated_duration_days": 20,
+              "status": "in_progress",
+              "completion_percentage": 45,
+              "localization_bridge_refs": [
+                {
+                  "bridge_id": "wbs-bridge-201",
+                  "localization_config_id": "loc-uk-research-team",
+                  "applies_to_team": "UK Research Team"
+                },
+                {
+                  "bridge_id": "wbs-bridge-202",
+                  "localization_config_id": "loc-us-research-team",
+                  "applies_to_team": "US Research Team"
+                }
+              ]
+            },
+            "why_good": "Multi-region work with separate localization for each team. Supports distributed teams working on same work package with different regional settings for scheduling and reporting."
+          }
+        ],
+        "bad_examples": [
+          {
+            "example_id": "wbs_bad_001",
+            "description": "WBS confused with PBS (deliverable names) - INCORRECT",
+            "data": {
+              "wbs_id": "wbs-bad-001",
+              "wbs_name": "Mobile App",
+              "org_id": "550e8400-e29b-41d4-a716-446655440100",
+              "wbs_type": "work_package",
+              "description": "The mobile application"
+            },
+            "why_bad": "WBS should describe work activities (HOW) not deliverables/products (WHAT). 'Mobile App' is a deliverable and belongs in PBS. WBS should be 'Develop Mobile App Features' or 'Design User Interface' etc.",
+            "validation_errors": [
+              "WBS name describes deliverable not work activity",
+              "This should be in PBS (Product Breakdown Structure) not WBS",
+              "WBS defines work organization, not outputs",
+              "Name should be action-oriented (verb + object)",
+              "Confusion between WHAT is delivered vs HOW work is organized",
+              "Should be something like 'Design mobile interface' or 'Develop mobile features'"
+            ]
+          },
+          {
+            "example_id": "wbs_bad_002",
+            "description": "Missing organization context and effort estimates - INCORRECT",
+            "data": {
+              "wbs_id": "wbs-bad-002",
+              "wbs_name": "Do some work",
+              "wbs_type": "work_package",
+              "status": "not_started"
+            },
+            "why_bad": "Missing org_id (which organization is doing the work?). Vague name. No effort estimates. No project link. No assigned stakeholder. Cannot be scheduled or tracked.",
+            "validation_errors": [
+              "org_id missing - required field (which org does this work?)",
+              "wbs_name too vague - 'Do some work' not specific",
+              "Name should be action-oriented with clear scope",
+              "description missing - required field",
+              "estimated_effort_hours missing",
+              "estimated_duration_days missing",
+              "assigned_to missing - work packages should be assigned",
+              "project_id missing - should link to project",
+              "localization_bridge_refs missing",
+              "Cannot estimate, schedule, or track progress with this data"
+            ]
+          },
+          {
+            "example_id": "wbs_bad_003",
+            "description": "Embedded dates without ISO format or localization bridge - INCORRECT",
+            "data": {
+              "wbs_id": "wbs-bad-003",
+              "wbs_name": "Write Documentation",
+              "org_id": "550e8400-e29b-41d4-a716-446655440100",
+              "wbs_type": "work_package",
+              "description": "Write user documentation",
+              "start_date": "10/15/2025",
+              "end_date": "10/29/2025",
+              "timezone": "America/New_York",
+              "date_format": "MM/DD/YYYY"
+            },
+            "why_bad": "Uses non-ISO date format (ambiguous - is it Oct 15 or 15 Oct?). Embeds timezone and date_format which should be in localization module via bridge. Wrong field names (should be planned_start_date, planned_end_date).",
+            "validation_errors": [
+              "Use planned_start_date not start_date",
+              "Use planned_end_date not end_date",
+              "Date format '10/15/2025' is ambiguous - use ISO 8601: '2025-10-15T09:00:00Z'",
+              "timezone field should not exist - timezone via localization bridge",
+              "date_format field should not exist - format via localization bridge",
+              "Missing localization_bridge_refs array",
+              "Dates must be in ISO 8601 format with explicit timezone offset",
+              "Display formatting handled by localization module, not embedded"
+            ]
+          }
+        ]
+      },
+      "guidance": {
+        "when_to_create": "Create WBS when planning and organizing work to be performed by an organization. Use for: (1) Project work breakdown, (2) Organizational standard work structures, (3) Multi-org project coordination (each org has their own WBS). Focus on HOW work is organized, not WHAT is delivered.",
+        "common_mistakes": [
+          "Confusing WBS with PBS (work vs deliverables)",
+          "Using deliverable names instead of action-oriented work names",
+          "Not specifying which organization owns the work (org_id)",
+          "Creating single WBS for multi-org projects (each org should have their own)",
+          "Embedding localization instead of using bridges",
+          "Missing effort estimates and assignments",
+          "Using non-ISO date formats",
+          "Granularity too high (tasks < 8 hours) or too low (> 80 hours)"
+        ],
+        "tips": [
+          "WBS = HOW work is organized (activities, tasks, work packages)",
+          "PBS = WHAT is delivered (outputs, products, deliverables)",
+          "Use action-oriented names (verb + object): 'Design UI', 'Develop API', 'Test Integration'",
+          "Each organization maintains their own WBS for work they perform",
+          "For multi-org projects: Client has WBS, Agency has WBS, both link to same project",
+          "Decompose to manageable work packages (8-80 hours)",
+          "Assign work packages to specific stakeholders",
+          "Estimate effort (hours) and duration (days) for each work package",
+          "Use dependencies to show work sequencing",
+          "Apply localization bridges for distributed teams",
+          "Store dates in ISO 8601 format, display format via localization",
+          "Link to PBS deliverables (deliverable_pbs_id) to show what work produces",
+          "Track actual vs planned for project control"
+        ]
+      }
+    }
+  },
+  "revision_history": [
+    {
+      "revision_number": 4,
+      "version": "2.2.1",
+      "revision_date": "2025-10-02T18:00:00Z",
+      "revision_type": "major_refactoring",
+      "summary": "Extracted localization into separate module, added PBS/WBS entities, implemented graph-style bridge relationships for modular architecture",
+      "detailed_changes": [
+        "BREAKING: Removed all embedded localization fields from entities",
+        "BREAKING: Extracted platform entity to separate Platform Ontology module",
+        "Added org_type enum: platform_owner, client, agency, affiliate",
+        "Added Product Breakdown Structure (PBS) entity for WHAT is delivered",
+        "Added Work Breakdown Structure (WBS) entity for HOW work is organized",
+        "Implemented graph-style localization_bridge_refs for flexible cascade",
+        "Financial values now store as *_usd fields (base currency)",
+        "Datetime values stored in ISO 8601, display via localization bridge",
+        "Enhanced glossary with bridge relationship concepts",
+        "Added dependencies on Localization Module v1.0.0 and Change Control Module v1.0.0",
+        "Updated all examples to show v2.2.1 structure with bridges",
+        "Added 3 good + 3 bad examples per entity",
+        "Removed change_control entity (moved to separate module)",
+        "Removed platform entity (moved to separate Platform Ontology)",
+        "Updated validation rules for bridge-based architecture"
+      ],
+      "changed_by": "Enterprise Architecture Team",
+      "approved_by": "Enterprise Architecture Review Board",
+      "approval_date": "2025-10-02T17:30:00Z",
+      "breaking_changes": true,
+      "migration_required": true,
+      "migration_notes": "v2.2.0 deployments must migrate to extract embedded localization to separate Localization Module. Migration scripts provided. Estimated effort: 3-5 days per platform.",
+      "backward_compatible": false,
+      "notes": "Major architectural refactoring for modularity. PPM now focuses solely on portfolio/programme/project management with PBS/WBS. All localization handled via bridge relationships to separate Localization Module. Enables flexible multi-region, multi-jurisdictional deployments."
+    },
+    {
+      "revision_number": 3,
+      "version": "2.2.0",
+      "revision_date": "2025-10-02T16:00:00Z",
+      "revision_type": "minor_release",
+      "summary": "Added multi-regional support (UK, US, EU) with currency conversion and flexible localization",
+      "notes": "Deprecated in favor of v2.2.1 modular architecture. v2.2.0 had embedded localization which violated separation of concerns."
+    },
+    {
+      "revision_number": 2,
+      "version": "2.1.0",
+      "revision_date": "2025-10-02T14:30:00Z",
+      "revision_type": "minor_release",
+      "summary": "Added change control, platform tracking, and UK localization"
+    },
+    {
+      "revision_number": 1,
+      "version": "2.0.0",
+      "revision_date": "2025-06-01T09:00:00Z",
+      "revision_type": "major_release",
+      "summary": "Initial self-documenting ontology with examples and best practices"
+    }
+  ],
+  "migration_guide_v2_2_0_to_v2_2_1": {
+    "overview": "v2.2.1 is a BREAKING change that refactors embedded localization into separate module with graph-style bridge relationships.",
+    "breaking_changes": [
+      "All localization fields removed from entities (operational_region, display_currency, regional_settings, etc.)",
+      "Platform entity moved to separate Platform Ontology module",
+      "Change Control entity moved to separate Change Control module",
+      "Financial fields renamed to *_usd suffix (e.g., annual_revenue → annual_revenue_usd)",
+      "Localization now applied via localization_bridge_refs arrays"
+    ],
+    "migration_steps": [
+      {
+        "step": 1,
+        "description": "Deploy Localization Module v1.0.0",
+        "details": "Install localization_module_v1.0.0.json before migrating PPM data"
+      },
+      {
+        "step": 2,
+        "description": "Extract embedded localization data",
+        "details": "For each organisation, portfolio, programme, project: extract operational_region, display_currency, regional_settings → create localization config in Localization Module"
+      },
+      {
+        "step": 3,
+        "description": "Create bridge relationships",
+        "details": "Create ppm_localization_bridge records linking PPM entities to their localization configs"
+      },
+      {
+        "step": 4,
+        "description": "Rename financial fields",
+        "details": "Rename annual_revenue → annual_revenue_usd, budget → budget_usd, etc."
+      },
+      {
+        "step": 5,
+        "description": "Update entity schemas",
+        "details": "Deploy PPM Module v2.2.1 schema"
+      },
+      {
+        "step": 6,
+        "description": "Add PBS/WBS data (optional)",
+        "details": "If using Product/Work Breakdown Structures, create PBS and WBS records"
+      },
+      {
+        "step": 7,
+        "description": "Test and validate",
+        "details": "Verify all entities have localization_bridge_refs, dates display correctly, currency converts properly"
+      }
+    ],
+    "rollback_plan": "Revert to v2.2.0 schema. Re-embed localization data from Localization Module back into entities. Data integrity maintained as localization extraction is reversible.",
+    "estimated_effort": "3-5 days per platform deployment",
+    "support_contact": "architecture@organisation.example.com"
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-RCSG-FW-001",
+  "name": "RCSG Framework Ontology (Regulatory, Compliance, Security & Governance)",
+  "description": "Unified RCSG framework ontology combining abstract regulatory, compliance, security and governance context with the NCSC/DSIT Cyber Governance Code of Practice. 9 entities covering RCSG context profiles, regulatory requirements, compliance frameworks, governance models, governance codes, principles, board-level actions, glossary terms, and cross-framework mappings to 9 international standards.",
+  "version": "2.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/rcsg-fw/",
+  "prefix": "rcsg-fw:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-16",
+  "gatesPassed": 8,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./rcsg-framework-ontology-v2.0.0.json",
+    "instances": "./rcsg-fw-mapping-instances-v2.0.0.json",
+    "authorityInstances": "./rcsg-fw-domain-authorities-v2.0.0.json"
+  },
+  "components": {
+    "RCSGContext": "Top-level RCSG profile with compliance posture, primary regulator, data classification",
+    "RegulatoryRequirement": "Specific regulation with enforcement body, jurisdiction, penalty risk",
+    "ComplianceFramework": "Framework certification (ISO27001, SOC2, PCI-DSS, MCSB) with scope and expiry",
+    "GovernanceModel": "Board, committee, policy structures — central governance node connecting to governance codes",
+    "GovernanceCode": "Published governance code, standard, or guide with principles and board-level actions",
+    "GovernancePrinciple": "High-level governance principle within a code (e.g. Risk Management, Strategy, People)",
+    "GovernanceAction": "Specific board-level governance action with dependency chains and cross-framework mappings",
+    "GovernanceGlossaryTerm": "Defined term from a governance code glossary",
+    "GovernanceActionMapping": "Cross-framework mapping linking governance actions to external standard controls"
+  },
+  "relationships": {
+    "internal": 14,
+    "crossOntology": [
+      {
+        "name": "regulatoryShapedByGeo",
+        "from": "rcsg-fw:RegulatoryRequirement",
+        "to": "ctx:GeoContext",
+        "cardinality": "1..*",
+        "purpose": "RCSG-FW -> CTX: Regulations are jurisdiction-specific"
+      },
+      {
+        "name": "rcsgDrivesFunctionalMaturity",
+        "from": "rcsg-fw:RCSGContext",
+        "to": "ctx:FunctionalMaturity",
+        "cardinality": "0..*",
+        "purpose": "RCSG-FW -> CTX: RCSG drives Legal/Compliance maturity"
+      },
+      {
+        "name": "regulatoryInMarket",
+        "from": "rcsg-fw:RegulatoryRequirement",
+        "to": "ctx:MarketClassification",
+        "cardinality": "0..*",
+        "purpose": "RCSG-FW -> CTX: Regulations apply to market verticals"
+      },
+      {
+        "name": "complianceRequiresITMaturity",
+        "from": "rcsg-fw:ComplianceFramework",
+        "to": "ctx:ITMaturity",
+        "cardinality": "0..1",
+        "purpose": "RCSG-FW -> CTX: Compliance requires IT maturity"
+      },
+      {
+        "name": "regulatoryImplementedByGDPR",
+        "from": "rcsg-fw:RegulatoryRequirement",
+        "to": "gdpr:DataProtectionPrinciple",
+        "cardinality": "0..*",
+        "purpose": "RCSG-FW -> GDPR: Regulatory implementation via GDPR principles"
+      },
+      {
+        "name": "frameworkImplementedByMCSB",
+        "from": "rcsg-fw:ComplianceFramework",
+        "to": "mcsb:SecurityControl",
+        "cardinality": "0..*",
+        "purpose": "RCSG-FW -> MCSB: Security control implementation"
+      },
+      {
+        "name": "frameworkImplementedByPII",
+        "from": "rcsg-fw:ComplianceFramework",
+        "to": "pii:ComplianceFramework",
+        "cardinality": "0..*",
+        "purpose": "RCSG-FW -> PII: Data protection implementation"
+      },
+      {
+        "name": "governanceAlignedToCAF",
+        "from": "rcsg-fw:GovernanceAction",
+        "to": "ncsc-caf:CAFPrinciple",
+        "cardinality": "0..*",
+        "purpose": "RCSG-FW -> NCSC-CAF: Governance action aligns to CAF principle"
+      },
+      {
+        "name": "governanceAlignedToCAFOutcome",
+        "from": "rcsg-fw:GovernanceAction",
+        "to": "ncsc-caf:ContributingOutcome",
+        "cardinality": "0..*",
+        "purpose": "RCSG-FW -> NCSC-CAF: Governance action aligns to CAF contributing outcome"
+      },
+      {
+        "name": "publishedByAuthority",
+        "from": "rcsg-fw:GovernanceCode",
+        "to": "org:Organization",
+        "cardinality": "1..1",
+        "purpose": "RCSG-FW -> ORG: Governance code published by domain authority"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-CTX-001",
+    "Entry-ONT-NCSC-CAF-001",
+    "Entry-ONT-ORG-001"
+  ],
+  "dependents": [
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-GDPR-001",
+    "Entry-ONT-PII-001",
+    "Entry-ONT-ALZ-001"
+  ],
+  "layer": "RCSG-SERIES",
+  "domain": "Regulatory, Compliance, Security & Governance Framework",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-10",
+  "lastModified": "2026-02-16",
+  "versionHistory": [
+    {
+      "version": "2.0.0",
+      "date": "2026-02-16",
+      "changes": "Major: merged CG-ONT into RCSG-FW. 9 entities (4 original + 5 governance code entities), 24 relationships (14 internal + 10 cross-ontology), 10 business rules, 4 enumerations. New hasGovernanceCode relationship connecting GovernanceModel to governance code hierarchy. Seed instances: 1 code, 5 principles, 22 actions, 12 glossary terms. 150 cross-framework mapping instances across 9 international standards. Epic 30 F30.11."
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-02-10",
+      "changes": "Initial release: 4 entities, 10 relationships (3 internal + 7 cross-ontology), 4 business rules. Extracted from CTX ontology to establish abstract RCSG framework layer with formalized bridges to GDPR-ONT, PII-ONT, MCSB-ONT."
+    }
+  ],
+  "notes": "Unified RCSG framework hub combining abstract RCSG context layer with NCSC/DSIT Cyber Governance Code of Practice. GovernanceModel serves as central governance node connecting to published governance codes, principles, and board-level actions. Cross-framework mappings to 9 international standards (NCSC CAF, COBIT, NIST CSF, ISO 27001, CMMI, IASME, ISA, ANSSI, WEF).",
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-RCSG-001",
+      "name": "RCSG Framework to CTX Jurisdiction Bridge",
+      "description": "Links regulatory requirements to geographic context for jurisdiction-specific compliance",
+      "joinPath": "rcsg-fw:RegulatoryRequirement → rcsg-fw:regulatoryShapedByGeo → ctx:GeoContext",
+      "useCase": "Determine which regulations apply based on organisational operating regions"
+    },
+    {
+      "patternId": "JP-RCSG-002",
+      "name": "Governance Model to Code Bridge",
+      "description": "Links the central governance model to published governance codes for board-level oversight",
+      "joinPath": "rcsg-fw:GovernanceModel → rcsg-fw:hasGovernanceCode → rcsg-fw:GovernanceCode → rcsg-fw:hasPrinciple → rcsg-fw:GovernancePrinciple → rcsg-fw:hasAction → rcsg-fw:GovernanceAction",
+      "useCase": "Navigate from governance model through code hierarchy to specific board actions"
+    },
+    {
+      "patternId": "JP-RCSG-003",
+      "name": "Governance Action to CAF Alignment Bridge",
+      "description": "Links governance actions to NCSC CAF principles for cross-framework compliance alignment",
+      "joinPath": "rcsg-fw:GovernanceAction → rcsg-fw:governanceAlignedToCAF → ncsc-caf:CAFPrinciple",
+      "useCase": "Map governance board actions to operational CAF assessment outcomes"
+    },
+    {
+      "patternId": "JP-RCSG-004",
+      "name": "Governance Code to Authority Bridge",
+      "description": "Links governance codes to their publishing domain authority organization",
+      "joinPath": "rcsg-fw:GovernanceCode → rcsg-fw:publishedByAuthority → org:Organization",
+      "useCase": "Identify which domain authorities publish governance codes and their jurisdictional scope"
+    }
+  ]
+}

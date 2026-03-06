@@ -1,0 +1,755 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ea-ai": "https://oaa-ontology.org/v6/ea-ai/",
+    "ea-core": "https://oaa-ontology.org/v6/ea-core/"
+  },
+  "@id": "https://oaa-ontology.org/v6/ea-ai/schema",
+  "@type": "owl:Ontology",
+  "name": "AI/ML Architecture Ontology",
+  "description": "Vendor-neutral AI/ML architecture ontology covering AI workloads, autonomous agents, RAG systems, ML pipelines, model registries, agent orchestration, architecture patterns, and responsible AI controls. Extracted from EA-MSFT-ONT to enable multi-cloud AI architecture modelling across Azure, AWS, GCP, and open-source platforms.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "AI/ML Architecture",
+  "oaa:status": "Production",
+  "dateCreated": "2026-03-04",
+  "dateModified": "2026-03-04",
+  "creator": {
+    "@type": "Organization",
+    "name": "Azlan EA-AAA"
+  },
+  "oaa:imports": [
+    {
+      "@id": "ea-core:schema",
+      "name": "EA-CORE-ONT",
+      "version": "1.0.0",
+      "description": "Platform-agnostic EA core providing Application, TechnologyArchitecture, SecurityArchitecture base types for AI workload hosting and governance",
+      "importedEntities": [
+        "ea-core:Application",
+        "ea-core:TechnologyArchitecture",
+        "ea-core:SecurityArchitecture"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-EA-AI-001",
+      "name": "Application-to-AIWorkload",
+      "description": "EA-CORE applications host or integrate AI workloads for intelligent capabilities",
+      "joinPath": "ea-core:Application -> ea-ai:hostsWorkload -> ea-ai:AIWorkload",
+      "useCase": "AI workload portfolio mapping and application intelligence assessment"
+    },
+    {
+      "patternId": "JP-EA-AI-002",
+      "name": "Agent-to-Application Tools",
+      "description": "AI agents use EA-CORE applications as tools for autonomous task execution",
+      "joinPath": "ea-ai:AIAgent -> ea-ai:hasTools -> ea-core:Application",
+      "useCase": "Agent tool inventory and application dependency mapping"
+    },
+    {
+      "patternId": "JP-EA-AI-003",
+      "name": "ResponsibleAI-to-Security",
+      "description": "Responsible AI controls integrate with security architecture for governance",
+      "joinPath": "ea-ai:ResponsibleAIControl -> ea-ai:alignsToSecurity -> ea-core:SecurityArchitecture",
+      "useCase": "AI governance and security posture alignment"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "ea-ai:AIWorkload",
+      "@type": "rdfs:Class",
+      "name": "AIWorkload",
+      "rdfs:subClassOf": "ea-core:Application",
+      "description": "An application leveraging AI/ML capabilities for inference, generation, or decision-making. AIWorkloads are vendor-neutral and can be hosted on any cloud platform (Azure AI, AWS SageMaker, GCP Vertex AI, open-source). AIWorkloads implement architecture patterns and are governed by Responsible AI controls.",
+      "oaa:properties": [
+        {
+          "name": "modelProvider",
+          "type": "xsd:string",
+          "required": false,
+          "description": "AI model provider (OpenAI, Anthropic, Google, Meta, Mistral, open-source)"
+        },
+        {
+          "name": "deploymentPlatform",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Cloud or on-premises platform hosting the workload"
+        },
+        {
+          "name": "inferenceMode",
+          "type": "ea-ai:InferenceMode",
+          "required": false,
+          "description": "Real-time or batch inference mode"
+        }
+      ]
+    },
+    {
+      "@id": "ea-ai:AIAgent",
+      "@type": "rdfs:Class",
+      "name": "AIAgent",
+      "rdfs:subClassOf": "ea-ai:AIWorkload",
+      "description": "An autonomous AI agent with tool-use capabilities, powered by large language models. Agents can use tools, maintain memory, plan multi-step actions, and collaborate with other agents in multi-agent orchestration patterns. Vendor-neutral — supports Azure AI Agent Service, AWS Bedrock Agents, Anthropic Claude, LangChain, CrewAI, AutoGen, and custom frameworks.",
+      "oaa:properties": [
+        {
+          "name": "agentFramework",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Agent framework (LangChain, CrewAI, AutoGen, Semantic Kernel, custom)"
+        },
+        {
+          "name": "memoryType",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Memory architecture (short-term, long-term, episodic, semantic)"
+        },
+        {
+          "name": "autonomyLevel",
+          "type": "ea-ai:AutonomyLevel",
+          "required": false,
+          "description": "Degree of autonomous operation"
+        }
+      ]
+    },
+    {
+      "@id": "ea-ai:RAGSystem",
+      "@type": "rdfs:Class",
+      "name": "RAGSystem",
+      "rdfs:subClassOf": "ea-ai:AIWorkload",
+      "description": "A Retrieval-Augmented Generation system that combines document retrieval with language model generation. RAG systems use vector stores (Pinecone, Weaviate, pgvector, Azure AI Search, Elasticsearch) for semantic search and LLMs for response synthesis. Supports basic, advanced, and agentic RAG patterns.",
+      "oaa:properties": [
+        {
+          "name": "vectorStore",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Vector database used for embeddings (Pinecone, Weaviate, pgvector, FAISS, Azure AI Search)"
+        },
+        {
+          "name": "chunkingStrategy",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Document chunking approach (fixed-size, semantic, recursive, parent-child)"
+        },
+        {
+          "name": "ragPattern",
+          "type": "ea-ai:RAGPattern",
+          "required": false,
+          "description": "RAG architecture pattern (Basic, Advanced, Agentic)"
+        }
+      ]
+    },
+    {
+      "@id": "ea-ai:MLPipeline",
+      "@type": "rdfs:Class",
+      "name": "MLPipeline",
+      "rdfs:subClassOf": "ea-ai:AIWorkload",
+      "description": "A machine learning pipeline for model training, evaluation, and deployment. Covers data preprocessing, feature engineering, model training, hyperparameter tuning, evaluation, and deployment stages. Vendor-neutral — supports Azure ML, SageMaker, Vertex AI, MLflow, Kubeflow, and custom pipelines.",
+      "oaa:properties": [
+        {
+          "name": "pipelineStages",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Pipeline stages (ingest, preprocess, train, evaluate, deploy, monitor)"
+        },
+        {
+          "name": "orchestrator",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Pipeline orchestration tool (Azure ML, SageMaker, Kubeflow, Airflow, MLflow)"
+        },
+        {
+          "name": "computeTarget",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Compute resource for training (GPU cluster, serverless, on-prem)"
+        }
+      ]
+    },
+    {
+      "@id": "ea-ai:ModelRegistry",
+      "@type": "rdfs:Class",
+      "name": "ModelRegistry",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "description": "A centralised repository for versioned ML models, model cards, lineage tracking, and deployment metadata. Supports governance through approval workflows and audit trails. Vendor-neutral — covers Azure ML Model Registry, SageMaker Model Registry, MLflow Model Registry, and Weights & Biases.",
+      "oaa:properties": [
+        {
+          "name": "registryPlatform",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Registry platform (Azure ML, SageMaker, MLflow, W&B, custom)"
+        },
+        {
+          "name": "modelCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of registered models"
+        },
+        {
+          "name": "governanceLevel",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Model governance maturity (None, Basic, Managed, Enterprise)"
+        }
+      ]
+    },
+    {
+      "@id": "ea-ai:AgentOrchestrator",
+      "@type": "rdfs:Class",
+      "name": "AgentOrchestrator",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "description": "A coordination layer for multi-agent systems that manages agent selection, task delegation, message routing, and workflow orchestration. Supports patterns like supervisor, consensus, pipeline, and hierarchical delegation. Vendor-neutral — covers AutoGen, CrewAI, LangGraph, Semantic Kernel, and custom orchestrators.",
+      "oaa:properties": [
+        {
+          "name": "orchestrationPattern",
+          "type": "ea-ai:OrchestrationPattern",
+          "required": false,
+          "description": "Multi-agent orchestration pattern"
+        },
+        {
+          "name": "maxConcurrentAgents",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Maximum concurrent agent instances"
+        },
+        {
+          "name": "routingStrategy",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Agent routing strategy (round-robin, skill-based, LLM-routed)"
+        }
+      ]
+    },
+    {
+      "@id": "ea-ai:AIArchitecturePattern",
+      "@type": "rdfs:Class",
+      "name": "AIArchitecturePattern",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "description": "A reusable AI solution architecture pattern (Basic RAG, Advanced RAG, Single Agent, Multi-Agent, Copilot, Fine-Tuning, Batch Inference) with defined components and vendor-neutral implementation guidance. Patterns can be implemented on any cloud platform.",
+      "oaa:properties": [
+        {
+          "name": "patternType",
+          "type": "ea-ai:AIPatternType",
+          "required": true,
+          "description": "Classification of the AI pattern"
+        },
+        {
+          "name": "components",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Key architectural components"
+        },
+        {
+          "name": "referenceArchitecture",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference architecture documentation link"
+        }
+      ]
+    },
+    {
+      "@id": "ea-ai:ResponsibleAIControl",
+      "@type": "rdfs:Class",
+      "name": "ResponsibleAIControl",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "description": "A control for responsible and ethical AI use covering content safety, groundedness verification, jailbreak protection, PII redaction, bias detection, and model transparency. Vendor-neutral — aligns to NIST AI RMF, EU AI Act, ISO 42001, OWASP LLM Top 10, and MITRE ATLAS.",
+      "oaa:properties": [
+        {
+          "name": "category",
+          "type": "ea-ai:ResponsibleAICategory",
+          "required": true,
+          "description": "Responsible AI control category"
+        },
+        {
+          "name": "severityLevel",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Control severity (Low, Medium, High, Critical)"
+        },
+        {
+          "name": "regulatoryAlignment",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Regulatory frameworks this control aligns to (NIST AI RMF, EU AI Act, ISO 42001)"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "ea-ai:hostsWorkload",
+      "@type": "owl:ObjectProperty",
+      "name": "hostsWorkload",
+      "description": "An EA-CORE application hosts or integrates an AI workload for intelligent capabilities",
+      "domainIncludes": [
+        "ea-core:Application"
+      ],
+      "rangeIncludes": [
+        "ea-ai:AIWorkload"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "EA-CORE-ONT"
+    },
+    {
+      "@id": "ea-ai:usesModel",
+      "@type": "owl:ObjectProperty",
+      "name": "usesModel",
+      "description": "An AI workload uses one or more AI/ML models for inference, generation, or decision-making",
+      "domainIncludes": [
+        "ea-ai:AIWorkload"
+      ],
+      "rangeIncludes": [
+        "ea-ai:ModelRegistry"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-ai:hasTools",
+      "@type": "owl:ObjectProperty",
+      "name": "hasTools",
+      "description": "An AI agent has tools (applications, APIs, functions) available for autonomous task execution",
+      "domainIncludes": [
+        "ea-ai:AIAgent"
+      ],
+      "rangeIncludes": [
+        "ea-core:Application"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "EA-CORE-ONT"
+    },
+    {
+      "@id": "ea-ai:implementsPattern",
+      "@type": "owl:ObjectProperty",
+      "name": "implementsPattern",
+      "description": "An AI workload implements a specific AI architecture pattern (RAG, Agent, Copilot, etc.)",
+      "domainIncludes": [
+        "ea-ai:AIWorkload"
+      ],
+      "rangeIncludes": [
+        "ea-ai:AIArchitecturePattern"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ea-ai:securedByControl",
+      "@type": "owl:ObjectProperty",
+      "name": "securedByControl",
+      "description": "An AI workload is secured by Responsible AI controls ensuring ethical, safe, and compliant AI deployment",
+      "domainIncludes": [
+        "ea-ai:AIWorkload"
+      ],
+      "rangeIncludes": [
+        "ea-ai:ResponsibleAIControl"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-ai:orchestrates",
+      "@type": "owl:ObjectProperty",
+      "name": "orchestrates",
+      "description": "An agent orchestrator coordinates multiple AI agents in a multi-agent system",
+      "domainIncludes": [
+        "ea-ai:AgentOrchestrator"
+      ],
+      "rangeIncludes": [
+        "ea-ai:AIAgent"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ea-ai:trainedByPipeline",
+      "@type": "owl:ObjectProperty",
+      "name": "trainedByPipeline",
+      "description": "An AI workload's model is trained or fine-tuned by an ML pipeline",
+      "domainIncludes": [
+        "ea-ai:AIWorkload"
+      ],
+      "rangeIncludes": [
+        "ea-ai:MLPipeline"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ea-ai:registeredIn",
+      "@type": "owl:ObjectProperty",
+      "name": "registeredIn",
+      "description": "An AI workload's model is registered in a model registry for versioning and governance",
+      "domainIncludes": [
+        "ea-ai:AIWorkload"
+      ],
+      "rangeIncludes": [
+        "ea-ai:ModelRegistry"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ea-ai:alignsToSecurity",
+      "@type": "owl:ObjectProperty",
+      "name": "alignsToSecurity",
+      "description": "A Responsible AI control aligns to the enterprise security architecture for integrated governance",
+      "domainIncludes": [
+        "ea-ai:ResponsibleAIControl"
+      ],
+      "rangeIncludes": [
+        "ea-core:SecurityArchitecture"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "EA-CORE-ONT"
+    }
+  ],
+  "enumerations": [
+    {
+      "@id": "ea-ai:AIPatternType",
+      "@type": "DefinedTermSet",
+      "name": "AIPatternType",
+      "description": "Reusable AI/ML architecture pattern classifications (vendor-neutral)",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-ai:ai-pattern/basic-rag",
+          "name": "BasicRAG",
+          "description": "Standard retrieval-augmented generation"
+        },
+        {
+          "@id": "ea-ai:ai-pattern/advanced-rag",
+          "name": "AdvancedRAG",
+          "description": "RAG with query rewriting, reranking, multi-step retrieval"
+        },
+        {
+          "@id": "ea-ai:ai-pattern/agentic-rag",
+          "name": "AgenticRAG",
+          "description": "RAG with autonomous agent-driven retrieval and reasoning"
+        },
+        {
+          "@id": "ea-ai:ai-pattern/single-agent",
+          "name": "SingleAgent",
+          "description": "Autonomous tool-using agent with single LLM"
+        },
+        {
+          "@id": "ea-ai:ai-pattern/multi-agent",
+          "name": "MultiAgent",
+          "description": "Collaborative specialised agents with orchestration"
+        },
+        {
+          "@id": "ea-ai:ai-pattern/copilot",
+          "name": "Copilot",
+          "description": "Embedded AI assistant in business application"
+        },
+        {
+          "@id": "ea-ai:ai-pattern/fine-tuning",
+          "name": "FineTuning",
+          "description": "Custom model training for domain-specific use"
+        },
+        {
+          "@id": "ea-ai:ai-pattern/batch-inference",
+          "name": "BatchInference",
+          "description": "Asynchronous large volume data processing"
+        }
+      ]
+    },
+    {
+      "@id": "ea-ai:ResponsibleAICategory",
+      "@type": "DefinedTermSet",
+      "name": "ResponsibleAICategory",
+      "description": "Categories of Responsible AI controls aligned to NIST AI RMF, EU AI Act, and ISO 42001",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-ai:rai/content-safety",
+          "name": "ContentSafety",
+          "description": "Filter harmful or inappropriate content"
+        },
+        {
+          "@id": "ea-ai:rai/groundedness-check",
+          "name": "GroundednessCheck",
+          "description": "Verify responses are grounded in source documents"
+        },
+        {
+          "@id": "ea-ai:rai/jailbreak-protection",
+          "name": "JailbreakProtection",
+          "description": "Prevent prompt injection and jailbreak attempts"
+        },
+        {
+          "@id": "ea-ai:rai/pii-redaction",
+          "name": "PIIRedaction",
+          "description": "Detect and redact personally identifiable information"
+        },
+        {
+          "@id": "ea-ai:rai/model-transparency",
+          "name": "ModelTransparency",
+          "description": "Document model capabilities, limitations, intended use"
+        },
+        {
+          "@id": "ea-ai:rai/bias-detection",
+          "name": "BiasDetection",
+          "description": "Detect and mitigate algorithmic bias in model outputs"
+        },
+        {
+          "@id": "ea-ai:rai/explainability",
+          "name": "Explainability",
+          "description": "Provide interpretable explanations for AI decisions"
+        }
+      ]
+    },
+    {
+      "@id": "ea-ai:InferenceMode",
+      "@type": "DefinedTermSet",
+      "name": "InferenceMode",
+      "description": "AI workload inference execution modes",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-ai:inference/realtime",
+          "name": "RealTime",
+          "description": "Synchronous low-latency inference"
+        },
+        {
+          "@id": "ea-ai:inference/batch",
+          "name": "Batch",
+          "description": "Asynchronous high-throughput batch processing"
+        },
+        {
+          "@id": "ea-ai:inference/streaming",
+          "name": "Streaming",
+          "description": "Token-by-token streaming inference"
+        }
+      ]
+    },
+    {
+      "@id": "ea-ai:AutonomyLevel",
+      "@type": "DefinedTermSet",
+      "name": "AutonomyLevel",
+      "description": "Degree of autonomous operation for AI agents",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-ai:autonomy/assisted",
+          "name": "Assisted",
+          "description": "Human-in-the-loop for all decisions"
+        },
+        {
+          "@id": "ea-ai:autonomy/semi-autonomous",
+          "name": "SemiAutonomous",
+          "description": "Agent acts independently within defined boundaries, human approval for escalations"
+        },
+        {
+          "@id": "ea-ai:autonomy/autonomous",
+          "name": "Autonomous",
+          "description": "Fully autonomous operation with post-hoc human review"
+        }
+      ]
+    },
+    {
+      "@id": "ea-ai:RAGPattern",
+      "@type": "DefinedTermSet",
+      "name": "RAGPattern",
+      "description": "RAG architecture pattern variants",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-ai:rag/basic",
+          "name": "Basic",
+          "description": "Simple retrieve-then-generate with single vector lookup"
+        },
+        {
+          "@id": "ea-ai:rag/advanced",
+          "name": "Advanced",
+          "description": "Multi-step retrieval with reranking and query expansion"
+        },
+        {
+          "@id": "ea-ai:rag/agentic",
+          "name": "Agentic",
+          "description": "Agent-driven adaptive retrieval with tool use"
+        }
+      ]
+    },
+    {
+      "@id": "ea-ai:OrchestrationPattern",
+      "@type": "DefinedTermSet",
+      "name": "OrchestrationPattern",
+      "description": "Multi-agent orchestration patterns for agent coordination",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-ai:orchestration/supervisor",
+          "name": "Supervisor",
+          "description": "Central supervisor agent delegates to specialist agents"
+        },
+        {
+          "@id": "ea-ai:orchestration/consensus",
+          "name": "Consensus",
+          "description": "Agents vote or debate to reach consensus decisions"
+        },
+        {
+          "@id": "ea-ai:orchestration/pipeline",
+          "name": "Pipeline",
+          "description": "Sequential agent chain with output-to-input flow"
+        },
+        {
+          "@id": "ea-ai:orchestration/hierarchical",
+          "name": "Hierarchical",
+          "description": "Multi-level delegation with manager and worker agents"
+        }
+      ]
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "ea-ai:BR-AI-001",
+      "name": "AIAgentModelRequirement",
+      "description": "AI agents must specify the AI model they use for reasoning and task execution",
+      "condition": "IF ea-ai:AIAgent exists",
+      "action": "THEN it MUST have at least one ea-ai:usesModel relationship to a model in the ModelRegistry",
+      "severity": "error",
+      "appliesTo": [
+        "ea-ai:AIAgent"
+      ]
+    },
+    {
+      "@id": "ea-ai:BR-AI-002",
+      "name": "RAGSystemVectorStore",
+      "description": "RAG systems must reference a vector store for document retrieval functionality",
+      "condition": "IF ea-ai:RAGSystem exists",
+      "action": "THEN it MUST have a non-empty vectorStore property identifying the vector database",
+      "severity": "error",
+      "appliesTo": [
+        "ea-ai:RAGSystem"
+      ]
+    },
+    {
+      "@id": "ea-ai:BR-AI-003",
+      "name": "ResponsibleAIControlCategory",
+      "description": "Responsible AI controls must specify a category for classification and governance",
+      "condition": "IF ea-ai:ResponsibleAIControl exists",
+      "action": "THEN it MUST have a non-empty category property from ea-ai:ResponsibleAICategory",
+      "severity": "warning",
+      "appliesTo": [
+        "ea-ai:ResponsibleAIControl"
+      ]
+    },
+    {
+      "@id": "ea-ai:BR-AI-004",
+      "name": "AIWorkloadResponsibleAICoverage",
+      "description": "AI workloads in production must have at least one Responsible AI control for governance compliance",
+      "condition": "IF ea-ai:AIWorkload is in Production status",
+      "action": "THEN it MUST have at least one ea-ai:securedByControl relationship to an ea-ai:ResponsibleAIControl",
+      "severity": "error",
+      "appliesTo": [
+        "ea-ai:AIWorkload"
+      ]
+    },
+    {
+      "@id": "ea-ai:BR-AI-005",
+      "name": "MultiAgentOrchestratorRequired",
+      "description": "Multi-agent systems must have an orchestrator for coordination and governance",
+      "condition": "IF ea-ai:AIWorkload implements MultiAgent pattern",
+      "action": "THEN there MUST exist an ea-ai:AgentOrchestrator with ea-ai:orchestrates relationships to the participating agents",
+      "severity": "error",
+      "appliesTo": [
+        "ea-ai:AgentOrchestrator"
+      ]
+    },
+    {
+      "@id": "ea-ai:BR-AI-006",
+      "name": "ModelRegistryGovernance",
+      "description": "Model registries must track governance level for audit and compliance",
+      "condition": "IF ea-ai:ModelRegistry exists",
+      "action": "THEN it SHOULD have a non-empty governanceLevel property",
+      "severity": "warning",
+      "appliesTo": [
+        "ea-ai:ModelRegistry"
+      ]
+    },
+    {
+      "@id": "ea-ai:BR-AI-007",
+      "name": "MLPipelineStageDefinition",
+      "description": "ML pipelines must define their stages for reproducibility and auditability",
+      "condition": "IF ea-ai:MLPipeline exists",
+      "action": "THEN it MUST have a non-empty pipelineStages property",
+      "severity": "error",
+      "appliesTo": [
+        "ea-ai:MLPipeline"
+      ]
+    },
+    {
+      "@id": "ea-ai:BR-AI-008",
+      "name": "AIPatternImplementation",
+      "description": "AI workloads should specify which architecture pattern they implement for portfolio analysis",
+      "condition": "IF ea-ai:AIWorkload exists",
+      "action": "THEN it SHOULD have an ea-ai:implementsPattern relationship to an ea-ai:AIArchitecturePattern",
+      "severity": "warning",
+      "appliesTo": [
+        "ea-ai:AIWorkload"
+      ]
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-03-04",
+    "modifiedBy": "Azlan EA-AAA",
+    "changeNotes": "Initial creation. 5 entities extracted from EA-MSFT-ONT v1.0.0 (AIWorkload, AIAgent, RAGSystem, AIArchitecturePattern, ResponsibleAIControl) and made vendor-neutral. 3 new entities added (MLPipeline, ModelRegistry, AgentOrchestrator). Re-namespaced from ea-msft: to ea-ai:. 8 entities, 9 relationships, 8 business rules, 6 enumerations.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-03-04",
+        "notes": "Initial release: Vendor-neutral AI/ML ontology extracted from EA-MSFT-ONT. Phase 2 of EA Sub-Series Restructure (Decision D2: Scenario A)."
+      }
+    ]
+  },
+  "oaa:ontologyId": "EA-AI-ONT",
+  "oaa:series": "PE-Series",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What AI workloads are deployed across the enterprise and what patterns do they implement?",
+      "targetEntities": ["ea-ai:AIWorkload"],
+      "targetRelationships": ["ea-ai:implementsPattern"],
+      "targetRules": ["ea-ai:BR-AI-008"]
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What AI agents exist and what tools do they have access to?",
+      "targetEntities": ["ea-ai:AIAgent"],
+      "targetRelationships": ["ea-ai:hasTools"],
+      "targetRules": ["ea-ai:BR-AI-001"]
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What RAG systems are deployed and what vector stores do they use?",
+      "targetEntities": ["ea-ai:RAGSystem"],
+      "targetRelationships": [],
+      "targetRules": ["ea-ai:BR-AI-002"]
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What Responsible AI controls govern our AI workloads?",
+      "targetEntities": ["ea-ai:ResponsibleAIControl"],
+      "targetRelationships": ["ea-ai:securedByControl"],
+      "targetRules": ["ea-ai:BR-AI-003", "ea-ai:BR-AI-004"]
+    },
+    {
+      "@id": "CQ-005",
+      "question": "How are multi-agent systems orchestrated and what patterns do they follow?",
+      "targetEntities": ["ea-ai:AgentOrchestrator", "ea-ai:AIAgent"],
+      "targetRelationships": ["ea-ai:orchestrates"],
+      "targetRules": ["ea-ai:BR-AI-005"]
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What ML pipelines exist and what models do they produce?",
+      "targetEntities": ["ea-ai:MLPipeline", "ea-ai:ModelRegistry"],
+      "targetRelationships": ["ea-ai:trainedByPipeline", "ea-ai:registeredIn"],
+      "targetRules": ["ea-ai:BR-AI-006", "ea-ai:BR-AI-007"]
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What AI architecture patterns are available and which workloads implement them?",
+      "targetEntities": ["ea-ai:AIArchitecturePattern"],
+      "targetRelationships": ["ea-ai:implementsPattern"],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "How do Responsible AI controls align to the enterprise security architecture?",
+      "targetEntities": ["ea-ai:ResponsibleAIControl"],
+      "targetRelationships": ["ea-ai:alignsToSecurity"],
+      "targetRules": []
+    }
+  ]
+}

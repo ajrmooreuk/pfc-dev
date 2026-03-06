@@ -1,0 +1,82 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-FAIRSLICE-001",
+  "name": "FairSlice Platform Economics Ontology",
+  "description": "Platform economics ontology governing dynamic equity, revenue sharing, and contribution-based value distribution. 9 owned entities: Pie, PieMember, Slice, Claim, WaterfallRule, RevenueEvent, Distribution, SmartContract, License. Revenue Waterfall engine with 7 priority steps. AI Judge integration for claim verification. Smart Contract Registry extends Unified Registry. 6 cross-ontology bridges to RRR, PE, GRC-FW, EMC, VSOM, PARTNER. VP-RRR aligned. Epic 50 F50.1.",
+  "version": "1.0.0",
+  "oaaVersion": "7.0.0",
+  "namespace": "https://platformcore.io/ontology/fairslice/",
+  "prefix": "fs:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-26",
+  "gatesPassed": 8,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./fairslice-ont-v1.0.0.json"
+  },
+  "components": {
+    "Pie": "Venture/startup tenant — JSONB ontology_config stores business rules, multipliers, waterfall priorities",
+    "PieMember": "Participant in a pie — role (Builder/Rainmaker/Architect/Partner), multiplier, vesting schedule",
+    "Slice": "Unit of contribution — base currency of FairSlice. Type: Equity, Time, Cash, IP, Sweat-Equity",
+    "Claim": "Contribution claim for AI Judge verification — proof, status, reasoning",
+    "WaterfallRule": "Priority step in revenue distribution — 7 types from Platform-Fee to Dividend",
+    "RevenueEvent": "Incoming revenue/transaction triggering waterfall execution",
+    "Distribution": "Calculated payout from revenue event via waterfall rule — immutable audit trail",
+    "SmartContract": "Packaged validation rules and system prompts — licensable via Unified Registry",
+    "License": "Subscription linking SmartContract to Pie — cash/equity/free terms"
+  },
+  "relationships": {
+    "internal": 13,
+    "crossOntology": [
+      {"name": "memberMapsToRole", "from": "fs:PieMember", "to": "rrr:FunctionalRole", "cardinality": "1..1", "purpose": "Role alignment: Builder=Engineer, Rainmaker=Sales, Architect=ModuleCreator"},
+      {"name": "claimFollowsProcess", "from": "fs:Claim", "to": "pe:Process", "cardinality": "1..1", "purpose": "Claims follow PE process lifecycle"},
+      {"name": "distributionAuditedBy", "from": "fs:Distribution", "to": "grc-fw:GovernanceAssurance", "cardinality": "1..1", "purpose": "Every distribution has GRC audit trail"},
+      {"name": "pieMapsToInstance", "from": "fs:Pie", "to": "emc:InstanceConfiguration", "cardinality": "0..1", "purpose": "Pie inherits PFI instance config"},
+      {"name": "waterfallTracesStrategy", "from": "fs:WaterfallRule", "to": "vsom:Strategy", "cardinality": "0..1", "purpose": "Waterfall rules trace to VSOM strategies"},
+      {"name": "contractInRegistry", "from": "fs:SmartContract", "to": "pf:RegistryArtifact", "cardinality": "0..1", "purpose": "Smart contracts as Unified Registry artifacts"}
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-PARTNER-001",
+    "Entry-ONT-RRR-001",
+    "Entry-ONT-GRC-FW-001",
+    "Entry-ONT-EMC-001"
+  ],
+  "forwardDependencies": [],
+  "dependents": [
+    "Entry-ONT-PARTNER-001"
+  ],
+  "layer": "Orchestration",
+  "domain": "Platform Economics & Revenue Distribution",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-26",
+  "lastModified": "2026-02-26",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-26",
+      "changes": "Initial release: 9 entities, 19 relationships (13 internal + 6 cross-ontology), 12 business rules, 8 enumerations, 7 join patterns. Revenue Waterfall engine. AI Judge integration. Smart Contract Registry as Unified Registry extension. Slicing Pie model adapted for PFC agentic platform. Epic 50 F50.1."
+    }
+  ],
+  "notes": "FAIRSLICE-ONT sits in the Orchestration series alongside EMC-ONT — it governs the economic layer of the PFC platform. Smart Contracts extend the Unified Registry with artifactType 'smart-contract'. The Pie entity's JSONB ontology_config follows the same quasi-OO cascade as pfc_registry.configuration. See CONVERGENCE-FairSlice-JSONB-Graph-Patterns.md for schema convergence with F34.5 JSONB Graph Storage PoC.",
+  "oaa:joinPatterns": [
+    {"patternId": "JP-FS-001", "name": "Pie Member to RRR Role Bridge", "joinPath": "fs:PieMember -> fs:memberMapsToRole -> rrr:FunctionalRole"},
+    {"patternId": "JP-FS-002", "name": "Claim to PE Process Verification", "joinPath": "fs:Claim -> fs:claimFollowsProcess -> pe:Process"},
+    {"patternId": "JP-FS-003", "name": "Distribution to GRC Audit Trail", "joinPath": "fs:Distribution -> fs:distributionAuditedBy -> grc-fw:GovernanceAssurance"},
+    {"patternId": "JP-FS-004", "name": "Smart Contract to Unified Registry", "joinPath": "fs:SmartContract -> fs:contractInRegistry -> pfc:RegistryArtifact"},
+    {"patternId": "JP-FS-005", "name": "Waterfall to VSOM Strategy Trace", "joinPath": "fs:WaterfallRule -> fs:waterfallTracesStrategy -> vsom:Strategy"},
+    {"patternId": "JP-FS-006", "name": "Partner Referral to Waterfall Payout", "joinPath": "partner:Referral -> partner:referralLinkedToPie -> fs:Pie -> fs:pieHasWaterfallRule"},
+    {"patternId": "JP-FS-007", "name": "Pie to EMC Instance Configuration", "joinPath": "fs:Pie -> fs:pieMapsToInstance -> emc:InstanceConfiguration"}
+  ]
+}

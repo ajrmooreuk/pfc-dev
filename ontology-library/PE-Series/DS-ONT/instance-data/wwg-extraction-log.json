@@ -1,0 +1,114 @@
+{
+  "extractionMetadata": {
+    "date": "2026-02-10",
+    "method": "Figma MCP (Claude Code — PE Process PE-DS-EXTRACT-001)",
+    "figmaFileKey": "62j96Z3fx6OlZYZJJVPhG4",
+    "figmaFileName": "WWG-Design-System-v1.1",
+    "figmaFileUrl": "https://www.figma.com/design/62j96Z3fx6OlZYZJJVPhG4/WWG-Design-System-v1.1",
+    "toolsUsed": ["get_metadata", "get_design_context"],
+    "targetOntology": "DS-ONT v1.1.0 (Azlan-EA-AAA)",
+    "peProcessRef": "PE-DS-EXTRACT-001 (ds-token-extraction-process-v1.0.0.json)",
+    "agentModel": "claude-opus-4-6",
+    "phasesExecuted": {
+      "PHASE-1-EXTRACT": "pass",
+      "PHASE-2-CLASSIFY": "pass",
+      "PHASE-3-VALIDATE": "pass",
+      "PHASE-4-POPULATE": "pass"
+    },
+    "gateResults": {
+      "GATE-1-EXTRACTION-COMPLETE": "pass — 88 colour primitives (8 scales x 11), 7 spacing, 6 radius extracted",
+      "GATE-2-CLASSIFICATION-VALID": "pass — 118 primitives, 75 semantics, 0 components classified",
+      "GATE-3-SCHEMA-VALID": "pass — BR-DS-001 through BR-DS-008 zero blocking errors",
+      "GATE-4-OUTPUT-VALID": "pass — valid JSONLD with @context, @graph, all required entity types present"
+    },
+    "notes": "WWG Figma file v1.1 uses same template as RCS/PAND. get_variable_defs not supported — used get_metadata for structure discovery then get_design_context on semantic frame nodes. Distinctive palette: Pink/Magenta primary, Royal Blue secondary, Lime Green success, Teal accent, Cyan info, Amber warning, Warm Red error, Warm Grey neutral. WWG Error section has different surface vs border hex values (unlike other brands where they match). Font family: Jura (Bold headings, Regular body). No component-tier tokens — semantic-level only."
+  },
+  "extractedNodes": {
+    "Primary / Pink (32:128)": {
+      "figmaNodeId": "32:128",
+      "tier": "Semantic",
+      "group": "primary",
+      "surface/subtle": "#fde1ea", "surface/lighter": "#f55095", "surface/default": "#8d1f50", "surface/darker": "#551331",
+      "border/subtle": "#fcc9d9", "border/lighter": "#f55095", "border/default": "#8d1f50", "border/darker": "#551331",
+      "text/label": "#400e24"
+    },
+    "Secondary / RoyalBlue (32:152)": {
+      "figmaNodeId": "32:152",
+      "tier": "Semantic",
+      "group": "secondary",
+      "surface/subtle": "#e0e8fe", "surface/lighter": "#3283fa", "surface/default": "#004593", "surface/darker": "#002a59",
+      "border/subtle": "#c4d4fd", "border/lighter": "#3283fa", "border/default": "#004593", "border/darker": "#002a59",
+      "text/label": "#002043"
+    },
+    "Error / WarmRed (32:175)": {
+      "figmaNodeId": "32:175",
+      "tier": "Semantic",
+      "group": "error",
+      "surface/subtle": "#fdefed", "surface/lighter": "#f4a590", "surface/default": "#d97049", "surface/darker": "#7b3f29",
+      "border/subtle": "#ffd9d9", "border/lighter": "#ff8a84", "border/default": "#e54525", "border/darker": "#5a1710",
+      "text/label": "#50291b"
+    },
+    "Warning / Amber (32:221)": {
+      "figmaNodeId": "32:221",
+      "tier": "Semantic",
+      "group": "warning",
+      "surface/subtle": "#fff7ee", "surface/lighter": "#ffce85", "surface/default": "#f1b038", "surface/darker": "#83601e",
+      "border/subtle": "#fff0de", "border/lighter": "#ffce85", "border/default": "#f1b038", "border/darker": "#83601e",
+      "text/label": "#543d14"
+    },
+    "Information / Cyan (32:245)": {
+      "figmaNodeId": "32:245",
+      "tier": "Semantic",
+      "group": "information",
+      "surface/subtle": "#ecf7fd", "surface/lighter": "#76cbf8", "surface/default": "#00a7de", "surface/darker": "#005d7c",
+      "border/subtle": "#d8eefd", "border/lighter": "#76cbf8", "border/default": "#00a7de", "border/darker": "#005d7c",
+      "text/label": "#003d50"
+    },
+    "Success / LimeGreen (32:268)": {
+      "figmaNodeId": "32:268",
+      "tier": "Semantic",
+      "group": "success",
+      "surface/subtle": "#e9ffe0", "surface/lighter": "#7ee736", "surface/default": "#6cc72e", "surface/darker": "#3a6c19",
+      "border/subtle": "#c4ffaa", "border/lighter": "#7ee736", "border/default": "#6cc72e", "border/darker": "#3a6c19",
+      "text/label": "#264510"
+    },
+    "Accent / Teal (32:314)": {
+      "figmaNodeId": "32:314",
+      "tier": "Semantic",
+      "group": "accent",
+      "surface/subtle": "#b5fff6", "surface/lighter": "#00c8b8", "surface/default": "#009084", "surface/darker": "#00524c",
+      "border/subtle": "#36ffed", "border/lighter": "#00c8b8", "border/default": "#009084", "border/darker": "#00524c",
+      "text/label": "#003633"
+    },
+    "Neutral / WarmGrey (36:59)": {
+      "figmaNodeId": "36:59",
+      "tier": "Semantic",
+      "group": "neutral",
+      "surface/subtle": "#f4f1f1", "surface/default": "#cfc6c3", "surface/disabled": "#bbaea8",
+      "border/default": "#a2948e", "border/disabled": "#bbaea8", "border/darker": "#645c58",
+      "text/title": "#1e1b1a", "text/body": "#312e2c", "text/footnote": "#494441", "text/caption": "#494441",
+      "text/negative": "#f4f1f1", "text/disabled": "#cfc6c3"
+    }
+  },
+  "instanceSummary": {
+    "brand": "wwg",
+    "pfiInstanceName": "WWG",
+    "designSystemVersion": "1.0.0",
+    "schemaVersion": "DS-ONT v1.1.0",
+    "entityCounts": {
+      "DesignSystem": 1,
+      "TokenCategory": 7,
+      "PrimitiveToken": 118,
+      "SemanticToken": 75,
+      "ComponentToken": 0,
+      "BrandVariant": 1,
+      "FigmaSource": 1,
+      "ThemeMode": 1,
+      "DesignPattern": 3
+    },
+    "totalTokens": 193,
+    "colourScales": ["Pink", "RoyalBlue", "WarmRed", "Amber", "Cyan", "LimeGreen", "Teal", "WarmGrey"],
+    "fontFamily": "Jura",
+    "themeModeSupport": false
+  }
+}

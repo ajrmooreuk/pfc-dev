@@ -1,0 +1,96 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-NAR-001",
+  "name": "NARRATIVE Ontology (Strategic Storytelling & Communication Patterns)",
+  "description": "Strategic narrative arc structure (Context → Challenge → Choice → Commitment → Cadence), evidence-linked narrative sections, communication patterns (30-Sec Answer, Rented Brain, Ars Rhetorica, Fait Accompli, Dramatic Structure, Deconstruction, Scalable Business Machines), pattern selection logic, communication objectives, and cadenced lifecycle model. Bridges VSOM-SA analysis outputs to audience-ready strategic communication. Part of VE-Series VSOM-SC sub-series.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://oaa-ontology.org/v6/narrative/",
+  "prefix": "nar:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate7": "pass"
+  },
+  "validationDate": "2026-02-13",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./narrative-ontology-v1.0.0-oaa-v6.json",
+    "documentation": null,
+    "glossary": "../../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "StrategicNarrative": "Container for a full strategic narrative arc with five sections",
+    "NarrativeSection": "One section of the narrative arc: Context, Challenge, Choice, Commitment, or Cadence",
+    "EvidenceChain": "Ordered sequence of SA analysis references backing a narrative section",
+    "NarrativeVersion": "Versioned snapshot of the narrative tied to a strategic review cycle",
+    "CommunicationPattern": "Named verbal/persuasion pattern for strategic communication delivery",
+    "PatternSelection": "Agent decision record: objective + audience + context → selected pattern",
+    "CommunicationObjective": "Purpose category for a communication: Inform, Persuade, Mobilise, Sustain",
+    "CommunicationLifecycle": "Cadenced communication rhythm: annual refresh, quarterly review, monthly pulse, event-driven alert"
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "narrativeAlignedToVSOM",
+        "from": "nar:StrategicNarrative",
+        "to": "vsom:VSOMFramework",
+        "purpose": "Narrative communicates a VSOM strategy"
+      },
+      {
+        "name": "sectionEvidencedBySynthesis",
+        "from": "nar:NarrativeSection",
+        "to": "rsn:AnalysisSynthesis",
+        "purpose": "Narrative sections backed by SA reasoning synthesis"
+      },
+      {
+        "name": "lifecycleTriggeredByReview",
+        "from": "nar:CommunicationLifecycle",
+        "to": "vsom:StrategicReviewCycle",
+        "purpose": "Communication cadence tied to VSOM review cycle"
+      },
+      {
+        "name": "narrativeSourcedFromDirection",
+        "from": "nar:StrategicNarrative",
+        "to": "pfl:StrategicDirectionSummary",
+        "purpose": "Narrative content sourced from SA capstone direction summary"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-BSC-001",
+    "Entry-ONT-RSN-001",
+    "Entry-ONT-PFL-001",
+    "Entry-ONT-RRR-001",
+    "Entry-ONT-KPI-001"
+  ],
+  "dependents": [
+    "Entry-ONT-CSC-001",
+    "Entry-ONT-CUL-001",
+    "Entry-ONT-VIZ-001"
+  ],
+  "layer": "STRATEGIC LAYER (VE-Series / VSOM-SC)",
+  "subSeries": "VSOM-SC",
+  "domain": "Strategy Communication, Strategic Storytelling",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-13",
+  "lastModified": "2026-02-13",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-13",
+      "changes": "Initial release — Strategic Narrative Arc, Communication Patterns, Pattern Selection, Communication Lifecycle"
+    }
+  ],
+  "notes": "Layer C1 (Narrative) of VSOM Strategy Communication. Foundation ontology for the SC sub-series. Bridges SA analysis outputs to structured communication via the 5-section narrative arc and 7 named communication patterns. CommunicationLifecycle ties to VSOM review cadence for sustained strategy communication."
+}

@@ -1,0 +1,1034 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ea": "https://ontology.enterprise-architecture.io/azure/",
+    "azure": "https://ontology.enterprise-architecture.io/azure/cloud/",
+    "togaf": "https://ontology.enterprise-architecture.io/togaf/",
+    "archimate": "https://ontology.enterprise-architecture.io/archimate/",
+    "vsem": "https://wings4mind.ai/ontology/vsem/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "ea:composedOf": {"@type": "@id"},
+    "ea:dependsOn": {"@type": "@id"},
+    "ea:realizes": {"@type": "@id"},
+    "ea:supports": {"@type": "@id"},
+    "ea:hostedOn": {"@type": "@id"},
+    "ea:governs": {"@type": "@id"},
+    "ea:implements": {"@type": "@id"},
+    "ea:consumedBy": {"@type": "@id"},
+    "ea:integratesWith": {"@type": "@id"},
+    "ea:securedBy": {"@type": "@id"},
+    "ea:managedBy": {"@type": "@id"},
+    "ea:alignsTo": {"@type": "@id"}
+  },
+  "@graph": [
+    {
+      "@id": "ea:EnterpriseArchitectureOntology",
+      "@type": "DefinedTermSet",
+      "name": "Enterprise Architecture Ontology for Azure & Microsoft Cloud",
+      "description": "Comprehensive ontology for enterprise architecture management covering TOGAF, ArchiMate, and Azure-specific domains with Schema.org foundations",
+      "version": "2.0.0-pre-oaav5",
+      "dateCreated": "2026-01-26",
+      "creator": {
+        "@type": "Organization",
+        "name": "Enterprise Architecture Practice"
+      }
+    },
+
+    {
+      "@id": "ea:ArchitectureDomainTaxonomy",
+      "@type": "rdfs:Class",
+      "rdfs:label": "Architecture Domain Taxonomy",
+      "rdfs:comment": "Top-level classification of architecture domains following TOGAF ADM",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTermSet"}
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:EAEntity",
+      "rdfs:subClassOf": {"@id": "schema:Thing"},
+      "rdfs:label": "Enterprise Architecture Entity",
+      "rdfs:comment": "Base class for all enterprise architecture entities"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:BusinessArchitecture",
+      "rdfs:subClassOf": [
+        {"@id": "schema:Organization"},
+        {"@id": "ea:EAEntity"}
+      ],
+      "rdfs:label": "Business Architecture",
+      "rdfs:comment": "TOGAF Business Architecture domain covering strategy, governance, organization and business capabilities"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:DataArchitecture",
+      "rdfs:subClassOf": [
+        {"@id": "schema:DataCatalog"},
+        {"@id": "ea:EAEntity"}
+      ],
+      "rdfs:label": "Data Architecture",
+      "rdfs:comment": "TOGAF Data Architecture domain covering data models, governance and management"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:ApplicationArchitecture",
+      "rdfs:subClassOf": [
+        {"@id": "schema:SoftwareApplication"},
+        {"@id": "ea:EAEntity"}
+      ],
+      "rdfs:label": "Application Architecture",
+      "rdfs:comment": "TOGAF Application Architecture domain covering application portfolio and integration"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:TechnologyArchitecture",
+      "rdfs:subClassOf": [
+        {"@id": "schema:TechArticle"},
+        {"@id": "ea:EAEntity"}
+      ],
+      "rdfs:label": "Technology Architecture",
+      "rdfs:comment": "TOGAF Technology Architecture domain covering infrastructure and platforms"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:SecurityArchitecture",
+      "rdfs:subClassOf": {"@id": "ea:EAEntity"},
+      "rdfs:label": "Security Architecture",
+      "rdfs:comment": "Cross-cutting security domain covering identity, access, compliance and threat management"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:IntegrationArchitecture",
+      "rdfs:subClassOf": {"@id": "ea:EAEntity"},
+      "rdfs:label": "Integration Architecture",
+      "rdfs:comment": "Cross-cutting integration domain covering APIs, events and data flows"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:BusinessCapability",
+      "rdfs:subClassOf": [
+        {"@id": "schema:Action"},
+        {"@id": "ea:BusinessArchitecture"}
+      ],
+      "rdfs:label": "Business Capability",
+      "rdfs:comment": "A particular ability or capacity that a business possesses"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:BusinessProcess",
+      "rdfs:subClassOf": [
+        {"@id": "schema:HowTo"},
+        {"@id": "ea:BusinessArchitecture"}
+      ],
+      "rdfs:label": "Business Process",
+      "rdfs:comment": "A collection of related activities that produce value"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:BusinessService",
+      "rdfs:subClassOf": [
+        {"@id": "schema:Service"},
+        {"@id": "ea:BusinessArchitecture"}
+      ],
+      "rdfs:label": "Business Service",
+      "rdfs:comment": "A service that fulfills a business need for customers"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:ValueStream",
+      "rdfs:subClassOf": {"@id": "ea:BusinessArchitecture"},
+      "rdfs:label": "Value Stream",
+      "rdfs:comment": "End-to-end sequence of activities creating value for stakeholders"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:OrganizationalUnit",
+      "rdfs:subClassOf": [
+        {"@id": "schema:Organization"},
+        {"@id": "ea:BusinessArchitecture"}
+      ],
+      "rdfs:label": "Organizational Unit",
+      "rdfs:comment": "A subdivision of an organization with specific responsibilities"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:Actor",
+      "rdfs:subClassOf": [
+        {"@id": "schema:Person"},
+        {"@id": "ea:BusinessArchitecture"}
+      ],
+      "rdfs:label": "Actor",
+      "rdfs:comment": "A person, team, or system that performs activities"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:DataEntity",
+      "rdfs:subClassOf": [
+        {"@id": "schema:Dataset"},
+        {"@id": "ea:DataArchitecture"}
+      ],
+      "rdfs:label": "Data Entity",
+      "rdfs:comment": "A fundamental business data object"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:DataDomain",
+      "rdfs:subClassOf": {"@id": "ea:DataArchitecture"},
+      "rdfs:label": "Data Domain",
+      "rdfs:comment": "A logical grouping of related data entities"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:DataProduct",
+      "rdfs:subClassOf": [
+        {"@id": "schema:Product"},
+        {"@id": "ea:DataArchitecture"}
+      ],
+      "rdfs:label": "Data Product",
+      "rdfs:comment": "A self-contained data asset with defined interfaces and SLAs"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:DataPipeline",
+      "rdfs:subClassOf": {"@id": "ea:DataArchitecture"},
+      "rdfs:label": "Data Pipeline",
+      "rdfs:comment": "A sequence of data processing operations"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:DataGovernancePolicy",
+      "rdfs:subClassOf": {"@id": "ea:DataArchitecture"},
+      "rdfs:label": "Data Governance Policy",
+      "rdfs:comment": "Rules and standards governing data management"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:Application",
+      "rdfs:subClassOf": [
+        {"@id": "schema:SoftwareApplication"},
+        {"@id": "ea:ApplicationArchitecture"}
+      ],
+      "rdfs:label": "Application",
+      "rdfs:comment": "A software system supporting business functions"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:ApplicationComponent",
+      "rdfs:subClassOf": {"@id": "ea:ApplicationArchitecture"},
+      "rdfs:label": "Application Component",
+      "rdfs:comment": "A modular part of an application with defined interfaces"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:ApplicationService",
+      "rdfs:subClassOf": [
+        {"@id": "schema:Service"},
+        {"@id": "ea:ApplicationArchitecture"}
+      ],
+      "rdfs:label": "Application Service",
+      "rdfs:comment": "A service exposed by an application"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:API",
+      "rdfs:subClassOf": [
+        {"@id": "schema:WebAPI"},
+        {"@id": "ea:IntegrationArchitecture"}
+      ],
+      "rdfs:label": "API",
+      "rdfs:comment": "Application Programming Interface enabling integration"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:Microservice",
+      "rdfs:subClassOf": {"@id": "ea:ApplicationComponent"},
+      "rdfs:label": "Microservice",
+      "rdfs:comment": "An independently deployable service with bounded context"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:TechnologyPlatform",
+      "rdfs:subClassOf": {"@id": "ea:TechnologyArchitecture"},
+      "rdfs:label": "Technology Platform",
+      "rdfs:comment": "A foundational technology layer enabling applications"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:InfrastructureComponent",
+      "rdfs:subClassOf": {"@id": "ea:TechnologyArchitecture"},
+      "rdfs:label": "Infrastructure Component",
+      "rdfs:comment": "A physical or virtual infrastructure element"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:TechnologyService",
+      "rdfs:subClassOf": [
+        {"@id": "schema:Service"},
+        {"@id": "ea:TechnologyArchitecture"}
+      ],
+      "rdfs:label": "Technology Service",
+      "rdfs:comment": "A service provided by technology infrastructure"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:Network",
+      "rdfs:subClassOf": {"@id": "ea:TechnologyArchitecture"},
+      "rdfs:label": "Network",
+      "rdfs:comment": "Communication infrastructure connecting components"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:AzureResource",
+      "rdfs:subClassOf": {"@id": "ea:InfrastructureComponent"},
+      "rdfs:label": "Azure Resource",
+      "rdfs:comment": "Base class for all Azure cloud resources"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:Subscription",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Subscription",
+      "rdfs:comment": "Azure billing and access control boundary"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:ResourceGroup",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Resource Group",
+      "rdfs:comment": "Logical container for Azure resources"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:ManagementGroup",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Management Group",
+      "rdfs:comment": "Container for managing access, policy and compliance across subscriptions"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:LandingZone",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Landing Zone",
+      "rdfs:comment": "Pre-configured Azure environment following Cloud Adoption Framework"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:VirtualNetwork",
+      "rdfs:subClassOf": [
+        {"@id": "azure:AzureResource"},
+        {"@id": "ea:Network"}
+      ],
+      "rdfs:label": "Azure Virtual Network",
+      "rdfs:comment": "Isolated network in Azure cloud"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:Subnet",
+      "rdfs:subClassOf": {"@id": "azure:VirtualNetwork"},
+      "rdfs:label": "Azure Subnet",
+      "rdfs:comment": "Segment of a virtual network"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:VirtualMachine",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Virtual Machine",
+      "rdfs:comment": "Azure IaaS compute resource"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:AppService",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure App Service",
+      "rdfs:comment": "Azure PaaS web application hosting"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:FunctionApp",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Function App",
+      "rdfs:comment": "Azure serverless compute platform"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:ContainerApp",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Container App",
+      "rdfs:comment": "Azure managed container hosting service"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:KubernetesService",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Kubernetes Service",
+      "rdfs:comment": "Azure managed Kubernetes cluster"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:SQLDatabase",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure SQL Database",
+      "rdfs:comment": "Azure managed relational database service"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:CosmosDB",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Cosmos DB",
+      "rdfs:comment": "Azure globally distributed multi-model database"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:StorageAccount",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Storage Account",
+      "rdfs:comment": "Azure cloud storage for blobs, files, queues and tables"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:DataLake",
+      "rdfs:subClassOf": {"@id": "azure:StorageAccount"},
+      "rdfs:label": "Azure Data Lake",
+      "rdfs:comment": "Azure hierarchical data lake storage"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:Synapse",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Synapse Analytics",
+      "rdfs:comment": "Azure integrated analytics service"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:Databricks",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Databricks",
+      "rdfs:comment": "Azure Apache Spark analytics platform"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:DataFactory",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Data Factory",
+      "rdfs:comment": "Azure data integration service"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:EventHub",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Event Hubs",
+      "rdfs:comment": "Azure big data streaming platform"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:ServiceBus",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Service Bus",
+      "rdfs:comment": "Azure enterprise messaging service"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:EventGrid",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Event Grid",
+      "rdfs:comment": "Azure event routing service"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:LogicApps",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Logic Apps",
+      "rdfs:comment": "Azure workflow automation service"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:APIManagement",
+      "rdfs:subClassOf": [
+        {"@id": "azure:AzureResource"},
+        {"@id": "ea:API"}
+      ],
+      "rdfs:label": "Azure API Management",
+      "rdfs:comment": "Azure API gateway and management service"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:KeyVault",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Key Vault",
+      "rdfs:comment": "Azure secrets and key management service"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:ApplicationInsights",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Application Insights",
+      "rdfs:comment": "Azure application performance monitoring"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:LogAnalytics",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Log Analytics",
+      "rdfs:comment": "Azure log collection and analysis service"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:Monitor",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Monitor",
+      "rdfs:comment": "Azure unified monitoring platform"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:EntraID",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Microsoft Entra ID",
+      "rdfs:comment": "Microsoft identity and access management service (formerly Azure AD)"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:Defender",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Microsoft Defender for Cloud",
+      "rdfs:comment": "Azure cloud security posture management"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:Sentinel",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Microsoft Sentinel",
+      "rdfs:comment": "Azure SIEM and SOAR solution"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:Policy",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Policy",
+      "rdfs:comment": "Azure governance and compliance enforcement"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:Blueprint",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Blueprint",
+      "rdfs:comment": "Azure environment deployment template"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:CognitiveServices",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Cognitive Services",
+      "rdfs:comment": "Azure AI and ML pre-built services"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:OpenAIService",
+      "rdfs:subClassOf": {"@id": "azure:CognitiveServices"},
+      "rdfs:label": "Azure OpenAI Service",
+      "rdfs:comment": "Azure hosted OpenAI models including GPT and embeddings"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:MachineLearning",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure Machine Learning",
+      "rdfs:comment": "Azure ML platform for model training and deployment"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:AIFoundry",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure AI Foundry",
+      "rdfs:comment": "Azure unified AI development platform (formerly Azure AI Studio)"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:AISearch",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure AI Search",
+      "rdfs:comment": "Azure search service with AI enrichment"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:CopilotStudio",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Microsoft Copilot Studio",
+      "rdfs:comment": "Low-code AI copilot development platform"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:PowerPlatform",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Microsoft Power Platform",
+      "rdfs:comment": "Low-code application development platform"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:PowerApps",
+      "rdfs:subClassOf": {"@id": "azure:PowerPlatform"},
+      "rdfs:label": "Microsoft Power Apps",
+      "rdfs:comment": "Low-code business application builder"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:PowerAutomate",
+      "rdfs:subClassOf": {"@id": "azure:PowerPlatform"},
+      "rdfs:label": "Microsoft Power Automate",
+      "rdfs:comment": "Workflow automation including RPA"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:PowerBI",
+      "rdfs:subClassOf": {"@id": "azure:PowerPlatform"},
+      "rdfs:label": "Microsoft Power BI",
+      "rdfs:comment": "Business intelligence and analytics platform"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:Fabric",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Microsoft Fabric",
+      "rdfs:comment": "Unified analytics platform combining data engineering, data science, and BI"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:Purview",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Microsoft Purview",
+      "rdfs:comment": "Azure unified data governance platform"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:DevOps",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Azure DevOps",
+      "rdfs:comment": "Azure development collaboration platform"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:GitHubEnterprise",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "GitHub Enterprise",
+      "rdfs:comment": "Enterprise source code management platform"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:M365",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Microsoft 365",
+      "rdfs:comment": "Microsoft productivity and collaboration suite"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:Teams",
+      "rdfs:subClassOf": {"@id": "azure:M365"},
+      "rdfs:label": "Microsoft Teams",
+      "rdfs:comment": "Microsoft collaboration and communication platform"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:SharePoint",
+      "rdfs:subClassOf": {"@id": "azure:M365"},
+      "rdfs:label": "Microsoft SharePoint",
+      "rdfs:comment": "Microsoft content management and collaboration platform"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "azure:Dynamics365",
+      "rdfs:subClassOf": {"@id": "azure:AzureResource"},
+      "rdfs:label": "Microsoft Dynamics 365",
+      "rdfs:comment": "Microsoft business applications suite"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:IdentityProvider",
+      "rdfs:subClassOf": {"@id": "ea:SecurityArchitecture"},
+      "rdfs:label": "Identity Provider",
+      "rdfs:comment": "Service providing identity authentication"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:AccessPolicy",
+      "rdfs:subClassOf": {"@id": "ea:SecurityArchitecture"},
+      "rdfs:label": "Access Policy",
+      "rdfs:comment": "Rules governing resource access"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:SecurityControl",
+      "rdfs:subClassOf": {"@id": "ea:SecurityArchitecture"},
+      "rdfs:label": "Security Control",
+      "rdfs:comment": "Safeguard or countermeasure against threats"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:ComplianceRequirement",
+      "rdfs:subClassOf": {"@id": "ea:SecurityArchitecture"},
+      "rdfs:label": "Compliance Requirement",
+      "rdfs:comment": "Regulatory or policy compliance obligation"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:IntegrationPattern",
+      "rdfs:subClassOf": {"@id": "ea:IntegrationArchitecture"},
+      "rdfs:label": "Integration Pattern",
+      "rdfs:comment": "Reusable solution pattern for integration scenarios"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:EventStream",
+      "rdfs:subClassOf": {"@id": "ea:IntegrationArchitecture"},
+      "rdfs:label": "Event Stream",
+      "rdfs:comment": "Continuous flow of events between systems"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:DataFlow",
+      "rdfs:subClassOf": {"@id": "ea:IntegrationArchitecture"},
+      "rdfs:label": "Data Flow",
+      "rdfs:comment": "Movement of data between systems"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:ArchitectureDecision",
+      "rdfs:subClassOf": {"@id": "ea:EAEntity"},
+      "rdfs:label": "Architecture Decision",
+      "rdfs:comment": "A recorded architectural decision with rationale"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:ArchitecturePrinciple",
+      "rdfs:subClassOf": {"@id": "ea:EAEntity"},
+      "rdfs:label": "Architecture Principle",
+      "rdfs:comment": "A fundamental guideline for architecture decisions"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:ArchitectureStandard",
+      "rdfs:subClassOf": {"@id": "ea:EAEntity"},
+      "rdfs:label": "Architecture Standard",
+      "rdfs:comment": "A mandatory specification for architecture implementations"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:ArchitecturePattern",
+      "rdfs:subClassOf": {"@id": "ea:EAEntity"},
+      "rdfs:label": "Architecture Pattern",
+      "rdfs:comment": "A reusable solution to common architecture problems"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:ArchitectureRoadmap",
+      "rdfs:subClassOf": [
+        {"@id": "schema:Plan"},
+        {"@id": "ea:EAEntity"}
+      ],
+      "rdfs:label": "Architecture Roadmap",
+      "rdfs:comment": "A timeline of planned architecture transitions"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:CapabilityGap",
+      "rdfs:subClassOf": {"@id": "ea:EAEntity"},
+      "rdfs:label": "Capability Gap",
+      "rdfs:comment": "Identified gap between current and target capability"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:TechnologyDebt",
+      "rdfs:subClassOf": {"@id": "ea:EAEntity"},
+      "rdfs:label": "Technology Debt",
+      "rdfs:comment": "Accumulated cost of deferred technology decisions"
+    },
+
+    {
+      "@type": "rdfs:Class",
+      "@id": "ea:ArchitectureRisk",
+      "rdfs:subClassOf": {"@id": "ea:EAEntity"},
+      "rdfs:label": "Architecture Risk",
+      "rdfs:comment": "Identified risk to architecture viability"
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:composedOf",
+      "rdfs:label": "composed of",
+      "rdfs:comment": "Indicates composition relationship",
+      "rdfs:domain": {"@id": "ea:EAEntity"},
+      "rdfs:range": {"@id": "ea:EAEntity"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:dependsOn",
+      "rdfs:label": "depends on",
+      "rdfs:comment": "Indicates dependency relationship",
+      "rdfs:domain": {"@id": "ea:EAEntity"},
+      "rdfs:range": {"@id": "ea:EAEntity"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:realizes",
+      "rdfs:label": "realizes",
+      "rdfs:comment": "Indicates realization of a capability",
+      "rdfs:domain": {"@id": "ea:ApplicationArchitecture"},
+      "rdfs:range": {"@id": "ea:BusinessCapability"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:supports",
+      "rdfs:label": "supports",
+      "rdfs:comment": "Indicates support relationship",
+      "rdfs:domain": {"@id": "ea:EAEntity"},
+      "rdfs:range": {"@id": "ea:EAEntity"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:hostedOn",
+      "rdfs:label": "hosted on",
+      "rdfs:comment": "Indicates hosting relationship",
+      "rdfs:domain": {"@id": "ea:ApplicationArchitecture"},
+      "rdfs:range": {"@id": "ea:TechnologyArchitecture"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:governs",
+      "rdfs:label": "governs",
+      "rdfs:comment": "Indicates governance relationship",
+      "rdfs:domain": {"@id": "ea:ArchitecturePrinciple"},
+      "rdfs:range": {"@id": "ea:EAEntity"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:implements",
+      "rdfs:label": "implements",
+      "rdfs:comment": "Indicates implementation of a pattern or standard",
+      "rdfs:domain": {"@id": "ea:EAEntity"},
+      "rdfs:range": {"@id": "ea:ArchitecturePattern"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:consumedBy",
+      "rdfs:label": "consumed by",
+      "rdfs:comment": "Indicates consumption relationship",
+      "rdfs:domain": {"@id": "ea:ApplicationService"},
+      "rdfs:range": {"@id": "ea:Application"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:integratesWith",
+      "rdfs:label": "integrates with",
+      "rdfs:comment": "Indicates integration relationship",
+      "rdfs:domain": {"@id": "ea:EAEntity"},
+      "rdfs:range": {"@id": "ea:EAEntity"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:securedBy",
+      "rdfs:label": "secured by",
+      "rdfs:comment": "Indicates security relationship",
+      "rdfs:domain": {"@id": "ea:EAEntity"},
+      "rdfs:range": {"@id": "ea:SecurityControl"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:managedBy",
+      "rdfs:label": "managed by",
+      "rdfs:comment": "Indicates management responsibility",
+      "rdfs:domain": {"@id": "ea:EAEntity"},
+      "rdfs:range": {"@id": "ea:OrganizationalUnit"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:alignsTo",
+      "rdfs:label": "aligns to",
+      "rdfs:comment": "Indicates strategic alignment",
+      "rdfs:domain": {"@id": "ea:EAEntity"},
+      "rdfs:range": {"@id": "vsem:StrategicObjective"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:lifecycleStatus",
+      "rdfs:label": "lifecycle status",
+      "rdfs:comment": "Current lifecycle phase of the entity",
+      "rdfs:domain": {"@id": "ea:EAEntity"},
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:maturityLevel",
+      "rdfs:label": "maturity level",
+      "rdfs:comment": "Capability maturity level (1-5)",
+      "rdfs:domain": {"@id": "ea:BusinessCapability"},
+      "rdfs:range": {"@id": "xsd:integer"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:businessCriticality",
+      "rdfs:label": "business criticality",
+      "rdfs:comment": "Criticality rating (Low, Medium, High, Critical)",
+      "rdfs:domain": {"@id": "ea:EAEntity"},
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:technologyFit",
+      "rdfs:label": "technology fit",
+      "rdfs:comment": "Assessment of technology fit to purpose (Poor, Adequate, Good, Excellent)",
+      "rdfs:domain": {"@id": "ea:Application"},
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "ea:totalCostOfOwnership",
+      "rdfs:label": "total cost of ownership",
+      "rdfs:comment": "Annual TCO for the entity",
+      "rdfs:domain": {"@id": "ea:EAEntity"},
+      "rdfs:range": {"@id": "schema:MonetaryAmount"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "azure:resourceId",
+      "rdfs:label": "Azure resource ID",
+      "rdfs:comment": "Unique Azure Resource Manager identifier",
+      "rdfs:domain": {"@id": "azure:AzureResource"},
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "azure:region",
+      "rdfs:label": "Azure region",
+      "rdfs:comment": "Azure deployment region",
+      "rdfs:domain": {"@id": "azure:AzureResource"},
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "azure:skuTier",
+      "rdfs:label": "SKU tier",
+      "rdfs:comment": "Azure service tier (Free, Basic, Standard, Premium)",
+      "rdfs:domain": {"@id": "azure:AzureResource"},
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+
+    {
+      "@type": "rdf:Property",
+      "@id": "azure:tags",
+      "rdfs:label": "Azure tags",
+      "rdfs:comment": "Azure resource tags for governance",
+      "rdfs:domain": {"@id": "azure:AzureResource"},
+      "rdfs:range": {"@id": "schema:PropertyValue"}
+    }
+  ]
+}

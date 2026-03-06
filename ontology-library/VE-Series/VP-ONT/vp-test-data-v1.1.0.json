@@ -1,0 +1,586 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "vp": "https://oaa-ontology.org/v5/value-proposition/",
+    "vsom": "https://oaa-ontology.org/v5/vsom/",
+    "org": "https://oaa-ontology.org/v5/organization/",
+    "efs": "https://oaa-ontology.org/v5/efs/"
+  },
+  "@id": "vp:test-data-v1.1.0",
+  "@type": "Dataset",
+  "name": "VP Ontology Test Data v1.1.0",
+  "description": "OAA v5.0.0 G5 compliant test data with 60-20-10-10 distribution",
+  "version": "1.1.0",
+  "dateCreated": "2026-02-02",
+  "testDataDistribution": {
+    "happyPath": {"percentage": 60, "count": 18},
+    "edgeCases": {"percentage": 20, "count": 6},
+    "errorScenarios": {"percentage": 10, "count": 3},
+    "boundaryTests": {"percentage": 10, "count": 3},
+    "totalInstances": 30
+  },
+
+  "testInstances": {
+    "happyPath": [
+      {
+        "@id": "vp:baiv-ai-visibility",
+        "@type": "vp:ValueProposition",
+        "testCategory": "happy-path",
+        "testDescription": "Complete BAIV AI Visibility VP with all required relationships",
+        "vpId": "vp:baiv-ai-visibility",
+        "name": "BAIV AI Visibility Platform",
+        "primaryStatement": "For mid-market B2B companies who struggle to be discovered by AI assistants like ChatGPT, Claude, and Perplexity, our AI Visibility platform provides comprehensive monitoring, optimization, and citation tracking unlike traditional SEO tools because we focus specifically on AI answer engines using proprietary AI-native optimization techniques.",
+        "keyBenefits": "Increased AI citations, brand visibility in AI responses, competitive intelligence on AI positioning",
+        "uniqueDifferentiators": "AI-native approach, real-time citation tracking, AI-specific content optimization",
+        "organizationContextRef": "ctx:baiv-org",
+        "status": "Active",
+        "validationDate": "2026-01-15",
+        "relationships": {
+          "alignsToObjective": ["vsom:obj-capture-ai-market"],
+          "targetsICP": ["icp:midmarket-cmo"],
+          "addressesProblem": ["prob:ai-invisibility"],
+          "offeredThrough": "sol:aiv-platform",
+          "supportedByEvidence": ["evid:customer-interviews-01"],
+          "differentiatesFrom": ["alt:traditional-seo"]
+        },
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "icp:midmarket-cmo",
+        "@type": "vp:IdealCustomerProfile",
+        "testCategory": "happy-path",
+        "testDescription": "Complete ICP for mid-market CMO with stakeholder mapping",
+        "icpId": "icp:midmarket-cmo",
+        "name": "Mid-Market B2B CMO",
+        "customerType": "B2B",
+        "segmentDescription": "Chief Marketing Officers at B2B SaaS companies with $10M-$100M ARR who are responsible for digital presence and lead generation",
+        "demographics": "Technology, SaaS, Professional Services; Company size 50-500 employees",
+        "firmographics": "Series B-D funded, modern tech stack, growth-focused",
+        "psychographics": "Data-driven, innovation-seeking, ROI-focused, early adopter mindset",
+        "willingnessToPayIndicator": "High",
+        "marketSize": 45000,
+        "acquisitionCost": 2500,
+        "lifetimeValue": 36000,
+        "relationships": {
+          "icpHasStakeholder": ["sh:cmo-decision-maker", "sh:content-lead-user"],
+          "manifestsAsPersona": ["efs:persona-marketing-maya"]
+        },
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "prob:ai-invisibility",
+        "@type": "vp:Problem",
+        "testCategory": "happy-path",
+        "testDescription": "Critical problem with pain points and evidence",
+        "problemId": "prob:ai-invisibility",
+        "problemStatement": "B2B marketing leaders struggle with complete invisibility to AI assistants when potential customers ask buying-related questions, resulting in missed opportunities and declining organic reach",
+        "problemType": "Functional",
+        "severity": "Critical",
+        "frequency": "Constant",
+        "isGrowing": true,
+        "marketSizeImpact": 5000000000,
+        "relationships": {
+          "problemHasPainPoint": ["pain:no-ai-citations", "pain:competitor-visibility"],
+          "problemValidatedBy": ["evid:customer-interviews-01"],
+          "mapsToEpic": "efs:epic-ai-visibility-core"
+        },
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "pain:no-ai-citations",
+        "@type": "vp:PainPoint",
+        "testCategory": "happy-path",
+        "testDescription": "Quantified functional pain point",
+        "painId": "pain:no-ai-citations",
+        "painDescription": "Brand is never mentioned or cited when AI assistants answer industry-related questions",
+        "painDimension": "Functional",
+        "customerImpact": "Missed discovery opportunities as 40% of B2B research now starts with AI assistants",
+        "quantifiedImpact": 125000,
+        "impactUnit": "Currency",
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "pain:competitor-visibility",
+        "@type": "vp:PainPoint",
+        "testCategory": "happy-path",
+        "testDescription": "Economic pain point with competitive dimension",
+        "painId": "pain:competitor-visibility",
+        "painDescription": "Competitors are being cited by AI while our brand remains invisible",
+        "painDimension": "Economic",
+        "customerImpact": "Losing market share to competitors who are AI-optimized",
+        "quantifiedImpact": 15,
+        "impactUnit": "Percentage",
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "gain:ai-discovery",
+        "@type": "vp:Gain",
+        "testCategory": "happy-path",
+        "testDescription": "High priority gain mapping to feature",
+        "gainId": "gain:ai-discovery",
+        "gainDescription": "Being discovered and recommended by AI assistants when prospects ask relevant questions",
+        "gainType": "Desired",
+        "gainCategory": "Economic",
+        "priority": "Critical",
+        "quantifiedValue": 500000,
+        "relationships": {
+          "gainMapsToFeature": "efs:feature-citation-optimization"
+        },
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "sol:aiv-platform",
+        "@type": "vp:Solution",
+        "testCategory": "happy-path",
+        "testDescription": "Complete solution with all required relationships",
+        "solutionId": "sol:aiv-platform",
+        "name": "AI Visibility Platform",
+        "description": "Comprehensive SaaS platform for monitoring, analyzing, and optimizing brand visibility across AI answer engines including ChatGPT, Claude, Perplexity, and Google AI Overviews",
+        "coreFunctionality": "AI citation monitoring, content optimization recommendations, competitive tracking, performance analytics",
+        "deliveryMethod": "SaaS",
+        "pricingModel": "Subscription",
+        "timeToValue": "P14D",
+        "relationships": {
+          "solutionAddressesProblem": ["prob:ai-invisibility"],
+          "solutionDeliversBenefit": ["ben:increased-citations", "ben:competitive-intel"],
+          "solutionDifferentiatedBy": ["diff:ai-native-approach"],
+          "solutionDeliversGain": ["gain:ai-discovery"]
+        },
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "ben:increased-citations",
+        "@type": "vp:Benefit",
+        "testCategory": "happy-path",
+        "testDescription": "Quantifiable benefit with story mapping",
+        "benefitId": "ben:increased-citations",
+        "benefitDescription": "30% increase in AI assistant citations within 90 days of implementation",
+        "benefitType": "Quantifiable",
+        "benefitCategory": "RevenueGrowth",
+        "quantifiedValue": 30,
+        "measurementMethod": "Automated citation tracking across major AI platforms",
+        "realizationTimeframe": "P90D",
+        "relationships": {
+          "benefitMitigatesPain": ["pain:no-ai-citations"],
+          "benefitEvidencedBy": ["evid:pilot-results-01"],
+          "realizesInStory": ["efs:story-citation-tracking"],
+          "benefitMeasuredBy": ["sm:citation-rate"]
+        },
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "ben:competitive-intel",
+        "@type": "vp:Benefit",
+        "testCategory": "happy-path",
+        "testDescription": "Qualitative strategic benefit",
+        "benefitId": "ben:competitive-intel",
+        "benefitDescription": "Real-time visibility into competitor AI positioning and citation patterns",
+        "benefitType": "Qualitative",
+        "benefitCategory": "StrategicAdvantage",
+        "measurementMethod": "Competitive dashboard with weekly trend analysis",
+        "relationships": {
+          "benefitMitigatesPain": ["pain:competitor-visibility"],
+          "realizesInStory": ["efs:story-competitor-tracking"]
+        },
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "diff:ai-native-approach",
+        "@type": "vp:Differentiator",
+        "testCategory": "happy-path",
+        "testDescription": "High defensibility technology differentiator",
+        "differentiatorId": "diff:ai-native-approach",
+        "differentiatorDescription": "Purpose-built for AI answer engines rather than retrofitted from traditional SEO tools",
+        "differentiatorType": "Technology",
+        "competitiveAdvantage": "Deep understanding of AI retrieval mechanisms vs surface-level keyword optimization",
+        "defensibility": "High",
+        "customerImportance": "High",
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "alt:traditional-seo",
+        "@type": "vp:CompetitiveAlternative",
+        "testCategory": "happy-path",
+        "testDescription": "Direct competitor alternative",
+        "alternativeId": "alt:traditional-seo",
+        "name": "Traditional SEO Tools (Semrush, Ahrefs, Moz)",
+        "alternativeType": "Substitute",
+        "marketShare": 65,
+        "strengths": "Established market presence, comprehensive SEO features, large user base",
+        "weaknesses": "Not designed for AI answer engines, no AI citation tracking, keyword-focused approach doesn't translate to AI",
+        "pricingComparison": "Similar",
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "evid:customer-interviews-01",
+        "@type": "vp:ValidationEvidence",
+        "testCategory": "happy-path",
+        "testDescription": "Strong evidence from customer research",
+        "evidenceId": "evid:customer-interviews-01",
+        "evidenceType": "CustomerInterview",
+        "evidenceSource": "Discovery interviews with 25 mid-market CMOs",
+        "evidenceDate": "2025-12-15",
+        "evidenceDescription": "23 of 25 CMOs (92%) expressed concern about AI visibility and indicated willingness to invest in solutions",
+        "evidenceStrength": "Strong",
+        "sampleSize": 25,
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "evid:pilot-results-01",
+        "@type": "vp:ValidationEvidence",
+        "testCategory": "happy-path",
+        "testDescription": "Quantitative pilot evidence",
+        "evidenceId": "evid:pilot-results-01",
+        "evidenceType": "UsageAnalytics",
+        "evidenceSource": "Beta customer pilot program",
+        "evidenceDate": "2026-01-30",
+        "evidenceDescription": "5 pilot customers achieved average 28% increase in AI citations over 60-day period",
+        "evidenceStrength": "Strong",
+        "sampleSize": 5,
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "sm:citation-rate",
+        "@type": "vp:SuccessMetric",
+        "testCategory": "happy-path",
+        "testDescription": "Complete success metric with AC mapping",
+        "metricId": "sm:citation-rate",
+        "name": "AI Citation Rate",
+        "description": "Percentage of relevant AI queries that cite or mention the brand",
+        "baseline": 2,
+        "target": 15,
+        "measurementMethod": "Automated tracking of brand mentions across ChatGPT, Claude, Perplexity responses",
+        "measurementFrequency": "P7D",
+        "relationships": {
+          "metricMapsToAC": "efs:ac-citation-increase"
+        },
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "sh:cmo-decision-maker",
+        "@type": "vp:Stakeholder",
+        "testCategory": "happy-path",
+        "testDescription": "High influence decision maker stakeholder",
+        "stakeholderId": "sh:cmo-decision-maker",
+        "name": "Chief Marketing Officer",
+        "stakeholderRole": "DecisionMaker",
+        "influenceLevel": "High",
+        "interests": "ROI, brand visibility, competitive advantage, measurable results",
+        "objections": "Unproven technology, integration complexity, budget constraints",
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "sh:content-lead-user",
+        "@type": "vp:Stakeholder",
+        "testCategory": "happy-path",
+        "testDescription": "Primary user stakeholder",
+        "stakeholderId": "sh:content-lead-user",
+        "name": "Content Marketing Lead",
+        "stakeholderRole": "PrimaryUser",
+        "influenceLevel": "Medium",
+        "interests": "Actionable insights, easy-to-use interface, content recommendations",
+        "objections": "Learning curve, another tool to manage",
+        "expectedValidation": "PASS"
+      },
+      {
+        "@id": "msg:baiv-messaging",
+        "@type": "vp:MessagingFramework",
+        "testCategory": "happy-path",
+        "testDescription": "Complete messaging framework",
+        "frameworkId": "msg:baiv-messaging",
+        "primaryMessage": "Get discovered by AI assistants before your competitors do",
+        "supportingMessages": "Track AI citations in real-time; Optimize content for AI retrieval; Monitor competitor AI positioning",
+        "emotionalHooks": "Don't let AI make you invisible; Be part of the conversation when it matters",
+        "useCustomerLanguage": true,
+        "relationships": {
+          "messagingTargetsStakeholder": ["sh:cmo-decision-maker", "sh:content-lead-user"]
+        },
+        "expectedValidation": "PASS"
+      }
+    ],
+
+    "edgeCases": [
+      {
+        "@id": "vp:minimal-valid-vp",
+        "@type": "vp:ValueProposition",
+        "testCategory": "edge-case",
+        "testDescription": "Minimum valid VP with exactly required fields only",
+        "vpId": "vp:minimal-valid-vp",
+        "name": "Minimal VP",
+        "primaryStatement": "For customers who have a problem, our solution provides benefits unlike alternatives because differentiators.",
+        "keyBenefits": "Basic benefit",
+        "uniqueDifferentiators": "Basic differentiator",
+        "organizationContextRef": "ctx:test-org",
+        "status": "Draft",
+        "relationships": {
+          "alignsToObjective": ["vsom:obj-test"],
+          "targetsICP": ["icp:test"],
+          "addressesProblem": ["prob:test"],
+          "offeredThrough": "sol:test",
+          "supportedByEvidence": ["evid:test"]
+        },
+        "expectedValidation": "PASS",
+        "edgeCaseReason": "Tests minimum required fields"
+      },
+      {
+        "@id": "icp:b2b2c-complex",
+        "@type": "vp:IdealCustomerProfile",
+        "testCategory": "edge-case",
+        "testDescription": "B2B2C customer type with complex stakeholder map",
+        "icpId": "icp:b2b2c-complex",
+        "name": "Enterprise Platform Provider (B2B2C)",
+        "customerType": "B2B2C",
+        "segmentDescription": "Enterprise companies that provide platforms to businesses who serve end consumers",
+        "willingnessToPayIndicator": "High",
+        "relationships": {
+          "icpHasStakeholder": ["sh:enterprise-cto", "sh:partner-manager", "sh:end-user-rep"]
+        },
+        "expectedValidation": "PASS",
+        "edgeCaseReason": "Tests B2B2C complexity"
+      },
+      {
+        "@id": "prob:multi-dimension",
+        "@type": "vp:Problem",
+        "testCategory": "edge-case",
+        "testDescription": "Problem with all four dimension types represented in pain points",
+        "problemId": "prob:multi-dimension",
+        "problemStatement": "Organizations face comprehensive challenges across functional, economic, emotional, and social dimensions",
+        "problemType": "Functional",
+        "severity": "Major",
+        "frequency": "Frequent",
+        "relationships": {
+          "problemHasPainPoint": ["pain:func", "pain:econ", "pain:emot", "pain:social"],
+          "problemValidatedBy": ["evid:comprehensive"]
+        },
+        "expectedValidation": "PASS",
+        "edgeCaseReason": "Tests all pain dimensions"
+      },
+      {
+        "@id": "gain:unexpected-type",
+        "@type": "vp:Gain",
+        "testCategory": "edge-case",
+        "testDescription": "Unexpected gain type (delighter)",
+        "gainId": "gain:unexpected-type",
+        "gainDescription": "Surprisingly positive outcome that exceeds customer expectations",
+        "gainType": "Unexpected",
+        "gainCategory": "Emotional",
+        "priority": "Low",
+        "expectedValidation": "PASS",
+        "edgeCaseReason": "Tests unexpected gain type"
+      },
+      {
+        "@id": "ben:compliance-benefit",
+        "@type": "vp:Benefit",
+        "testCategory": "edge-case",
+        "testDescription": "Compliance assurance benefit category",
+        "benefitId": "ben:compliance-benefit",
+        "benefitDescription": "Ensures regulatory compliance with emerging AI disclosure requirements",
+        "benefitType": "Qualitative",
+        "benefitCategory": "ComplianceAssurance",
+        "relationships": {
+          "benefitMitigatesPain": ["pain:compliance-risk"]
+        },
+        "expectedValidation": "PASS",
+        "edgeCaseReason": "Tests compliance category"
+      },
+      {
+        "@id": "diff:network-effect",
+        "@type": "vp:Differentiator",
+        "testCategory": "edge-case",
+        "testDescription": "Network effect differentiator type",
+        "differentiatorId": "diff:network-effect",
+        "differentiatorDescription": "Platform becomes more valuable as more users contribute data and insights",
+        "differentiatorType": "Network",
+        "competitiveAdvantage": "Self-reinforcing competitive moat through data network effects",
+        "defensibility": "High",
+        "customerImportance": "Medium",
+        "expectedValidation": "PASS",
+        "edgeCaseReason": "Tests network differentiator type"
+      }
+    ],
+
+    "errorScenarios": [
+      {
+        "@id": "vp:invalid-no-statement",
+        "@type": "vp:ValueProposition",
+        "testCategory": "error-scenario",
+        "testDescription": "VP missing required primaryStatement",
+        "vpId": "vp:invalid-no-statement",
+        "name": "Invalid VP - No Statement",
+        "keyBenefits": "Some benefits",
+        "uniqueDifferentiators": "Some differentiators",
+        "organizationContextRef": "ctx:test",
+        "status": "Draft",
+        "expectedValidation": "FAIL",
+        "expectedError": "BR-VP-001: primaryStatement MUST be defined",
+        "errorReason": "Missing required primaryStatement field"
+      },
+      {
+        "@id": "vp:invalid-short-statement",
+        "@type": "vp:ValueProposition",
+        "testCategory": "error-scenario",
+        "testDescription": "VP with primaryStatement under 50 chars",
+        "vpId": "vp:invalid-short-statement",
+        "name": "Invalid VP - Short Statement",
+        "primaryStatement": "Too short statement here.",
+        "keyBenefits": "Benefits",
+        "uniqueDifferentiators": "Differentiators",
+        "organizationContextRef": "ctx:test",
+        "status": "Draft",
+        "expectedValidation": "FAIL",
+        "expectedError": "BR-VP-001: primaryStatement length >= 50 characters",
+        "errorReason": "primaryStatement only 25 chars, minimum is 50"
+      },
+      {
+        "@id": "prob:invalid-no-painpoints",
+        "@type": "vp:Problem",
+        "testCategory": "error-scenario",
+        "testDescription": "Problem with no pain points",
+        "problemId": "prob:invalid-no-painpoints",
+        "problemStatement": "A problem statement that is long enough to pass validation",
+        "problemType": "Functional",
+        "severity": "Major",
+        "frequency": "Frequent",
+        "relationships": {
+          "problemHasPainPoint": [],
+          "problemValidatedBy": ["evid:test"]
+        },
+        "expectedValidation": "FAIL",
+        "expectedError": "BR-VP-007: Problem MUST have at least one problemHasPainPoint relationship",
+        "errorReason": "Empty pain points array violates BR-VP-007"
+      }
+    ],
+
+    "boundaryTests": [
+      {
+        "@id": "vp:boundary-50-char-statement",
+        "@type": "vp:ValueProposition",
+        "testCategory": "boundary-test",
+        "testDescription": "VP with exactly 50 character primaryStatement",
+        "vpId": "vp:boundary-50-char",
+        "name": "Boundary Test VP",
+        "primaryStatement": "For X who Y, our Z provides A unlike B because C.",
+        "keyBenefits": "Benefits listed here",
+        "uniqueDifferentiators": "Unique aspects",
+        "organizationContextRef": "ctx:test",
+        "status": "Draft",
+        "relationships": {
+          "alignsToObjective": ["vsom:obj-test"],
+          "targetsICP": ["icp:test"],
+          "addressesProblem": ["prob:test"],
+          "offeredThrough": "sol:test",
+          "supportedByEvidence": ["evid:test"]
+        },
+        "expectedValidation": "PASS",
+        "boundaryReason": "Tests minimum 50 char boundary"
+      },
+      {
+        "@id": "pain:boundary-20-char-desc",
+        "@type": "vp:PainPoint",
+        "testCategory": "boundary-test",
+        "testDescription": "PainPoint with exactly 20 character description",
+        "painId": "pain:boundary-20",
+        "painDescription": "Pain description here",
+        "painDimension": "Functional",
+        "customerImpact": "Impacts the customer significantly",
+        "expectedValidation": "PASS",
+        "boundaryReason": "Tests minimum 20 char boundary for painDescription"
+      },
+      {
+        "@id": "icp:boundary-all-optional",
+        "@type": "vp:IdealCustomerProfile",
+        "testCategory": "boundary-test",
+        "testDescription": "ICP with only required fields, all optional null",
+        "icpId": "icp:boundary-minimal",
+        "name": "Minimal ICP",
+        "customerType": "B2B",
+        "segmentDescription": "A segment description that meets the minimum length requirement",
+        "willingnessToPayIndicator": "Low",
+        "demographics": null,
+        "firmographics": null,
+        "psychographics": null,
+        "marketSize": null,
+        "acquisitionCost": null,
+        "lifetimeValue": null,
+        "relationships": {
+          "icpHasStakeholder": ["sh:minimal"]
+        },
+        "expectedValidation": "PASS",
+        "boundaryReason": "Tests null optional fields"
+      }
+    ]
+  },
+
+  "crossReferenceValidation": {
+    "vpToVSOM": [
+      {
+        "sourceEntity": "vp:baiv-ai-visibility",
+        "relationship": "alignsToObjective",
+        "targetEntity": "vsom:obj-capture-ai-market",
+        "targetOntology": "VSOM-ONT",
+        "validationStatus": "Requires VSOM instance"
+      }
+    ],
+    "vpToEFS": [
+      {
+        "sourceEntity": "prob:ai-invisibility",
+        "relationship": "mapsToEpic",
+        "targetEntity": "efs:epic-ai-visibility-core",
+        "targetOntology": "EFS-ONT",
+        "validationStatus": "Requires EFS instance"
+      },
+      {
+        "sourceEntity": "icp:midmarket-cmo",
+        "relationship": "manifestsAsPersona",
+        "targetEntity": "efs:persona-marketing-maya",
+        "targetOntology": "EFS-ONT",
+        "validationStatus": "Requires EFS instance"
+      },
+      {
+        "sourceEntity": "ben:increased-citations",
+        "relationship": "realizesInStory",
+        "targetEntity": "efs:story-citation-tracking",
+        "targetOntology": "EFS-ONT",
+        "validationStatus": "Requires EFS instance"
+      }
+    ],
+    "vpToOrg": [
+      {
+        "sourceEntity": "vp:baiv-ai-visibility",
+        "relationship": "belongsToOrgContext",
+        "targetEntity": "ctx:baiv-org",
+        "targetOntology": "ORG-CONTEXT-ONT",
+        "validationStatus": "Requires ORG-CONTEXT instance"
+      }
+    ]
+  },
+
+  "testSummary": {
+    "totalInstances": 30,
+    "byCategory": {
+      "happyPath": 18,
+      "edgeCases": 6,
+      "errorScenarios": 3,
+      "boundaryTests": 3
+    },
+    "byEntity": {
+      "ValueProposition": 4,
+      "IdealCustomerProfile": 3,
+      "Problem": 3,
+      "PainPoint": 3,
+      "Gain": 2,
+      "Solution": 1,
+      "Benefit": 3,
+      "Differentiator": 2,
+      "CompetitiveAlternative": 1,
+      "ValidationEvidence": 2,
+      "SuccessMetric": 1,
+      "Stakeholder": 2,
+      "MessagingFramework": 1
+    },
+    "expectedResults": {
+      "pass": 27,
+      "fail": 3
+    }
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pe": "https://oaa-ontology.org/v6/process-engineering/",
+    "indt": "https://platformcore.io/ontology/individual-types/",
+    "ant": "https://baiv.co.uk/ontology/"
+  },
+  "@type": "pe:ProcessInstance",
+  "@id": "pe:customer-journey:antiques-acquisition-v0.1",
+  "metadata": {
+    "name": "Antiques Acquisition Customer Journey",
+    "version": "0.1.0",
+    "status": "stub",
+    "description": "PE-Series process stub for antiques acquisition customer journey. Demonstrates IND-ONT individual types as participants in PE process phases. Per DR-IND-005: customer journeys are PE processes — IND-ONT defines PurchaseBehaviour, PE-ONT defines the journey process.",
+    "owningInstance": "PFI-BAIV",
+    "domain": "Antiques & Collectibles",
+    "dateCreated": "2026-02-20"
+  },
+  "processDefinition": {
+    "processId": "CJ-ANTQ-001",
+    "processName": "Antiques Acquisition Journey",
+    "processType": "discovery",
+    "phases": [
+      {
+        "@id": "pe:phase:awareness",
+        "phaseName": "Awareness",
+        "description": "Individual becomes aware of antiques as investment, inheritance, or hobby opportunity",
+        "participants": [
+          {
+            "individualTypeRef": "indt:serious-collector",
+            "purchaseBehaviour": "Researched",
+            "entryTrigger": "Market research, auction catalogues, dealer referrals"
+          },
+          {
+            "individualTypeRef": "indt:inheritor-beneficiary",
+            "purchaseBehaviour": "Inherited",
+            "entryTrigger": "Inheritance event, estate notification"
+          },
+          {
+            "individualTypeRef": "indt:hobbyist-collector",
+            "purchaseBehaviour": "Impulse",
+            "entryTrigger": "Antiques fair, social media, TV programme"
+          },
+          {
+            "individualTypeRef": "indt:antiques-investor",
+            "purchaseBehaviour": "Researched",
+            "entryTrigger": "Investment portfolio diversification research"
+          }
+        ]
+      },
+      {
+        "@id": "pe:phase:consideration",
+        "phaseName": "Consideration",
+        "description": "Individual evaluates options — valuation, authentication, insurance, specialist advice",
+        "participants": [
+          {
+            "individualTypeRef": "indt:serious-collector",
+            "activities": ["Commission valuation", "Verify provenance", "Compare dealers"]
+          },
+          {
+            "individualTypeRef": "indt:inheritor-beneficiary",
+            "activities": ["Seek probate valuation", "Insurance assessment", "Decide keep/sell"]
+          },
+          {
+            "individualTypeRef": "indt:insurance-underwriter",
+            "channel": "B2B",
+            "activities": ["Assess item value", "Evaluate risk", "Quote premium"]
+          },
+          {
+            "individualTypeRef": "indt:interior-designer",
+            "channel": "B2B2C",
+            "activities": ["Source items for client", "Negotiate with dealers", "Coordinate logistics"]
+          }
+        ]
+      },
+      {
+        "@id": "pe:phase:decision",
+        "phaseName": "Decision",
+        "description": "Individual commits to acquisition, sale, or insurance — transactional stage",
+        "participants": [
+          {
+            "individualTypeRef": "indt:serious-collector",
+            "activities": ["Place bid at auction", "Agree private sale", "Commission restoration"]
+          },
+          {
+            "individualTypeRef": "indt:auction-house-director",
+            "channel": "B2B",
+            "activities": ["Accept consignment", "Set reserve", "Manage lot"]
+          },
+          {
+            "individualTypeRef": "indt:antiques-investor",
+            "activities": ["Execute purchase", "Arrange secure storage", "Update portfolio"]
+          }
+        ]
+      },
+      {
+        "@id": "pe:phase:adoption",
+        "phaseName": "Adoption",
+        "description": "Post-acquisition — insurance, display, ongoing care, portfolio management",
+        "participants": [
+          {
+            "individualTypeRef": "indt:serious-collector",
+            "activities": ["Insure acquisition", "Display/store", "Join collector networks"]
+          },
+          {
+            "individualTypeRef": "indt:insurance-underwriter",
+            "channel": "B2B",
+            "activities": ["Issue policy", "Schedule revaluation", "Process claims"]
+          }
+        ]
+      },
+      {
+        "@id": "pe:phase:advocacy",
+        "phaseName": "Advocacy",
+        "description": "Individual becomes referral source, repeat buyer, or community contributor",
+        "participants": [
+          {
+            "individualTypeRef": "indt:serious-collector",
+            "activities": ["Refer dealers", "Share expertise", "Mentor new collectors"]
+          },
+          {
+            "individualTypeRef": "indt:hobbyist-collector",
+            "activities": ["Social sharing", "Fair attendance", "Casual recommendations"]
+          }
+        ]
+      }
+    ]
+  },
+  "crossOntologyBridges": {
+    "IND-ONT": "JP-IND-PE-001: IndividualTypes participate as journey participants per phase",
+    "VP-ONT": "JP-VP-005: ICP segments map to journey entry points",
+    "ANTIQUES-ONT": "JP-IND-ANT-001: IndividualTypes map to domain entities (Owner, Appraiser)",
+    "RRR-ONT": "JP-IND-RRR-001: B2B participants (Insurance Underwriter, Auction House Director) subclass RRR roles"
+  },
+  "designNotes": [
+    "DR-IND-005: This process defines the journey — IND-ONT only defines PurchaseBehaviour (how individuals enter/navigate)",
+    "DR-IND-002: B2B participants carry RRR subclass and org relation",
+    "DR-IND-003: B2C participants are standalone — no org hierarchy",
+    "Stub v0.1.0: phases are illustrative. Full implementation requires PE process metrics, gates, and AI agent augmentation"
+  ]
+}

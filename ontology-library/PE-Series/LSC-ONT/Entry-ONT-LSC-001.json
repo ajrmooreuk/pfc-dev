@@ -1,0 +1,71 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-LSC-001",
+  "name": "LSC Ontology (Logistics & Supply Chain)",
+  "description": "Models end-to-end logistics supply chains — journey corridors, chain nodes, shipping legs, compliance gates, risk assessments, bottlenecks, incidents, escalation paths, cold chain integrity, net impact assessment, hypotheses, scenarios, cascade effects, and predictive patterns. Designed for international trade corridors (AU→UK meat export reference) but generalisable to any regulated freight corridor.",
+  "version": "1.2.0",
+  "oaaVersion": "7.0.0",
+  "namespace": "https://oaa-ontology.org/v6/logistics/",
+  "prefix": "lsc:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass",
+    "gate7": "pass",
+    "gate8": "pass",
+    "gate20": "pass",
+    "gate21": "pass",
+    "gate22": "pass",
+    "gate23": "pass",
+    "gate24": "pass"
+  },
+  "artifacts": {
+    "ontology": "./lsc-ontology-v1.2.0-oaa-v7.json",
+    "documentation": null,
+    "glossary": null,
+    "testData": null,
+    "validationReport": null,
+    "instanceData": [
+      "./lsc-instances-au-uk-meat-v0.1.0.json"
+    ]
+  },
+  "components": {
+    "entities": "SupplyChain (hub), ChainNode, ShipmentLeg, ComplianceGate, TradeDocument, Party, Shipment, ColdChainEvent, RiskAssessment, RiskMitigation, Bottleneck, Incident, Escalation, ImpactAssessment, Hypothesis, Scenario, CascadeEffect, PredictivePattern",
+    "relationships": "42 relationships including 8 cross-ontology bridges (LSC→PE, LSC→ORG, LSC→RRR ×2, LSC→GRC-FW, LSC→ORG-CONTEXT ×3)",
+    "businessRules": "20 rules (14 mandatory, 6 advisory) in IF-THEN format",
+    "competencyQuestions": "18 domain-specific CQs with targetEntities, targetRelationships, and targetRules",
+    "enums": "commodityClass (7), chainStatus (4), nodeType (11), transportMode (7), containerType (8), gateType (10), documentType (21), partyRole (14), shipmentStatus (11), incidentType (14), escalationLevel (5), bottleneckType (10), impactType (12), hypothesisType (10), scenarioType (10), cascadeType (13), riskCategory (9)"
+  },
+  "dependencies": [
+    "Entry-ONT-PE-001",
+    "Entry-ONT-ORG-001",
+    "Entry-ONT-RRR-001",
+    "Entry-ONT-GRC-FW-001",
+    "Entry-ONT-ORG-CTX-001"
+  ],
+  "dependents": [],
+  "relationships": {
+    "crossOntology": [
+      { "target": "Entry-ONT-PE-001", "type": "mapsToProcess", "direction": "outgoing" },
+      { "target": "Entry-ONT-ORG-001", "type": "partyMapsToOrg", "direction": "outgoing" },
+      { "target": "Entry-ONT-RRR-001", "type": "partyMapsToRole", "direction": "outgoing" },
+      { "target": "Entry-ONT-GRC-FW-001", "type": "mapsToGRCRequirement", "direction": "outgoing" },
+      { "target": "Entry-ONT-ORG-CTX-001", "type": "partyHasOrgContext", "direction": "outgoing" },
+      { "target": "Entry-ONT-ORG-CTX-001", "type": "operatesInMarket", "direction": "outgoing" },
+      { "target": "Entry-ONT-ORG-CTX-001", "type": "nodeInJurisdiction", "direction": "outgoing" }
+    ]
+  },
+  "layer": "PE-SERIES",
+  "domain": "Logistics / Supply Chain / International Trade",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-20",
+  "lastModified": "2026-02-23",
+  "notes": "v1.0.0: Initial release. 18 entities, 38 relationships, 20 business rules, 7 join patterns. v1.1.0: Added ORG-CONTEXT-ONT import, 3 new bridge relationships, 2 new join patterns, neutrality fix for TradeDocument enum. v1.2.0: OAA v7.0.0 compliance upgrade — 18 domain-specific CQs, partyMapsToRole relationship added (resolves orphaned RRR-ONT import), G8 camelCase fix (Mitigates→mitigates). Now 42 relationships, 9 join patterns, 8 cross-ontology bridges, 18 CQs. Full pass G1-G4, G7, G8, G20-G24."
+}

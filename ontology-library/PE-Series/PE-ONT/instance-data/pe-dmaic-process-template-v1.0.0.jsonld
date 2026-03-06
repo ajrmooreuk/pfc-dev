@@ -1,0 +1,782 @@
+{
+  "@context": {
+    "pe": "https://oaa-ontology.org/v6/process-engineering/",
+    "ds": "https://oaa-ontology.org/v6/design-system/",
+    "emc": "https://oaa-ontology.org/v6/enterprise-model-composition/",
+    "oaa": "https://pbs.azlan.me/oaa#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "pe:dmaic-six-sigma-process-template",
+  "@type": "oaa:OntologyTemplate",
+  "oaa:templateOf": "pe:process-engineering-ontology",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:templateVersion": "1.0.0",
+  "oaa:created": "2026-02-26",
+  "oaa:description": "Universal PE-ONT process template for DMAIC (Define-Measure-Analyze-Improve-Control) Six Sigma process improvement methodology. Demonstrates v4.0.0 Skill, Plugin, ProcessPath, PathStep, and PathLink entities alongside the established phase/gate/artifact/metric/agent pattern. Not scoped to any vertical — applicable to any existing process requiring measurable improvement.",
+
+  "entities": [
+
+    {
+      "@id": "pe:dmaic-process-improvement",
+      "@type": "pe:Process",
+      "processId": "pe:dmaic-proc-001",
+      "processName": "DMAIC Six Sigma Process Improvement",
+      "processType": "optimization",
+      "description": "Structured data-driven methodology for improving existing business processes using the Define-Measure-Analyze-Improve-Control cycle. Rooted in Six Sigma principles with AI augmentation for statistical analysis, data collection, and control monitoring.",
+      "businessObjective": "Reduce process variation and defects to achieve target sigma performance, improve cycle time, and reduce cost of quality through systematic root cause elimination and sustained control",
+      "scope": "Applicable to any existing business process requiring measurable improvement. Requires baseline data, defined CTQ (Critical to Quality) characteristics, and executive sponsorship. For net-new process design use DMADV / Design for Six Sigma instead.",
+      "owner": "Six Sigma Black Belt / Process Improvement Lead",
+      "status": "active",
+      "version": "1.0.0",
+      "estimatedDuration": "P16W",
+      "automationLevel": 45
+    },
+
+    {
+      "@id": "pe:dmaic-phase-define",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:dmaic-ph-define",
+      "phaseName": "Define",
+      "phaseNumber": 1,
+      "description": "Bound the problem, identify the customer, establish the process under study, and articulate what good looks like. Outputs: signed Project Charter, validated SIPOC, CTQ requirements derived from Voice of Customer.",
+      "entryConditions": "Executive sponsor identified; process improvement opportunity identified; initial problem statement drafted; project team assembled",
+      "exitConditions": "Project Charter signed off by sponsor; SIPOC validated with process owner; CTQ requirements derived from VOC; project scope agreed and bounded; business case quantified",
+      "activities": "Stakeholder identification and engagement; Voice of Customer (VOC) collection via surveys, interviews, complaints analysis; SIPOC diagram creation (Suppliers, Inputs, Process, Outputs, Customers); CTQ (Critical to Quality) tree derivation from VOC; Project Charter drafting and sign-off; Team roles and RACI assignment; Business case quantification; High-level process map",
+      "estimatedDuration": "P2W",
+      "parallelExecution": true
+    },
+    {
+      "@id": "pe:dmaic-phase-measure",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:dmaic-ph-measure",
+      "phaseName": "Measure",
+      "phaseNumber": 2,
+      "description": "Quantify current-state performance and establish a statistically valid baseline. Validate the measurement system before drawing conclusions from data. Outputs: baseline sigma level, process capability (Cp/Cpk), validated measurement system.",
+      "entryConditions": "Project Charter approved; CTQ requirements defined; process boundaries established via SIPOC; measurement team trained",
+      "exitConditions": "Data collection plan executed; baseline performance established with statistical validity; measurement system validated via MSA (Gage R&R < 30% tolerance); process capability baseline (Cp/Cpk) calculated; initial control charts plotted",
+      "activities": "Data collection plan design; Operational definition of metrics; Measurement System Analysis (Gage R&R); Data collection execution; Detailed process mapping (value stream map); Baseline sigma level calculation; Process capability analysis (Cp/Cpk); Control chart selection and initial plotting; Distinguish leading vs lagging indicators",
+      "estimatedDuration": "P3W",
+      "parallelExecution": false
+    },
+    {
+      "@id": "pe:dmaic-phase-analyze",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:dmaic-ph-analyze",
+      "phaseName": "Analyze",
+      "phaseNumber": 3,
+      "description": "Identify and statistically validate root causes of the performance gap. Separate the vital few X variables from the trivial many. Outputs: validated root causes with statistical evidence, FMEA, Pareto analysis.",
+      "entryConditions": "Baseline data collected and validated; MSA confirms measurement system adequate; detailed process maps completed; initial process capability documented",
+      "exitConditions": "Root causes statistically validated (p < 0.05); vital few X variables identified from trivial many; failure modes documented via FMEA; hypothesis validated or invalidated with data",
+      "activities": "Root cause brainstorming (fishbone / Ishikawa diagram); 5-Why deep-dive on suspected root causes; Hypothesis formulation and statistical testing; Regression analysis, ANOVA, chi-square tests; Process failure mode and effects analysis (FMEA); Multi-vari analysis; Correlation and scatter plot analysis; Pareto analysis of defect categories; Validate or invalidate the root-cause hypothesis",
+      "estimatedDuration": "P4W",
+      "parallelExecution": false
+    },
+    {
+      "@id": "pe:dmaic-phase-improve",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:dmaic-ph-improve",
+      "phaseName": "Improve",
+      "phaseNumber": 4,
+      "description": "Design, pilot, and implement solutions targeting validated root causes. Demonstrate statistically significant improvement against baseline before full rollout. Outputs: piloted solution, before/after comparison, implementation plan.",
+      "entryConditions": "Root causes statistically validated; vital few variables identified; improvement targets quantified; stakeholders briefed on analysis findings",
+      "exitConditions": "Solution piloted with measurable improvement demonstrated; before/after statistical comparison significant; implementation plan approved; risk assessment (FMEA) on proposed changes completed; process capability improved from baseline",
+      "activities": "Solution brainstorming and selection (Pugh matrix / decision matrix); Design of Experiments (DOE) for solution optimisation; Pilot planning and execution on limited scope; Before/after statistical comparison (paired t-test or 2-sample t-test); Risk assessment (FMEA on proposed changes); Implementation plan development; Stakeholder communication and change management; Cost-benefit analysis of improvements",
+      "estimatedDuration": "P4W",
+      "parallelExecution": false
+    },
+    {
+      "@id": "pe:dmaic-phase-control",
+      "@type": "pe:ProcessPhase",
+      "phaseId": "pe:dmaic-ph-control",
+      "phaseName": "Control",
+      "phaseNumber": 5,
+      "description": "Standardise the improved process, establish real-time monitoring, and ensure gains are sustained. Hand off to process owner with active SPC, updated SOPs, and a PDCA sub-cycle for ongoing refinement. Outputs: control plan, active SPC charts, updated SOPs, handoff documentation.",
+      "entryConditions": "Improved process piloted successfully; statistical improvement validated against baseline; implementation plan approved; monitoring infrastructure available",
+      "exitConditions": "Control plan implemented and operational; SPC charts active with documented response plans; SOPs updated and training delivered; process handed off to process owner; 30-day sustained performance confirmed; PDCA sub-cycle activated for ongoing refinement",
+      "activities": "Control plan development; Statistical Process Control (SPC) chart implementation; Response plan documentation for out-of-control signals (Western Electric rules, Nelson rules); Standard Operating Procedures (SOP) update; Training delivery to process operators; Handoff documentation to process owner; 30-day monitoring period with daily review; Benefits realisation tracking; Lessons learned documentation; PDCA sub-cycle activation for ongoing refinement",
+      "estimatedDuration": "P3W",
+      "parallelExecution": false
+    },
+
+    {
+      "@id": "pe:dmaic-gate-d-to-m",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:dmaic-g1-define",
+      "gateName": "G1: Define Tollgate",
+      "gateType": "go-no-go",
+      "description": "Verify problem is well-defined, scoped, and sponsored before investing in data collection",
+      "criteria": "Project Charter signed by sponsor; SIPOC validated with process owner; CTQ requirements derived from VOC and agreed; business case approved; team RACI confirmed",
+      "threshold": 85,
+      "automated": false,
+      "blockingFactor": "blocking"
+    },
+    {
+      "@id": "pe:dmaic-gate-m-to-a",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:dmaic-g2-measure",
+      "gateName": "G2: Measure Tollgate",
+      "gateType": "completeness",
+      "description": "Verify baseline is statistically valid and measurement system is adequate before root cause analysis",
+      "criteria": "Baseline sigma level calculated; MSA passed (Gage R&R < 30% tolerance); data statistically valid (sufficient sample size); Cp/Cpk baseline documented; initial control charts plotted",
+      "threshold": 90,
+      "automated": false,
+      "blockingFactor": "blocking"
+    },
+    {
+      "@id": "pe:dmaic-gate-a-to-i",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:dmaic-g3-analyze",
+      "gateName": "G3: Analyze Tollgate",
+      "gateType": "quality",
+      "description": "Verify root causes are statistically validated before solution design — prevents solution-first bias",
+      "criteria": "Root causes statistically validated (p < 0.05); vital few X variables identified; FMEA completed with severity/occurrence/detection scores; hypothesis validated or invalidated with data evidence; Pareto analysis confirms focus areas",
+      "threshold": 85,
+      "automated": false,
+      "blockingFactor": "blocking"
+    },
+    {
+      "@id": "pe:dmaic-gate-i-to-c",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:dmaic-g4-improve",
+      "gateName": "G4: Improve Tollgate",
+      "gateType": "approval",
+      "description": "Verify pilot demonstrates statistically significant improvement before full rollout and control plan",
+      "criteria": "Pilot results show statistically significant improvement (p < 0.05); before/after Cpk comparison documented; implementation plan approved by sponsor; risk assessment (FMEA) on proposed changes completed; cost-benefit analysis positive",
+      "threshold": 90,
+      "automated": false,
+      "blockingFactor": "blocking"
+    },
+    {
+      "@id": "pe:dmaic-gate-final-control",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:dmaic-g5-control",
+      "gateName": "G5: Control Handoff Gate",
+      "gateType": "completeness",
+      "description": "Final gate verifying sustained performance and complete handoff before project closure",
+      "criteria": "SPC charts operational for 30 days with no out-of-control signals; control plan documented and approved; SOPs updated and operators trained; process owner sign-off received; benefits realisation confirmed; lessons learned documented; PDCA sub-cycle handed off",
+      "threshold": 95,
+      "automated": false,
+      "blockingFactor": "blocking"
+    },
+
+    {
+      "@id": "pe:dmaic-artifact-project-charter",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-charter",
+      "artifactName": "Project Charter",
+      "artifactType": "document",
+      "description": "Defines the problem statement, business case, project scope, team members, timeline, and sponsor sign-off. The single source of truth for what the DMAIC project will and will not address.",
+      "format": "Markdown",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-sipoc",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-sipoc",
+      "artifactName": "SIPOC Diagram",
+      "artifactType": "document",
+      "description": "High-level process map identifying Suppliers, Inputs, Process steps, Outputs, and Customers. Establishes process boundaries and identifies who the customer is.",
+      "format": "Diagram + Markdown",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-ctq",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-ctq",
+      "artifactName": "CTQ Requirements Tree",
+      "artifactType": "document",
+      "description": "Critical to Quality tree deriving measurable requirements from Voice of Customer needs. Maps customer needs to specific, measurable process characteristics.",
+      "format": "Diagram + Markdown",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-voc",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-voc",
+      "artifactName": "Voice of Customer Summary",
+      "artifactType": "report",
+      "description": "Consolidated customer feedback from surveys, interviews, complaints, and operational data. Feeds directly into CTQ derivation.",
+      "format": "Markdown",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-data-collection-plan",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-dcp",
+      "artifactName": "Data Collection Plan",
+      "artifactType": "document",
+      "description": "Specifies what data to collect, operational definitions, sample sizes, collection methods, responsible parties, and timeline. Ensures data is collected consistently and with statistical validity.",
+      "format": "Spreadsheet + Markdown",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-baseline-report",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-baseline",
+      "artifactName": "Baseline Performance Report",
+      "artifactType": "report",
+      "description": "Documents current-state process performance: sigma level, DPMO, Cp/Cpk, cycle time distribution, and cost of quality. Serves as the benchmark for all improvement measurement.",
+      "format": "Markdown + Statistical Charts",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-msa",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-msa",
+      "artifactName": "Measurement System Analysis Report",
+      "artifactType": "report",
+      "description": "Gage R&R study results validating that the measurement system contributes less than 30% of total observed variation. Ensures data reliability before drawing conclusions.",
+      "format": "Markdown + Statistical Charts",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-root-cause-report",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-rca",
+      "artifactName": "Root Cause Analysis Report",
+      "artifactType": "report",
+      "description": "Documents the root cause investigation: fishbone diagrams, 5-Why analysis, and the statistically validated vital few X variables driving the defect rate.",
+      "format": "Markdown + Diagrams",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-statistical-results",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-stats",
+      "artifactName": "Statistical Analysis Results",
+      "artifactType": "report",
+      "description": "Complete statistical test results: hypothesis tests (t-test, ANOVA, chi-square, regression), p-values, confidence intervals, and effect sizes confirming or rejecting root cause hypotheses.",
+      "format": "Markdown + Statistical Output",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-fmea",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-fmea",
+      "artifactName": "Failure Mode and Effects Analysis",
+      "artifactType": "document",
+      "description": "FMEA scoring each failure mode by severity, occurrence, and detection to produce Risk Priority Numbers (RPN). Used in both Analyze (current state) and Improve (proposed changes) phases.",
+      "format": "Spreadsheet + Markdown",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-solution-design",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-solution",
+      "artifactName": "Solution Design Document",
+      "artifactType": "document",
+      "description": "Documents the selected solution(s) from the Pugh matrix evaluation, DOE results, risk assessment, and implementation approach. Includes cost-benefit analysis.",
+      "format": "Markdown",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-pilot-results",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-pilot",
+      "artifactName": "Pilot Results Report",
+      "artifactType": "report",
+      "description": "Before/after comparison from the controlled pilot: statistical test results, Cpk improvement, defect rate reduction, and lessons learned from pilot execution.",
+      "format": "Markdown + Statistical Charts",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-implementation-plan",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-impl",
+      "artifactName": "Implementation Plan",
+      "artifactType": "document",
+      "description": "Full rollout plan: phased implementation steps, resource requirements, timeline, risk mitigations, communication plan, and training schedule.",
+      "format": "Markdown + Gantt Chart",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-control-plan",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-control",
+      "artifactName": "Control Plan",
+      "artifactType": "document",
+      "description": "Specifies what to monitor, how to monitor it, control limits, response plans for out-of-control signals, and escalation procedures. The operational blueprint for sustained performance.",
+      "format": "Spreadsheet + Markdown",
+      "mandatory": true
+    },
+    {
+      "@id": "pe:dmaic-artifact-handoff-package",
+      "@type": "pe:ProcessArtifact",
+      "artifactId": "pe:dmaic-art-handoff",
+      "artifactName": "Handoff Documentation Package",
+      "artifactType": "document",
+      "description": "Complete handoff to process owner: updated SOPs, SPC chart configurations, response plans, training materials, lessons learned, and PDCA sub-cycle guidance for ongoing refinement.",
+      "format": "Markdown + Attachments",
+      "mandatory": true
+    },
+
+    {
+      "@id": "pe:dmaic-metric-sigma-level",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:dmaic-met-sigma",
+      "metricName": "Process Sigma Level",
+      "metricType": "outcome",
+      "description": "Overall process sigma level. Z = (USL - mean) / sigma. DPMO = NORMSDIST(-Z) * 1000000. World-class = 6-sigma (3.4 DPMO with 1.5-sigma shift).",
+      "formula": "Z = (USL - mean) / sigma; DPMO = NORMSDIST(-Z) * 1000000",
+      "unit": "sigma",
+      "target": 6.0,
+      "collectionMethod": "hybrid",
+      "frequency": "per-phase"
+    },
+    {
+      "@id": "pe:dmaic-metric-defect-rate",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:dmaic-met-dpmo",
+      "metricName": "Defect Rate (DPMO)",
+      "metricType": "quality",
+      "description": "Defects Per Million Opportunities. Primary quality metric tracking the rate of non-conformances against CTQ specifications.",
+      "formula": "(Number of defects / (Units inspected * Opportunities per unit)) * 1000000",
+      "unit": "dpmo",
+      "target": 3.4,
+      "collectionMethod": "automated",
+      "frequency": "per-phase"
+    },
+    {
+      "@id": "pe:dmaic-metric-capability",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:dmaic-met-cpk",
+      "metricName": "Process Capability (Cpk)",
+      "metricType": "quality",
+      "description": "Process capability index accounting for centering. Cpk >= 1.33 is capable; Cpk >= 2.0 is world-class.",
+      "formula": "Cpk = min((USL - mean) / (3 * sigma), (mean - LSL) / (3 * sigma))",
+      "unit": "ratio",
+      "target": 2.0,
+      "collectionMethod": "automated",
+      "frequency": "per-phase"
+    },
+    {
+      "@id": "pe:dmaic-metric-cycle-time",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:dmaic-met-ct",
+      "metricName": "Process Cycle Time",
+      "metricType": "efficiency",
+      "description": "Total elapsed time from process input to process output. Target is process-specific and set in the Define phase based on VOC and CTQ requirements.",
+      "formula": "End timestamp - Start timestamp per unit",
+      "unit": "duration",
+      "target": 0,
+      "collectionMethod": "hybrid",
+      "frequency": "per-phase"
+    },
+    {
+      "@id": "pe:dmaic-metric-coq",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:dmaic-met-coq",
+      "metricName": "Cost of Quality",
+      "metricType": "cost",
+      "description": "Total cost of quality comprising prevention costs, appraisal costs, internal failure costs, and external failure costs. Reduction in CoQ is a key business case metric.",
+      "formula": "Prevention + Appraisal + Internal Failure + External Failure costs",
+      "unit": "currency",
+      "target": 0,
+      "collectionMethod": "manual",
+      "frequency": "per-phase"
+    },
+
+    {
+      "@id": "pe:dmaic-hypothesis-root-cause",
+      "@type": "pe:Hypothesis",
+      "hypothesisId": "pe:dmaic-hyp-001",
+      "statement": "The identified vital-few root causes (X variables) are the primary drivers of the process defect rate, and addressing them will reduce DPMO by at least 50% from baseline",
+      "description": "Central DMAIC hypothesis formed in Define, refined in Measure, tested in Analyze, validated in Improve. Links problem statement to measurable outcome.",
+      "measurementMethod": "Before/after comparison using paired t-test or 2-sample t-test on defect rates; process capability (Cpk) comparison; sigma level improvement calculation",
+      "target": "50% reduction in DPMO from baseline; Cpk improvement of at least 0.5 from baseline",
+      "status": "proposed",
+      "confidence": null
+    },
+
+    {
+      "@id": "pe:dmaic-agent-data-analyst",
+      "@type": "pe:AIAgent",
+      "agentId": "pe:dmaic-ai-data",
+      "agentName": "DMAIC Data Analyst Agent",
+      "agentType": "analysis",
+      "description": "AI agent that collects, cleanses, and analyses process data. Performs descriptive statistics, builds data collection plans, executes measurement system analysis, and generates baseline reports.",
+      "autonomyLevel": "supervised",
+      "model": "Claude / GPT-4 with statistical libraries",
+      "qualityThreshold": 80
+    },
+    {
+      "@id": "pe:dmaic-agent-statistical",
+      "@type": "pe:AIAgent",
+      "agentId": "pe:dmaic-ai-stats",
+      "agentName": "Statistical Analysis Agent",
+      "agentType": "analysis",
+      "description": "AI agent that performs hypothesis testing (t-tests, ANOVA, chi-square, regression), correlation analysis, DOE design and analysis, and generates statistical validation reports for root cause confirmation.",
+      "autonomyLevel": "supervised",
+      "model": "Claude / GPT-4 with R/Python statistical runtime",
+      "qualityThreshold": 85
+    },
+    {
+      "@id": "pe:dmaic-agent-spc-monitor",
+      "@type": "pe:AIAgent",
+      "agentId": "pe:dmaic-ai-spc",
+      "agentName": "SPC Monitoring Agent",
+      "agentType": "monitoring",
+      "description": "AI agent that monitors control charts in real-time, detects out-of-control signals using Western Electric rules and Nelson rules, triggers response plans, and tracks sustained performance during the 30-day control period.",
+      "autonomyLevel": "highly-autonomous",
+      "model": "Lightweight inference model with SPC rule engine",
+      "qualityThreshold": 90
+    },
+
+    {
+      "@id": "pe:dmaic-pattern-dmaic-cycle",
+      "@type": "pe:ProcessPattern",
+      "patternId": "pe:dmaic-pat-001",
+      "patternName": "DMAIC Process Improvement Cycle",
+      "description": "Universal Six Sigma pattern for improving existing processes through systematic definition, measurement, analysis, improvement, and control",
+      "context": "Any organisation with an existing process exhibiting measurable defects, variation, or performance gaps against customer requirements (CTQs). Not suitable for net-new process design (use DMADV).",
+      "problem": "Process improvement efforts fail when they lack structured methodology, skip root cause validation, jump to solutions prematurely, or fail to sustain improvements after initial gains",
+      "solution": "Apply the 5-phase DMAIC cycle: Define the problem and CTQs from VOC; Measure baseline performance with validated measurement system; Analyze data to identify and statistically validate root causes; Improve by piloting data-driven solutions; Control to sustain gains via SPC and standardisation. Each phase has a blocking tollgate review. Statistical validation is required at each transition.",
+      "benefits": "Data-driven decisions eliminate guesswork; Tollgates prevent premature phase transitions; Statistical validation ensures real improvement (not noise); Control phase prevents regression; Reusable across industries and process types; Provides common language for improvement teams"
+    },
+    {
+      "@id": "pe:dmaic-pattern-pdca-subcycle",
+      "@type": "pe:ProcessPattern",
+      "patternId": "pe:dmaic-pat-002",
+      "patternName": "PDCA Continuous Refinement Sub-Cycle",
+      "description": "Plan-Do-Check-Act (Deming Cycle) activated within the DMAIC Control phase for ongoing incremental improvement (Kaizen) after the main DMAIC cycle closes",
+      "context": "Control phase of DMAIC where the improved process needs ongoing refinement beyond initial project closure. Also applicable standalone for small continuous improvements.",
+      "problem": "DMAIC projects that end at Control without a handoff mechanism for continuous improvement lose gains over time as conditions change, new variation sources emerge, or operator discipline decays",
+      "solution": "Embed PDCA cycles within the Control phase: Plan further refinements based on SPC signals and operator feedback; Do small-scale changes on limited scope; Check results against control limits and targets; Act to standardise successful changes or iterate. PDCA runs indefinitely under process owner governance.",
+      "benefits": "Prevents improvement decay; Enables incremental optimisation (Kaizen); Maintains process owner engagement; Bridges DMAIC project completion to operational excellence; Low-risk small-batch changes"
+    },
+
+    {
+      "@id": "pe:dmaic-skill-statistical-analysis",
+      "@type": "pe:Skill",
+      "skillId": "pe:dmaic-sk-stats",
+      "skillName": "Statistical Hypothesis Testing",
+      "description": "Performs hypothesis tests (t-test, paired t-test, ANOVA, chi-square, regression) on process data sets. Returns test statistics, p-values, confidence intervals, and significance determination.",
+      "version": "1.0.0",
+      "skillType": "analysis",
+      "inputs": [
+        { "name": "dataSet", "dataType": "array", "required": true, "description": "Process measurement data" },
+        { "name": "testType", "dataType": "string", "required": true, "description": "Statistical test: t-test, paired-t, anova, chi-square, regression" },
+        { "name": "alpha", "dataType": "number", "required": false, "description": "Significance level (default 0.05)" }
+      ],
+      "outputs": [
+        { "name": "testResult", "dataType": "object", "description": "Full test output including test statistic and degrees of freedom" },
+        { "name": "pValue", "dataType": "number", "description": "Calculated p-value" },
+        { "name": "significant", "dataType": "boolean", "description": "Whether result is significant at given alpha" }
+      ],
+      "provider": "agent",
+      "qualityThreshold": 85,
+      "idempotent": true,
+      "owningOntology": "PE-ONT",
+      "status": "active"
+    },
+    {
+      "@id": "pe:dmaic-skill-data-collection",
+      "@type": "pe:Skill",
+      "skillId": "pe:dmaic-sk-data",
+      "skillName": "Process Data Collection and Sampling",
+      "description": "Collects process measurement data according to a sampling plan. Handles operational definitions, sample size calculations, data validation, and collection logging.",
+      "version": "1.0.0",
+      "skillType": "extraction",
+      "inputs": [
+        { "name": "processId", "dataType": "string", "required": true, "description": "Target process identifier" },
+        { "name": "samplingPlan", "dataType": "object", "required": true, "description": "Sample size, frequency, stratification criteria" },
+        { "name": "duration", "dataType": "string", "required": false, "description": "Collection window (ISO 8601 duration)" }
+      ],
+      "outputs": [
+        { "name": "dataSet", "dataType": "array", "description": "Collected measurements" },
+        { "name": "sampleSize", "dataType": "integer", "description": "Actual samples collected" },
+        { "name": "collectionLog", "dataType": "object", "description": "Collection metadata and quality notes" }
+      ],
+      "provider": "hybrid",
+      "qualityThreshold": 80,
+      "idempotent": false,
+      "owningOntology": "PE-ONT",
+      "status": "active"
+    },
+    {
+      "@id": "pe:dmaic-skill-spc-monitoring",
+      "@type": "pe:Skill",
+      "skillId": "pe:dmaic-sk-spc",
+      "skillName": "SPC Chart Monitoring and Alerting",
+      "description": "Monitors Statistical Process Control charts in real-time. Applies Western Electric rules and Nelson rules to detect out-of-control conditions. Triggers response plans when signals are detected.",
+      "version": "1.0.0",
+      "skillType": "validation",
+      "inputs": [
+        { "name": "controlChart", "dataType": "object", "required": true, "description": "Chart type (X-bar, R, p, c, u), control limits, centre line" },
+        { "name": "rules", "dataType": "array", "required": true, "description": "Detection rules to apply (Western Electric, Nelson, custom)" },
+        { "name": "responsePlan", "dataType": "object", "required": false, "description": "Actions to trigger on out-of-control signal" }
+      ],
+      "outputs": [
+        { "name": "chartStatus", "dataType": "string", "description": "in-control or out-of-control" },
+        { "name": "signals", "dataType": "array", "description": "Detected signals with rule references and data points" },
+        { "name": "alertsTriggered", "dataType": "array", "description": "Response plan actions triggered" }
+      ],
+      "provider": "agent",
+      "qualityThreshold": 90,
+      "idempotent": false,
+      "owningOntology": "PE-ONT",
+      "status": "active"
+    },
+    {
+      "@id": "pe:dmaic-skill-root-cause-analysis",
+      "@type": "pe:Skill",
+      "skillId": "pe:dmaic-sk-rca",
+      "skillName": "Root Cause Analysis and Validation",
+      "description": "Analyses process defect data and process maps to identify potential root causes, then validates them statistically. Generates fishbone categories, Pareto charts, and 5-Why traces.",
+      "version": "1.0.0",
+      "skillType": "analysis",
+      "inputs": [
+        { "name": "defectData", "dataType": "array", "required": true, "description": "Defect records with categories, timestamps, and measurements" },
+        { "name": "processMap", "dataType": "object", "required": true, "description": "Detailed process map or value stream map" },
+        { "name": "hypotheses", "dataType": "array", "required": false, "description": "Pre-formulated hypotheses to test" }
+      ],
+      "outputs": [
+        { "name": "rootCauses", "dataType": "array", "description": "Validated root causes with evidence and confidence" },
+        { "name": "validationResults", "dataType": "object", "description": "Statistical test results for each hypothesis" },
+        { "name": "paretoChart", "dataType": "object", "description": "Pareto analysis identifying vital few from trivial many" }
+      ],
+      "provider": "hybrid",
+      "qualityThreshold": 85,
+      "idempotent": true,
+      "owningOntology": "PE-ONT",
+      "status": "active"
+    },
+
+    {
+      "@id": "pe:dmaic-plugin-quality-improvement",
+      "@type": "pe:Plugin",
+      "pluginId": "pe:dmaic-plg-001",
+      "pluginName": "Quality Improvement Plugin",
+      "description": "Extension bundle providing DMAIC-specific skills for statistical hypothesis testing, process data collection, SPC monitoring, and root cause analysis. Deployable at PFC level for all instances.",
+      "version": "1.0.0",
+      "pluginType": "analytics",
+      "cascadeTier": "PFC",
+      "status": "active",
+      "entryPoint": "./plugins/quality-improvement/index.js"
+    },
+
+    {
+      "@id": "pe:dmaic-path-linear-flow",
+      "@type": "pe:ProcessPath",
+      "pathId": "pe:dmaic-pth-001",
+      "pathName": "DMAIC Linear Process Flow",
+      "description": "Standard DMAIC linear path: Define -> Measure -> Analyze -> Improve -> Control. Each transition is mandatory and sequential with tollgate enforcement. Entry point is always Define.",
+      "version": "1.0.0",
+      "pathType": "linear",
+      "scope": "intra-series",
+      "seriesRefs": "PE-Series",
+      "status": "active"
+    },
+
+    {
+      "@id": "pe:dmaic-step-define",
+      "@type": "pe:PathStep",
+      "stepId": "pe:dmaic-stp-define",
+      "stepName": "Define Phase Step",
+      "description": "Entry point for DMAIC. Maps to pe:dmaic-phase-define. Scopes the problem, establishes charter, derives CTQs.",
+      "stepType": "required",
+      "entryPoint": true,
+      "estimatedDuration": "P2W",
+      "ontologyRef": "PE-ONT"
+    },
+    {
+      "@id": "pe:dmaic-step-measure",
+      "@type": "pe:PathStep",
+      "stepId": "pe:dmaic-stp-measure",
+      "stepName": "Measure Phase Step",
+      "description": "Maps to pe:dmaic-phase-measure. Establishes baseline, validates measurement system, calculates process capability.",
+      "stepType": "required",
+      "entryPoint": false,
+      "estimatedDuration": "P3W",
+      "ontologyRef": "PE-ONT"
+    },
+    {
+      "@id": "pe:dmaic-step-analyze",
+      "@type": "pe:PathStep",
+      "stepId": "pe:dmaic-stp-analyze",
+      "stepName": "Analyze Phase Step",
+      "description": "Maps to pe:dmaic-phase-analyze. Identifies and statistically validates root causes. Invokes root cause analysis and statistical skills.",
+      "stepType": "required",
+      "entryPoint": false,
+      "estimatedDuration": "P4W",
+      "ontologyRef": "PE-ONT"
+    },
+    {
+      "@id": "pe:dmaic-step-improve",
+      "@type": "pe:PathStep",
+      "stepId": "pe:dmaic-stp-improve",
+      "stepName": "Improve Phase Step",
+      "description": "Maps to pe:dmaic-phase-improve. Designs, pilots, and validates solutions against root causes.",
+      "stepType": "required",
+      "entryPoint": false,
+      "estimatedDuration": "P4W",
+      "ontologyRef": "PE-ONT"
+    },
+    {
+      "@id": "pe:dmaic-step-control",
+      "@type": "pe:PathStep",
+      "stepId": "pe:dmaic-stp-control",
+      "stepName": "Control Phase Step",
+      "description": "Maps to pe:dmaic-phase-control. Establishes SPC monitoring, updates SOPs, hands off to process owner with PDCA sub-cycle.",
+      "stepType": "required",
+      "entryPoint": false,
+      "estimatedDuration": "P3W",
+      "ontologyRef": "PE-ONT"
+    },
+
+    {
+      "@id": "pe:dmaic-link-d-to-m",
+      "@type": "pe:PathLink",
+      "linkId": "pe:dmaic-lnk-d-m",
+      "bindingStrength": "mandatory",
+      "linkType": "sequential",
+      "weight": 0,
+      "description": "Define tollgate passed — problem scoped, charter signed, CTQs defined. Proceed to Measure."
+    },
+    {
+      "@id": "pe:dmaic-link-m-to-a",
+      "@type": "pe:PathLink",
+      "linkId": "pe:dmaic-lnk-m-a",
+      "bindingStrength": "mandatory",
+      "linkType": "sequential",
+      "weight": 0,
+      "description": "Measure tollgate passed — baseline established, measurement system validated. Proceed to Analyze."
+    },
+    {
+      "@id": "pe:dmaic-link-a-to-i",
+      "@type": "pe:PathLink",
+      "linkId": "pe:dmaic-lnk-a-i",
+      "bindingStrength": "mandatory",
+      "linkType": "sequential",
+      "weight": 0,
+      "description": "Analyze tollgate passed — root causes statistically validated, vital few identified. Proceed to Improve."
+    },
+    {
+      "@id": "pe:dmaic-link-i-to-c",
+      "@type": "pe:PathLink",
+      "linkId": "pe:dmaic-lnk-i-c",
+      "bindingStrength": "mandatory",
+      "linkType": "sequential",
+      "weight": 0,
+      "description": "Improve tollgate passed — pilot demonstrates significant improvement, implementation plan approved. Proceed to Control."
+    },
+
+    {
+      "@id": "pe:dmaic-valuechain-ci",
+      "@type": "pe:ValueChain",
+      "valueChainId": "pe:dmaic-vc-001",
+      "valueChainName": "Continuous Improvement Value Chain",
+      "description": "The continuous improvement value chain in which DMAIC operates: identify improvement opportunity, execute DMAIC cycle, sustain gains via control, feed learnings back into the organisation for the next improvement cycle.",
+      "customerValue": "Reduced defects, improved process capability, lower cost of quality, predictable process performance, and data-driven decision making",
+      "inputs": "Process performance data; customer complaints and VOC; quality metrics and SPC signals; regulatory requirements; benchmark data; lessons learned from prior DMAIC cycles",
+      "outputs": "Improved process with sustained sigma level; updated SOPs; trained operators; active SPC monitoring; documented lessons learned; quantified benefits realisation; PDCA sub-cycle for ongoing refinement"
+    }
+  ],
+
+  "relationships": [
+
+    { "@type": "pe:hasPhase", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-phase-define" },
+    { "@type": "pe:hasPhase", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-phase-measure" },
+    { "@type": "pe:hasPhase", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-phase-analyze" },
+    { "@type": "pe:hasPhase", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-phase-improve" },
+    { "@type": "pe:hasPhase", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-phase-control" },
+
+    { "@type": "pe:dependsOn", "from": "pe:dmaic-phase-measure", "to": "pe:dmaic-phase-define" },
+    { "@type": "pe:dependsOn", "from": "pe:dmaic-phase-analyze", "to": "pe:dmaic-phase-measure" },
+    { "@type": "pe:dependsOn", "from": "pe:dmaic-phase-improve", "to": "pe:dmaic-phase-analyze" },
+    { "@type": "pe:dependsOn", "from": "pe:dmaic-phase-control", "to": "pe:dmaic-phase-improve" },
+
+    { "@type": "pe:hasGate", "from": "pe:dmaic-phase-define", "to": "pe:dmaic-gate-d-to-m" },
+    { "@type": "pe:hasGate", "from": "pe:dmaic-phase-measure", "to": "pe:dmaic-gate-m-to-a" },
+    { "@type": "pe:hasGate", "from": "pe:dmaic-phase-analyze", "to": "pe:dmaic-gate-a-to-i" },
+    { "@type": "pe:hasGate", "from": "pe:dmaic-phase-improve", "to": "pe:dmaic-gate-i-to-c" },
+    { "@type": "pe:hasGate", "from": "pe:dmaic-phase-control", "to": "pe:dmaic-gate-final-control" },
+
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-define", "to": "pe:dmaic-artifact-project-charter" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-define", "to": "pe:dmaic-artifact-sipoc" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-define", "to": "pe:dmaic-artifact-ctq" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-define", "to": "pe:dmaic-artifact-voc" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-measure", "to": "pe:dmaic-artifact-data-collection-plan" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-measure", "to": "pe:dmaic-artifact-baseline-report" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-measure", "to": "pe:dmaic-artifact-msa" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-analyze", "to": "pe:dmaic-artifact-root-cause-report" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-analyze", "to": "pe:dmaic-artifact-statistical-results" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-analyze", "to": "pe:dmaic-artifact-fmea" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-improve", "to": "pe:dmaic-artifact-solution-design" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-improve", "to": "pe:dmaic-artifact-pilot-results" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-improve", "to": "pe:dmaic-artifact-implementation-plan" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-control", "to": "pe:dmaic-artifact-control-plan" },
+    { "@type": "pe:produces", "from": "pe:dmaic-phase-control", "to": "pe:dmaic-artifact-handoff-package" },
+
+    { "@type": "pe:measures", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-metric-sigma-level" },
+    { "@type": "pe:measures", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-metric-defect-rate" },
+    { "@type": "pe:measures", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-metric-capability" },
+    { "@type": "pe:measures", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-metric-cycle-time" },
+    { "@type": "pe:measures", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-metric-coq" },
+
+    { "@type": "pe:validates", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-hypothesis-root-cause" },
+    { "@type": "pe:measuredBy", "from": "pe:dmaic-hypothesis-root-cause", "to": "pe:dmaic-metric-defect-rate" },
+    { "@type": "pe:measuredBy", "from": "pe:dmaic-hypothesis-root-cause", "to": "pe:dmaic-metric-capability" },
+
+    { "@type": "pe:augmentedBy", "from": "pe:dmaic-phase-measure", "to": "pe:dmaic-agent-data-analyst" },
+    { "@type": "pe:augmentedBy", "from": "pe:dmaic-phase-analyze", "to": "pe:dmaic-agent-data-analyst" },
+    { "@type": "pe:augmentedBy", "from": "pe:dmaic-phase-analyze", "to": "pe:dmaic-agent-statistical" },
+    { "@type": "pe:augmentedBy", "from": "pe:dmaic-phase-improve", "to": "pe:dmaic-agent-statistical" },
+    { "@type": "pe:augmentedBy", "from": "pe:dmaic-phase-control", "to": "pe:dmaic-agent-spc-monitor" },
+
+    { "@type": "pe:implementsPattern", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-pattern-dmaic-cycle" },
+    { "@type": "pe:implementsPattern", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-pattern-pdca-subcycle" },
+
+    { "@type": "pe:partOfValueChain", "from": "pe:dmaic-process-improvement", "to": "pe:dmaic-valuechain-ci" },
+    { "@type": "pe:includes", "from": "pe:dmaic-valuechain-ci", "to": "pe:dmaic-process-improvement" },
+
+    { "@type": "pe:invokesSkill", "from": "pe:dmaic-phase-measure", "to": "pe:dmaic-skill-data-collection" },
+    { "@type": "pe:invokesSkill", "from": "pe:dmaic-phase-measure", "to": "pe:dmaic-skill-statistical-analysis" },
+    { "@type": "pe:invokesSkill", "from": "pe:dmaic-phase-analyze", "to": "pe:dmaic-skill-root-cause-analysis" },
+    { "@type": "pe:invokesSkill", "from": "pe:dmaic-phase-analyze", "to": "pe:dmaic-skill-statistical-analysis" },
+    { "@type": "pe:invokesSkill", "from": "pe:dmaic-phase-control", "to": "pe:dmaic-skill-spc-monitoring" },
+
+    { "@type": "pe:agentProvidesSkill", "from": "pe:dmaic-agent-data-analyst", "to": "pe:dmaic-skill-data-collection" },
+    { "@type": "pe:agentProvidesSkill", "from": "pe:dmaic-agent-data-analyst", "to": "pe:dmaic-skill-statistical-analysis" },
+    { "@type": "pe:agentProvidesSkill", "from": "pe:dmaic-agent-statistical", "to": "pe:dmaic-skill-statistical-analysis" },
+    { "@type": "pe:agentProvidesSkill", "from": "pe:dmaic-agent-statistical", "to": "pe:dmaic-skill-root-cause-analysis" },
+    { "@type": "pe:agentProvidesSkill", "from": "pe:dmaic-agent-spc-monitor", "to": "pe:dmaic-skill-spc-monitoring" },
+
+    { "@type": "pe:skillDependsOn", "from": "pe:dmaic-skill-root-cause-analysis", "to": "pe:dmaic-skill-statistical-analysis" },
+    { "@type": "pe:skillDependsOn", "from": "pe:dmaic-skill-spc-monitoring", "to": "pe:dmaic-skill-data-collection" },
+
+    { "@type": "pe:providesSkill", "from": "pe:dmaic-plugin-quality-improvement", "to": "pe:dmaic-skill-statistical-analysis" },
+    { "@type": "pe:providesSkill", "from": "pe:dmaic-plugin-quality-improvement", "to": "pe:dmaic-skill-data-collection" },
+    { "@type": "pe:providesSkill", "from": "pe:dmaic-plugin-quality-improvement", "to": "pe:dmaic-skill-spc-monitoring" },
+    { "@type": "pe:providesSkill", "from": "pe:dmaic-plugin-quality-improvement", "to": "pe:dmaic-skill-root-cause-analysis" },
+
+    { "@type": "pe:hasPathStep", "from": "pe:dmaic-path-linear-flow", "to": "pe:dmaic-step-define" },
+    { "@type": "pe:hasPathStep", "from": "pe:dmaic-path-linear-flow", "to": "pe:dmaic-step-measure" },
+    { "@type": "pe:hasPathStep", "from": "pe:dmaic-path-linear-flow", "to": "pe:dmaic-step-analyze" },
+    { "@type": "pe:hasPathStep", "from": "pe:dmaic-path-linear-flow", "to": "pe:dmaic-step-improve" },
+    { "@type": "pe:hasPathStep", "from": "pe:dmaic-path-linear-flow", "to": "pe:dmaic-step-control" },
+
+    { "@type": "pe:hasPathLink", "from": "pe:dmaic-path-linear-flow", "to": "pe:dmaic-link-d-to-m" },
+    { "@type": "pe:hasPathLink", "from": "pe:dmaic-path-linear-flow", "to": "pe:dmaic-link-m-to-a" },
+    { "@type": "pe:hasPathLink", "from": "pe:dmaic-path-linear-flow", "to": "pe:dmaic-link-a-to-i" },
+    { "@type": "pe:hasPathLink", "from": "pe:dmaic-path-linear-flow", "to": "pe:dmaic-link-i-to-c" },
+
+    { "@type": "pe:stepRefersToProcess", "from": "pe:dmaic-step-define", "to": "pe:dmaic-process-improvement" },
+    { "@type": "pe:stepRefersToProcess", "from": "pe:dmaic-step-measure", "to": "pe:dmaic-process-improvement" },
+    { "@type": "pe:stepRefersToProcess", "from": "pe:dmaic-step-analyze", "to": "pe:dmaic-process-improvement" },
+    { "@type": "pe:stepRefersToProcess", "from": "pe:dmaic-step-improve", "to": "pe:dmaic-process-improvement" },
+    { "@type": "pe:stepRefersToProcess", "from": "pe:dmaic-step-control", "to": "pe:dmaic-process-improvement" },
+
+    { "@type": "pe:linkFrom", "from": "pe:dmaic-link-d-to-m", "to": "pe:dmaic-step-define" },
+    { "@type": "pe:linkTo", "from": "pe:dmaic-link-d-to-m", "to": "pe:dmaic-step-measure" },
+    { "@type": "pe:linkFrom", "from": "pe:dmaic-link-m-to-a", "to": "pe:dmaic-step-measure" },
+    { "@type": "pe:linkTo", "from": "pe:dmaic-link-m-to-a", "to": "pe:dmaic-step-analyze" },
+    { "@type": "pe:linkFrom", "from": "pe:dmaic-link-a-to-i", "to": "pe:dmaic-step-analyze" },
+    { "@type": "pe:linkTo", "from": "pe:dmaic-link-a-to-i", "to": "pe:dmaic-step-improve" },
+    { "@type": "pe:linkFrom", "from": "pe:dmaic-link-i-to-c", "to": "pe:dmaic-step-improve" },
+    { "@type": "pe:linkTo", "from": "pe:dmaic-link-i-to-c", "to": "pe:dmaic-step-control" },
+
+    { "@type": "pe:pathImplementsPattern", "from": "pe:dmaic-path-linear-flow", "to": "pe:dmaic-pattern-dmaic-cycle" }
+  ]
+}

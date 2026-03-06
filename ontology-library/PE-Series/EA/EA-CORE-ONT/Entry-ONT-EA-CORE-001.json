@@ -1,0 +1,91 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-EA-CORE-001",
+  "name": "EA-CORE Ontology (Enterprise Architecture Core)",
+  "description": "Platform-agnostic enterprise architecture core ontology providing foundational EA domains (Business, Data, Application, Technology, Security, Integration), architecture governance entities, and universal relationships for capability mapping, decision recording, and roadmap planning.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://oaa-ontology.org/v6/ea-core/",
+  "prefix": "ea-core:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-09",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./ea-core-v1.0.0-oaa-v6.json",
+    "documentation": null,
+    "instanceData": [],
+    "glossary": "../../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "EAEntity": "Base class for all enterprise architecture entities",
+    "BusinessArchitecture": "TOGAF Business Architecture domain",
+    "DataArchitecture": "Data Architecture domain for information assets",
+    "ApplicationArchitecture": "Application Architecture domain for software systems",
+    "TechnologyArchitecture": "Technology Architecture domain for infrastructure",
+    "SecurityArchitecture": "Cross-cutting security architecture domain",
+    "IntegrationArchitecture": "Cross-cutting integration architecture domain",
+    "BusinessCapability": "Organisational ability or capacity to achieve outcomes",
+    "BusinessProcess": "Value-creating activity collection within a domain",
+    "Application": "Software system supporting business capabilities",
+    "DataEntity": "Fundamental business data object or information asset",
+    "ArchitecturePrinciple": "Fundamental guideline governing architecture decisions",
+    "ArchitectureDecision": "Recorded decision with rationale and implications",
+    "ArchitectureRoadmap": "Timeline of planned architecture transitions",
+    "CapabilityGap": "Gap between current and target capability state"
+  },
+  "relationships": {
+    "internal": 10,
+    "crossOntology": [
+      {
+        "name": "managedBy",
+        "from": "ea-core:EAEntity",
+        "to": "org:OrganizationalUnit",
+        "cardinality": "n:1",
+        "purpose": "EA-CORE → ORG: Entity ownership and management accountability"
+      },
+      {
+        "name": "alignsTo",
+        "from": "ea-core:EAEntity",
+        "to": "vsom:StrategicObjective",
+        "cardinality": "n:1",
+        "purpose": "EA-CORE → VSOM: Strategic alignment of architecture entities"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-ORG-001",
+    "Entry-ONT-VSOM-001"
+  ],
+  "dependents": [
+    "Entry-ONT-EA-TOGAF-001",
+    "Entry-ONT-EA-MSFT-001",
+    "Entry-ONT-ALZ-001"
+  ],
+  "layer": "EXECUTION LAYER (PE-Series)",
+  "domain": "Enterprise Architecture",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-09",
+  "lastModified": "2026-02-09",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-09",
+      "changes": "Initial platform-agnostic EA core ontology consolidated from V3 source material. 15 entities, 12 relationships, 8 business rules, 4 enumerations. OAA v6.1.0 compliant."
+    }
+  ],
+  "notes": "EA-CORE provides the platform-agnostic foundation for enterprise architecture modelling. Designed for extension by platform-specific ontologies (EA-MSFT, future EA-AWS, EA-GCP) and methodology ontologies (EA-TOGAF). Sits alongside existing EA-ONT (PPM portfolio execution layer)."
+}

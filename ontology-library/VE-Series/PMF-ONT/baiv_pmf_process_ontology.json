@@ -1,0 +1,808 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@base": "https://baiv.ai/ontology/pmf-process/",
+    "schema": "https://schema.org/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "pmf": "https://baiv.ai/ontology/pmf-process/",
+    "org": "https://baiv.ai/ontology/organization/",
+    "okr": "https://baiv.ai/ontology/okr/"
+  },
+  "pmf:baivP1CustomerDiscovery": {
+    "@type": "schema:WorkflowDefinition",
+    "schema:name": "BAIV P1 Customer Discovery and Data Enrichment Framework",
+    "schema:description": "Specialized customer discovery approach focusing on data enrichment, market problems, customer questions, and workflow pain points",
+    "pmf:focus": [
+      "Customer Discovery and Data Enrichment",
+      "Market and Problems to Solve identification",
+      "Questions customers frequently ask", 
+      "Workflows that cause grief or have greatest potential if solved"
+    ],
+    "pmf:methodology": {
+      "dataEnrichment": {
+        "description": "Systematic collection and analysis of customer data to understand behavior patterns, pain points, and workflow inefficiencies",
+        "activities": [
+          "Customer data mining and pattern analysis",
+          "Workflow documentation and friction mapping",
+          "Question frequency analysis and categorization",
+          "Problem severity scoring and correlation analysis"
+        ]
+      },
+      "marketProblemIdentification": {
+        "description": "Deep dive into market-specific problems that represent the sharpest pain points",
+        "approach": [
+          "Map customer workflows and identify friction points",
+          "Categorize problems by severity and frequency",
+          "Identify workflow bottlenecks with highest impact",
+          "Assess problems that cause most customer grief"
+        ]
+      },
+      "customerQuestionAnalysis": {
+        "description": "Systematic analysis of questions customers ask to identify underlying problems and education needs",
+        "framework": [
+          "Question categorization by workflow stage",
+          "Frequency analysis of support tickets and queries",
+          "Identification of recurring confusion patterns",
+          "Mapping questions to underlying workflow problems"
+        ]
+      },
+      "workflowGriefAssessment": {
+        "description": "Identification of workflows causing greatest customer grief or representing highest potential for improvement",
+        "criteria": [
+          "Time consumption and resource inefficiency",
+          "Error rates and quality issues",
+          "Customer frustration and satisfaction impact", 
+          "Frequency of workflow execution",
+          "Business impact of workflow optimization"
+        ]
+      }
+    },
+    "pmf:deliverables": [
+      "Customer Data Enrichment Report",
+      "Market Problem Hierarchy (sharpest problems identified)",
+      "Customer Question Analysis and FAQ Optimization",
+      "Workflow Grief Assessment with improvement potential",
+      "3X-5X Opportunity Map for highest-impact workflows"
+    ],
+    "pmf:integration": "Feeds directly into Customer Discovery (1.1) Key Questions Framework and Market Analysis (1.3) processes"
+  },
+  "@graph": [
+    {
+      "@id": "pmf:BAIV_MVP12_PMF_Process_Ontology",
+      "@type": "owl:Ontology",
+      "rdfs:label": "BAIV MVP1.2 PMF Process Ontology",
+      "rdfs:comment": "Comprehensive Product-Market Fit process ontology for continuous assessment and product development optimization",
+      "schema:version": "1.2",
+      "schema:dateCreated": "2025-01-20",
+      "schema:creator": "BAIV Product Innovation Team",
+      "pmf:purpose": "Enable systematic PMF achievement for startups and enterprises through measurable, repeatable processes"
+    },
+    {
+      "@id": "pmf:ProductMarketFit",
+      "@type": "owl:Class",
+      "rdfs:label": "Product-Market Fit",
+      "rdfs:comment": "The degree to which a product satisfies strong market demand, measured by customer retention, satisfaction, and willingness to pay premium pricing",
+      "rdfs:subClassOf": "schema:Intangible",
+      "pmf:definition": "Product-Market Fit (PMF) occurs when a product delivers significant value to a clearly defined market segment, evidenced by sustainable customer acquisition, high retention rates (>40% monthly for SaaS), strong user engagement, and customers' willingness to pay premium pricing for the solution.",
+      "pmf:coreComponents": [
+        "Customer Problem Validation",
+        "Solution-Problem Fit Verification", 
+        "Market Size Qualification",
+        "Value Proposition Optimization",
+        "Customer Acquisition Scalability",
+        "Revenue Model Validation"
+      ],
+      "pmf:measurementCriteria": {
+        "ellisScore": ">=w% customers very disappointed if product unavailable",
+        "retentionRate": ">=x% monthly retention for activated users",
+        "netPromoterScore": ">=y NPS indicating strong advocacy",
+        "customerAcquisitionCost": "<z% of customer lifetime value",
+        "premiumPricing": ">=aa% price premium vs alternatives",
+        "organicGrowth": ">=bb% new customers from referrals"
+      },
+      "pmf:benefits": [
+        "Sustainable competitive advantage through customer loyalty",
+        "Scalable customer acquisition with predictable unit economics",
+        "Premium pricing power due to unique value delivery",
+        "Reduced customer acquisition costs through word-of-mouth",
+        "Accelerated product development through clear customer feedback",
+        "Investor confidence and funding accessibility"
+      ]
+    },
+    {
+      "@id": "pmf:PMFProcess",
+      "@type": "owl:Class",
+      "rdfs:label": "PMF Process",
+      "rdfs:comment": "Systematic methodology for achieving and maintaining product-market fit",
+      "rdfs:subClassOf": "schema:DefinedProcess",
+      "pmf:processStages": [
+        "Customer Discovery",
+        "Problem Validation", 
+        "Solution Development",
+        "Product-Market Fit Testing",
+        "PMF Optimization",
+        "PMF Maintenance"
+      ],
+      "pmf:processFeatures": {
+        "iterative": "Continuous cycle of hypothesis-test-learn-optimize",
+        "datadriven": "Quantitative metrics and qualitative insights integration",
+        "customerCentric": "Direct customer feedback drives all decisions",
+        "crossFunctional": "Marketing, Product, Sales, and Customer Success alignment",
+        "scalable": "Framework applicable from startup to enterprise levels",
+        "aiEnhanced": "Machine learning optimization and predictive analytics"
+      }
+    },
+    {
+      "@id": "pmf:CustomerDiscovery",
+      "@type": "owl:Class",
+      "rdfs:label": "Customer Discovery",
+      "rdfs:comment": "Systematic identification and analysis of target customer segments using structured heuristic framework",
+      "rdfs:subClassOf": "pmf:PMFProcess",
+      "pmf:duration": "[x weeks]",
+      "pmf:heuristicRules": {
+        "@id": "pmf:ThreeLayerFramework",
+        "rdfs:label": "Three Layer Market Winner Framework",
+        "rdfs:comment": "The winner in any market is the organization that successfully executes on 3 layers",
+        "pmf:layer1": {
+          "name": "The Business Layer",
+          "description": "Customer Experience (CX) and effective Monetization Model that turns Customer Satisfaction (CSAT) into profits",
+          "components": ["Customer Experience Design", "Monetization Strategy", "CSAT to Profit Conversion"]
+        },
+        "pmf:layer2": {
+          "name": "The Solution Layer", 
+          "description": "How the solution as a software product (form and function) solves real world customer problems or augments existing workflows with minimal friction",
+          "components": ["Problem-Solution Fit", "Workflow Integration", "Friction Minimization", "Customer Success Enablement"]
+        },
+        "pmf:layer3": {
+          "name": "The Technology Layer",
+          "description": "Software, hardware and infrastructure that forms the core of the organization's reason for being and modus operandi",
+          "components": ["Core Technology Platform", "Infrastructure Architecture", "Scalability Framework", "Technical Differentiation"]
+        }
+      },
+      "pmf:improvementThreshold": {
+        "multiplier": "3X-5X",
+        "description": "Improvements and benefits to customer experience must be at least 3-5x better than current solutions to justify switch costs",
+        "rationale": "Customers will only switch if the new solution is significantly better to overcome time, effort, and risk of switching from existing workflow",
+        "positioning": "Position as 'can't live without it' solution"
+      },
+      "pmf:prioritizationFramework": {
+        "@id": "pmf:SharpestProblemsFirst",
+        "rdfs:label": "Sharpest Problems First Prioritization",
+        "description": "Focus roadmap on solving the biggest, most beneficial problems first as these have highest correlation to success",
+        "pmf:prioritizationMatrix": {
+          "type": "2x2 Matrix",
+          "xAxis": "Difficulty to Solve (Easy → Hard)",
+          "yAxis": "Problem Severity (Low Impact → Really Sharp Big Problem)",
+          "quadrants": {
+            "quickWins": "Easy to Solve + Sharp Problem (Priority 1)",
+            "majorProjects": "Hard to Solve + Sharp Problem (Priority 2)", 
+            "fillIns": "Easy to Solve + Low Impact (Priority 3)",
+            "questionMarks": "Hard to Solve + Low Impact (Priority 4)"
+          }
+        }
+      },
+      "pmf:latentDemand": {
+        "definition": "Customer need that exists but customers may not be fully aware of the problem or why it matters most",
+        "approach": "Need to educate not just about the problem but why solving it matters most",
+        "strategy": "Focus on what matters most - bottom line impact and workflow transformation"
+      },
+      "pmf:activities": [
+        "Market segmentation analysis",
+        "Customer persona development", 
+        "Pain point identification and severity ranking",
+        "Buying behavior analysis",
+        "Competitive landscape mapping",
+        "Workflow analysis and friction assessment",
+        "3X-5X improvement opportunity identification"
+      ],
+      "pmf:deliverables": [
+        "Ideal Customer Profile (ICP)",
+        "Customer Journey Maps",
+        "Sharpest Problems Hierarchy",
+        "Competitive Analysis Report",
+        "Market Size Assessment",
+        "3X-5X Improvement Opportunities Map",
+        "Prioritization Matrix (2x2)"
+      ],
+      "pmf:successCriteria": ">=n validated customer interviews per segment with sharpest problems identified and quantified"
+    },
+    {
+      "@id": "pmf:CustomerDiscoverySubProcesses",
+      "@type": "owl:Class",
+      "rdfs:label": "Customer Discovery Sub-Processes",
+      "rdfs:comment": "Detailed sub-processes for systematic customer discovery execution",
+      "rdfs:subClassOf": "pmf:CustomerDiscovery"
+    },
+    {
+      "@id": "pmf:KeyQuestionsFramework",
+      "@type": "owl:Class", 
+      "rdfs:label": "Key Questions to Ask You and Your Team (1.1)",
+      "rdfs:comment": "Structured question framework for internal team alignment before customer research",
+      "rdfs:subClassOf": "pmf:CustomerDiscoverySubProcesses",
+      "pmf:questionCategories": [
+        "Problem Definition and Scope",
+        "Customer Segmentation Hypotheses", 
+        "Solution Assumptions",
+        "Market Dynamics Understanding",
+        "Competitive Landscape Assessment",
+        "Value Proposition Hypotheses"
+      ]
+    },
+    {
+      "@id": "pmf:MarketAnalysisQuestions",
+      "@type": "owl:Class",
+      "rdfs:label": "Market Analysis Questions (1.3)",
+      "rdfs:comment": "Systematic questions for market and competitive analysis",
+      "rdfs:subClassOf": "pmf:CustomerDiscoverySubProcesses",
+      "pmf:question131": {
+        "question": "What and who are the alternatives currently serving this market and solving the problem? (1.3.1)",
+        "purpose": "Competitive landscape mapping and alternative solution identification",
+        "deliverable": "Competitive Analysis Matrix"
+      },
+      "pmf:question132": {
+        "question": "How prevalent is the problem? (1.3.2)",
+        "subQuestions": {
+          "1.3.2a": "What is the size of the market? (Customers in the addressable market)",
+          "1.3.2b": "Is the problem growing? (Trends, growth rates, CAGR etc)",
+          "1.3.2c": "Is the problem general or niche?",
+          "1.3.2d": "What is the problem frequency? (Continuous, monthly, weekly, daily, resource and time consuming etc)"
+        },
+        "purpose": "Market sizing and problem characterization",
+        "deliverable": "Market Size and Growth Analysis"
+      }
+    },
+    {
+      "@id": "pmf:ValueAssessmentQuestions", 
+      "@type": "owl:Class",
+      "rdfs:label": "Value Assessment Questions (1.4)",
+      "rdfs:comment": "Questions to assess potential value and willingness to pay",
+      "rdfs:subClassOf": "pmf:CustomerDiscoverySubProcesses",
+      "pmf:question14": {
+        "question": "What is the potential value of solving the problem? (1.4)",
+        "description": "Is the solution valuable and customers willing to pay at a price profitable to your organization?",
+        "citation": "Reference: 9 Rules of Pricing and Willingness to Pay methodology from 'Monetizing Innovation' by Madhavan Ramanujam and Georg Tacke",
+        "methodology": "Value-based pricing research and willingness-to-pay analysis"
+      },
+      "pmf:question141": {
+        "question": "What part of the problem remains unresolved or difficult to solve with your product/service in place? (1.4.1)",
+        "purpose": "Gap analysis and future roadmap identification",
+        "dimensions": [
+          "Market Size Assessment",
+          "Problem Growth Trajectory", 
+          "Niche vs General Problem Classification",
+          "Problem Frequency and Urgency Analysis"
+        ]
+      }
+    },
+    {
+      "@id": "pmf:ProblemValidation",
+      "@type": "owl:Class",
+      "rdfs:label": "Problem Validation",
+      "rdfs:comment": "Verification that identified customer problems are significant, urgent, and represent sharpest problems worth solving",
+      "rdfs:subClassOf": "pmf:PMFProcess",
+      "pmf:duration": "[y weeks]",
+      "pmf:willingnessToPayAnalysis": {
+        "methodology": "9 Rules of Pricing and Willingness to Pay framework",
+        "citation": "Monetizing Innovation: How Smart Companies Design the Product Around the Price by Madhavan Ramanujam and Georg Tacke",
+        "approach": "Value-based pricing research to determine customer willingness to pay at profitable price points",
+        "deliverable": "WTP Analysis with price sensitivity curves and value perception mapping"
+      },
+      "pmf:activities": [
+        "Problem severity assessment using sharpest problems framework",
+        "Current solution analysis and workflow mapping",
+        "Willingness-to-pay research using Monetizing Innovation methodology",
+        "Problem frequency and urgency measurement", 
+        "Alternative solution evaluation and 3X-5X improvement gap analysis",
+        "Latent demand identification and education requirements assessment"
+      ],
+      "pmf:deliverables": [
+        "Problem Validation Report with sharpest problems ranking",
+        "Customer Pain Point Prioritization Matrix (2x2)",
+        "Willingness-to-Pay Analysis (citing 9 Rules of Pricing)",
+        "Solution Gap Assessment (3X-5X improvement opportunities)",
+        "Market Opportunity Sizing with growth trajectory",
+        "Latent Demand Education Strategy"
+      ],
+      "pmf:successCriteria": ">=p% of target customers rate problem as critical/urgent AND identify as sharpest problem worth 3X-5X improvement investment"
+    },
+    {
+      "@id": "pmf:SolutionDevelopment",
+      "@type": "owl:Class",
+      "rdfs:label": "Solution Development",
+      "rdfs:comment": "Creation and iteration of minimum viable product addressing validated sharpest problems with 3X-5X improvement target",
+      "rdfs:subClassOf": "pmf:PMFProcess",
+      "pmf:duration": "[z weeks]",
+      "pmf:activities": [
+        "MVP feature prioritization using sharpest problems matrix",
+        "Prototype development focused on 3X-5X improvement areas",
+        "User testing and feedback collection",
+        "Feature-value mapping against customer workflows",
+        "Technical feasibility assessment for core technology layer",
+        "Workflow integration and friction minimization design"
+      ],
+      "pmf:deliverables": [
+        "Minimum Viable Product (MVP) targeting sharpest problems",
+        "Feature Specification Document with 3X-5X improvement rationale",
+        "User Testing Results validating workflow improvements", 
+        "Technical Architecture Plan supporting three-layer framework",
+        "Product Roadmap prioritized by sharpest problems first"
+      ],
+      "pmf:successCriteria": "MVP solves sharpest customer problems with >=q% satisfaction AND demonstrates 3X-5X improvement over alternatives"
+    },
+    {
+      "@id": "pmf:PMFTesting",
+      "@type": "owl:Class",
+      "rdfs:label": "PMF Testing",
+      "rdfs:comment": "Systematic measurement of product-market fit using quantitative and qualitative metrics focused on sharpest problems resolution",
+      "rdfs:subClassOf": "pmf:PMFProcess",
+      "pmf:duration": "[a weeks]",
+      "pmf:activities": [
+        "Ellis PMF survey deployment with sharpest problems focus",
+        "Customer retention analysis by problem severity solved",
+        "Usage analytics tracking for core workflow improvements",
+        "NPS measurement with 3X-5X improvement validation",
+        "Revenue metrics analysis and WTP confirmation"
+      ],
+      "pmf:deliverables": [
+        "PMF Score Dashboard with sharpest problems correlation",
+        "Customer Retention Report by problem type solved",
+        "Usage Analytics Summary showing workflow adoption",
+        "Net Promoter Score Analysis with improvement attribution",
+        "Revenue Performance Metrics validating WTP assumptions"
+      ],
+      "pmf:successCriteria": "Ellis Score >=r% AND Monthly Retention >=s% AND customers validate 3X-5X improvement claims"
+    },
+    {
+      "@id": "pmf:PMFOptimization",
+      "@type": "owl:Class",
+      "rdfs:label": "PMF Optimization", 
+      "rdfs:comment": "Continuous improvement of product-market fit through data-driven iterations focused on sharpest problems enhancement",
+      "rdfs:subClassOf": "pmf:PMFProcess",
+      "pmf:duration": "[Ongoing]",
+      "pmf:activities": [
+        "A/B testing of features addressing sharpest problems",
+        "Customer feedback integration and workflow refinement",
+        "Pricing optimization using WTP insights from Monetizing Innovation framework",
+        "User experience enhancement targeting friction reduction",
+        "Market expansion testing for adjacent sharpest problems"
+      ],
+      "pmf:deliverables": [
+        "A/B Test Results with sharpest problems impact analysis",
+        "Feature Impact Analysis on workflow improvements",
+        "Pricing Strategy Optimization using 9 Rules framework",
+        "UX Improvement Plan for friction minimization",
+        "Market Expansion Strategy for related problem domains"
+      ],
+      "pmf:successCriteria": ">=t% improvement in core PMF metrics quarter-over-quarter while maintaining 3X-5X value perception"
+    },
+    {
+      "@id": "pmf:PMFMaintenance",
+      "@type": "owl:Class",
+      "rdfs:label": "PMF Maintenance",
+      "rdfs:comment": "Ongoing monitoring and preservation of product-market fit as markets evolve and new sharpest problems emerge",
+      "rdfs:subClassOf": "pmf:PMFProcess",
+      "pmf:duration": "[Continuous]",
+      "pmf:activities": [
+        "Continuous market monitoring for emerging sharpest problems",
+        "Competitive landscape tracking and 3X-5X advantage preservation",
+        "Customer satisfaction surveillance and workflow evolution tracking",
+        "Product performance analysis against three-layer framework",
+        "Strategic adaptation planning for latent demand opportunities"
+      ],
+      "pmf:deliverables": [
+        "Market Intelligence Reports identifying new sharpest problems",
+        "Competitive Analysis Updates maintaining 3X-5X advantage",
+        "Customer Health Scorecards tracking workflow satisfaction",
+        "Performance Trend Analysis across three-layer framework",
+        "Strategic Adaptation Recommendations for emerging opportunities"
+      ],
+      "pmf:successCriteria": "PMF metrics maintained >=u months with <v% degradation while adapting to evolving sharpest problems"
+    },
+    {
+      "@id": "pmf:Organization",
+      "@type": "owl:Class",
+      "rdfs:label": "Organization",
+      "rdfs:comment": "Business entity implementing PMF processes",
+      "rdfs:subClassOf": "schema:Organization",
+      "pmf:attributes": {
+        "stage": ["Startup", "Growth", "Scale", "Enterprise"],
+        "industry": "schema:Industry",
+        "size": "schema:Number",
+        "revenue": "schema:MonetaryAmount",
+        "pmfMaturity": ["Initial", "Developing", "Advanced", "Optimized"]
+      }
+    },
+    {
+      "@id": "pmf:Product",
+      "@type": "owl:Class",
+      "rdfs:label": "Product",
+      "rdfs:comment": "Software, service, or solution being optimized for market fit",
+      "rdfs:subClassOf": "schema:Product",
+      "pmf:attributes": {
+        "stage": ["Concept", "MVP", "Beta", "Launch", "Growth", "Mature"],
+        "type": ["Software", "Service", "Platform", "API", "Hardware"],
+        "businessModel": ["SaaS", "Marketplace", "Freemium", "Enterprise", "Consumer"],
+        "pmfStatus": ["Not Achieved", "Emerging", "Achieved", "Optimized"]
+      }
+    },
+    {
+      "@id": "pmf:ValueProposition",
+      "@type": "owl:Class",
+      "rdfs:label": "Value Proposition",
+      "rdfs:comment": "Unique value delivered to customers solving their core problems",
+      "rdfs:subClassOf": "schema:Offer",
+      "pmf:components": [
+        "Customer segment definition",
+        "Problem statement",
+        "Solution description", 
+        "Unique differentiator",
+        "Benefit quantification"
+      ]
+    },
+    {
+      "@id": "pmf:CustomerSegment",
+      "@type": "owl:Class",
+      "rdfs:label": "Customer Segment",
+      "rdfs:comment": "Specific group of customers with common characteristics and needs",
+      "rdfs:subClassOf": "schema:Audience",
+      "pmf:attributes": {
+        "demographics": "schema:PropertyValue",
+        "firmographics": "schema:PropertyValue", 
+        "psychographics": "schema:PropertyValue",
+        "behaviorPattern": "schema:PropertyValue",
+        "painPoints": "schema:PropertyValue"
+      }
+    },
+    {
+      "@id": "pmf:PMFMetric",
+      "@type": "owl:Class",
+      "rdfs:label": "PMF Metric",
+      "rdfs:comment": "Quantitative measurement of product-market fit strength",
+      "rdfs:subClassOf": "schema:PropertyValue",
+      "pmf:metricTypes": [
+        "Ellis Score",
+        "Retention Rate",
+        "Net Promoter Score",
+        "Customer Acquisition Cost",
+        "Lifetime Value",
+        "Time to Value",
+        "Usage Frequency",
+        "Feature Adoption",
+        "Churn Rate",
+        "Revenue Growth"
+      ]
+    },
+    {
+      "@id": "pmf:PMFAssessment",
+      "@type": "owl:Class",
+      "rdfs:label": "PMF Assessment",
+      "rdfs:comment": "Systematic evaluation of current product-market fit status",
+      "rdfs:subClassOf": "schema:Review",
+      "pmf:assessmentComponents": [
+        "Quantitative metrics analysis",
+        "Qualitative customer feedback",
+        "Competitive positioning review",
+        "Market dynamics assessment",
+        "Internal capability evaluation"
+      ]
+    },
+    {
+      "@id": "pmf:ExperimentCycle",
+      "@type": "owl:Class",
+      "rdfs:label": "Experiment Cycle",
+      "rdfs:comment": "Hypothesis-driven testing cycle for PMF optimization",
+      "rdfs:subClassOf": "schema:Experiment",
+      "pmf:phases": [
+        "Hypothesis Formation",
+        "Experiment Design",
+        "Implementation",
+        "Data Collection",
+        "Analysis",
+        "Learning Integration"
+      ]
+    },
+    {
+      "@id": "pmf:hasProcess",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "Has Process",
+      "rdfs:comment": "Organization implements PMF process",
+      "rdfs:domain": "pmf:Organization",
+      "rdfs:range": "pmf:PMFProcess"
+    },
+    {
+      "@id": "pmf:hasProduct",
+      "@type": "owl:ObjectProperty", 
+      "rdfs:label": "Has Product",
+      "rdfs:comment": "Organization has product in PMF process",
+      "rdfs:domain": "pmf:Organization",
+      "rdfs:range": "pmf:Product"
+    },
+    {
+      "@id": "pmf:hasValueProposition",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "Has Value Proposition",
+      "rdfs:comment": "Product delivers value proposition",
+      "rdfs:domain": "pmf:Product",
+      "rdfs:range": "pmf:ValueProposition"
+    },
+    {
+      "@id": "pmf:targetsSegment",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "Targets Segment",
+      "rdfs:comment": "Value proposition targets customer segment",
+      "rdfs:domain": "pmf:ValueProposition",
+      "rdfs:range": "pmf:CustomerSegment"
+    },
+    {
+      "@id": "pmf:measuredBy",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "Measured By",
+      "rdfs:comment": "PMF process measured by specific metrics",
+      "rdfs:domain": "pmf:PMFProcess",
+      "rdfs:range": "pmf:PMFMetric"
+    },
+    {
+      "@id": "pmf:assessedBy",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "Assessed By", 
+      "rdfs:comment": "Product PMF assessed by assessment process",
+      "rdfs:domain": "pmf:Product",
+      "rdfs:range": "pmf:PMFAssessment"
+    },
+    {
+      "@id": "pmf:optimizedThrough",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "Optimized Through",
+      "rdfs:comment": "PMF optimized through experiment cycles",
+      "rdfs:domain": "pmf:Product",
+      "rdfs:range": "pmf:ExperimentCycle"
+    },
+    {
+      "@id": "pmf:alignsWith",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "Aligns With",
+      "rdfs:comment": "PMF process aligns with organizational strategy/OKRs",
+      "rdfs:domain": "pmf:PMFProcess",
+      "rdfs:range": "schema:Plan"
+    },
+    {
+      "@id": "pmf:hasStage",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Has Stage",
+      "rdfs:comment": "Current stage in PMF process",
+      "rdfs:domain": "pmf:PMFProcess",
+      "rdfs:range": "xsd:string"
+    },
+    {
+      "@id": "pmf:pmfScore",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "PMF Score",
+      "rdfs:comment": "Quantitative PMF measurement score",
+      "rdfs:domain": "pmf:Product",
+      "rdfs:range": "xsd:decimal"
+    },
+    {
+      "@id": "pmf:assessmentDate",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Assessment Date",
+      "rdfs:comment": "Date of PMF assessment",
+      "rdfs:domain": "pmf:PMFAssessment",
+      "rdfs:range": "xsd:date"
+    },
+    {
+      "@id": "pmf:confidenceLevel",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Confidence Level",
+      "rdfs:comment": "Statistical confidence in PMF measurement",
+      "rdfs:domain": "pmf:PMFMetric",
+      "rdfs:range": "xsd:decimal"
+    },
+    {
+      "@id": "pmf:implementationTimeline",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Implementation Timeline",
+      "rdfs:comment": "Expected timeline for PMF process implementation",
+      "rdfs:domain": "pmf:PMFProcess",
+      "rdfs:range": "xsd:duration"
+    }
+  ],
+  "pmf:processWorkflow": {
+    "@type": "schema:WorkflowDefinition",
+    "schema:name": "BAIV PMF Process Workflow with Sharpest Problems Framework",
+    "schema:description": "Complete workflow for achieving and maintaining product-market fit using three-layer execution framework",
+    "schema:workflowSteps": [
+      {
+        "@type": "schema:WorkflowStep",
+        "schema:name": "Customer Discovery",
+        "schema:description": "Identify and validate target customer segments using three-layer framework and sharpest problems prioritization",
+        "pmf:duration": "[x weeks]",
+        "pmf:resources": ["Product Manager", "UX Researcher", "Sales Team", "Customer Success"],
+        "pmf:keyActivities": [
+          "Apply Three-Layer Framework (Business, Solution, Technology)",
+          "Execute Key Questions Framework (1.1)",
+          "Conduct Market Analysis Questions (1.3.1, 1.3.2)",
+          "Perform Value Assessment (1.4, 1.4.1)",
+          "Create Sharpest Problems Prioritization Matrix (2x2)",
+          "Identify 3X-5X improvement opportunities"
+        ],
+        "pmf:deliverables": [
+          "ICP Document with sharpest problems focus", 
+          "Customer Journey Maps with workflow friction analysis",
+          "Market Analysis Report (size, growth, frequency)",
+          "Competitive Alternatives Assessment (1.3.1)",
+          "Sharpest Problems Matrix (2x2: Easy/Hard vs Low/Sharp)",
+          "3X-5X Improvement Opportunities Map"
+        ],
+        "pmf:successCriteria": ">=n validated interviews identifying sharpest problems and 3X-5X improvement potential",
+        "pmf:nextStep": "Problem Validation"
+      },
+      {
+        "@type": "schema:WorkflowStep", 
+        "schema:name": "Problem Validation",
+        "schema:description": "Confirm customer problems are sharpest problems worth 3X-5X investment using WTP methodology",
+        "pmf:duration": "[y weeks]",
+        "pmf:resources": ["Product Manager", "Customer Success", "Sales", "Pricing Analyst"],
+        "pmf:keyActivities": [
+          "Apply 9 Rules of Pricing methodology from Monetizing Innovation",
+          "Conduct Willingness-to-Pay research for sharpest problems",
+          "Validate 3X-5X improvement requirement vs alternatives",
+          "Assess latent demand and education requirements",
+          "Confirm problem frequency and workflow impact"
+        ],
+        "pmf:deliverables": [
+          "Problem Validation Report ranking sharpest problems",
+          "WTP Analysis citing Monetizing Innovation framework", 
+          "3X-5X Improvement Gap Analysis vs current solutions",
+          "Latent Demand Assessment and education strategy",
+          "Market Opportunity Sizing with CAGR projections"
+        ],
+        "pmf:successCriteria": ">=p% rate as critical/urgent sharpest problem + confirmed WTP at profitable pricing",
+        "pmf:nextStep": "Solution Development"
+      },
+      {
+        "@type": "schema:WorkflowStep",
+        "schema:name": "Solution Development", 
+        "schema:description": "Build MVP targeting sharpest problems with 3X-5X improvement over alternatives",
+        "pmf:duration": "[z weeks]",
+        "pmf:resources": ["Engineering Team", "Product Manager", "UX Designer", "Customer Success"],
+        "pmf:keyActivities": [
+          "Prioritize features using Sharpest Problems First framework",
+          "Design for 3X-5X workflow improvement vs alternatives", 
+          "Minimize friction and switching costs",
+          "Implement three-layer framework (Business, Solution, Technology)",
+          "Position as 'can't live without it' solution"
+        ],
+        "pmf:deliverables": [
+          "MVP solving sharpest problems with minimal friction",
+          "Feature Specs with 3X-5X improvement rationale",
+          "User Testing Results validating workflow transformation",
+          "Technical Architecture supporting three-layer framework"
+        ],
+        "pmf:successCriteria": "MVP demonstrates 3X-5X improvement with >=q% customer satisfaction",
+        "pmf:nextStep": "PMF Testing"
+      },
+      {
+        "@type": "schema:WorkflowStep",
+        "schema:name": "PMF Testing",
+        "schema:description": "Measure product-market fit focusing on sharpest problems resolution and 3X-5X value delivery",
+        "pmf:duration": "[a weeks]",
+        "pmf:resources": ["Data Analyst", "Product Manager", "Customer Success", "Sales"],
+        "pmf:keyActivities": [
+          "Deploy Ellis PMF surveys with sharpest problems context",
+          "Track retention by problem severity solved",
+          "Measure workflow adoption and friction reduction",
+          "Validate 3X-5X improvement claims with customers",
+          "Confirm WTP assumptions from Monetizing Innovation framework"
+        ],
+        "pmf:deliverables": [
+          "PMF Score Dashboard (>=r% target)",
+          "Retention Analysis by sharpest problems solved",
+          "3X-5X Improvement Validation Report",
+          "Workflow Adoption and Friction Metrics"
+        ],
+        "pmf:successCriteria": "Ellis Score >=r% + Retention >=s% + validated 3X-5X claims",
+        "pmf:nextStep": "PMF Optimization"
+      },
+      {
+        "@type": "schema:WorkflowStep",
+        "schema:name": "PMF Optimization",
+        "schema:description": "Iteratively improve PMF while maintaining 3X-5X value advantage",
+        "pmf:duration": "[Ongoing]",
+        "pmf:resources": ["Cross-functional teams", "Data Scientists", "Pricing Analysts"],
+        "pmf:keyActivities": [
+          "A/B test features impacting sharpest problems",
+          "Optimize pricing using 9 Rules framework",
+          "Enhance workflows for greater friction reduction",
+          "Expand to adjacent sharpest problems",
+          "Maintain 'can't live without it' positioning"
+        ],
+        "pmf:deliverables": [
+          "A/B Test Results with sharpest problems impact",
+          "Pricing Optimization using WTP insights",
+          "Workflow Enhancement Plans",
+          "Adjacent Market Opportunities Assessment"
+        ],
+        "pmf:successCriteria": ">=t% quarterly improvement maintaining 3X-5X perception",
+        "pmf:nextStep": "PMF Maintenance"
+      },
+      {
+        "@type": "schema:WorkflowStep",
+        "schema:name": "PMF Maintenance",
+        "schema:description": "Monitor and preserve PMF as markets evolve and new sharpest problems emerge",
+        "pmf:duration": "[Continuous]",
+        "pmf:resources": ["Product Team", "Market Intelligence", "Customer Success"],
+        "pmf:keyActivities": [
+          "Monitor for emerging sharpest problems",
+          "Track competitive threats to 3X-5X advantage",
+          "Assess workflow evolution and new friction points",
+          "Identify latent demand opportunities",
+          "Adapt three-layer framework to market changes"
+        ],
+        "pmf:deliverables": [
+          "Market Intelligence on emerging sharpest problems",
+          "Competitive Advantage Preservation Strategy",
+          "Workflow Evolution Tracking Reports",
+          "Strategic Adaptation Recommendations"
+        ],
+        "pmf:successCriteria": "PMF metrics maintained >=u months adapting to evolving problems",
+        "pmf:nextStep": "Continuous Optimization"
+      }
+    ]
+  },
+  "pmf:integrationPoints": {
+    "organizationalStrategy": {
+      "vision": "PMF process supports long-term organizational vision",
+      "mission": "Customer-centric approach aligns with mission delivery",
+      "values": "Data-driven decision making reflects organizational values"
+    },
+    "okrFramework": {
+      "objectives": "PMF metrics become key organizational objectives",
+      "keyResults": "Specific PMF scores and retention rates as measurable results",
+      "alignment": "PMF OKRs cascade from company to team to individual level"
+    },
+    "productDevelopment": {
+      "roadmap": "PMF insights directly inform product roadmap prioritization",
+      "features": "Customer feedback drives feature development decisions",
+      "releases": "PMF metrics gate major product releases"
+    },
+    "marketingStrategy": {
+      "positioning": "PMF validation informs market positioning",
+      "messaging": "Customer language from PMF research shapes messaging",
+      "channels": "PMF data identifies most effective customer acquisition channels"
+    }
+  },
+  "pmf:continuousAssessment": {
+    "frequency": "Monthly PMF metric collection and quarterly deep assessment",
+    "triggers": [
+      "New feature releases",
+      "Market condition changes", 
+      "Competitive landscape shifts",
+      "Customer feedback themes",
+      "Performance metric degradation"
+    ],
+    "automation": {
+      "dataCollection": "Automated customer surveys and usage analytics",
+      "alerting": "Real-time alerts for PMF metric threshold breaches",
+      "reporting": "Automated PMF dashboard updates and trend analysis",
+      "optimization": "AI-driven recommendations for PMF improvement"
+    }
+  },
+  "pmf:successIndicators": {
+    "quantitative": {
+      "ellisScore": ">=w% customers very disappointed without product",
+      "monthlyRetention": ">=x% for activated users",
+      "netPromoterScore": ">=y indicating strong customer advocacy",
+      "organicGrowthRate": ">=bb% new customers from referrals",
+      "customerAcquisitionCost": "<=z% of customer lifetime value",
+      "premiumPricingPower": ">=aa% price premium vs alternatives"
+    },
+    "qualitative": {
+      "customerSatisfaction": "Consistent positive feedback and testimonials",
+      "marketRecognition": "Industry analyst recognition and awards",
+      "competitiveDifferentiation": "Clear unique value vs alternatives",
+      "teamConfidence": "Internal team confidence in product direction",
+      "investorInterest": "Growing investor and partner interest"
+    }
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-PFL-001",
+  "name": "PORTFOLIO Ontology (BCG, Three Horizons, Investment Maps, Strategic Lens)",
+  "description": "Innermost execution layer: BCG Growth-Share Matrix (portfolio classification), Three Horizons Model (innovation investment), Strategic Investment Maps (budget-to-strategy alignment), Portfolio Strategic Lens (focused graph views by product/brand/BU), and Strategic Direction Summary (executive one-pager capstone). Bridges VSOM strategy to PPM portfolio execution. Part of VE-Series VSOM-SA sub-series.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://oaa-ontology.org/v6/portfolio/",
+  "prefix": "pfl:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate7": "pass"
+  },
+  "validationDate": "2026-02-12",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./portfolio-ontology-v1.0.0-oaa-v6.json",
+    "documentation": null,
+    "glossary": "../../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "GrowthShareMatrix": "BCG matrix — portfolio analysis by relative market share x growth rate",
+    "GrowthShareEntry": "Individual product/brand/BU classified into Star/CashCow/QuestionMark/Dog",
+    "ThreeHorizonsModel": "McKinsey H1/H2/H3 innovation investment structure",
+    "HorizonInitiative": "Initiative assigned to a specific horizon with risk and ROI",
+    "StrategicInvestmentMap": "Budget-to-strategy alignment across strategic themes",
+    "InvestmentAllocation": "Single investment allocation linking theme to budget and BSC perspective",
+    "PortfolioStrategicLens": "Focused analytical view for AI agents — zoom into a single portfolio element",
+    "StrategicDirectionSummary": "Executive one-pager capstone: where we play, how we win, what bets we make"
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "entryClassifiesEntity",
+        "from": "pfl:GrowthShareEntry",
+        "to": "orgctx:Product",
+        "purpose": "BCG classifies existing org-context products/brands"
+      },
+      {
+        "name": "allocationAlignedToStrategy",
+        "from": "pfl:InvestmentAllocation",
+        "to": "vsom:StrategyComponent",
+        "purpose": "Investment aligned to VSOM strategy pillars"
+      },
+      {
+        "name": "initiativeFundedByPPM",
+        "from": "pfl:HorizonInitiative",
+        "to": "ppm:Initiative",
+        "purpose": "Horizon initiatives executed via PPM"
+      },
+      {
+        "name": "allocationOwnedBy",
+        "from": "pfl:InvestmentAllocation",
+        "to": "rrr:ExecutiveRole",
+        "purpose": "Investment allocations owned by executive roles"
+      },
+      {
+        "name": "summarisesStrategy",
+        "from": "pfl:StrategicDirectionSummary",
+        "to": "vsom:VSOMFramework",
+        "purpose": "Capstone entity synthesises VSOM framework"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-BSC-001",
+    "Entry-ONT-IND-001",
+    "Entry-ONT-MAC-001",
+    "Entry-ONT-KPI-001",
+    "Entry-ONT-OKR-001",
+    "Entry-ONT-RRR-001",
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-VP-001",
+    "Entry-ONT-PMF-001",
+    "Entry-ONT-PPM-001",
+    "Entry-ONT-EFS-001"
+  ],
+  "dependents": [],
+  "layer": "STRATEGIC LAYER (VE-Series / VSOM-SA)",
+  "subSeries": "VSOM-SA",
+  "domain": "Portfolio Management, Innovation Strategy, Resource Allocation",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-12",
+  "lastModified": "2026-02-12",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-12",
+      "changes": "Initial release — BCG, Three Horizons, Investment Maps, Strategic Lens, Direction Summary"
+    }
+  ],
+  "notes": "Layer 5 (Portfolio/Execution) of VSOM Strategy Analysis. Capstone layer with 12 imports — touches the entire graph. PortfolioStrategicLens is the AI agent 'zoom-in'. StrategicDirectionSummary is the executive one-pager output."
+}

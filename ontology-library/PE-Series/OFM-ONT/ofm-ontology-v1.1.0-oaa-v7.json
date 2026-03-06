@@ -1,0 +1,2407 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ofm": "https://oaa-ontology.org/v6/order-fulfilment/",
+    "lsc": "https://oaa-ontology.org/v6/logistics/",
+    "pe": "https://oaa-ontology.org/v6/process-engineering/",
+    "org": "https://oaa-ontology.org/v5/organization/",
+    "pf": "https://oaa-ontology.org/v5/rrr/",
+    "org-ctx": "https://platformcore.io/ontology/org-context/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/",
+    "vp": "https://oaa-ontology.org/v6/value-proposition/",
+    "pmf": "https://oaa-ontology.org/v6/pmf/",
+    "crt": "https://platformcore.io/ontology/crt/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/"
+  },
+  "@type": "owl:Ontology",
+  "@id": "ofm:schema",
+  "name": "Order Fulfilment Management Ontology (OFM-ONT)",
+  "description": "Models demand-side order fulfilment across two complementary layers: (1) warehouse/distribution — sales orders, stock allocation, storage cost accumulation, customer changes, margin tracking, dispatch, and fulfilment risk; (2) customer/commercial — SLA management, breach detection, landed cost build-up, margin analysis, complaint handling, customer satisfaction, and remediation. Bridges to LSC-ONT supply graph (8 operational bridges), VE-Series customer value engineering (9 bridges with VP-RRR alignment), and Foundation ontologies. Designed for food import/distribution but generalisable to any order-to-delivery fulfilment.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.1.0",
+  "oaa:status": "compliant",
+  "oaa:series": "PE-Series",
+  "oaa:domain": "Order Fulfilment / Distribution / Margin Management",
+  "oaa:imports": [
+    {
+      "ontology": "LSC-ONT",
+      "version": "1.2.0",
+      "usedEntities": [
+        "lsc:Shipment",
+        "lsc:Incident",
+        "lsc:Bottleneck",
+        "lsc:RiskAssessment",
+        "lsc:PredictivePattern",
+        "lsc:SupplyChain",
+        "lsc:ChainNode",
+        "lsc:ImpactAssessment",
+        "lsc:RiskMitigation"
+      ]
+    },
+    {
+      "ontology": "PE-ONT",
+      "version": "3.0.0",
+      "usedEntities": [
+        "pe:Process"
+      ]
+    },
+    {
+      "ontology": "ORG-ONT",
+      "version": "2.1.0",
+      "usedEntities": [
+        "org:Organization"
+      ]
+    },
+    {
+      "ontology": "RRR-ONT",
+      "version": "4.0.0",
+      "usedEntities": [
+        "pf:FunctionalRole"
+      ]
+    },
+    {
+      "ontology": "KPI-ONT",
+      "version": "1.0.0",
+      "usedEntities": [
+        "kpi:KPI",
+        "kpi:Metric"
+      ]
+    },
+    {
+      "ontology": "VP-ONT",
+      "version": "1.2.3",
+      "usedEntities": [
+        "vp:Problem",
+        "vp:Solution",
+        "vp:Benefit"
+      ]
+    },
+    {
+      "ontology": "PMF-ONT",
+      "version": "2.0.0",
+      "usedEntities": [
+        "pmf:ProductMarketFit"
+      ]
+    },
+    {
+      "ontology": "CRT-ONT",
+      "version": "1.0.0",
+      "usedEntities": [
+        "crt:CustomerRole"
+      ]
+    },
+    {
+      "ontology": "VSOM-ONT",
+      "version": "1.0.0",
+      "usedEntities": [
+        "vsom:Strategy"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-OFM-001",
+      "name": "Order-to-Delivery Traversal",
+      "description": "Walk the full fulfilment chain from sales order through allocation, dispatch, and delivery",
+      "joinPath": "ofm:SalesOrder -> hasOrderLine -> ofm:OrderLine -> hasAllocation -> ofm:StockAllocation -> allocatedToLine -> ofm:OrderLine -> hasDispatchLeg -> ofm:DispatchLeg -> hasDeliveryWindow -> ofm:DeliveryWindow",
+      "useCase": "Trace the complete fulfilment journey for a customer order from commitment to delivery"
+    },
+    {
+      "patternId": "JP-OFM-002",
+      "name": "Margin Waterfall",
+      "description": "Track margin erosion from booked margin through all erosion events to realised margin",
+      "joinPath": "ofm:OrderLine -> hasMarginImpact -> ofm:MarginImpact (ordered by erosionDate) -> cumulativeErosion chain",
+      "useCase": "Visualise the margin waterfall showing where value is lost between booking and invoicing"
+    },
+    {
+      "patternId": "JP-OFM-003",
+      "name": "Supply-Demand Bridge",
+      "description": "Cross-ontology join connecting inbound supply (LSC) to outbound demand (OFM)",
+      "joinPath": "lsc:Shipment <- allocatedFrom <- ofm:StockAllocation -> allocatedToLine -> ofm:OrderLine -> belongsToOrder -> ofm:SalesOrder",
+      "useCase": "Answer 'which customer orders depend on which inbound shipments?' — THE critical cross-ontology join",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "patternId": "JP-OFM-004",
+      "name": "Customer Change Impact",
+      "description": "Trace the impact of a customer amendment through affected order lines, margin erosion, and fulfilment risk",
+      "joinPath": "ofm:CustomerChange -> affectsOrderLine -> ofm:OrderLine -> hasMarginImpact -> ofm:MarginImpact; ofm:CustomerChange -> triggersMarginImpact -> ofm:MarginImpact; ofm:OrderLine -> hasFulfilmentRisk -> ofm:FulfilmentRisk",
+      "useCase": "Quantify the total cost and risk impact of a customer change request"
+    },
+    {
+      "patternId": "JP-OFM-005",
+      "name": "Storage Cost Accumulation",
+      "description": "Walk the storage event chain per allocation to calculate cumulative dwell cost",
+      "joinPath": "ofm:StockAllocation -> hasStorageEvent -> ofm:StorageEvent (ordered by eventDate) -> cumulativeCost running total",
+      "useCase": "Track daily storage cost accumulation per batch and identify high-dwell-cost allocations"
+    },
+    {
+      "patternId": "JP-OFM-006",
+      "name": "Supply Disruption to Demand Cascade",
+      "description": "Cross-ontology cascade from an LSC incident through affected allocations to customer order risk",
+      "joinPath": "lsc:Incident -> ofm:MarginImpact (via erosionFromIncident) -> ofm:OrderLine; ofm:StockAllocation (affected by incident) -> allocatedToLine -> ofm:OrderLine -> hasFulfilmentRisk -> ofm:FulfilmentRisk",
+      "useCase": "When a supply-side incident occurs, immediately identify which customer orders are at risk",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "patternId": "JP-OFM-007",
+      "name": "Demand Pattern Recognition",
+      "description": "Identify recurring customer ordering behaviours and seasonal trends",
+      "joinPath": "ofm:DemandPattern -> correlatesWithSupplyPattern -> lsc:PredictivePattern; ofm:DemandPattern -> customer ordering history -> seasonal/behavioural trends",
+      "useCase": "Forecast demand based on historical patterns, seasonal cycles, and customer-specific behaviours",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "patternId": "JP-OFM-008",
+      "name": "Capacity Planning",
+      "description": "Net warehouse capacity from inbound arrivals (LSC) and outbound dispatches (OFM)",
+      "joinPath": "ofm:CapacityForecast -> considersInboundFrom -> lsc:SupplyChain; ofm:CapacityForecast -> outbound dispatches -> ofm:DispatchLeg",
+      "useCase": "Plan warehouse capacity by netting inbound arrivals against outbound dispatches over a rolling horizon",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "patternId": "JP-OFM-009",
+      "name": "Fulfilment Risk Heat Map",
+      "description": "Aggregate fulfilment risks across all orders for a risk dashboard",
+      "joinPath": "ofm:SalesOrder -> hasOrderLine -> ofm:OrderLine -> hasFulfilmentRisk -> ofm:FulfilmentRisk (aggregated by riskType, impact)",
+      "useCase": "Build a real-time fulfilment risk heat map showing order-level and aggregate risk exposure"
+    },
+    {
+      "patternId": "JP-OFM-010",
+      "name": "Order-to-Shipment Tracking",
+      "description": "Cross-ontology join from commercial order to physical shipment position",
+      "joinPath": "ofm:SalesOrder -> fulfilledByShipment -> lsc:Shipment -> currentlyAt -> lsc:ChainNode",
+      "useCase": "Real-time order position tracking — where is my shipment right now?",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "patternId": "JP-OFM-011",
+      "name": "SLA Compliance Dashboard",
+      "description": "Join SLA definitions to milestones and breach records for compliance visibility",
+      "joinPath": "ofm:ServiceLevelAgreement -> slaMonitorsMilestone -> ofm:OrderMilestone; ofm:ServiceLevelAgreement -> hasBreach -> ofm:SLABreach -> breachTriggeredByIncident -> lsc:Incident",
+      "useCase": "SLA health view — which SLAs are on track, at risk, or breached, and what incidents caused breaches?",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "patternId": "JP-OFM-012",
+      "name": "Automated Assessment Flow",
+      "description": "End-to-end predictive assessment from early warning to proactive customer notification",
+      "joinPath": "lsc:PredictivePattern -> lsc:Hypothesis -> lsc:Scenario -> ofm:SLABreach (predicted) -> breachTriggersRemediation -> ofm:RemediationAction -> remediationNotifiesCustomer -> ofm:CustomerNotification",
+      "useCase": "Predictive-to-notification chain — early warning signals drive proactive customer communication",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "patternId": "JP-OFM-013",
+      "name": "Profit Optimisation Chain",
+      "description": "Full revenue-to-PMF validation chain through landed cost and margin analysis",
+      "joinPath": "ofm:SalesOrder -> hasLandedCost -> ofm:LandedCost -> costImpactedBy -> lsc:ImpactAssessment; ofm:LandedCost -> landedCostFeedsMargin -> ofm:MarginAnalysis -> marginValidatesPMF -> pmf:ProductMarketFit",
+      "useCase": "Revenue to product-market fit validation — does this corridor sustain profitable margins?",
+      "oaa:crossOntologyRef": "LSC-ONT, PMF-ONT"
+    },
+    {
+      "patternId": "JP-OFM-014",
+      "name": "Complaint-to-Prevention Loop",
+      "description": "Closed-loop learning from customer complaint through root cause to systemic prevention",
+      "joinPath": "ofm:ComplaintCase -> complaintRootCauseIncident -> lsc:Incident -> occursAtNode -> lsc:ChainNode -> hasBottleneck -> lsc:Bottleneck -> mitigates -> lsc:RiskMitigation <- remediationInformsMitigation <- ofm:RemediationAction",
+      "useCase": "Every complaint drives systemic improvement — trace from customer issue to operational fix",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "patternId": "JP-OFM-015",
+      "name": "Customer Role Experience",
+      "description": "Role-specific fulfilment experience view combining orders, satisfaction, and KPI metrics",
+      "joinPath": "crt:CustomerRole <- orderPlacedByRole <- ofm:SalesOrder -> hasSatisfaction -> ofm:CustomerSatisfaction -> satisfactionFeedsKPI -> kpi:Metric",
+      "useCase": "Role-specific fulfilment KPIs — how is each customer segment experiencing our service?",
+      "oaa:crossOntologyRef": "CRT-ONT, KPI-ONT"
+    },
+    {
+      "patternId": "JP-OFM-016",
+      "name": "VP-RRR Through Fulfilment",
+      "description": "Value proposition alignment via fulfilment data — complaints reveal problems (risks), remediation maps to solutions (requirements), satisfaction validates benefits (results)",
+      "joinPath": "ofm:ComplaintCase -> complaintRevealsVPProblem -> vp:Problem [-> rrr:Risk]; ofm:RemediationAction -> remediationMapsToVPSolution -> vp:Solution [-> rrr:Requirement]; ofm:CustomerSatisfaction -> satisfactionValidatesBenefit -> vp:Benefit [-> rrr:Result]",
+      "useCase": "VP-RRR alignment via fulfilment — does our service delivery validate our value proposition?",
+      "oaa:crossOntologyRef": "VP-ONT, RRR-ONT"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "ofm:SalesOrder",
+      "@type": "rdfs:Class",
+      "name": "SalesOrder",
+      "rdfs:subClassOf": "schema:Order",
+      "rdfs:sameAs": "ofm:PurchaseOrder",
+      "description": "A customer order commitment representing demand for goods. The top-level container for the fulfilment graph. Tracks order status from draft through allocation, dispatch, delivery, and invoicing. Carries booked and realised margin for P&L visibility. Equivalent to PurchaseOrder in the customer/commercial layer — serves as the hub entity connecting both warehouse/distribution and customer-facing views.",
+      "oaa:properties": [
+        {
+          "name": "orderId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this sales order"
+        },
+        {
+          "name": "customerName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Name of the customer placing the order"
+        },
+        {
+          "name": "customerType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "RestaurantChain",
+            "Wholesaler",
+            "FoodServiceDistributor",
+            "OnlineSpecialist",
+            "Retailer"
+          ],
+          "description": "Classification of customer channel"
+        },
+        {
+          "name": "orderDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date the order was placed"
+        },
+        {
+          "name": "requestedDeliveryDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Customer's requested delivery date"
+        },
+        {
+          "name": "confirmedDeliveryDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Confirmed delivery date after allocation"
+        },
+        {
+          "name": "orderStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Draft",
+            "Confirmed",
+            "Allocated",
+            "InDispatch",
+            "Delivered",
+            "Invoiced",
+            "Cancelled"
+          ],
+          "description": "Current lifecycle status of the order"
+        },
+        {
+          "name": "totalOrderValue",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Total monetary value of the order (e.g. GBP 24,500)"
+        },
+        {
+          "name": "bookedMargin",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Expected margin at time of order confirmation (e.g. GBP 4,200 / 17.1%)"
+        },
+        {
+          "name": "realisedMargin",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Actual margin after all erosion events (e.g. GBP 2,800 / 11.4%)"
+        },
+        {
+          "name": "marginStatus",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Green",
+            "Amber",
+            "Red",
+            "NotStarted"
+          ],
+          "description": "RAG status of margin health — Green (>target), Amber (within tolerance), Red (below floor)"
+        },
+        {
+          "name": "paymentTerms",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Payment terms (e.g. Net 30, COD, 60 days EOM)"
+        },
+        {
+          "name": "deliveryAddress",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Delivery destination address"
+        },
+        {
+          "name": "specialInstructions",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Customer-specific delivery or handling instructions"
+        }
+      ]
+    },
+    {
+      "@id": "ofm:OrderLine",
+      "@type": "rdfs:Class",
+      "name": "OrderLine",
+      "rdfs:subClassOf": "schema:Offer",
+      "description": "An individual product line within a sales order. Each line specifies a product, quantity, price, and commodity class. Lines are independently allocatable and trackable through the fulfilment pipeline.",
+      "oaa:properties": [
+        {
+          "name": "orderLineId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this order line"
+        },
+        {
+          "name": "productDescription",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Description of the product (e.g. Wagyu ribeye 300-day grain-fed)"
+        },
+        {
+          "name": "commodityClass",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Chilled",
+            "Frozen",
+            "Ambient"
+          ],
+          "description": "Temperature/handling classification"
+        },
+        {
+          "name": "quantity",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Order quantity with unit (e.g. 500 kg, 20 cases)"
+        },
+        {
+          "name": "unitPrice",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Price per unit (e.g. GBP 18.50/kg)"
+        },
+        {
+          "name": "lineValue",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Total line value (quantity x unitPrice)"
+        },
+        {
+          "name": "committedShelfLife",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Minimum shelf life guaranteed to customer at delivery (e.g. 21 days)"
+        },
+        {
+          "name": "requestedDeliveryDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Line-level requested delivery date (may differ from order header)"
+        },
+        {
+          "name": "lineStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Pending",
+            "Allocated",
+            "PartiallyAllocated",
+            "InDispatch",
+            "Delivered",
+            "Cancelled"
+          ],
+          "description": "Current fulfilment status of this line"
+        },
+        {
+          "name": "corridorSource",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "AU-UK",
+            "NZ-UK",
+            "IS-UK",
+            "IE-UK"
+          ],
+          "description": "Supply corridor that sources this product (links to LSC-ONT corridor)"
+        }
+      ]
+    },
+    {
+      "@id": "ofm:StockAllocation",
+      "@type": "rdfs:Class",
+      "name": "StockAllocation",
+      "rdfs:subClassOf": "schema:ReserveAction",
+      "description": "Links an inbound shipment batch (LSC-ONT supply side) to an order line (OFM-ONT demand side). THE supply-demand bridge entity. Tracks allocation status, shelf life at allocation time, and storage location. Multiple allocations can fulfil a single order line (partial allocation) and a single shipment can serve multiple order lines.",
+      "oaa:properties": [
+        {
+          "name": "allocationId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this allocation"
+        },
+        {
+          "name": "allocatedQuantity",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Quantity allocated from this batch (e.g. 200 kg)"
+        },
+        {
+          "name": "allocationDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date the allocation was made"
+        },
+        {
+          "name": "allocationStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Provisional",
+            "Confirmed",
+            "Released",
+            "Expired"
+          ],
+          "description": "Lifecycle status of this allocation"
+        },
+        {
+          "name": "batchRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to landed batch / LSC shipment identifier"
+        },
+        {
+          "name": "shelfLifeAtAllocation",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Remaining shelf life at the time of allocation (e.g. 42 days)"
+        },
+        {
+          "name": "storageLocation",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Warehouse location where allocated stock is held (e.g. Bay 14, Rack C)"
+        },
+        {
+          "name": "temperatureZone",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Frozen",
+            "Chilled",
+            "Ambient"
+          ],
+          "description": "Temperature zone of the storage location"
+        }
+      ]
+    },
+    {
+      "@id": "ofm:StorageEvent",
+      "@type": "rdfs:Class",
+      "name": "StorageEvent",
+      "rdfs:subClassOf": "schema:Event",
+      "description": "A daily or periodic storage cost accumulation record for an allocated batch. Tracks pallet count, daily rate, temperature multiplier, and cumulative cost. The storage event chain shows how dwell cost erodes margin over time.",
+      "oaa:properties": [
+        {
+          "name": "storageEventId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this storage event"
+        },
+        {
+          "name": "eventDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date of this storage record"
+        },
+        {
+          "name": "palletsStored",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of pallets in storage on this date"
+        },
+        {
+          "name": "dailyRate",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Base daily rate per pallet (e.g. GBP 3.50)"
+        },
+        {
+          "name": "temperatureMultiplier",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Multiplier for temperature zone (e.g. 1.0 ambient, 1.5 chilled, 2.2 frozen)"
+        },
+        {
+          "name": "dailyCost",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Calculated daily storage cost (pallets x dailyRate x temperatureMultiplier)"
+        },
+        {
+          "name": "cumulativeCost",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Running total of storage cost for this allocation"
+        },
+        {
+          "name": "shelfLifeRemaining",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Remaining shelf life at this point (e.g. 35 days)"
+        },
+        {
+          "name": "capacityUtilisation",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Warehouse capacity utilisation percentage at time of event (0-100)"
+        },
+        {
+          "name": "dwellDays",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of days this batch has been in storage"
+        }
+      ]
+    },
+    {
+      "@id": "ofm:DeliveryWindow",
+      "@type": "rdfs:Class",
+      "name": "DeliveryWindow",
+      "rdfs:subClassOf": "schema:Schedule",
+      "description": "A committed dispatch and delivery time slot for an order line. Captures scheduled vs actual dates, delivery slot preferences, vehicle requirements, and access constraints. Failed windows trigger rescheduling and margin impact.",
+      "oaa:properties": [
+        {
+          "name": "windowId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this delivery window"
+        },
+        {
+          "name": "scheduledDispatchDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Planned dispatch date from warehouse"
+        },
+        {
+          "name": "scheduledDeliveryDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Planned delivery date to customer"
+        },
+        {
+          "name": "actualDispatchDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Actual dispatch date"
+        },
+        {
+          "name": "actualDeliveryDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Actual delivery date"
+        },
+        {
+          "name": "windowStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Scheduled",
+            "Dispatched",
+            "Delivered",
+            "Failed",
+            "Rescheduled"
+          ],
+          "description": "Current status of this delivery window"
+        },
+        {
+          "name": "deliverySlot",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Time slot preference (e.g. AM, PM, 06:00-08:00)"
+        },
+        {
+          "name": "vehicleRequirements",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Vehicle specifications needed (e.g. 7.5t rigid, tail-lift, dual-compartment)"
+        },
+        {
+          "name": "accessConstraints",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Site access restrictions (e.g. no artics, loading bay 3 only, requires booking-in)"
+        }
+      ]
+    },
+    {
+      "@id": "ofm:DispatchLeg",
+      "@type": "rdfs:Class",
+      "name": "DispatchLeg",
+      "rdfs:subClassOf": "schema:DeliveryEvent",
+      "description": "An outbound transport movement from warehouse to customer. Tracks carrier, vehicle type, temperature class, transit time, cost, and delivery outcome. Consolidated dispatches serve multiple orders on a single vehicle.",
+      "oaa:properties": [
+        {
+          "name": "dispatchLegId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this dispatch leg"
+        },
+        {
+          "name": "carrierName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Name of the haulier or delivery carrier"
+        },
+        {
+          "name": "vehicleType",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Vehicle specification (e.g. 7.5t rigid, 18t artic, van)"
+        },
+        {
+          "name": "temperatureClass",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Frozen",
+            "Chilled",
+            "Ambient",
+            "DualCompartment"
+          ],
+          "description": "Temperature capability of the vehicle"
+        },
+        {
+          "name": "routeDescription",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Route description (e.g. Tilbury DC -> M25 -> Croydon depot)"
+        },
+        {
+          "name": "estimatedTransitHours",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Estimated transit time in hours"
+        },
+        {
+          "name": "actualTransitHours",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Actual transit time in hours"
+        },
+        {
+          "name": "dispatchCost",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Cost of this dispatch leg (e.g. GBP 285)"
+        },
+        {
+          "name": "deliveryOutcome",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "DeliveredOK",
+            "PartialDelivery",
+            "Refused",
+            "NotAtHome",
+            "WrongSpec",
+            "Damaged"
+          ],
+          "description": "Outcome of the delivery attempt"
+        },
+        {
+          "name": "isConsolidated",
+          "type": "xsd:boolean",
+          "required": false,
+          "description": "True if this dispatch carries multiple orders on one vehicle"
+        },
+        {
+          "name": "consolidatedOrderCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of orders consolidated on this dispatch"
+        }
+      ]
+    },
+    {
+      "@id": "ofm:CustomerChange",
+      "@type": "rdfs:Class",
+      "name": "CustomerChange",
+      "rdfs:subClassOf": "schema:UpdateAction",
+      "description": "An amendment, reschedule, reduction, or cancellation initiated by the customer after order confirmation. Customer changes are a major source of margin erosion and fulfilment risk. Tracks the type of change, timing relative to dispatch, direct and indirect costs, and recovery.",
+      "oaa:properties": [
+        {
+          "name": "changeId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this customer change"
+        },
+        {
+          "name": "changeType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "DatePushBack",
+            "DatePullForward",
+            "QuantityReduction",
+            "QuantityIncrease",
+            "FullCancellation",
+            "SpecChange",
+            "AddressChange"
+          ],
+          "description": "Classification of the change type"
+        },
+        {
+          "name": "changeDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date the change was requested"
+        },
+        {
+          "name": "changeReason",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Customer's stated reason for the change"
+        },
+        {
+          "name": "requestedBy",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Name or role of the person requesting the change"
+        },
+        {
+          "name": "directCost",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Immediate cost of the change (e.g. wasted stock, re-pick cost)"
+        },
+        {
+          "name": "indirectCost",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Indirect cost (e.g. additional storage, re-allocation labour)"
+        },
+        {
+          "name": "cascadeRisk",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Description of downstream cascade risks from this change"
+        },
+        {
+          "name": "changeWindow",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How far before scheduled dispatch the change was made (e.g. 48 hours, same day)"
+        },
+        {
+          "name": "recoveredAmount",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Amount recovered from re-allocation or cancellation charges"
+        },
+        {
+          "name": "recoveryMethod",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How costs were recovered (e.g. re-allocated to another order, cancellation charge, credit note offset)"
+        }
+      ]
+    },
+    {
+      "@id": "ofm:MarginImpact",
+      "@type": "rdfs:Class",
+      "name": "MarginImpact",
+      "rdfs:subClassOf": "schema:MonetaryAmount",
+      "description": "A running margin calculation event that records an erosion (or recovery) step between booked margin and realised margin. The chain of MarginImpact events forms the margin waterfall — each event records the source of erosion, the amount, and the resulting margin position.",
+      "oaa:properties": [
+        {
+          "name": "marginImpactId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this margin impact event"
+        },
+        {
+          "name": "erosionSource",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "InboundDelay",
+            "StorageAccumulation",
+            "CustomerChange",
+            "DispatchPremium",
+            "QualityRejection",
+            "ShelfLifeDiscount",
+            "CreditNote",
+            "Spoilage"
+          ],
+          "description": "Classification of what caused this margin erosion"
+        },
+        {
+          "name": "erosionAmount",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Monetary amount of this erosion event (e.g. GBP 320)"
+        },
+        {
+          "name": "erosionDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date the erosion event occurred"
+        },
+        {
+          "name": "cumulativeErosion",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Running total of all erosion for this order line"
+        },
+        {
+          "name": "marginBeforeEvent",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Margin position before this erosion event"
+        },
+        {
+          "name": "marginAfterEvent",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Margin position after this erosion event"
+        },
+        {
+          "name": "marginPercentageRemaining",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Margin as percentage of line value remaining after this event (0-100)"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Free-text description of the erosion event"
+        }
+      ]
+    },
+    {
+      "@id": "ofm:FulfilmentRisk",
+      "@type": "rdfs:Class",
+      "name": "FulfilmentRisk",
+      "rdfs:subClassOf": "schema:Rating",
+      "description": "A risk assessment attached to an order or order line. Captures the probability, impact, and score of fulfilment risks such as late delivery, stock shortage, quality issues, or carrier failure. Enables heat-map visualisation across the order book.",
+      "oaa:properties": [
+        {
+          "name": "riskId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this fulfilment risk"
+        },
+        {
+          "name": "riskType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "LateDelivery",
+            "ShortShelfLife",
+            "StockShortage",
+            "QualityIssue",
+            "CustomerChangeExposure",
+            "StorageOverflow",
+            "CarrierFailure"
+          ],
+          "description": "Classification of the fulfilment risk"
+        },
+        {
+          "name": "probability",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Probability of this risk materialising (0.0 to 1.0)"
+        },
+        {
+          "name": "impact",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Low",
+            "Medium",
+            "High",
+            "Critical"
+          ],
+          "description": "Impact severity if the risk materialises"
+        },
+        {
+          "name": "riskScore",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Composite risk score (probability x impact weight)"
+        },
+        {
+          "name": "mitigationAction",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Planned or executed mitigation action"
+        },
+        {
+          "name": "riskStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Open",
+            "Mitigated",
+            "Materialised",
+            "Closed"
+          ],
+          "description": "Current lifecycle status of this risk"
+        },
+        {
+          "name": "detectedDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Date the risk was first detected"
+        },
+        {
+          "name": "resolvedDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Date the risk was resolved or closed"
+        }
+      ]
+    },
+    {
+      "@id": "ofm:DemandPattern",
+      "@type": "rdfs:Class",
+      "name": "DemandPattern",
+      "rdfs:subClassOf": "schema:DataFeed",
+      "description": "A recurring customer ordering behaviour or demand trend identified from historical order data. Demand patterns enable proactive stock positioning, allocation planning, and capacity forecasting. Correlates with LSC-ONT PredictivePattern for supply-demand alignment.",
+      "oaa:properties": [
+        {
+          "name": "patternId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this demand pattern"
+        },
+        {
+          "name": "patternType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Seasonal",
+            "Weekly",
+            "EventDriven",
+            "CustomerSpecific",
+            "Promotional"
+          ],
+          "description": "Classification of the demand pattern"
+        },
+        {
+          "name": "patternName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Human-readable name for this pattern"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Detailed description of the pattern and its characteristics"
+        },
+        {
+          "name": "observedFrequency",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How often this pattern recurs (e.g. annually Dec, weekly Mon/Tue, quarterly)"
+        },
+        {
+          "name": "historicalOccurrences",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of times this pattern has been observed"
+        },
+        {
+          "name": "dataWindow",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Time period of data analysed (e.g. 2022-2025)"
+        },
+        {
+          "name": "typicalImpact",
+          "type": "xsd:string",
+          "required": false,
+          "description": "What typically happens when this pattern activates (e.g. +30% wagyu demand)"
+        },
+        {
+          "name": "reliability",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Historical accuracy of this pattern 0.0-1.0"
+        },
+        {
+          "name": "leadIndicators",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Early-warning signals that this pattern is activating"
+        },
+        {
+          "name": "recommendedAction",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Pre-emptive action when pattern is detected (e.g. increase AU-UK allocation by 25%)"
+        }
+      ]
+    },
+    {
+      "@id": "ofm:CapacityForecast",
+      "@type": "rdfs:Class",
+      "name": "CapacityForecast",
+      "rdfs:subClassOf": "schema:QuantitativeValue",
+      "description": "A warehouse capacity planning forecast. Nets inbound arrivals (from LSC supply chains) against outbound dispatches to project capacity utilisation over a rolling horizon. Triggers overflow risk alerts when projected utilisation exceeds thresholds.",
+      "oaa:properties": [
+        {
+          "name": "forecastId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unique identifier for this capacity forecast"
+        },
+        {
+          "name": "forecastDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date the forecast was generated"
+        },
+        {
+          "name": "forecastHorizonDays",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of days this forecast covers (e.g. 7, 14, 30)"
+        },
+        {
+          "name": "currentUtilisation",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Current warehouse utilisation as percentage (0-100)"
+        },
+        {
+          "name": "projectedPeakUtilisation",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Highest projected utilisation within the forecast horizon"
+        },
+        {
+          "name": "inboundArrivalsPlanned",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of inbound shipments expected within horizon"
+        },
+        {
+          "name": "outboundDispatchesPlanned",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of outbound dispatches planned within horizon"
+        },
+        {
+          "name": "netCapacityChange",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Net change in stored pallets (inbound minus outbound)"
+        },
+        {
+          "name": "capacityStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Green",
+            "Amber",
+            "Red"
+          ],
+          "description": "RAG status — Green (<75%), Amber (75-90%), Red (>90%)"
+        },
+        {
+          "name": "overflowRisk",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Description of overflow risk if capacity is exceeded"
+        },
+        {
+          "name": "recommendedAction",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Recommended action to manage capacity (e.g. expedite dispatches, defer inbound)"
+        }
+      ]
+    },
+    {
+      "@id": "ofm:ServiceLevelAgreement",
+      "@type": "rdfs:Class",
+      "name": "ServiceLevelAgreement",
+      "rdfs:subClassOf": "schema:OfferCatalog",
+      "description": "A contractual service level agreement defining performance targets for order fulfilment. Covers delivery time, temperature compliance, order accuracy, response time, damage rates, and documentation accuracy. SLAs are monitored via OrderMilestones and breaches are recorded as SLABreach entities.",
+      "oaa:properties": [
+        { "name": "slaId", "type": "xsd:string", "required": true, "description": "Unique SLA identifier" },
+        { "name": "name", "type": "xsd:string", "required": true, "description": "Human-readable SLA name" },
+        { "name": "slaType", "type": "xsd:string", "required": true, "enum": ["DeliveryTime", "TemperatureCompliance", "OrderAccuracy", "ResponseTime", "DamageRate", "DocumentAccuracy"], "description": "Classification of what the SLA measures" },
+        { "name": "targetValue", "type": "xsd:decimal", "required": true, "description": "Numeric target (e.g. 38 days, 99%)" },
+        { "name": "unit", "type": "xsd:string", "required": true, "description": "Unit of measure — days, percent, hours, celsius" },
+        { "name": "measurementMethod", "type": "xsd:string", "required": true, "description": "How compliance is measured" },
+        { "name": "penaltyClause", "type": "xsd:string", "required": false, "description": "Contractual penalty for breach" },
+        { "name": "reviewFrequency", "type": "xsd:string", "required": false, "description": "Review cadence — Monthly, Quarterly, Annual" },
+        { "name": "status", "type": "xsd:string", "required": true, "enum": ["Active", "Suspended", "Expired"], "description": "Current status of this SLA" }
+      ]
+    },
+    {
+      "@id": "ofm:OrderMilestone",
+      "@type": "rdfs:Class",
+      "name": "OrderMilestone",
+      "rdfs:subClassOf": "schema:Event",
+      "description": "A tracking milestone in the order fulfilment lifecycle. Each milestone has a planned and actual date, enabling SLA compliance monitoring. Milestones map to physical locations via the milestoneAtNode bridge to LSC-ONT ChainNode. Variance triggers SLA breach detection.",
+      "oaa:properties": [
+        { "name": "milestoneId", "type": "xsd:string", "required": true, "description": "Unique milestone identifier" },
+        { "name": "name", "type": "xsd:string", "required": true, "description": "Human-readable milestone name" },
+        { "name": "milestoneType", "type": "xsd:string", "required": true, "enum": ["OrderReceived", "OrderConfirmed", "PickPack", "Dispatched", "AtPort", "CustomsClearance", "InTransit", "Arrived", "LastMile", "Delivered", "PODReceived", "InvoiceSent", "PaymentReceived"], "description": "Classification of this milestone in the order lifecycle" },
+        { "name": "plannedDate", "type": "xsd:date", "required": true, "description": "Expected date for this milestone" },
+        { "name": "actualDate", "type": "xsd:date", "required": false, "description": "When this milestone actually occurred" },
+        { "name": "status", "type": "xsd:string", "required": true, "enum": ["Pending", "OnTrack", "AtRisk", "Breached", "Completed", "Skipped"], "description": "Current tracking status" },
+        { "name": "delayDays", "type": "xsd:integer", "required": false, "description": "Variance in days (negative = early)" },
+        { "name": "delayReason", "type": "xsd:string", "required": false, "description": "Explanation of variance" }
+      ]
+    },
+    {
+      "@id": "ofm:CustomerNotification",
+      "@type": "rdfs:Class",
+      "name": "CustomerNotification",
+      "rdfs:subClassOf": "schema:Message",
+      "description": "A milestone-triggered or event-triggered communication sent to the customer. Covers order confirmations, dispatch notices, tracking updates, delay alerts, SLA breach notices, complaint acknowledgements, remediation offers, and satisfaction surveys. Tracks send/deliver/read timestamps.",
+      "oaa:properties": [
+        { "name": "notificationId", "type": "xsd:string", "required": true, "description": "Unique notification identifier" },
+        { "name": "notificationType", "type": "xsd:string", "required": true, "enum": ["OrderConfirmation", "DispatchNotice", "TrackingUpdate", "DelayAlert", "DeliveryConfirmation", "SLABreachNotice", "ComplaintAcknowledgement", "RemediationOffer", "SatisfactionSurvey"], "description": "Classification of this notification" },
+        { "name": "channel", "type": "xsd:string", "required": true, "enum": ["Email", "SMS", "Push", "Portal", "Phone"], "description": "Delivery channel" },
+        { "name": "sentAt", "type": "xsd:dateTime", "required": true, "description": "When notification was sent" },
+        { "name": "deliveredAt", "type": "xsd:dateTime", "required": false, "description": "When confirmed delivered" },
+        { "name": "readAt", "type": "xsd:dateTime", "required": false, "description": "When confirmed read" },
+        { "name": "actionRequired", "type": "xsd:boolean", "required": false, "description": "Whether customer action is needed" }
+      ]
+    },
+    {
+      "@id": "ofm:LandedCost",
+      "@type": "rdfs:Class",
+      "name": "LandedCost",
+      "rdfs:subClassOf": "schema:MonetaryAmount",
+      "description": "A cost line item contributing to the full landed cost of an order. Covers 14 cost categories including product cost, freight, insurance, customs duty, import tariff, warehousing, last mile, documentation, inspection, demurrage, detention, currency hedging, agent fees, and port handling. Multiple LandedCost entries per order build up the total cost for margin analysis.",
+      "oaa:properties": [
+        { "name": "costId", "type": "xsd:string", "required": true, "description": "Unique cost line identifier" },
+        { "name": "costCategory", "type": "xsd:string", "required": true, "enum": ["ProductCost", "Freight", "Insurance", "CustomsDuty", "ImportTariff", "Warehousing", "LastMile", "Documentation", "Inspection", "Demurrage", "Detention", "CurrencyHedge", "AgentFees", "PortHandling"], "description": "Classification of this cost category" },
+        { "name": "amount", "type": "xsd:decimal", "required": true, "description": "Cost amount" },
+        { "name": "currency", "type": "xsd:string", "required": true, "enum": ["AUD", "GBP", "USD", "EUR"], "description": "Currency of this cost line" },
+        { "name": "isFixed", "type": "xsd:boolean", "required": true, "description": "Fixed cost or variable" },
+        { "name": "perUnit", "type": "xsd:string", "required": false, "description": "Unit basis — per container, per kg, per order" },
+        { "name": "allocatedToOrder", "type": "xsd:string", "required": true, "description": "Order reference this cost is allocated to" },
+        { "name": "notes", "type": "xsd:string", "required": false, "description": "Cost justification or variance note" }
+      ]
+    },
+    {
+      "@id": "ofm:MarginAnalysis",
+      "@type": "rdfs:Class",
+      "name": "MarginAnalysis",
+      "rdfs:subClassOf": "schema:QuantitativeValue",
+      "description": "A profitability analysis for an order or corridor. Calculates gross margin from total revenue minus total landed cost. Tracks target margin, variance, and profitability status. Links to PMF-ONT for market fit validation — sustained margins validate product-market fit.",
+      "oaa:properties": [
+        { "name": "analysisId", "type": "xsd:string", "required": true, "description": "Unique analysis identifier" },
+        { "name": "orderRef", "type": "xsd:string", "required": true, "description": "Order being analysed" },
+        { "name": "corridorRef", "type": "xsd:string", "required": false, "description": "Supply chain corridor reference" },
+        { "name": "totalRevenue", "type": "xsd:decimal", "required": true, "description": "Total invoice value to customer" },
+        { "name": "totalLandedCost", "type": "xsd:decimal", "required": true, "description": "Sum of all LandedCost entries" },
+        { "name": "grossMargin", "type": "xsd:decimal", "required": true, "description": "totalRevenue - totalLandedCost" },
+        { "name": "grossMarginPercent", "type": "xsd:decimal", "required": true, "description": "grossMargin / totalRevenue * 100" },
+        { "name": "targetMarginPercent", "type": "xsd:decimal", "required": true, "description": "Business target margin percentage" },
+        { "name": "marginVariance", "type": "xsd:decimal", "required": true, "description": "grossMarginPercent - targetMarginPercent" },
+        { "name": "varianceReason", "type": "xsd:string", "required": false, "description": "Explanation if variance exceeds threshold" },
+        { "name": "profitabilityStatus", "type": "xsd:string", "required": true, "enum": ["Profitable", "Marginal", "BreakEven", "LossMaking"], "description": "Overall profitability classification" }
+      ]
+    },
+    {
+      "@id": "ofm:SLABreach",
+      "@type": "rdfs:Class",
+      "name": "SLABreach",
+      "rdfs:subClassOf": "schema:Event",
+      "description": "A record of an SLA violation. Created when an OrderMilestone variance exceeds the SLA target. Links to LSC-ONT Incident and Bottleneck to trace the operational root cause. SLA breaches feed KPI dashboards and trigger remediation actions and customer notifications.",
+      "oaa:properties": [
+        { "name": "breachId", "type": "xsd:string", "required": true, "description": "Unique breach identifier" },
+        { "name": "breachType", "type": "xsd:string", "required": true, "enum": ["DeliveryTime", "TemperatureCompliance", "OrderAccuracy", "ResponseTime", "DamageRate", "DocumentAccuracy"], "description": "Mirrors SLA slaType enum — what type of SLA was breached" },
+        { "name": "severity", "type": "xsd:string", "required": true, "enum": ["Critical", "Major", "Moderate", "Minor"], "description": "Severity classification" },
+        { "name": "detectedAt", "type": "xsd:dateTime", "required": true, "description": "When breach was detected" },
+        { "name": "description", "type": "xsd:string", "required": true, "description": "What happened" },
+        { "name": "targetValue", "type": "xsd:decimal", "required": true, "description": "SLA target that was breached" },
+        { "name": "actualValue", "type": "xsd:decimal", "required": true, "description": "Actual measured value" },
+        { "name": "deviationPercent", "type": "xsd:decimal", "required": true, "description": "Percentage deviation from target" },
+        { "name": "rootCause", "type": "xsd:string", "required": false, "description": "Brief root cause description" },
+        { "name": "financialPenalty", "type": "xsd:decimal", "required": false, "description": "Contractual penalty amount" },
+        { "name": "penaltyCurrency", "type": "xsd:string", "required": false, "enum": ["AUD", "GBP", "USD", "EUR"], "description": "Currency of penalty" },
+        { "name": "customerImpact", "type": "xsd:string", "required": false, "description": "Impact description for the customer" },
+        { "name": "isNotified", "type": "xsd:boolean", "required": true, "description": "Whether customer was notified of breach" },
+        { "name": "remediationRequired", "type": "xsd:boolean", "required": true, "description": "Whether remediation action is needed" }
+      ]
+    },
+    {
+      "@id": "ofm:ComplaintCase",
+      "@type": "rdfs:Class",
+      "name": "ComplaintCase",
+      "rdfs:subClassOf": "schema:Review",
+      "description": "A customer complaint record tracking the lifecycle from raising through investigation, remediation, and resolution. Links to LSC-ONT Incident for root cause tracing and to VP-ONT Problem for value proposition alignment (VP-RRR: complaints reveal problems which are risks to the customer).",
+      "oaa:properties": [
+        { "name": "caseId", "type": "xsd:string", "required": true, "description": "Unique case identifier" },
+        { "name": "caseType", "type": "xsd:string", "required": true, "enum": ["LateDelivery", "DamagedGoods", "WrongItem", "QualityIssue", "DocumentError", "Overcharge", "ColdChainBreach", "MissingItems", "CommunicationFailure"], "description": "Classification of complaint type" },
+        { "name": "raisedAt", "type": "xsd:dateTime", "required": true, "description": "When complaint was raised" },
+        { "name": "raisedBy", "type": "xsd:string", "required": true, "description": "Customer contact who raised it" },
+        { "name": "severity", "type": "xsd:string", "required": true, "enum": ["Critical", "Major", "Moderate", "Minor"], "description": "Severity classification" },
+        { "name": "status", "type": "xsd:string", "required": true, "enum": ["Open", "Investigating", "RemediationInProgress", "Resolved", "Escalated", "Closed", "Reopened"], "description": "Current lifecycle status" },
+        { "name": "resolution", "type": "xsd:string", "required": false, "description": "Resolution description" },
+        { "name": "satisfactionOutcome", "type": "xsd:string", "required": false, "enum": ["Satisfied", "PartiallyResolved", "Unsatisfied"], "description": "Customer's assessment of the resolution" }
+      ]
+    },
+    {
+      "@id": "ofm:CustomerSatisfaction",
+      "@type": "rdfs:Class",
+      "name": "CustomerSatisfaction",
+      "rdfs:subClassOf": "schema:Rating",
+      "description": "A customer satisfaction survey record capturing NPS/CSAT scores, verbatim feedback, sentiment analysis, and response themes. Links to VP-ONT Benefit for value proposition validation (VP-RRR: satisfaction validates benefits which are measurable results). Feeds KPI dashboards via satisfactionFeedsKPI bridge.",
+      "oaa:properties": [
+        { "name": "satisfactionId", "type": "xsd:string", "required": true, "description": "Unique survey identifier" },
+        { "name": "surveyType", "type": "xsd:string", "required": true, "enum": ["PostDelivery", "PostComplaint", "Periodic", "NPS"], "description": "Type of satisfaction survey" },
+        { "name": "score", "type": "xsd:decimal", "required": true, "description": "Raw score (0-10 for NPS, 1-5 for CSAT)" },
+        { "name": "maxScore", "type": "xsd:decimal", "required": true, "description": "Maximum possible score" },
+        { "name": "npsCategory", "type": "xsd:string", "required": false, "enum": ["Promoter", "Passive", "Detractor"], "description": "NPS category — Promoter (9-10), Passive (7-8), Detractor (0-6)" },
+        { "name": "verbatimFeedback", "type": "xsd:string", "required": false, "description": "Free-text customer comments" },
+        { "name": "sentimentScore", "type": "xsd:decimal", "required": false, "description": "AI-derived sentiment score (-1.0 to 1.0)" },
+        { "name": "themes", "type": "xsd:string", "required": false, "description": "Extracted themes from feedback (comma-separated)" },
+        { "name": "surveyDate", "type": "xsd:date", "required": true, "description": "When survey was completed" },
+        { "name": "responseRate", "type": "xsd:decimal", "required": false, "description": "Response rate for this survey batch (0-100)" }
+      ]
+    },
+    {
+      "@id": "ofm:RemediationAction",
+      "@type": "rdfs:Class",
+      "name": "RemediationAction",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A resolution action taken in response to an SLA breach or customer complaint. Covers credit notes, replacements, refunds, priority reshipments, SLA waivers, discounts, apologies, process changes, and supplier claims. Links to VP-ONT Solution for value proposition alignment (VP-RRR: remediation actions are solutions which map to requirements). Links to LSC-ONT RiskMitigation to drive systemic improvements.",
+      "oaa:properties": [
+        { "name": "actionId", "type": "xsd:string", "required": true, "description": "Unique action identifier" },
+        { "name": "actionType", "type": "xsd:string", "required": true, "enum": ["CreditNote", "Replacement", "PartialRefund", "FullRefund", "PriorityReshipment", "SLAWaiver", "FutureDiscount", "PersonalApology", "ProcessChange", "SupplierClaim"], "description": "Classification of remediation action type" },
+        { "name": "description", "type": "xsd:string", "required": true, "description": "What was done" },
+        { "name": "cost", "type": "xsd:decimal", "required": false, "description": "Cost of remediation" },
+        { "name": "currency", "type": "xsd:string", "required": false, "enum": ["AUD", "GBP", "USD", "EUR"], "description": "Currency of remediation cost" },
+        { "name": "approvedBy", "type": "xsd:string", "required": false, "description": "Approver name/role (required if cost exceeds threshold)" },
+        { "name": "implementedAt", "type": "xsd:dateTime", "required": false, "description": "When action was taken" },
+        { "name": "effectiveness", "type": "xsd:string", "required": false, "enum": ["Resolved", "PartiallyResolved", "Ineffective", "PendingVerification"], "description": "Effectiveness assessment" },
+        { "name": "preventsFutureOccurrence", "type": "xsd:boolean", "required": false, "description": "Whether this is a systemic fix preventing recurrence" }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "ofm:hasOrderLine",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Order Line",
+      "description": "Sales order contains this order line",
+      "domainIncludes": [
+        "ofm:SalesOrder"
+      ],
+      "rangeIncludes": [
+        "ofm:OrderLine"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ofm:belongsToOrder",
+      "@type": "owl:ObjectProperty",
+      "name": "Belongs To Order",
+      "description": "Order line belongs to this sales order (inverse of hasOrderLine)",
+      "domainIncludes": [
+        "ofm:OrderLine"
+      ],
+      "rangeIncludes": [
+        "ofm:SalesOrder"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ofm:hasAllocation",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Allocation",
+      "description": "Order line has this stock allocation",
+      "domainIncludes": [
+        "ofm:OrderLine"
+      ],
+      "rangeIncludes": [
+        "ofm:StockAllocation"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:allocatedToLine",
+      "@type": "owl:ObjectProperty",
+      "name": "Allocated To Line",
+      "description": "Stock allocation is assigned to this order line (inverse of hasAllocation)",
+      "domainIncludes": [
+        "ofm:StockAllocation"
+      ],
+      "rangeIncludes": [
+        "ofm:OrderLine"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ofm:allocatedFrom",
+      "@type": "owl:ObjectProperty",
+      "name": "Allocated From",
+      "description": "Stock allocation draws from this inbound shipment — THE supply-demand bridge relationship",
+      "domainIncludes": [
+        "ofm:StockAllocation"
+      ],
+      "rangeIncludes": [
+        "lsc:Shipment"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:hasStorageEvent",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Storage Event",
+      "description": "Stock allocation has this storage cost accumulation event",
+      "domainIncludes": [
+        "ofm:StockAllocation"
+      ],
+      "rangeIncludes": [
+        "ofm:StorageEvent"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:hasDeliveryWindow",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Delivery Window",
+      "description": "Order line has this committed delivery window",
+      "domainIncludes": [
+        "ofm:OrderLine"
+      ],
+      "rangeIncludes": [
+        "ofm:DeliveryWindow"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ofm:hasDispatchLeg",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Dispatch Leg",
+      "description": "Order line is fulfilled by this outbound dispatch leg",
+      "domainIncludes": [
+        "ofm:OrderLine"
+      ],
+      "rangeIncludes": [
+        "ofm:DispatchLeg"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ofm:hasMarginImpact",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Margin Impact",
+      "description": "Order line has this margin erosion event",
+      "domainIncludes": [
+        "ofm:OrderLine"
+      ],
+      "rangeIncludes": [
+        "ofm:MarginImpact"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:hasFulfilmentRisk",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Fulfilment Risk",
+      "description": "Order line has this fulfilment risk assessment",
+      "domainIncludes": [
+        "ofm:OrderLine"
+      ],
+      "rangeIncludes": [
+        "ofm:FulfilmentRisk"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:orderHasFulfilmentRisk",
+      "@type": "owl:ObjectProperty",
+      "name": "Order Has Fulfilment Risk",
+      "description": "Sales order has this order-level fulfilment risk assessment",
+      "domainIncludes": [
+        "ofm:SalesOrder"
+      ],
+      "rangeIncludes": [
+        "ofm:FulfilmentRisk"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:hasCustomerChange",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Customer Change",
+      "description": "Sales order has this customer-initiated change",
+      "domainIncludes": [
+        "ofm:SalesOrder"
+      ],
+      "rangeIncludes": [
+        "ofm:CustomerChange"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:affectsOrderLine",
+      "@type": "owl:ObjectProperty",
+      "name": "Affects Order Line",
+      "description": "Customer change affects these order lines",
+      "domainIncludes": [
+        "ofm:CustomerChange"
+      ],
+      "rangeIncludes": [
+        "ofm:OrderLine"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ofm:triggersMarginImpact",
+      "@type": "owl:ObjectProperty",
+      "name": "Triggers Margin Impact",
+      "description": "Customer change triggers this margin erosion event",
+      "domainIncludes": [
+        "ofm:CustomerChange"
+      ],
+      "rangeIncludes": [
+        "ofm:MarginImpact"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:erosionFromIncident",
+      "@type": "owl:ObjectProperty",
+      "name": "Erosion From Incident",
+      "description": "Margin erosion was caused by this LSC-ONT supply-side incident",
+      "domainIncludes": [
+        "ofm:MarginImpact"
+      ],
+      "rangeIncludes": [
+        "lsc:Incident"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:erosionFromBottleneck",
+      "@type": "owl:ObjectProperty",
+      "name": "Erosion From Bottleneck",
+      "description": "Margin erosion was caused by this LSC-ONT supply-side bottleneck",
+      "domainIncludes": [
+        "ofm:MarginImpact"
+      ],
+      "rangeIncludes": [
+        "lsc:Bottleneck"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:informedByLSCRisk",
+      "@type": "owl:ObjectProperty",
+      "name": "Informed By LSC Risk",
+      "description": "Fulfilment risk is informed by this LSC-ONT risk assessment",
+      "domainIncludes": [
+        "ofm:FulfilmentRisk"
+      ],
+      "rangeIncludes": [
+        "lsc:RiskAssessment"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:correlatesWithSupplyPattern",
+      "@type": "owl:ObjectProperty",
+      "name": "Correlates With Supply Pattern",
+      "description": "Demand pattern correlates with this LSC-ONT predictive supply pattern",
+      "domainIncludes": [
+        "ofm:DemandPattern"
+      ],
+      "rangeIncludes": [
+        "lsc:PredictivePattern"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:considersInboundFrom",
+      "@type": "owl:ObjectProperty",
+      "name": "Considers Inbound From",
+      "description": "Capacity forecast considers inbound arrivals from these LSC-ONT supply chains",
+      "domainIncludes": [
+        "ofm:CapacityForecast"
+      ],
+      "rangeIncludes": [
+        "lsc:SupplyChain"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:managedByRole",
+      "@type": "owl:ObjectProperty",
+      "name": "Managed By Role",
+      "description": "Sales order is managed by this RRR-ONT functional role (e.g. Account Manager, Sales Director)",
+      "domainIncludes": [
+        "ofm:SalesOrder"
+      ],
+      "rangeIncludes": [
+        "pf:FunctionalRole"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    },
+    {
+      "@id": "ofm:operatedByCarrier",
+      "@type": "owl:ObjectProperty",
+      "name": "Operated By Carrier",
+      "description": "Dispatch leg is operated by this carrier organisation",
+      "domainIncludes": [
+        "ofm:DispatchLeg"
+      ],
+      "rangeIncludes": [
+        "org:Organization"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "ORG-ONT"
+    },
+    {
+      "@id": "ofm:mapsToProcess",
+      "@type": "owl:ObjectProperty",
+      "name": "Maps To Process",
+      "description": "Fulfilment workflow maps to a PE-ONT process definition",
+      "domainIncludes": [
+        "ofm:SalesOrder"
+      ],
+      "rangeIncludes": [
+        "pe:Process"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "PE-ONT"
+    },
+    {
+      "@id": "ofm:trackedByKPI",
+      "@type": "owl:ObjectProperty",
+      "name": "Tracked By KPI",
+      "description": "Sales order performance tracked by this KPI-ONT metric",
+      "domainIncludes": [
+        "ofm:SalesOrder",
+        "ofm:DispatchLeg",
+        "ofm:CapacityForecast"
+      ],
+      "rangeIncludes": [
+        "kpi:KPI"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "KPI-ONT"
+    },
+    {
+      "@id": "ofm:dispatchUsesWindow",
+      "@type": "owl:ObjectProperty",
+      "name": "Dispatch Uses Window",
+      "description": "Dispatch leg uses this delivery window for scheduling",
+      "domainIncludes": [
+        "ofm:DispatchLeg"
+      ],
+      "rangeIncludes": [
+        "ofm:DeliveryWindow"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ofm:storageErodesMargin",
+      "@type": "owl:ObjectProperty",
+      "name": "Storage Erodes Margin",
+      "description": "Storage event contributes to this margin impact (storage cost accumulation eroding margin)",
+      "domainIncludes": [
+        "ofm:StorageEvent"
+      ],
+      "rangeIncludes": [
+        "ofm:MarginImpact"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ofm:changeTriggersRisk",
+      "@type": "owl:ObjectProperty",
+      "name": "Change Triggers Risk",
+      "description": "Customer change creates or increases this fulfilment risk",
+      "domainIncludes": [
+        "ofm:CustomerChange"
+      ],
+      "rangeIncludes": [
+        "ofm:FulfilmentRisk"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:demandPatternAffectsCapacity",
+      "@type": "owl:ObjectProperty",
+      "name": "Demand Pattern Affects Capacity",
+      "description": "Demand pattern influences this capacity forecast",
+      "domainIncludes": [
+        "ofm:DemandPattern"
+      ],
+      "rangeIncludes": [
+        "ofm:CapacityForecast"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:allocationFulfilsLine",
+      "@type": "owl:ObjectProperty",
+      "name": "Allocation Fulfils Line",
+      "description": "Stock allocation contributes to fulfilling this order line (many allocations can partially fulfil one line)",
+      "domainIncludes": [
+        "ofm:StockAllocation"
+      ],
+      "rangeIncludes": [
+        "ofm:OrderLine"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ofm:riskInformedByPattern",
+      "@type": "owl:ObjectProperty",
+      "name": "Risk Informed By Pattern",
+      "description": "Fulfilment risk assessment is informed by this demand pattern",
+      "domainIncludes": [
+        "ofm:FulfilmentRisk"
+      ],
+      "rangeIncludes": [
+        "ofm:DemandPattern"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:customerOrderedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Customer Ordered By",
+      "description": "Sales order placed by this customer organisation",
+      "domainIncludes": [
+        "ofm:SalesOrder"
+      ],
+      "rangeIncludes": [
+        "org:Organization"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "ORG-ONT"
+    },
+    {
+      "@id": "ofm:capacityForecastForWarehouse",
+      "@type": "owl:ObjectProperty",
+      "name": "Capacity Forecast For Warehouse",
+      "description": "Capacity forecast is for this warehouse organisation",
+      "domainIncludes": [
+        "ofm:CapacityForecast"
+      ],
+      "rangeIncludes": [
+        "org:Organization"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "ORG-ONT"
+    },
+    {
+      "@id": "ofm:dispatchConsolidatesWith",
+      "@type": "owl:ObjectProperty",
+      "name": "Dispatch Consolidates With",
+      "description": "Dispatch leg is consolidated with other dispatch legs on the same vehicle",
+      "domainIncludes": [
+        "ofm:DispatchLeg"
+      ],
+      "rangeIncludes": [
+        "ofm:DispatchLeg"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:hasSLA",
+      "@type": "owl:ObjectProperty",
+      "name": "Has SLA",
+      "description": "Sales order is governed by this service level agreement",
+      "domainIncludes": ["ofm:SalesOrder"],
+      "rangeIncludes": ["ofm:ServiceLevelAgreement"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:hasMilestone",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Milestone",
+      "description": "Sales order has this tracking milestone in its fulfilment lifecycle",
+      "domainIncludes": ["ofm:SalesOrder"],
+      "rangeIncludes": ["ofm:OrderMilestone"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:hasNotification",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Notification",
+      "description": "Sales order has this customer notification",
+      "domainIncludes": ["ofm:SalesOrder"],
+      "rangeIncludes": ["ofm:CustomerNotification"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:hasLandedCost",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Landed Cost",
+      "description": "Sales order has this landed cost line item contributing to the total cost build-up",
+      "domainIncludes": ["ofm:SalesOrder"],
+      "rangeIncludes": ["ofm:LandedCost"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:hasMarginAnalysis",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Margin Analysis",
+      "description": "Sales order has this margin/profitability analysis",
+      "domainIncludes": ["ofm:SalesOrder"],
+      "rangeIncludes": ["ofm:MarginAnalysis"],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ofm:hasBreach",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Breach",
+      "description": "Service level agreement has this breach record",
+      "domainIncludes": ["ofm:ServiceLevelAgreement"],
+      "rangeIncludes": ["ofm:SLABreach"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:hasComplaint",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Complaint",
+      "description": "Sales order has this customer complaint case",
+      "domainIncludes": ["ofm:SalesOrder"],
+      "rangeIncludes": ["ofm:ComplaintCase"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:hasSatisfaction",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Satisfaction",
+      "description": "Sales order has this customer satisfaction survey record",
+      "domainIncludes": ["ofm:SalesOrder"],
+      "rangeIncludes": ["ofm:CustomerSatisfaction"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:slaMonitorsMilestone",
+      "@type": "owl:ObjectProperty",
+      "name": "SLA Monitors Milestone",
+      "description": "Service level agreement monitors compliance via this order milestone",
+      "domainIncludes": ["ofm:ServiceLevelAgreement"],
+      "rangeIncludes": ["ofm:OrderMilestone"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:breachTriggersRemediation",
+      "@type": "owl:ObjectProperty",
+      "name": "Breach Triggers Remediation",
+      "description": "SLA breach triggers this remediation action",
+      "domainIncludes": ["ofm:SLABreach"],
+      "rangeIncludes": ["ofm:RemediationAction"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:complaintLeadsToRemediation",
+      "@type": "owl:ObjectProperty",
+      "name": "Complaint Leads To Remediation",
+      "description": "Customer complaint leads to this remediation action",
+      "domainIncludes": ["ofm:ComplaintCase"],
+      "rangeIncludes": ["ofm:RemediationAction"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:remediationNotifiesCustomer",
+      "@type": "owl:ObjectProperty",
+      "name": "Remediation Notifies Customer",
+      "description": "Remediation action triggers this customer notification (e.g. remediation offer, credit note notice)",
+      "domainIncludes": ["ofm:RemediationAction"],
+      "rangeIncludes": ["ofm:CustomerNotification"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:landedCostFeedsMargin",
+      "@type": "owl:ObjectProperty",
+      "name": "Landed Cost Feeds Margin",
+      "description": "Landed cost entries feed into margin analysis calculation (totalLandedCost = sum of LandedCost amounts)",
+      "domainIncludes": ["ofm:LandedCost"],
+      "rangeIncludes": ["ofm:MarginAnalysis"],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ofm:complaintAffectsSatisfaction",
+      "@type": "owl:ObjectProperty",
+      "name": "Complaint Affects Satisfaction",
+      "description": "Customer complaint affects this satisfaction survey outcome",
+      "domainIncludes": ["ofm:ComplaintCase"],
+      "rangeIncludes": ["ofm:CustomerSatisfaction"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:satisfactionInformsRemediation",
+      "@type": "owl:ObjectProperty",
+      "name": "Satisfaction Informs Remediation",
+      "description": "Customer satisfaction feedback informs remediation strategy (e.g. low NPS triggers proactive remediation)",
+      "domainIncludes": ["ofm:CustomerSatisfaction"],
+      "rangeIncludes": ["ofm:RemediationAction"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ofm:fulfilledByShipment",
+      "@type": "owl:ObjectProperty",
+      "name": "Fulfilled By Shipment",
+      "description": "Sales order is physically fulfilled by this LSC-ONT shipment consignment. Links the commercial order to the physical logistics.",
+      "domainIncludes": ["ofm:SalesOrder"],
+      "rangeIncludes": ["lsc:Shipment"],
+      "oaa:cardinality": "1..*",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:orderUsesChain",
+      "@type": "owl:ObjectProperty",
+      "name": "Order Uses Chain",
+      "description": "Sales order travels via this LSC-ONT supply chain corridor (e.g. AU-UK meat corridor)",
+      "domainIncludes": ["ofm:SalesOrder"],
+      "rangeIncludes": ["lsc:SupplyChain"],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:milestoneAtNode",
+      "@type": "owl:ObjectProperty",
+      "name": "Milestone At Node",
+      "description": "Order milestone occurred at this physical LSC-ONT chain node (e.g. port, warehouse, customs point)",
+      "domainIncludes": ["ofm:OrderMilestone"],
+      "rangeIncludes": ["lsc:ChainNode"],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:breachTriggeredByIncident",
+      "@type": "owl:ObjectProperty",
+      "name": "Breach Triggered By Incident",
+      "description": "SLA breach was caused by this LSC-ONT supply-side incident (e.g. vessel delay, port congestion)",
+      "domainIncludes": ["ofm:SLABreach"],
+      "rangeIncludes": ["lsc:Incident"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:breachCausedByBottleneck",
+      "@type": "owl:ObjectProperty",
+      "name": "Breach Caused By Bottleneck",
+      "description": "SLA breach was caused by this systemic LSC-ONT bottleneck (e.g. recurring port congestion)",
+      "domainIncludes": ["ofm:SLABreach"],
+      "rangeIncludes": ["lsc:Bottleneck"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:costImpactedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Cost Impacted By",
+      "description": "Landed cost was impacted by this LSC-ONT disruption impact assessment (e.g. incident costs rolling into landed cost)",
+      "domainIncludes": ["ofm:LandedCost"],
+      "rangeIncludes": ["lsc:ImpactAssessment"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:complaintRootCauseIncident",
+      "@type": "owl:ObjectProperty",
+      "name": "Complaint Root Cause Incident",
+      "description": "Customer complaint traces to this LSC-ONT logistics incident as the operational root cause",
+      "domainIncludes": ["ofm:ComplaintCase"],
+      "rangeIncludes": ["lsc:Incident"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:remediationInformsMitigation",
+      "@type": "owl:ObjectProperty",
+      "name": "Remediation Informs Mitigation",
+      "description": "Customer remediation action drives this systemic LSC-ONT risk mitigation (closing the loop from complaint to prevention)",
+      "domainIncludes": ["ofm:RemediationAction"],
+      "rangeIncludes": ["lsc:RiskMitigation"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "LSC-ONT"
+    },
+    {
+      "@id": "ofm:complaintRevealsVPProblem",
+      "@type": "owl:ObjectProperty",
+      "name": "Complaint Reveals VP Problem",
+      "description": "Customer complaint reveals a value proposition problem — VP-RRR alignment: complaints are problems which map to risks for the customer",
+      "domainIncludes": ["ofm:ComplaintCase"],
+      "rangeIncludes": ["vp:Problem"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "VP-ONT",
+      "oaa:vpRRRAlignment": "Problem → Risk"
+    },
+    {
+      "@id": "ofm:remediationMapsToVPSolution",
+      "@type": "owl:ObjectProperty",
+      "name": "Remediation Maps To VP Solution",
+      "description": "Remediation action maps to a value proposition solution — VP-RRR alignment: remediation actions are solutions which map to requirements to build",
+      "domainIncludes": ["ofm:RemediationAction"],
+      "rangeIncludes": ["vp:Solution"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "VP-ONT",
+      "oaa:vpRRRAlignment": "Solution → Requirement"
+    },
+    {
+      "@id": "ofm:satisfactionValidatesBenefit",
+      "@type": "owl:ObjectProperty",
+      "name": "Satisfaction Validates Benefit",
+      "description": "Customer satisfaction validates a value proposition benefit — VP-RRR alignment: satisfaction confirms benefits which are measurable results",
+      "domainIncludes": ["ofm:CustomerSatisfaction"],
+      "rangeIncludes": ["vp:Benefit"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "VP-ONT",
+      "oaa:vpRRRAlignment": "Benefit → Result"
+    },
+    {
+      "@id": "ofm:marginValidatesPMF",
+      "@type": "owl:ObjectProperty",
+      "name": "Margin Validates PMF",
+      "description": "Sustained margin profitability validates product-market fit — if margins are healthy over time, the product/corridor has market fit",
+      "domainIncludes": ["ofm:MarginAnalysis"],
+      "rangeIncludes": ["pmf:ProductMarketFit"],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "PMF-ONT"
+    },
+    {
+      "@id": "ofm:satisfactionFeedsKPI",
+      "@type": "owl:ObjectProperty",
+      "name": "Satisfaction Feeds KPI",
+      "description": "Customer satisfaction score feeds KPI dashboard metrics (e.g. NPS score, CSAT average)",
+      "domainIncludes": ["ofm:CustomerSatisfaction"],
+      "rangeIncludes": ["kpi:Metric"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "KPI-ONT"
+    },
+    {
+      "@id": "ofm:breachFeedsKPI",
+      "@type": "owl:ObjectProperty",
+      "name": "Breach Feeds KPI",
+      "description": "SLA breach rate feeds KPI dashboard metrics (e.g. breach count, breach rate percentage)",
+      "domainIncludes": ["ofm:SLABreach"],
+      "rangeIncludes": ["kpi:Metric"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "KPI-ONT"
+    },
+    {
+      "@id": "ofm:orderPlacedByRole",
+      "@type": "owl:ObjectProperty",
+      "name": "Order Placed By Role",
+      "description": "Sales order was placed by a customer in this CRT-ONT customer role (e.g. B2B Buyer, B2C Consumer)",
+      "domainIncludes": ["ofm:SalesOrder"],
+      "rangeIncludes": ["crt:CustomerRole"],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "CRT-ONT"
+    },
+    {
+      "@id": "ofm:complaintOwnedByRole",
+      "@type": "owl:ObjectProperty",
+      "name": "Complaint Owned By Role",
+      "description": "Complaint case is owned and accountable to this RRR-ONT functional role for resolution",
+      "domainIncludes": ["ofm:ComplaintCase"],
+      "rangeIncludes": ["pf:FunctionalRole"],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    },
+    {
+      "@id": "ofm:breachAccountableRole",
+      "@type": "owl:ObjectProperty",
+      "name": "Breach Accountable Role",
+      "description": "SLA breach accountability is assigned to this RRR-ONT functional role",
+      "domainIncludes": ["ofm:SLABreach"],
+      "rangeIncludes": ["pf:FunctionalRole"],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-OFM-001",
+      "name": "AllocationBeforeDispatch",
+      "condition": "IF an OrderLine.lineStatus transitions to InDispatch",
+      "action": "THEN it MUST have at least one StockAllocation with allocationStatus = Confirmed",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-002",
+      "name": "MarginWaterfallIntegrity",
+      "condition": "IF a SalesOrder has realisedMargin defined",
+      "action": "THEN the sum of all MarginImpact.erosionAmount for all OrderLines MUST equal (bookedMargin - realisedMargin) within rounding tolerance",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-003",
+      "name": "AllocationMustReferenceLSCShipment",
+      "condition": "IF a StockAllocation.allocationStatus = Confirmed",
+      "action": "THEN it MUST have an allocatedFrom relationship referencing a valid lsc:Shipment",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-004",
+      "name": "ShelfLifeAtDispatch",
+      "condition": "IF an OrderLine enters InDispatch status AND has a committedShelfLife defined",
+      "action": "THEN the shelfLifeRemaining on the associated StockAllocation's latest StorageEvent MUST exceed committedShelfLife",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-005",
+      "name": "LateChangeEscalation",
+      "condition": "IF a CustomerChange.changeWindow is less than 24 hours before scheduled dispatch",
+      "action": "THEN the change MUST trigger L2 escalation and a FulfilmentRisk of impact >= High MUST be created",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-006",
+      "name": "CapacityRedThreshold",
+      "condition": "IF a CapacityForecast.currentUtilisation > 90 OR projectedPeakUtilisation > 90",
+      "action": "THEN capacityStatus MUST be Red AND a FulfilmentRisk of type StorageOverflow MUST be created",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-007",
+      "name": "MarginRedThreshold",
+      "condition": "IF a MarginImpact.marginPercentageRemaining < 5.0",
+      "action": "THEN the parent SalesOrder.marginStatus MUST be set to Red AND a FulfilmentRisk SHOULD be raised",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-008",
+      "name": "DispatchTemperatureMatch",
+      "condition": "IF a DispatchLeg is assigned to an OrderLine with commodityClass = Frozen",
+      "action": "THEN DispatchLeg.temperatureClass MUST be Frozen or DualCompartment (not Chilled or Ambient)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-009",
+      "name": "StorageEventDailyCostCalculation",
+      "condition": "IF a StorageEvent is created",
+      "action": "THEN dailyCost MUST equal palletsStored x dailyRate x temperatureMultiplier AND cumulativeCost MUST equal sum of all prior dailyCost values for this allocation",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-010",
+      "name": "DeliveryWindowSequence",
+      "condition": "IF a DeliveryWindow is defined",
+      "action": "THEN scheduledDeliveryDate MUST be >= scheduledDispatchDate AND actualDeliveryDate (if set) MUST be >= actualDispatchDate",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-011",
+      "name": "CancelledOrderNoDispatch",
+      "condition": "IF a SalesOrder.orderStatus = Cancelled",
+      "action": "THEN no OrderLine within this order MUST have lineStatus = InDispatch or Delivered",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-012",
+      "name": "ConsolidationDispatchCount",
+      "condition": "IF a DispatchLeg.isConsolidated = true",
+      "action": "THEN consolidatedOrderCount MUST be >= 2",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-013",
+      "name": "FailedDeliveryRequiresReschedule",
+      "condition": "IF a DeliveryWindow.windowStatus = Failed",
+      "action": "THEN a new DeliveryWindow with windowStatus = Rescheduled SHOULD be created AND a MarginImpact of type DispatchPremium SHOULD be recorded",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-OFM-014",
+      "name": "HighDwellAlert",
+      "condition": "IF a StorageEvent.dwellDays > 14 AND temperatureZone IN [Chilled, Frozen]",
+      "action": "THEN a FulfilmentRisk of type ShortShelfLife SHOULD be raised AND the allocation SHOULD be reviewed for priority dispatch",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-OFM-015",
+      "name": "DemandPatternReliability",
+      "condition": "IF a DemandPattern.reliability < 0.5",
+      "action": "THEN the pattern SHOULD NOT be used for automated allocation or capacity planning without human review",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-OFM-016",
+      "name": "QuantityReductionRecovery",
+      "condition": "IF a CustomerChange.changeType = QuantityReduction AND directCost > 0",
+      "action": "THEN recoveredAmount and recoveryMethod SHOULD be populated within 5 business days",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-OFM-017",
+      "name": "FulfilmentRiskProbabilityBound",
+      "condition": "IF a FulfilmentRisk exists",
+      "action": "THEN probability MUST be between 0.0 and 1.0",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-018",
+      "name": "OrderMustHaveLines",
+      "condition": "IF a SalesOrder.orderStatus != Draft",
+      "action": "THEN it MUST have at least one OrderLine via hasOrderLine relationship",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-019",
+      "name": "AllocationTemperatureZoneMatch",
+      "condition": "IF a StockAllocation references an OrderLine with commodityClass = Frozen",
+      "action": "THEN StockAllocation.temperatureZone MUST be Frozen",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-020",
+      "name": "RefusedDeliveryMarginImpact",
+      "condition": "IF a DispatchLeg.deliveryOutcome = Refused",
+      "action": "THEN a MarginImpact event MUST be created for the associated OrderLine with erosionSource appropriate to the refusal reason",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-021",
+      "name": "OrderMustHaveShipment",
+      "condition": "IF a SalesOrder.orderStatus IN [InDispatch, Delivered, Invoiced]",
+      "action": "THEN it MUST have at least 1 fulfilledByShipment reference to a valid lsc:Shipment",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-022",
+      "name": "SLABreachDetection",
+      "condition": "IF an OrderMilestone.actualDate exceeds plannedDate by more than the associated SLA targetValue",
+      "action": "THEN an SLABreach entity MUST be created with severity based on deviation percentage and breachType matching the SLA slaType",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-023",
+      "name": "BreachRequiresNotification",
+      "condition": "IF an SLABreach.severity IN [Critical, Major]",
+      "action": "THEN a CustomerNotification of type SLABreachNotice MUST be sent within 4 hours AND SLABreach.isNotified MUST be set to true",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-024",
+      "name": "ComplaintRequiresOwner",
+      "condition": "IF a ComplaintCase is created",
+      "action": "THEN complaintOwnedByRole MUST reference a valid pf:FunctionalRole — every complaint must have an accountable owner",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-025",
+      "name": "RemediationApproval",
+      "condition": "IF a RemediationAction.cost exceeds the currency-specific threshold (e.g. GBP 500, AUD 1000)",
+      "action": "THEN approvedBy MUST be populated with the approving role or individual",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-026",
+      "name": "MarginCalculation",
+      "condition": "IF a MarginAnalysis exists",
+      "action": "THEN grossMargin MUST equal totalRevenue - totalLandedCost AND grossMarginPercent MUST equal grossMargin / totalRevenue * 100",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-027",
+      "name": "LandedCostCompleteness",
+      "condition": "IF a SalesOrder.orderStatus = Delivered",
+      "action": "THEN it MUST have at least 3 LandedCost entries covering ProductCost + Freight + one of Insurance/CustomsDuty/ImportTariff",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-OFM-028",
+      "name": "VPRRRAlignmentEnforcement",
+      "condition": "IF a ComplaintCase links to vp:Problem via complaintRevealsVPProblem",
+      "action": "THEN the referenced vp:Problem SHOULD also have rrr:Risk alignment (ensuring the VP-RRR convention: Problem → Risk is maintained)",
+      "severity": "warning"
+    }
+  ],
+  "changeControl": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-24",
+      "author": "PF-Core",
+      "changes": [
+        "Initial release - 11 entities, 32 relationships, 20 business rules, 9 join patterns",
+        "Demand-side complement to LSC-ONT (supply side)",
+        "StockAllocation as THE supply-demand bridge entity (LSC Shipment -> OFM OrderLine)",
+        "Margin waterfall tracking from booked to realised margin via MarginImpact chain",
+        "Storage cost accumulation via StorageEvent with daily rate x temperature multiplier",
+        "Customer change management with direct/indirect cost tracking and recovery",
+        "Fulfilment risk heat map with probability x impact scoring",
+        "Demand pattern recognition correlated with LSC PredictivePattern",
+        "Warehouse capacity planning netting inbound (LSC) against outbound dispatches",
+        "Cross-ontology bridges to LSC-ONT (6 relationships), PE-ONT, ORG-ONT, RRR-ONT, KPI-ONT",
+        "Designed for food import/distribution (AU/NZ -> UK meat) but generalisable to any warehouse-to-customer fulfilment"
+      ]
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-03-02",
+      "author": "PF-Core",
+      "changes": [
+        "F41.2 + F41.3: Customer/commercial layer added — 9 new entities alongside existing 11 warehouse entities",
+        "New entities: ServiceLevelAgreement, OrderMilestone, CustomerNotification, LandedCost, MarginAnalysis, SLABreach, ComplaintCase, CustomerSatisfaction, RemediationAction",
+        "SalesOrder marked rdfs:sameAs ofm:PurchaseOrder — hub entity connects both layers",
+        "15 internal relationships connecting new entities to SalesOrder hub",
+        "8 LSC-ONT bridge relationships (F41.2): fulfilledByShipment, orderUsesChain, milestoneAtNode, breachTriggeredByIncident, breachCausedByBottleneck, costImpactedBy, complaintRootCauseIncident, remediationInformsMitigation",
+        "9 VE-Series bridge relationships (F41.3): complaintRevealsVPProblem, remediationMapsToVPSolution, satisfactionValidatesBenefit, marginValidatesPMF, satisfactionFeedsKPI, breachFeedsKPI, orderPlacedByRole, complaintOwnedByRole, breachAccountableRole",
+        "VP-RRR alignment on 3 bridges: ComplaintCase→Problem (Risk), RemediationAction→Solution (Requirement), CustomerSatisfaction→Benefit (Result)",
+        "8 new business rules (BR-OFM-021 to BR-OFM-028) for bridge validation and SLA enforcement",
+        "7 new join patterns (JP-OFM-010 to JP-OFM-016) for cross-ontology traversals",
+        "New imports: VP-ONT v1.2.3, PMF-ONT v2.0.0, CRT-ONT v1.0.0, VSOM-ONT v1.0.0",
+        "Updated LSC-ONT usedEntities: +ChainNode, +ImpactAssessment, +RiskMitigation",
+        "Updated KPI-ONT usedEntities: +kpi:Metric",
+        "Totals: 20 entities, 64 relationships, 28 business rules, 16 join patterns"
+      ]
+    }
+  ],
+  "oaa:ontologyId": "OFM-ONT",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the current status of a sales order, what are its order lines, and what is the margin position (booked vs realised)?",
+      "targetEntities": ["ofm:SalesOrder", "ofm:OrderLine"],
+      "targetRelationships": ["ofm:hasOrderLine"],
+      "targetRules": ["BR-OFM-018"]
+    },
+    {
+      "@id": "CQ-002",
+      "question": "Which inbound LSC shipments have been allocated to which customer order lines, and what is the allocation status?",
+      "targetEntities": ["ofm:StockAllocation", "ofm:OrderLine"],
+      "targetRelationships": ["ofm:allocatedFrom", "ofm:allocatedToLine", "ofm:hasAllocation"],
+      "targetRules": ["BR-OFM-001", "BR-OFM-003"]
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the margin waterfall for a given order line, showing each erosion event from booked margin to realised margin?",
+      "targetEntities": ["ofm:MarginImpact", "ofm:OrderLine"],
+      "targetRelationships": ["ofm:hasMarginImpact"],
+      "targetRules": ["BR-OFM-002", "BR-OFM-007"]
+    },
+    {
+      "@id": "CQ-004",
+      "question": "How much has storage cost accumulated for a given allocation, and what is the shelf life remaining?",
+      "targetEntities": ["ofm:StorageEvent", "ofm:StockAllocation"],
+      "targetRelationships": ["ofm:hasStorageEvent"],
+      "targetRules": ["BR-OFM-009", "BR-OFM-014"]
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What customer changes have been requested for this order, which lines are affected, and what is the cost impact?",
+      "targetEntities": ["ofm:CustomerChange", "ofm:OrderLine", "ofm:MarginImpact"],
+      "targetRelationships": ["ofm:hasCustomerChange", "ofm:affectsOrderLine", "ofm:triggersMarginImpact"],
+      "targetRules": ["BR-OFM-005", "BR-OFM-016"]
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What delivery windows are scheduled, have any failed, and what is the on-time delivery rate?",
+      "targetEntities": ["ofm:DeliveryWindow"],
+      "targetRelationships": ["ofm:hasDeliveryWindow", "ofm:dispatchUsesWindow"],
+      "targetRules": ["BR-OFM-010", "BR-OFM-013"]
+    },
+    {
+      "@id": "CQ-007",
+      "question": "Which dispatch legs are consolidated, what carriers are used, and what is the delivery outcome distribution?",
+      "targetEntities": ["ofm:DispatchLeg"],
+      "targetRelationships": ["ofm:hasDispatchLeg", "ofm:operatedByCarrier", "ofm:dispatchConsolidatesWith"],
+      "targetRules": ["BR-OFM-008", "BR-OFM-012"]
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What are the highest fulfilment risks across the order book, broken down by risk type and impact?",
+      "targetEntities": ["ofm:FulfilmentRisk"],
+      "targetRelationships": ["ofm:hasFulfilmentRisk", "ofm:orderHasFulfilmentRisk", "ofm:informedByLSCRisk"],
+      "targetRules": ["BR-OFM-017"]
+    },
+    {
+      "@id": "CQ-009",
+      "question": "If an LSC supply-side incident occurs, which customer orders are immediately at risk?",
+      "targetEntities": ["ofm:StockAllocation", "ofm:OrderLine", "ofm:FulfilmentRisk"],
+      "targetRelationships": ["ofm:allocatedFrom", "ofm:allocatedToLine", "ofm:hasFulfilmentRisk", "ofm:erosionFromIncident"],
+      "targetRules": ["BR-OFM-004"]
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What recurring demand patterns have been identified, and how do they correlate with supply-side patterns from LSC-ONT?",
+      "targetEntities": ["ofm:DemandPattern"],
+      "targetRelationships": ["ofm:correlatesWithSupplyPattern", "ofm:riskInformedByPattern"],
+      "targetRules": ["BR-OFM-015"]
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the current warehouse capacity utilisation, and what is the projected peak over the next 14 days?",
+      "targetEntities": ["ofm:CapacityForecast"],
+      "targetRelationships": ["ofm:considersInboundFrom", "ofm:capacityForecastForWarehouse"],
+      "targetRules": ["BR-OFM-006"]
+    },
+    {
+      "@id": "CQ-012",
+      "question": "Which orders have margin status Red, and what were the primary erosion sources?",
+      "targetEntities": ["ofm:SalesOrder", "ofm:MarginImpact"],
+      "targetRelationships": ["ofm:hasOrderLine", "ofm:hasMarginImpact"],
+      "targetRules": ["BR-OFM-002", "BR-OFM-007"]
+    },
+    {
+      "@id": "CQ-013",
+      "question": "What is the shelf life position across all allocations, and which are at risk of breaching committed shelf life at dispatch?",
+      "targetEntities": ["ofm:StockAllocation", "ofm:StorageEvent"],
+      "targetRelationships": ["ofm:hasStorageEvent", "ofm:hasAllocation"],
+      "targetRules": ["BR-OFM-004", "BR-OFM-014"]
+    },
+    {
+      "@id": "CQ-014",
+      "question": "How many customer changes occurred in the last 30 days, what was the total cost, and how much was recovered?",
+      "targetEntities": ["ofm:CustomerChange"],
+      "targetRelationships": ["ofm:hasCustomerChange", "ofm:affectsOrderLine"],
+      "targetRules": ["BR-OFM-005", "BR-OFM-016"]
+    },
+    {
+      "@id": "CQ-015",
+      "question": "Which functional roles manage which sales orders, and what is the performance distribution by role?",
+      "targetEntities": ["ofm:SalesOrder"],
+      "targetRelationships": ["ofm:managedByRole"],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-016",
+      "question": "What is the temperature compliance across all dispatch legs — are any chilled/frozen orders being dispatched in non-compliant vehicles?",
+      "targetEntities": ["ofm:DispatchLeg", "ofm:OrderLine"],
+      "targetRelationships": ["ofm:hasDispatchLeg"],
+      "targetRules": ["BR-OFM-008", "BR-OFM-019"]
+    },
+    {
+      "@id": "CQ-017",
+      "question": "What is the complete order-to-delivery journey for a given sales order, including allocation, storage, dispatch, and delivery?",
+      "targetEntities": ["ofm:SalesOrder", "ofm:OrderLine", "ofm:StockAllocation", "ofm:DispatchLeg", "ofm:DeliveryWindow"],
+      "targetRelationships": ["ofm:hasOrderLine", "ofm:hasAllocation", "ofm:hasDispatchLeg", "ofm:hasDeliveryWindow"],
+      "targetRules": ["BR-OFM-001", "BR-OFM-010"]
+    },
+    {
+      "@id": "CQ-018",
+      "question": "Which supply-side bottlenecks from LSC-ONT are causing the most margin erosion on the demand side?",
+      "targetEntities": ["ofm:MarginImpact"],
+      "targetRelationships": ["ofm:erosionFromBottleneck", "ofm:erosionFromIncident"],
+      "targetRules": ["BR-OFM-002"]
+    }
+  ]
+}

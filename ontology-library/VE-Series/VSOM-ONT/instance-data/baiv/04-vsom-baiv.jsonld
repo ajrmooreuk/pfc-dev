@@ -1,0 +1,454 @@
+{
+  "@context": {
+    "vsom": "https://platformcore.io/ontology/vsom/",
+    "bsc": "https://platformcore.io/ontology/bsc/",
+    "orgctx": "https://platformcore.io/ontology/org-context/",
+    "rrr": "https://platformcore.io/ontology/rrr/",
+    "pfc": "https://platformcore.io/ontology/"
+  },
+  "@type": "vsom:VSOMFramework",
+  "@id": "vsom:framework-baiv",
+  "vsom:organizationContextRef": "org:ctx-baiv",
+
+  "vsom:vision": {
+    "@type": "vsom:Vision",
+    "@id": "vsom:vision-baiv",
+    "vsom:visionStatement": "When businesses think 'how do I get recommended by AI', they think Be AI Visible. We own the AI Visibility category the way SEO owned Google rankings.",
+    "vsom:visionScope": "organizational",
+    "vsom:visionHorizon": 5,
+    "vsom:visionOwner": "rrr:role-baiv-pfi-owner",
+    "vsom:status": "draft",
+    "vsom:keyInsight": "40% of B2B purchase decisions now include AI conversation research. There is a 12-18 month window before incumbent SEO tools add AI tracking. Category creation is the strategic imperative."
+  },
+
+  "vsom:strategies": [
+    {
+      "@type": "vsom:Strategy",
+      "@id": "vsom:strategy-baiv-1",
+      "vsom:strategyName": "AI Visibility Category Creation",
+      "vsom:strategyDescription": "Establish BAIV as the category-defining platform for AI Visibility — the way SEMrush defined SEO tooling. First-mover advantage with 12-18 month window before incumbents respond.",
+      "vsom:strategyType": "growth",
+      "vsom:strategicFocus": "Market creation and brand positioning",
+      "vsom:timeHorizon": 2,
+      "vsom:strategyScope": "organizational",
+      "vsom:setByRole": "rrr:role-baiv-pfi-owner",
+      "vsom:informedBy": ["vsom:vision-baiv"],
+      "vsom:status": "draft"
+    },
+    {
+      "@type": "vsom:Strategy",
+      "@id": "vsom:strategy-baiv-2",
+      "vsom:strategyName": "Ontology-Driven Platform Architecture",
+      "vsom:strategyDescription": "Use the 52-ontology PFC knowledge graph to deliver 10x faster feature development via semantic understanding, enabling AI Visibility scoring, cross-LLM tracking, and content optimization at a depth competitors cannot match.",
+      "vsom:strategyType": "innovation",
+      "vsom:strategicFocus": "Technology differentiation and development velocity",
+      "vsom:timeHorizon": 3,
+      "vsom:strategyScope": "organizational",
+      "vsom:setByRole": "rrr:role-baiv-admin",
+      "vsom:informedBy": ["vsom:vision-baiv"],
+      "vsom:status": "draft",
+      "vsom:agentArchitecture": {
+        "totalAgents": 16,
+        "clusters": [
+          { "name": "Discovery", "description": "Discover brand mentions and citations across LLMs" },
+          { "name": "Analysis", "description": "Score AI Visibility across 5 dimensions" },
+          { "name": "Generation", "description": "Generate LLM-optimized content recommendations" },
+          { "name": "Optimisation", "description": "Continuously optimize AI Visibility based on results" }
+        ]
+      }
+    },
+    {
+      "@type": "vsom:Strategy",
+      "@id": "vsom:strategy-baiv-3",
+      "vsom:strategyName": "Discovery Audit as Growth Engine",
+      "vsom:strategyDescription": "Use a 2.5-minute AI Visibility audit as the primary customer acquisition engine — a low-friction, high-value entry point that demonstrates the AI Visibility gap and drives platform subscriptions.",
+      "vsom:strategyType": "customer_centricity",
+      "vsom:strategicFocus": "Customer acquisition and conversion",
+      "vsom:timeHorizon": 1,
+      "vsom:strategyScope": "organizational",
+      "vsom:setByRole": "rrr:role-baiv-pfi-owner",
+      "vsom:informedBy": ["vsom:vision-baiv", "vsom:strategy-baiv-1"],
+      "vsom:status": "draft"
+    }
+  ],
+
+  "vsom:objectives": [
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-baiv-f1",
+      "vsom:objectiveName": "Scale to $466K MRR",
+      "vsom:objectiveDescription": "Grow monthly recurring revenue from $15K to $466K through 6 agency clients and 1,000 platform subscribers",
+      "vsom:bscPerspective": "Financial",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:role-baiv-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-baiv-1",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "$15K MRR",
+      "vsom:target": "$466K MRR",
+      "vsom:timeline": "12 months",
+      "vsom:breakdown": {
+        "agencyClients": { "count": 6, "avgMRR": "$8K" },
+        "platformSubscribers": { "count": 1000, "avgMRR": "$418" }
+      }
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-baiv-f2",
+      "vsom:objectiveName": "Maintain healthy churn",
+      "vsom:objectiveDescription": "Keep monthly churn rate below 5% through client success and platform stickiness",
+      "vsom:bscPerspective": "Financial",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:role-baiv-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-baiv-3",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "Unknown",
+      "vsom:target": "<5%",
+      "vsom:timeline": "Ongoing",
+      "vsom:thresholds": { "critical": ">10%", "warning": ">5%", "target": "5%" }
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-baiv-c1",
+      "vsom:objectiveName": "Client success validation",
+      "vsom:objectiveDescription": "90% of clients achieve 3x citation increase and measurable conversion improvement within 90 days",
+      "vsom:bscPerspective": "Customer",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:role-baiv-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-baiv-3",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "No benchmark",
+      "vsom:target": "90% achieving 3x citations",
+      "vsom:timeline": "Ongoing"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-baiv-c2",
+      "vsom:objectiveName": "Build BAIV's own AI Visibility",
+      "vsom:objectiveDescription": "Increase BAIV's own AI Visibility Score from 10 to 50, demonstrating the platform's effectiveness",
+      "vsom:bscPerspective": "Customer",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:role-baiv-admin",
+      "vsom:parentStrategy": "vsom:strategy-baiv-1",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "10",
+      "vsom:target": "50",
+      "vsom:timeline": "12 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-baiv-c3",
+      "vsom:objectiveName": "Market education and audience reach",
+      "vsom:objectiveDescription": "Build awareness of the AI Visibility category through content, events, and thought leadership",
+      "vsom:bscPerspective": "Customer",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:role-baiv-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-baiv-1",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "0",
+      "vsom:target": "17,500 audience reach",
+      "vsom:timeline": "12 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-baiv-p1",
+      "vsom:objectiveName": "Complete Platform MVP1",
+      "vsom:objectiveDescription": "Ship platform from 87% to 100% completion with all core features operational",
+      "vsom:bscPerspective": "InternalProcess",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:role-baiv-admin",
+      "vsom:parentStrategy": "vsom:strategy-baiv-2",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "87%",
+      "vsom:target": "100%",
+      "vsom:timeline": "2026-05-31"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-baiv-p2",
+      "vsom:objectiveName": "Discovery Audit conversion engine",
+      "vsom:objectiveDescription": "2.5-minute audit as primary acquisition tool with measurable conversion funnel",
+      "vsom:bscPerspective": "InternalProcess",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:role-baiv-pfi-owner",
+      "vsom:parentStrategy": "vsom:strategy-baiv-3",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "Prototype",
+      "vsom:target": "Fully operational with conversion tracking",
+      "vsom:timeline": "6 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-baiv-p3",
+      "vsom:objectiveName": "Scale active agency clients",
+      "vsom:objectiveDescription": "Grow from 6 to 58 active agency clients through the agency programme",
+      "vsom:bscPerspective": "InternalProcess",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:role-baiv-agency-admin",
+      "vsom:parentStrategy": "vsom:strategy-baiv-1",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "6",
+      "vsom:target": "58",
+      "vsom:timeline": "12 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-baiv-l1",
+      "vsom:objectiveName": "16-agent AI engine operational",
+      "vsom:objectiveDescription": "Deploy all 16 agents across 4 clusters (Discovery, Analysis, Generation, Optimisation) with autonomous operation",
+      "vsom:bscPerspective": "LearningGrowth",
+      "vsom:priority": "P1-Critical",
+      "vsom:ownerRole": "rrr:role-baiv-admin",
+      "vsom:parentStrategy": "vsom:strategy-baiv-2",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "Architecture designed",
+      "vsom:target": "16 agents deployed and operational",
+      "vsom:timeline": "12 months"
+    },
+    {
+      "@type": "vsom:StrategicObjective",
+      "@id": "vsom:obj-baiv-l2",
+      "vsom:objectiveName": "Cross-LLM tracking coverage",
+      "vsom:objectiveDescription": "Track AI Visibility across all major LLMs (ChatGPT, Claude, Perplexity, Google AI Overviews, Copilot)",
+      "vsom:bscPerspective": "LearningGrowth",
+      "vsom:priority": "P2-High",
+      "vsom:ownerRole": "rrr:role-baiv-admin",
+      "vsom:parentStrategy": "vsom:strategy-baiv-2",
+      "vsom:timeframe": "Annual",
+      "vsom:baseline": "Partial",
+      "vsom:target": "5 LLMs tracked",
+      "vsom:timeline": "12 months"
+    }
+  ],
+
+  "vsom:metrics": [
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-baiv-f1-1",
+      "vsom:metricName": "Monthly Recurring Revenue (MRR)",
+      "vsom:metricType": "Lagging",
+      "vsom:formula": "Sum of all active subscription revenue per month",
+      "vsom:unit": "USD",
+      "vsom:baselineValue": 15000,
+      "vsom:targetValue": 466000,
+      "vsom:dataSource": "Billing system",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-baiv-f1",
+      "vsom:thresholds": { "critical": 200000, "warning": 350000, "target": 466000 }
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-baiv-f2-1",
+      "vsom:metricName": "Monthly Churn Rate",
+      "vsom:metricType": "Lagging",
+      "vsom:formula": "Churned subscribers / Total subscribers at start of month × 100%",
+      "vsom:unit": "%",
+      "vsom:baselineValue": null,
+      "vsom:targetValue": 5,
+      "vsom:dataSource": "Subscription management",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-baiv-f2"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-baiv-c1-1",
+      "vsom:metricName": "Client Citation Success Rate",
+      "vsom:metricType": "Lagging",
+      "vsom:formula": "Clients achieving 3x citation increase within 90 days / Total clients × 100%",
+      "vsom:unit": "%",
+      "vsom:baselineValue": 0,
+      "vsom:targetValue": 90,
+      "vsom:dataSource": "AI Visibility tracking engine",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-baiv-c1"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-baiv-c2-1",
+      "vsom:metricName": "BAIV AI Visibility Score",
+      "vsom:metricType": "Leading",
+      "vsom:formula": "Weighted composite: Discovery(25%) + Authority(20%) + Trust(30%) + Technical(15%) + Impact(10%)",
+      "vsom:unit": "score (0-100)",
+      "vsom:baselineValue": 10,
+      "vsom:targetValue": 50,
+      "vsom:dataSource": "BAIV platform self-assessment",
+      "vsom:frequency": "Weekly",
+      "vsom:objectiveRef": "vsom:obj-baiv-c2"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-baiv-p1-1",
+      "vsom:metricName": "Platform Completion",
+      "vsom:metricType": "Leading",
+      "vsom:formula": "Shipped features / Total MVP1 features × 100%",
+      "vsom:unit": "%",
+      "vsom:baselineValue": 87,
+      "vsom:targetValue": 100,
+      "vsom:dataSource": "Project board feature tracking",
+      "vsom:frequency": "Weekly",
+      "vsom:objectiveRef": "vsom:obj-baiv-p1"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-baiv-p2-1",
+      "vsom:metricName": "Discovery Audit Time",
+      "vsom:metricType": "Leading",
+      "vsom:formula": "Median time from audit start to results delivery",
+      "vsom:unit": "minutes",
+      "vsom:baselineValue": null,
+      "vsom:targetValue": 2.5,
+      "vsom:dataSource": "Audit engine telemetry",
+      "vsom:frequency": "Daily",
+      "vsom:objectiveRef": "vsom:obj-baiv-p2"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-baiv-p3-1",
+      "vsom:metricName": "Active Agency Clients",
+      "vsom:metricType": "Lagging",
+      "vsom:formula": "Count of agencies with active subscription and ≥1 client managed",
+      "vsom:unit": "count",
+      "vsom:baselineValue": 6,
+      "vsom:targetValue": 58,
+      "vsom:dataSource": "CRM + subscription management",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-baiv-p3"
+    },
+    {
+      "@type": "vsom:Metric",
+      "@id": "vsom:metric-baiv-c3-1",
+      "vsom:metricName": "Audience Reach",
+      "vsom:metricType": "Leading",
+      "vsom:formula": "Unique individuals reached through content, events, social, and AI mentions",
+      "vsom:unit": "count",
+      "vsom:baselineValue": 0,
+      "vsom:targetValue": 17500,
+      "vsom:dataSource": "Marketing analytics + AI mention tracking",
+      "vsom:frequency": "Monthly",
+      "vsom:objectiveRef": "vsom:obj-baiv-c3"
+    }
+  ],
+
+  "bsc:balancedScorecard": {
+    "@type": "bsc:BalancedScorecard",
+    "@id": "bsc:scorecard-baiv",
+    "bsc:perspectives": [
+      {
+        "@type": "bsc:BSCPerspective",
+        "bsc:perspectiveName": "Financial",
+        "bsc:perspectiveWeight": 0.30,
+        "bsc:perspectiveOwnedBy": "rrr:role-baiv-pfi-owner",
+        "bsc:objectives": ["vsom:obj-baiv-f1", "vsom:obj-baiv-f2"]
+      },
+      {
+        "@type": "bsc:BSCPerspective",
+        "bsc:perspectiveName": "Customer",
+        "bsc:perspectiveWeight": 0.30,
+        "bsc:perspectiveOwnedBy": "rrr:role-baiv-pfi-owner",
+        "bsc:objectives": ["vsom:obj-baiv-c1", "vsom:obj-baiv-c2", "vsom:obj-baiv-c3"]
+      },
+      {
+        "@type": "bsc:BSCPerspective",
+        "bsc:perspectiveName": "InternalProcess",
+        "bsc:perspectiveWeight": 0.25,
+        "bsc:perspectiveOwnedBy": "rrr:role-baiv-admin",
+        "bsc:objectives": ["vsom:obj-baiv-p1", "vsom:obj-baiv-p2", "vsom:obj-baiv-p3"]
+      },
+      {
+        "@type": "bsc:BSCPerspective",
+        "bsc:perspectiveName": "LearningGrowth",
+        "bsc:perspectiveWeight": 0.15,
+        "bsc:perspectiveOwnedBy": "rrr:role-baiv-admin",
+        "bsc:objectives": ["vsom:obj-baiv-l1", "vsom:obj-baiv-l2"]
+      }
+    ]
+  },
+
+  "bsc:strategyMap": {
+    "@type": "bsc:StrategyMap",
+    "@id": "bsc:strategy-map-baiv",
+    "bsc:causalLinks": [
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-baiv-1",
+        "bsc:fromObjective": "vsom:obj-baiv-l1",
+        "bsc:toObjective": "vsom:obj-baiv-p1",
+        "bsc:hypothesis": "If we deploy all 16 agents (L&G), then the platform reaches 100% completion (Internal Process), because the agent clusters deliver the core Discovery/Analysis/Generation/Optimisation capabilities.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-baiv-2",
+        "bsc:fromObjective": "vsom:obj-baiv-l2",
+        "bsc:toObjective": "vsom:obj-baiv-c2",
+        "bsc:hypothesis": "If we track 5 LLMs (L&G), then BAIV's own AI Visibility Score improves (Customer), because comprehensive tracking enables targeted optimization across all AI surfaces.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-baiv-3",
+        "bsc:fromObjective": "vsom:obj-baiv-p1",
+        "bsc:toObjective": "vsom:obj-baiv-c1",
+        "bsc:hypothesis": "If the platform is 100% complete (Internal Process), then 90% of clients achieve 3x citations (Customer), because full feature delivery unlocks the optimization loop that drives citations.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-baiv-4",
+        "bsc:fromObjective": "vsom:obj-baiv-p2",
+        "bsc:toObjective": "vsom:obj-baiv-c3",
+        "bsc:hypothesis": "If the Discovery Audit runs in 2.5 minutes (Internal Process), then audience reach hits 17,500 (Customer), because low-friction audits create shareable, viral moments that drive word-of-mouth.",
+        "bsc:confidence": "Medium"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-baiv-5",
+        "bsc:fromObjective": "vsom:obj-baiv-c1",
+        "bsc:toObjective": "vsom:obj-baiv-f2",
+        "bsc:hypothesis": "If 90% of clients achieve 3x citations (Customer), then churn stays below 5% (Financial), because demonstrated results create retention.",
+        "bsc:confidence": "High"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-baiv-6",
+        "bsc:fromObjective": "vsom:obj-baiv-c3",
+        "bsc:toObjective": "vsom:obj-baiv-f1",
+        "bsc:hypothesis": "If audience reach hits 17,500 (Customer), then MRR reaches $466K (Financial), because category awareness drives the top-of-funnel that converts to subscribers.",
+        "bsc:confidence": "Medium"
+      },
+      {
+        "@type": "bsc:CausalLink",
+        "@id": "bsc:link-baiv-7",
+        "bsc:fromObjective": "vsom:obj-baiv-p3",
+        "bsc:toObjective": "vsom:obj-baiv-f1",
+        "bsc:hypothesis": "If active agency clients grow to 58 (Internal Process), then MRR scales to $466K (Financial), because each agency brings 10+ client subscriptions.",
+        "bsc:confidence": "High"
+      }
+    ]
+  },
+
+  "pfc:version": "1.0.0",
+  "pfc:status": "draft",
+  "pfc:createdDate": "2026-03-01",
+  "pfc:generatedBy": "pfc-vsom (manual execution)",
+  "pfc:sourceDocuments": [
+    "Foundation/ORG-CONTEXT-ONT/instance-data/baiv/01-org-context-baiv.jsonld",
+    "pfi-BAIV-AIV-ONT/BAIV_VSOM_OAA_COMPLIANT (2).json",
+    "pfi-BAIV-AIV-ONT/baiv-ai-visibility-vp-rrr-enhanced-v1.1.0.jsonld",
+    "PBS/STRATEGY/BRIEFING-Epic34-PF-Core-VSOM-Platform-Strategy.md",
+    "PBS/STRATEGY/BRIEFING-Epic34-PFI-Instance-Readiness.md"
+  ],
+  "pfc:vsomSummary": {
+    "vision": "Own the AI Visibility category the way SEO owned Google rankings",
+    "visionHorizon": "5 years",
+    "strategies": 3,
+    "strategyTypes": ["growth", "innovation", "customer_centricity"],
+    "objectives": 10,
+    "objectivesByPerspective": { "Financial": 2, "Customer": 3, "InternalProcess": 3, "LearningGrowth": 2 },
+    "metrics": 8,
+    "metricsLeading": 4,
+    "metricsLagging": 4,
+    "bscCausalChains": 7,
+    "saGrounding": { "MACRO": false, "INDUSTRY": false },
+    "note": "VSOM formulated from existing BAIV_VSOM_OAA_COMPLIANT data and Epic 34 briefings. Rich source material available."
+  }
+}

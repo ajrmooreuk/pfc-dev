@@ -1,0 +1,96 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-VIZ-001",
+  "name": "VIZSTRAT Ontology (Visual Strategy Artefacts & Deck Patterns)",
+  "description": "Visual strategy artefact system: 9 single-artefact templates (One Slider, Use Case Map, Directional Costing, Priority Map, Technology Radar, Build/Buy/Partner, Due Diligence, Audit & Traceability, Architectural Definition), 6 deck patterns (Ghost, Ask, Strategy, Roadmap, Tactical Plan, Strategy Plan), deck composition, diagram patterns for Mermaid rendering, data source mapping to SA ontologies, audience views, skeleton diagrams for idea-to-execution, and artefact versioning. The capstone SC ontology — connects SA analysis through communication patterns to concrete deliverable artefacts. Part of VE-Series VSOM-SC sub-series.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://oaa-ontology.org/v6/vizstrat/",
+  "prefix": "viz:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate7": "pass"
+  },
+  "validationDate": "2026-02-13",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./vizstrat-ontology-v1.0.0-oaa-v6.json",
+    "documentation": null,
+    "glossary": "../../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "VisualArtefact": "Base entity for any rendered visual strategy output",
+    "ArtefactTemplate": "One of 9 single-artefact template types with data source and audience mapping",
+    "DeckPattern": "One of 6 composed deck patterns: ordered template sequences with narrative structure",
+    "DeckComposition": "Ordered sequence of templates within a deck with transition guidance",
+    "DiagramPattern": "Mermaid/graph diagram pattern mapping for each template type",
+    "DataSourceMapping": "Mapping from SA ontology entities to visual artefact data inputs",
+    "AudienceView": "Audience-appropriate detail level configuration for an artefact",
+    "ArtefactVersion": "Versioned visual artefact for diff/evolution tracking across review cycles",
+    "SkeletonDiagram": "Structural outline for idea-to-execution graph traversal"
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "artefactRendersFromSA",
+        "from": "viz:DataSourceMapping",
+        "to": "pfl:StrategicDirectionSummary",
+        "purpose": "Visual artefacts render from SA capstone direction summaries"
+      },
+      {
+        "name": "deckUsesPattern",
+        "from": "viz:DeckPattern",
+        "to": "nar:CommunicationPattern",
+        "purpose": "Decks use narrative communication patterns for structural approach"
+      },
+      {
+        "name": "skeletonStartsFromQuestion",
+        "from": "viz:SkeletonDiagram",
+        "to": "rsn:StrategicQuestion",
+        "purpose": "Skeleton diagrams start from a strategic question for idea-to-execution traversal"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-NAR-001",
+    "Entry-ONT-CSC-001",
+    "Entry-ONT-CUL-001",
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-BSC-001",
+    "Entry-ONT-RSN-001",
+    "Entry-ONT-PFL-001",
+    "Entry-ONT-MAC-001",
+    "Entry-ONT-IND-001",
+    "Entry-ONT-KPI-001",
+    "Entry-ONT-OKR-001",
+    "Entry-ONT-RRR-001",
+    "Entry-ONT-PPM-001",
+    "Entry-ONT-EFS-001",
+    "Entry-ONT-EA-CORE-001"
+  ],
+  "dependents": [],
+  "layer": "STRATEGIC LAYER (VE-Series / VSOM-SC)",
+  "subSeries": "VSOM-SC",
+  "domain": "Strategy Visualisation, Communication Artefacts, Decision Support",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-13",
+  "lastModified": "2026-02-13",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-13",
+      "changes": "Initial release — 9 Artefact Templates, 6 Deck Patterns, Diagram Patterns, Data Source Mapping, Skeleton Diagrams"
+    }
+  ],
+  "notes": "Layer C4 (Capstone) of VSOM Strategy Communication. Analogous to PORTFOLIO-ONT in VSOM-SA — touches the entire ontology graph. Bridges SA analysis data through SC communication patterns into concrete, audience-appropriate, versioned visual deliverables. 15 imports — the widest dependency graph in the ontology library."
+}

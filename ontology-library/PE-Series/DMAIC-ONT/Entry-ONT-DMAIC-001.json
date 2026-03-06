@@ -1,0 +1,48 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-DMAIC-001",
+  "name": "DMAIC Ontology (Six Sigma DMAIC)",
+  "description": "Six Sigma DMAIC process improvement ontology for modelling the standard 8-24 week project-based methodology with full statistical rigour — SIPOC scoping, CTQ trees, Gage R&R measurement system analysis, process capability (Cp/Cpk/sigma/DPMO), root cause analysis with hypothesis testing, design of experiments (DOE), and SPC control plans",
+  "version": "1.0.0",
+  "oaaVersion": "7.0.0",
+  "namespace": "https://oaa-ontology.org/v6/six-sigma-dmaic/",
+  "prefix": "dmaic:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "./dmaic-v1.0.0-oaa-v7.json",
+    "glossary": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "sixSigmaProject": "DMAIC project charter, sigma tracking, and phase progression",
+    "sipoc": "Supplier-Input-Process-Output-Customer process scoping",
+    "criticalToQuality": "VOC-driven CTQ tree with specification limits (USL/LSL/target)",
+    "measurementSystem": "Gage R&R / MSA validation (%GRR ≤ 30%)",
+    "processCapability": "Sigma level, Cp, Cpk, Pp, Ppk, DPMO, yield tracking",
+    "rootCauseAnalysis": "Fishbone, 5-Why, statistical hypothesis testing (p < 0.05)",
+    "experiment": "DOE factorial design, factor optimisation, interaction analysis",
+    "controlPlan": "SPC chart monitoring (8 chart types), control limits, reaction plans"
+  },
+  "dependencies": [
+    "Entry-ONT-PE-001"
+  ],
+  "dependents": [],
+  "layer": "EXECUTION LAYER (PE-Series)",
+  "domain": "Six Sigma, DMAIC, Statistical Process Control",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-26",
+  "lastModified": "2026-02-26",
+  "notes": "Six Sigma DMAIC ontology — standard 8-24 week project-based variant with full statistical rigour. Companion to K-DMAIC-ONT (compressed 3-5 day Kaizen blitz variant). Imports PE-ONT v4.0.0 for Process, ProcessMetric, AIAgent, Skill, Hypothesis, ProcessPattern cross-ontology bridges."
+}

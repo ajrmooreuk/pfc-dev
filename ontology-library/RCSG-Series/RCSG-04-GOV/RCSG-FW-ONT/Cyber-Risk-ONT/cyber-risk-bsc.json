@@ -1,0 +1,155 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "vsem": "https://wings4mind.ai/ontology/vsem/",
+    "bsc": "https://wings4mind.ai/ontology/bsc/"
+  },
+  "@type": "vsem:BalancedScorecard",
+  "@id": "vsem:bsc-qlai-cyber-risk",
+  "name": "Quantum Lane AI — Cyber Risk Ontology Service BSC",
+  "vsem:scorecardPeriod": "FY2026-FY2028",
+  "vsem:perspectives": [
+    {
+      "@type": "bsc:FinancialPerspective",
+      "@id": "bsc:financial-cra",
+      "bsc:objectives": [
+        {
+          "@id": "vsem:objective-cra-f1",
+          "name": "Generate £500K ARR from ontology risk services",
+          "vsem:targetDate": "2027-06-30"
+        },
+        {
+          "@id": "vsem:objective-cra-f2",
+          "name": "Achieve 70% gross margin on ontology-as-a-service",
+          "vsem:targetDate": "2027-12-31"
+        }
+      ],
+      "bsc:metrics": [
+        {"@id": "vsem:metric-cra-f1", "name": "Cyber Risk Service ARR", "vsem:targetValue": 500000, "unitCode": "GBP"},
+        {"@id": "vsem:metric-cra-f2", "name": "Ontology Service Gross Margin", "vsem:targetValue": 70, "unitCode": "P1"}
+      ]
+    },
+    {
+      "@type": "bsc:CustomerPerspective",
+      "@id": "bsc:customer-cra",
+      "bsc:objectives": [
+        {
+          "@id": "vsem:objective-cra-c1",
+          "name": "Onboard 25 clients onto continuous risk graph",
+          "vsem:targetDate": "2027-12-31"
+        },
+        {
+          "@id": "vsem:objective-cra-c2",
+          "name": "Achieve 90%+ client retention rate",
+          "vsem:targetDate": "2027-12-31"
+        },
+        {
+          "@id": "vsem:objective-cra-c3",
+          "name": "Generate 100 qualified prospects via benchmarking",
+          "vsem:targetDate": "2026-12-31"
+        }
+      ],
+      "bsc:metrics": [
+        {"@id": "vsem:metric-cra-c1", "name": "Active Continuous Risk Graph Clients", "vsem:targetValue": 25},
+        {"@id": "vsem:metric-cra-c2", "name": "Annual Client Retention Rate", "vsem:targetValue": 90, "unitCode": "P1"},
+        {"@id": "vsem:metric-cra-c3", "name": "Qualified Prospects via Benchmarking", "vsem:targetValue": 100}
+      ]
+    },
+    {
+      "@type": "bsc:InternalProcessPerspective",
+      "@id": "bsc:process-cra",
+      "bsc:objectives": [
+        {
+          "@id": "vsem:objective-cra-ip1",
+          "name": "Deploy production ontology covering NIST/ISO/MITRE",
+          "vsem:targetDate": "2026-06-30"
+        },
+        {
+          "@id": "vsem:objective-cra-ip2",
+          "name": "Automate graph deployment pipeline (< 2 hours)",
+          "vsem:targetDate": "2026-09-30"
+        },
+        {
+          "@id": "vsem:objective-cra-ip3",
+          "name": "Automated compliance gap detection for 5 frameworks",
+          "vsem:targetDate": "2027-03-31"
+        }
+      ],
+      "bsc:metrics": [
+        {"@id": "vsem:metric-cra-ip1", "name": "Ontology Class Coverage", "vsem:targetValue": 500},
+        {"@id": "vsem:metric-cra-ip2", "name": "Graph Deployment Time (hours)", "vsem:targetValue": 2},
+        {"@id": "vsem:metric-cra-ip3", "name": "Frameworks with Auto Gap Detection", "vsem:targetValue": 5}
+      ]
+    },
+    {
+      "@type": "bsc:LearningGrowthPerspective",
+      "@id": "bsc:learning-cra",
+      "bsc:objectives": [
+        {
+          "@id": "vsem:objective-cra-lg1",
+          "name": "Build ontology/graph competency (6 consultants)",
+          "vsem:targetDate": "2026-06-30"
+        },
+        {
+          "@id": "vsem:objective-cra-lg2",
+          "name": "Create sector ontology templates for 4 industries",
+          "vsem:targetDate": "2026-12-31"
+        }
+      ],
+      "bsc:metrics": [
+        {"@id": "vsem:metric-cra-lg1", "name": "Certified Ontology/Graph Consultants", "vsem:targetValue": 6},
+        {"@id": "vsem:metric-cra-lg2", "name": "Sector Templates Completed", "vsem:targetValue": 4}
+      ]
+    }
+  ],
+  "vsem:causeEffectChains": [
+    {
+      "@type": "vsem:CauseEffectChain",
+      "@id": "vsem:chain-cra-1",
+      "name": "Skills → Ontology Quality → Client Acquisition → Revenue",
+      "vsem:cause": {"@id": "vsem:objective-cra-lg1"},
+      "vsem:effect": {"@id": "vsem:objective-cra-ip1"},
+      "vsem:hypothesis": "Training consultants in graph modelling and cyber risk frameworks enables production-grade ontology development"
+    },
+    {
+      "@type": "vsem:CauseEffectChain",
+      "@id": "vsem:chain-cra-2",
+      "name": "Sector Templates → Deployment Speed → Client Onboarding → Revenue",
+      "vsem:cause": {"@id": "vsem:objective-cra-lg2"},
+      "vsem:effect": {"@id": "vsem:objective-cra-ip2"},
+      "vsem:hypothesis": "Pre-built sector templates dramatically reduce per-client deployment time, enabling volume scaling"
+    },
+    {
+      "@type": "vsem:CauseEffectChain",
+      "@id": "vsem:chain-cra-3",
+      "name": "Fast Deployment → More Clients → Higher ARR",
+      "vsem:cause": {"@id": "vsem:objective-cra-ip2"},
+      "vsem:effect": {"@id": "vsem:objective-cra-c1"},
+      "vsem:hypothesis": "Reducing deployment friction from weeks to hours increases conversion from prospect to active client"
+    },
+    {
+      "@type": "vsem:CauseEffectChain",
+      "@id": "vsem:chain-cra-4",
+      "name": "Compliance Automation → Retention → Revenue Stability",
+      "vsem:cause": {"@id": "vsem:objective-cra-ip3"},
+      "vsem:effect": {"@id": "vsem:objective-cra-c2"},
+      "vsem:hypothesis": "Automated regulatory gap detection creates continuous advisory touchpoints that justify annual renewal"
+    },
+    {
+      "@type": "vsem:CauseEffectChain",
+      "@id": "vsem:chain-cra-5",
+      "name": "Client Volume + Retention → ARR Target",
+      "vsem:cause": {"@id": "vsem:objective-cra-c1"},
+      "vsem:effect": {"@id": "vsem:objective-cra-f1"},
+      "vsem:hypothesis": "25 active clients at average £20K/year blended rate achieves £500K ARR"
+    },
+    {
+      "@type": "vsem:CauseEffectChain",
+      "@id": "vsem:chain-cra-6",
+      "name": "Ontology Reuse → Margin Improvement",
+      "vsem:cause": {"@id": "vsem:objective-cra-ip1"},
+      "vsem:effect": {"@id": "vsem:objective-cra-f2"},
+      "vsem:hypothesis": "High ontology reuse across clients reduces marginal delivery cost, improving gross margin to 70%+"
+    }
+  ]
+}

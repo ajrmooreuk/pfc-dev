@@ -1,0 +1,88 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-RSN-001",
+  "name": "REASON Ontology (MECE, Logic Trees, Hypothesis-Driven Analysis)",
+  "description": "AI agent reasoning substrate: MECE decomposition, Logic Trees, Hypothesis-Driven Strategy, Evidence Chains, and Analysis Synthesis. Provides structured reasoning patterns enabling Gen AI agents to perform rigorous strategic analysis with anti-confirmation-bias safeguards. Part of VE-Series VSOM-SA sub-series.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://oaa-ontology.org/v6/reason/",
+  "prefix": "rsn:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate7": "pass"
+  },
+  "validationDate": "2026-02-12",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./reason-ontology-v1.0.0-oaa-v6.json",
+    "documentation": null,
+    "glossary": "../../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "StrategicQuestion": "Root question driving an analysis tree",
+    "MECETree": "Mutually Exclusive Collectively Exhaustive decomposition",
+    "MECEBranch": "Individual branch with assigned framework for parallel routing",
+    "StrategicHypothesis": "Testable strategic hypothesis with evidence requirements",
+    "HypothesisAssumption": "Individual assumption underlying a hypothesis",
+    "EvidenceItem": "Evidence for/against a hypothesis with direction and strength",
+    "LogicTree": "Issue/driver/lever decomposition tree",
+    "LogicTreeNode": "Node with sensitivity rank identifying highest-impact levers",
+    "AnalysisSynthesis": "Synthesis detecting convergent/divergent/blind-spot findings",
+    "SynthesisFinding": "Individual finding from cross-analysis synthesis",
+    "StrategicRecommendation": "Actionable recommendation with confidence and dependencies"
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "questionAddressesVSOM",
+        "from": "rsn:StrategicQuestion",
+        "to": "vsom:VSOMFramework",
+        "purpose": "Strategic questions address VSOM components"
+      },
+      {
+        "name": "branchAssignsFramework",
+        "from": "rsn:MECEBranch",
+        "to": "ind:SWOTAnalysis",
+        "purpose": "MECE branches route to specific analysis frameworks"
+      },
+      {
+        "name": "recommendationInformsStrategy",
+        "from": "rsn:StrategicRecommendation",
+        "to": "vsom:StrategyComponent",
+        "purpose": "Recommendations feed back into VSOM strategy"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-BSC-001",
+    "Entry-ONT-IND-001",
+    "Entry-ONT-KPI-001",
+    "Entry-ONT-OKR-001"
+  ],
+  "dependents": [],
+  "layer": "STRATEGIC LAYER (VE-Series / VSOM-SA)",
+  "subSeries": "VSOM-SA",
+  "domain": "Strategic Reasoning, AI Agent Analysis",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-12",
+  "lastModified": "2026-02-12",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-12",
+      "changes": "Initial release — MECE, Logic Trees, Hypothesis-Driven Analysis, Synthesis, anti-confirmation-bias rules"
+    }
+  ],
+  "notes": "Layer 4 (Reasoning) of VSOM Strategy Analysis. AI agent reasoning substrate. MECEBranch.assignedFramework enables parallel framework routing. Anti-confirmation-bias rules BR-RSN-007/008."
+}

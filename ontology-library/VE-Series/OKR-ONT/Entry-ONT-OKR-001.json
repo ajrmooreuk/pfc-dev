@@ -1,0 +1,245 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-OKR-001",
+  "name": "OKR Ontology (Objectives & Key Results)",
+  "description": "Objectives and Key Results ontology for goal-setting, alignment cascading, and performance measurement. Upgraded to OAA v6.1.0 with full entity connectivity and IF-THEN business rules. Part of VE lineage chain: VSOM \u2192 OKR \u2192 VP \u2192 PMF.",
+  "version": "2.1.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/okr/",
+  "prefix": "okr:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-06",
+  "gatesPassed": 8,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./okr-ontology-v2.0.0-oaa-v6.json",
+    "documentation": "./PFC-ONT-OKR-README.md",
+    "detailedDocs": "./PFC-ONT-OKR-documentation.md",
+    "glossary": "./PFC-ONT-OKR-glossary.json",
+    "visualGuide": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "summary": {
+    "entities": [
+      {
+        "id": "okr:Objective",
+        "name": "Objective",
+        "entityType": "class"
+      },
+      {
+        "id": "okr:KeyResult",
+        "name": "KeyResult",
+        "entityType": "class"
+      },
+      {
+        "id": "okr:Initiative",
+        "name": "Initiative",
+        "entityType": "class"
+      },
+      {
+        "id": "okr:CheckIn",
+        "name": "CheckIn",
+        "entityType": "class"
+      },
+      {
+        "id": "okr:TimePeriod",
+        "name": "TimePeriod",
+        "entityType": "class"
+      },
+      {
+        "id": "okr:ObjectiveType",
+        "name": "ObjectiveType",
+        "entityType": "enum"
+      },
+      {
+        "id": "okr:ObjectiveStatus",
+        "name": "ObjectiveStatus",
+        "entityType": "enum"
+      },
+      {
+        "id": "okr:KeyResultType",
+        "name": "KeyResultType",
+        "entityType": "enum"
+      },
+      {
+        "id": "okr:KeyResultStatus",
+        "name": "KeyResultStatus",
+        "entityType": "enum"
+      },
+      {
+        "id": "okr:PriorityLevel",
+        "name": "PriorityLevel",
+        "entityType": "enum"
+      },
+      {
+        "id": "okr:InitiativeStatus",
+        "name": "InitiativeStatus",
+        "entityType": "enum"
+      },
+      {
+        "id": "okr:PeriodType",
+        "name": "PeriodType",
+        "entityType": "enum"
+      }
+    ],
+    "relationships": [
+      {
+        "name": "hasKeyResult",
+        "source": "Objective",
+        "target": "KeyResult"
+      },
+      {
+        "name": "hasInitiative",
+        "source": "KeyResult",
+        "target": "Initiative"
+      },
+      {
+        "name": "hasCheckIn",
+        "source": "Objective",
+        "target": "CheckIn"
+      },
+      {
+        "name": "updatesKeyResult",
+        "source": "CheckIn",
+        "target": "KeyResult"
+      },
+      {
+        "name": "alignsTo",
+        "source": "Objective",
+        "target": "Objective"
+      },
+      {
+        "name": "dependsOn",
+        "source": "KeyResult",
+        "target": "KeyResult"
+      },
+      {
+        "name": "scopedByPeriod",
+        "source": "Objective",
+        "target": "TimePeriod"
+      },
+      {
+        "name": "hasObjectiveType",
+        "source": "Objective",
+        "target": "ObjectiveType"
+      },
+      {
+        "name": "hasObjectiveStatus",
+        "source": "Objective",
+        "target": "ObjectiveStatus"
+      },
+      {
+        "name": "hasPriority",
+        "source": "Objective",
+        "target": "PriorityLevel"
+      },
+      {
+        "name": "hasKeyResultType",
+        "source": "KeyResult",
+        "target": "KeyResultType"
+      },
+      {
+        "name": "hasKeyResultStatus",
+        "source": "KeyResult",
+        "target": "KeyResultStatus"
+      },
+      {
+        "name": "hasInitiativeStatus",
+        "source": "Initiative",
+        "target": "InitiativeStatus"
+      },
+      {
+        "name": "hasPeriodType",
+        "source": "TimePeriod",
+        "target": "PeriodType"
+      }
+    ]
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "derivesFromVSOM",
+        "from": "vsom:ObjectivesComponent",
+        "to": "okr:Objective",
+        "purpose": "VSOM \u2192 OKR lineage"
+      },
+      {
+        "name": "informsValue",
+        "from": "okr:KeyResult",
+        "to": "vp:ValueProposition",
+        "purpose": "OKR \u2192 VP lineage"
+      },
+      {
+        "name": "measuredBy",
+        "from": "okr:KeyResult",
+        "to": "kpi:KPI",
+        "purpose": "KPI measurement connection"
+      },
+      {
+        "name": "drivesObjective",
+        "from": "gdpr:ComplianceObligation",
+        "to": "okr:Objective",
+        "purpose": "GDPR \u2192 OKR: Compliance obligations drive objectives"
+      },
+      {
+        "name": "measuresCompliance",
+        "from": "okr:KeyResult",
+        "to": "mcsb:SecurityControl",
+        "purpose": "OKR \u2192 MCSB: Key results measure security control implementation"
+      },
+      {
+        "name": "informedByRegulation",
+        "from": "okr:Objective",
+        "to": "pii:DataProtectionPrinciple",
+        "purpose": "OKR \u2192 PII: Objectives informed by data protection principles"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-GDPR-001",
+    "Entry-ONT-ALZ-001",
+    "Entry-ONT-PII-001"
+  ],
+  "dependents": [
+    "Entry-ONT-VP-001",
+    "Entry-ONT-KPI-001",
+    "Entry-ONT-EFS-001",
+    "Entry-ONT-EMC-001"
+  ],
+  "layer": "VE-Series",
+  "domain": "Performance Management",
+  "maintainer": "PF-Core VE Module",
+  "created": "2026-01-28",
+  "lastModified": "2026-02-07",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-02",
+      "changes": "Initial OAA v5 compliance, VE lineage chain integration"
+    },
+    {
+      "version": "2.0.0",
+      "date": "2026-02-06",
+      "changes": "Upgraded to OAA v6.1.0: hasDefinedTerm format, 14 relationships connecting all 12 entities as single component, 8 IF-THEN business rules"
+    },
+    {
+      "version": "2.1.0",
+      "date": "2026-02-07",
+      "changes": "RCSG integration: added gdpr:ComplianceObligation, mcsb:SecurityControl, pii:DataProtectionPrinciple cross-ref stubs with drivesObjective, measuresCompliance, informedByRegulation relationships"
+    }
+  ],
+  "notes": "Part of VE lineage chain between VSOM and VP. Connects strategic objectives to measurable key results with full alignment cascading."
+}

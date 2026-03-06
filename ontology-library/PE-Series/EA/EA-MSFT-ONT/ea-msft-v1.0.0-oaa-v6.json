@@ -1,0 +1,642 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ea-msft": "https://oaa-ontology.org/v6/ea-msft/",
+    "ea-core": "https://oaa-ontology.org/v6/ea-core/",
+    "ea-ai": "https://oaa-ontology.org/v6/ea-ai/"
+  },
+  "@id": "https://oaa-ontology.org/v6/ea-msft/schema",
+  "@type": "owl:Ontology",
+  "name": "Microsoft Cloud Platform Enterprise Architecture Ontology",
+  "description": "Microsoft-specific cloud platform ontology covering Azure resources, Power Platform, Microsoft 365, Azure Well-Architected Framework (WAF) pillars, and Azure AI service bindings. Extends EA-CORE-ONT with Microsoft cloud implementation details and imports EA-AI-ONT for vendor-neutral AI/ML entities. Designed for future parallel extensions (EA-AWS-ONT, EA-GCP-ONT).",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.1.0",
+  "oaa:domain": "Microsoft Cloud Architecture",
+  "oaa:status": "Production",
+  "dateCreated": "2026-02-09",
+  "dateModified": "2026-03-04",
+  "creator": {
+    "@type": "Organization",
+    "name": "Azlan EA-AAA"
+  },
+  "oaa:imports": [
+    {
+      "@id": "ea-core:schema",
+      "name": "EA-CORE-ONT",
+      "version": "1.0.0",
+      "description": "Platform-agnostic EA core providing Application, TechnologyArchitecture, SecurityArchitecture, and BusinessCapability base types",
+      "importedEntities": [
+        "ea-core:Application",
+        "ea-core:TechnologyArchitecture",
+        "ea-core:SecurityArchitecture",
+        "ea-core:BusinessCapability"
+      ]
+    },
+    {
+      "@id": "ea-ai:schema",
+      "name": "EA-AI-ONT",
+      "version": "1.0.0",
+      "description": "Vendor-neutral AI/ML architecture ontology providing AIWorkload, AIAgent, RAGSystem, and ResponsibleAIControl base types for Azure AI service bindings",
+      "importedEntities": [
+        "ea-ai:AIWorkload",
+        "ea-ai:AIAgent",
+        "ea-ai:RAGSystem",
+        "ea-ai:AIArchitecturePattern",
+        "ea-ai:ResponsibleAIControl",
+        "ea-ai:ModelRegistry"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-EA-MSFT-001",
+      "name": "Application-to-Azure Hosting",
+      "description": "EA-CORE applications are hosted on Microsoft cloud platform resources",
+      "joinPath": "ea-core:Application -> ea-msft:hostedOnPlatform -> ea-msft:CloudPlatform",
+      "useCase": "Application portfolio cloud migration tracking"
+    },
+    {
+      "patternId": "JP-EA-MSFT-002",
+      "name": "WAF Assessment Bridge",
+      "description": "EA-CORE applications are assessed against WAF pillars for architecture quality",
+      "joinPath": "ea-core:Application -> ea-msft:assessedByPillar -> ea-msft:WAFPillar",
+      "useCase": "Well-Architected Framework compliance reporting"
+    },
+    {
+      "patternId": "JP-EA-MSFT-003",
+      "name": "Azure AI Service Binding",
+      "description": "Vendor-neutral AI workloads are bound to specific Azure AI services for deployment",
+      "joinPath": "ea-ai:AIWorkload -> ea-msft:deployedOnAzureAI -> ea-msft:AzureAIService",
+      "useCase": "Azure AI workload deployment tracking and cost management"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "ea-msft:CloudPlatform",
+      "@type": "rdfs:Class",
+      "name": "CloudPlatform",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A cloud provider platform (Microsoft Azure, future: AWS, GCP) that hosts enterprise applications and services. CloudPlatform is the root anchor for platform-specific resource hierarchies.",
+      "oaa:properties": [
+        {
+          "name": "provider",
+          "type": "ea-msft:CloudProvider",
+          "required": true,
+          "description": "Cloud provider identity"
+        },
+        {
+          "name": "regions",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Available deployment regions"
+        }
+      ]
+    },
+    {
+      "@id": "ea-msft:AzureResource",
+      "@type": "rdfs:Class",
+      "name": "AzureResource",
+      "rdfs:subClassOf": "ea-msft:CloudPlatform",
+      "description": "Base class for all Azure cloud resources, representing any Azure Resource Manager (ARM) managed entity. Provides common Azure properties including resource ID, region, SKU tier, and tags.",
+      "oaa:properties": [
+        {
+          "name": "resourceId",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Azure Resource Manager unique identifier"
+        },
+        {
+          "name": "region",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Azure deployment region (e.g., uksouth, northeurope)"
+        },
+        {
+          "name": "skuTier",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Azure service tier (Free, Basic, Standard, Premium)"
+        },
+        {
+          "name": "tags",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Azure resource tags for governance and cost tracking"
+        }
+      ]
+    },
+    {
+      "@id": "ea-msft:AzureSubscription",
+      "@type": "rdfs:Class",
+      "name": "AzureSubscription",
+      "rdfs:subClassOf": "ea-msft:AzureResource",
+      "description": "Azure billing and access control boundary that contains resource groups and resources. Subscriptions are the primary unit of Azure cost management and RBAC scope."
+    },
+    {
+      "@id": "ea-msft:AzureResourceGroup",
+      "@type": "rdfs:Class",
+      "name": "AzureResourceGroup",
+      "rdfs:subClassOf": "ea-msft:AzureResource",
+      "description": "Logical container for Azure resources that share the same lifecycle, permissions, and policies. Resource groups are deployed to a specific Azure region."
+    },
+    {
+      "@id": "ea-msft:AzureLandingZone",
+      "@type": "rdfs:Class",
+      "name": "AzureLandingZone",
+      "rdfs:subClassOf": "ea-msft:AzureResource",
+      "description": "Pre-configured Azure environment following Cloud Adoption Framework (CAF) best practices with identity, networking, governance, and security foundations in place."
+    },
+    {
+      "@id": "ea-msft:PowerPlatform",
+      "@type": "rdfs:Class",
+      "name": "PowerPlatform",
+      "rdfs:subClassOf": "ea-msft:AzureResource",
+      "description": "Microsoft Power Platform low-code application development environment including Power Apps, Power Automate, Power BI, and Power Pages for citizen developer and professional developer scenarios."
+    },
+    {
+      "@id": "ea-msft:Microsoft365",
+      "@type": "rdfs:Class",
+      "name": "Microsoft365",
+      "rdfs:subClassOf": "ea-msft:AzureResource",
+      "description": "Microsoft 365 productivity and collaboration suite including Teams, SharePoint, Exchange, OneDrive, and associated services providing the digital workplace foundation."
+    },
+    {
+      "@id": "ea-msft:WAFPillar",
+      "@type": "rdfs:Class",
+      "name": "WAFPillar",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "description": "A foundational pillar of the Azure Well-Architected Framework. The five pillars (Reliability, Security, Cost Optimization, Operational Excellence, Performance Efficiency) provide a structured approach to architecture quality assessment.",
+      "oaa:properties": [
+        {
+          "name": "pillarName",
+          "type": "ea-msft:WAFPillarName",
+          "required": true,
+          "description": "Pillar identification"
+        },
+        {
+          "name": "pillarOrder",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Display order (1-5)"
+        },
+        {
+          "name": "keyGoals",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Primary goals for this pillar"
+        },
+        {
+          "name": "azureServices",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Key Azure services supporting this pillar"
+        }
+      ]
+    },
+    {
+      "@id": "ea-msft:DesignPrinciple",
+      "@type": "rdfs:Class",
+      "name": "DesignPrinciple",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "description": "A guiding principle from the Azure Well-Architected Framework that informs architecture decisions within a specific pillar (e.g., Design for Failure, Defense in Depth, Zero Trust, Infrastructure as Code)."
+    },
+    {
+      "@id": "ea-msft:AssessmentCriterion",
+      "@type": "rdfs:Class",
+      "name": "AssessmentCriterion",
+      "rdfs:subClassOf": "schema:QuantitativeValue",
+      "description": "A measurable criterion for architecture assessment against WAF pillars with defined units of measurement (e.g., RTO in minutes, Secure Score as percentage, P95 Latency in milliseconds).",
+      "oaa:properties": [
+        {
+          "name": "unitCode",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Unit of measurement (MIN, HUR, P1, SEC, DAY)"
+        },
+        {
+          "name": "targetValue",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Target threshold for this criterion"
+        }
+      ]
+    },
+    {
+      "@id": "ea-msft:AzureAIService",
+      "@type": "rdfs:Class",
+      "name": "AzureAIService",
+      "rdfs:subClassOf": "ea-msft:AzureResource",
+      "description": "An Azure AI service resource providing AI/ML capabilities (Azure OpenAI, Azure AI Search, Azure ML, Azure AI Studio, Azure AI Content Safety). Binds vendor-neutral ea-ai:AIWorkload entities to Azure-specific deployments with resource IDs, endpoints, and SKUs.",
+      "oaa:properties": [
+        {
+          "name": "azureAIServiceType",
+          "type": "ea-msft:AzureAIServiceType",
+          "required": true,
+          "description": "Type of Azure AI service"
+        },
+        {
+          "name": "endpoint",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Azure AI service endpoint URL"
+        },
+        {
+          "name": "modelDeployment",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Model deployment name within the Azure AI service"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "ea-msft:hostedOnPlatform",
+      "@type": "owl:ObjectProperty",
+      "name": "hostedOnPlatform",
+      "description": "An EA-CORE application is hosted on a cloud platform, establishing the runtime environment for cross-platform portfolio analysis",
+      "domainIncludes": [
+        "ea-core:Application"
+      ],
+      "rangeIncludes": [
+        "ea-msft:CloudPlatform"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "EA-CORE-ONT"
+    },
+    {
+      "@id": "ea-msft:belongsToSubscription",
+      "@type": "owl:ObjectProperty",
+      "name": "belongsToSubscription",
+      "description": "An Azure resource belongs to exactly one Azure subscription for billing and access control governance",
+      "domainIncludes": [
+        "ea-msft:AzureResource"
+      ],
+      "rangeIncludes": [
+        "ea-msft:AzureSubscription"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ea-msft:containsResource",
+      "@type": "owl:ObjectProperty",
+      "name": "containsResource",
+      "description": "An Azure resource group contains one or more Azure resources that share the same lifecycle and governance policies",
+      "domainIncludes": [
+        "ea-msft:AzureResourceGroup"
+      ],
+      "rangeIncludes": [
+        "ea-msft:AzureResource"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ea-msft:assessedByPillar",
+      "@type": "owl:ObjectProperty",
+      "name": "assessedByPillar",
+      "description": "An EA-CORE application is assessed against WAF pillars for architecture quality scoring and improvement planning",
+      "domainIncludes": [
+        "ea-core:Application"
+      ],
+      "rangeIncludes": [
+        "ea-msft:WAFPillar"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "EA-CORE-ONT"
+    },
+    {
+      "@id": "ea-msft:belongsToPillar",
+      "@type": "owl:ObjectProperty",
+      "name": "belongsToPillar",
+      "description": "A WAF design principle belongs to exactly one WAF pillar, establishing the principle-to-pillar taxonomy",
+      "domainIncludes": [
+        "ea-msft:DesignPrinciple"
+      ],
+      "rangeIncludes": [
+        "ea-msft:WAFPillar"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ea-msft:measuresPillar",
+      "@type": "owl:ObjectProperty",
+      "name": "measuresPillar",
+      "description": "An assessment criterion measures a specific WAF pillar, providing quantifiable metrics for architecture quality",
+      "domainIncludes": [
+        "ea-msft:AssessmentCriterion"
+      ],
+      "rangeIncludes": [
+        "ea-msft:WAFPillar"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ea-msft:providedByPlatform",
+      "@type": "owl:ObjectProperty",
+      "name": "providedByPlatform",
+      "description": "An Azure resource is provided by the Microsoft cloud platform, anchoring all Azure resources to the platform root",
+      "domainIncludes": [
+        "ea-msft:AzureResource"
+      ],
+      "rangeIncludes": [
+        "ea-msft:CloudPlatform"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ea-msft:governedByLandingZone",
+      "@type": "owl:ObjectProperty",
+      "name": "governedByLandingZone",
+      "description": "An Azure subscription is governed by a landing zone providing pre-configured governance, networking, and security foundations",
+      "domainIncludes": [
+        "ea-msft:AzureSubscription"
+      ],
+      "rangeIncludes": [
+        "ea-msft:AzureLandingZone"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ea-msft:deployedOnAzureAI",
+      "@type": "owl:ObjectProperty",
+      "name": "deployedOnAzureAI",
+      "description": "A vendor-neutral AI workload is deployed on a specific Azure AI service, binding abstract AI architecture to Azure infrastructure",
+      "domainIncludes": [
+        "ea-ai:AIWorkload"
+      ],
+      "rangeIncludes": [
+        "ea-msft:AzureAIService"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "EA-AI-ONT"
+    }
+  ],
+  "enumerations": [
+    {
+      "@id": "ea-msft:CloudProvider",
+      "@type": "DefinedTermSet",
+      "name": "CloudProvider",
+      "description": "Cloud platform providers. Microsoft is implemented; AWS and GCP reserved for future EA-AWS-ONT and EA-GCP-ONT extensions.",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-msft:provider/microsoft",
+          "name": "Microsoft",
+          "description": "Microsoft Azure, Power Platform, Microsoft 365"
+        },
+        {
+          "@id": "ea-msft:provider/aws",
+          "name": "AWS",
+          "description": "Amazon Web Services (future EA-AWS-ONT)"
+        },
+        {
+          "@id": "ea-msft:provider/gcp",
+          "name": "GCP",
+          "description": "Google Cloud Platform (future EA-GCP-ONT)"
+        }
+      ]
+    },
+    {
+      "@id": "ea-msft:WAFPillarName",
+      "@type": "DefinedTermSet",
+      "name": "WAFPillarName",
+      "description": "The five pillars of the Azure Well-Architected Framework",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-msft:waf/reliability",
+          "name": "Reliability",
+          "description": "System recovery from failures and continued function"
+        },
+        {
+          "@id": "ea-msft:waf/security",
+          "name": "Security",
+          "description": "Protect applications and data from threats"
+        },
+        {
+          "@id": "ea-msft:waf/cost-optimization",
+          "name": "CostOptimization",
+          "description": "Manage costs to maximise delivered value"
+        },
+        {
+          "@id": "ea-msft:waf/operational-excellence",
+          "name": "OperationalExcellence",
+          "description": "Operations processes for production systems"
+        },
+        {
+          "@id": "ea-msft:waf/performance-efficiency",
+          "name": "PerformanceEfficiency",
+          "description": "System ability to adapt to load changes"
+        }
+      ]
+    },
+    {
+      "@id": "ea-msft:AzureAIServiceType",
+      "@type": "DefinedTermSet",
+      "name": "AzureAIServiceType",
+      "description": "Types of Azure AI services for AI workload deployment",
+      "hasDefinedTerm": [
+        {
+          "@id": "ea-msft:azure-ai/openai",
+          "name": "AzureOpenAI",
+          "description": "Azure OpenAI Service for GPT, DALL-E, and Whisper models"
+        },
+        {
+          "@id": "ea-msft:azure-ai/ai-search",
+          "name": "AzureAISearch",
+          "description": "Azure AI Search for vector and hybrid search"
+        },
+        {
+          "@id": "ea-msft:azure-ai/ml",
+          "name": "AzureML",
+          "description": "Azure Machine Learning for model training and deployment"
+        },
+        {
+          "@id": "ea-msft:azure-ai/ai-studio",
+          "name": "AzureAIStudio",
+          "description": "Azure AI Studio for prompt engineering and evaluation"
+        },
+        {
+          "@id": "ea-msft:azure-ai/content-safety",
+          "name": "AzureContentSafety",
+          "description": "Azure AI Content Safety for responsible AI controls"
+        },
+        {
+          "@id": "ea-msft:azure-ai/document-intelligence",
+          "name": "AzureDocumentIntelligence",
+          "description": "Azure AI Document Intelligence for document processing"
+        }
+      ]
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "ea-msft:BR-MSFT-001",
+      "name": "AzureResourceSubscriptionMembership",
+      "description": "Every Azure resource must belong to exactly one subscription for billing and governance",
+      "condition": "IF ea-msft:AzureResource exists",
+      "action": "THEN it MUST have exactly one ea-msft:belongsToSubscription relationship to an ea-msft:AzureSubscription",
+      "severity": "error",
+      "appliesTo": [
+        "ea-msft:AzureResource"
+      ]
+    },
+    {
+      "@id": "ea-msft:BR-MSFT-002",
+      "name": "WAFPillarCompleteness",
+      "description": "Each WAF pillar must have at least one design principle and one assessment criterion for actionable guidance",
+      "condition": "IF ea-msft:WAFPillar exists",
+      "action": "THEN it MUST be referenced by at least one ea-msft:DesignPrinciple via belongsToPillar AND one ea-msft:AssessmentCriterion via measuresPillar",
+      "severity": "error",
+      "appliesTo": [
+        "ea-msft:WAFPillar"
+      ]
+    },
+    {
+      "@id": "ea-msft:BR-MSFT-006",
+      "name": "LandingZoneSubscriptionGovernance",
+      "description": "Landing zones must govern at least one subscription to justify their configuration",
+      "condition": "IF ea-msft:AzureLandingZone exists",
+      "action": "THEN it MUST be referenced by at least one ea-msft:AzureSubscription via ea-msft:governedByLandingZone",
+      "severity": "warning",
+      "appliesTo": [
+        "ea-msft:AzureLandingZone"
+      ]
+    },
+    {
+      "@id": "ea-msft:BR-MSFT-007",
+      "name": "DesignPrinciplePillarAssignment",
+      "description": "Design principles must belong to exactly one WAF pillar for clear categorisation",
+      "condition": "IF ea-msft:DesignPrinciple exists",
+      "action": "THEN it MUST have exactly one ea-msft:belongsToPillar relationship to an ea-msft:WAFPillar",
+      "severity": "error",
+      "appliesTo": [
+        "ea-msft:DesignPrinciple"
+      ]
+    },
+    {
+      "@id": "ea-msft:BR-MSFT-008",
+      "name": "MicrosoftPlatformWAFAssessment",
+      "description": "Microsoft cloud platforms should have WAF assessment coverage for architecture quality governance",
+      "condition": "IF ea-msft:CloudPlatform has provider 'Microsoft'",
+      "action": "THEN applications hosted on it SHOULD be assessed against at least one ea-msft:WAFPillar",
+      "severity": "warning",
+      "appliesTo": [
+        "ea-msft:CloudPlatform"
+      ]
+    },
+    {
+      "@id": "ea-msft:BR-MSFT-009",
+      "name": "AzureAIServiceEndpoint",
+      "description": "Azure AI services must specify an endpoint for connectivity",
+      "condition": "IF ea-msft:AzureAIService exists",
+      "action": "THEN it SHOULD have a non-empty endpoint property",
+      "severity": "warning",
+      "appliesTo": [
+        "ea-msft:AzureAIService"
+      ]
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.1.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-03-04",
+    "modifiedBy": "Azlan EA-AAA",
+    "changeNotes": "v1.1.0: AI entity extraction to EA-AI-ONT. Removed 5 AI entities (AIWorkload, AIAgent, RAGSystem, AIArchitecturePattern, ResponsibleAIControl), 4 AI relationships (usesModel, hasTools, implementsPattern, securedByControl), 2 AI enumerations (AIPatternType, ResponsibleAICategory), 3 AI business rules (BR-MSFT-003/004/005). Added EA-AI-ONT import. Added AzureAIService entity and deployedOnAzureAI relationship for Azure-specific AI service bindings. Added AzureAIServiceType enumeration. 11 entities, 9 relationships, 6 business rules, 3 enumerations.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-02-09",
+        "notes": "Initial release: Microsoft cloud platform ontology from V3 source consolidation"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-03-04",
+        "notes": "AI entity extraction to EA-AI-ONT. Added EA-AI import, AzureAIService entity, deployedOnAzureAI relationship. Phase 2 of EA Sub-Series Restructure."
+      }
+    ]
+  },
+  "oaa:ontologyId": "EA-MSFT-ONT",
+  "oaa:series": "PE-Series",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of CloudPlatform within this ontology?",
+      "targetEntities": ["ea-msft:CloudPlatform"],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of AzureResource within this ontology?",
+      "targetEntities": ["ea-msft:AzureResource"],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of AzureSubscription within this ontology?",
+      "targetEntities": ["ea-msft:AzureSubscription"],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of AzureResourceGroup within this ontology?",
+      "targetEntities": ["ea-msft:AzureResourceGroup"],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of AzureLandingZone within this ontology?",
+      "targetEntities": ["ea-msft:AzureLandingZone"],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of PowerPlatform within this ontology?",
+      "targetEntities": ["ea-msft:PowerPlatform"],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of Microsoft365 within this ontology?",
+      "targetEntities": ["ea-msft:Microsoft365"],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of WAFPillar within this ontology?",
+      "targetEntities": ["ea-msft:WAFPillar"],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of DesignPrinciple within this ontology?",
+      "targetEntities": ["ea-msft:DesignPrinciple"],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of AssessmentCriterion within this ontology?",
+      "targetEntities": ["ea-msft:AssessmentCriterion"],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What Azure AI services are available and what AI workloads are deployed on them?",
+      "targetEntities": ["ea-msft:AzureAIService"],
+      "targetRelationships": ["ea-msft:deployedOnAzureAI"],
+      "targetRules": ["ea-msft:BR-MSFT-009"]
+    }
+  ]
+}

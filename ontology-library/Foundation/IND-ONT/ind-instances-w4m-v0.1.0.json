@@ -1,0 +1,260 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ind": "https://oaa-ontology.org/v6/individual-types/",
+    "rrr": "https://oaa-ontology.org/v5/rrr/",
+    "org": "https://oaa-ontology.org/v5/organization/",
+    "vp": "https://oaa-ontology.org/v5/value-proposition/"
+  },
+  "@type": "InstanceDataSet",
+  "@id": "ind:instances:w4m-v0.1",
+  "metadata": {
+    "name": "W4M SaaS/EA Individual Types — Instance Data",
+    "version": "0.1.0",
+    "status": "prototype",
+    "parentSchema": "ind-v1.0.0-oaa-v6.json",
+    "owningInstance": "PFI-W4M",
+    "domain": "SaaS / Enterprise Architecture",
+    "description": "Individual type instances for W4M platform. B2B enterprise buyers, B2C freelance consultants, and B2B2C resellers/partners. Cross-refs: EA-CORE-ONT, EA-TOGAF-ONT, PPM-ONT.",
+    "dateCreated": "2026-02-20",
+    "individualCount": 5
+  },
+  "examples": [
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:w4m-ea-director",
+      "indTypeId": "ind:w4m-ea-director",
+      "name": "Enterprise Architecture Director",
+      "channel": "B2B",
+      "typeCategory": "B2B_Executive",
+      "description": "Senior leader responsible for EA strategy, TOGAF adoption, architecture repository, and technology roadmap. Subclasses RRR CTO. Drives platform procurement for EA tooling.",
+      "motivations": "Architecture coherence, TOGAF compliance, stakeholder alignment, technology roadmap, cost rationalisation",
+      "painSummary": "Tool fragmentation, stakeholder engagement, architecture debt, repository stagnation, proving EA value",
+      "decisionStyle": "Consensus",
+      "budgetAuthority": "Approver",
+      "typicalEngagement": "Relational",
+      "vpStakeholderType": "DecisionMaker",
+      "rrrSubclass": "rrr:CTO", "rrrSeniorityLevel": 2,
+      "relationships": {
+        "hasQualifier": ["ind:q-ead-firmographic-01", "ind:q-ead-behavioral-01"],
+        "hasIndustryProfile": ["ind:ip-ead-saas"],
+        "hasPurchaseBehaviour": "ind:pb-ead-saas",
+        "subclassesRRRRole": "rrr:CTO",
+        "hasOrgRelation": "org:Enterprise",
+        "populatesICP": ["vp:icp-w4m-ea-leader"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-ead-firmographic-01",
+      "qualifierId": "ind:q-ead-firmographic-01", "criteriaType": "Firmographic",
+      "criteriaName": "orgSize", "operator": "greaterThan", "value": "500", "weight": 0.8
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-ead-behavioral-01",
+      "qualifierId": "ind:q-ead-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "togafAdoption", "operator": "contains", "value": "TOGAF-9,TOGAF-10,ArchiMate", "weight": 0.7
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-ead-saas",
+      "profileId": "ind:ip-ead-saas", "industry": "SaaS / Enterprise Architecture",
+      "industrySegment": "EA Tooling & Governance", "owningInstance": "PFI-W4M",
+      "typicalBudgetRange": "50k-500k/yr (platform + consulting)",
+      "purchaseFrequency": "Annual renewal + project-based",
+      "seasonality": "Budget cycle Q4; transformation programmes drive mid-year",
+      "regulatoryContext": "SOX (if listed), ITIL, TOGAF certification",
+      "industrySpecificTraits": "Repository-centric. Values ArchiMate modelling. Needs C-level dashboards. Integration with ServiceNow/Jira critical."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-ead-saas",
+      "behaviourId": "ind:pb-ead-saas", "buyerJourneyType": "Researched",
+      "decisionTimeframe": "3-9 months (enterprise procurement)",
+      "influencers": "Gartner MQ, Forrester Wave, peer EA directors, TOGAF community, vendor POCs",
+      "trustSignals": "Analyst recognition, enterprise references, security certifications, API extensibility",
+      "priceElasticity": "Medium", "channelPreference": "Vendor direct, Gartner referral, conference demo"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:w4m-solution-architect",
+      "indTypeId": "ind:w4m-solution-architect",
+      "name": "Solution Architect",
+      "channel": "B2B",
+      "typeCategory": "B2B_Technical",
+      "description": "Hands-on architect designing solutions within the EA framework. Subclasses RRR Architect. Primary daily user of EA tooling — builds models, maps dependencies, validates designs.",
+      "motivations": "Modelling efficiency, pattern reuse, dependency mapping, design compliance, collaboration",
+      "painSummary": "Manual model maintenance, tool learning curve, versioning complexity, cross-team collaboration friction",
+      "decisionStyle": "Analytical",
+      "budgetAuthority": "Recommender",
+      "typicalEngagement": "Relational",
+      "vpStakeholderType": "PrimaryUser",
+      "rrrSubclass": "rrr:Architect", "rrrSeniorityLevel": 3,
+      "relationships": {
+        "hasQualifier": ["ind:q-sa-w4m-behavioral-01"],
+        "hasIndustryProfile": ["ind:ip-sa-w4m-saas"],
+        "hasPurchaseBehaviour": "ind:pb-sa-w4m-saas",
+        "subclassesRRRRole": "rrr:Architect",
+        "hasOrgRelation": "org:Enterprise",
+        "populatesICP": ["vp:icp-w4m-practitioner"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-sa-w4m-behavioral-01",
+      "qualifierId": "ind:q-sa-w4m-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "weeklyModellingHours", "operator": "greaterThan", "value": "10", "weight": 0.8
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-sa-w4m-saas",
+      "profileId": "ind:ip-sa-w4m-saas", "industry": "SaaS / Enterprise Architecture",
+      "industrySegment": "Architecture Modelling", "owningInstance": "PFI-W4M",
+      "typicalBudgetRange": "Per-seat licensing 500-5000/yr",
+      "purchaseFrequency": "Annual renewal",
+      "regulatoryContext": "TOGAF certification, ArchiMate 3.x",
+      "industrySpecificTraits": "Daily tool user. Values keyboard shortcuts, ArchiMate compliance, Git integration, view generation."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-sa-w4m-saas",
+      "behaviourId": "ind:pb-sa-w4m-saas", "buyerJourneyType": "Researched",
+      "decisionTimeframe": "2-4 weeks (influenced by EA Director decision)",
+      "influencers": "EA Director, peer architects, online reviews, community forums",
+      "trustSignals": "ArchiMate compliance, UX quality, collaboration features, API/export capabilities",
+      "priceElasticity": "High", "channelPreference": "Free trial, community, peer recommendation"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:w4m-programme-manager",
+      "indTypeId": "ind:w4m-programme-manager",
+      "name": "Programme / Portfolio Manager",
+      "channel": "B2B",
+      "typeCategory": "B2B_Management",
+      "description": "Manager overseeing transformation programmes that consume EA outputs. Subclasses RRR ProgrammeManager. Needs architecture views for initiative planning, dependency tracking, and portfolio alignment.",
+      "motivations": "Initiative alignment, dependency visibility, resource planning, progress tracking, benefits realisation",
+      "painSummary": "Architecture-programme disconnect, dependency blindness, stale capability models, manual reporting",
+      "decisionStyle": "Pragmatic",
+      "budgetAuthority": "Influencer",
+      "typicalEngagement": "Project",
+      "vpStakeholderType": "UserBuyer",
+      "rrrSubclass": "rrr:ProgrammeManager", "rrrSeniorityLevel": 3,
+      "relationships": {
+        "hasQualifier": ["ind:q-pm-behavioral-01"],
+        "hasIndustryProfile": ["ind:ip-pm-saas"],
+        "hasPurchaseBehaviour": "ind:pb-pm-saas",
+        "subclassesRRRRole": "rrr:ProgrammeManager",
+        "hasOrgRelation": "org:Enterprise",
+        "populatesICP": ["vp:icp-w4m-consumer"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-pm-behavioral-01",
+      "qualifierId": "ind:q-pm-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "architectureConsumptionFrequency", "operator": "greaterThan", "value": "weekly", "weight": 0.7
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-pm-saas",
+      "profileId": "ind:ip-pm-saas", "industry": "SaaS / Enterprise Architecture",
+      "industrySegment": "Programme & Portfolio Management", "owningInstance": "PFI-W4M",
+      "typicalBudgetRange": "Viewer/consumer seat 200-1000/yr",
+      "purchaseFrequency": "Annual renewal (bundled with EA platform)",
+      "regulatoryContext": "MSP/MoP certification, P3O, PRINCE2",
+      "industrySpecificTraits": "Reads architecture, doesn't build it. Values roadmap views, dependency maps, executive summaries."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-pm-saas",
+      "behaviourId": "ind:pb-pm-saas", "buyerJourneyType": "Advised",
+      "decisionTimeframe": "Part of EA platform procurement",
+      "influencers": "EA Director recommendation, PMO standards, project dependencies",
+      "trustSignals": "Easy onboarding, intuitive views, Jira/Azure DevOps integration, export to PPT",
+      "priceElasticity": "High", "channelPreference": "EA Director referral, internal adoption"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:w4m-freelance-consultant",
+      "indTypeId": "ind:w4m-freelance-consultant",
+      "name": "Freelance EA Consultant",
+      "channel": "B2C",
+      "typeCategory": "B2C_Professional",
+      "description": "Independent EA practitioner operating without permanent org affiliation. Uses platform for client engagements. Standalone — no org relation.",
+      "motivations": "Client deliverables, personal brand, tool portability, competitive pricing, TOGAF credential leverage",
+      "painSummary": "Licence cost (no enterprise discount), data portability between clients, credential proof, multi-client workspace",
+      "decisionStyle": "Pragmatic",
+      "budgetAuthority": "Owner",
+      "typicalEngagement": "Project",
+      "vpStakeholderType": "PrimaryUser",
+      "rrrSubclass": null, "rrrSeniorityLevel": null,
+      "relationships": {
+        "hasQualifier": ["ind:q-fc-behavioral-01"],
+        "hasIndustryProfile": ["ind:ip-fc-saas"],
+        "hasPurchaseBehaviour": "ind:pb-fc-saas",
+        "populatesICP": ["vp:icp-w4m-freelance"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-fc-behavioral-01",
+      "qualifierId": "ind:q-fc-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "activeClientCount", "operator": "greaterThan", "value": "1", "weight": 0.8
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-fc-saas",
+      "profileId": "ind:ip-fc-saas", "industry": "SaaS / Enterprise Architecture",
+      "industrySegment": "Independent Consulting", "owningInstance": "PFI-W4M",
+      "typicalBudgetRange": "Personal licence 500-2000/yr",
+      "purchaseFrequency": "Annual or monthly",
+      "regulatoryContext": "TOGAF certification, professional indemnity insurance",
+      "industrySpecificTraits": "Price-sensitive. Values multi-tenant workspace. Needs client data isolation. Often trial-to-paid conversion."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-fc-saas",
+      "behaviourId": "ind:pb-fc-saas", "buyerJourneyType": "Researched",
+      "decisionTimeframe": "1-2 weeks",
+      "influencers": "Peer consultants, LinkedIn community, TOGAF forums, client requirements",
+      "trustSignals": "Free tier, data export, client workspace isolation, professional references",
+      "priceElasticity": "High", "channelPreference": "Free trial, community, LinkedIn, TOGAF events"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:w4m-reseller-partner",
+      "indTypeId": "ind:w4m-reseller-partner",
+      "name": "Technology Reseller / SI Partner",
+      "channel": "B2B2C",
+      "typeCategory": "B2B2C_Reseller",
+      "description": "Systems integrator or VAR that bundles W4M platform into client transformation programmes. Intermediary between platform and end-customer.",
+      "motivations": "Margin, client stickiness, solution differentiation, partner tier advancement, training revenue",
+      "painSummary": "Partner enablement, demo environments, deal registration, white-label needs, commission tracking",
+      "decisionStyle": "Commercial",
+      "budgetAuthority": "Intermediary",
+      "typicalEngagement": "Relational",
+      "vpStakeholderType": "ChannelPartner",
+      "rrrSubclass": null, "rrrSeniorityLevel": null,
+      "relationships": {
+        "hasQualifier": ["ind:q-rp-firmographic-01"],
+        "hasIndustryProfile": ["ind:ip-rp-saas"],
+        "hasPurchaseBehaviour": "ind:pb-rp-saas",
+        "populatesICP": ["vp:icp-w4m-partner"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-rp-firmographic-01",
+      "qualifierId": "ind:q-rp-firmographic-01", "criteriaType": "Firmographic",
+      "criteriaName": "partnerType", "operator": "contains", "value": "SI,VAR,Consultancy,MSP", "weight": 1.0
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-rp-saas",
+      "profileId": "ind:ip-rp-saas", "industry": "SaaS / Enterprise Architecture",
+      "industrySegment": "Channel / Partner", "owningInstance": "PFI-W4M",
+      "typicalBudgetRange": "Volume licensing 10k-500k/yr (resold)",
+      "purchaseFrequency": "Deal-driven + annual agreements",
+      "regulatoryContext": "Partner agreement terms, data processing addendum",
+      "industrySpecificTraits": "Values partner portal, demo environments, co-branded materials, deal registration, training certification."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-rp-saas",
+      "behaviourId": "ind:pb-rp-saas", "buyerJourneyType": "Subscription",
+      "decisionTimeframe": "Partner onboarding 2-4 weeks; deals per client 1-3 months",
+      "influencers": "Vendor partner team, existing clients, analyst reports, competitive positioning",
+      "trustSignals": "Partner margin structure, enablement investment, co-selling support, product roadmap transparency",
+      "priceElasticity": "Medium", "channelPreference": "Partner portal, vendor account manager, partner events"
+    }
+  ]
+}

@@ -1,0 +1,922 @@
+{
+  "$comment": "EFS Ontology Template v1.0.0 - Generic template for Epic-Features-Stories ontology creation",
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "efs": "https://platformcore.io/ontology/efs/",
+    "vsom": "https://platformcore.io/ontology/vsom/",
+    "pmf": "https://platformcore.io/ontology/pmf/",
+    "gtm": "https://platformcore.io/ontology/gtm/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+  },
+  "@id": "{{NAMESPACE}}:{{ONTOLOGY_NAME}}Ontology",
+  "@type": "DefinedTermSet",
+  "name": "{{PRODUCT_NAME}} EFS Ontology",
+  "description": "Epic-Features-Stories ontology for {{PRODUCT_DESCRIPTION}}",
+  "version": "1.0.0",
+  "dateCreated": "{{YYYY-MM-DD}}",
+  "creator": {
+    "@type": "Organization",
+    "@id": "{{ORG_NAMESPACE}}:{{ORG_ID}}",
+    "name": "{{ORGANIZATION_NAME}}"
+  },
+
+  "efs:domainContext": {
+    "@type": "DefinedTerm",
+    "name": "Domain Context",
+    "description": "Defines the domain scope and integration points for this EFS instance",
+    "efs:productInstance": "{{PF_INSTANCE_ID}}",
+    "efs:upstreamOntologies": ["vsom:VSOM", "pmf:ValueProposition"],
+    "efs:downstreamOntologies": ["gtm:GoToMarket"],
+    "efs:parallelOntologies": ["pmf:ProductMarketFit"]
+  },
+
+  "hasDefinedTerm": [
+    {
+      "@id": "efs:BacklogItem",
+      "@type": "Class",
+      "name": "Backlog Item",
+      "description": "Abstract base class for all specification items in the product backlog hierarchy",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "skos:note": "Foundation class - Epic, Feature, Story inherit from this",
+      "efs:moduleBinding": ["efs:BacklogManagement"],
+      "efs:properties": [
+        {
+          "@id": "efs:backlogItemId",
+          "@type": "PropertyValue",
+          "name": "Backlog Item ID",
+          "description": "Unique identifier within the backlog system",
+          "valueReference": "xsd:string",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:priority",
+          "@type": "PropertyValue",
+          "name": "Priority",
+          "description": "Relative importance for scheduling",
+          "valueReference": "efs:PriorityLevel",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:status",
+          "@type": "PropertyValue",
+          "name": "Status",
+          "description": "Current state in the workflow",
+          "valueReference": "efs:BacklogItemStatus",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:estimate",
+          "@type": "QuantitativeValue",
+          "name": "Estimate",
+          "description": "Effort estimation in chosen unit",
+          "efs:cardinality": "0:1"
+        },
+        {
+          "@id": "efs:valueScore",
+          "@type": "QuantitativeValue",
+          "name": "Value Score",
+          "description": "Quantified business value contribution",
+          "efs:cardinality": "0:1"
+        },
+        {
+          "@id": "efs:riskScore",
+          "@type": "QuantitativeValue",
+          "name": "Risk Score",
+          "description": "Implementation risk assessment",
+          "efs:cardinality": "0:1"
+        }
+      ]
+    },
+
+    {
+      "@id": "efs:Epic",
+      "@type": "Class",
+      "name": "Epic",
+      "description": "Large body of work decomposable into features; represents strategic initiative at product level",
+      "rdfs:subClassOf": "efs:BacklogItem",
+      "skos:broader": "schema:Project",
+      "efs:moduleBinding": ["efs:BacklogManagement", "efs:StrategicAlignment"],
+      "efs:integrationPoint": {
+        "vsom:StrategicObjective": "efs:alignsToObjective",
+        "vsom:StrategicInitiative": "efs:implementsInitiative"
+      },
+      "efs:properties": [
+        {
+          "@id": "efs:epicTheme",
+          "@type": "PropertyValue",
+          "name": "Epic Theme",
+          "description": "Strategic theme or capability area",
+          "valueReference": "efs:Theme",
+          "efs:cardinality": "0:1"
+        },
+        {
+          "@id": "efs:businessOutcome",
+          "@type": "PropertyValue",
+          "name": "Business Outcome",
+          "description": "Expected business result when epic is delivered",
+          "valueReference": "efs:Outcome",
+          "efs:cardinality": "1:N"
+        },
+        {
+          "@id": "efs:targetRelease",
+          "@type": "PropertyValue",
+          "name": "Target Release",
+          "description": "Planned release for epic completion",
+          "valueReference": "efs:Release",
+          "efs:cardinality": "0:1"
+        },
+        {
+          "@id": "efs:hasFeature",
+          "@type": "PropertyValue",
+          "name": "Has Features",
+          "description": "Features comprising this epic",
+          "valueReference": {
+            "@type": "ItemList",
+            "itemListElement": "efs:Feature"
+          },
+          "efs:cardinality": "1:N",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:hypotheses",
+          "@type": "PropertyValue",
+          "name": "Hypotheses",
+          "description": "Testable assumptions underlying the epic value",
+          "valueReference": {
+            "@type": "ItemList",
+            "itemListElement": "efs:Hypothesis"
+          },
+          "efs:cardinality": "0:N"
+        },
+        {
+          "@id": "efs:mvpScope",
+          "@type": "PropertyValue",
+          "name": "MVP Scope",
+          "description": "Minimum features required for initial value delivery",
+          "valueReference": {
+            "@type": "ItemList",
+            "itemListElement": "efs:Feature"
+          },
+          "efs:cardinality": "0:N"
+        }
+      ]
+    },
+
+    {
+      "@id": "efs:Feature",
+      "@type": "Class",
+      "name": "Feature",
+      "description": "Distinct functionality delivering user or business value; decomposable into stories",
+      "rdfs:subClassOf": "efs:BacklogItem",
+      "skos:broader": "schema:SoftwareApplication",
+      "efs:moduleBinding": ["efs:BacklogManagement", "efs:CapabilityDelivery"],
+      "efs:integrationPoint": {
+        "efs:Epic": "efs:belongsToEpic",
+        "pmf:ValueProposition": "efs:deliversValue",
+        "efs:Capability": "efs:enablesCapability"
+      },
+      "efs:properties": [
+        {
+          "@id": "efs:featureType",
+          "@type": "PropertyValue",
+          "name": "Feature Type",
+          "description": "Classification of feature purpose",
+          "valueReference": "efs:FeatureType",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:benefitHypothesis",
+          "@type": "PropertyValue",
+          "name": "Benefit Hypothesis",
+          "description": "Statement of expected benefit to validate",
+          "valueReference": "xsd:string",
+          "efs:cardinality": "0:1"
+        },
+        {
+          "@id": "efs:acceptanceCriteria",
+          "@type": "PropertyValue",
+          "name": "Acceptance Criteria",
+          "description": "Conditions for feature completion",
+          "valueReference": {
+            "@type": "ItemList",
+            "itemListElement": "efs:AcceptanceCriterion"
+          },
+          "efs:cardinality": "1:N",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:hasStory",
+          "@type": "PropertyValue",
+          "name": "Has Stories",
+          "description": "User stories implementing this feature",
+          "valueReference": {
+            "@type": "ItemList",
+            "itemListElement": "efs:UserStory"
+          },
+          "efs:cardinality": "1:N",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:enablesCapability",
+          "@type": "PropertyValue",
+          "name": "Enables Capability",
+          "description": "Business capability this feature supports",
+          "valueReference": "efs:Capability",
+          "efs:cardinality": "0:1"
+        },
+        {
+          "@id": "efs:technicalEnablers",
+          "@type": "PropertyValue",
+          "name": "Technical Enablers",
+          "description": "Technical work required to support this feature",
+          "valueReference": {
+            "@type": "ItemList",
+            "itemListElement": "efs:Enabler"
+          },
+          "efs:cardinality": "0:N"
+        }
+      ]
+    },
+
+    {
+      "@id": "efs:UserStory",
+      "@type": "Class",
+      "name": "User Story",
+      "description": "User-centric description of functionality from specific persona perspective",
+      "rdfs:subClassOf": "efs:BacklogItem",
+      "skos:broader": "schema:HowTo",
+      "efs:moduleBinding": ["efs:BacklogManagement", "efs:UserExperience"],
+      "efs:integrationPoint": {
+        "efs:Feature": "efs:belongsToFeature",
+        "efs:Persona": "efs:forPersona",
+        "pmf:CustomerSegment": "efs:targetsSegment"
+      },
+      "efs:properties": [
+        {
+          "@id": "efs:asA",
+          "@type": "PropertyValue",
+          "name": "As A",
+          "description": "The persona or role requesting this functionality",
+          "valueReference": "efs:Persona",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:iWant",
+          "@type": "PropertyValue",
+          "name": "I Want",
+          "description": "The desired functionality or capability",
+          "valueReference": "xsd:string",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:soThat",
+          "@type": "PropertyValue",
+          "name": "So That",
+          "description": "The benefit or value to be achieved",
+          "valueReference": "xsd:string",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:storyAcceptanceCriteria",
+          "@type": "PropertyValue",
+          "name": "Acceptance Criteria",
+          "description": "Specific conditions for story completion (Given-When-Then)",
+          "valueReference": {
+            "@type": "ItemList",
+            "itemListElement": "efs:AcceptanceCriterion"
+          },
+          "efs:cardinality": "1:N",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:storyPoints",
+          "@type": "QuantitativeValue",
+          "name": "Story Points",
+          "description": "Relative effort estimate",
+          "unitText": "points",
+          "efs:cardinality": "0:1"
+        },
+        {
+          "@id": "efs:hasTasks",
+          "@type": "PropertyValue",
+          "name": "Has Tasks",
+          "description": "Implementation tasks for this story",
+          "valueReference": {
+            "@type": "ItemList",
+            "itemListElement": "efs:Task"
+          },
+          "efs:cardinality": "0:N"
+        }
+      ]
+    },
+
+    {
+      "@id": "efs:Task",
+      "@type": "Class",
+      "name": "Task",
+      "description": "Smallest unit of work; implementation activity for a story",
+      "rdfs:subClassOf": "schema:Action",
+      "efs:moduleBinding": ["efs:ExecutionManagement"],
+      "efs:integrationPoint": {
+        "efs:UserStory": "efs:belongsToStory"
+      },
+      "efs:properties": [
+        {
+          "@id": "efs:taskType",
+          "@type": "PropertyValue",
+          "name": "Task Type",
+          "description": "Classification of task",
+          "valueReference": "efs:TaskType",
+          "efs:cardinality": "1:1"
+        },
+        {
+          "@id": "efs:estimatedHours",
+          "@type": "QuantitativeValue",
+          "name": "Estimated Hours",
+          "unitText": "hours",
+          "efs:cardinality": "0:1"
+        },
+        {
+          "@id": "efs:actualHours",
+          "@type": "QuantitativeValue",
+          "name": "Actual Hours",
+          "unitText": "hours",
+          "efs:cardinality": "0:1"
+        },
+        {
+          "@id": "efs:assignee",
+          "@type": "PropertyValue",
+          "name": "Assignee",
+          "valueReference": "schema:Person",
+          "efs:cardinality": "0:1"
+        }
+      ]
+    },
+
+    {
+      "@id": "efs:Hypothesis",
+      "@type": "Class",
+      "name": "Hypothesis",
+      "description": "Testable assumption about value delivery; core to lean/agile validation",
+      "rdfs:subClassOf": "schema:Claim",
+      "efs:moduleBinding": ["efs:ValueValidation"],
+      "efs:integrationPoint": {
+        "pmf:ProductMarketFit": "efs:validatesForPMF"
+      },
+      "efs:properties": [
+        {
+          "@id": "efs:hypothesisStatement",
+          "@type": "PropertyValue",
+          "name": "Hypothesis Statement",
+          "description": "We believe [this capability] will result in [this outcome]",
+          "valueReference": "xsd:string",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:validationMethod",
+          "@type": "PropertyValue",
+          "name": "Validation Method",
+          "description": "How hypothesis will be tested",
+          "valueReference": "efs:ValidationMethod",
+          "efs:cardinality": "1:1"
+        },
+        {
+          "@id": "efs:successCriteria",
+          "@type": "PropertyValue",
+          "name": "Success Criteria",
+          "description": "Measurable criteria for hypothesis validation",
+          "valueReference": {
+            "@type": "ItemList",
+            "itemListElement": "efs:AcceptanceCriterion"
+          },
+          "efs:cardinality": "1:N",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:validationStatus",
+          "@type": "PropertyValue",
+          "name": "Validation Status",
+          "description": "Current validation state",
+          "valueReference": "efs:ValidationStatus",
+          "efs:cardinality": "1:1"
+        },
+        {
+          "@id": "efs:learnings",
+          "@type": "PropertyValue",
+          "name": "Learnings",
+          "description": "Insights gained from validation",
+          "valueReference": "xsd:string",
+          "efs:cardinality": "0:1"
+        }
+      ]
+    },
+
+    {
+      "@id": "efs:Outcome",
+      "@type": "Class",
+      "name": "Outcome",
+      "description": "Measurable result achieved through delivery; bridges to value proposition",
+      "rdfs:subClassOf": "schema:Result",
+      "efs:moduleBinding": ["efs:ValueDelivery", "efs:StrategicAlignment"],
+      "efs:integrationPoint": {
+        "vsom:StrategicObjective": "efs:achievesObjective",
+        "pmf:ValueProposition": "efs:validatesValue",
+        "efs:Benefit": "efs:realizesBenefit"
+      },
+      "efs:properties": [
+        {
+          "@id": "efs:outcomeType",
+          "@type": "PropertyValue",
+          "name": "Outcome Type",
+          "description": "Classification of outcome",
+          "valueReference": "efs:OutcomeType",
+          "efs:cardinality": "1:1"
+        },
+        {
+          "@id": "efs:leadMetric",
+          "@type": "PropertyValue",
+          "name": "Lead Metric",
+          "description": "Leading indicator for outcome progress",
+          "valueReference": "vsom:StrategicKPI",
+          "efs:cardinality": "0:1"
+        },
+        {
+          "@id": "efs:lagMetric",
+          "@type": "PropertyValue",
+          "name": "Lag Metric",
+          "description": "Trailing indicator for outcome achievement",
+          "valueReference": "vsom:StrategicKPI",
+          "efs:cardinality": "0:1"
+        },
+        {
+          "@id": "efs:targetValue",
+          "@type": "QuantitativeValue",
+          "name": "Target Value",
+          "description": "Quantified target for outcome",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:currentValue",
+          "@type": "QuantitativeValue",
+          "name": "Current Value",
+          "description": "Current measured value",
+          "efs:cardinality": "0:1"
+        }
+      ]
+    },
+
+    {
+      "@id": "efs:AcceptanceCriterion",
+      "@type": "Class",
+      "name": "Acceptance Criterion",
+      "description": "Testable condition that must be met for item completion",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "efs:moduleBinding": ["efs:QualityAssurance"],
+      "efs:properties": [
+        {
+          "@id": "efs:given",
+          "@type": "PropertyValue",
+          "name": "Given",
+          "description": "Precondition context",
+          "valueReference": "xsd:string",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:when",
+          "@type": "PropertyValue",
+          "name": "When",
+          "description": "Triggering action",
+          "valueReference": "xsd:string",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:then",
+          "@type": "PropertyValue",
+          "name": "Then",
+          "description": "Expected outcome",
+          "valueReference": "xsd:string",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:automationStatus",
+          "@type": "PropertyValue",
+          "name": "Automation Status",
+          "description": "Whether criterion is automated in tests",
+          "valueReference": "efs:AutomationStatus",
+          "efs:cardinality": "0:1"
+        }
+      ]
+    },
+
+    {
+      "@id": "efs:Persona",
+      "@type": "Class",
+      "name": "Persona",
+      "description": "Archetypal user representing a customer segment",
+      "rdfs:subClassOf": "schema:Person",
+      "efs:moduleBinding": ["efs:UserExperience"],
+      "efs:integrationPoint": {
+        "pmf:CustomerSegment": "efs:representsSegment"
+      },
+      "efs:properties": [
+        {
+          "@id": "efs:personaName",
+          "@type": "PropertyValue",
+          "name": "Persona Name",
+          "valueReference": "xsd:string",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:goals",
+          "@type": "PropertyValue",
+          "name": "Goals",
+          "description": "What persona wants to achieve",
+          "valueReference": {
+            "@type": "ItemList",
+            "itemListElement": "xsd:string"
+          },
+          "efs:cardinality": "1:N",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:painPoints",
+          "@type": "PropertyValue",
+          "name": "Pain Points",
+          "description": "Current frustrations and challenges",
+          "valueReference": {
+            "@type": "ItemList",
+            "itemListElement": "xsd:string"
+          },
+          "efs:cardinality": "0:N"
+        },
+        {
+          "@id": "efs:jobsToBeDone",
+          "@type": "PropertyValue",
+          "name": "Jobs To Be Done",
+          "description": "JTBD framework entries",
+          "valueReference": {
+            "@type": "ItemList",
+            "itemListElement": "efs:JobToBeDone"
+          },
+          "efs:cardinality": "0:N"
+        }
+      ]
+    },
+
+    {
+      "@id": "efs:Release",
+      "@type": "Class",
+      "name": "Release",
+      "description": "Planned delivery milestone containing features; connects to GTM",
+      "rdfs:subClassOf": "schema:SoftwareApplication",
+      "efs:moduleBinding": ["efs:ReleaseManagement"],
+      "efs:integrationPoint": {
+        "gtm:LaunchPlan": "efs:triggersLaunch",
+        "gtm:MarketEntry": "efs:supportsEntry"
+      },
+      "efs:properties": [
+        {
+          "@id": "efs:releaseVersion",
+          "@type": "PropertyValue",
+          "name": "Release Version",
+          "valueReference": "xsd:string",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:releaseDate",
+          "@type": "PropertyValue",
+          "name": "Release Date",
+          "valueReference": "xsd:date",
+          "efs:cardinality": "0:1"
+        },
+        {
+          "@id": "efs:releaseType",
+          "@type": "PropertyValue",
+          "name": "Release Type",
+          "description": "Major, minor, patch, MVP",
+          "valueReference": "efs:ReleaseType",
+          "efs:cardinality": "1:1",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:includedFeatures",
+          "@type": "PropertyValue",
+          "name": "Included Features",
+          "description": "Features in this release",
+          "valueReference": {
+            "@type": "ItemList",
+            "itemListElement": "efs:Feature"
+          },
+          "efs:cardinality": "1:N",
+          "efs:required": true
+        },
+        {
+          "@id": "efs:marketReadiness",
+          "@type": "PropertyValue",
+          "name": "Market Readiness",
+          "description": "GTM readiness assessment",
+          "valueReference": "efs:MarketReadinessLevel",
+          "efs:cardinality": "0:1"
+        }
+      ]
+    }
+  ],
+
+  "efs:enumerations": [
+    {
+      "@id": "efs:PriorityLevel",
+      "@type": "Enumeration",
+      "name": "Priority Level",
+      "hasEnumerationMember": [
+        {"@id": "efs:Critical", "name": "Critical", "value": 1},
+        {"@id": "efs:High", "name": "High", "value": 2},
+        {"@id": "efs:Medium", "name": "Medium", "value": 3},
+        {"@id": "efs:Low", "name": "Low", "value": 4}
+      ]
+    },
+    {
+      "@id": "efs:BacklogItemStatus",
+      "@type": "Enumeration",
+      "name": "Backlog Item Status",
+      "hasEnumerationMember": [
+        {"@id": "efs:Idea", "name": "Idea"},
+        {"@id": "efs:Backlog", "name": "Backlog"},
+        {"@id": "efs:Ready", "name": "Ready"},
+        {"@id": "efs:InProgress", "name": "In Progress"},
+        {"@id": "efs:InReview", "name": "In Review"},
+        {"@id": "efs:Done", "name": "Done"},
+        {"@id": "efs:Released", "name": "Released"}
+      ]
+    },
+    {
+      "@id": "efs:FeatureType",
+      "@type": "Enumeration",
+      "name": "Feature Type",
+      "hasEnumerationMember": [
+        {"@id": "efs:Functional", "name": "Functional"},
+        {"@id": "efs:NonFunctional", "name": "Non-Functional"},
+        {"@id": "efs:Compliance", "name": "Compliance"},
+        {"@id": "efs:Integration", "name": "Integration"},
+        {"@id": "efs:Migration", "name": "Migration"}
+      ]
+    },
+    {
+      "@id": "efs:ReleaseType",
+      "@type": "Enumeration",
+      "name": "Release Type",
+      "hasEnumerationMember": [
+        {"@id": "efs:MVP", "name": "MVP"},
+        {"@id": "efs:Major", "name": "Major"},
+        {"@id": "efs:Minor", "name": "Minor"},
+        {"@id": "efs:Patch", "name": "Patch"},
+        {"@id": "efs:Beta", "name": "Beta"},
+        {"@id": "efs:GA", "name": "General Availability"}
+      ]
+    },
+    {
+      "@id": "efs:ValidationStatus",
+      "@type": "Enumeration",
+      "name": "Validation Status",
+      "hasEnumerationMember": [
+        {"@id": "efs:NotTested", "name": "Not Tested"},
+        {"@id": "efs:Testing", "name": "Testing"},
+        {"@id": "efs:Validated", "name": "Validated"},
+        {"@id": "efs:Invalidated", "name": "Invalidated"},
+        {"@id": "efs:NeedsMoreData", "name": "Needs More Data"}
+      ]
+    }
+  ],
+
+  "efs:relationships": [
+    {
+      "@id": "efs:hasFeature",
+      "@type": "PropertyValue",
+      "name": "Has Feature",
+      "description": "Epic contains Features",
+      "efs:domainIncludes": "efs:Epic",
+      "efs:rangeIncludes": "efs:Feature",
+      "efs:cardinality": "1:N",
+      "efs:inverseOf": "efs:belongsToEpic"
+    },
+    {
+      "@id": "efs:belongsToEpic",
+      "@type": "PropertyValue",
+      "name": "Belongs To Epic",
+      "description": "Feature belongs to Epic",
+      "efs:domainIncludes": "efs:Feature",
+      "efs:rangeIncludes": "efs:Epic",
+      "efs:cardinality": "N:1",
+      "efs:inverseOf": "efs:hasFeature"
+    },
+    {
+      "@id": "efs:hasStory",
+      "@type": "PropertyValue",
+      "name": "Has Story",
+      "description": "Feature contains User Stories",
+      "efs:domainIncludes": "efs:Feature",
+      "efs:rangeIncludes": "efs:UserStory",
+      "efs:cardinality": "1:N",
+      "efs:inverseOf": "efs:belongsToFeature"
+    },
+    {
+      "@id": "efs:belongsToFeature",
+      "@type": "PropertyValue",
+      "name": "Belongs To Feature",
+      "description": "User Story belongs to Feature",
+      "efs:domainIncludes": "efs:UserStory",
+      "efs:rangeIncludes": "efs:Feature",
+      "efs:cardinality": "N:1",
+      "efs:inverseOf": "efs:hasStory"
+    },
+    {
+      "@id": "efs:hasTasks",
+      "@type": "PropertyValue",
+      "name": "Has Tasks",
+      "description": "User Story contains Tasks",
+      "efs:domainIncludes": "efs:UserStory",
+      "efs:rangeIncludes": "efs:Task",
+      "efs:cardinality": "1:N",
+      "efs:inverseOf": "efs:belongsToStory"
+    },
+    {
+      "@id": "efs:belongsToStory",
+      "@type": "PropertyValue",
+      "name": "Belongs To Story",
+      "description": "Task belongs to User Story",
+      "efs:domainIncludes": "efs:Task",
+      "efs:rangeIncludes": "efs:UserStory",
+      "efs:cardinality": "N:1",
+      "efs:inverseOf": "efs:hasTasks"
+    },
+    {
+      "@id": "efs:alignsToObjective",
+      "@type": "PropertyValue",
+      "name": "Aligns To Objective",
+      "description": "Epic aligns to VSOM Strategic Objective",
+      "efs:domainIncludes": "efs:Epic",
+      "efs:rangeIncludes": "vsom:StrategicObjective",
+      "efs:cardinality": "N:1",
+      "efs:externalOntology": true
+    },
+    {
+      "@id": "efs:deliversValue",
+      "@type": "PropertyValue",
+      "name": "Delivers Value",
+      "description": "Feature delivers PMF Value Proposition",
+      "efs:domainIncludes": "efs:Feature",
+      "efs:rangeIncludes": "pmf:ValueProposition",
+      "efs:cardinality": "N:1",
+      "efs:externalOntology": true
+    },
+    {
+      "@id": "efs:triggersLaunch",
+      "@type": "PropertyValue",
+      "name": "Triggers Launch",
+      "description": "Release triggers GTM Launch Plan",
+      "efs:domainIncludes": "efs:Release",
+      "efs:rangeIncludes": "gtm:LaunchPlan",
+      "efs:cardinality": "1:1",
+      "efs:externalOntology": true
+    },
+    {
+      "@id": "efs:forPersona",
+      "@type": "PropertyValue",
+      "name": "For Persona",
+      "description": "User Story is written for Persona",
+      "efs:domainIncludes": "efs:UserStory",
+      "efs:rangeIncludes": "efs:Persona",
+      "efs:cardinality": "N:1"
+    },
+    {
+      "@id": "efs:validatesForPMF",
+      "@type": "PropertyValue",
+      "name": "Validates For PMF",
+      "description": "Hypothesis validates Product-Market Fit",
+      "efs:domainIncludes": "efs:Hypothesis",
+      "efs:rangeIncludes": "pmf:ProductMarketFit",
+      "efs:cardinality": "N:1",
+      "efs:externalOntology": true
+    }
+  ],
+
+  "efs:modules": {
+    "@type": "ItemList",
+    "name": "EFS Ontology Modules",
+    "description": "Modular components for selective deployment",
+    "itemListElement": [
+      {
+        "@id": "efs:BacklogManagement",
+        "@type": "DefinedTerm",
+        "name": "Backlog Management Module",
+        "description": "Core Epic-Feature-Story hierarchy and backlog operations",
+        "efs:coreModule": true,
+        "efs:requiredEntities": ["efs:BacklogItem", "efs:Epic", "efs:Feature", "efs:UserStory"],
+        "efs:dependencies": []
+      },
+      {
+        "@id": "efs:ValueDelivery",
+        "@type": "DefinedTerm",
+        "name": "Value Delivery Module",
+        "description": "Outcomes, benefits, and value tracking",
+        "efs:coreModule": true,
+        "efs:requiredEntities": ["efs:Outcome", "efs:Benefit"],
+        "efs:dependencies": ["efs:BacklogManagement"],
+        "efs:externalIntegration": ["pmf:ValueProposition", "vsom:StrategicObjective"]
+      },
+      {
+        "@id": "efs:ExecutionManagement",
+        "@type": "DefinedTerm",
+        "name": "Execution Management Module",
+        "description": "Sprint, task, and team execution tracking",
+        "efs:coreModule": false,
+        "efs:requiredEntities": ["efs:Task", "efs:Sprint"],
+        "efs:dependencies": ["efs:BacklogManagement"]
+      },
+      {
+        "@id": "efs:ValueValidation",
+        "@type": "DefinedTerm",
+        "name": "Value Validation Module",
+        "description": "Hypothesis testing and lean validation",
+        "efs:coreModule": false,
+        "efs:requiredEntities": ["efs:Hypothesis"],
+        "efs:dependencies": ["efs:BacklogManagement", "efs:ValueDelivery"],
+        "efs:externalIntegration": ["pmf:ProductMarketFit"]
+      },
+      {
+        "@id": "efs:ReleaseManagement",
+        "@type": "DefinedTerm",
+        "name": "Release Management Module",
+        "description": "Release planning and market readiness",
+        "efs:coreModule": false,
+        "efs:requiredEntities": ["efs:Release"],
+        "efs:dependencies": ["efs:BacklogManagement", "efs:ExecutionManagement"],
+        "efs:externalIntegration": ["gtm:LaunchPlan", "gtm:MarketEntry"]
+      },
+      {
+        "@id": "efs:UserExperience",
+        "@type": "DefinedTerm",
+        "name": "User Experience Module",
+        "description": "Personas, jobs-to-be-done, and user journey",
+        "efs:coreModule": false,
+        "efs:requiredEntities": ["efs:Persona"],
+        "efs:dependencies": ["efs:BacklogManagement"],
+        "efs:externalIntegration": ["pmf:CustomerSegment"]
+      },
+      {
+        "@id": "efs:QualityAssurance",
+        "@type": "DefinedTerm",
+        "name": "Quality Assurance Module",
+        "description": "Acceptance criteria and test automation tracking",
+        "efs:coreModule": false,
+        "efs:requiredEntities": ["efs:AcceptanceCriterion"],
+        "efs:dependencies": ["efs:BacklogManagement"]
+      }
+    ]
+  },
+
+  "efs:oaaValidation": {
+    "@type": "DefinedTerm",
+    "name": "OAA v5.0.0 Validation Metadata",
+    "description": "Metadata for OAA validation compliance",
+    "efs:oaaVersion": "5.0.0",
+    "efs:entityCount": 11,
+    "efs:relationshipCount": 11,
+    "efs:enumerationCount": 5,
+    "efs:moduleCount": 7,
+    "efs:entityConnectivity": {
+      "efs:BacklogItem": ["efs:Epic", "efs:Feature", "efs:UserStory", "efs:Task"],
+      "efs:Epic": ["efs:Feature", "efs:Outcome", "efs:Hypothesis", "efs:Release", "vsom:StrategicObjective"],
+      "efs:Feature": ["efs:Epic", "efs:UserStory", "efs:AcceptanceCriterion", "pmf:ValueProposition"],
+      "efs:UserStory": ["efs:Feature", "efs:Task", "efs:Persona", "efs:AcceptanceCriterion"],
+      "efs:Task": ["efs:UserStory"],
+      "efs:Hypothesis": ["efs:Epic", "efs:AcceptanceCriterion", "pmf:ProductMarketFit"],
+      "efs:Outcome": ["efs:Epic", "vsom:StrategicObjective", "pmf:ValueProposition"],
+      "efs:AcceptanceCriterion": ["efs:Feature", "efs:UserStory", "efs:Hypothesis"],
+      "efs:Persona": ["efs:UserStory", "pmf:CustomerSegment"],
+      "efs:Release": ["efs:Epic", "efs:Feature", "gtm:LaunchPlan"]
+    },
+    "efs:graphMetrics": {
+      "totalEntities": 11,
+      "connectedEntities": 11,
+      "orphanedEntities": 0,
+      "connectivityPercentage": 100,
+      "edgeToNodeRatio": 1.0
+    }
+  }
+}

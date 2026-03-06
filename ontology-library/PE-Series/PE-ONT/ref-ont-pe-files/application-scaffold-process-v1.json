@@ -1,0 +1,478 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pe": "https://platformcore.io/ontology/process-engineering/",
+    "appscaffold": "https://platformcore.io/process/app-scaffold/v1/"
+  },
+  "@type": "pe:Process",
+  "@id": "appscaffold:process:application-scaffold-v1",
+  "pe:processId": "APP-SCAFFOLD-001",
+  "pe:processName": "AI-Augmented Application Scaffold Process",
+  "pe:processType": "DevelopmentProcess",
+  "pe:version": "1.0.0",
+  "pe:status": "active",
+  "pe:automationLevel": 80,
+  "pe:description": "Comprehensive process for rapidly scaffolding applications using AI-augmented development patterns with hypothesis-driven OKR design",
+  "pe:businessObjective": [
+    "Provide automatic first cut using target platform",
+    "Include AI augmented processes to build the first cut",
+    "Include Hypothesis led OKR driven design and specification to MVP POC 1st cut",
+    "Accelerate time to value from Idea to MVP to PMF",
+    "Standardize architecture decisions across projects",
+    "Enable consistent AI agent integration"
+  ],
+  "pe:maturityLevel": "AIAugmented",
+  "pe:estimatedDuration": "P14D",
+  "pe:aiAugmentation": [
+    {
+      "@type": "pe:AIAugmentationType",
+      "pe:type": "EndToEndOrchestration",
+      "pe:level": "HighlyAutomated",
+      "pe:description": "Full AI orchestration from requirements to deployment"
+    }
+  ],
+  "pe:hasPhase": [
+    "appscaffold:phase:domain-definition",
+    "appscaffold:phase:code-generation",
+    "appscaffold:phase:database-setup",
+    "appscaffold:phase:service-layer",
+    "appscaffold:phase:ui-components",
+    "appscaffold:phase:integration",
+    "appscaffold:phase:testing",
+    "appscaffold:phase:optimization",
+    "appscaffold:phase:deployment"
+  ],
+  "pe:measures": [
+    "appscaffold:metric:time-to-mvp",
+    "appscaffold:metric:code-quality-score",
+    "appscaffold:metric:test-coverage",
+    "appscaffold:metric:performance-score",
+    "appscaffold:metric:ai-automation-percentage"
+  ],
+  "pe:relatedProcesses": [
+    {
+      "pe:processId": "PE-DS-EXTRACT-001",
+      "pe:relationship": "complementary",
+      "pe:description": "Design token extraction pipeline — provides design system tokens that scaffold apps consume"
+    },
+    {
+      "pe:processId": "PE-DS-EXTRACT-002",
+      "pe:relationship": "complementary",
+      "pe:description": "Application skeleton authoring — defines zone/nav/component structure that scaffold apps implement"
+    }
+  ],
+  "pe:processPhases": [
+    {
+      "@type": "pe:ProcessPhase",
+      "@id": "appscaffold:phase:domain-definition",
+      "pe:phaseId": "PHASE-001",
+      "pe:phaseName": "Phase 1: Domain Definition",
+      "pe:description": "Analyze requirements and map to schema.org foundations",
+      "pe:sequenceOrder": 1,
+      "pe:parallelExecution": false,
+      "pe:estimatedDuration": "P2D",
+      "pe:produces": [
+        "appscaffold:artifact:requirements-analysis",
+        "appscaffold:artifact:schema-org-mapping",
+        "appscaffold:artifact:extensions-definition",
+        "appscaffold:artifact:ontology-config-json"
+      ],
+      "pe:hasGate": [
+        "appscaffold:gate:domain-approval"
+      ],
+      "pe:augmentedBy": [
+        "appscaffold:agent:requirements-analyzer",
+        "appscaffold:agent:schema-mapper"
+      ],
+      "pe:activities": [
+        "Analyze Requirements",
+        "Map to schema.org",
+        "Define Extensions",
+        "Create ontology-config.json"
+      ]
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "@id": "appscaffold:phase:code-generation",
+      "pe:phaseId": "PHASE-002",
+      "pe:phaseName": "Phase 2: Code Generation",
+      "pe:description": "Generate TypeScript types, schemas and foundational code",
+      "pe:sequenceOrder": 2,
+      "pe:parallelExecution": false,
+      "pe:estimatedDuration": "P1D",
+      "pe:dependsOn": ["appscaffold:phase:domain-definition"],
+      "pe:produces": [
+        "appscaffold:artifact:typescript-types",
+        "appscaffold:artifact:zod-schemas",
+        "appscaffold:artifact:json-schemas"
+      ],
+      "pe:hasGate": [
+        "appscaffold:gate:code-generation-quality"
+      ],
+      "pe:augmentedBy": [
+        "appscaffold:agent:code-generator",
+        "appscaffold:agent:type-validator"
+      ],
+      "pe:activities": [
+        "npm run generate-types",
+        "TypeScript Types",
+        "Zod Schemas",
+        "JSON Schemas"
+      ]
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "@id": "appscaffold:phase:database-setup",
+      "pe:phaseId": "PHASE-003",
+      "pe:phaseName": "Phase 3: Database Setup",
+      "pe:description": "Create and configure database with migrations and seeding",
+      "pe:sequenceOrder": 3,
+      "pe:parallelExecution": false,
+      "pe:estimatedDuration": "P1D",
+      "pe:dependsOn": ["appscaffold:phase:code-generation"],
+      "pe:produces": [
+        "appscaffold:artifact:supabase-project",
+        "appscaffold:artifact:database-migrations",
+        "appscaffold:artifact:seed-data",
+        "appscaffold:artifact:rls-configuration",
+        "appscaffold:artifact:database-indexes"
+      ],
+      "pe:hasGate": [
+        "appscaffold:gate:database-validation"
+      ],
+      "pe:augmentedBy": [
+        "appscaffold:agent:database-architect",
+        "appscaffold:agent:migration-generator"
+      ],
+      "pe:activities": [
+        "Create Supabase Project",
+        "npm run db:migrate",
+        "npm run db:seed",
+        "Configure RLS",
+        "Create Indexes"
+      ]
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "@id": "appscaffold:phase:service-layer",
+      "pe:phaseId": "PHASE-004A",
+      "pe:phaseName": "Phase 4A: Service Layer",
+      "pe:description": "Build core service layer components",
+      "pe:sequenceOrder": 4,
+      "pe:parallelExecution": true,
+      "pe:estimatedDuration": "P2D",
+      "pe:dependsOn": ["appscaffold:phase:database-setup"],
+      "pe:produces": [
+        "appscaffold:artifact:ontology-service",
+        "appscaffold:artifact:entity-service",
+        "appscaffold:artifact:validation-service",
+        "appscaffold:artifact:graph-service"
+      ],
+      "pe:hasGate": [
+        "appscaffold:gate:service-layer-quality"
+      ],
+      "pe:augmentedBy": [
+        "appscaffold:agent:service-generator",
+        "appscaffold:agent:api-designer"
+      ],
+      "pe:activities": [
+        "OntologyService",
+        "EntityService",
+        "ValidationService",
+        "GraphService"
+      ]
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "@id": "appscaffold:phase:ui-components",
+      "pe:phaseId": "PHASE-004B",
+      "pe:phaseName": "Phase 4B: UI Components",
+      "pe:description": "Create user interface components and forms",
+      "pe:sequenceOrder": 4,
+      "pe:parallelExecution": true,
+      "pe:estimatedDuration": "P2D",
+      "pe:dependsOn": ["appscaffold:phase:database-setup"],
+      "pe:produces": [
+        "appscaffold:artifact:shadcn-ui-setup",
+        "appscaffold:artifact:entity-forms",
+        "appscaffold:artifact:data-viewers",
+        "appscaffold:artifact:graph-visualizer"
+      ],
+      "pe:hasGate": [
+        "appscaffold:gate:ui-component-quality"
+      ],
+      "pe:augmentedBy": [
+        "appscaffold:agent:ui-generator",
+        "appscaffold:agent:ux-optimizer"
+      ],
+      "pe:activities": [
+        "Install shadcn/ui",
+        "Build Entity Forms",
+        "Create Viewers",
+        "Graph Visualizer"
+      ]
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "@id": "appscaffold:phase:integration",
+      "pe:phaseId": "PHASE-005",
+      "pe:phaseName": "Phase 5: Integration",
+      "pe:description": "Connect services to UI with real-time capabilities",
+      "pe:sequenceOrder": 5,
+      "pe:parallelExecution": false,
+      "pe:estimatedDuration": "P1D",
+      "pe:dependsOn": ["appscaffold:phase:service-layer", "appscaffold:phase:ui-components"],
+      "pe:produces": [
+        "appscaffold:artifact:service-ui-connections",
+        "appscaffold:artifact:react-hooks",
+        "appscaffold:artifact:realtime-sync"
+      ],
+      "pe:hasGate": [
+        "appscaffold:gate:integration-complete"
+      ],
+      "pe:augmentedBy": [
+        "appscaffold:agent:integration-orchestrator"
+      ],
+      "pe:activities": [
+        "Connect Services to UI",
+        "Implement Hooks",
+        "Add Real-time Sync"
+      ]
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "@id": "appscaffold:phase:testing",
+      "pe:phaseId": "PHASE-006",
+      "pe:phaseName": "Phase 6: Testing",
+      "pe:description": "Comprehensive testing suite implementation",
+      "pe:sequenceOrder": 6,
+      "pe:parallelExecution": false,
+      "pe:estimatedDuration": "P2D",
+      "pe:dependsOn": ["appscaffold:phase:integration"],
+      "pe:produces": [
+        "appscaffold:artifact:unit-tests",
+        "appscaffold:artifact:integration-tests",
+        "appscaffold:artifact:e2e-tests",
+        "appscaffold:artifact:performance-tests"
+      ],
+      "pe:hasGate": [
+        "appscaffold:gate:tests-pass"
+      ],
+      "pe:augmentedBy": [
+        "appscaffold:agent:test-generator",
+        "appscaffold:agent:test-runner"
+      ],
+      "pe:activities": [
+        "Unit Tests",
+        "Integration Tests",
+        "E2E Tests",
+        "Performance Tests"
+      ]
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "@id": "appscaffold:phase:optimization",
+      "pe:phaseId": "PHASE-007",
+      "pe:phaseName": "Phase 7: Optimization",
+      "pe:description": "Analyze patterns and optimize performance",
+      "pe:sequenceOrder": 7,
+      "pe:parallelExecution": false,
+      "pe:estimatedDuration": "P1D",
+      "pe:dependsOn": ["appscaffold:phase:testing"],
+      "pe:produces": [
+        "appscaffold:artifact:pattern-analysis",
+        "appscaffold:artifact:computed-properties",
+        "appscaffold:artifact:query-optimization",
+        "appscaffold:artifact:cache-implementation"
+      ],
+      "pe:hasGate": [
+        "appscaffold:gate:optimization-complete"
+      ],
+      "pe:augmentedBy": [
+        "appscaffold:agent:performance-analyzer",
+        "appscaffold:agent:cache-optimizer"
+      ],
+      "pe:activities": [
+        "Analyze Patterns",
+        "Add Computed Props",
+        "Optimize Queries",
+        "Implement Cache"
+      ]
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "@id": "appscaffold:phase:deployment",
+      "pe:phaseId": "PHASE-008",
+      "pe:phaseName": "Phase 8: Deployment",
+      "pe:description": "Build and deploy to production with monitoring",
+      "pe:sequenceOrder": 8,
+      "pe:parallelExecution": false,
+      "pe:estimatedDuration": "P1D",
+      "pe:dependsOn": ["appscaffold:phase:optimization"],
+      "pe:produces": [
+        "appscaffold:artifact:production-build",
+        "appscaffold:artifact:vercel-deployment",
+        "appscaffold:artifact:environment-config",
+        "appscaffold:artifact:monitoring-setup"
+      ],
+      "pe:hasGate": [
+        "appscaffold:gate:deployment-successful"
+      ],
+      "pe:augmentedBy": [
+        "appscaffold:agent:deployment-orchestrator",
+        "appscaffold:agent:monitoring-setup"
+      ],
+      "pe:activities": [
+        "Build Production",
+        "Deploy to Vercel",
+        "Configure Env",
+        "Setup Monitoring"
+      ]
+    }
+  ],
+  "pe:processMetrics": [
+    {
+      "@type": "pe:ProcessMetric",
+      "@id": "appscaffold:metric:time-to-mvp",
+      "pe:metricId": "METRIC-TIME-MVP",
+      "pe:metricName": "Time to MVP",
+      "pe:measurementType": "OKR",
+      "pe:targetValue": 14,
+      "pe:unit": "days",
+      "pe:description": "Time from requirements to deployed MVP"
+    },
+    {
+      "@type": "pe:ProcessMetric",
+      "@id": "appscaffold:metric:ai-automation-percentage",
+      "pe:metricId": "METRIC-AI-AUTO",
+      "pe:metricName": "AI Automation Percentage",
+      "pe:measurementType": "KPI",
+      "pe:targetValue": 80,
+      "pe:unit": "percentage",
+      "pe:description": "Percentage of process activities automated by AI"
+    },
+    {
+      "@type": "pe:ProcessMetric",
+      "@id": "appscaffold:metric:code-quality-score",
+      "pe:metricId": "METRIC-QUALITY",
+      "pe:metricName": "Code Quality Score",
+      "pe:measurementType": "Quality",
+      "pe:targetValue": 95,
+      "pe:unit": "percentage",
+      "pe:description": "Composite score of code quality metrics"
+    }
+  ],
+  "pe:aiAgents": [
+    {
+      "@type": "pe:AIAgent",
+      "@id": "appscaffold:agent:process-engineer",
+      "pe:agentId": "AGENT-PROCESS-ENGINEER",
+      "pe:agentType": "OrchestrationAgent",
+      "pe:capabilities": [
+        "Process orchestration and management",
+        "Phase transition control",
+        "Quality gate evaluation",
+        "Progress tracking and reporting",
+        "Exception handling and escalation"
+      ],
+      "pe:autonomyLevel": "HighlyAutonomous",
+      "pe:description": "Master agent that orchestrates the entire application scaffold process"
+    },
+    {
+      "@type": "pe:AIAgent",
+      "@id": "appscaffold:agent:requirements-analyzer",
+      "pe:agentId": "AGENT-REQ-ANALYZER",
+      "pe:agentType": "AnalysisAgent",
+      "pe:capabilities": [
+        "Requirements extraction and analysis",
+        "Business objective identification",
+        "Use case generation",
+        "Constraint identification"
+      ],
+      "pe:autonomyLevel": "Supervised"
+    },
+    {
+      "@type": "pe:AIAgent",
+      "@id": "appscaffold:agent:code-generator",
+      "pe:agentId": "AGENT-CODE-GEN",
+      "pe:agentType": "GenerationAgent",
+      "pe:capabilities": [
+        "TypeScript type generation",
+        "Zod schema creation",
+        "JSON schema generation",
+        "Validation logic creation"
+      ],
+      "pe:autonomyLevel": "HighlyAutonomous"
+    }
+  ],
+  "pe:developmentTools": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Claude Code CLI",
+      "description": "AI-powered development assistant",
+      "usedIn": ["appscaffold:phase:code-generation", "appscaffold:phase:service-layer"]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Supabase CLI",
+      "description": "Database management and deployment",
+      "usedIn": ["appscaffold:phase:database-setup"]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Git Hooks",
+      "description": "Automated quality checks",
+      "usedIn": ["appscaffold:phase:testing"]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "CI/CD Pipeline",
+      "description": "Automated deployment pipeline",
+      "usedIn": ["appscaffold:phase:deployment"]
+    }
+  ],
+  "pe:okrFramework": {
+    "objective": "Accelerate application development with AI-augmented processes",
+    "keyResults": [
+      {
+        "kr": "Reduce time from idea to MVP by 70%",
+        "target": "14 days maximum",
+        "metric": "appscaffold:metric:time-to-mvp"
+      },
+      {
+        "kr": "Achieve 80%+ AI automation in development process",
+        "target": "80%",
+        "metric": "appscaffold:metric:ai-automation-percentage"
+      },
+      {
+        "kr": "Maintain 95%+ code quality score",
+        "target": "95%",
+        "metric": "appscaffold:metric:code-quality-score"
+      }
+    ]
+  },
+  "pe:hypotheses": [
+    {
+      "hypothesis": "AI-generated code scaffolds will reduce initial development time by 60%",
+      "validation": "Measure time from requirements to first working prototype",
+      "successCriteria": "Less than 3 days for basic CRUD application"
+    },
+    {
+      "hypothesis": "Schema.org grounding will improve interoperability by 40%",
+      "validation": "Test integration with external systems and APIs",
+      "successCriteria": "80% successful integrations without custom mapping"
+    },
+    {
+      "hypothesis": "Hypothesis-driven OKR design will improve MVP success rate by 50%",
+      "validation": "Track MVP to PMF conversion rates",
+      "successCriteria": "30% MVP to PMF conversion rate"
+    }
+  ],
+  "pe:versionHistory": [
+    {
+      "pe:version": "1.0.0",
+      "pe:date": "2026-02-21",
+      "pe:changes": "Migrated from legacy process: namespace to pe: v3.0.0. Added pe:status, pe:automationLevel, pe:relatedProcesses cross-references to PE-DS-EXTRACT-001/002. Removed emoji prefixes from activity names."
+    }
+  ]
+}

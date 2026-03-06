@@ -1,0 +1,1039 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platformcore.io/ontology/",
+    "okr": "https://platformcore.io/ontology/okr/",
+    "oaa": "https://platformcore.io/ontology/oaa/",
+    "gdpr": "https://platformcore.io/ontology/gdpr/",
+    "mcsb": "https://platformcore.io/ontology/mcsb/",
+    "pii": "https://platformcore.io/ontology/pii-governance/"
+  },
+  "@type": "pf:Ontology",
+  "@id": "okr:okr-ontology",
+  "name": "OKR Ontology (Objectives & Key Results)",
+  "description": "Comprehensive ontology for the Objectives and Key Results (OKR) framework enabling AI-driven goal management, alignment tracking, and performance optimisation. Part of the VE-Series lineage chain: VSOM → OKR → VP → PMF.",
+  "version": "2.0.0",
+  "oaaVersion": "6.1.0",
+  "created": "2026-01-28",
+  "lastModified": "2026-02-06",
+  "author": "PF-Core VE Module",
+  "schemaOrgAlignment": 0.8,
+  "pfCoreModule": "VE",
+  "pfCoreInstances": [
+    "W4M-VE",
+    "BAIV-VE"
+  ],
+  "metadata": {
+    "domain": "Performance Management",
+    "purpose": "Define canonical OKR entities for goal-setting, alignment cascading, and progress tracking across organisational levels",
+    "scope": "Enterprise OKR programs from company-level through team and individual objectives",
+    "targetAudience": [
+      "Strategy Leaders",
+      "Team Leads",
+      "HR Business Partners",
+      "Performance Coaches"
+    ],
+    "lineageChain": "VSOM → OKR → VP → PMF → EFS"
+  },
+  "hasDefinedTerm": [
+    {
+      "@type": "DefinedTerm",
+      "@id": "okr:Objective",
+      "name": "Objective",
+      "description": "A qualitative, inspirational, time-bound goal that defines what an organisation, team, or individual wants to achieve. Objectives cascade from company to team to individual levels.",
+      "termCode": "OBJ",
+      "inDefinedTermSet": "okr:okr-ontology",
+      "schemaType": "schema:Intangible",
+      "properties": {
+        "objectiveId": {
+          "type": "string",
+          "description": "Unique identifier for the objective",
+          "example": "OBJ-2025-Q1-001"
+        },
+        "objectiveName": {
+          "type": "string",
+          "description": "Clear, concise name of the objective",
+          "maxLength": 100
+        },
+        "objectiveDescription": {
+          "type": "string",
+          "description": "Detailed description of purpose and context"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Person or team responsible for the objective"
+        },
+        "confidenceLevel": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Confidence in achieving the objective (0-100%)"
+        },
+        "progressPercentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Weighted average progress from key results (0-100%)"
+        },
+        "strategicAlignment": {
+          "type": "string",
+          "description": "How this objective aligns with organisational strategy"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Categorisation tags"
+        }
+      },
+      "instances": [
+        {
+          "@id": "okr:Objective-Company",
+          "objectiveName": "Company Objective",
+          "description": "Top-level strategic objective set by leadership"
+        },
+        {
+          "@id": "okr:Objective-Department",
+          "objectiveName": "Department Objective",
+          "description": "Department-level objective aligned to company goals"
+        },
+        {
+          "@id": "okr:Objective-Team",
+          "objectiveName": "Team Objective",
+          "description": "Team-level objective supporting department goals"
+        },
+        {
+          "@id": "okr:Objective-Individual",
+          "objectiveName": "Individual Objective",
+          "description": "Individual contributor objective supporting team goals"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "okr:KeyResult",
+      "name": "KeyResult",
+      "description": "A quantitative, measurable outcome that indicates progress toward achieving an objective. Each objective should have 2-5 key results with weighted contributions.",
+      "termCode": "KR",
+      "inDefinedTermSet": "okr:okr-ontology",
+      "schemaType": "schema:Intangible",
+      "properties": {
+        "keyResultId": {
+          "type": "string",
+          "description": "Unique identifier for the key result",
+          "example": "KR-2025-Q1-001-1"
+        },
+        "keyResultName": {
+          "type": "string",
+          "description": "Clear, measurable statement of the key result"
+        },
+        "keyResultDescription": {
+          "type": "string",
+          "description": "Detailed description of what the key result measures and why"
+        },
+        "startValue": {
+          "type": "number",
+          "description": "Starting baseline value"
+        },
+        "targetValue": {
+          "type": "number",
+          "description": "Target value to achieve"
+        },
+        "currentValue": {
+          "type": "number",
+          "description": "Current actual value"
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of measurement (points, percentage, dollars, count)"
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Weight of this KR in objective calculation"
+        },
+        "progressPercentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Progress based on current vs target"
+        },
+        "confidenceLevel": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Confidence in achieving (0-100%)"
+        }
+      },
+      "instances": [
+        {
+          "@id": "okr:KeyResult-Increase",
+          "keyResultName": "Increase Metric",
+          "description": "Key result targeting an increase in a measurable metric"
+        },
+        {
+          "@id": "okr:KeyResult-Decrease",
+          "keyResultName": "Decrease Metric",
+          "description": "Key result targeting a decrease in a measurable metric"
+        },
+        {
+          "@id": "okr:KeyResult-Milestone",
+          "keyResultName": "Achieve Milestone",
+          "description": "Key result targeting achievement of a specific milestone"
+        },
+        {
+          "@id": "okr:KeyResult-Binary",
+          "keyResultName": "Binary Completion",
+          "description": "Key result with yes/no completion criteria"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "okr:Initiative",
+      "name": "Initiative",
+      "description": "A specific project, programme, or action taken to achieve a key result. Initiatives are the executable work items that drive measurable progress on key results.",
+      "termCode": "INIT",
+      "inDefinedTermSet": "okr:okr-ontology",
+      "schemaType": "schema:Action",
+      "properties": {
+        "initiativeId": {
+          "type": "string",
+          "description": "Unique identifier for the initiative"
+        },
+        "initiativeName": {
+          "type": "string",
+          "description": "Name of the initiative"
+        },
+        "initiativeDescription": {
+          "type": "string",
+          "description": "Detailed description of the initiative"
+        },
+        "estimatedImpact": {
+          "type": "number",
+          "description": "Estimated impact on the key result value"
+        },
+        "actualImpact": {
+          "type": "number",
+          "description": "Actual measured impact on the key result"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Person responsible for the initiative"
+        }
+      },
+      "instances": [
+        {
+          "@id": "okr:Initiative-Project",
+          "initiativeName": "Project Initiative",
+          "description": "A time-bounded project driving key result progress"
+        },
+        {
+          "@id": "okr:Initiative-Program",
+          "initiativeName": "Programme Initiative",
+          "description": "An ongoing programme contributing to key result achievement"
+        },
+        {
+          "@id": "okr:Initiative-Experiment",
+          "initiativeName": "Experiment Initiative",
+          "description": "A hypothesis-driven experiment to test impact on key results"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "okr:CheckIn",
+      "name": "CheckIn",
+      "description": "A periodic update recording progress, confidence, blockers, and commentary on an objective or key result. Check-ins drive the cadence of OKR reviews.",
+      "termCode": "CI",
+      "inDefinedTermSet": "okr:okr-ontology",
+      "schemaType": "schema:Action",
+      "properties": {
+        "checkInId": {
+          "type": "string",
+          "description": "Unique identifier for the check-in"
+        },
+        "checkInDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of the check-in"
+        },
+        "progressUpdate": {
+          "type": "string",
+          "description": "Narrative update on progress"
+        },
+        "confidenceLevel": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Confidence in achieving the target (0-100%)"
+        },
+        "blockers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of impediments or blockers"
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Identified risks"
+        },
+        "author": {
+          "type": "string",
+          "description": "Person who created the check-in"
+        }
+      },
+      "instances": [
+        {
+          "@id": "okr:CheckIn-Weekly",
+          "checkInId": "weekly",
+          "description": "Weekly progress check-in for active OKR cycles"
+        },
+        {
+          "@id": "okr:CheckIn-Monthly",
+          "checkInId": "monthly",
+          "description": "Monthly review check-in with deeper analysis"
+        },
+        {
+          "@id": "okr:CheckIn-EndOfCycle",
+          "checkInId": "end-of-cycle",
+          "description": "End-of-cycle scoring and retrospective check-in"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "okr:TimePeriod",
+      "name": "TimePeriod",
+      "description": "A defined time period bounding an OKR cycle, typically quarterly or annually. Time periods structure the cadence of objective setting, tracking, and review.",
+      "termCode": "TP",
+      "inDefinedTermSet": "okr:okr-ontology",
+      "schemaType": "schema:Intangible",
+      "properties": {
+        "startDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Start date of the period"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date",
+          "description": "End date of the period"
+        },
+        "fiscalYear": {
+          "type": "integer",
+          "description": "Fiscal year reference"
+        },
+        "quarter": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4,
+          "description": "Quarter reference (1-4)"
+        }
+      },
+      "instances": [
+        {
+          "@id": "okr:TimePeriod-Annual",
+          "description": "Annual OKR cycle covering the full fiscal year"
+        },
+        {
+          "@id": "okr:TimePeriod-Quarterly",
+          "description": "Quarterly OKR cycle, the most common cadence"
+        },
+        {
+          "@id": "okr:TimePeriod-Monthly",
+          "description": "Monthly OKR cycle for fast-moving teams"
+        },
+        {
+          "@id": "okr:TimePeriod-Custom",
+          "description": "Custom time period for special initiatives"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "okr:ObjectiveType",
+      "name": "ObjectiveType",
+      "description": "Classification of objective types by organisational scope, from company-level strategic objectives through department, team, and individual contributor objectives.",
+      "termCode": "OT",
+      "inDefinedTermSet": "okr:okr-ontology",
+      "schemaType": "schema:Enumeration",
+      "properties": {
+        "typeCode": {
+          "type": "string",
+          "description": "Short code for the type"
+        },
+        "level": {
+          "type": "integer",
+          "description": "Organisational level (1=company, 4=individual)"
+        }
+      },
+      "instances": [
+        {
+          "@id": "okr:ObjectiveType-Company",
+          "typeCode": "COMPANY",
+          "level": 1,
+          "description": "Company-level strategic objective"
+        },
+        {
+          "@id": "okr:ObjectiveType-Department",
+          "typeCode": "DEPT",
+          "level": 2,
+          "description": "Department-level objective"
+        },
+        {
+          "@id": "okr:ObjectiveType-Team",
+          "typeCode": "TEAM",
+          "level": 3,
+          "description": "Team-level objective"
+        },
+        {
+          "@id": "okr:ObjectiveType-Individual",
+          "typeCode": "INDIV",
+          "level": 4,
+          "description": "Individual contributor objective"
+        },
+        {
+          "@id": "okr:ObjectiveType-CrossFunctional",
+          "typeCode": "XFUNC",
+          "level": 2,
+          "description": "Cross-functional initiative objective"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "okr:ObjectiveStatus",
+      "name": "ObjectiveStatus",
+      "description": "Lifecycle status values tracking the progression of objectives from draft through active execution to completion or cancellation.",
+      "termCode": "OS",
+      "inDefinedTermSet": "okr:okr-ontology",
+      "schemaType": "schema:Enumeration",
+      "properties": {
+        "statusCode": {
+          "type": "string",
+          "description": "Short code for the status"
+        },
+        "isTerminal": {
+          "type": "boolean",
+          "description": "Whether this is a terminal state"
+        }
+      },
+      "instances": [
+        {
+          "@id": "okr:ObjectiveStatus-Draft",
+          "statusCode": "DRAFT",
+          "isTerminal": false,
+          "description": "Objective is being formulated"
+        },
+        {
+          "@id": "okr:ObjectiveStatus-Active",
+          "statusCode": "ACTIVE",
+          "isTerminal": false,
+          "description": "Objective is active and being tracked"
+        },
+        {
+          "@id": "okr:ObjectiveStatus-OnTrack",
+          "statusCode": "ON_TRACK",
+          "isTerminal": false,
+          "description": "Objective progress is on track (≥70% confidence)"
+        },
+        {
+          "@id": "okr:ObjectiveStatus-AtRisk",
+          "statusCode": "AT_RISK",
+          "isTerminal": false,
+          "description": "Objective is at risk (40-69% confidence)"
+        },
+        {
+          "@id": "okr:ObjectiveStatus-OffTrack",
+          "statusCode": "OFF_TRACK",
+          "isTerminal": false,
+          "description": "Objective is off track (<40% confidence)"
+        },
+        {
+          "@id": "okr:ObjectiveStatus-Completed",
+          "statusCode": "COMPLETED",
+          "isTerminal": true,
+          "description": "Objective has been completed and scored"
+        },
+        {
+          "@id": "okr:ObjectiveStatus-Cancelled",
+          "statusCode": "CANCELLED",
+          "isTerminal": true,
+          "description": "Objective was cancelled before completion"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "okr:KeyResultType",
+      "name": "KeyResultType",
+      "description": "Types of key result measurement approaches defining how progress is calculated from start value toward target value across different metric patterns.",
+      "termCode": "KRT",
+      "inDefinedTermSet": "okr:okr-ontology",
+      "schemaType": "schema:Enumeration",
+      "properties": {
+        "typeCode": {
+          "type": "string",
+          "description": "Short code for the type"
+        },
+        "progressFormula": {
+          "type": "string",
+          "description": "How progress is calculated"
+        }
+      },
+      "instances": [
+        {
+          "@id": "okr:KeyResultType-Increase",
+          "typeCode": "INCR",
+          "progressFormula": "(current - start) / (target - start)",
+          "description": "Increase a metric from baseline to target"
+        },
+        {
+          "@id": "okr:KeyResultType-Decrease",
+          "typeCode": "DECR",
+          "progressFormula": "(start - current) / (start - target)",
+          "description": "Decrease a metric from baseline to target"
+        },
+        {
+          "@id": "okr:KeyResultType-Maintain",
+          "typeCode": "MAINT",
+          "progressFormula": "1 if within threshold else 0",
+          "description": "Maintain a metric within acceptable bounds"
+        },
+        {
+          "@id": "okr:KeyResultType-Milestone",
+          "typeCode": "MILE",
+          "progressFormula": "steps_completed / total_steps",
+          "description": "Achieve a defined milestone with steps"
+        },
+        {
+          "@id": "okr:KeyResultType-Binary",
+          "typeCode": "BIN",
+          "progressFormula": "0 or 100",
+          "description": "Yes/No binary completion"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "okr:KeyResultStatus",
+      "name": "KeyResultStatus",
+      "description": "Status values tracking the progression of key results from not started through active measurement to final achievement scoring.",
+      "termCode": "KRS",
+      "inDefinedTermSet": "okr:okr-ontology",
+      "schemaType": "schema:Enumeration",
+      "properties": {
+        "statusCode": {
+          "type": "string",
+          "description": "Short code for the status"
+        },
+        "isTerminal": {
+          "type": "boolean",
+          "description": "Whether this is a terminal state"
+        }
+      },
+      "instances": [
+        {
+          "@id": "okr:KeyResultStatus-NotStarted",
+          "statusCode": "NOT_STARTED",
+          "isTerminal": false,
+          "description": "Key result measurement has not begun"
+        },
+        {
+          "@id": "okr:KeyResultStatus-InProgress",
+          "statusCode": "IN_PROGRESS",
+          "isTerminal": false,
+          "description": "Key result is being actively tracked"
+        },
+        {
+          "@id": "okr:KeyResultStatus-OnTrack",
+          "statusCode": "ON_TRACK",
+          "isTerminal": false,
+          "description": "Key result is on track to be achieved"
+        },
+        {
+          "@id": "okr:KeyResultStatus-AtRisk",
+          "statusCode": "AT_RISK",
+          "isTerminal": false,
+          "description": "Key result achievement is at risk"
+        },
+        {
+          "@id": "okr:KeyResultStatus-OffTrack",
+          "statusCode": "OFF_TRACK",
+          "isTerminal": false,
+          "description": "Key result is off track"
+        },
+        {
+          "@id": "okr:KeyResultStatus-Achieved",
+          "statusCode": "ACHIEVED",
+          "isTerminal": true,
+          "description": "Key result target has been achieved"
+        },
+        {
+          "@id": "okr:KeyResultStatus-PartiallyAchieved",
+          "statusCode": "PARTIAL",
+          "isTerminal": true,
+          "description": "Key result was partially achieved"
+        },
+        {
+          "@id": "okr:KeyResultStatus-NotAchieved",
+          "statusCode": "NOT_ACHIEVED",
+          "isTerminal": true,
+          "description": "Key result was not achieved"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "okr:PriorityLevel",
+      "name": "PriorityLevel",
+      "description": "Priority levels for ranking objectives by importance and urgency, used to allocate focus and resources when multiple objectives compete.",
+      "termCode": "PL",
+      "inDefinedTermSet": "okr:okr-ontology",
+      "schemaType": "schema:Enumeration",
+      "properties": {
+        "priorityCode": {
+          "type": "string",
+          "description": "Short code for the priority"
+        },
+        "priorityValue": {
+          "type": "integer",
+          "description": "Numeric priority (1=highest)"
+        }
+      },
+      "instances": [
+        {
+          "@id": "okr:PriorityLevel-Critical",
+          "priorityCode": "P1",
+          "priorityValue": 1,
+          "description": "Critical priority, must-achieve objective"
+        },
+        {
+          "@id": "okr:PriorityLevel-High",
+          "priorityCode": "P2",
+          "priorityValue": 2,
+          "description": "High priority, strongly expected to achieve"
+        },
+        {
+          "@id": "okr:PriorityLevel-Medium",
+          "priorityCode": "P3",
+          "priorityValue": 3,
+          "description": "Medium priority, important but flexible"
+        },
+        {
+          "@id": "okr:PriorityLevel-Low",
+          "priorityCode": "P4",
+          "priorityValue": 4,
+          "description": "Low priority, aspirational stretch goal"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "okr:InitiativeStatus",
+      "name": "InitiativeStatus",
+      "description": "Status values tracking the lifecycle of initiatives from planning through execution to completion, enabling portfolio-level visibility of OKR execution.",
+      "termCode": "IS",
+      "inDefinedTermSet": "okr:okr-ontology",
+      "schemaType": "schema:Enumeration",
+      "properties": {
+        "statusCode": {
+          "type": "string",
+          "description": "Short code for the status"
+        },
+        "isTerminal": {
+          "type": "boolean",
+          "description": "Whether this is a terminal state"
+        }
+      },
+      "instances": [
+        {
+          "@id": "okr:InitiativeStatus-Planned",
+          "statusCode": "PLANNED",
+          "isTerminal": false,
+          "description": "Initiative is planned but not started"
+        },
+        {
+          "@id": "okr:InitiativeStatus-InProgress",
+          "statusCode": "IN_PROGRESS",
+          "isTerminal": false,
+          "description": "Initiative is actively being executed"
+        },
+        {
+          "@id": "okr:InitiativeStatus-Completed",
+          "statusCode": "COMPLETED",
+          "isTerminal": true,
+          "description": "Initiative has been completed"
+        },
+        {
+          "@id": "okr:InitiativeStatus-OnHold",
+          "statusCode": "ON_HOLD",
+          "isTerminal": false,
+          "description": "Initiative is paused"
+        },
+        {
+          "@id": "okr:InitiativeStatus-Cancelled",
+          "statusCode": "CANCELLED",
+          "isTerminal": true,
+          "description": "Initiative was cancelled"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "okr:PeriodType",
+      "name": "PeriodType",
+      "description": "Types of OKR time periods defining the cadence of objective setting and review cycles. Quarterly is the most common cadence for OKR programmes.",
+      "termCode": "PT",
+      "inDefinedTermSet": "okr:okr-ontology",
+      "schemaType": "schema:Enumeration",
+      "properties": {
+        "periodCode": {
+          "type": "string",
+          "description": "Short code for the period type"
+        },
+        "typicalDurationDays": {
+          "type": "integer",
+          "description": "Typical duration in days"
+        }
+      },
+      "instances": [
+        {
+          "@id": "okr:PeriodType-Annual",
+          "periodCode": "ANN",
+          "typicalDurationDays": 365,
+          "description": "Annual OKR cycle"
+        },
+        {
+          "@id": "okr:PeriodType-Quarterly",
+          "periodCode": "QTR",
+          "typicalDurationDays": 90,
+          "description": "Quarterly OKR cycle (recommended default)"
+        },
+        {
+          "@id": "okr:PeriodType-Monthly",
+          "periodCode": "MON",
+          "typicalDurationDays": 30,
+          "description": "Monthly OKR cycle"
+        },
+        {
+          "@id": "okr:PeriodType-Custom",
+          "periodCode": "CUST",
+          "typicalDurationDays": null,
+          "description": "Custom time period for special initiatives"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "gdpr:ComplianceObligation",
+      "name": "ComplianceObligation",
+      "description": "External GDPR entity representing a regulatory compliance obligation that drives compliance-focused objectives and informs key result targets.",
+      "oaa:externalOntology": "gdpr:GDPRRegulatoryFrameworkOntology"
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "mcsb:SecurityControl",
+      "name": "SecurityControl",
+      "description": "External MCSB entity representing a cloud security benchmark control whose implementation progress is measured by key results.",
+      "oaa:externalOntology": "mcsb:MCSBOntology"
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "pii:DataProtectionPrinciple",
+      "name": "DataProtectionPrinciple",
+      "description": "External PII entity representing a data protection principle from the PII governance framework that informs privacy-focused objectives.",
+      "oaa:externalOntology": "pii:PIIGovernanceOntology"
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:hasKeyResult",
+      "name": "hasKeyResult",
+      "description": "Links an Objective to its measurable Key Results (2-5 per objective)",
+      "domainIncludes": "okr:Objective",
+      "rangeIncludes": "okr:KeyResult",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:hasInitiative",
+      "name": "hasInitiative",
+      "description": "Links a Key Result to executable initiatives that drive progress",
+      "domainIncludes": "okr:KeyResult",
+      "rangeIncludes": "okr:Initiative",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:hasCheckIn",
+      "name": "hasCheckIn",
+      "description": "Links an Objective to its periodic progress check-ins",
+      "domainIncludes": "okr:Objective",
+      "rangeIncludes": "okr:CheckIn",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:updatesKeyResult",
+      "name": "updatesKeyResult",
+      "description": "Check-in records progress updates against a specific Key Result",
+      "domainIncludes": "okr:CheckIn",
+      "rangeIncludes": "okr:KeyResult",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:alignsTo",
+      "name": "alignsTo",
+      "description": "Links an Objective to a higher-level Objective it aligns with in the cascade",
+      "domainIncludes": "okr:Objective",
+      "rangeIncludes": "okr:Objective",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:dependsOn",
+      "name": "dependsOn",
+      "description": "Indicates a dependency between Key Results across objectives or teams",
+      "domainIncludes": "okr:KeyResult",
+      "rangeIncludes": "okr:KeyResult",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:scopedByPeriod",
+      "name": "scopedByPeriod",
+      "description": "Objective is time-bounded by a specific OKR cycle period",
+      "domainIncludes": "okr:Objective",
+      "rangeIncludes": "okr:TimePeriod",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:hasObjectiveType",
+      "name": "hasObjectiveType",
+      "description": "Classifies the organisational scope of an Objective",
+      "domainIncludes": "okr:Objective",
+      "rangeIncludes": "okr:ObjectiveType",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:hasObjectiveStatus",
+      "name": "hasObjectiveStatus",
+      "description": "Tracks the current lifecycle status of an Objective",
+      "domainIncludes": "okr:Objective",
+      "rangeIncludes": "okr:ObjectiveStatus",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:hasPriority",
+      "name": "hasPriority",
+      "description": "Assigns a priority level to an Objective for resource allocation",
+      "domainIncludes": "okr:Objective",
+      "rangeIncludes": "okr:PriorityLevel",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:hasKeyResultType",
+      "name": "hasKeyResultType",
+      "description": "Classifies how a Key Result measures progress (increase, decrease, milestone, binary)",
+      "domainIncludes": "okr:KeyResult",
+      "rangeIncludes": "okr:KeyResultType",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:hasKeyResultStatus",
+      "name": "hasKeyResultStatus",
+      "description": "Tracks the current lifecycle status of a Key Result",
+      "domainIncludes": "okr:KeyResult",
+      "rangeIncludes": "okr:KeyResultStatus",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:hasInitiativeStatus",
+      "name": "hasInitiativeStatus",
+      "description": "Tracks the current execution status of an Initiative",
+      "domainIncludes": "okr:Initiative",
+      "rangeIncludes": "okr:InitiativeStatus",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:hasPeriodType",
+      "name": "hasPeriodType",
+      "description": "Defines the cadence type of a TimePeriod (annual, quarterly, monthly)",
+      "domainIncludes": "okr:TimePeriod",
+      "rangeIncludes": "okr:PeriodType",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:drivesObjective",
+      "name": "drivesObjective",
+      "description": "A GDPR compliance obligation drives the creation of compliance-focused objectives",
+      "domainIncludes": "gdpr:ComplianceObligation",
+      "rangeIncludes": "okr:Objective",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:measuresCompliance",
+      "name": "measuresCompliance",
+      "description": "A Key Result measures implementation progress of MCSB security controls",
+      "domainIncludes": "okr:KeyResult",
+      "rangeIncludes": "mcsb:SecurityControl",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "okr:informedByRegulation",
+      "name": "informedByRegulation",
+      "description": "An Objective is informed by PII data protection principles for privacy-focused goal setting",
+      "domainIncludes": "okr:Objective",
+      "rangeIncludes": "pii:DataProtectionPrinciple",
+      "cardinality": "n:m"
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "okr:rule-objective-key-results-count",
+      "name": "ObjectiveKeyResultsCount",
+      "description": "Every objective must have between 2 and 5 key results to maintain focus",
+      "condition": "IF okr:Objective exists",
+      "action": "THEN COUNT(okr:hasKeyResult) >= 2 AND COUNT(okr:hasKeyResult) <= 5",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "okr:rule-key-result-target-differs",
+      "name": "KeyResultTargetDiffers",
+      "description": "Key result target value must differ from start value to be measurable",
+      "condition": "IF okr:KeyResult.targetValue is set",
+      "action": "THEN okr:KeyResult.targetValue != okr:KeyResult.startValue",
+      "priority": 2,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "okr:rule-key-result-weights-sum",
+      "name": "KeyResultWeightsSum",
+      "description": "All key result weights for an objective should sum to 100",
+      "condition": "IF okr:Objective has multiple KeyResults with weights",
+      "action": "THEN SUM(okr:KeyResult.weight) = 100 for each Objective",
+      "priority": 3,
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "@id": "okr:rule-objective-time-period-required",
+      "name": "ObjectiveTimePeriodRequired",
+      "description": "Every objective must be scoped to a time period with defined start and end dates",
+      "condition": "IF okr:Objective exists",
+      "action": "THEN okr:scopedByPeriod relationship must exist with valid TimePeriod",
+      "priority": 4,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "okr:rule-progress-from-key-results",
+      "name": "ProgressFromKeyResults",
+      "description": "Objective progress percentage is the weighted average of its key results",
+      "condition": "IF okr:Objective.progressPercentage is calculated",
+      "action": "THEN progressPercentage = WEIGHTED_AVG(KeyResults.progressPercentage, KeyResults.weight)",
+      "priority": 5,
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "@id": "okr:rule-alignment-cascade-required",
+      "name": "AlignmentCascadeRequired",
+      "description": "Non-company objectives must align to at least one higher-level objective",
+      "condition": "IF okr:ObjectiveType != COMPANY",
+      "action": "THEN okr:alignsTo relationship must exist to a higher-level Objective",
+      "priority": 6,
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "@id": "okr:rule-check-in-cadence",
+      "name": "CheckInCadenceRequired",
+      "description": "Active objectives should have at least one check-in per month",
+      "condition": "IF okr:ObjectiveStatus = ACTIVE or ON_TRACK or AT_RISK or OFF_TRACK",
+      "action": "THEN okr:hasCheckIn should have entries within last 30 days",
+      "priority": 7,
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "@id": "okr:rule-initiative-links-key-result",
+      "name": "InitiativeLinksKeyResult",
+      "description": "Every initiative must be linked to at least one key result it supports",
+      "condition": "IF okr:Initiative exists",
+      "action": "THEN okr:hasInitiative relationship must connect to at least one KeyResult",
+      "priority": 8,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    }
+  ],
+  "crossOntologyReferences": {
+    "veSeries": [
+      "vsom:",
+      "vp:",
+      "kpi:",
+      "pmf:"
+    ],
+    "foundationSeries": [
+      "org:",
+      "org-ctx:"
+    ],
+    "rcsgSeries": [
+      "gdpr:",
+      "mcsb:",
+      "pii:"
+    ],
+    "description": "OKR sits in the VE lineage chain between VSOM (strategic objectives) and VP (value propositions). Key results connect to KPI for measurement. Compliance obligations from GDPR drive objectives, key results measure MCSB security control implementation, and objectives are informed by PII data protection principles.",
+    "lineageAlignment": {
+      "vsom:ObjectivesComponent": "Drives okr:Objective creation from strategic framework",
+      "vp:ValueProposition": "Key results inform value proposition evidence",
+      "kpi:KPI": "Key results measured by KPI definitions",
+      "gdpr:ComplianceObligation": "GDPR compliance obligations drive compliance-focused objectives",
+      "mcsb:SecurityControl": "MCSB security control implementation measured by key results",
+      "pii:DataProtectionPrinciple": "PII data protection principles inform privacy-focused objectives"
+    },
+    "keyBridges": [
+      {
+        "from": "gdpr:ComplianceObligation",
+        "to": "okr:Objective",
+        "relationship": "drivesObjective"
+      },
+      {
+        "from": "okr:KeyResult",
+        "to": "mcsb:SecurityControl",
+        "relationship": "measuresCompliance"
+      },
+      {
+        "from": "okr:Objective",
+        "to": "pii:DataProtectionPrinciple",
+        "relationship": "informedByRegulation"
+      }
+    ]
+  },
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "OKR-ONT",
+  "oaa:series": "VE-Series"
+}

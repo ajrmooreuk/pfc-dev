@@ -1,0 +1,469 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "vsem": "https://wings4mind.ai/ontology/vsem/",
+    "bsc": "https://wings4mind.ai/ontology/bsc/",
+    "cra": "https://quantumlane.ai/ontology/cyber-risk/",
+    "nist": "https://csrc.nist.gov/ns/rmf/",
+    "iso27k": "https://www.iso.org/standard/27001/"
+  },
+  "@type": "vsem:VSEMEntity",
+  "@id": "vsem:vsom-qlai-cyber-risk-assessment",
+  "vsem:entityType": "programme",
+  "vsem:platformInstance": "PF-Core-QLAI",
+  "vsem:validFrom": "2025-01-01",
+  "vsem:validTo": "2028-12-31",
+  "name": "Quantum Lane AI — Cyber Risk Assessment Ontology Service",
+  "description": "Ontology-driven cyber risk assessment capability delivered as a consulting service for client prospecting, engagement deepening, and retention. Leverages graph-native analytics in Power Platform OneLake environments.",
+  "@graph": [
+    {
+      "@type": ["Mission", "vsem:StrategicVision"],
+      "@id": "vsem:vision-cra-1",
+      "name": "Ontology-Native Cyber Risk Intelligence Leader",
+      "description": "Establish Quantum Lane AI as the definitive provider of ontology-driven cyber risk assessment services, transforming client security posture from reactive compliance checklists to proactive, graph-powered risk intelligence that integrates seamlessly into enterprise analytics ecosystems. Clients gain sustainable risk visibility through interconnected threat, asset, control, and compliance graphs rather than static spreadsheet-based assessments.",
+      "vsem:timeHorizon": "P3Y",
+      "vsem:competitivePositioning": {
+        "@type": "vsem:CompetitivePositioning",
+        "vsem:strategy": "Differentiation",
+        "vsem:basis": "Graph-native ontology architecture enabling contextual risk inference, causal chain analysis, and automated compliance mapping — capabilities impossible with flat assessment tools",
+        "vsem:targetMarket": "Mid-market to enterprise organisations in regulated sectors (financial services, healthcare, critical infrastructure, UK insurers under PRA SS1/21)",
+        "vsem:valueProposition": "Move from periodic audit snapshots to continuous, ontology-driven cyber risk intelligence that surfaces hidden dependencies, quantifies cascading failure impact, and auto-maps to multiple compliance frameworks simultaneously"
+      },
+      "vsem:informs": [
+        {"@id": "vsem:strategy-cra-1"},
+        {"@id": "vsem:strategy-cra-2"},
+        {"@id": "vsem:strategy-cra-3"},
+        {"@id": "vsem:strategy-cra-4"}
+      ]
+    },
+
+    {
+      "@type": ["Plan", "vsem:StrategicInitiative"],
+      "@id": "vsem:strategy-cra-1",
+      "name": "Graph-Native Risk Ontology Development",
+      "description": "Build and maintain a comprehensive cyber risk ontology grounded in Schema.org, NIST CSF 2.0, ISO 27001/27002:2022, and MITRE ATT&CK that models threats, vulnerabilities, assets, controls, compliance obligations, and business impact as an interconnected knowledge graph. Prototype in JSON-LD, deploy to Neo4j, surface through Power BI via OneLake DirectLake.",
+      "vsem:strategicPriority": 1,
+      "vsem:investmentLevel": {
+        "@type": "MonetaryAmount",
+        "value": 150000,
+        "currency": "GBP"
+      },
+      "vsem:achieves": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:requires": [
+        {"@id": "vsem:capability-cra-1"},
+        {"@id": "vsem:capability-cra-2"}
+      ]
+    },
+    {
+      "@type": ["Plan", "vsem:StrategicInitiative"],
+      "@id": "vsem:strategy-cra-2",
+      "name": "Client Prospecting via Risk Posture Benchmarking",
+      "description": "Use the cyber risk ontology to generate sector-specific risk posture benchmarks that serve as lead magnets. Prospects receive a complimentary risk profile comparison against anonymised peer data from the graph, demonstrating immediate value and creating urgency for deeper engagement.",
+      "vsem:strategicPriority": 2,
+      "vsem:investmentLevel": {
+        "@type": "MonetaryAmount",
+        "value": 75000,
+        "currency": "GBP"
+      },
+      "vsem:achieves": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:requires": [
+        {"@id": "vsem:capability-cra-3"},
+        {"@id": "vsem:capability-cra-4"}
+      ]
+    },
+    {
+      "@type": ["Plan", "vsem:StrategicInitiative"],
+      "@id": "vsem:strategy-cra-3",
+      "name": "Engagement Deepening Through Continuous Risk Graph",
+      "description": "Convert initial assessments into ongoing relationships by deploying persistent client risk graphs in their OneLake/Fabric environment. The graph continuously ingests telemetry, maps emerging threats via MITRE ATT&CK ontology edges, and surfaces actionable intelligence through Power BI dashboards — creating switching costs and demonstrating continuous value.",
+      "vsem:strategicPriority": 3,
+      "vsem:investmentLevel": {
+        "@type": "MonetaryAmount",
+        "value": 200000,
+        "currency": "GBP"
+      },
+      "vsem:achieves": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:requires": [
+        {"@id": "vsem:capability-cra-5"},
+        {"@id": "vsem:capability-cra-6"}
+      ]
+    },
+    {
+      "@type": ["Plan", "vsem:StrategicInitiative"],
+      "@id": "vsem:strategy-cra-4",
+      "name": "Retention via Regulatory Intelligence & Compliance Automation",
+      "description": "Lock-in clients through automated compliance mapping that dynamically links their control implementations to evolving regulatory requirements (PRA SS1/21, DORA, NIS2, SOC2, ISO 27001). As regulations change, the ontology auto-identifies gaps — generating continuous advisory engagements and renewal justification.",
+      "vsem:strategicPriority": 4,
+      "vsem:investmentLevel": {
+        "@type": "MonetaryAmount",
+        "value": 100000,
+        "currency": "GBP"
+      },
+      "vsem:achieves": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:requires": [
+        {"@id": "vsem:capability-cra-7"},
+        {"@id": "vsem:capability-cra-8"}
+      ]
+    },
+
+    {
+      "@type": ["Action", "vsem:StrategicObjective"],
+      "@id": "vsem:objective-cra-f1",
+      "name": "Generate £500K recurring revenue from cyber risk ontology services within 18 months",
+      "description": "Achieve £500K ARR from ontology-driven cyber risk assessment engagements including initial assessments (£15-50K), continuous graph deployments (£5-15K/month), and compliance automation subscriptions (£3-8K/month).",
+      "vsem:objectiveType": "Growth",
+      "vsem:targetDate": "2027-06-30",
+      "vsem:supports": [{"@id": "vsem:strategy-cra-2"}, {"@id": "vsem:strategy-cra-3"}],
+      "vsem:measuredBy": [{"@id": "vsem:metric-cra-f1"}],
+      "vsem:bscPerspective": "Financial"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective"],
+      "@id": "vsem:objective-cra-f2",
+      "name": "Achieve 70% gross margin on ontology-as-a-service engagements",
+      "description": "Maintain 70%+ gross margin through ontology reuse, automated graph deployment pipelines, and template-driven compliance mapping that reduces per-client customisation effort.",
+      "vsem:objectiveType": "Efficiency",
+      "vsem:targetDate": "2027-12-31",
+      "vsem:supports": [{"@id": "vsem:strategy-cra-1"}],
+      "vsem:measuredBy": [{"@id": "vsem:metric-cra-f2"}],
+      "vsem:bscPerspective": "Financial"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective"],
+      "@id": "vsem:objective-cra-c1",
+      "name": "Onboard 25 clients onto continuous risk graph within 24 months",
+      "description": "Convert 25 organisations from initial assessment to persistent risk graph deployments in their Power Platform/OneLake environments, creating deep integration and switching costs.",
+      "vsem:objectiveType": "Growth",
+      "vsem:targetDate": "2027-12-31",
+      "vsem:supports": [{"@id": "vsem:strategy-cra-3"}],
+      "vsem:measuredBy": [{"@id": "vsem:metric-cra-c1"}],
+      "vsem:bscPerspective": "Customer"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective"],
+      "@id": "vsem:objective-cra-c2",
+      "name": "Achieve 90%+ client retention rate on annual engagements",
+      "description": "Retain 90% of clients year-over-year through continuous compliance intelligence updates, proactive threat landscape briefings generated from the ontology, and embedded Power BI dashboard stickiness.",
+      "vsem:objectiveType": "Risk",
+      "vsem:targetDate": "2027-12-31",
+      "vsem:supports": [{"@id": "vsem:strategy-cra-4"}],
+      "vsem:measuredBy": [{"@id": "vsem:metric-cra-c2"}],
+      "vsem:bscPerspective": "Customer"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective"],
+      "@id": "vsem:objective-cra-c3",
+      "name": "Generate 100 qualified prospects via risk posture benchmarking within 12 months",
+      "description": "Deliver complimentary sector-specific risk posture benchmarks to 100 qualified prospects, converting at least 25% to paid initial assessments.",
+      "vsem:objectiveType": "Growth",
+      "vsem:targetDate": "2026-12-31",
+      "vsem:supports": [{"@id": "vsem:strategy-cra-2"}],
+      "vsem:measuredBy": [{"@id": "vsem:metric-cra-c3"}],
+      "vsem:bscPerspective": "Customer"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective"],
+      "@id": "vsem:objective-cra-ip1",
+      "name": "Deploy production cyber risk ontology covering NIST CSF 2.0, ISO 27001, MITRE ATT&CK",
+      "description": "Deliver a production-grade JSON-LD ontology with 500+ class instances covering threat actors, techniques, vulnerabilities, assets, controls, and compliance obligations with full cross-framework mapping.",
+      "vsem:objectiveType": "Innovation",
+      "vsem:targetDate": "2026-06-30",
+      "vsem:supports": [{"@id": "vsem:strategy-cra-1"}],
+      "vsem:measuredBy": [{"@id": "vsem:metric-cra-ip1"}],
+      "vsem:bscPerspective": "InternalProcess"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective"],
+      "@id": "vsem:objective-cra-ip2",
+      "name": "Automate graph deployment pipeline for OneLake/Neo4j in under 2 hours",
+      "description": "Build CI/CD pipeline that provisions a client-specific risk graph instance, seeds with sector template, connects to OneLake, and generates initial Power BI dashboards within 2 hours of engagement kickoff.",
+      "vsem:objectiveType": "Efficiency",
+      "vsem:targetDate": "2026-09-30",
+      "vsem:supports": [{"@id": "vsem:strategy-cra-3"}],
+      "vsem:measuredBy": [{"@id": "vsem:metric-cra-ip2"}],
+      "vsem:bscPerspective": "InternalProcess"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective"],
+      "@id": "vsem:objective-cra-ip3",
+      "name": "Achieve automated compliance gap detection across 5 regulatory frameworks",
+      "description": "Enable automatic identification of control gaps when regulatory requirements change across PRA SS1/21, DORA, NIS2, SOC2 Type II, and ISO 27001:2022 through ontology reasoning over the client risk graph.",
+      "vsem:objectiveType": "Innovation",
+      "vsem:targetDate": "2027-03-31",
+      "vsem:supports": [{"@id": "vsem:strategy-cra-4"}],
+      "vsem:measuredBy": [{"@id": "vsem:metric-cra-ip3"}],
+      "vsem:bscPerspective": "InternalProcess"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective"],
+      "@id": "vsem:objective-cra-lg1",
+      "name": "Build ontology engineering and graph analytics competency across delivery team",
+      "description": "Train 6 consultants in knowledge graph modelling (JSON-LD, Neo4j Cypher, SPARQL), cyber risk domain expertise (NIST CSF, ISO 27001, MITRE ATT&CK), and Power Platform integration patterns.",
+      "vsem:objectiveType": "Innovation",
+      "vsem:targetDate": "2026-06-30",
+      "vsem:supports": [{"@id": "vsem:strategy-cra-1"}],
+      "vsem:measuredBy": [{"@id": "vsem:metric-cra-lg1"}],
+      "vsem:bscPerspective": "LearningGrowth"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective"],
+      "@id": "vsem:objective-cra-lg2",
+      "name": "Establish reusable sector ontology templates for 4 regulated industries",
+      "description": "Create pre-built cyber risk ontology templates for Financial Services (PRA/FCA), Healthcare (DSPT), Critical Infrastructure (NIS2), and Insurance (PRA SS1/21) that accelerate deployment from weeks to hours.",
+      "vsem:objectiveType": "Efficiency",
+      "vsem:targetDate": "2026-12-31",
+      "vsem:supports": [{"@id": "vsem:strategy-cra-1"}, {"@id": "vsem:strategy-cra-3"}],
+      "vsem:measuredBy": [{"@id": "vsem:metric-cra-lg2"}],
+      "vsem:bscPerspective": "LearningGrowth"
+    },
+
+    {
+      "@type": ["Action", "vsem:OperationalCapability"],
+      "@id": "vsem:capability-cra-1",
+      "name": "Ontology Architecture & Schema.org Grounding",
+      "description": "Ability to design, build, and maintain JSON-LD ontologies grounded in Schema.org with domain-specific extensions for cyber risk, compliance, and threat intelligence.",
+      "vsem:executedBy": {
+        "@type": "OrganizationRole",
+        "roleName": "Ontology Architect / OAA Agent"
+      },
+      "vsem:supports": [{"@id": "vsem:strategy-cra-1"}],
+      "vsem:produces": [{"@id": "vsem:metric-cra-ip1"}],
+      "vsem:maturityLevel": "Defined"
+    },
+    {
+      "@type": ["Action", "vsem:OperationalCapability"],
+      "@id": "vsem:capability-cra-2",
+      "name": "Graph Database Engineering (Neo4j / Cosmos DB Gremlin)",
+      "description": "Ability to transform JSON-LD ontologies into performant graph databases, write Cypher/Gremlin queries for risk inference, and maintain graph schemas across client instances.",
+      "vsem:executedBy": {
+        "@type": "OrganizationRole",
+        "roleName": "Graph Data Engineer"
+      },
+      "vsem:supports": [{"@id": "vsem:strategy-cra-1"}],
+      "vsem:maturityLevel": "Managed"
+    },
+    {
+      "@type": ["Action", "vsem:OperationalCapability"],
+      "@id": "vsem:capability-cra-3",
+      "name": "Sector Risk Benchmarking & Lead Generation",
+      "description": "Ability to generate anonymised sector risk posture benchmarks from aggregated graph data and deliver as compelling prospect-facing reports.",
+      "vsem:executedBy": {
+        "@type": "OrganizationRole",
+        "roleName": "Business Development / Risk Analyst"
+      },
+      "vsem:supports": [{"@id": "vsem:strategy-cra-2"}],
+      "vsem:maturityLevel": "Initial"
+    },
+    {
+      "@type": ["Action", "vsem:OperationalCapability"],
+      "@id": "vsem:capability-cra-4",
+      "name": "Client Risk Profiling & Intake Assessment",
+      "description": "Structured methodology for rapid client risk profiling using ontology-driven questionnaires that auto-populate the initial risk graph.",
+      "vsem:executedBy": {
+        "@type": "OrganizationRole",
+        "roleName": "Cyber Risk Consultant"
+      },
+      "vsem:supports": [{"@id": "vsem:strategy-cra-2"}],
+      "vsem:maturityLevel": "Defined"
+    },
+    {
+      "@type": ["Action", "vsem:OperationalCapability"],
+      "@id": "vsem:capability-cra-5",
+      "name": "OneLake / Fabric Graph Integration",
+      "description": "Ability to deploy and maintain Neo4j graph instances that synchronise with Microsoft Fabric OneLake via shortcuts, enabling DirectLake Power BI consumption of graph-derived risk analytics.",
+      "vsem:executedBy": {
+        "@type": "OrganizationRole",
+        "roleName": "Platform Integration Engineer"
+      },
+      "vsem:supports": [{"@id": "vsem:strategy-cra-3"}],
+      "vsem:maturityLevel": "Initial"
+    },
+    {
+      "@type": ["Action", "vsem:OperationalCapability"],
+      "@id": "vsem:capability-cra-6",
+      "name": "Power BI Cyber Risk Dashboard Design",
+      "description": "Ability to design and deploy Power BI dashboards that consume graph-derived datasets from OneLake, visualising risk posture, control coverage, threat landscape, and compliance status.",
+      "vsem:executedBy": {
+        "@type": "OrganizationRole",
+        "roleName": "BI Developer / Dashboard Designer"
+      },
+      "vsem:supports": [{"@id": "vsem:strategy-cra-3"}],
+      "vsem:maturityLevel": "Managed"
+    },
+    {
+      "@type": ["Action", "vsem:OperationalCapability"],
+      "@id": "vsem:capability-cra-7",
+      "name": "Regulatory Ontology Maintenance & Gap Reasoning",
+      "description": "Ability to model regulatory requirements as ontology entities, link to client controls, and run graph traversals to identify compliance gaps when regulations change.",
+      "vsem:executedBy": {
+        "@type": "OrganizationRole",
+        "roleName": "Compliance Ontology Analyst"
+      },
+      "vsem:supports": [{"@id": "vsem:strategy-cra-4"}],
+      "vsem:maturityLevel": "Initial"
+    },
+    {
+      "@type": ["Action", "vsem:OperationalCapability"],
+      "@id": "vsem:capability-cra-8",
+      "name": "AI-Augmented Advisory Report Generation",
+      "description": "Ability to generate contextualised advisory reports using AI agents that traverse the client risk graph, identify material findings, and produce actionable recommendations grounded in ontology evidence.",
+      "vsem:executedBy": {
+        "@type": "OrganizationRole",
+        "roleName": "AI Advisory Agent / Senior Consultant"
+      },
+      "vsem:supports": [{"@id": "vsem:strategy-cra-4"}],
+      "vsem:maturityLevel": "Initial"
+    },
+
+    {
+      "@type": ["QuantitativeValue", "vsem:StrategicKPI"],
+      "@id": "vsem:metric-cra-f1",
+      "name": "Cyber Risk Service ARR",
+      "description": "Annual recurring revenue from all cyber risk ontology service engagements",
+      "vsem:metricType": "Lagging",
+      "vsem:targetValue": 500000,
+      "vsem:currentValue": 0,
+      "vsem:baselineValue": 0,
+      "unitCode": "GBP",
+      "vsem:measurementFrequency": "Monthly",
+      "vsem:measures": [{"@id": "vsem:capability-cra-3"}, {"@id": "vsem:capability-cra-5"}],
+      "vsem:validates": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:bscPerspective": "Financial"
+    },
+    {
+      "@type": ["QuantitativeValue", "vsem:StrategicKPI"],
+      "@id": "vsem:metric-cra-f2",
+      "name": "Ontology Service Gross Margin",
+      "description": "Gross margin percentage on ontology-as-a-service engagements measuring reuse efficiency",
+      "vsem:metricType": "Lagging",
+      "vsem:targetValue": 70,
+      "vsem:currentValue": 0,
+      "vsem:baselineValue": 0,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Quarterly",
+      "vsem:measures": [{"@id": "vsem:capability-cra-1"}],
+      "vsem:validates": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:bscPerspective": "Financial"
+    },
+    {
+      "@type": ["QuantitativeValue", "vsem:StrategicKPI"],
+      "@id": "vsem:metric-cra-c1",
+      "name": "Active Continuous Risk Graph Clients",
+      "description": "Number of clients with deployed persistent risk graphs in their environment",
+      "vsem:metricType": "Lagging",
+      "vsem:targetValue": 25,
+      "vsem:currentValue": 0,
+      "vsem:baselineValue": 0,
+      "unitCode": "C62",
+      "vsem:measurementFrequency": "Monthly",
+      "vsem:measures": [{"@id": "vsem:capability-cra-5"}],
+      "vsem:validates": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:bscPerspective": "Customer"
+    },
+    {
+      "@type": ["QuantitativeValue", "vsem:StrategicKPI"],
+      "@id": "vsem:metric-cra-c2",
+      "name": "Annual Client Retention Rate",
+      "description": "Percentage of clients renewing annual risk graph and compliance subscriptions",
+      "vsem:metricType": "Lagging",
+      "vsem:targetValue": 90,
+      "vsem:currentValue": 0,
+      "vsem:baselineValue": 0,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Quarterly",
+      "vsem:measures": [{"@id": "vsem:capability-cra-7"}],
+      "vsem:validates": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:bscPerspective": "Customer"
+    },
+    {
+      "@type": ["QuantitativeValue", "vsem:StrategicKPI"],
+      "@id": "vsem:metric-cra-c3",
+      "name": "Qualified Prospects via Benchmarking",
+      "description": "Number of prospects engaged through complimentary risk posture benchmark reports",
+      "vsem:metricType": "Leading",
+      "vsem:targetValue": 100,
+      "vsem:currentValue": 0,
+      "vsem:baselineValue": 0,
+      "unitCode": "C62",
+      "vsem:measurementFrequency": "Monthly",
+      "vsem:measures": [{"@id": "vsem:capability-cra-3"}],
+      "vsem:validates": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:bscPerspective": "Customer"
+    },
+    {
+      "@type": ["QuantitativeValue", "vsem:StrategicKPI"],
+      "@id": "vsem:metric-cra-ip1",
+      "name": "Ontology Class Coverage",
+      "description": "Number of ontology class instances across threat, asset, control, and compliance domains",
+      "vsem:metricType": "Leading",
+      "vsem:targetValue": 500,
+      "vsem:currentValue": 0,
+      "vsem:baselineValue": 0,
+      "unitCode": "C62",
+      "vsem:measurementFrequency": "Monthly",
+      "vsem:measures": [{"@id": "vsem:capability-cra-1"}],
+      "vsem:validates": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:bscPerspective": "InternalProcess"
+    },
+    {
+      "@type": ["QuantitativeValue", "vsem:StrategicKPI"],
+      "@id": "vsem:metric-cra-ip2",
+      "name": "Graph Deployment Time",
+      "description": "Time from engagement kickoff to operational client risk graph with initial dashboards",
+      "vsem:metricType": "Leading",
+      "vsem:targetValue": 2,
+      "vsem:currentValue": 0,
+      "vsem:baselineValue": 40,
+      "unitCode": "HUR",
+      "vsem:measurementFrequency": "Monthly",
+      "vsem:measures": [{"@id": "vsem:capability-cra-5"}],
+      "vsem:validates": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:bscPerspective": "InternalProcess"
+    },
+    {
+      "@type": ["QuantitativeValue", "vsem:StrategicKPI"],
+      "@id": "vsem:metric-cra-ip3",
+      "name": "Regulatory Frameworks with Automated Gap Detection",
+      "description": "Number of regulatory frameworks with fully modelled ontology entities enabling automated compliance gap identification",
+      "vsem:metricType": "Leading",
+      "vsem:targetValue": 5,
+      "vsem:currentValue": 0,
+      "vsem:baselineValue": 0,
+      "unitCode": "C62",
+      "vsem:measurementFrequency": "Quarterly",
+      "vsem:measures": [{"@id": "vsem:capability-cra-7"}],
+      "vsem:validates": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:bscPerspective": "InternalProcess"
+    },
+    {
+      "@type": ["QuantitativeValue", "vsem:StrategicKPI"],
+      "@id": "vsem:metric-cra-lg1",
+      "name": "Certified Ontology/Graph Consultants",
+      "description": "Number of consultants trained and certified in knowledge graph modelling and cyber risk domain expertise",
+      "vsem:metricType": "Leading",
+      "vsem:targetValue": 6,
+      "vsem:currentValue": 1,
+      "vsem:baselineValue": 1,
+      "unitCode": "C62",
+      "vsem:measurementFrequency": "Quarterly",
+      "vsem:measures": [{"@id": "vsem:capability-cra-1"}],
+      "vsem:validates": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:bscPerspective": "LearningGrowth"
+    },
+    {
+      "@type": ["QuantitativeValue", "vsem:StrategicKPI"],
+      "@id": "vsem:metric-cra-lg2",
+      "name": "Sector Ontology Templates Completed",
+      "description": "Number of regulated industry verticals with production-ready cyber risk ontology templates",
+      "vsem:metricType": "Leading",
+      "vsem:targetValue": 4,
+      "vsem:currentValue": 0,
+      "vsem:baselineValue": 0,
+      "unitCode": "C62",
+      "vsem:measurementFrequency": "Quarterly",
+      "vsem:measures": [{"@id": "vsem:capability-cra-1"}],
+      "vsem:validates": [{"@id": "vsem:vision-cra-1"}],
+      "vsem:bscPerspective": "LearningGrowth"
+    }
+  ]
+}

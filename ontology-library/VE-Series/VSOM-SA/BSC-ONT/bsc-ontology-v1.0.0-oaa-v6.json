@@ -1,0 +1,1872 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "bsc": "https://oaa-ontology.org/v6/bsc/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/",
+    "okr": "https://oaa-ontology.org/v6/okr/",
+    "rrr": "https://oaa-ontology.org/v6/rrr/",
+    "org": "https://oaa-ontology.org/v6/organization/",
+    "orgctx": "https://oaa-ontology.org/v6/org-context/",
+    "ea": "https://oaa-ontology.org/v6/ea-core/",
+    "ppm": "https://oaa-ontology.org/v6/ppm/"
+  },
+  "@id": "https://oaa-ontology.org/v6/bsc/schema",
+  "@type": "owl:Ontology",
+  "name": "Balanced Scorecard Strategy Execution Ontology",
+  "alternateName": "BSC-ONT — Strategy Maps, Perspectives & Stakeholder Alignment",
+  "description": "Formalizes the Balanced Scorecard (Kaplan & Norton) as the connective tissue between VSOM strategic intent and KPI/OKR operational measurement. Includes BSC Perspectives, Strategy Maps with cause-and-effect chains, Stakeholder Alignment, Strategic Value Chain analysis, and Lifecycle Stage analysis. BSC is the natural bridge — VSOM defines Vision→Strategy→Objectives→Metrics; BSC organizes those objectives and metrics into four perspectives with C-Suite accountability via RRR roles. Part of VE-Series VSOM-SA (Strategy Analysis).",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "Strategic Management, Performance Management, Strategy Execution",
+  "oaa:status": "Draft",
+  "dateCreated": "2026-02-12",
+  "dateModified": "2026-02-12",
+  "creator": {
+    "@type": "Organization",
+    "name": "W4M Strategic Patterns Framework"
+  },
+  "oaa:imports": [
+    {
+      "@id": "vsom:schema",
+      "name": "VSOM-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "vsom:VSOMFramework",
+        "vsom:VisionComponent",
+        "vsom:StrategyComponent",
+        "vsom:ObjectivesComponent",
+        "vsom:MetricsComponent",
+        "vsom:StrategicReviewCycle"
+      ],
+      "importedRelationships": [
+        "vsom:hasStrategicContext",
+        "vsom:hasStrategy",
+        "vsom:hasObjective",
+        "vsom:hasMetric",
+        "vsom:triggeredByMetric"
+      ]
+    },
+    {
+      "@id": "kpi:schema",
+      "name": "KPI-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "kpi:KPI",
+        "kpi:Metric",
+        "kpi:VEAnalysis",
+        "kpi:VEFunction"
+      ],
+      "importedRelationships": [
+        "kpi:trackedVia",
+        "kpi:quantifiedBy"
+      ]
+    },
+    {
+      "@id": "okr:schema",
+      "name": "OKR-ONT",
+      "version": "2.0.0",
+      "importedEntities": [
+        "okr:Objective",
+        "okr:KeyResult",
+        "okr:Initiative"
+      ],
+      "importedRelationships": [
+        "okr:hasKeyResult",
+        "okr:hasInitiative",
+        "okr:alignsTo"
+      ]
+    },
+    {
+      "@id": "rrr:schema",
+      "name": "RRR-ONT",
+      "version": "4.0.0",
+      "importedEntities": [
+        "rrr:ExecutiveRole",
+        "rrr:FunctionalRole",
+        "rrr:RACIAssignment"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "org:schema",
+      "name": "ORG-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "org:Organization",
+        "org:OrganizationContext"
+      ],
+      "importedRelationships": [
+        "org:hasContext"
+      ]
+    },
+    {
+      "@id": "orgctx:schema",
+      "name": "ORG-CONTEXT-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "orgctx:OrganizationContext",
+        "orgctx:Product",
+        "orgctx:Brand",
+        "orgctx:CompetitiveLandscape",
+        "orgctx:MarketContext"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "ea:schema",
+      "name": "EA-CORE-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "ea:BusinessCapability",
+        "ea:BusinessProcess",
+        "ea:CapabilityGap"
+      ],
+      "importedRelationships": [
+        "ea:realizes",
+        "ea:composedOf"
+      ]
+    },
+    {
+      "@id": "ppm:schema",
+      "name": "PPM-ONT",
+      "version": "4.0.0",
+      "importedEntities": [
+        "ppm:Portfolio",
+        "ppm:Programme",
+        "ppm:Initiative"
+      ],
+      "importedRelationships": []
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-BSC-001",
+      "name": "VSOM-BSC-KPI Measurement Chain",
+      "description": "The golden chain: VSOM Strategy is operationalized through BSC into perspective objectives measured by KPIs. This is how VSOM MetricsComponent gets structured into balanced perspectives.",
+      "joinPath": "vsom:VSOMFramework → bsc:operationalizedBy → bsc:BalancedScorecard → bsc:hasPerspective → bsc:BSCPerspective → bsc:hasPerspectiveObjective → bsc:BSCObjective → bsc:measuredByKPI → kpi:KPI → kpi:quantifiedBy → kpi:Metric",
+      "useCase": "Strategy to measurement cascade across balanced perspectives"
+    },
+    {
+      "patternId": "JP-BSC-002",
+      "name": "BSC-RRR Accountability Bridge",
+      "description": "Each BSC perspective has C-Suite accountability via RRR ExecutiveRole.bscPerspective property. Objectives within each perspective inherit role ownership.",
+      "joinPath": "bsc:BSCPerspective → bsc:perspectiveOwnedBy → rrr:ExecutiveRole [WHERE bscPerspective matches] → rrr:raciAccountable → vsom:ObjectivesComponent",
+      "useCase": "Executive accountability for strategic perspective performance"
+    },
+    {
+      "patternId": "JP-BSC-003",
+      "name": "Strategy Map Causal Traversal",
+      "description": "Bottom-up causal chain through the Strategy Map: invest in people/technology (L&G) → improve processes (Internal) → delight customers (Customer) → grow revenue (Financial). Each link is a testable hypothesis.",
+      "joinPath": "bsc:StrategyMap → bsc:hasCausalChain → bsc:CausalLink [LearningAndGrowth → InternalProcess → Customer → Financial]",
+      "useCase": "Trace investment impact from capability building to financial outcomes"
+    },
+    {
+      "patternId": "JP-BSC-004",
+      "name": "Org-Context-BSC Full Path",
+      "description": "Full traversal from organization through context through VSOM to balanced scorecard",
+      "joinPath": "org:Organization → org:hasContext → orgctx:OrganizationContext → vsom:hasStrategicContext → vsom:VSOMFramework → bsc:operationalizedBy → bsc:BalancedScorecard",
+      "useCase": "Complete organizational strategy-to-measurement context"
+    },
+    {
+      "patternId": "JP-BSC-005",
+      "name": "BSC-to-OKR Cascade",
+      "description": "BSC perspective objectives cascade to OKR quarterly objectives with measurable key results",
+      "joinPath": "bsc:BSCObjective → bsc:cascadesToOKR → okr:Objective → okr:hasKeyResult → okr:KeyResult → okr:hasInitiative → okr:Initiative",
+      "useCase": "Strategy execution: annual BSC objectives decompose into quarterly OKR cycles"
+    },
+    {
+      "patternId": "JP-BSC-006",
+      "name": "Value Chain to BSC Internal Process",
+      "description": "Strategic value chain activities map to BSC Internal Process perspective objectives via EA business capabilities",
+      "joinPath": "bsc:StrategicValueChain → bsc:activityCapability → ea:BusinessCapability → bsc:trackedInPerspective → bsc:BSCPerspective [InternalProcess]",
+      "useCase": "Connect value-creating activities to internal process measurement"
+    },
+    {
+      "patternId": "JP-BSC-007",
+      "name": "Lifecycle-BSC Emphasis Shift",
+      "description": "Organization lifecycle stage determines which BSC perspective receives strategic emphasis and investment priority",
+      "joinPath": "bsc:LifecycleStageAnalysis → bsc:emphasizesPerspective → bsc:BSCPerspective → bsc:hasPerspectiveObjective → bsc:BSCObjective",
+      "useCase": "Adaptive strategy: lifecycle stage shifts BSC focus from growth (Customer) to optimization (Financial/Internal Process)"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "bsc:BalancedScorecard",
+      "@type": "rdfs:Class",
+      "name": "BalancedScorecard",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Kaplan & Norton Balanced Scorecard — translates a VSOM strategy into measurable objectives organized across four perspectives (Financial, Customer, Internal Process, Learning & Growth). Each BSC instance operationalizes exactly one VSOMFramework and is scoped to a specific organizational level (corporate, business-unit, department, team).",
+      "oaa:properties": [
+        {
+          "name": "scorecardId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "vsomFrameworkRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vsom:VSOMFramework @id being operationalized"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "scope",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Corporate",
+            "BusinessUnit",
+            "Department",
+            "Team"
+          ],
+          "description": "Organizational level this scorecard applies to"
+        },
+        {
+          "name": "scopeEntityRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to specific business unit, department, or team if scope is not Corporate"
+        },
+        {
+          "name": "period",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Fiscal period covered (e.g. FY2026, Q1-2026)"
+        },
+        {
+          "name": "periodStartDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "periodEndDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "overallScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Weighted composite score across all perspectives (0-100)"
+        },
+        {
+          "name": "overallStatus",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "OnTrack",
+            "AtRisk",
+            "OffTrack",
+            "NotStarted"
+          ],
+          "description": "Traffic-light status rollup"
+        },
+        {
+          "name": "strategyMapRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to bsc:StrategyMap @id visualizing cause-and-effect"
+        },
+        {
+          "name": "lastReviewDate",
+          "type": "xsd:date",
+          "required": false
+        },
+        {
+          "name": "nextReviewDate",
+          "type": "xsd:date",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "bsc:BSCPerspective",
+      "@type": "rdfs:Class",
+      "name": "BSCPerspective",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "One of four Balanced Scorecard perspectives. Each perspective contains strategic objectives measured by KPIs. C-Suite roles from RRR-ONT own perspectives based on their bscPerspective property. The four canonical perspectives form a causal chain: Learning & Growth → Internal Process → Customer → Financial. The perspectiveType enum aligns to both kpi:KPI.category and rrr:ExecutiveRole.bscPerspective.",
+      "oaa:properties": [
+        {
+          "name": "perspectiveId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "perspectiveType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Financial",
+            "Customer",
+            "Internal Process",
+            "Learning & Growth"
+          ],
+          "description": "Canonical BSC perspective. Maps to kpi:KPI.category and rrr:ExecutiveRole.bscPerspective"
+        },
+        {
+          "name": "strategicTheme",
+          "type": "xsd:string",
+          "required": false,
+          "description": "High-level strategic theme unifying objectives in this perspective (e.g. 'Profitable Growth', 'Customer Intimacy')"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "weight",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Perspective weight in overall scorecard (0.0-1.0, sum across 4 perspectives = 1.0)"
+        },
+        {
+          "name": "perspectiveScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Weighted score for this perspective (0-100)"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "OnTrack",
+            "AtRisk",
+            "OffTrack",
+            "NotStarted"
+          ]
+        },
+        {
+          "name": "objectiveCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of strategic objectives in this perspective (typically 3-5)"
+        }
+      ],
+      "_crossOntologyAlignment": {
+        "kpiCategory": {
+          "Financial": "Financial",
+          "Customer": "Customer",
+          "Internal Process": "Operational",
+          "Learning & Growth": "Learning & Growth"
+        },
+        "rrrBscPerspective": {
+          "Financial": [
+            "Financial"
+          ],
+          "Customer": [
+            "Customer"
+          ],
+          "Internal Process": [
+            "Internal Process",
+            "Technology"
+          ],
+          "Learning & Growth": [
+            "Learning & Growth",
+            "Innovation"
+          ]
+        },
+        "rrrTypicalOwners": {
+          "Financial": [
+            "CFO",
+            "CEO",
+            "CRO"
+          ],
+          "Customer": [
+            "CCO",
+            "CMO",
+            "CSO"
+          ],
+          "Internal Process": [
+            "COO",
+            "CTO",
+            "CISO",
+            "CPO"
+          ],
+          "Learning & Growth": [
+            "CHRO",
+            "CLO",
+            "CDO",
+            "CInO"
+          ]
+        }
+      }
+    },
+    {
+      "@id": "bsc:BSCObjective",
+      "@type": "rdfs:Class",
+      "name": "BSCObjective",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A strategic objective within a BSC perspective. Each objective aligns to a vsom:ObjectivesComponent, is owned by an rrr:ExecutiveRole, measured by kpi:KPI instances, and can cascade to okr:Objective for quarterly execution. Objectives within a Strategy Map participate in cause-and-effect chains across perspectives.",
+      "oaa:properties": [
+        {
+          "name": "objectiveId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "perspectiveType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Financial",
+            "Customer",
+            "Internal Process",
+            "Learning & Growth"
+          ],
+          "description": "Which BSC perspective this objective belongs to"
+        },
+        {
+          "name": "vsomObjectiveRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vsom:ObjectivesComponent @id this operationalizes"
+        },
+        {
+          "name": "ownerRoleRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to rrr:ExecutiveRole @id accountable for this objective"
+        },
+        {
+          "name": "weight",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Weight within perspective (0.0-1.0, sum within perspective = 1.0)"
+        },
+        {
+          "name": "targetDescription",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What success looks like for this objective"
+        },
+        {
+          "name": "targetDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "OnTrack",
+            "AtRisk",
+            "OffTrack",
+            "NotStarted",
+            "Completed",
+            "Cancelled"
+          ]
+        },
+        {
+          "name": "score",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Objective achievement score (0-100)"
+        },
+        {
+          "name": "trend",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Improving",
+            "Stable",
+            "Declining"
+          ]
+        },
+        {
+          "name": "strategicInitiativeRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to ppm:Initiative @ids driving this objective",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "okrObjectiveRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to okr:Objective @ids for quarterly cascading",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "commentary",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Qualitative progress commentary from objective owner"
+        }
+      ]
+    },
+    {
+      "@id": "bsc:BSCMeasure",
+      "@type": "rdfs:Class",
+      "name": "BSCMeasure",
+      "rdfs:subClassOf": "schema:PropertyValue",
+      "description": "A specific KPI measurement attached to a BSC objective. Bridges bsc:BSCObjective to kpi:KPI with target/actual/threshold tracking. Each objective should have 1-3 measures (leading and lagging).",
+      "oaa:properties": [
+        {
+          "name": "measureId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "kpiRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to kpi:KPI @id"
+        },
+        {
+          "name": "measureType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Leading",
+            "Lagging"
+          ],
+          "description": "Leading indicators predict future performance; lagging indicators confirm past outcomes"
+        },
+        {
+          "name": "target",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Target value for this period"
+        },
+        {
+          "name": "actual",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Current actual value"
+        },
+        {
+          "name": "baseline",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Starting baseline value"
+        },
+        {
+          "name": "thresholdGreen",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "On-track threshold"
+        },
+        {
+          "name": "thresholdAmber",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "At-risk threshold"
+        },
+        {
+          "name": "thresholdRed",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Off-track threshold"
+        },
+        {
+          "name": "unit",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:unitCode",
+          "description": "Measurement unit (%, $, #, days, NPS, etc.)"
+        },
+        {
+          "name": "polarity",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "HigherIsBetter",
+            "LowerIsBetter",
+            "TargetIsBetter"
+          ],
+          "description": "Whether improvement means going up, down, or hitting a specific target"
+        },
+        {
+          "name": "frequency",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Daily",
+            "Weekly",
+            "Monthly",
+            "Quarterly",
+            "Annual"
+          ],
+          "description": "Measurement frequency"
+        },
+        {
+          "name": "dataSourceRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "System or data source for this measure"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "OnTrack",
+            "AtRisk",
+            "OffTrack"
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "bsc:StrategyMap",
+      "@type": "rdfs:Class",
+      "name": "StrategyMap",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "Visual cause-and-effect diagram showing how BSC objectives across perspectives link together. The Strategy Map IS a directed acyclic graph flowing from Learning & Growth → Internal Process → Customer → Financial. Each causal link is a testable hypothesis: 'If we improve X (lower perspective), then Y (higher perspective) will improve.' This entity is the primary graph structure for AI agent traversal of strategic cause-and-effect.",
+      "oaa:properties": [
+        {
+          "name": "mapId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "scorecardRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to bsc:BalancedScorecard @id"
+        },
+        {
+          "name": "vsomStrategyRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vsom:StrategyComponent @id being mapped"
+        },
+        {
+          "name": "strategicNarrative",
+          "type": "xsd:string",
+          "required": false,
+          "description": "The strategy story: how objectives connect to deliver on the vision"
+        },
+        {
+          "name": "validatedDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Last date causal hypotheses were reviewed"
+        },
+        {
+          "name": "chainCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of end-to-end causal chains in the map"
+        }
+      ]
+    },
+    {
+      "@id": "bsc:CausalLink",
+      "@type": "rdfs:Class",
+      "name": "CausalLink",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A single cause-and-effect link between two BSC objectives, typically across adjacent perspectives. Forms the edges of the Strategy Map graph. Each link represents a testable strategic hypothesis: 'Improving {fromObjective} will drive improvement in {toObjective}.' Links have strength and lag-time properties to support quantitative strategy modelling.",
+      "oaa:properties": [
+        {
+          "name": "linkId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "fromObjectiveRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to bsc:BSCObjective @id (cause)"
+        },
+        {
+          "name": "fromPerspective",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Financial",
+            "Customer",
+            "Internal Process",
+            "Learning & Growth"
+          ]
+        },
+        {
+          "name": "toObjectiveRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to bsc:BSCObjective @id (effect)"
+        },
+        {
+          "name": "toPerspective",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Financial",
+            "Customer",
+            "Internal Process",
+            "Learning & Growth"
+          ]
+        },
+        {
+          "name": "linkType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Drives",
+            "Enables",
+            "Influences",
+            "Requires"
+          ],
+          "description": "Strength of causal relationship"
+        },
+        {
+          "name": "hypothesis",
+          "type": "xsd:string",
+          "required": false,
+          "description": "The testable hypothesis this link represents"
+        },
+        {
+          "name": "strength",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Strong",
+            "Moderate",
+            "Weak",
+            "Unvalidated"
+          ],
+          "description": "Evidence-based strength of the causal relationship"
+        },
+        {
+          "name": "lagTime",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Immediate",
+            "ShortTerm",
+            "MediumTerm",
+            "LongTerm"
+          ],
+          "description": "Time delay between cause and effect"
+        },
+        {
+          "name": "evidenceRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to supporting data or analysis"
+        },
+        {
+          "name": "validated",
+          "type": "xsd:boolean",
+          "required": false,
+          "description": "Whether this causal hypothesis has been empirically validated"
+        }
+      ]
+    },
+    {
+      "@id": "bsc:StakeholderAlignment",
+      "@type": "rdfs:Class",
+      "name": "StakeholderAlignment",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Assessment of executive and key stakeholder alignment with strategic objectives. Maps rrr:ExecutiveRole owners to their interest, influence, and alignment posture for each BSC perspective and its objectives. Used to identify alignment gaps that could block strategy execution.",
+      "oaa:properties": [
+        {
+          "name": "assessmentId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "vsomFrameworkRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vsom:VSOMFramework @id"
+        },
+        {
+          "name": "scorecardRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to bsc:BalancedScorecard @id"
+        },
+        {
+          "name": "assessmentDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "overallAlignmentScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Composite alignment score (0-100)"
+        },
+        {
+          "name": "criticalGaps",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Summary of critical alignment gaps requiring intervention"
+        }
+      ]
+    },
+    {
+      "@id": "bsc:StakeholderAssessment",
+      "@type": "rdfs:Class",
+      "name": "StakeholderAssessment",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Individual stakeholder assessment within a StakeholderAlignment. Maps a specific rrr:ExecutiveRole or rrr:FunctionalRole to their alignment posture, interest, influence, and BSC perspective ownership.",
+      "oaa:properties": [
+        {
+          "name": "assessmentEntryId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "roleRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to rrr:ExecutiveRole or rrr:FunctionalRole @id"
+        },
+        {
+          "name": "roleName",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Role title for convenience"
+        },
+        {
+          "name": "interest",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "High",
+            "Medium",
+            "Low"
+          ],
+          "description": "How interested/affected this stakeholder is"
+        },
+        {
+          "name": "influence",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "High",
+            "Medium",
+            "Low"
+          ],
+          "description": "How much power this stakeholder has to support or block"
+        },
+        {
+          "name": "alignment",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Champion",
+            "Supporter",
+            "Neutral",
+            "Resistant",
+            "Blocker"
+          ],
+          "description": "Current alignment posture toward the strategy"
+        },
+        {
+          "name": "bscPerspectiveOwnership",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Financial",
+            "Customer",
+            "Internal Process",
+            "Learning & Growth"
+          ],
+          "description": "Primary BSC perspective this stakeholder is accountable for",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "objectivesOwned",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to bsc:BSCObjective @ids this stakeholder owns",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "engagementStrategy",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Recommended engagement approach based on interest/influence/alignment"
+        },
+        {
+          "name": "riskIfMisaligned",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Critical",
+            "High",
+            "Medium",
+            "Low"
+          ],
+          "description": "Risk to strategy execution if this stakeholder remains misaligned"
+        }
+      ]
+    },
+    {
+      "@id": "bsc:StrategicValueChain",
+      "@type": "rdfs:Class",
+      "name": "StrategicValueChain",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Porter's Value Chain applied at organizational level. Maps primary and support activities to ea:BusinessCapability, identifies margin contribution, and connects to BSC Internal Process perspective. Activities with high value contribution become focal points for BSC objectives.",
+      "oaa:properties": [
+        {
+          "name": "chainId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "analysisDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "totalRevenue",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Total revenue for margin analysis"
+        },
+        {
+          "name": "totalCost",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Total cost for margin analysis"
+        },
+        {
+          "name": "totalMargin",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Overall margin (revenue - cost)"
+        },
+        {
+          "name": "valueDriverSummary",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Summary of key value drivers"
+        },
+        {
+          "name": "veAnalysisRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to kpi:VEAnalysis @id for value engineering optimization"
+        }
+      ]
+    },
+    {
+      "@id": "bsc:ValueChainActivity",
+      "@type": "rdfs:Class",
+      "name": "ValueChainActivity",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A single activity in the strategic value chain (primary or support). Each activity maps to an ea:BusinessCapability and has measurable value and cost contributions. High-value activities become candidates for BSC Internal Process objectives.",
+      "oaa:properties": [
+        {
+          "name": "activityId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "activityType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Primary",
+            "Support"
+          ]
+        },
+        {
+          "name": "primaryCategory",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "InboundLogistics",
+            "Operations",
+            "OutboundLogistics",
+            "MarketingAndSales",
+            "Service"
+          ],
+          "description": "Porter's primary activity categories"
+        },
+        {
+          "name": "supportCategory",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "FirmInfrastructure",
+            "HumanResourceManagement",
+            "TechnologyDevelopment",
+            "Procurement"
+          ],
+          "description": "Porter's support activity categories"
+        },
+        {
+          "name": "capabilityRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to ea:BusinessCapability @id"
+        },
+        {
+          "name": "processRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to ea:BusinessProcess @id"
+        },
+        {
+          "name": "valueContributionPct",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Percentage of total value creation (0-100)"
+        },
+        {
+          "name": "costAllocationPct",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Percentage of total cost (0-100)"
+        },
+        {
+          "name": "marginContribution",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Net margin contribution"
+        },
+        {
+          "name": "strategicRole",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Differentiator",
+            "Qualifier",
+            "Enabler",
+            "Commodity"
+          ],
+          "description": "Strategic role of this activity in competitive positioning"
+        },
+        {
+          "name": "maturityScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Capability maturity (1.0-5.0)"
+        },
+        {
+          "name": "bscObjectiveRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to bsc:BSCObjective @id tracking this activity (typically Internal Process)"
+        }
+      ]
+    },
+    {
+      "@id": "bsc:LifecycleStageAnalysis",
+      "@type": "rdfs:Class",
+      "name": "LifecycleStageAnalysis",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Strategic analysis contextualised by organization or product lifecycle stage. Different stages demand different BSC perspective emphasis, leadership focus, and metric priorities. Startup emphasizes Customer perspective (product-market fit), Growth emphasizes Customer+Financial (scaling), Maturity emphasizes Financial+Internal Process (optimization), Renewal emphasizes Learning & Growth (innovation). Connects to orgctx lifecycle types (merged from ORG-MAT).",
+      "oaa:properties": [
+        {
+          "name": "analysisId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "contextRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to orgctx:OrganizationContext @id"
+        },
+        {
+          "name": "analysisDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "lifecycleStage",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Startup",
+            "Growth",
+            "Maturity",
+            "Renewal"
+          ],
+          "description": "Current lifecycle stage. Aligns to orgctx lifecycle types (merged from ORG-MAT)."
+        },
+        {
+          "name": "dominantBSCPerspective",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Financial",
+            "Customer",
+            "Internal Process",
+            "Learning & Growth"
+          ],
+          "description": "Primary BSC perspective for this lifecycle stage"
+        },
+        {
+          "name": "secondaryBSCPerspective",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Financial",
+            "Customer",
+            "Internal Process",
+            "Learning & Growth"
+          ]
+        },
+        {
+          "name": "strategicFocus",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What the organization should focus on at this stage"
+        },
+        {
+          "name": "keyMetricCategories",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Primary metric categories for this stage",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "leadershipFocus",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Key C-Suite roles driving at this stage. References rrr:ExecutiveRole roleCode values.",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "vsomStrategyRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:StrategyComponent @id adapted for lifecycle stage"
+        },
+        {
+          "name": "transitionSignals",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Signals indicating transition to next lifecycle stage"
+        },
+        {
+          "name": "riskFactors",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Key risks at this lifecycle stage"
+        }
+      ],
+      "_lifecycleBSCMapping": {
+        "Startup": {
+          "dominantPerspective": "Customer",
+          "focus": "Product-Market Fit, customer discovery, value proposition validation",
+          "keyMetrics": [
+            "retention-rate",
+            "NPS",
+            "activation-rate",
+            "CAC"
+          ],
+          "leadershipFocus": [
+            "CEO",
+            "CPO",
+            "CTO"
+          ],
+          "pmfLink": "pmf:ProductMarketFit"
+        },
+        "Growth": {
+          "dominantPerspective": "Customer",
+          "secondaryPerspective": "Financial",
+          "focus": "Scaling, market expansion, unit economics",
+          "keyMetrics": [
+            "MRR-growth",
+            "CAC:LTV",
+            "market-share",
+            "team-growth"
+          ],
+          "leadershipFocus": [
+            "CEO",
+            "CRO",
+            "CMO",
+            "COO"
+          ]
+        },
+        "Maturity": {
+          "dominantPerspective": "Financial",
+          "secondaryPerspective": "Internal Process",
+          "focus": "Optimization, efficiency, margin improvement",
+          "keyMetrics": [
+            "profit-margin",
+            "ROIC",
+            "operational-efficiency",
+            "customer-retention"
+          ],
+          "leadershipFocus": [
+            "CFO",
+            "COO",
+            "CHRO"
+          ]
+        },
+        "Renewal": {
+          "dominantPerspective": "Learning & Growth",
+          "focus": "Innovation, transformation, new capabilities",
+          "keyMetrics": [
+            "R&D-spend",
+            "new-revenue-pct",
+            "innovation-pipeline",
+            "digital-maturity"
+          ],
+          "leadershipFocus": [
+            "CEO",
+            "CInO",
+            "CDO",
+            "CTO"
+          ]
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "bsc:operationalizedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Operationalized By BSC",
+      "description": "A VSOM Framework is operationalized by a Balanced Scorecard that organizes its objectives into balanced perspectives",
+      "domainIncludes": [
+        "vsom:VSOMFramework"
+      ],
+      "rangeIncludes": [
+        "bsc:BalancedScorecard"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "bsc:operationalizes",
+      "@type": "owl:ObjectProperty",
+      "name": "Operationalizes VSOM",
+      "description": "Inverse: Balanced Scorecard operationalizes a VSOM Framework",
+      "domainIncludes": [
+        "bsc:BalancedScorecard"
+      ],
+      "rangeIncludes": [
+        "vsom:VSOMFramework"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:inverseOf": "bsc:operationalizedBy",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "bsc:hasPerspective",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Perspective",
+      "description": "Balanced Scorecard has four perspectives",
+      "domainIncludes": [
+        "bsc:BalancedScorecard"
+      ],
+      "rangeIncludes": [
+        "bsc:BSCPerspective"
+      ],
+      "oaa:cardinality": "4..4"
+    },
+    {
+      "@id": "bsc:hasPerspectiveObjective",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Perspective Objective",
+      "description": "BSC Perspective contains strategic objectives (typically 3-5 per perspective)",
+      "domainIncludes": [
+        "bsc:BSCPerspective"
+      ],
+      "rangeIncludes": [
+        "bsc:BSCObjective"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "bsc:perspectiveOwnedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Perspective Owned By",
+      "description": "BSC Perspective is owned by C-Suite roles matching rrr:ExecutiveRole.bscPerspective",
+      "domainIncludes": [
+        "bsc:BSCPerspective"
+      ],
+      "rangeIncludes": [
+        "rrr:ExecutiveRole"
+      ],
+      "oaa:cardinality": "1..*",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    },
+    {
+      "@id": "bsc:objectiveOwnedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Objective Owned By",
+      "description": "BSC Objective is accountable to a specific executive role",
+      "domainIncludes": [
+        "bsc:BSCObjective"
+      ],
+      "rangeIncludes": [
+        "rrr:ExecutiveRole"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    },
+    {
+      "@id": "bsc:measuredByKPI",
+      "@type": "owl:ObjectProperty",
+      "name": "Measured By KPI",
+      "description": "BSC Objective is measured by KPI instances (1-3 per objective, mix of leading and lagging)",
+      "domainIncludes": [
+        "bsc:BSCObjective"
+      ],
+      "rangeIncludes": [
+        "bsc:BSCMeasure"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "bsc:measureReferencesKPI",
+      "@type": "owl:ObjectProperty",
+      "name": "Measure References KPI",
+      "description": "BSC Measure references a KPI-ONT KPI for the actual metric definition",
+      "domainIncludes": [
+        "bsc:BSCMeasure"
+      ],
+      "rangeIncludes": [
+        "kpi:KPI"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "KPI-ONT"
+    },
+    {
+      "@id": "bsc:objectiveAlignsToVSOM",
+      "@type": "owl:ObjectProperty",
+      "name": "Objective Aligns To VSOM Objective",
+      "description": "BSC Objective aligns to a VSOM ObjectivesComponent",
+      "domainIncludes": [
+        "bsc:BSCObjective"
+      ],
+      "rangeIncludes": [
+        "vsom:ObjectivesComponent"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "bsc:cascadesToOKR",
+      "@type": "owl:ObjectProperty",
+      "name": "Cascades To OKR",
+      "description": "BSC Objective cascades to quarterly OKR objectives for execution",
+      "domainIncludes": [
+        "bsc:BSCObjective"
+      ],
+      "rangeIncludes": [
+        "okr:Objective"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "OKR-ONT"
+    },
+    {
+      "@id": "bsc:drivenByInitiative",
+      "@type": "owl:ObjectProperty",
+      "name": "Driven By Initiative",
+      "description": "BSC Objective is driven by PPM strategic initiatives",
+      "domainIncludes": [
+        "bsc:BSCObjective"
+      ],
+      "rangeIncludes": [
+        "ppm:Initiative"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "PPM-ONT"
+    },
+    {
+      "@id": "bsc:hasStrategyMap",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Strategy Map",
+      "description": "Balanced Scorecard has a strategy map visualizing cause-and-effect",
+      "domainIncludes": [
+        "bsc:BalancedScorecard"
+      ],
+      "rangeIncludes": [
+        "bsc:StrategyMap"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "bsc:hasCausalLink",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Causal Link",
+      "description": "Strategy Map contains causal links between objectives",
+      "domainIncludes": [
+        "bsc:StrategyMap"
+      ],
+      "rangeIncludes": [
+        "bsc:CausalLink"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "bsc:causeObjective",
+      "@type": "owl:ObjectProperty",
+      "name": "Cause Objective",
+      "description": "Causal link originates from this BSC objective (the cause)",
+      "domainIncludes": [
+        "bsc:CausalLink"
+      ],
+      "rangeIncludes": [
+        "bsc:BSCObjective"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "bsc:effectObjective",
+      "@type": "owl:ObjectProperty",
+      "name": "Effect Objective",
+      "description": "Causal link points to this BSC objective (the effect)",
+      "domainIncludes": [
+        "bsc:CausalLink"
+      ],
+      "rangeIncludes": [
+        "bsc:BSCObjective"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "bsc:hasStakeholderAlignment",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Stakeholder Alignment",
+      "description": "Balanced Scorecard has an associated stakeholder alignment assessment",
+      "domainIncludes": [
+        "bsc:BalancedScorecard"
+      ],
+      "rangeIncludes": [
+        "bsc:StakeholderAlignment"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "bsc:hasStakeholderAssessment",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Stakeholder Assessment",
+      "description": "Stakeholder Alignment contains individual stakeholder assessments",
+      "domainIncludes": [
+        "bsc:StakeholderAlignment"
+      ],
+      "rangeIncludes": [
+        "bsc:StakeholderAssessment"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "bsc:assessesRole",
+      "@type": "owl:ObjectProperty",
+      "name": "Assesses Role",
+      "description": "Stakeholder assessment evaluates a specific executive or functional role",
+      "domainIncludes": [
+        "bsc:StakeholderAssessment"
+      ],
+      "rangeIncludes": [
+        "rrr:ExecutiveRole",
+        "rrr:FunctionalRole"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    },
+    {
+      "@id": "bsc:hasValueChain",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Value Chain",
+      "description": "Organization context has a strategic value chain analysis",
+      "domainIncludes": [
+        "orgctx:OrganizationContext"
+      ],
+      "rangeIncludes": [
+        "bsc:StrategicValueChain"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "bsc:hasActivity",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Activity",
+      "description": "Strategic value chain contains activities",
+      "domainIncludes": [
+        "bsc:StrategicValueChain"
+      ],
+      "rangeIncludes": [
+        "bsc:ValueChainActivity"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "bsc:activityCapability",
+      "@type": "owl:ObjectProperty",
+      "name": "Activity Maps To Capability",
+      "description": "Value chain activity maps to an EA business capability",
+      "domainIncludes": [
+        "bsc:ValueChainActivity"
+      ],
+      "rangeIncludes": [
+        "ea:BusinessCapability"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "EA-CORE-ONT"
+    },
+    {
+      "@id": "bsc:activityTrackedByObjective",
+      "@type": "owl:ObjectProperty",
+      "name": "Activity Tracked By Objective",
+      "description": "Value chain activity performance is tracked by a BSC objective (typically Internal Process perspective)",
+      "domainIncludes": [
+        "bsc:ValueChainActivity"
+      ],
+      "rangeIncludes": [
+        "bsc:BSCObjective"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "bsc:hasLifecycleAnalysis",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Lifecycle Analysis",
+      "description": "Organization context has a lifecycle stage analysis",
+      "domainIncludes": [
+        "orgctx:OrganizationContext"
+      ],
+      "rangeIncludes": [
+        "bsc:LifecycleStageAnalysis"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "bsc:emphasizesPerspective",
+      "@type": "owl:ObjectProperty",
+      "name": "Emphasizes Perspective",
+      "description": "Lifecycle stage analysis identifies which BSC perspective should receive strategic emphasis",
+      "domainIncludes": [
+        "bsc:LifecycleStageAnalysis"
+      ],
+      "rangeIncludes": [
+        "bsc:BSCPerspective"
+      ],
+      "oaa:cardinality": "1..2"
+    },
+    {
+      "@id": "bsc:lifecycleShapesStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "Lifecycle Shapes Strategy",
+      "description": "Lifecycle stage analysis shapes which VSOM strategy is appropriate",
+      "domainIncludes": [
+        "bsc:LifecycleStageAnalysis"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategyComponent"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-BSC-001",
+      "name": "BSC Must Have Four Perspectives",
+      "condition": "IF a BalancedScorecard is created",
+      "action": "THEN it MUST have exactly four BSCPerspective instances: Financial, Customer, Internal Process, and Learning & Growth",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-BSC-002",
+      "name": "BSC Must Reference VSOM Framework",
+      "condition": "IF a BalancedScorecard is created",
+      "action": "THEN vsomFrameworkRef MUST reference a valid vsom:VSOMFramework @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-BSC-003",
+      "name": "Perspective Weights Must Sum to 1.0",
+      "condition": "IF BSCPerspective.weight values are specified",
+      "action": "THEN the sum of all four perspective weights MUST equal 1.0",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-BSC-004",
+      "name": "Perspective Must Have Objectives",
+      "condition": "IF a BSCPerspective exists",
+      "action": "THEN it MUST have at least one BSCObjective (recommended 3-5)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-BSC-005",
+      "name": "Objective Must Have Owner",
+      "condition": "IF a BSCObjective is created",
+      "action": "THEN ownerRoleRef MUST reference a valid rrr:ExecutiveRole @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-BSC-006",
+      "name": "Objective Must Have Measure",
+      "condition": "IF a BSCObjective exists",
+      "action": "THEN it MUST have at least one BSCMeasure via measuredByKPI relationship",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-BSC-007",
+      "name": "Measure Must Reference KPI",
+      "condition": "IF a BSCMeasure is created",
+      "action": "THEN kpiRef MUST reference a valid kpi:KPI @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-BSC-008",
+      "name": "Strategy Map Causal Direction",
+      "condition": "IF a CausalLink is created in a StrategyMap",
+      "action": "THEN fromPerspective SHOULD be at a lower BSC level than toPerspective (Learning & Growth → Internal Process → Customer → Financial). Cross-perspective or same-perspective links are allowed but SHOULD be flagged as non-standard.",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-BSC-009",
+      "name": "Objective Weight Sum Within Perspective",
+      "condition": "IF BSCObjective.weight values are specified within a BSCPerspective",
+      "action": "THEN the sum of objective weights within that perspective MUST equal 1.0",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-BSC-010",
+      "name": "Perspective Owner Must Match RRR bscPerspective",
+      "condition": "IF a perspectiveOwnedBy relationship is created",
+      "action": "THEN the rrr:ExecutiveRole.bscPerspective property SHOULD include the BSCPerspective.perspectiveType value",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-BSC-011",
+      "name": "BSCObjective Must Align to VSOM",
+      "condition": "IF a BSCObjective is created",
+      "action": "THEN vsomObjectiveRef MUST reference a valid vsom:ObjectivesComponent @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-BSC-012",
+      "name": "Measure Polarity Consistency",
+      "condition": "IF a BSCMeasure has polarity 'HigherIsBetter'",
+      "action": "THEN thresholdGreen MUST be >= thresholdAmber >= thresholdRed",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-BSC-013",
+      "name": "Stakeholder Alignment Coverage",
+      "condition": "IF a StakeholderAlignment assessment is created",
+      "action": "THEN it SHOULD include assessments for all rrr:ExecutiveRole instances with bscPerspective ownership",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-BSC-014",
+      "name": "Value Chain Activity Must Be Categorized",
+      "condition": "IF a ValueChainActivity has activityType 'Primary'",
+      "action": "THEN primaryCategory MUST be specified",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-BSC-015",
+      "name": "Lifecycle Stage Must Set Dominant Perspective",
+      "condition": "IF a LifecycleStageAnalysis is created",
+      "action": "THEN dominantBSCPerspective MUST be specified based on lifecycle stage",
+      "severity": "error"
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-12",
+    "modifiedBy": "OAA v6.1.0 Agent",
+    "changeNotes": "Initial release of BSC-ONT as part of VE-Series VSOM-SA (Strategy Analysis). Formalizes the Balanced Scorecard as the bridge between VSOM strategic intent and KPI/OKR measurement. Includes Strategy Maps, Stakeholder Alignment, Strategic Value Chain, and Lifecycle Stage Analysis. Cross-references VSOM-ONT v3.0.0, KPI-ONT v1.0.0, OKR-ONT v2.0.0, RRR-ONT v4.0.0, ORG-ONT v3.0.0, ORG-CONTEXT-ONT v3.0.0, EA-CORE-ONT v1.0.0, PPM-ONT v4.0.0.",
+    "versionHistory": []
+  },
+  "oaa:ontologyId": "BSC-ONT",
+  "oaa:series": "VE-Series / VSOM-SA",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of BalancedScorecard within this ontology?",
+      "targetEntities": [
+        "bsc:BalancedScorecard"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of BSCPerspective within this ontology?",
+      "targetEntities": [
+        "bsc:BSCPerspective"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of BSCObjective within this ontology?",
+      "targetEntities": [
+        "bsc:BSCObjective"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of BSCMeasure within this ontology?",
+      "targetEntities": [
+        "bsc:BSCMeasure"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of StrategyMap within this ontology?",
+      "targetEntities": [
+        "bsc:StrategyMap"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of CausalLink within this ontology?",
+      "targetEntities": [
+        "bsc:CausalLink"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of StakeholderAlignment within this ontology?",
+      "targetEntities": [
+        "bsc:StakeholderAlignment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of StakeholderAssessment within this ontology?",
+      "targetEntities": [
+        "bsc:StakeholderAssessment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of StrategicValueChain within this ontology?",
+      "targetEntities": [
+        "bsc:StrategicValueChain"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of ValueChainActivity within this ontology?",
+      "targetEntities": [
+        "bsc:ValueChainActivity"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the role and purpose of LifecycleStageAnalysis within this ontology?",
+      "targetEntities": [
+        "bsc:LifecycleStageAnalysis"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

@@ -1,0 +1,902 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "mcsb": "https://platformcore.io/ontology/mcsb/",
+    "ea-core": "https://oaa-ontology.org/v6/ea-core/",
+    "ea-msft": "https://oaa-ontology.org/v6/ea-msft/"
+  },
+  "@id": "https://platformcore.io/ontology/mcsb/schema",
+  "@type": "owl:Ontology",
+  "name": "Microsoft Cloud Security Benchmark (MCSB) Ontology",
+  "description": "Comprehensive ontology representing the Microsoft Cloud Security Benchmark v1 framework, enabling AI agents to reason about cloud security controls, compliance mappings, implementation guidance, and responsibility assignments across Azure and multi-cloud environments. Acts as a governance overlay bridging RCSG security controls to EA architecture domains and Microsoft Cloud platform resources.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "2.0.0",
+  "oaa:domain": "Cloud Security & Compliance",
+  "oaa:status": "Production",
+  "version": "2.0.0",
+  "dateCreated": "2026-01-23",
+  "dateModified": "2026-02-09",
+  "creator": {
+    "@type": "Organization",
+    "name": "Azlan EA-AAA",
+    "description": "Enterprise Architecture Advisory & Automation"
+  },
+  "oaa:imports": [
+    {
+      "@id": "ea-core:schema",
+      "name": "EA-CORE-ONT",
+      "version": "1.0.0",
+      "description": "Platform-agnostic EA core providing SecurityArchitecture for control-to-architecture domain mapping",
+      "importedEntities": [
+        "ea-core:SecurityArchitecture"
+      ]
+    },
+    {
+      "@id": "ea-msft:schema",
+      "name": "EA-MSFT-ONT",
+      "version": "1.0.0",
+      "description": "Microsoft Cloud platform providing AzureResource for assessment targeting and CloudPlatform for platform-specific guidance filtering",
+      "importedEntities": [
+        "ea-msft:AzureResource",
+        "ea-msft:CloudPlatform"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-MCSB-001",
+      "name": "Security Control Architecture Bridge",
+      "description": "MCSB security controls map to EA-CORE security architecture domains for enterprise security coverage analysis",
+      "joinPath": "mcsb:SecurityControl → mcsb:appliesTo → ea-core:SecurityArchitecture",
+      "useCase": "Map security controls to enterprise architecture security layers"
+    },
+    {
+      "patternId": "JP-MCSB-002",
+      "name": "Control Assessment Resource Bridge",
+      "description": "MCSB control assessments target specific Azure resources for resource-level security posture evaluation",
+      "joinPath": "mcsb:ControlAssessment → mcsb:assessesResource → ea-msft:AzureResource",
+      "useCase": "Azure resource-level security assessment tracking"
+    },
+    {
+      "patternId": "JP-MCSB-003",
+      "name": "Implementation Guidance Platform Bridge",
+      "description": "MCSB implementation guidance is tailored to specific cloud platforms for platform-filtered guidance retrieval",
+      "joinPath": "mcsb:ImplementationGuidance → mcsb:guidanceForPlatform → ea-msft:CloudPlatform",
+      "useCase": "Platform-specific implementation guidance filtering"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "mcsb:ControlDomain",
+      "@type": "rdfs:Class",
+      "name": "ControlDomain",
+      "description": "A high-level security control category within the Microsoft Cloud Security Benchmark that groups related security controls addressing a specific area of cloud security governance. MCSB v1 defines 12 control domains: Network Security (NS), Identity Management (IM), Privileged Access (PA), Data Protection (DP), Logging & Threat Detection (LT), Asset Management (AM), Governance & Strategy (GS), Incident Response (IR), Posture & Vulnerability Management (PV), Endpoint Security (ES), DevOps Security (DS), and Backup & Recovery (BR).",
+      "oaa:properties": [
+        {
+          "name": "domainCode",
+          "type": "xsd:string",
+          "description": "Two-letter identifier for the control domain",
+          "required": true,
+          "constraints": {
+            "pattern": "^[A-Z]{2}$"
+          }
+        },
+        {
+          "name": "domainName",
+          "type": "xsd:string",
+          "description": "Full name of the control domain",
+          "required": true
+        },
+        {
+          "name": "controlCount",
+          "type": "xsd:integer",
+          "description": "Number of security controls within this domain",
+          "required": true
+        },
+        {
+          "name": "defaultResponsibility",
+          "type": "mcsb:ResponsibilityType",
+          "description": "Default shared responsibility model for the domain",
+          "required": true
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:SecurityControl",
+      "@type": "rdfs:Class",
+      "name": "SecurityControl",
+      "description": "A specific security control within the MCSB framework identified by a unique control ID (e.g., NS-1, IM-3). Each control defines a security principle, implementation guidance, and compliance mappings to external frameworks. Controls are the atomic units of security governance.",
+      "oaa:properties": [
+        {
+          "name": "controlId",
+          "type": "xsd:string",
+          "description": "Unique identifier in format DOMAIN-NUMBER (e.g., NS-1, IM-3, PA-7)",
+          "required": true,
+          "constraints": {
+            "pattern": "^[A-Z]{2}-\\d{1,2}$"
+          }
+        },
+        {
+          "name": "securityPrinciple",
+          "type": "xsd:string",
+          "description": "Core security principle or objective this control addresses",
+          "required": true
+        },
+        {
+          "name": "severity",
+          "type": "mcsb:ControlSeverity",
+          "description": "Implementation priority severity level",
+          "required": true
+        },
+        {
+          "name": "featureNotes",
+          "type": "xsd:string",
+          "description": "Additional implementation notes and feature-specific guidance",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:ImplementationGuidance",
+      "@type": "rdfs:Class",
+      "name": "ImplementationGuidance",
+      "description": "Platform-specific implementation instructions for a security control, providing concrete steps, configuration guidance, and best practices for deploying the control on a specific cloud platform (Azure, AWS, or multi-cloud).",
+      "oaa:properties": [
+        {
+          "name": "guidanceText",
+          "type": "xsd:string",
+          "description": "Detailed implementation guidance text with step-by-step instructions",
+          "required": true
+        },
+        {
+          "name": "platformCode",
+          "type": "xsd:string",
+          "description": "Target cloud platform identifier (e.g., Azure, AWS)",
+          "required": true
+        },
+        {
+          "name": "azureServices",
+          "type": "xsd:string",
+          "description": "Comma-separated list of relevant Azure services for this guidance",
+          "required": false
+        },
+        {
+          "name": "awsServices",
+          "type": "xsd:string",
+          "description": "Comma-separated list of relevant AWS services for this guidance",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:ComplianceMapping",
+      "@type": "rdfs:Class",
+      "name": "ComplianceMapping",
+      "description": "A mapping between an MCSB security control and an external compliance framework control, establishing traceability for cross-framework compliance analysis. Supports NIST SP800-53, CIS Controls v7.1, CIS Controls v8, and PCI-DSS v3.2.1.",
+      "oaa:properties": [
+        {
+          "name": "mappedControlIds",
+          "type": "xsd:string",
+          "description": "Comma-separated external framework control identifiers that map to this MCSB control",
+          "required": true
+        },
+        {
+          "name": "mappingType",
+          "type": "mcsb:MappingType",
+          "description": "Degree of mapping alignment (full, partial, related)",
+          "required": true
+        },
+        {
+          "name": "mappingNotes",
+          "type": "xsd:string",
+          "description": "Clarification of mapping scope or differences",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:ComplianceFramework",
+      "@type": "rdfs:Class",
+      "name": "ComplianceFramework",
+      "description": "An external regulatory or industry compliance framework to which MCSB controls are mapped. Provides cross-framework traceability for multi-standard compliance programmes.",
+      "oaa:properties": [
+        {
+          "name": "frameworkCode",
+          "type": "xsd:string",
+          "description": "Short code for the framework (e.g., NIST, CIS-v7, CIS-v8, PCI-DSS)",
+          "required": true
+        },
+        {
+          "name": "frameworkName",
+          "type": "xsd:string",
+          "description": "Full name of the compliance framework",
+          "required": true
+        },
+        {
+          "name": "currentVersion",
+          "type": "xsd:string",
+          "description": "Version of the framework mapped to",
+          "required": true
+        },
+        {
+          "name": "governingBody",
+          "type": "xsd:string",
+          "description": "Organisation responsible for maintaining the framework",
+          "required": true
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:ResponsibilityAssignment",
+      "@type": "rdfs:Class",
+      "name": "ResponsibilityAssignment",
+      "description": "A shared responsibility model assignment for a security control, defining whether the cloud provider, customer, or both are responsible for implementing and maintaining the control in a cloud deployment.",
+      "oaa:properties": [
+        {
+          "name": "responsibilityType",
+          "type": "mcsb:ResponsibilityType",
+          "description": "Type of shared responsibility (Client, Provider, Joint, SolutionProvider)",
+          "required": true
+        },
+        {
+          "name": "clientActions",
+          "type": "xsd:string",
+          "description": "Actions the client/customer must take for this control",
+          "required": false
+        },
+        {
+          "name": "providerActions",
+          "type": "xsd:string",
+          "description": "Actions the cloud provider performs for this control",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:SecurityStakeholder",
+      "@type": "rdfs:Class",
+      "name": "SecurityStakeholder",
+      "description": "A security role or stakeholder function involved in the implementation, oversight, or governance of MCSB security controls. Used for RACI matrix generation and accountability mapping.",
+      "oaa:properties": [
+        {
+          "name": "stakeholderFunction",
+          "type": "xsd:string",
+          "description": "Primary function or role title (e.g., CISO, Security Operations, Cloud Architect)",
+          "required": true
+        },
+        {
+          "name": "raciRole",
+          "type": "xsd:string",
+          "description": "RACI role for this stakeholder (Responsible, Accountable, Consulted, Informed)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:ControlAssessment",
+      "@type": "rdfs:Class",
+      "name": "ControlAssessment",
+      "description": "An assessment of a security control's implementation status against MCSB requirements, tracking compliance posture, gaps, and remediation priorities for security posture management.",
+      "oaa:properties": [
+        {
+          "name": "assessmentStatus",
+          "type": "mcsb:AssessmentStatus",
+          "description": "Current compliance status of the control",
+          "required": true
+        },
+        {
+          "name": "assessmentDate",
+          "type": "xsd:date",
+          "description": "Date the assessment was performed",
+          "required": true
+        },
+        {
+          "name": "implementationGaps",
+          "type": "xsd:string",
+          "description": "Description of gaps between current state and MCSB requirements",
+          "required": false
+        },
+        {
+          "name": "remediationPriority",
+          "type": "mcsb:PriorityLevel",
+          "description": "Priority level for remediation of identified gaps",
+          "required": false
+        },
+        {
+          "name": "assessor",
+          "type": "xsd:string",
+          "description": "Person or team that performed the assessment",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ea-core:SecurityArchitecture",
+      "@type": "rdfs:Class",
+      "name": "SecurityArchitecture",
+      "description": "External EA-CORE-ONT entity representing cross-cutting security architecture domains that MCSB controls implement and govern.",
+      "oaa:externalOntology": "ea-core:EnterpriseArchitectureCoreOntology"
+    },
+    {
+      "@id": "ea-msft:AzureResource",
+      "@type": "rdfs:Class",
+      "name": "AzureResource",
+      "description": "External EA-MSFT-ONT entity representing Azure cloud resources targeted by MCSB control assessments.",
+      "oaa:externalOntology": "ea-msft:MicrosoftCloudPlatformOntology"
+    },
+    {
+      "@id": "ea-msft:CloudPlatform",
+      "@type": "rdfs:Class",
+      "name": "CloudPlatform",
+      "description": "External EA-MSFT-ONT entity representing cloud provider platforms for which MCSB provides implementation guidance.",
+      "oaa:externalOntology": "ea-msft:MicrosoftCloudPlatformOntology"
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "mcsb:belongsToDomain",
+      "@type": "owl:ObjectProperty",
+      "name": "belongsToDomain",
+      "description": "A security control belongs to a control domain, establishing the primary categorisation of controls within the MCSB framework",
+      "domainIncludes": [
+        "mcsb:SecurityControl"
+      ],
+      "rangeIncludes": [
+        "mcsb:ControlDomain"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "mcsb:hasControl",
+      "@type": "owl:ObjectProperty",
+      "name": "hasControl",
+      "description": "A control domain contains security controls that address its area of security governance",
+      "domainIncludes": [
+        "mcsb:ControlDomain"
+      ],
+      "rangeIncludes": [
+        "mcsb:SecurityControl"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "mcsb:hasGuidance",
+      "@type": "owl:ObjectProperty",
+      "name": "hasGuidance",
+      "description": "A security control has platform-specific implementation guidance providing concrete deployment instructions",
+      "domainIncludes": [
+        "mcsb:SecurityControl"
+      ],
+      "rangeIncludes": [
+        "mcsb:ImplementationGuidance"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "mcsb:forControl",
+      "@type": "owl:ObjectProperty",
+      "name": "forControl",
+      "description": "Implementation guidance is written for a specific security control",
+      "domainIncludes": [
+        "mcsb:ImplementationGuidance"
+      ],
+      "rangeIncludes": [
+        "mcsb:SecurityControl"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "mcsb:hasComplianceMapping",
+      "@type": "owl:ObjectProperty",
+      "name": "hasComplianceMapping",
+      "description": "A security control has mappings to external compliance framework controls for cross-standard traceability",
+      "domainIncludes": [
+        "mcsb:SecurityControl"
+      ],
+      "rangeIncludes": [
+        "mcsb:ComplianceMapping"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "mcsb:mapsToFramework",
+      "@type": "owl:ObjectProperty",
+      "name": "mapsToFramework",
+      "description": "A compliance mapping references a specific external compliance framework",
+      "domainIncludes": [
+        "mcsb:ComplianceMapping"
+      ],
+      "rangeIncludes": [
+        "mcsb:ComplianceFramework"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "mcsb:hasResponsibility",
+      "@type": "owl:ObjectProperty",
+      "name": "hasResponsibility",
+      "description": "A security control has a shared responsibility assignment defining client and provider obligations",
+      "domainIncludes": [
+        "mcsb:SecurityControl"
+      ],
+      "rangeIncludes": [
+        "mcsb:ResponsibilityAssignment"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "mcsb:hasStakeholders",
+      "@type": "owl:ObjectProperty",
+      "name": "hasStakeholders",
+      "description": "A security control has associated security stakeholders who participate in its governance via RACI roles",
+      "domainIncludes": [
+        "mcsb:SecurityControl"
+      ],
+      "rangeIncludes": [
+        "mcsb:SecurityStakeholder"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "mcsb:assessesControl",
+      "@type": "owl:ObjectProperty",
+      "name": "assessesControl",
+      "description": "A control assessment evaluates a specific security control's implementation status",
+      "domainIncludes": [
+        "mcsb:ControlAssessment"
+      ],
+      "rangeIncludes": [
+        "mcsb:SecurityControl"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "mcsb:appliesTo",
+      "@type": "owl:ObjectProperty",
+      "name": "appliesTo",
+      "description": "A security control applies to an EA-CORE security architecture domain, establishing which enterprise security layer the control implements",
+      "domainIncludes": [
+        "mcsb:SecurityControl"
+      ],
+      "rangeIncludes": [
+        "ea-core:SecurityArchitecture"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "EA-CORE-ONT"
+    },
+    {
+      "@id": "mcsb:assessesResource",
+      "@type": "owl:ObjectProperty",
+      "name": "assessesResource",
+      "description": "A control assessment targets a specific Azure resource for resource-level security posture evaluation",
+      "domainIncludes": [
+        "mcsb:ControlAssessment"
+      ],
+      "rangeIncludes": [
+        "ea-msft:AzureResource"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "EA-MSFT-ONT"
+    },
+    {
+      "@id": "mcsb:guidanceForPlatform",
+      "@type": "owl:ObjectProperty",
+      "name": "guidanceForPlatform",
+      "description": "Implementation guidance is specific to a cloud platform, enabling platform-filtered guidance retrieval",
+      "domainIncludes": [
+        "mcsb:ImplementationGuidance"
+      ],
+      "rangeIncludes": [
+        "ea-msft:CloudPlatform"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "EA-MSFT-ONT"
+    }
+  ],
+  "enumerations": [
+    {
+      "@id": "mcsb:ResponsibilityType",
+      "@type": "DefinedTermSet",
+      "name": "ResponsibilityType",
+      "description": "Shared responsibility model types for cloud security controls",
+      "hasDefinedTerm": [
+        {
+          "@id": "mcsb:responsibility/client",
+          "name": "Client",
+          "description": "Customer is solely responsible for implementing and maintaining the control"
+        },
+        {
+          "@id": "mcsb:responsibility/provider",
+          "name": "Provider",
+          "description": "Cloud provider is solely responsible for the control"
+        },
+        {
+          "@id": "mcsb:responsibility/joint",
+          "name": "Joint",
+          "description": "Both customer and cloud provider share responsibility for the control"
+        },
+        {
+          "@id": "mcsb:responsibility/solutionProvider",
+          "name": "SolutionProvider",
+          "description": "Third-party solution provider is responsible for the control"
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:MappingType",
+      "@type": "DefinedTermSet",
+      "name": "MappingType",
+      "description": "Degree of alignment between MCSB controls and external framework controls",
+      "hasDefinedTerm": [
+        {
+          "@id": "mcsb:mapping/full",
+          "name": "Full",
+          "description": "Complete alignment — MCSB control fully maps to external framework control"
+        },
+        {
+          "@id": "mcsb:mapping/partial",
+          "name": "Partial",
+          "description": "Partial alignment — MCSB control partially covers external framework control"
+        },
+        {
+          "@id": "mcsb:mapping/related",
+          "name": "Related",
+          "description": "Thematically related but not directly aligned"
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:AssessmentStatus",
+      "@type": "DefinedTermSet",
+      "name": "AssessmentStatus",
+      "description": "Implementation compliance status for a security control assessment",
+      "hasDefinedTerm": [
+        {
+          "@id": "mcsb:status/compliant",
+          "name": "Compliant",
+          "description": "Control is fully implemented and meets MCSB requirements"
+        },
+        {
+          "@id": "mcsb:status/partiallyCompliant",
+          "name": "PartiallyCompliant",
+          "description": "Control is partially implemented with identified gaps"
+        },
+        {
+          "@id": "mcsb:status/nonCompliant",
+          "name": "NonCompliant",
+          "description": "Control is not implemented or does not meet MCSB requirements"
+        },
+        {
+          "@id": "mcsb:status/notApplicable",
+          "name": "NotApplicable",
+          "description": "Control is not applicable to the assessed environment"
+        },
+        {
+          "@id": "mcsb:status/notAssessed",
+          "name": "NotAssessed",
+          "description": "Control has not yet been assessed"
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:PriorityLevel",
+      "@type": "DefinedTermSet",
+      "name": "PriorityLevel",
+      "description": "Priority levels for security control remediation and implementation",
+      "hasDefinedTerm": [
+        {
+          "@id": "mcsb:priority/critical",
+          "name": "Critical",
+          "description": "Immediate remediation required — active security risk"
+        },
+        {
+          "@id": "mcsb:priority/high",
+          "name": "High",
+          "description": "Remediation within 30 days — significant security gap"
+        },
+        {
+          "@id": "mcsb:priority/medium",
+          "name": "Medium",
+          "description": "Remediation within 90 days — moderate security improvement"
+        },
+        {
+          "@id": "mcsb:priority/low",
+          "name": "Low",
+          "description": "Remediation within next planning cycle — defence in depth enhancement"
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:ControlSeverity",
+      "@type": "DefinedTermSet",
+      "name": "ControlSeverity",
+      "description": "Implementation priority severity classification for security controls",
+      "hasDefinedTerm": [
+        {
+          "@id": "mcsb:severity/mustHave",
+          "name": "Must_Have",
+          "description": "Mandatory control — required for baseline security compliance"
+        },
+        {
+          "@id": "mcsb:severity/shouldHave",
+          "name": "Should_Have",
+          "description": "Recommended control — significant security value"
+        },
+        {
+          "@id": "mcsb:severity/niceToHave",
+          "name": "Nice_to_Have",
+          "description": "Optional control — additional defence in depth"
+        }
+      ]
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "mcsb:BR-001",
+      "name": "Domain Code Uniqueness",
+      "condition": "IF ControlDomain exists THEN domainCode MUST be unique across all ControlDomain instances",
+      "severity": "error",
+      "appliesTo": [
+        "mcsb:ControlDomain"
+      ]
+    },
+    {
+      "@id": "mcsb:BR-002",
+      "name": "Control Domain Assignment",
+      "condition": "IF SecurityControl exists THEN it MUST have exactly one belongsToDomain relationship to a ControlDomain",
+      "severity": "error",
+      "appliesTo": [
+        "mcsb:SecurityControl"
+      ]
+    },
+    {
+      "@id": "mcsb:BR-003",
+      "name": "Compliance Mapping Completeness",
+      "condition": "IF SecurityControl exists THEN it MUST have at least one hasComplianceMapping relationship",
+      "severity": "error",
+      "appliesTo": [
+        "mcsb:SecurityControl"
+      ]
+    },
+    {
+      "@id": "mcsb:BR-004",
+      "name": "Responsibility Assignment Required",
+      "condition": "IF SecurityControl exists THEN it MUST have exactly one hasResponsibility relationship",
+      "severity": "error",
+      "appliesTo": [
+        "mcsb:SecurityControl"
+      ]
+    },
+    {
+      "@id": "mcsb:BR-005",
+      "name": "Joint Responsibility Actions",
+      "condition": "IF ResponsibilityAssignment has responsibilityType 'Joint' THEN both clientActions AND providerActions MUST be defined",
+      "severity": "error",
+      "appliesTo": [
+        "mcsb:ResponsibilityAssignment"
+      ]
+    },
+    {
+      "@id": "mcsb:BR-006",
+      "name": "NonCompliant Gap Documentation",
+      "condition": "IF ControlAssessment has assessmentStatus 'NonCompliant' THEN implementationGaps MUST contain at least one gap description",
+      "severity": "error",
+      "appliesTo": [
+        "mcsb:ControlAssessment"
+      ]
+    },
+    {
+      "@id": "mcsb:BR-007",
+      "name": "Gap Remediation Priority",
+      "condition": "IF ControlAssessment has non-empty implementationGaps THEN remediationPriority MUST be defined",
+      "severity": "error",
+      "appliesTo": [
+        "mcsb:ControlAssessment"
+      ]
+    },
+    {
+      "@id": "mcsb:BR-008",
+      "name": "Guidance Platform Assignment",
+      "condition": "IF ImplementationGuidance exists THEN it SHOULD have a guidanceForPlatform relationship to a CloudPlatform",
+      "severity": "warning",
+      "appliesTo": [
+        "mcsb:ImplementationGuidance"
+      ]
+    },
+    {
+      "@id": "mcsb:BR-009",
+      "name": "Control ID Format Validation",
+      "condition": "IF SecurityControl exists THEN controlId MUST match pattern ^[A-Z]{2}-\\d{1,2}$",
+      "severity": "error",
+      "appliesTo": [
+        "mcsb:SecurityControl"
+      ]
+    },
+    {
+      "@id": "mcsb:BR-010",
+      "name": "Security Architecture Coverage",
+      "condition": "IF SecurityControl exists THEN it SHOULD have at least one appliesTo relationship to SecurityArchitecture",
+      "severity": "warning",
+      "appliesTo": [
+        "mcsb:SecurityControl"
+      ]
+    }
+  ],
+  "crossOntologyReferences": {
+    "imports": [
+      "EA-CORE-ONT",
+      "EA-MSFT-ONT"
+    ],
+    "importedBy": [
+      "EA-ONT"
+    ],
+    "rcsgSeries": [],
+    "peSeries": [
+      "ea-core:",
+      "ea-msft:",
+      "ea:"
+    ],
+    "description": "MCSB-ONT is a governance overlay in RCSG-Series. Security controls map to EA-CORE SecurityArchitecture domains for enterprise coverage analysis. Control assessments target EA-MSFT AzureResources for resource-level security tracking. Implementation guidance is filtered by EA-MSFT CloudPlatform. EA-ONT (PPM) initiatives reference MCSB controls via the existing mitigatedByControl relationship.",
+    "keyBridges": [
+      {
+        "bridgeId": "MCSB-BRIDGE-001",
+        "name": "Security Control to Architecture Bridge",
+        "from": "mcsb:SecurityControl",
+        "to": "ea-core:SecurityArchitecture",
+        "via": "mcsb:appliesTo",
+        "purpose": "Maps MCSB controls to enterprise security architecture domains for coverage analysis"
+      },
+      {
+        "bridgeId": "MCSB-BRIDGE-002",
+        "name": "Control Assessment to Azure Resource Bridge",
+        "from": "mcsb:ControlAssessment",
+        "to": "ea-msft:AzureResource",
+        "via": "mcsb:assessesResource",
+        "purpose": "Enables resource-level security assessment tracking against MCSB controls"
+      },
+      {
+        "bridgeId": "MCSB-BRIDGE-003",
+        "name": "Implementation Guidance Platform Bridge",
+        "from": "mcsb:ImplementationGuidance",
+        "to": "ea-msft:CloudPlatform",
+        "via": "mcsb:guidanceForPlatform",
+        "purpose": "Filters implementation guidance by target cloud platform"
+      }
+    ],
+    "existingExternalRefs": [
+      {
+        "ontology": "EA-ONT",
+        "relationship": "mitigatedByControl",
+        "from": "ppm:Initiative",
+        "to": "mcsb:SecurityControl",
+        "direction": "incoming"
+      }
+    ]
+  },
+  "changeControl": {
+    "currentVersion": "2.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-09",
+    "modifiedBy": "Azlan EA-AAA",
+    "changeNotes": "Complete rebuild from OAA v5.0.0 to v6.1.0. Removed CloudPlatform and CloudService entities (now in EA-MSFT-ONT). Added 3 cross-ontology bridges to EA-CORE (SecurityArchitecture) and EA-MSFT (AzureResource, CloudPlatform). 8 owned entities, 12 relationships (9 internal + 3 cross-ontology), 10 business rules, 5 enumerations.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-01-23",
+        "notes": "Initial creation from MCSB v1 Excel source with 12 control domains, 76 controls, 4 compliance framework mappings. OAA v5.0.0."
+      },
+      {
+        "version": "2.0.0",
+        "date": "2026-02-09",
+        "notes": "OAA v6.1.0 rebuild: CloudPlatform/CloudService removed to EA-MSFT. Added 3 cross-ontology bridges (EA-CORE SecurityArchitecture, EA-MSFT AzureResource/CloudPlatform). Migrated to owl:ObjectProperty relationships with oaa:cardinality. 8 owned entities + 3 external stubs, 12 relationships, 10 business rules, 5 enumerations."
+      }
+    ]
+  },
+  "oaa:ontologyId": "ALZ-ONT",
+  "oaa:series": "RCSG-SERIES",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of ControlDomain within this ontology?",
+      "targetEntities": [
+        "mcsb:ControlDomain"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of SecurityControl within this ontology?",
+      "targetEntities": [
+        "mcsb:SecurityControl"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of ImplementationGuidance within this ontology?",
+      "targetEntities": [
+        "mcsb:ImplementationGuidance"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of ComplianceMapping within this ontology?",
+      "targetEntities": [
+        "mcsb:ComplianceMapping"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of ComplianceFramework within this ontology?",
+      "targetEntities": [
+        "mcsb:ComplianceFramework"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of ResponsibilityAssignment within this ontology?",
+      "targetEntities": [
+        "mcsb:ResponsibilityAssignment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of SecurityStakeholder within this ontology?",
+      "targetEntities": [
+        "mcsb:SecurityStakeholder"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of ControlAssessment within this ontology?",
+      "targetEntities": [
+        "mcsb:ControlAssessment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of SecurityArchitecture within this ontology?",
+      "targetEntities": [
+        "ea-core:SecurityArchitecture"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of AzureResource within this ontology?",
+      "targetEntities": [
+        "ea-msft:AzureResource"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the role and purpose of CloudPlatform within this ontology?",
+      "targetEntities": [
+        "ea-msft:CloudPlatform"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+%% PF-Core: VE GTM DIAG-Ontology v0.1.0
+%% Go-to-Market Module Entity Relationships
+%% Platform Foundation Core
+%% Document ID: PF-Core_VE_GTM_Diagram-Ontology_v0.1.0
+
+erDiagram
+    GTM_STRATEGY ||--|| VALUE_PROPOSITION : "executes"
+    GTM_STRATEGY ||--o{ CAMPAIGN : "contains"
+    GTM_STRATEGY ||--o{ CHANNEL_MIX : "defines"
+    GTM_STRATEGY ||--|| TARGET_MARKET : "addresses"
+    GTM_STRATEGY ||--|| LAUNCH_PLAN : "implements"
+    
+    CAMPAIGN ||--o{ MESSAGING : "delivers"
+    CAMPAIGN ||--o{ CONTENT_ASSET : "produces"
+    CAMPAIGN ||--|| TIMELINE : "follows"
+    CAMPAIGN ||--o{ CAMPAIGN_METRIC : "tracks"
+    
+    CHANNEL_MIX ||--o{ CHANNEL : "includes"
+    CHANNEL ||--o{ TOUCHPOINT : "enables"
+    CHANNEL }|--|| CHANNEL_TYPE : "categorized_as"
+    
+    MESSAGING ||--|| CUSTOMER_SEGMENT : "resonates_with"
+    MESSAGING ||--o{ VALUE_DRIVER : "communicates"
+    MESSAGING ||--|| EMOTIONAL_HOOK : "leverages"
+    
+    LAUNCH_PLAN ||--o{ MILESTONE : "contains"
+    LAUNCH_PLAN ||--o{ DEPENDENCY : "manages"
+    LAUNCH_PLAN ||--o{ RESOURCE : "allocates"
+    
+    TARGET_MARKET ||--o{ CUSTOMER_SEGMENT : "comprises"
+    TARGET_MARKET ||--|| MARKET_SIZE : "quantifies"
+    
+    GTM_STRATEGY {
+        string strategyId PK
+        string valuePropositionId FK
+        enum launchType "Product|Feature|Campaign|Relaunch"
+        date plannedLaunchDate
+        string marketScope
+        enum status "Draft|Active|Launched|Completed"
+        float budgetTotal
+        string currency
+    }
+    
+    CAMPAIGN {
+        string campaignId PK
+        string strategyId FK
+        string campaignName
+        enum campaignType "Awareness|Acquisition|Activation|Retention"
+        enum status "Planning|Active|Paused|Completed"
+        date startDate
+        date endDate
+        float budget
+        string objective
+    }
+    
+    CHANNEL {
+        string channelId PK
+        string channelName
+        enum channelCategory "Owned|Earned|Paid|AI"
+        float costPerAcquisition
+        int expectedReach
+        float conversionRate
+        enum priority "Primary|Secondary|Experimental"
+    }
+    
+    CHANNEL_TYPE {
+        string typeId PK
+        string typeName
+        string description
+        string[] platforms
+    }
+    
+    MESSAGING {
+        string messageId PK
+        string campaignId FK
+        string headline
+        string subheadline
+        string primaryMessage
+        string callToAction
+        string emotionalHook
+        enum audience "Executive|Technical|EndUser"
+        string[] keywords
+    }
+    
+    TOUCHPOINT {
+        string touchpointId PK
+        string channelId FK
+        enum stage "Awareness|Consideration|Decision|Retention"
+        string intent
+        string content
+        string callToAction
+    }
+    
+    LAUNCH_PLAN {
+        string planId PK
+        string strategyId FK
+        date softLaunchDate
+        date publicLaunchDate
+        string[] successCriteria
+        string rollbackPlan
+    }
+    
+    MILESTONE {
+        string milestoneId PK
+        string planId FK
+        string milestoneName
+        date targetDate
+        date actualDate
+        enum status "Pending|InProgress|Completed|Delayed"
+        string[] deliverables
+    }
+    
+    CAMPAIGN_METRIC {
+        string metricId PK
+        string campaignId FK
+        string metricName
+        enum metricType "Leading|Lagging"
+        float targetValue
+        float actualValue
+        string unit
+        date measuredAt
+    }
+    
+    CONTENT_ASSET {
+        string assetId PK
+        string campaignId FK
+        enum assetType "Blog|Video|Infographic|Whitepaper|Email|Ad"
+        string title
+        string url
+        date publishDate
+        string[] tags
+    }
+    
+    VALUE_PROPOSITION {
+        string propositionId PK
+        string propositionStatement
+        enum propositionType "Product|Service|Initiative"
+    }
+    
+    CUSTOMER_SEGMENT {
+        string segmentId PK
+        string segmentName
+        string industry
+        string companySize
+    }
+    
+    VALUE_DRIVER {
+        string driverId PK
+        enum driverType "CostReduction|RevenueGrowth|RiskMitigation"
+        string quantifiableValue
+    }

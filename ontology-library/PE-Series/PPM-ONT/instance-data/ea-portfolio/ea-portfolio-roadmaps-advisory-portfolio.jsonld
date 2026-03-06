@@ -1,0 +1,365 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v5/",
+    "vsem": "https://oaa-ontology.org/v5/vsem/",
+    "ppm": "https://oaa-ontology.org/v5/ppm/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "advisory": "urn:advisory:"
+  },
+  
+  "@graph": [
+    {
+      "@type": "ppm:Portfolio",
+      "@id": "advisory:portfolio/transformation-2026",
+      "name": "Advisory Transformation Portfolio",
+      "description": "3-year digital transformation portfolio delivering 60% manual process reduction through AI-augmented advisory capabilities",
+      
+      "ppm:vision": {
+        "@type": "vsem:StrategicVision",
+        "@id": "advisory:vision/ai-augmented-advisory",
+        "name": "AI-Augmented Advisory Excellence",
+        "description": "Transform into an AI-augmented advisory firm where intelligent automation eliminates 60% of manual processes, enabling consultants to focus on high-value client engagement, insight generation, and strategic counsel—driving profitable growth through increased utilisation, faster delivery, and premium positioning."
+      },
+      
+      "ppm:horizon": "P3Y",
+      "startDate": "2026-02-01",
+      "endDate": "2029-01-31",
+      
+      "ppm:investmentEnvelope": {
+        "@type": "MonetaryAmount",
+        "value": 7700000,
+        "currency": "GBP"
+      },
+      
+      "ppm:valueTarget": {
+        "@type": "ppm:BenefitMetric",
+        "@id": "advisory:metric/manual-reduction",
+        "name": "Manual Process Reduction",
+        "ppm:baseline": 0.0,
+        "ppm:target": 0.60,
+        "ppm:unit": "percentage",
+        "ppm:measurementMethod": "Time-motion study comparison against 2026-Q1 baseline"
+      },
+      
+      "ppm:strategicPillars": [
+        {"@id": "advisory:pillar/delivery-automation"},
+        {"@id": "advisory:pillar/knowledge-enablement"},
+        {"@id": "advisory:pillar/platform-foundation"},
+        {"@id": "advisory:pillar/client-experience"}
+      ],
+      
+      "ppm:programmes": [
+        {"@id": "advisory:programme/delivery-automation"},
+        {"@id": "advisory:programme/knowledge-enablement"},
+        {"@id": "advisory:programme/platform-foundation"},
+        {"@id": "advisory:programme/client-experience"}
+      ],
+      
+      "ppm:practiceAreas": [
+        {"@id": "advisory:practice/strategy"},
+        {"@id": "advisory:practice/operations"},
+        {"@id": "advisory:practice/technology"},
+        {"@id": "advisory:practice/risk-actuarial"},
+        {"@id": "advisory:practice/regulatory"},
+        {"@id": "advisory:practice/transactions"}
+      ],
+      
+      "ppm:governanceModel": {
+        "@type": "ppm:GovernanceModel",
+        "ppm:cadence": {
+          "portfolioBoard": "Monthly",
+          "programmeSteerco": "Fortnightly",
+          "projectStandup": "Weekly"
+        },
+        "ppm:decisionRights": {
+          "portfolioBoard": "Investment decisions >£100K, programme prioritisation, strategic direction",
+          "programmeSteerco": "Initiative approval, resource allocation, milestone sign-off",
+          "projectBoard": "Delivery decisions, risk escalation, change requests"
+        }
+      }
+    },
+
+    {
+      "@type": "vsem:StrategicInitiative",
+      "@id": "advisory:pillar/delivery-automation",
+      "name": "Delivery Automation",
+      "description": "Automate report generation, data gathering, analysis, and proposal workflows to reduce consultant administrative burden",
+      "ppm:contributionWeight": 0.35
+    },
+    {
+      "@type": "vsem:StrategicInitiative",
+      "@id": "advisory:pillar/knowledge-enablement",
+      "name": "Knowledge Enablement",
+      "description": "Build knowledge graph, RAG assistants, methodology library, and expert finder to capitalise institutional knowledge",
+      "ppm:contributionWeight": 0.30
+    },
+    {
+      "@type": "vsem:StrategicInitiative",
+      "@id": "advisory:pillar/platform-foundation",
+      "name": "Platform Foundation",
+      "description": "Deploy Azure Landing Zone, data platform, AI/ML infrastructure, and security controls as enabling platform",
+      "ppm:contributionWeight": 0.20
+    },
+    {
+      "@type": "vsem:StrategicInitiative",
+      "@id": "advisory:pillar/client-experience",
+      "name": "Client Experience",
+      "description": "Build client portals, collaboration tools, delivery tracking, and self-service capabilities",
+      "ppm:contributionWeight": 0.15
+    },
+
+    {
+      "@type": "ppm:Programme",
+      "@id": "advisory:programme/delivery-automation",
+      "name": "Delivery Automation Programme",
+      "description": "Programme delivering automation of advisory delivery processes including research, analysis, reporting, and proposals",
+      "ppm:parentPortfolio": {"@id": "advisory:portfolio/transformation-2026"},
+      "ppm:strategicPillar": {"@id": "advisory:pillar/delivery-automation"},
+      "ppm:contributionWeight": 0.35,
+      "ppm:status": {"@id": "ppm:prog-status/approved"},
+      "ppm:owner": {
+        "@type": "Person",
+        "name": "TBC - Delivery Automation SRO"
+      },
+      "ppm:benefitProfile": {
+        "@type": "ppm:BenefitProfile",
+        "ppm:benefits": [
+          {"name": "Report Generation Time Reduction", "ppm:target": 0.70},
+          {"name": "Proposal Turnaround Improvement", "ppm:target": 0.50},
+          {"name": "Research Time Reduction", "ppm:target": 0.60}
+        ]
+      }
+    },
+    
+    {
+      "@type": "ppm:Programme",
+      "@id": "advisory:programme/knowledge-enablement",
+      "name": "Knowledge Enablement Programme",
+      "description": "Programme delivering knowledge management capabilities including knowledge graph, RAG, methodology library, and expert finder",
+      "ppm:parentPortfolio": {"@id": "advisory:portfolio/transformation-2026"},
+      "ppm:strategicPillar": {"@id": "advisory:pillar/knowledge-enablement"},
+      "ppm:contributionWeight": 0.30,
+      "ppm:status": {"@id": "ppm:prog-status/approved"},
+      "ppm:owner": {
+        "@type": "Person",
+        "name": "TBC - Knowledge Enablement SRO"
+      },
+      "ppm:benefitProfile": {
+        "@type": "ppm:BenefitProfile",
+        "ppm:benefits": [
+          {"name": "Knowledge Reuse Rate", "ppm:target": 0.40},
+          {"name": "Expert Location Time Reduction", "ppm:target": 0.80},
+          {"name": "Methodology Compliance", "ppm:target": 0.90}
+        ]
+      }
+    },
+    
+    {
+      "@type": "ppm:Programme",
+      "@id": "advisory:programme/platform-foundation",
+      "name": "Platform Foundation Programme",
+      "description": "Programme delivering Azure platform, data infrastructure, AI/ML capabilities, and security controls",
+      "ppm:parentPortfolio": {"@id": "advisory:portfolio/transformation-2026"},
+      "ppm:strategicPillar": {"@id": "advisory:pillar/platform-foundation"},
+      "ppm:contributionWeight": 0.20,
+      "ppm:status": {"@id": "ppm:prog-status/approved"},
+      "ppm:owner": {
+        "@type": "Person",
+        "name": "TBC - Platform Foundation SRO"
+      },
+      "ppm:benefitProfile": {
+        "@type": "ppm:BenefitProfile",
+        "ppm:benefits": [
+          {"name": "Platform Availability", "ppm:target": 0.999},
+          {"name": "Security Compliance Score", "ppm:target": 0.95},
+          {"name": "AI Workload Enablement", "ppm:target": 1.0}
+        ]
+      }
+    },
+    
+    {
+      "@type": "ppm:Programme",
+      "@id": "advisory:programme/client-experience",
+      "name": "Client Experience Programme",
+      "description": "Programme delivering client-facing digital capabilities including portals, collaboration, and self-service",
+      "ppm:parentPortfolio": {"@id": "advisory:portfolio/transformation-2026"},
+      "ppm:strategicPillar": {"@id": "advisory:pillar/client-experience"},
+      "ppm:contributionWeight": 0.15,
+      "ppm:status": {"@id": "ppm:prog-status/approved"},
+      "ppm:owner": {
+        "@type": "Person",
+        "name": "TBC - Client Experience SRO"
+      },
+      "ppm:benefitProfile": {
+        "@type": "ppm:BenefitProfile",
+        "ppm:benefits": [
+          {"name": "Client Self-Service Adoption", "ppm:target": 0.60},
+          {"name": "Client NPS Improvement", "ppm:target": 20},
+          {"name": "Engagement Visibility", "ppm:target": 1.0}
+        ]
+      }
+    },
+
+    {
+      "@type": "ppm:PracticeArea",
+      "@id": "advisory:practice/strategy",
+      "name": "Strategy Advisory",
+      "description": "Market entry, growth strategy, M&A due diligence, competitive positioning services for insurance clients",
+      "ppm:manualReductionTarget": 0.55,
+      "ppm:headcount": 120,
+      "ppm:primaryProgramme": {"@id": "advisory:programme/knowledge-enablement"},
+      "ppm:secondaryProgramme": {"@id": "advisory:programme/delivery-automation"},
+      "ppm:keyProcesses": [
+        "Market research and analysis",
+        "Competitor benchmarking",
+        "Strategic option evaluation",
+        "Business case development"
+      ]
+    },
+    
+    {
+      "@type": "ppm:PracticeArea",
+      "@id": "advisory:practice/operations",
+      "name": "Operations Advisory",
+      "description": "Claims transformation, underwriting optimisation, operational efficiency services for insurance clients",
+      "ppm:manualReductionTarget": 0.65,
+      "ppm:headcount": 180,
+      "ppm:primaryProgramme": {"@id": "advisory:programme/delivery-automation"},
+      "ppm:secondaryProgramme": {"@id": "advisory:programme/knowledge-enablement"},
+      "ppm:keyProcesses": [
+        "Process mapping and analysis",
+        "Operational benchmarking",
+        "Operating model design",
+        "Performance improvement"
+      ]
+    },
+    
+    {
+      "@type": "ppm:PracticeArea",
+      "@id": "advisory:practice/technology",
+      "name": "Technology Advisory",
+      "description": "Core system selection, digital transformation, InsurTech assessment, architecture services for insurance clients",
+      "ppm:manualReductionTarget": 0.60,
+      "ppm:headcount": 150,
+      "ppm:primaryProgramme": {"@id": "advisory:programme/delivery-automation"},
+      "ppm:secondaryProgramme": {"@id": "advisory:programme/platform-foundation"},
+      "ppm:keyProcesses": [
+        "Vendor evaluation and RFP",
+        "Technology assessment",
+        "Architecture definition",
+        "Implementation oversight"
+      ]
+    },
+    
+    {
+      "@type": "ppm:PracticeArea",
+      "@id": "advisory:practice/risk-actuarial",
+      "name": "Risk & Actuarial",
+      "description": "Risk modelling, reserve analysis, capital optimisation, Solvency II services for insurance clients",
+      "ppm:manualReductionTarget": 0.70,
+      "ppm:headcount": 140,
+      "ppm:primaryProgramme": {"@id": "advisory:programme/delivery-automation"},
+      "ppm:secondaryProgramme": {"@id": "advisory:programme/knowledge-enablement"},
+      "ppm:keyProcesses": [
+        "Data analysis and modelling",
+        "Reserve calculations",
+        "Capital requirement analysis",
+        "Regulatory reporting"
+      ]
+    },
+    
+    {
+      "@type": "ppm:PracticeArea",
+      "@id": "advisory:practice/regulatory",
+      "name": "Regulatory Advisory",
+      "description": "FCA compliance, prudential regulation, conduct risk, regulatory change services for insurance clients",
+      "ppm:manualReductionTarget": 0.60,
+      "ppm:headcount": 110,
+      "ppm:primaryProgramme": {"@id": "advisory:programme/knowledge-enablement"},
+      "ppm:secondaryProgramme": {"@id": "advisory:programme/delivery-automation"},
+      "ppm:keyProcesses": [
+        "Regulatory research and tracking",
+        "Gap analysis",
+        "Policy drafting",
+        "Compliance assessment"
+      ]
+    },
+    
+    {
+      "@type": "ppm:PracticeArea",
+      "@id": "advisory:practice/transactions",
+      "name": "Transaction Services",
+      "description": "Insurance M&A, portfolio transfers, run-off advisory, due diligence services",
+      "ppm:manualReductionTarget": 0.55,
+      "ppm:headcount": 100,
+      "ppm:primaryProgramme": {"@id": "advisory:programme/delivery-automation"},
+      "ppm:secondaryProgramme": {"@id": "advisory:programme/client-experience"},
+      "ppm:keyProcesses": [
+        "Data room analysis",
+        "Financial modelling",
+        "Due diligence reporting",
+        "Deal documentation"
+      ]
+    },
+
+    {
+      "@type": "ppm:Milestone",
+      "@id": "advisory:milestone/foundation-gate",
+      "name": "Foundation Phase Gate",
+      "description": "10% manual process reduction demonstrated in pilot practice",
+      "ppm:targetDate": "2026-05-31",
+      "ppm:isPhaseGate": true,
+      "ppm:successCriteria": [
+        "10% manual reduction demonstrated with documented savings",
+        "Advisory Enablement COE established",
+        "Knowledge Graph v1.0 operational with RAG",
+        "Year 1 plan approved with partner investment",
+        "PPM governance operational"
+      ]
+    },
+    {
+      "@type": "ppm:Milestone",
+      "@id": "advisory:milestone/y1-gate",
+      "name": "Year 1 Gate",
+      "description": "25% manual process reduction achieved",
+      "ppm:targetDate": "2027-01-31",
+      "ppm:isPhaseGate": true,
+      "ppm:successCriteria": [
+        "25% cumulative manual reduction",
+        "All 6 practices activated",
+        "40+ automations operational",
+        "£3-4M benefit realised"
+      ]
+    },
+    {
+      "@type": "ppm:Milestone",
+      "@id": "advisory:milestone/y2-gate",
+      "name": "Year 2 Gate",
+      "description": "45% manual process reduction achieved",
+      "ppm:targetDate": "2028-01-31",
+      "ppm:isPhaseGate": true,
+      "ppm:successCriteria": [
+        "45% cumulative manual reduction",
+        "AI-native advisory delivery",
+        "Client portal operational",
+        "£8-10M cumulative benefit"
+      ]
+    },
+    {
+      "@type": "ppm:Milestone",
+      "@id": "advisory:milestone/y3-gate",
+      "name": "Year 3 Gate - Target Achievement",
+      "description": "60% manual process reduction achieved",
+      "ppm:targetDate": "2029-01-31",
+      "ppm:isPhaseGate": true,
+      "ppm:successCriteria": [
+        "60% manual reduction validated",
+        "120 FTE equivalent capacity redeployed",
+        "£18-22M cumulative benefit",
+        "25%+ revenue per consultant increase"
+      ]
+    }
+  ]
+}

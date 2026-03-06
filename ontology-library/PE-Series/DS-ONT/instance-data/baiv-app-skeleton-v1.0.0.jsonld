@@ -1,0 +1,114 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ds": "https://platformcore.io/ontology/ds/",
+    "emc": "https://platformcore.io/ontology/emc/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "ds:baiv-app-skeleton-v1.0.0",
+  "@type": "ds:AppSkeletonInstance",
+  "name": "BAIV PFI Application Skeleton Override",
+  "description": "PFI-tier skeleton override for BAIV AI Visibility platform. Extends the PFC base skeleton with BAIV-specific context identity bar content, L4 navigation items for MarTech features, and brand-specific token overrides. Cannot modify PFC-tier entities (BR-DS-013 CascadeImmutability).",
+  "version": "1.0.0",
+  "dateCreated": "2026-02-21",
+  "ds:targetOntology": "ds-v2.0.0-oaa-v6.json",
+  "ds:cascadeTier": "PFI",
+  "ds:extendsApp": { "@id": "ds:pfc-app-skeleton-v1.0.0" },
+  "ds:configuredByApp": { "@id": "emc:InstanceConfiguration-BAIV" },
+
+  "@graph": [
+
+    {
+      "@id": "ds:nav-L4-baiv-campaigns",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-baiv-campaigns",
+      "ds:label": "Campaigns",
+      "ds:itemType": "Button",
+      "ds:action": "toggleBAIVCampaigns",
+      "ds:icon": "megaphone",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-BAIV'",
+      "ds:renderOrder": 1,
+      "ds:cascadeTier": "PFI",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" },
+      "description": "BAIV MarTech campaigns view — campaign performance, channel mix, content graph"
+    },
+    {
+      "@id": "ds:nav-L4-baiv-agents",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-baiv-agents",
+      "ds:label": "AI Agents",
+      "ds:itemType": "Button",
+      "ds:action": "toggleBAIVAgents",
+      "ds:icon": "cpu",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-BAIV'",
+      "ds:renderOrder": 2,
+      "ds:cascadeTier": "PFI",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" },
+      "description": "BAIV AI agent manager — 16 agents, role assignments, process ownership"
+    },
+    {
+      "@id": "ds:nav-L4-baiv-visibility",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-baiv-visibility",
+      "ds:label": "Visibility Score",
+      "ds:itemType": "Button",
+      "ds:action": "toggleBAIVVisibility",
+      "ds:icon": "eye",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-BAIV'",
+      "ds:renderOrder": 3,
+      "ds:cascadeTier": "PFI",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" },
+      "description": "BAIV AI Visibility scoring dashboard — brand visibility metrics, trend analysis"
+    },
+    {
+      "@id": "ds:nav-L4-baiv-compose",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-baiv-compose",
+      "ds:label": "Compose Graph",
+      "ds:itemType": "Button",
+      "ds:action": "composeBAIVGraph",
+      "ds:icon": "git-merge",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-BAIV'",
+      "ds:renderOrder": 4,
+      "ds:cascadeTier": "PFI",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" },
+      "description": "BAIV shortcut — compose instance graph from scope rules and instance data"
+    },
+    {
+      "@id": "ds:nav-L4-baiv-freeze",
+      "@type": "ds:NavItem",
+      "ds:itemId": "nav-baiv-freeze",
+      "ds:label": "Freeze Snapshot",
+      "ds:itemType": "Button",
+      "ds:action": "freezeBAIVSnapshot",
+      "ds:icon": "lock",
+      "ds:shortcut": null,
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-BAIV' && state.composedPFIGraph",
+      "ds:renderOrder": 5,
+      "ds:cascadeTier": "PFI",
+      "ds:belongsToLayer": { "@id": "ds:navlayer-L4" },
+      "description": "BAIV shortcut — freeze current composed graph as immutable canonical snapshot"
+    },
+
+    {
+      "@id": "ds:cmp-pfi-context-bar",
+      "@type": "ds:ZoneComponent",
+      "ds:placementId": "cmp-pfi-context-bar",
+      "ds:renderOrder": 1,
+      "ds:slotName": "context-bar-content",
+      "ds:tokenOverrides": {
+        "--viz-accent": "var(--viz-baiv-accent, #4CAF50)",
+        "--viz-accent-active": "var(--viz-baiv-accent-active, #2E7D32)"
+      },
+      "ds:visibilityCondition": "state.activeInstanceId === 'PFI-BAIV'",
+      "ds:cascadeTier": "PFI",
+      "ds:placedInZone": { "@id": "ds:zone-Z3" },
+      "ds:placesComponent": { "@id": "ds:dc-context-bar" },
+      "description": "BAIV-branded context identity bar — BAIV logo, green accent, instance name"
+    }
+  ]
+}

@@ -1,0 +1,677 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v5/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "pmf": "https://oaa-ontology.org/v5/pmf/",
+    "vp": "https://oaa-ontology.org/v5/vp/",
+    "efs": "https://oaa-ontology.org/v5/efs/",
+    "ppm": "https://oaa-ontology.org/v5/ppm/",
+    "cl": "https://oaa-ontology.org/v5/competitive-landscape/",
+    "okr": "https://oaa-ontology.org/v5/okr/"
+  },
+  "@id": "https://oaa-ontology.org/v5/pmf/schema",
+  "@type": "owl:Ontology",
+  "name": "PMF Ontology (Product-Market Fit)",
+  "alternateName": "Product-Market Fit Validation Framework",
+  "description": "Product-Market Fit ontology for customer validation, market positioning, willingness-to-pay analysis, and launch readiness assessment. Part of the VE lineage chain: VSOM → OKR → VP → PMF → EFS.",
+  "oaa:schemaVersion": "5.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:previousVersion": null,
+  "oaa:domain": "Market Validation, Product Development",
+  "oaa:status": "Production",
+  "dateCreated": "2026-02-07",
+  "dateModified": "2026-02-07",
+  "creator": {
+    "@type": "Organization",
+    "name": "Azlan EA-AAA / OAA v5 Agent"
+  },
+  "oaa:imports": [
+    {
+      "@id": "vp:schema",
+      "name": "VP-ONT",
+      "version": "1.2.3",
+      "importedEntities": ["vp:ValueProposition", "vp:IdealCustomerProfile", "vp:Problem", "vp:Benefit"],
+      "importedRelationships": ["vp:targetsSegment"]
+    },
+    {
+      "@id": "cl:schema",
+      "name": "CL-ONT",
+      "version": "1.0.0",
+      "importedEntities": ["cl:CompetitiveLandscape", "cl:Competitor"],
+      "importedRelationships": ["cl:positionedAgainst"]
+    },
+    {
+      "@id": "okr:schema",
+      "name": "OKR-ONT",
+      "version": "2.0.0",
+      "importedEntities": ["okr:Objective", "okr:KeyResult"],
+      "importedRelationships": ["okr:measuredBy"]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-PMF-001",
+      "name": "VP-to-PMF Validation",
+      "description": "Join VP-ONT Value Proposition to PMF validation assessment",
+      "joinPath": "vp:ValueProposition → pmf:validatesMarket → pmf:ProductMarketFit",
+      "useCase": "Validate that a value proposition achieves product-market fit"
+    },
+    {
+      "patternId": "JP-PMF-002",
+      "name": "PMF-to-EFS Execution",
+      "description": "Join validated PMF to EFS execution backlog",
+      "joinPath": "pmf:ProductMarketFit → pmf:enablesExecution → efs:Epic",
+      "useCase": "Convert validated PMF into executable epics and features"
+    },
+    {
+      "patternId": "JP-PMF-003",
+      "name": "PMF-to-PPM Delivery",
+      "description": "Join PMF to project portfolio management for delivery",
+      "joinPath": "pmf:ProductMarketFit → pmf:executedVia → ppm:Project",
+      "useCase": "Route validated PMF items to project execution pipeline"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "pmf:ProductMarketFit",
+      "@type": "rdfs:Class",
+      "name": "ProductMarketFit",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Core assessment of alignment between a product offering and market demand. Aggregates quantitative and qualitative validation signals to determine readiness for scale.",
+      "oaa:properties": [
+        {
+          "name": "fitScore",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Composite PMF score (0.0-1.0) combining quantitative (70%) and qualitative (30%) signals",
+          "default": "0.0"
+        },
+        {
+          "name": "fitStatus",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Current PMF assessment status",
+          "enum": ["exploring", "validating", "approaching", "achieved", "scaling"],
+          "default": "exploring"
+        },
+        {
+          "name": "iterationCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of PMF iteration cycles completed (2-week sprints)"
+        },
+        {
+          "name": "pivotCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of strategic pivots executed during validation"
+        },
+        {
+          "name": "assessmentDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date of most recent PMF assessment"
+        },
+        {
+          "name": "targetMarket",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Target market segment being validated"
+        },
+        {
+          "name": "productName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Product or service being assessed for market fit"
+        },
+        {
+          "name": "decision",
+          "type": "xsd:string",
+          "required": false,
+          "description": "PMF iteration decision outcome",
+          "enum": ["iterate", "pivot", "scale", "kill"]
+        }
+      ]
+    },
+    {
+      "@id": "pmf:MarketValidation",
+      "@type": "rdfs:Class",
+      "name": "MarketValidation",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Quantitative and qualitative evidence of market acceptance, demand signals, and growth potential. Provides measurable proof points for PMF assessment.",
+      "oaa:properties": [
+        {
+          "name": "retentionRate",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "3-month user retention rate (target: ≥40%)"
+        },
+        {
+          "name": "netPromoterScore",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Net Promoter Score (-100 to 100, target: >50)"
+        },
+        {
+          "name": "organicGrowthRate",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Month-over-month organic growth rate (target: ≥10%)"
+        },
+        {
+          "name": "churnRate",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Monthly customer churn rate (target: <5%)"
+        },
+        {
+          "name": "engagementScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "User engagement alignment with product intent (0.0-1.0)"
+        },
+        {
+          "name": "disappointmentRate",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Percentage of users who would be 'very disappointed' if product removed (target: ≥40%)"
+        },
+        {
+          "name": "wordOfMouthActive",
+          "type": "xsd:boolean",
+          "required": false,
+          "description": "Whether organic word-of-mouth referrals are occurring"
+        },
+        {
+          "name": "valueArticulationClarity",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Score indicating how clearly users can articulate the product value (0.0-1.0)"
+        },
+        {
+          "name": "supportBurdenTrend",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Trend direction of support ticket volume",
+          "enum": ["increasing", "stable", "declining"]
+        },
+        {
+          "name": "validationType",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Type of validation evidence",
+          "enum": ["quantitative", "qualitative", "mixed"]
+        }
+      ]
+    },
+    {
+      "@id": "pmf:CustomerSegmentFit",
+      "@type": "rdfs:Class",
+      "name": "CustomerSegmentFit",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Assessment of alignment between product offering and a specific customer segment's needs, pain points, and willingness to pay.",
+      "oaa:properties": [
+        {
+          "name": "segmentName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Name of the customer segment being assessed"
+        },
+        {
+          "name": "segmentSize",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Estimated total addressable market size for this segment"
+        },
+        {
+          "name": "fitScore",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Segment-specific PMF alignment score (0.0-1.0)"
+        },
+        {
+          "name": "painPointAlignment",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "How well the product addresses this segment's pain points (0.0-1.0)"
+        },
+        {
+          "name": "willingnessToPayValidated",
+          "type": "xsd:boolean",
+          "required": true,
+          "description": "Whether willingness-to-pay has been validated through customer research"
+        },
+        {
+          "name": "pricePoint",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Validated price point for this segment"
+        },
+        {
+          "name": "acquisitionCost",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Customer acquisition cost for this segment"
+        },
+        {
+          "name": "lifetimeValue",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Estimated customer lifetime value for this segment"
+        },
+        {
+          "name": "interviewsCompleted",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of customer interviews completed for this segment"
+        }
+      ]
+    },
+    {
+      "@id": "pmf:CompetitivePositioning",
+      "@type": "rdfs:Class",
+      "name": "CompetitivePositioning",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Product position relative to competitors in the target market, including differentiation strategy and competitive advantages.",
+      "oaa:properties": [
+        {
+          "name": "positioningStatement",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Concise positioning statement: For [segment], [product] is [category] that [key benefit]"
+        },
+        {
+          "name": "primaryDifferentiator",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Primary differentiating factor from competitors"
+        },
+        {
+          "name": "competitiveAdvantageType",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Type of competitive advantage",
+          "enum": ["cost", "differentiation", "niche", "technology", "network-effects", "brand"]
+        },
+        {
+          "name": "marketShareEstimate",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Estimated market share percentage in target segment"
+        },
+        {
+          "name": "switchingCostLevel",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Level of switching cost for customers moving from competitors",
+          "enum": ["low", "medium", "high"]
+        },
+        {
+          "name": "defensibilityScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "How defensible the competitive position is (0.0-1.0)"
+        }
+      ]
+    },
+    {
+      "@id": "pmf:PMFIteration",
+      "@type": "rdfs:Class",
+      "name": "PMFIteration",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A single iteration cycle (2-week sprint) in the PMF validation process, following the Plan-Build-Measure-Learn-Decide framework.",
+      "oaa:properties": [
+        {
+          "name": "iterationNumber",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Sequential iteration number"
+        },
+        {
+          "name": "sprintStartDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Start date of this iteration sprint"
+        },
+        {
+          "name": "sprintEndDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "End date of this iteration sprint"
+        },
+        {
+          "name": "hypothesis",
+          "type": "xsd:string",
+          "required": true,
+          "description": "The hypothesis being tested in this iteration"
+        },
+        {
+          "name": "phase",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Current phase of the iteration",
+          "enum": ["plan", "build", "measure", "learn", "decide"]
+        },
+        {
+          "name": "outcome",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Iteration outcome decision",
+          "enum": ["iterate", "pivot", "scale", "kill"]
+        },
+        {
+          "name": "keyLearnings",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Summary of key learnings from this iteration"
+        }
+      ]
+    },
+    {
+      "@id": "pmf:GTMStrategy",
+      "@type": "rdfs:Class",
+      "name": "GTMStrategy",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Go-To-Market strategy defining how a validated product will be launched and scaled, covering positioning, brand, commercial model, and execution channels.",
+      "oaa:properties": [
+        {
+          "name": "strategyName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Name of the GTM strategy"
+        },
+        {
+          "name": "launchPhase",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Current launch phase",
+          "enum": ["pre-launch", "soft-launch", "general-availability", "scaling"]
+        },
+        {
+          "name": "primaryChannel",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Primary go-to-market channel"
+        },
+        {
+          "name": "pricingModel",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Revenue/pricing model",
+          "enum": ["freemium", "subscription", "usage-based", "one-time", "marketplace", "enterprise-license"]
+        },
+        {
+          "name": "budgetAllocation",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Total GTM budget allocation"
+        },
+        {
+          "name": "launchReadinessScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Launch readiness assessment score (0.0-1.0)"
+        }
+      ]
+    },
+    {
+      "@id": "pmf:WillingnessToPayAssessment",
+      "@type": "rdfs:Class",
+      "name": "WillingnessToPayAssessment",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Structured assessment of customer willingness to pay through interview-based research, pricing experiments, and demand validation.",
+      "oaa:properties": [
+        {
+          "name": "assessmentMethod",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Method used for WTP assessment",
+          "enum": ["van-westendorp", "conjoint-analysis", "interview-based", "a-b-pricing", "demand-curve"]
+        },
+        {
+          "name": "sampleSize",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of respondents or data points in assessment"
+        },
+        {
+          "name": "optimalPricePoint",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Identified optimal price point from assessment"
+        },
+        {
+          "name": "priceRangeMin",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Minimum acceptable price point"
+        },
+        {
+          "name": "priceRangeMax",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Maximum acceptable price point before demand drops"
+        },
+        {
+          "name": "confidenceLevel",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Statistical confidence level of assessment (0.0-1.0)"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "pmf:validatesMarket",
+      "@type": "owl:ObjectProperty",
+      "name": "Validates Market",
+      "description": "Links a Value Proposition to its PMF validation assessment (VP → PMF lineage)",
+      "domainIncludes": ["vp:ValueProposition"],
+      "rangeIncludes": ["pmf:ProductMarketFit"],
+      "oaa:cardinality": { "min": 0, "max": "*" },
+      "oaa:crossOntologyRef": "VP-ONT"
+    },
+    {
+      "@id": "pmf:enablesExecution",
+      "@type": "owl:ObjectProperty",
+      "name": "Enables Execution",
+      "description": "Links validated PMF to EFS execution backlog (PMF → EFS lineage)",
+      "domainIncludes": ["pmf:ProductMarketFit"],
+      "rangeIncludes": ["efs:Epic"],
+      "oaa:cardinality": { "min": 0, "max": "*" },
+      "oaa:crossOntologyRef": "EFS-ONT"
+    },
+    {
+      "@id": "pmf:executedVia",
+      "@type": "owl:ObjectProperty",
+      "name": "Executed Via",
+      "description": "Links PMF to project portfolio management for delivery (PMF → PPM)",
+      "domainIncludes": ["pmf:ProductMarketFit"],
+      "rangeIncludes": ["ppm:Project"],
+      "oaa:cardinality": { "min": 0, "max": "*" },
+      "oaa:crossOntologyRef": "PPM-ONT"
+    },
+    {
+      "@id": "pmf:hasValidation",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Validation",
+      "description": "Links a PMF assessment to its supporting market validation evidence",
+      "domainIncludes": ["pmf:ProductMarketFit"],
+      "rangeIncludes": ["pmf:MarketValidation"],
+      "oaa:cardinality": { "min": 1, "max": "*" }
+    },
+    {
+      "@id": "pmf:hasSegmentFit",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Segment Fit",
+      "description": "Links a PMF assessment to per-segment fit assessments",
+      "domainIncludes": ["pmf:ProductMarketFit"],
+      "rangeIncludes": ["pmf:CustomerSegmentFit"],
+      "oaa:cardinality": { "min": 1, "max": "*" }
+    },
+    {
+      "@id": "pmf:hasPositioning",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Positioning",
+      "description": "Links a PMF assessment to competitive positioning analysis",
+      "domainIncludes": ["pmf:ProductMarketFit"],
+      "rangeIncludes": ["pmf:CompetitivePositioning"],
+      "oaa:cardinality": { "min": 1, "max": 1 }
+    },
+    {
+      "@id": "pmf:hasIteration",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Iteration",
+      "description": "Links a PMF assessment to its validation iteration cycles",
+      "domainIncludes": ["pmf:ProductMarketFit"],
+      "rangeIncludes": ["pmf:PMFIteration"],
+      "oaa:cardinality": { "min": 0, "max": "*" }
+    },
+    {
+      "@id": "pmf:hasGTMStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "Has GTM Strategy",
+      "description": "Links a PMF assessment to its go-to-market strategy",
+      "domainIncludes": ["pmf:ProductMarketFit"],
+      "rangeIncludes": ["pmf:GTMStrategy"],
+      "oaa:cardinality": { "min": 0, "max": 1 }
+    },
+    {
+      "@id": "pmf:hasWTPAssessment",
+      "@type": "owl:ObjectProperty",
+      "name": "Has WTP Assessment",
+      "description": "Links a customer segment to willingness-to-pay research",
+      "domainIncludes": ["pmf:CustomerSegmentFit"],
+      "rangeIncludes": ["pmf:WillingnessToPayAssessment"],
+      "oaa:cardinality": { "min": 0, "max": "*" }
+    },
+    {
+      "@id": "pmf:targetsSegment",
+      "@type": "owl:ObjectProperty",
+      "name": "Targets Segment",
+      "description": "Links competitive positioning to the target customer segment",
+      "domainIncludes": ["pmf:CompetitivePositioning"],
+      "rangeIncludes": ["pmf:CustomerSegmentFit"],
+      "oaa:cardinality": { "min": 1, "max": "*" }
+    },
+    {
+      "@id": "pmf:informedByLandscape",
+      "@type": "owl:ObjectProperty",
+      "name": "Informed By Landscape",
+      "description": "Links competitive positioning to CL-ONT competitive landscape data",
+      "domainIncludes": ["pmf:CompetitivePositioning"],
+      "rangeIncludes": ["cl:CompetitiveLandscape"],
+      "oaa:cardinality": { "min": 0, "max": 1 },
+      "oaa:crossOntologyRef": "CL-ONT"
+    },
+    {
+      "@id": "pmf:drivesGTM",
+      "@type": "owl:ObjectProperty",
+      "name": "Drives GTM",
+      "description": "Links a validated customer segment to GTM strategy formulation",
+      "domainIncludes": ["pmf:CustomerSegmentFit"],
+      "rangeIncludes": ["pmf:GTMStrategy"],
+      "oaa:cardinality": { "min": 0, "max": 1 }
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-PMF-001",
+      "name": "PMF Requires Validation",
+      "condition": "IF a ProductMarketFit is created",
+      "constraint": "THEN it MUST have at least one MarketValidation with validationType",
+      "severity": "error",
+      "appliesTo": ["pmf:ProductMarketFit"]
+    },
+    {
+      "ruleId": "BR-PMF-002",
+      "name": "PMF Requires Segment",
+      "condition": "IF a ProductMarketFit is created",
+      "constraint": "THEN it MUST have at least one CustomerSegmentFit",
+      "severity": "error",
+      "appliesTo": ["pmf:ProductMarketFit"]
+    },
+    {
+      "ruleId": "BR-PMF-003",
+      "name": "Scale Decision Requires Score",
+      "condition": "IF ProductMarketFit.decision equals 'scale'",
+      "constraint": "THEN fitScore MUST be greater than 0.7",
+      "severity": "error",
+      "appliesTo": ["pmf:ProductMarketFit"]
+    },
+    {
+      "ruleId": "BR-PMF-004",
+      "name": "Retention Threshold",
+      "condition": "IF MarketValidation.validationType equals 'quantitative'",
+      "constraint": "THEN retentionRate SHOULD be greater than or equal to 0.40 for PMF achievement",
+      "severity": "warning",
+      "appliesTo": ["pmf:MarketValidation"]
+    },
+    {
+      "ruleId": "BR-PMF-005",
+      "name": "NPS Threshold",
+      "condition": "IF MarketValidation.validationType equals 'quantitative'",
+      "constraint": "THEN netPromoterScore SHOULD be greater than 50 for PMF achievement",
+      "severity": "warning",
+      "appliesTo": ["pmf:MarketValidation"]
+    },
+    {
+      "ruleId": "BR-PMF-006",
+      "name": "WTP Before GTM",
+      "condition": "IF a GTMStrategy is created for a CustomerSegmentFit",
+      "constraint": "THEN CustomerSegmentFit.willingnessToPayValidated MUST be true",
+      "severity": "error",
+      "appliesTo": ["pmf:GTMStrategy", "pmf:CustomerSegmentFit"]
+    },
+    {
+      "ruleId": "BR-PMF-007",
+      "name": "Iteration Hypothesis Required",
+      "condition": "IF a PMFIteration is created",
+      "constraint": "THEN it MUST have a hypothesis defined before entering build phase",
+      "severity": "error",
+      "appliesTo": ["pmf:PMFIteration"]
+    },
+    {
+      "ruleId": "BR-PMF-008",
+      "name": "Execution Requires PMF",
+      "condition": "IF ProductMarketFit has enablesExecution relationship",
+      "constraint": "THEN fitStatus MUST be 'achieved' or 'scaling'",
+      "severity": "error",
+      "appliesTo": ["pmf:ProductMarketFit"]
+    },
+    {
+      "ruleId": "BR-PMF-009",
+      "name": "LTV-CAC Ratio",
+      "condition": "IF CustomerSegmentFit has both lifetimeValue and acquisitionCost",
+      "constraint": "THEN lifetimeValue SHOULD be at least 3x acquisitionCost",
+      "severity": "warning",
+      "appliesTo": ["pmf:CustomerSegmentFit"]
+    },
+    {
+      "ruleId": "BR-PMF-010",
+      "name": "Competitive Positioning Required",
+      "condition": "IF ProductMarketFit.fitStatus equals 'validating' or higher",
+      "constraint": "THEN it MUST have a CompetitivePositioning with positioningStatement",
+      "severity": "error",
+      "appliesTo": ["pmf:ProductMarketFit"]
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "5.0.0",
+    "lastModified": "2026-02-07",
+    "modifiedBy": "OAA v5 Agent",
+    "changeNotes": "Initial creation of PMF ontology with 7 entities, 12 relationships, and 10 business rules. Covers Product-Market Fit validation, customer segment analysis, competitive positioning, WTP assessment, PMF iteration cycles, and GTM strategy.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-02-07",
+        "notes": "Initial OAA v5.0.0 compliant ontology generated from PMF-GTM agent specifications and registry entry definitions"
+      }
+    ]
+  }
+}

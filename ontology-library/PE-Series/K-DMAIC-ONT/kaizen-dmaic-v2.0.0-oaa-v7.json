@@ -1,0 +1,1207 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "kdmaic": "https://oaa-ontology.org/v6/kaizen-dmaic/",
+    "pe": "https://oaa-ontology.org/v6/process-engineering/",
+    "vsm": "https://oaa-ontology.org/v6/value-stream-mapping/",
+    "vana": "https://oaa-ontology.org/v6/value-add-analysis/"
+  },
+  "@type": "owl:Ontology",
+  "@id": "kdmaic:schema",
+  "name": "Kaizen DMAIC Ontology (K-DMAIC-ONT)",
+  "description": "Ontology for modelling Kaizen DMAIC — the compressed 3-5 day blitz variant of Six Sigma DMAIC. v2.0.0 deprecates kdmaic:WasteCategory (replaced by vana:WasteCategory) and kdmaic:ValueStreamMap (replaced by vsm:ValueStreamMap) as part of the PE-L6S sub-series extraction. All other entities unchanged. Backward-compatible aliases resolve deprecated entities to their imported equivalents.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "2.0.0",
+  "oaa:status": "compliant",
+  "oaa:series": "PE-Series",
+  "oaa:domain": "Lean Six Sigma, Kaizen Events, Rapid Process Improvement, Value Stream Mapping, Waste Elimination",
+  "dateCreated": "2026-02-26",
+  "dateModified": "2026-03-04",
+  "creator": {
+    "@type": "Organization",
+    "name": "Platform Foundation Core - Ontology Architect Agent"
+  },
+  "oaa:imports": [
+    {
+      "ontology": "PE-ONT",
+      "version": "4.0.0",
+      "usedEntities": [
+        "pe:Process",
+        "pe:ProcessMetric",
+        "pe:AIAgent",
+        "pe:Skill",
+        "pe:Hypothesis",
+        "pe:ProcessPattern"
+      ]
+    },
+    {
+      "ontology": "VSM-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "vsm:ValueStreamMap",
+        "vsm:ProcessBox",
+        "vsm:KaizenBurst"
+      ],
+      "note": "v2.0.0: Replaces deprecated kdmaic:ValueStreamMap with vsm:ValueStreamMap"
+    },
+    {
+      "ontology": "VANA-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "vana:WasteCategory",
+        "vana:WasteInstance",
+        "vana:ValueAddClassification"
+      ],
+      "note": "v2.0.0: Replaces deprecated kdmaic:WasteCategory with vana:WasteCategory"
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-K-001",
+      "name": "Gemba-to-QuickWin Lineage",
+      "description": "Trace waste from observation through to elimination — full lineage from Gemba walk to implemented quick win",
+      "joinPath": "kdmaic:GembaObservation → identifiesWaste → kdmaic:WasteCategory ← eliminatesWaste ← kdmaic:QuickWin",
+      "useCase": "Answer: Which quick wins address the wastes observed during the Gemba walk?"
+    },
+    {
+      "patternId": "JP-K-002",
+      "name": "Experiment-to-Control Chain",
+      "description": "Trace a rapid experiment through its quick win to the visual control sustaining the improvement",
+      "joinPath": "kdmaic:RapidExperiment → implementsQuickWin → kdmaic:QuickWin → controlledBy → kdmaic:VisualControl",
+      "useCase": "Answer: What visual controls sustain the improvements discovered through rapid experiments?"
+    },
+    {
+      "patternId": "JP-K-003",
+      "name": "Cross-Ontology Process Bridge",
+      "description": "Connect the Kaizen event to the PE-ONT process it improves and the metrics that track improvement",
+      "joinPath": "kdmaic:KaizenEvent → appliesToProcess → pe:Process → pe:measures → pe:ProcessMetric ← kdmaic:improvesMeasure ← kdmaic:KaizenEvent",
+      "useCase": "Answer: Which PE process metrics improved as a result of this Kaizen event?",
+      "oaa:crossOntologyRef": "PE-ONT"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "kdmaic:KaizenEvent",
+      "@type": "rdfs:Class",
+      "name": "KaizenEvent",
+      "rdfs:subClassOf": "schema:Event",
+      "description": "A time-boxed rapid improvement event (Kaizen blitz) that compresses DMAIC into 3-5 days. A co-located team performs Gemba observation, value stream mapping, waste identification, rapid experiments, and same-day implementation of quick wins. Extends pe:Process semantics but adds Kaizen-specific attributes for event logistics, sigma tracking, and waste targeting.",
+      "oaa:properties": [
+        {
+          "name": "eventId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "eventName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "eventType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "blitz",
+            "mini",
+            "virtual"
+          ],
+          "description": "Type of Kaizen event. Blitz: full 3-5 day co-located event. Mini: 1-2 day focused event. Virtual: remote Kaizen event."
+        },
+        {
+          "name": "duration",
+          "type": "xsd:duration",
+          "required": true,
+          "description": "Duration of the event (P1D to P5D). Must conform to BR-K-001.",
+          "schemaOrgMapping": "schema:duration"
+        },
+        {
+          "name": "startDate",
+          "type": "xsd:date",
+          "required": true,
+          "schemaOrgMapping": "schema:startDate"
+        },
+        {
+          "name": "endDate",
+          "type": "xsd:date",
+          "required": false,
+          "schemaOrgMapping": "schema:endDate"
+        },
+        {
+          "name": "teamSize",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of team members (advisory: 5-10 per BR-K-006)"
+        },
+        {
+          "name": "gembaLocation",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Physical or logical location where the process under improvement operates (the Gemba)",
+          "schemaOrgMapping": "schema:location"
+        },
+        {
+          "name": "sponsor",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Executive sponsor authorising the event"
+        },
+        {
+          "name": "facilitator",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Lean/Six Sigma facilitator leading the event"
+        },
+        {
+          "name": "targetProcess",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Name or ID of the process targeted for improvement"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "planning",
+            "in-progress",
+            "completed",
+            "follow-up",
+            "closed"
+          ]
+        },
+        {
+          "name": "priorSigma",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Sigma level before the Kaizen event"
+        },
+        {
+          "name": "postSigma",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Sigma level after the Kaizen event"
+        }
+      ]
+    },
+    {
+      "@id": "kdmaic:GembaObservation",
+      "@type": "rdfs:Class",
+      "name": "GembaObservation",
+      "rdfs:subClassOf": "schema:Observation",
+      "description": "A structured observation recorded at the point of work (Gemba) during a Gemba walk. Observers go to where the work happens, watch the process in action, and record waste, delays, quality issues, and improvement opportunities. Each observation classifies exactly one waste type.",
+      "oaa:properties": [
+        {
+          "name": "observationId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "location",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Specific location within the Gemba where observed",
+          "schemaOrgMapping": "schema:location"
+        },
+        {
+          "name": "observer",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Person who recorded the observation"
+        },
+        {
+          "name": "timestamp",
+          "type": "xsd:dateTime",
+          "required": true,
+          "description": "When the observation was recorded",
+          "schemaOrgMapping": "schema:dateCreated"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "severity",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "minor",
+            "moderate",
+            "major"
+          ]
+        },
+        {
+          "name": "evidenceType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "photo",
+            "video",
+            "note",
+            "measurement"
+          ]
+        },
+        {
+          "name": "evidenceRef",
+          "type": "xsd:anyURI",
+          "required": false,
+          "description": "URI or path to supporting evidence (photo, video, etc.)"
+        }
+      ]
+    },
+    {
+      "@id": "kdmaic:WasteCategory",
+      "@type": "rdfs:Class",
+      "name": "WasteCategory",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "oaa:deprecated": true,
+      "oaa:deprecatedInVersion": "2.0.0",
+      "oaa:replacedBy": "vana:WasteCategory",
+      "oaa:deprecationNote": "v2.0.0: Use vana:WasteCategory from VANA-ONT v1.0.0. Alias kdmaic:WasteCategory resolves to vana:WasteCategory for backward compatibility.",
+      "description": "One of the 8 Lean wastes using the DOWNTIME mnemonic: Defects, Overproduction, Waiting, Non-utilized talent, Transport, Inventory, Motion, Extra processing. Predefined instances are provided as testInstances. Custom waste categories can extend this set.",
+      "oaa:properties": [
+        {
+          "name": "wasteId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "wasteName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "wasteCode",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "D",
+            "O",
+            "W",
+            "N",
+            "T",
+            "I",
+            "M",
+            "E"
+          ],
+          "description": "DOWNTIME mnemonic letter"
+        },
+        {
+          "name": "mnemonic",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Position in DOWNTIME mnemonic (e.g. 'D = Defects')"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "examples",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Typical examples of this waste type"
+        },
+        {
+          "name": "detectionMethod",
+          "type": "xsd:string",
+          "required": true,
+          "description": "How to detect this waste during a Gemba walk"
+        }
+      ]
+    },
+    {
+      "@id": "kdmaic:ValueStreamMap",
+      "@type": "rdfs:Class",
+      "name": "ValueStreamMap",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "oaa:deprecated": true,
+      "oaa:deprecatedInVersion": "2.0.0",
+      "oaa:replacedBy": "vsm:ValueStreamMap",
+      "oaa:deprecationNote": "v2.0.0: Use vsm:ValueStreamMap from VSM-ONT v1.0.0. Alias kdmaic:ValueStreamMap resolves to vsm:ValueStreamMap for backward compatibility.",
+      "description": "A current-state or future-state value stream map (VSM) that visualises the flow of materials and information through a process. Captures lead time, process time, value-added ratio, takt time, and bottleneck identification. Both current-state and future-state maps are required before the Improve phase (BR-K-005).",
+      "oaa:properties": [
+        {
+          "name": "vsmId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "vsmName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "mapType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "current-state",
+            "future-state"
+          ]
+        },
+        {
+          "name": "processStepCount",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of process steps mapped"
+        },
+        {
+          "name": "totalLeadTime",
+          "type": "xsd:duration",
+          "required": true,
+          "description": "Total lead time from customer order to delivery"
+        },
+        {
+          "name": "totalProcessTime",
+          "type": "xsd:duration",
+          "required": true,
+          "description": "Sum of actual value-adding process time"
+        },
+        {
+          "name": "valueAddedRatio",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Ratio of process time to lead time (0.0-1.0). Higher is better."
+        },
+        {
+          "name": "taktTime",
+          "type": "xsd:duration",
+          "required": false,
+          "description": "Available production time divided by customer demand rate"
+        },
+        {
+          "name": "bottleneck",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Identified bottleneck step or constraint"
+        }
+      ]
+    },
+    {
+      "@id": "kdmaic:RapidExperiment",
+      "@type": "rdfs:Class",
+      "name": "RapidExperiment",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A quick try-storm test of a countermeasure during the Kaizen event. Unlike standard DMAIC DOE (days/weeks), rapid experiments are completed in hours. Each tests a specific hypothesis with a countermeasure, measures before/after, and decides whether to implement immediately as a quick win.",
+      "oaa:properties": [
+        {
+          "name": "experimentId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "experimentName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "hypothesis",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What we believe will happen if we apply the countermeasure"
+        },
+        {
+          "name": "countermeasure",
+          "type": "xsd:string",
+          "required": true,
+          "description": "The change being tested to address the waste"
+        },
+        {
+          "name": "duration",
+          "type": "xsd:duration",
+          "required": true,
+          "description": "How long the experiment took (advisory: should not exceed P1D per BR-K-008)"
+        },
+        {
+          "name": "result",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "success",
+            "partial",
+            "fail"
+          ]
+        },
+        {
+          "name": "beforeMetric",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Measured value before countermeasure"
+        },
+        {
+          "name": "afterMetric",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Measured value after countermeasure"
+        },
+        {
+          "name": "implementImmediately",
+          "type": "xsd:boolean",
+          "required": true,
+          "default": false,
+          "description": "Whether this experiment's countermeasure should be implemented same-day"
+        }
+      ]
+    },
+    {
+      "@id": "kdmaic:QuickWin",
+      "@type": "rdfs:Class",
+      "name": "QuickWin",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "An improvement implemented same-day during the Kaizen event. Quick wins are the tangible output of successful rapid experiments — they eliminate a specific waste and must be sustained by a visual control (BR-K-003).",
+      "oaa:properties": [
+        {
+          "name": "quickWinId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "quickWinName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "beforeState",
+          "type": "xsd:string",
+          "required": true,
+          "description": "State before the quick win was implemented"
+        },
+        {
+          "name": "afterState",
+          "type": "xsd:string",
+          "required": true,
+          "description": "State after the quick win was implemented"
+        },
+        {
+          "name": "effortLevel",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "trivial",
+            "low",
+            "medium"
+          ],
+          "description": "Implementation effort. High-effort changes are not quick wins — they become follow-up actions."
+        },
+        {
+          "name": "implementedBy",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Person or team who implemented the quick win"
+        },
+        {
+          "name": "implementedDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date the quick win was implemented (must be during event)"
+        }
+      ]
+    },
+    {
+      "@id": "kdmaic:VisualControl",
+      "@type": "rdfs:Class",
+      "name": "VisualControl",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A visual management mechanism established during the Control phase to sustain quick wins. Visual controls make the standard visible so that deviations are immediately apparent. Every quick win must have at least one visual control (BR-K-003).",
+      "oaa:properties": [
+        {
+          "name": "controlId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "controlName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "controlType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "andon",
+            "board",
+            "floor-marking",
+            "shadow-board",
+            "kanban-card",
+            "checklist",
+            "colour-code"
+          ]
+        },
+        {
+          "name": "location",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Where the visual control is installed"
+        },
+        {
+          "name": "owner",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Person responsible for maintaining the visual control"
+        },
+        {
+          "name": "checkFrequency",
+          "type": "xsd:string",
+          "required": true,
+          "description": "How often the visual control is reviewed (e.g. 'daily', 'per-shift', 'weekly')"
+        }
+      ]
+    },
+    {
+      "@id": "kdmaic:FollowUpAction",
+      "@type": "rdfs:Class",
+      "name": "FollowUpAction",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A post-event action item tracked during the 30-day follow-up period. Follow-up actions address items that could not be completed during the event or require longer-term monitoring. Deadlines must be within 30 days of event end (BR-K-004). Overdue actions must trigger escalation (BR-K-007).",
+      "oaa:properties": [
+        {
+          "name": "actionId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "actionName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "owner",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Person responsible for completing the action"
+        },
+        {
+          "name": "deadline",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Must be within 30 days of event end date (BR-K-004)"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "open",
+            "in-progress",
+            "completed",
+            "overdue"
+          ]
+        },
+        {
+          "name": "verificationMethod",
+          "type": "xsd:string",
+          "required": true,
+          "description": "How completion of this action will be verified"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "kdmaic:hasGembaObservation",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Gemba Observation",
+      "description": "A Kaizen event includes Gemba observations from the walk. At least one observation is required before Analyze activities begin (BR-K-002).",
+      "domainIncludes": [
+        "kdmaic:KaizenEvent"
+      ],
+      "rangeIncludes": [
+        "kdmaic:GembaObservation"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "kdmaic:identifiesWaste",
+      "@type": "owl:ObjectProperty",
+      "name": "Identifies Waste",
+      "description": "A Gemba observation identifies exactly one waste type from the DOWNTIME taxonomy",
+      "domainIncludes": [
+        "kdmaic:GembaObservation"
+      ],
+      "rangeIncludes": [
+        "kdmaic:WasteCategory"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "kdmaic:targetsWaste",
+      "@type": "owl:ObjectProperty",
+      "name": "Targets Waste",
+      "description": "A Kaizen event targets one or more primary waste types for elimination",
+      "domainIncludes": [
+        "kdmaic:KaizenEvent"
+      ],
+      "rangeIncludes": [
+        "kdmaic:WasteCategory"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "kdmaic:mapsCurrentState",
+      "@type": "owl:ObjectProperty",
+      "name": "Maps Current State",
+      "description": "A Kaizen event produces a current-state value stream map",
+      "domainIncludes": [
+        "kdmaic:KaizenEvent"
+      ],
+      "rangeIncludes": [
+        "kdmaic:ValueStreamMap"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "kdmaic:mapsFutureState",
+      "@type": "owl:ObjectProperty",
+      "name": "Maps Future State",
+      "description": "A Kaizen event produces a future-state value stream map",
+      "domainIncludes": [
+        "kdmaic:KaizenEvent"
+      ],
+      "rangeIncludes": [
+        "kdmaic:ValueStreamMap"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "kdmaic:runsExperiment",
+      "@type": "owl:ObjectProperty",
+      "name": "Runs Experiment",
+      "description": "A Kaizen event runs rapid try-storm experiments during the Improve phase",
+      "domainIncludes": [
+        "kdmaic:KaizenEvent"
+      ],
+      "rangeIncludes": [
+        "kdmaic:RapidExperiment"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "kdmaic:implementsQuickWin",
+      "@type": "owl:ObjectProperty",
+      "name": "Implements Quick Win",
+      "description": "A successful rapid experiment leads to one or more quick wins implemented same-day",
+      "domainIncludes": [
+        "kdmaic:RapidExperiment"
+      ],
+      "rangeIncludes": [
+        "kdmaic:QuickWin"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "kdmaic:eliminatesWaste",
+      "@type": "owl:ObjectProperty",
+      "name": "Eliminates Waste",
+      "description": "A quick win eliminates or reduces a specific waste category",
+      "domainIncludes": [
+        "kdmaic:QuickWin"
+      ],
+      "rangeIncludes": [
+        "kdmaic:WasteCategory"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "kdmaic:controlledBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Controlled By",
+      "description": "Every quick win must be sustained by a visual control mechanism (BR-K-003)",
+      "domainIncludes": [
+        "kdmaic:QuickWin"
+      ],
+      "rangeIncludes": [
+        "kdmaic:VisualControl"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "kdmaic:hasFollowUp",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Follow Up",
+      "description": "A Kaizen event generates follow-up actions for the 30-day review period",
+      "domainIncludes": [
+        "kdmaic:KaizenEvent"
+      ],
+      "rangeIncludes": [
+        "kdmaic:FollowUpAction"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "kdmaic:followUpFor",
+      "@type": "owl:ObjectProperty",
+      "name": "Follow Up For",
+      "description": "A follow-up action is linked to a specific quick win for ongoing monitoring",
+      "domainIncludes": [
+        "kdmaic:FollowUpAction"
+      ],
+      "rangeIncludes": [
+        "kdmaic:QuickWin"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "kdmaic:vsmRevealsWaste",
+      "@type": "owl:ObjectProperty",
+      "name": "VSM Reveals Waste",
+      "description": "Value stream map analysis identifies waste categories in the process flow",
+      "domainIncludes": [
+        "kdmaic:ValueStreamMap"
+      ],
+      "rangeIncludes": [
+        "kdmaic:WasteCategory"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "kdmaic:improvesMeasure",
+      "@type": "owl:ObjectProperty",
+      "name": "Improves Measure",
+      "description": "A Kaizen event improves one or more PE-ONT process metrics. Cross-ontology bridge to PE-ONT.",
+      "domainIncludes": [
+        "kdmaic:KaizenEvent"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessMetric"
+      ],
+      "oaa:cardinality": "1..*",
+      "oaa:crossOntology": "PE-ONT"
+    },
+    {
+      "@id": "kdmaic:augmentedByAgent",
+      "@type": "owl:ObjectProperty",
+      "name": "Augmented By Agent",
+      "description": "A Kaizen event is augmented by AI agents for analysis, waste detection, or experiment optimisation. Cross-ontology bridge to PE-ONT.",
+      "domainIncludes": [
+        "kdmaic:KaizenEvent"
+      ],
+      "rangeIncludes": [
+        "pe:AIAgent"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntology": "PE-ONT"
+    },
+    {
+      "@id": "kdmaic:invokesSkill",
+      "@type": "owl:ObjectProperty",
+      "name": "Invokes Skill",
+      "description": "A Kaizen event invokes skills during execution (e.g. statistical analysis, waste classification). Cross-ontology bridge to PE-ONT.",
+      "domainIncludes": [
+        "kdmaic:KaizenEvent"
+      ],
+      "rangeIncludes": [
+        "pe:Skill"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntology": "PE-ONT"
+    },
+    {
+      "@id": "kdmaic:appliesToProcess",
+      "@type": "owl:ObjectProperty",
+      "name": "Applies To Process",
+      "description": "A Kaizen event applies to (improves) a specific PE-ONT process. Cross-ontology bridge to PE-ONT.",
+      "domainIncludes": [
+        "kdmaic:KaizenEvent"
+      ],
+      "rangeIncludes": [
+        "pe:Process"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntology": "PE-ONT"
+    },
+    {
+      "@id": "kdmaic:eventImplementsPattern",
+      "@type": "owl:ObjectProperty",
+      "name": "Event Implements Pattern",
+      "description": "A Kaizen event implements reusable process patterns (e.g. DMAIC cycle, PDCA subcycle). Cross-ontology bridge to PE-ONT.",
+      "domainIncludes": [
+        "kdmaic:KaizenEvent"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessPattern"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntology": "PE-ONT"
+    },
+    {
+      "@id": "kdmaic:experimentTestsHypothesis",
+      "@type": "owl:ObjectProperty",
+      "name": "Experiment Tests Hypothesis",
+      "description": "A rapid experiment tests a formal PE-ONT hypothesis. Cross-ontology bridge to PE-ONT.",
+      "domainIncludes": [
+        "kdmaic:RapidExperiment"
+      ],
+      "rangeIncludes": [
+        "pe:Hypothesis"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntology": "PE-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "kdmaic:BR-K-001",
+      "name": "Event Duration Constraint",
+      "description": "Kaizen events must be between 1 and 5 days. Events longer than 5 days should use standard DMAIC.",
+      "condition": "IF a KaizenEvent exists",
+      "action": "THEN KaizenEvent.duration MUST be between P1D and P5D inclusive",
+      "severity": "error",
+      "appliesTo": [
+        "kdmaic:KaizenEvent"
+      ]
+    },
+    {
+      "@id": "kdmaic:BR-K-002",
+      "name": "Gemba Before Analyze",
+      "description": "At least one Gemba observation must be recorded before Analyze activities can begin",
+      "condition": "IF a KaizenEvent transitions to Analyze phase activities",
+      "action": "THEN the event MUST have at least one hasGembaObservation relationship",
+      "severity": "error",
+      "appliesTo": [
+        "kdmaic:KaizenEvent",
+        "kdmaic:GembaObservation"
+      ]
+    },
+    {
+      "@id": "kdmaic:BR-K-003",
+      "name": "QuickWin Requires Visual Control",
+      "description": "Every quick win must be sustained by exactly one visual control to prevent regression",
+      "condition": "IF a QuickWin exists",
+      "action": "THEN the QuickWin MUST have exactly one controlledBy relationship to a VisualControl",
+      "severity": "error",
+      "appliesTo": [
+        "kdmaic:QuickWin",
+        "kdmaic:VisualControl"
+      ]
+    },
+    {
+      "@id": "kdmaic:BR-K-004",
+      "name": "Follow-Up Deadline Constraint",
+      "description": "Follow-up action deadlines must be within 30 days of event end date",
+      "condition": "IF a FollowUpAction has a deadline",
+      "action": "THEN FollowUpAction.deadline MUST be within 30 calendar days of the parent KaizenEvent.endDate",
+      "severity": "error",
+      "appliesTo": [
+        "kdmaic:FollowUpAction",
+        "kdmaic:KaizenEvent"
+      ]
+    },
+    {
+      "@id": "kdmaic:BR-K-005",
+      "name": "Both VSMs Required Before Improve",
+      "description": "Both current-state and future-state value stream maps must exist before Improve phase",
+      "condition": "IF a KaizenEvent transitions to Improve phase activities",
+      "action": "THEN the event MUST have both mapsCurrentState (mapType=current-state) AND mapsFutureState (mapType=future-state) relationships",
+      "severity": "error",
+      "appliesTo": [
+        "kdmaic:KaizenEvent",
+        "kdmaic:ValueStreamMap"
+      ]
+    },
+    {
+      "@id": "kdmaic:BR-K-006",
+      "name": "Team Size Advisory",
+      "description": "Kaizen teams should be 5-10 members for effectiveness. Smaller teams lack diversity; larger teams reduce focus.",
+      "condition": "IF a KaizenEvent has teamSize < 5 OR teamSize > 10",
+      "action": "THEN system SHOULD generate advisory warning about suboptimal team size",
+      "severity": "warning",
+      "appliesTo": [
+        "kdmaic:KaizenEvent"
+      ]
+    },
+    {
+      "@id": "kdmaic:BR-K-007",
+      "name": "Overdue Follow-Up Escalation",
+      "description": "Overdue follow-up actions must trigger escalation to event sponsor",
+      "condition": "IF a FollowUpAction has status 'overdue'",
+      "action": "THEN system MUST trigger escalation notification to event sponsor",
+      "severity": "error",
+      "appliesTo": [
+        "kdmaic:FollowUpAction"
+      ]
+    },
+    {
+      "@id": "kdmaic:BR-K-008",
+      "name": "Experiment Duration Advisory",
+      "description": "Rapid experiments should not exceed 1 day. Longer experiments belong in standard DMAIC.",
+      "condition": "IF a RapidExperiment has duration > P1D",
+      "action": "THEN system SHOULD generate advisory warning recommending standard DMAIC for longer experiments",
+      "severity": "warning",
+      "appliesTo": [
+        "kdmaic:RapidExperiment"
+      ]
+    }
+  ],
+  "competencyQuestions": [
+    {
+      "@id": "CQ-K-001",
+      "question": "What wastes were observed during the Gemba walk and how severe are they?",
+      "targetEntities": [
+        "kdmaic:GembaObservation",
+        "kdmaic:WasteCategory"
+      ],
+      "targetRelationships": [
+        "kdmaic:hasGembaObservation",
+        "kdmaic:identifiesWaste"
+      ],
+      "targetRules": [
+        "kdmaic:BR-K-002"
+      ]
+    },
+    {
+      "@id": "CQ-K-002",
+      "question": "What is the value-added ratio from the current-state VSM and where is the bottleneck?",
+      "targetEntities": [
+        "kdmaic:ValueStreamMap"
+      ],
+      "targetRelationships": [
+        "kdmaic:mapsCurrentState"
+      ],
+      "targetRules": [
+        "kdmaic:BR-K-005"
+      ]
+    },
+    {
+      "@id": "CQ-K-003",
+      "question": "Which rapid experiments succeeded and became quick wins?",
+      "targetEntities": [
+        "kdmaic:RapidExperiment",
+        "kdmaic:QuickWin"
+      ],
+      "targetRelationships": [
+        "kdmaic:runsExperiment",
+        "kdmaic:implementsQuickWin"
+      ],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-K-004",
+      "question": "Does every quick win have a visual control ensuring sustainability?",
+      "targetEntities": [
+        "kdmaic:QuickWin",
+        "kdmaic:VisualControl"
+      ],
+      "targetRelationships": [
+        "kdmaic:controlledBy"
+      ],
+      "targetRules": [
+        "kdmaic:BR-K-003"
+      ]
+    },
+    {
+      "@id": "CQ-K-005",
+      "question": "What follow-up actions are outstanding from the 30-day review?",
+      "targetEntities": [
+        "kdmaic:FollowUpAction"
+      ],
+      "targetRelationships": [
+        "kdmaic:hasFollowUp",
+        "kdmaic:followUpFor"
+      ],
+      "targetRules": [
+        "kdmaic:BR-K-004",
+        "kdmaic:BR-K-007"
+      ]
+    },
+    {
+      "@id": "CQ-K-006",
+      "question": "What was the before/after sigma level improvement from the Kaizen event?",
+      "targetEntities": [
+        "kdmaic:KaizenEvent"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-K-007",
+      "question": "Which PE-ONT process metrics improved as a result of this Kaizen event?",
+      "targetEntities": [
+        "kdmaic:KaizenEvent"
+      ],
+      "targetRelationships": [
+        "kdmaic:improvesMeasure",
+        "kdmaic:appliesToProcess"
+      ],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-K-008",
+      "question": "Which waste categories are most frequently observed across multiple Kaizen events?",
+      "targetEntities": [
+        "kdmaic:WasteCategory",
+        "kdmaic:GembaObservation"
+      ],
+      "targetRelationships": [
+        "kdmaic:identifiesWaste"
+      ],
+      "targetRules": []
+    }
+  ],
+  "testInstances": [
+    {
+      "@id": "kdmaic:waste-defects",
+      "@type": "kdmaic:WasteCategory",
+      "wasteId": "waste-defects",
+      "wasteName": "Defects",
+      "wasteCode": "D",
+      "mnemonic": "D = Defects",
+      "description": "Work that contains errors, rework, scrap, or corrections. Any output that does not meet the standard the first time.",
+      "examples": "Rework, scrap, warranty claims, data entry errors, code bugs, incorrect orders",
+      "detectionMethod": "Quality inspection data, defect logs, rework tracking, customer complaints, error rate monitoring"
+    },
+    {
+      "@id": "kdmaic:waste-overproduction",
+      "@type": "kdmaic:WasteCategory",
+      "wasteId": "waste-overproduction",
+      "wasteName": "Overproduction",
+      "wasteCode": "O",
+      "mnemonic": "O = Overproduction",
+      "description": "Producing more than needed, earlier than needed, or faster than needed. The most harmful waste as it generates all other wastes.",
+      "examples": "Batch processing beyond demand, printing reports nobody reads, building features before validation, excess inventory",
+      "detectionMethod": "Compare production rate to actual demand, check for accumulating WIP, monitor batch sizes vs pull signals"
+    },
+    {
+      "@id": "kdmaic:waste-waiting",
+      "@type": "kdmaic:WasteCategory",
+      "wasteId": "waste-waiting",
+      "wasteName": "Waiting",
+      "wasteCode": "W",
+      "mnemonic": "W = Waiting",
+      "description": "Idle time when people, materials, information, or equipment are not being used productively. Includes queue time and delays.",
+      "examples": "Waiting for approvals, system downtime, queue time between steps, waiting for materials, batch-and-queue delays",
+      "detectionMethod": "Time studies, queue length monitoring, idle time tracking, lead time vs process time ratio"
+    },
+    {
+      "@id": "kdmaic:waste-non-utilized-talent",
+      "@type": "kdmaic:WasteCategory",
+      "wasteId": "waste-non-utilized-talent",
+      "wasteName": "Non-utilized Talent",
+      "wasteCode": "N",
+      "mnemonic": "N = Non-utilized Talent",
+      "description": "Underusing people's skills, knowledge, creativity, and experience. Knowledge silos and lack of employee engagement.",
+      "examples": "Not involving frontline workers in improvement, knowledge silos, underqualified assignments, unused suggestions",
+      "detectionMethod": "Skills gap analysis, employee engagement surveys, suggestion system utilisation, cross-training coverage"
+    },
+    {
+      "@id": "kdmaic:waste-transport",
+      "@type": "kdmaic:WasteCategory",
+      "wasteId": "waste-transport",
+      "wasteName": "Transport",
+      "wasteCode": "T",
+      "mnemonic": "T = Transport",
+      "description": "Unnecessary movement of materials, products, information, or data between process steps. Does not add value.",
+      "examples": "Moving materials between buildings, email forwarding chains, multiple handoffs, data re-entry across systems",
+      "detectionMethod": "Spaghetti diagrams, material flow analysis, handoff counting, distance tracking"
+    },
+    {
+      "@id": "kdmaic:waste-inventory",
+      "@type": "kdmaic:WasteCategory",
+      "wasteId": "waste-inventory",
+      "wasteName": "Inventory",
+      "wasteCode": "I",
+      "mnemonic": "I = Inventory",
+      "description": "Excess raw materials, work-in-progress, finished goods, or information beyond what is immediately needed.",
+      "examples": "Excess stock, large WIP buffers, unread email backlogs, open ticket backlogs, undeployed code branches",
+      "detectionMethod": "Inventory counts, WIP limits monitoring, backlog size tracking, storage space utilisation"
+    },
+    {
+      "@id": "kdmaic:waste-motion",
+      "@type": "kdmaic:WasteCategory",
+      "wasteId": "waste-motion",
+      "wasteName": "Motion",
+      "wasteCode": "M",
+      "mnemonic": "M = Motion",
+      "description": "Unnecessary movement of people — walking, reaching, bending, searching — that does not add value to the product or service.",
+      "examples": "Walking to distant printers, searching for tools/files, switching between applications, excessive clicking",
+      "detectionMethod": "Motion studies, workplace layout analysis, click-path tracking, ergonomic assessment"
+    },
+    {
+      "@id": "kdmaic:waste-extra-processing",
+      "@type": "kdmaic:WasteCategory",
+      "wasteId": "waste-extra-processing",
+      "wasteName": "Extra Processing",
+      "wasteCode": "E",
+      "mnemonic": "E = Extra Processing",
+      "description": "Doing more work than required to meet customer needs. Over-engineering, redundant steps, unnecessary approvals, gold-plating.",
+      "examples": "Unnecessary approvals, over-specification, redundant data entry, excessive documentation, gold-plating features",
+      "detectionMethod": "Value-add analysis on each process step, customer requirements comparison, approval chain review"
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "2.0.0",
+    "oaaSchemaVersion": "7.0.0",
+    "lastModified": "2026-03-04",
+    "modifiedBy": "Ontology Architect Agent",
+    "changeNotes": "v2.0.0: PE-L6S sub-series extraction. Deprecated kdmaic:WasteCategory (replaced by vana:WasteCategory from VANA-ONT v1.0.0) and kdmaic:ValueStreamMap (replaced by vsm:ValueStreamMap from VSM-ONT v1.0.0). Added imports for VSM-ONT v1.0.0 and VANA-ONT v1.0.0. Backward-compatible: deprecated entity aliases resolve to imported equivalents. 8 predefined DOWNTIME instances preserved as test data. All other entities unchanged.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-02-26",
+        "notes": "Initial creation. 8 entity types, 18 relationships, 8 business rules, 3 join patterns, 8 DOWNTIME instances."
+      }
+    ]
+  },
+  "oaa:ontologyId": "K-DMAIC-ONT",
+  "oaa:series": "PE-Series"
+}

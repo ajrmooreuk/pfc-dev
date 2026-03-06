@@ -1,0 +1,711 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platformcore.io/ontology/pf/",
+    "crt": "https://platformcore.io/ontology/crt/",
+    "oaa": "https://platformcore.io/ontology/oaa/",
+    "vp": "https://platformcore.io/ontology/vp/",
+    "rrr": "https://platformcore.io/ontology/rrr/",
+    "org-ctx": "https://platformcore.io/ontology/org-context/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "crt:ontology:customer-role-taxonomy-v1.0.0",
+  "@type": "pf:Ontology",
+  "name": "Customer Role Taxonomy Ontology (CRT-ONT)",
+  "alternateName": "CRT-ONT",
+  "description": "Universal customer-side role taxonomy — B2B buyer roles, B2C consumer archetypes, and B2B2C intermediary roles with structured qualification criteria, industry role profiles, and purchase patterns. Maps to VP-ONT stakeholder types, RRR-ONT organisational roles, and ORG-CONTEXT industry/segment context. Schema only — no instance data.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "domain": "Customer Role Taxonomy, Value Engineering, Market Segmentation",
+  "subDomains": [
+    "B2B Buyer Role Modelling",
+    "B2C Consumer Archetypes",
+    "B2B2C Intermediary Roles",
+    "Purchase Pattern Analysis",
+    "Industry Role Profiling",
+    "Cross-ontology Role Bridging"
+  ],
+  "dateCreated": "2026-02-20",
+  "dateModified": "2026-02-20",
+  "creator": "Azlan EA-AAA",
+  "series": "VE-Series",
+  "namespace": "https://platformcore.io/ontology/crt/",
+  "prefix": "crt:",
+  "status": "compliant",
+  "oaa:imports": [
+    {
+      "@id": "vp:schema",
+      "name": "VP-ONT",
+      "version": "1.2.3",
+      "description": "Value Proposition Ontology — provides Stakeholder and IdealCustomerProfile entities that CRT roles map to",
+      "importedEntities": [
+        "vp:Stakeholder",
+        "vp:IdealCustomerProfile"
+      ],
+      "importedRelationships": [
+        "vp:icpHasStakeholder"
+      ]
+    },
+    {
+      "@id": "rrr:schema",
+      "name": "RRR-ONT",
+      "version": "4.0.0",
+      "description": "Roles, RACI & RBAC Ontology — provides ExecutiveRole and FunctionalRole that B2B customer roles map to for organisational alignment",
+      "importedEntities": [
+        "rrr:ExecutiveRole",
+        "rrr:FunctionalRole"
+      ]
+    },
+    {
+      "@id": "org-ctx:schema",
+      "name": "ORG-CONTEXT-ONT",
+      "version": "3.1.0",
+      "description": "Organization Context Ontology — provides MarketSegment and OrganizationContext for industry profile and firmographic linkage",
+      "importedEntities": [
+        "org-ctx:MarketSegment",
+        "org-ctx:OrganizationContext"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-CRT-001",
+      "name": "CRT Role to VP Stakeholder Bridge",
+      "description": "Maps CRT CustomerRole to VP-ONT Stakeholder for value proposition targeting",
+      "joinPath": "crt:CustomerRole → crt:mapsToStakeholder → vp:Stakeholder",
+      "useCase": "Link customer role archetypes to VP stakeholder types for ICP construction"
+    },
+    {
+      "patternId": "JP-CRT-002",
+      "name": "CRT B2B Role to RRR Org Role Bridge",
+      "description": "Maps B2B CustomerRole to RRR organisational role for org-chart alignment",
+      "joinPath": "crt:CustomerRole[channel=B2B] → crt:mapsToOrgRole → rrr:ExecutiveRole | rrr:FunctionalRole",
+      "useCase": "Align B2B buyer roles to the counterpart organisational roles in customer organisations"
+    },
+    {
+      "patternId": "JP-CRT-003",
+      "name": "CRT Role to ICP Bridge",
+      "description": "Maps CRT CustomerRole to VP IdealCustomerProfile for VP construction",
+      "joinPath": "crt:CustomerRole → crt:mapsToICP → vp:IdealCustomerProfile",
+      "useCase": "Customer role taxonomies feed ICP definitions for value proposition targeting"
+    },
+    {
+      "patternId": "JP-CRT-004",
+      "name": "Industry Profile to Market Segment Bridge",
+      "description": "Links CRT IndustryRoleProfile to ORG-CONTEXT MarketSegment for sector-level role context",
+      "joinPath": "crt:IndustryRoleProfile → crt:mapsToIndustry → org-ctx:MarketSegment",
+      "useCase": "Industry-specific role profiles connect to market segment definitions for targeted go-to-market"
+    },
+    {
+      "patternId": "JP-CRT-005",
+      "name": "Qualifier to Firmographic Bridge",
+      "description": "Links RoleQualifier firmographic criteria to ORG-CONTEXT OrganizationContext",
+      "joinPath": "crt:RoleQualifier → crt:mapsToFirmographic → org-ctx:OrganizationContext",
+      "useCase": "Role qualification criteria connect to organizational firmographic data for segmentation"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "crt:CustomerRole",
+      "@type": "rdfs:Class",
+      "name": "CustomerRole",
+      "rdfs:subClassOf": "schema:Role",
+      "description": "Central hub entity representing a customer-side role archetype across B2B, B2C, and B2B2C channels. Captures the structured taxonomy of who buys, uses, or influences purchase decisions. Each CustomerRole is a schema-level archetype — not an individual person — defining the role pattern, channel context, and stakeholder type. Maps to VP-ONT Stakeholder and, for B2B roles, to RRR-ONT organisational roles.",
+      "oaa:termCode": "crt:CustomerRole",
+      "oaa:schemaType": "schema:Role",
+      "oaa:properties": [
+        {
+          "name": "roleId",
+          "type": "xsd:string",
+          "required": true,
+          "pattern": "crt:[a-z0-9-]+",
+          "description": "Unique identifier for the customer role archetype",
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "roleName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Human-readable name for the customer role (e.g. 'Economic Buyer', 'Health-Conscious Shopper', 'Retail Intermediary')",
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "roleDescription",
+          "type": "xsd:string",
+          "required": true,
+          "minLength": 30,
+          "description": "Narrative description of the role archetype, its context, motivations, and typical behaviours",
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "channel",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Commercial channel context in which this role operates",
+          "enum": [
+            "B2B",
+            "B2C",
+            "B2B2C"
+          ]
+        },
+        {
+          "name": "category",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Role category classifying the primary function of this customer role within the purchase or usage journey",
+          "enum": [
+            "EconomicBuyer",
+            "TechnicalEvaluator",
+            "EndUser",
+            "Champion",
+            "Influencer",
+            "Gatekeeper",
+            "DecisionMaker",
+            "Beneficiary",
+            "Recommender",
+            "Intermediary",
+            "ConsumerAdvocate",
+            "PriceSeeker",
+            "LoyaltySeeker",
+            "ImpulseConsumer"
+          ]
+        },
+        {
+          "name": "vpStakeholderType",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to the VP-ONT Stakeholder type this role maps to (e.g. vp:Stakeholder.stakeholderRole value). Mandatory for all roles."
+        },
+        {
+          "name": "rrrRoleRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to the RRR-ONT ExecutiveRole or FunctionalRole this customer role corresponds to in a buyer organisation. Mandatory for B2B channel roles."
+        },
+        {
+          "name": "typicalEngagement",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Typical mode of engagement with suppliers or vendors for this role",
+          "enum": [
+            "SelfServe",
+            "ConsultationLed",
+            "PartnerMediated",
+            "DirectSales"
+          ]
+        },
+        {
+          "name": "budgetAuthority",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Level of budget or spending authority held by this role",
+          "enum": [
+            "Full",
+            "Partial",
+            "None"
+          ]
+        },
+        {
+          "name": "decisionStyle",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Primary decision-making orientation of this role archetype",
+          "enum": [
+            "RationalAnalytical",
+            "RelationshipDriven",
+            "RiskAverse",
+            "InnovationSeeker",
+            "PriceOptimiser"
+          ]
+        },
+        {
+          "name": "notes",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Additional context, caveats, or cross-ontology integration notes for this role"
+        }
+      ]
+    },
+    {
+      "@id": "crt:RoleQualifier",
+      "@type": "rdfs:Class",
+      "name": "RoleQualifier",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Structured set of qualification criteria that define when a contact or organisation matches a given CustomerRole archetype. Qualifiers capture firmographic conditions (for B2B), demographic/psychographic conditions (for B2C), and intermediary characteristics (for B2B2C). A CustomerRole may have multiple RoleQualifiers representing different qualifying paths. Connects to ORG-CONTEXT OrganizationContext for firmographic linkage.",
+      "oaa:termCode": "crt:RoleQualifier",
+      "oaa:schemaType": "schema:Intangible",
+      "oaa:properties": [
+        {
+          "name": "qualifierId",
+          "type": "xsd:string",
+          "required": true,
+          "pattern": "crtq:[a-z0-9-]+",
+          "description": "Unique identifier for this role qualifier set",
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "qualifierName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Short label for this qualifier (e.g. 'Mid-Market B2B IT Buyer', 'Price-Sensitive B2C Shopper')",
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "criteriaType",
+          "type": "xsd:string",
+          "required": true,
+          "description": "The primary type of qualifying criteria this qualifier applies",
+          "enum": [
+            "Firmographic",
+            "Demographic",
+            "Psychographic",
+            "Behavioural",
+            "Technographic",
+            "Contextual"
+          ]
+        },
+        {
+          "name": "criteriaDescription",
+          "type": "xsd:string",
+          "required": true,
+          "minLength": 20,
+          "description": "Narrative description of the qualifying conditions. For firmographic: org size, industry, geography, tech stack. For demographic/psychographic: age range, values, lifestyle. For behavioural: purchase history, engagement patterns."
+        },
+        {
+          "name": "orgContextRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to org-ctx:OrganizationContext for firmographic qualifier linkage. Required when criteriaType = Firmographic."
+        },
+        {
+          "name": "minimumMatchScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Optional minimum match score (0.0–1.0) for probabilistic role assignment in agentic systems"
+        },
+        {
+          "name": "exclusionCriteria",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Criteria that explicitly disqualify a contact or organisation from this role, even if inclusion criteria are met"
+        }
+      ]
+    },
+    {
+      "@id": "crt:IndustryRoleProfile",
+      "@type": "rdfs:Class",
+      "name": "IndustryRoleProfile",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Industry-specific instantiation of a CustomerRole archetype, capturing the contextual nuances of how a given role behaves within a particular industry or sector vertical. An IndustryRoleProfile links a CustomerRole to an ORG-CONTEXT MarketSegment and provides industry-specific buying journey, price sensitivity, and engagement norms. Enables go-to-market teams to configure role-based messaging by vertical.",
+      "oaa:termCode": "crt:IndustryRoleProfile",
+      "oaa:schemaType": "schema:Intangible",
+      "oaa:properties": [
+        {
+          "name": "profileId",
+          "type": "xsd:string",
+          "required": true,
+          "pattern": "crtip:[a-z0-9-]+",
+          "description": "Unique identifier for this industry role profile",
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "profileName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Short descriptive name (e.g. 'Retail Sector Economic Buyer', 'Healthcare B2C Wellness Consumer')",
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "industryRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to the org-ctx:MarketSegment this profile applies to. Must be a valid market segment identifier. Mandatory."
+        },
+        {
+          "name": "buyerJourneyType",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Characterises the typical buyer journey structure for this role in this industry",
+          "enum": [
+            "TransactionalShort",
+            "ConsultativeComplex",
+            "SubscriptionRenewal",
+            "TenderProcurement",
+            "ImpulseDirect",
+            "PartnerChannelMediated"
+          ]
+        },
+        {
+          "name": "priceElasticity",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Sensitivity of this role archetype to price changes within this industry context",
+          "enum": [
+            "High",
+            "Medium",
+            "Low"
+          ]
+        },
+        {
+          "name": "purchaseFrequency",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Typical frequency with which this role makes purchase decisions in this industry",
+          "enum": [
+            "OneOff",
+            "Annual",
+            "Quarterly",
+            "Recurring"
+          ]
+        },
+        {
+          "name": "industryNotes",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Sector-specific context, regulatory considerations, or cultural nuances affecting how this role engages in this industry"
+        }
+      ]
+    },
+    {
+      "@id": "crt:PurchasePattern",
+      "@type": "rdfs:Class",
+      "name": "PurchasePattern",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Structured model of the recurring purchase behaviour exhibited by a CustomerRole, capturing how, when, and why purchasing decisions are made. PurchasePatterns enable go-to-market and product teams to design acquisition, conversion, and retention strategies aligned to observed role behaviour. May be shared across multiple CustomerRoles where archetypes exhibit similar purchasing behaviour.",
+      "oaa:termCode": "crt:PurchasePattern",
+      "oaa:schemaType": "schema:Intangible",
+      "oaa:properties": [
+        {
+          "name": "patternId",
+          "type": "xsd:string",
+          "required": true,
+          "pattern": "crtpp:[a-z0-9-]+",
+          "description": "Unique identifier for this purchase pattern",
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "patternName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Short descriptive label for this purchase pattern (e.g. 'Annual Budget Cycle Procurement', 'Repeat Subscription Renewal', 'High-Frequency Low-Value Impulse')",
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "patternDescription",
+          "type": "xsd:string",
+          "required": true,
+          "minLength": 20,
+          "description": "Narrative description of the purchase pattern including triggers, decision sequence, and typical outcome"
+        },
+        {
+          "name": "decisionStyle",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Primary decision-making orientation of this purchase pattern",
+          "enum": [
+            "RationalAnalytical",
+            "RelationshipDriven",
+            "RiskAverse",
+            "InnovationSeeker",
+            "PriceOptimiser"
+          ]
+        },
+        {
+          "name": "buyerJourneyType",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Buyer journey structure characteristic of this pattern",
+          "enum": [
+            "TransactionalShort",
+            "ConsultativeComplex",
+            "SubscriptionRenewal",
+            "TenderProcurement",
+            "ImpulseDirect",
+            "PartnerChannelMediated"
+          ]
+        },
+        {
+          "name": "purchaseFrequency",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Frequency cadence of purchasing decisions in this pattern",
+          "enum": [
+            "OneOff",
+            "Annual",
+            "Quarterly",
+            "Recurring"
+          ]
+        },
+        {
+          "name": "priceElasticity",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Price sensitivity characteristic of this pattern",
+          "enum": [
+            "High",
+            "Medium",
+            "Low"
+          ]
+        },
+        {
+          "name": "typicalTriggers",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Typical events or conditions that trigger a purchase decision for this pattern (e.g. 'budget renewal', 'pain threshold exceeded', 'peer recommendation')"
+        },
+        {
+          "name": "averageSalescycleDays",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Estimated average length of the sales or decision cycle in calendar days for this pattern"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "crt:hasQualifier",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Qualifier",
+      "description": "CustomerRole has one or more RoleQualifiers defining the criteria that identify a contact or organisation as belonging to this role archetype",
+      "domainIncludes": [
+        "crt:CustomerRole"
+      ],
+      "rangeIncludes": [
+        "crt:RoleQualifier"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "crt:hasIndustryProfile",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Industry Profile",
+      "description": "CustomerRole has one or more IndustryRoleProfiles contextualising the role within specific industry verticals",
+      "domainIncludes": [
+        "crt:CustomerRole"
+      ],
+      "rangeIncludes": [
+        "crt:IndustryRoleProfile"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "crt:hasPurchasePattern",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Purchase Pattern",
+      "description": "CustomerRole exhibits one or more PurchasePatterns describing its recurring buying behaviour",
+      "domainIncludes": [
+        "crt:CustomerRole"
+      ],
+      "rangeIncludes": [
+        "crt:PurchasePattern"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "crt:qualifiesRole",
+      "@type": "owl:ObjectProperty",
+      "name": "Qualifies Role",
+      "description": "Inverse of hasQualifier — RoleQualifier qualifies one CustomerRole archetype, creating a bidirectional navigation path",
+      "domainIncludes": [
+        "crt:RoleQualifier"
+      ],
+      "rangeIncludes": [
+        "crt:CustomerRole"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "crt:mapsToStakeholder",
+      "@type": "owl:ObjectProperty",
+      "name": "Maps To Stakeholder",
+      "description": "CustomerRole maps to a VP-ONT Stakeholder type, enabling value proposition targeting and messaging alignment. All CustomerRoles must map to at least one VP Stakeholder type.",
+      "domainIncludes": [
+        "crt:CustomerRole"
+      ],
+      "rangeIncludes": [
+        "vp:Stakeholder"
+      ],
+      "oaa:cardinality": "1..*",
+      "oaa:crossOntologyRef": "VP-ONT"
+    },
+    {
+      "@id": "crt:mapsToOrgRole",
+      "@type": "owl:ObjectProperty",
+      "name": "Maps To Org Role",
+      "description": "B2B CustomerRole maps to the counterpart RRR-ONT ExecutiveRole or FunctionalRole in a buyer organisation, enabling org-chart traversal and problem-roll-up via VP-RRR patterns. Mandatory for B2B channel roles.",
+      "domainIncludes": [
+        "crt:CustomerRole"
+      ],
+      "rangeIncludes": [
+        "rrr:ExecutiveRole",
+        "rrr:FunctionalRole"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    },
+    {
+      "@id": "crt:mapsToIndustry",
+      "@type": "owl:ObjectProperty",
+      "name": "Maps To Industry",
+      "description": "IndustryRoleProfile maps to an ORG-CONTEXT MarketSegment, linking the sector-specific role profile to a structured industry taxonomy. Mandatory for all IndustryRoleProfiles.",
+      "domainIncludes": [
+        "crt:IndustryRoleProfile"
+      ],
+      "rangeIncludes": [
+        "org-ctx:MarketSegment"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "crt:mapsToFirmographic",
+      "@type": "owl:ObjectProperty",
+      "name": "Maps To Firmographic",
+      "description": "RoleQualifier with firmographic criteria maps to an ORG-CONTEXT OrganizationContext, connecting role qualification rules to structured organisational context data",
+      "domainIncludes": [
+        "crt:RoleQualifier"
+      ],
+      "rangeIncludes": [
+        "org-ctx:OrganizationContext"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "crt:mapsToICP",
+      "@type": "owl:ObjectProperty",
+      "name": "Maps To ICP",
+      "description": "CustomerRole maps to a VP-ONT IdealCustomerProfile, enabling CRT role archetypes to feed VP ICP definitions and supporting role-level problem decomposition via the VP-RRR alignment convention",
+      "domainIncludes": [
+        "crt:CustomerRole"
+      ],
+      "rangeIncludes": [
+        "vp:IdealCustomerProfile"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "VP-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-CRT-001",
+      "name": "B2B Role Must Have RRR Role Reference",
+      "condition": "IF crt:CustomerRole.channel = 'B2B'",
+      "action": "THEN crt:CustomerRole.rrrRoleRef MUST be populated with a valid reference to rrr:ExecutiveRole or rrr:FunctionalRole, AND crt:CustomerRole MUST have at least one crt:mapsToOrgRole relationship",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CRT-002",
+      "name": "All Roles Must Have VP Stakeholder Type",
+      "condition": "IF a crt:CustomerRole is created",
+      "action": "THEN crt:CustomerRole.vpStakeholderType MUST be populated AND the role MUST have at least one crt:mapsToStakeholder relationship to a valid vp:Stakeholder",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CRT-003",
+      "name": "Industry Profiles Must Reference Valid Industry",
+      "condition": "IF a crt:IndustryRoleProfile is created",
+      "action": "THEN crt:IndustryRoleProfile.industryRef MUST be populated with a valid org-ctx:MarketSegment identifier AND the profile MUST have a crt:mapsToIndustry relationship to that MarketSegment",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CRT-004",
+      "name": "CRT Roles Should Have At Least One Qualifier",
+      "condition": "IF a crt:CustomerRole is used in a production context (status = Active)",
+      "action": "THEN crt:CustomerRole SHOULD have at least one crt:hasQualifier relationship to a crt:RoleQualifier to support automated role assignment",
+      "severity": "warning"
+    }
+  ],
+  "oaaValidation": {
+    "lastValidated": "2026-02-20",
+    "validatedBy": "OAA v6.1.0 Validation Engine",
+    "gateResults": {
+      "G1_SchemaStructure": {
+        "status": "PASS",
+        "score": "Valid JSON-LD with @context, @id, @type pf:Ontology, entities array, relationships array, businessRules array"
+      },
+      "G2_RelationshipCardinality": {
+        "status": "PASS",
+        "score": "9/9 relationships have domainIncludes/rangeIncludes with string cardinality notation"
+      },
+      "G2B_EntityConnectivity": {
+        "status": "PASS",
+        "score": "4/4 entities participate in at least 1 relationship"
+      },
+      "G2C_GraphConnectivity": {
+        "status": "PASS",
+        "score": "Single connected component via CustomerRole hub — all entities reachable"
+      },
+      "G3_BusinessRules": {
+        "status": "PASS",
+        "score": "4/4 rules (100%) in IF-THEN format with severity levels (3 error, 1 warning)"
+      },
+      "G4_SemanticConsistency": {
+        "status": "PASS",
+        "score": "4/4 entities have descriptions >= 30 chars; all enum values documented"
+      }
+    },
+    "complianceStatus": "FULL-COMPLIANCE",
+    "complianceVersion": "OAA v6.1.0"
+  },
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-20",
+    "modifiedBy": "Azlan EA-AAA",
+    "changeNotes": "Initial release. B2B/B2C/B2B2C customer-side role archetypes with structured qualification criteria, industry role profiles, and purchase patterns. Cross-ontology bridges to VP-ONT (Stakeholder, ICP), RRR-ONT (ExecutiveRole, FunctionalRole), and ORG-CONTEXT-ONT (MarketSegment, OrganizationContext). Schema only — no instance data.",
+    "breakingChanges": false,
+    "migrationNotes": "N/A — initial release",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-02-20",
+        "notes": "Initial CRT-ONT schema. 4 entities, 9 relationships (4 internal, 5 cross-ontology), 4 business rules, full OAA v6.1.0 compliance."
+      }
+    ]
+  },
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "CRT-ONT",
+  "oaa:series": "VE-SERIES",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of CustomerRole within this ontology?",
+      "targetEntities": [
+        "crt:CustomerRole"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of RoleQualifier within this ontology?",
+      "targetEntities": [
+        "crt:RoleQualifier"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of IndustryRoleProfile within this ontology?",
+      "targetEntities": [
+        "crt:IndustryRoleProfile"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of PurchasePattern within this ontology?",
+      "targetEntities": [
+        "crt:PurchasePattern"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

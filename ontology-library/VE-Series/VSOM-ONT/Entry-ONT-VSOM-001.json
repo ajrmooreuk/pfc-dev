@@ -1,0 +1,102 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-VSOM-001",
+  "name": "VSOM Ontology (Vision-Strategy-Objectives-Metrics)",
+  "description": "Vision-Strategy-Objectives-Metrics ontology for strategic alignment and planning. Root of VE lineage chain: VSOM \u2192 OKR \u2192 VP \u2192 PMF \u2192 EFS",
+  "version": "3.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/vsom/",
+  "prefix": "vsom:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-08",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./vsom-ontology-v3.0.0-oaa-v6.json",
+    "alternateFormat": "./w4m_vsom_ontology_v1.0.json",
+    "documentation": "./PFC-OAA-VE-ONT1-VSOM-README.md",
+    "visualGuide": "./w4m_vsom_visual_guide_v1.0.md",
+    "glossary": "../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": "../../validation-reports/VSOM-OAA-v5-Validation-Report.md"
+  },
+  "components": {
+    "VSOMFramework": "Root framework container for strategic planning",
+    "VisionComponent": "Long-term aspirational statement",
+    "StrategyComponent": "High-level approach to achieving vision",
+    "ObjectivesComponent": "Measurable goals aligned to strategy",
+    "MetricsComponent": "Quantitative progress measures",
+    "StrategicReviewCycle": "Periodic review and update process",
+    "Market": "Market classification - vertical or horizontal",
+    "BusinessModel": "Adoptable business model framework",
+    "BusinessImpact": "Driver of VSOM activities - measures business effect",
+    "Outcome": "Goal of VSOM framework - desired end state",
+    "ValueMeasure": "Measurement of value delivered through VSOM"
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "hasStrategicContext",
+        "from": "org-ctx:OrganizationContext",
+        "to": "vsom:VSOMFramework",
+        "purpose": "ORG-CONTEXT bridge pattern"
+      },
+      {
+        "name": "reviewsLandscape",
+        "from": "vsom:StrategicReviewCycle",
+        "to": "cl:CompetitiveLandscape",
+        "purpose": "Competitive feedback loop"
+      },
+      {
+        "name": "derivesOKR",
+        "from": "vsom:ObjectivesComponent",
+        "to": "okr:Objective",
+        "purpose": "VE lineage chain to OKR"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-ORG-CTX-001"
+  ],
+  "dependents": [
+    "Entry-ONT-OKR-001",
+    "Entry-ONT-VP-001",
+    "Entry-ONT-RRR-001",
+    "Entry-ONT-EFS-001",
+    "Entry-ONT-EMC-001"
+  ],
+  "layer": "STRATEGIC LAYER (VE-Series)",
+  "domain": "Strategic Planning",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "lastModified": "2026-02-08",
+  "versionHistory": [
+    {
+      "version": "3.0.0",
+      "date": "2026-02-08",
+      "changes": "OAA v6.1.0 compliance: G3 business rules fix, G2C graph connectivity fix, cardinality notation standardised"
+    },
+    {
+      "version": "2.1.0",
+      "date": "2026-02-02",
+      "changes": "Full OAA v5 compliance, VE lineage chain integration, ORG-CONTEXT bridge, CL review cycle"
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-01-28",
+      "changes": "Initial OAA v5 migration"
+    }
+  ],
+  "notes": "Root of VE lineage chain. All C-Suite roles have VSOM accountability mapping. Connected to CL-ONT for strategic review cycles."
+}

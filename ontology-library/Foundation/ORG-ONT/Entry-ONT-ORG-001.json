@@ -1,0 +1,58 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-ORG-001",
+  "name": "ORG Ontology (Organization Foundation)",
+  "description": "Core organization ontology defining organizational entities, structures, and foundational concepts",
+  "version": "3.1.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/org/",
+  "prefix": "org:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "./org-ontology-v3.0.0-oaa-v6.json",
+    "glossary": "./glossary-v1.0.0.json",
+    "registryEntry": "./registry-entry-v3.0.0.json",
+    "testData": "./test-data-v1.0.0.json",
+    "validationReport": null
+  },
+  "components": {
+    "organization": "Core organizational entity definition",
+    "structure": "Organizational hierarchy and relationships",
+    "context": "Bridge to ORG-CONTEXT hub"
+  },
+  "dependencies": [],
+  "dependents": [
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-CA-001",
+    "Entry-ONT-EMC-001"
+  ],
+  "layer": "FOUNDATION LAYER",
+  "domain": "Organization",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "lastModified": "2026-02-16",
+  "versionHistory": [
+    {
+      "version": "3.0.0",
+      "date": "2026-02-09",
+      "changes": "OAA v6.1.0 compliance. 2 entities (Organization, OrganizationContext), 5 relationships, 4 business rules."
+    },
+    {
+      "version": "3.1.0",
+      "date": "2026-02-16",
+      "changes": "Extended Organization type enum with StandardsBody, GovernmentAgency, InternationalOrg for domain authority modelling (CG-ONT dependency). BR-ORG-002 updated to restrict new types from isClientOf. Epic 30 F30.7 S30.7.1."
+    }
+  ],
+  "notes": "Foundation ontology providing core organizational concepts used across all other ontologies. v3.1.0 adds domain authority organization types for governance ontology support."
+}

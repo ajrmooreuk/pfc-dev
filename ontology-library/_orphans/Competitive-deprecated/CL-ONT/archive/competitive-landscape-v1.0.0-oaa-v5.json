@@ -1,0 +1,358 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v5/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "cl": "https://oaa-ontology.org/v5/competitive-landscape/",
+    "org": "https://oaa-ontology.org/v5/organization/"
+  },
+  "@id": "https://oaa-ontology.org/v5/cl/schema",
+  "@type": "owl:Ontology",
+  "name": "Competitive Landscape Ontology",
+  "description": "Organizational context ontology for competitive landscape analysis. Connects to ORG-ONT via OrganizationContext bridge pattern, enabling cross-ontology joins with CA-ONT, VSOM-ONT, and other domain ontologies for comprehensive strategic intelligence.",
+  "oaa:schemaVersion": "5.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "Competitive Intelligence & Market Context",
+  "oaa:status": "Production",
+  "dateCreated": "2026-02-01",
+  "dateModified": "2026-02-01",
+  "creator": {
+    "@type": "Organization",
+    "name": "Platform Framework Architecture Team"
+  },
+
+  "oaa:imports": [
+    {
+      "@id": "org:schema",
+      "name": "ORG-ONT",
+      "version": "2.1.0",
+      "importedEntities": ["org:Organization", "org:OrganizationContext"],
+      "importedRelationships": ["org:hasContext", "org:contextBelongsTo"]
+    }
+  ],
+
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-CL-001",
+      "name": "Org-Context-Landscape Join",
+      "description": "Join ORG-ONT Organization to CL-ONT CompetitiveLandscape via OrganizationContext bridge",
+      "joinPath": "org:Organization → org:hasContext → org:OrganizationContext → cl:hasCompetitiveLandscape → cl:CompetitiveLandscape",
+      "useCase": "Full organizational competitive context for PFI instance"
+    },
+    {
+      "patternId": "JP-CL-002",
+      "name": "Landscape-Analysis Join",
+      "description": "Join CL-ONT CompetitiveLandscape to CA-ONT CompetitiveAnalysis for analytical reports",
+      "joinPath": "cl:CompetitiveLandscape → cl:informsAnalysis → ca:CompetitiveAnalysis",
+      "useCase": "Competitive analysis grounded in landscape context"
+    },
+    {
+      "patternId": "JP-CL-003",
+      "name": "Strategic-Landscape Join",
+      "description": "Join CL-ONT to VSOM-ONT for strategy-aligned competitive positioning",
+      "joinPath": "cl:CompetitiveLandscape → cl:alignsToStrategy → vsom:Strategy",
+      "useCase": "Strategy-driven competitive positioning"
+    }
+  ],
+
+  "entities": [
+    {
+      "@id": "cl:CompetitiveLandscape",
+      "@type": "rdfs:Class",
+      "name": "CompetitiveLandscape",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "The competitive environment context for an organization. Aggregates market segments, competitor positions, and industry dynamics. Connected via OrganizationContext bridge.",
+      "oaa:properties": [
+        {"name": "landscapeId", "type": "xsd:string", "required": true, "description": "Unique landscape identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "schemaOrgMapping": "schema:name"},
+        {"name": "industryClassification", "type": "xsd:string", "required": true, "description": "Primary industry NAICS/SIC code or name"},
+        {"name": "geographicScope", "type": "xsd:string", "required": true, "enum": ["Local", "Regional", "National", "International", "Global"]},
+        {"name": "marketMaturity", "type": "xsd:string", "required": true, "enum": ["Emerging", "Growth", "Mature", "Declining"]},
+        {"name": "competitiveIntensity", "type": "xsd:string", "required": true, "enum": ["Low", "Medium", "High", "Hyper-competitive"]},
+        {"name": "barrierToEntry", "type": "xsd:string", "required": false, "enum": ["Low", "Medium", "High"]},
+        {"name": "regulatoryComplexity", "type": "xsd:string", "required": false, "enum": ["Low", "Medium", "High"]},
+        {"name": "technologyDisruptionRisk", "type": "xsd:string", "required": false, "enum": ["Low", "Medium", "High"]},
+        {"name": "validFrom", "type": "xsd:date", "required": true, "description": "Landscape assessment date"},
+        {"name": "validUntil", "type": "xsd:date", "required": false, "description": "Reassessment due date"}
+      ]
+    },
+    {
+      "@id": "cl:MarketSegment",
+      "@type": "rdfs:Class",
+      "name": "MarketSegment",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "A distinct segment within the competitive landscape with specific characteristics and dynamics.",
+      "oaa:properties": [
+        {"name": "segmentId", "type": "xsd:string", "required": true, "description": "Unique segment identifier"},
+        {"name": "segmentName", "type": "xsd:string", "required": true, "description": "Segment name"},
+        {"name": "segmentType", "type": "xsd:string", "required": true, "enum": ["Geographic", "Demographic", "Psychographic", "Behavioral", "Industry-Vertical"]},
+        {"name": "estimatedSize", "type": "xsd:string", "required": false, "description": "TAM/SAM/SOM estimate"},
+        {"name": "growthRate", "type": "xsd:decimal", "required": false, "description": "Annual growth rate percentage"},
+        {"name": "profitabilityIndex", "type": "xsd:string", "required": false, "enum": ["Low", "Medium", "High"]},
+        {"name": "accessibilityScore", "type": "xsd:integer", "required": false, "description": "1-10 accessibility rating"},
+        {"name": "strategicPriority", "type": "xsd:string", "required": false, "enum": ["Primary", "Secondary", "Opportunistic", "Exit"]}
+      ]
+    },
+    {
+      "@id": "cl:CompetitorProfile",
+      "@type": "rdfs:Class",
+      "name": "CompetitorProfile",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Profile of a competitor within the landscape. References ORG-ONT Organization for the actual competitor entity.",
+      "oaa:properties": [
+        {"name": "profileId", "type": "xsd:string", "required": true, "description": "Unique profile identifier"},
+        {"name": "competitorOrgRef", "type": "xsd:string", "required": true, "description": "Reference to org:Organization @id"},
+        {"name": "competitorType", "type": "xsd:string", "required": true, "enum": ["Direct", "Indirect", "Substitute", "Potential", "Adjacent"]},
+        {"name": "marketPosition", "type": "xsd:string", "required": true, "enum": ["Leader", "Challenger", "Follower", "Niche", "New-Entrant"]},
+        {"name": "estimatedMarketShare", "type": "xsd:decimal", "required": false, "description": "Estimated market share percentage"},
+        {"name": "competitiveStrength", "type": "xsd:string", "required": true, "enum": ["Dominant", "Strong", "Moderate", "Weak"]},
+        {"name": "threatLevel", "type": "xsd:string", "required": true, "enum": ["Critical", "High", "Medium", "Low", "Minimal"]},
+        {"name": "strategicIntent", "type": "xsd:string", "required": false, "description": "Observed strategic direction"},
+        {"name": "keyDifferentiators", "type": "xsd:string", "required": false, "description": "Main competitive advantages"},
+        {"name": "vulnerabilities", "type": "xsd:string", "required": false, "description": "Known weaknesses"}
+      ]
+    },
+    {
+      "@id": "cl:MarketDynamic",
+      "@type": "rdfs:Class",
+      "name": "MarketDynamic",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "A significant trend, force, or dynamic shaping the competitive landscape.",
+      "oaa:properties": [
+        {"name": "dynamicId", "type": "xsd:string", "required": true, "description": "Unique dynamic identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "description": "Dynamic name"},
+        {"name": "dynamicType", "type": "xsd:string", "required": true, "enum": ["Technology-Shift", "Regulatory-Change", "Consumer-Behavior", "Economic-Factor", "Competitive-Move", "Supply-Chain", "ESG-Pressure"]},
+        {"name": "impactLevel", "type": "xsd:string", "required": true, "enum": ["Transformational", "High", "Medium", "Low"]},
+        {"name": "timeHorizon", "type": "xsd:string", "required": true, "enum": ["Immediate", "Short-Term", "Medium-Term", "Long-Term"]},
+        {"name": "probabilityOfOccurrence", "type": "xsd:string", "required": false, "enum": ["Certain", "Likely", "Possible", "Unlikely"]},
+        {"name": "strategicImplication", "type": "xsd:string", "required": false, "description": "What this means for strategy"}
+      ]
+    },
+    {
+      "@id": "cl:CompetitiveAdvantage",
+      "@type": "rdfs:Class",
+      "name": "CompetitiveAdvantage",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "A specific competitive advantage held or sought by the organization within the landscape.",
+      "oaa:properties": [
+        {"name": "advantageId", "type": "xsd:string", "required": true, "description": "Unique advantage identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "description": "Advantage name"},
+        {"name": "advantageType", "type": "xsd:string", "required": true, "enum": ["Cost-Leadership", "Differentiation", "Focus-Cost", "Focus-Differentiation", "Innovation", "Network-Effects", "Data-Moat", "Brand-Equity", "Operational-Excellence"]},
+        {"name": "sustainabilityLevel", "type": "xsd:string", "required": true, "enum": ["Temporary", "Sustainable", "Durable", "Structural"]},
+        {"name": "imitabilityRisk", "type": "xsd:string", "required": true, "enum": ["High", "Medium", "Low"]},
+        {"name": "currentStatus", "type": "xsd:string", "required": true, "enum": ["Held", "Building", "Eroding", "Lost", "Aspirational"]},
+        {"name": "evidenceSource", "type": "xsd:string", "required": false, "description": "Data source for this advantage claim"}
+      ]
+    },
+    {
+      "@id": "cl:StrategicOpportunity",
+      "@type": "rdfs:Class",
+      "name": "StrategicOpportunity",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "An identified opportunity within the competitive landscape, including blue ocean opportunities.",
+      "oaa:properties": [
+        {"name": "opportunityId", "type": "xsd:string", "required": true, "description": "Unique opportunity identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "description": "Opportunity name"},
+        {"name": "opportunityType", "type": "xsd:string", "required": true, "enum": ["Blue-Ocean", "White-Space", "Market-Gap", "Adjacency", "Disruption", "Consolidation"]},
+        {"name": "estimatedValue", "type": "xsd:string", "required": false, "description": "Potential value estimate"},
+        {"name": "competitiveBarriers", "type": "xsd:string", "required": true, "enum": ["None", "Low", "Medium", "High"]},
+        {"name": "timeToCapture", "type": "xsd:string", "required": false, "enum": ["Immediate", "Short-Term", "Medium-Term", "Long-Term"]},
+        {"name": "fitScore", "type": "xsd:integer", "required": false, "description": "1-10 strategic fit rating"},
+        {"name": "riskLevel", "type": "xsd:string", "required": false, "enum": ["Low", "Medium", "High"]}
+      ]
+    }
+  ],
+
+  "relationships": [
+    {
+      "@id": "cl:hasCompetitiveLandscape",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Competitive Landscape",
+      "description": "Links OrganizationContext to its CompetitiveLandscape. This is the primary bridge from ORG-ONT.",
+      "domainIncludes": ["org:OrganizationContext"],
+      "rangeIncludes": ["cl:CompetitiveLandscape"],
+      "oaa:cardinality": {"min": 0, "max": 1},
+      "oaa:inverseOf": "cl:landscapeBelongsToContext"
+    },
+    {
+      "@id": "cl:landscapeBelongsToContext",
+      "@type": "owl:ObjectProperty",
+      "name": "Landscape Belongs To Context",
+      "description": "Inverse: CompetitiveLandscape back to OrganizationContext",
+      "domainIncludes": ["cl:CompetitiveLandscape"],
+      "rangeIncludes": ["org:OrganizationContext"],
+      "oaa:cardinality": {"min": 1, "max": 1}
+    },
+    {
+      "@id": "cl:hasSegment",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Segment",
+      "description": "Landscape contains market segments",
+      "domainIncludes": ["cl:CompetitiveLandscape"],
+      "rangeIncludes": ["cl:MarketSegment"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "cl:hasCompetitorProfile",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Competitor Profile",
+      "description": "Landscape contains competitor profiles",
+      "domainIncludes": ["cl:CompetitiveLandscape"],
+      "rangeIncludes": ["cl:CompetitorProfile"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "cl:hasMarketDynamic",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Market Dynamic",
+      "description": "Landscape is shaped by market dynamics",
+      "domainIncludes": ["cl:CompetitiveLandscape"],
+      "rangeIncludes": ["cl:MarketDynamic"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "cl:hasAdvantage",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Advantage",
+      "description": "Organization holds competitive advantages in landscape",
+      "domainIncludes": ["cl:CompetitiveLandscape"],
+      "rangeIncludes": ["cl:CompetitiveAdvantage"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "cl:hasOpportunity",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Opportunity",
+      "description": "Landscape contains strategic opportunities",
+      "domainIncludes": ["cl:CompetitiveLandscape"],
+      "rangeIncludes": ["cl:StrategicOpportunity"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "cl:competitorOperatesIn",
+      "@type": "owl:ObjectProperty",
+      "name": "Competitor Operates In",
+      "description": "Competitor profile operates in specific segments",
+      "domainIncludes": ["cl:CompetitorProfile"],
+      "rangeIncludes": ["cl:MarketSegment"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "cl:dynamicImpactsSegment",
+      "@type": "owl:ObjectProperty",
+      "name": "Dynamic Impacts Segment",
+      "description": "Market dynamic affects specific segments",
+      "domainIncludes": ["cl:MarketDynamic"],
+      "rangeIncludes": ["cl:MarketSegment"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "cl:opportunityInSegment",
+      "@type": "owl:ObjectProperty",
+      "name": "Opportunity In Segment",
+      "description": "Strategic opportunity exists within segment",
+      "domainIncludes": ["cl:StrategicOpportunity"],
+      "rangeIncludes": ["cl:MarketSegment"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "cl:advantageCounters",
+      "@type": "owl:ObjectProperty",
+      "name": "Advantage Counters",
+      "description": "Competitive advantage counters specific competitor",
+      "domainIncludes": ["cl:CompetitiveAdvantage"],
+      "rangeIncludes": ["cl:CompetitorProfile"],
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "cl:informsAnalysis",
+      "@type": "owl:ObjectProperty",
+      "name": "Informs Analysis",
+      "description": "Cross-ontology join: Landscape informs CA-ONT CompetitiveAnalysis",
+      "domainIncludes": ["cl:CompetitiveLandscape"],
+      "rangeIncludes": ["ca:CompetitiveAnalysis"],
+      "oaa:cardinality": {"min": 0, "max": "*"},
+      "oaa:crossOntologyRef": "CA-ONT"
+    },
+    {
+      "@id": "cl:alignsToStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "Aligns To Strategy",
+      "description": "Cross-ontology join: Landscape aligned to VSOM-ONT Strategy",
+      "domainIncludes": ["cl:CompetitiveLandscape"],
+      "rangeIncludes": ["vsom:Strategy"],
+      "oaa:cardinality": {"min": 0, "max": 1},
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    }
+  ],
+
+  "businessRules": [
+    {
+      "ruleId": "BR-CL-001",
+      "name": "Landscape Requires Context Bridge",
+      "condition": "IF a CompetitiveLandscape is created",
+      "constraint": "THEN it MUST have exactly one landscapeBelongsToContext relationship to an OrganizationContext",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CL-002",
+      "name": "Minimum Segments Required",
+      "condition": "IF a CompetitiveLandscape is defined",
+      "constraint": "THEN it MUST have at least one hasSegment relationship to a MarketSegment",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CL-003",
+      "name": "Minimum Competitors Required",
+      "condition": "IF a CompetitiveLandscape is defined for competitive analysis",
+      "constraint": "THEN it MUST have at least 3 hasCompetitorProfile relationships",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-CL-004",
+      "name": "Competitor Must Reference Organization",
+      "condition": "IF a CompetitorProfile is created",
+      "constraint": "THEN competitorOrgRef MUST reference a valid org:Organization @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CL-005",
+      "name": "Competitor Segment Coverage",
+      "condition": "IF a CompetitorProfile is defined",
+      "constraint": "THEN it MUST have at least one competitorOperatesIn relationship to a MarketSegment",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CL-006",
+      "name": "Blue Ocean Low Barriers",
+      "condition": "IF a StrategicOpportunity has opportunityType 'Blue-Ocean'",
+      "constraint": "THEN competitiveBarriers MUST be 'None' or 'Low'",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CL-007",
+      "name": "High Threat Requires Evidence",
+      "condition": "IF a CompetitorProfile has threatLevel 'Critical' or 'High'",
+      "constraint": "THEN strategicIntent and keyDifferentiators SHOULD be populated",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-CL-008",
+      "name": "Landscape Validity Period",
+      "condition": "IF a CompetitiveLandscape has validFrom date older than 12 months",
+      "constraint": "THEN the landscape SHOULD be flagged for reassessment",
+      "severity": "warning"
+    }
+  ],
+
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "5.0.0",
+    "lastModified": "2026-02-01",
+    "modifiedBy": "OAA v6.1.0 Agent",
+    "changeNotes": "Initial creation with OrganizationContext bridge pattern and cross-ontology join specifications",
+    "versionHistory": []
+  }
+}

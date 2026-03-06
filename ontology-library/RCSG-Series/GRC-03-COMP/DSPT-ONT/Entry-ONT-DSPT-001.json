@@ -1,0 +1,109 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-DSPT-001",
+  "name": "Data Security and Protection Toolkit (DSPT) Ontology",
+  "description": "NHS Data Security and Protection Toolkit ontology modelling the 10 National Data Guardian (NDG) Data Security Standards, 44 Assertions, and 149 Evidence Items across 4 organisation categories. Includes 19 pre-built cross-framework mappings to NCSC CAF contributing outcomes for NHS organisations required to demonstrate both DSPT and CAF compliance.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/dspt/",
+  "prefix": "dspt:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "skipped"
+  },
+  "validationDate": "2026-02-14",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "folder": "./",
+    "ontology": "./dspt-ontology-v1.0.0.json",
+    "glossary": null,
+    "documentation": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "summary": {
+    "entities": [
+      { "id": "dspt:DSPTStandard", "name": "DSPTStandard", "entityType": "class" },
+      { "id": "dspt:DSPTAssertion", "name": "DSPTAssertion", "entityType": "class" },
+      { "id": "dspt:EvidenceItem", "name": "EvidenceItem", "entityType": "class" },
+      { "id": "dspt:DSPTAssessment", "name": "DSPTAssessment", "entityType": "class" },
+      { "id": "dspt:CAFDSPTMapping", "name": "CAFDSPTMapping", "entityType": "class" }
+    ],
+    "relationships": [
+      { "name": "hasAssertion", "source": "DSPTStandard", "target": "DSPTAssertion" },
+      { "name": "hasEvidenceItem", "source": "DSPTAssertion", "target": "EvidenceItem" },
+      { "name": "hasCAFMapping", "source": "DSPTStandard", "target": "CAFDSPTMapping" },
+      { "name": "mapsToCAFOutcome", "source": "CAFDSPTMapping", "target": "ncsc-caf:ContributingOutcome" },
+      { "name": "implementsGDPRPrinciple", "source": "DSPTAssertion", "target": "gdpr:DataProtectionPrinciple" },
+      { "name": "supportsDataSubjectRight", "source": "DSPTAssertion", "target": "gdpr:DataSubjectRight" },
+      { "name": "registeredAsFramework", "source": "DSPTAssessment", "target": "grc-fw:ComplianceFramework" },
+      { "name": "assessesStandard", "source": "DSPTAssessment", "target": "DSPTStandard" },
+      { "name": "alignsToPrinciple", "source": "DSPTStandard", "target": "ncsc-caf:CAFPrinciple" },
+      { "name": "fulfillsObligation", "source": "DSPTAssessment", "target": "gdpr:ComplianceObligation" }
+    ]
+  },
+  "relationships": {
+    "crossOntology": 6,
+    "keyBridges": [
+      {
+        "to": "ncsc-caf:",
+        "entity": "ContributingOutcome",
+        "relationship": "mapsToCAFOutcome"
+      },
+      {
+        "to": "ncsc-caf:",
+        "entity": "CAFPrinciple",
+        "relationship": "alignsToPrinciple"
+      },
+      {
+        "to": "gdpr:",
+        "entity": "DataProtectionPrinciple",
+        "relationship": "implementsGDPRPrinciple"
+      },
+      {
+        "to": "gdpr:",
+        "entity": "DataSubjectRight",
+        "relationship": "supportsDataSubjectRight"
+      },
+      {
+        "to": "gdpr:",
+        "entity": "ComplianceObligation",
+        "relationship": "fulfillsObligation"
+      },
+      {
+        "to": "grc-fw:",
+        "entity": "ComplianceFramework",
+        "relationship": "registeredAsFramework"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-NCSC-CAF-001",
+    "Entry-ONT-GDPR-001",
+    "Entry-ONT-GRC-FW-001"
+  ],
+  "dependents": [],
+  "layer": "RCSG-SERIES",
+  "domain": "UK Health Sector Data Security & Protection",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-14",
+  "lastModified": "2026-02-14",
+  "sourceDocument": "DSPT Requirements 21-22 v1.04 (NHS Digital)",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-14",
+      "changes": "Initial release: 5 entities, 7 relationships, 6 business rules covering 10 NDG Standards, 44 assertions, 149 evidence items, plus 19 DSPT-to-CAF cross-framework mappings"
+    }
+  ],
+  "notes": "DSPT-ONT provides a comprehensive model of the NHS Data Security and Protection Toolkit enabling AI-agent-driven compliance assessment for health sector organisations. Includes pre-built cross-framework mappings linking DSPT standards to NCSC CAF contributing outcomes (19 mappings), enabling organisations to demonstrate compliance across both frameworks simultaneously. Bridges to GDPR for data protection alignment and GRC-FW for organisational compliance posture tracking."
+}

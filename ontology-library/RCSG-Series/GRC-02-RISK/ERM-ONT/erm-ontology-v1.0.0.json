@@ -1,0 +1,1876 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "erm": "https://platformcore.io/ontology/erm/",
+    "pf": "https://platformcore.io/ontology/",
+    "oaa": "https://platformcore.io/ontology/oaa/",
+    "grc-fw": "https://platformcore.io/ontology/grc-fw/",
+    "rmf": "https://baiv.co.uk/ontology/",
+    "ncsc-caf": "https://platformcore.io/ontology/ncsc-caf/",
+    "mcsb": "https://platformcore.io/ontology/mcsb/",
+    "vsom": "https://platformcore.io/ontology/vsom/"
+  },
+  "@type": "Ontology",
+  "@id": "erm:ontology:erm-v1.0",
+  "metadata": {
+    "name": "Enterprise Risk Management Ontology",
+    "version": "1.0.0",
+    "description": "Domain-agnostic enterprise risk management ontology aligned to ISO 31000:2018. GRC Tier 1 domain governed by GRC-FW governance hub. 6 owned entities: RiskRegister, Risk, RiskAppetite, Control, ResilienceCapability, RiskAssessment. 23 risk categories including 9 AI-specific. 19 relationships (11 internal + 8 cross-ontology). 1 VSEM bridge. Satisfies grc-fw:governsRisk and grc-fw:assuranceAssessesRisk forward references.",
+    "domain": "Enterprise Risk Management",
+    "purpose": "Provide domain-agnostic enterprise risk management concepts enabling risk registers, risk appetite statements, control frameworks, resilience capabilities, and risk assessments. Tier 1 parent for domain-specific risk specialisations (ISO 27005, AI risk, operational risk).",
+    "oaaVersion": "6.1.0",
+    "series": "RCSG-Series",
+    "subSeries": "GRC-02-RISK",
+    "dateCreated": "2026-02-17",
+    "dateModified": "2026-02-17",
+    "creator": "Azlan EA-AAA"
+  },
+  "oaa:sourceFrameworks": [
+    {
+      "name": "ISO 31000:2018 — Risk management — Guidelines",
+      "version": "2018",
+      "publisher": "ISO/TC 262",
+      "applicability": [
+        "Enterprise risk management",
+        "Risk principles, framework and process"
+      ]
+    },
+    {
+      "name": "COBIT 2019 — APO12 (Managed Risk) & EDM03 (Ensure Risk Optimisation)",
+      "version": "2019",
+      "publisher": "ISACA",
+      "applicability": [
+        "IT risk management alignment",
+        "Risk optimisation governance"
+      ]
+    },
+    {
+      "name": "NCSC Cyber Governance Code — Principle A (Risk Management)",
+      "version": "1.0",
+      "publisher": "UK NCSC / DSIT",
+      "applicability": [
+        "Board-level risk management oversight"
+      ]
+    },
+    {
+      "name": "FCA/PRA Operational Resilience — PS21/3",
+      "version": "2021",
+      "publisher": "FCA/PRA",
+      "applicability": [
+        "Important Business Services",
+        "Impact tolerances",
+        "Financial services"
+      ]
+    },
+    {
+      "name": "DORA — Digital Operational Resilience Act, Chapter II",
+      "version": "2023",
+      "publisher": "European Parliament",
+      "applicability": [
+        "ICT risk management framework",
+        "Financial sector digital resilience"
+      ]
+    },
+    {
+      "name": "NIS2 — Article 21 — Cybersecurity risk-management measures",
+      "version": "2023",
+      "publisher": "European Parliament",
+      "applicability": [
+        "10 minimum cybersecurity measures",
+        "Essential and important entities"
+      ]
+    }
+  ],
+  "oaa:imports": [
+    {
+      "@id": "grc-fw:schema",
+      "name": "GRC-FW-ONT",
+      "version": "3.0.0",
+      "description": "GRC governance hub — provides GRCContext and GovernanceAssurance for governance-to-risk bridges",
+      "importedEntities": [
+        "grc-fw:GRCContext",
+        "grc-fw:GovernanceAssurance"
+      ]
+    },
+    {
+      "@id": "rmf:schema",
+      "name": "RMF-IS27005-ONT",
+      "version": "1.0.0",
+      "description": "ISO 27005 information security risk management — Tier 2 specialisation below ERM",
+      "importedEntities": [
+        "rmf:Risk",
+        "rmf:Control",
+        "rmf:RiskAssessment"
+      ]
+    },
+    {
+      "@id": "ncsc-caf:schema",
+      "name": "NCSC-CAF-ONT",
+      "version": "1.0.0",
+      "description": "NCSC Cyber Assessment Framework — CAF Objective A risk management alignment",
+      "importedEntities": [
+        "ncsc-caf:ContributingOutcome"
+      ]
+    },
+    {
+      "@id": "mcsb:schema",
+      "name": "MCSB-ONT",
+      "version": "2.0.0",
+      "description": "Microsoft Cloud Security Benchmark — security control alignment",
+      "importedEntities": [
+        "mcsb:SecurityControl"
+      ]
+    },
+    {
+      "@id": "vsom:schema",
+      "name": "VSOM-ONT",
+      "version": "3.0.0",
+      "description": "Vision & Strategic Objectives Model — VSEM bridge for risk-threatens-objective",
+      "importedEntities": [
+        "vsom:StrategicObjective"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-ERM-001",
+      "name": "GRC Governance to Risk Register Bridge",
+      "description": "Governance context oversees enterprise risk registers — satisfies grc-fw:governsRisk forward reference",
+      "joinPath": "grc-fw:GRCContext → grc-fw:governsRisk → erm:RiskRegister → erm:containsRisk → erm:Risk",
+      "useCase": "Board-level visibility from governance context into enterprise risk register and individual risks"
+    },
+    {
+      "patternId": "JP-ERM-002",
+      "name": "Risk Assessment to Treatment Lifecycle",
+      "description": "ISO 31000 risk process: assessment identifies risks which are treated by controls",
+      "joinPath": "erm:RiskAssessment → erm:assessesRegister → erm:RiskRegister → erm:containsRisk → erm:Risk → erm:mitigatedByControl → erm:Control",
+      "useCase": "Full risk lifecycle from assessment through to control implementation"
+    },
+    {
+      "patternId": "JP-ERM-003",
+      "name": "Risk Appetite Governance Bridge",
+      "description": "Risk appetite constrains risk acceptance decisions within the governance context",
+      "joinPath": "erm:RiskRegister → erm:hasAppetite → erm:RiskAppetite",
+      "useCase": "Ensure risk acceptance decisions are within approved appetite levels"
+    },
+    {
+      "patternId": "JP-ERM-004",
+      "name": "ERM to RMF Tier 1-to-Tier 2 Specialisation",
+      "description": "Domain-agnostic ERM risks specialise into ISO 27005 information security risks",
+      "joinPath": "erm:Risk → erm:specialisedByInfoSecRisk → rmf:Risk → rmf:affectsAsset → rmf:Asset",
+      "useCase": "Navigate from enterprise risk register to domain-specific information security risk details"
+    },
+    {
+      "patternId": "JP-ERM-005",
+      "name": "ERM Control to MCSB Benchmark Alignment",
+      "description": "Enterprise controls align to Microsoft Cloud Security Benchmark controls",
+      "joinPath": "erm:Control → erm:controlAlignsToBenchmark → mcsb:SecurityControl",
+      "useCase": "Map enterprise-level controls to Azure/cloud security benchmark implementation guidance"
+    },
+    {
+      "patternId": "JP-ERM-006",
+      "name": "Risk Threatens Strategic Objective (VSEM Bridge)",
+      "description": "Enterprise risks threaten strategic objectives — enables risk-informed strategic planning",
+      "joinPath": "erm:Risk → erm:riskThreatsObjective → vsom:StrategicObjective",
+      "useCase": "Board-level risk-to-strategy alignment: which strategic objectives are at risk?"
+    },
+    {
+      "patternId": "JP-ERM-007",
+      "name": "Resilience Capability to Risk Coverage",
+      "description": "Resilience capabilities protect against specific risks and inform business continuity",
+      "joinPath": "erm:ResilienceCapability → erm:protectsAgainstRisk → erm:Risk",
+      "useCase": "Determine resilience coverage for identified risks — RTO/RPO verification"
+    },
+    {
+      "patternId": "JP-ERM-008",
+      "name": "Assurance to Risk Assessment Bridge",
+      "description": "Governance assurance activities evaluate risks — satisfies grc-fw:assuranceAssessesRisk",
+      "joinPath": "grc-fw:GovernanceAssurance → grc-fw:assuranceAssessesRisk → erm:Risk",
+      "useCase": "Link governance assurance activities to the risks they evaluate"
+    }
+  ],
+  "entities": [
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "erm:RiskRegister",
+      "name": "RiskRegister",
+      "description": "An enterprise risk register providing a structured repository for identified risks within a defined scope. Supports 7 scope levels from Enterprise to Vendor. Contains risks, references risk appetite, and tracks review cadence. ISO 31000:2018 clause 6.7 — recording and reporting. Satisfies grc-fw:governsRisk forward reference from GRC-FW-ONT v3.0.0.",
+      "properties": [
+        {
+          "name": "registerId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the risk register"
+        },
+        {
+          "name": "registerName",
+          "type": "Text",
+          "required": true,
+          "description": "Human-readable name for the risk register"
+        },
+        {
+          "name": "scope",
+          "type": "Text",
+          "required": true,
+          "description": "Scope level: Enterprise, Division, Business-Unit, Programme, Project, Third-Party, Vendor"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": false,
+          "description": "Description of the register scope, purpose, and coverage boundaries"
+        },
+        {
+          "name": "owner",
+          "type": "Text",
+          "required": true,
+          "description": "Risk register owner — typically CRO, Head of Risk, or equivalent governance role"
+        },
+        {
+          "name": "riskAppetiteRef",
+          "type": "Text",
+          "required": false,
+          "description": "Reference to the RiskAppetite instance governing this register"
+        },
+        {
+          "name": "riskCount",
+          "type": "Number",
+          "required": false,
+          "description": "Total number of risks in the register"
+        },
+        {
+          "name": "criticalRiskCount",
+          "type": "Number",
+          "required": false,
+          "description": "Number of risks with residual risk level of Critical"
+        },
+        {
+          "name": "highRiskCount",
+          "type": "Number",
+          "required": false,
+          "description": "Number of risks with residual risk level of High"
+        },
+        {
+          "name": "lastReviewDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Date of the last formal review of the risk register"
+        },
+        {
+          "name": "nextReviewDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Scheduled date for the next review"
+        },
+        {
+          "name": "reviewFrequency",
+          "type": "Text",
+          "required": false,
+          "description": "Review cadence: Weekly, Monthly, Quarterly, Semi-Annual, Annual"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "description": "Register status: Draft, Active, Under-Review, Archived"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "erm:Risk",
+      "name": "Risk",
+      "description": "An identified enterprise risk expressed as the effect of uncertainty on objectives (ISO 31000:2018 definition). Uses a 5x5 likelihood-impact matrix for inherent and residual scoring. 23 risk categories covering traditional, technology, AI-specific, and operational risk domains. Supports 5 response strategies. Satisfies grc-fw:assuranceAssessesRisk forward reference from GRC-FW-ONT v3.0.0.",
+      "properties": [
+        {
+          "name": "riskId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the risk"
+        },
+        {
+          "name": "riskTitle",
+          "type": "Text",
+          "required": true,
+          "description": "Short descriptive title of the risk"
+        },
+        {
+          "name": "riskDescription",
+          "type": "Text",
+          "required": true,
+          "description": "Detailed description of the risk scenario, cause, and potential consequence"
+        },
+        {
+          "name": "riskCategory",
+          "type": "Text",
+          "required": true,
+          "description": "Risk category from 23-value taxonomy (see RiskCategory enumeration)"
+        },
+        {
+          "name": "inherentLikelihood",
+          "type": "Number",
+          "required": true,
+          "description": "Inherent likelihood score before controls (1=Rare, 2=Unlikely, 3=Possible, 4=Likely, 5=Almost-Certain)"
+        },
+        {
+          "name": "inherentImpact",
+          "type": "Number",
+          "required": true,
+          "description": "Inherent impact score before controls (1=Negligible, 2=Minor, 3=Moderate, 4=Major, 5=Catastrophic)"
+        },
+        {
+          "name": "inherentRiskScore",
+          "type": "Number",
+          "required": true,
+          "description": "Calculated inherent risk score (likelihood x impact, range 1-25)"
+        },
+        {
+          "name": "inherentRiskLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Derived inherent risk level: Low (1-4), Medium (5-9), High (10-15), Critical (16-25)"
+        },
+        {
+          "name": "residualLikelihood",
+          "type": "Number",
+          "required": false,
+          "description": "Residual likelihood score after controls applied (1-5)"
+        },
+        {
+          "name": "residualImpact",
+          "type": "Number",
+          "required": false,
+          "description": "Residual impact score after controls applied (1-5)"
+        },
+        {
+          "name": "residualRiskScore",
+          "type": "Number",
+          "required": false,
+          "description": "Calculated residual risk score (likelihood x impact, range 1-25)"
+        },
+        {
+          "name": "residualRiskLevel",
+          "type": "Text",
+          "required": false,
+          "description": "Derived residual risk level: Low, Medium, High, Critical"
+        },
+        {
+          "name": "velocity",
+          "type": "Text",
+          "required": false,
+          "description": "Speed at which the risk could materialise: Immediate, Days, Weeks, Months, Years"
+        },
+        {
+          "name": "trend",
+          "type": "Text",
+          "required": false,
+          "description": "Directional trend of the risk: Increasing, Stable, Decreasing, New"
+        },
+        {
+          "name": "response",
+          "type": "Text",
+          "required": true,
+          "description": "Risk response strategy: Avoid, Mitigate, Transfer, Accept, Exploit"
+        },
+        {
+          "name": "riskOwner",
+          "type": "Text",
+          "required": true,
+          "description": "Person or role accountable for managing this risk"
+        },
+        {
+          "name": "threatensObjectiveRef",
+          "type": "Text",
+          "required": false,
+          "description": "Reference to the strategic objective(s) this risk threatens"
+        },
+        {
+          "name": "escalationTrigger",
+          "type": "Text",
+          "required": false,
+          "description": "Condition that triggers escalation to a higher governance body"
+        },
+        {
+          "name": "riskStatus",
+          "type": "Text",
+          "required": true,
+          "description": "Lifecycle status: Identified, Assessed, Treating, Accepted, Closed, Escalated"
+        },
+        {
+          "name": "dateIdentified",
+          "type": "DateTime",
+          "required": false,
+          "description": "Date the risk was first identified"
+        },
+        {
+          "name": "lastAssessedDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Date of the last formal risk assessment for this risk"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "erm:RiskAppetite",
+      "name": "RiskAppetite",
+      "description": "An organisational risk appetite statement defining the amount and type of risk the organisation is willing to accept in pursuit of its objectives (ISO 31000:2018 clause 3.7). Aligned to NCSC Cyber Governance Code Principle A — board sets risk appetite.",
+      "properties": [
+        {
+          "name": "appetiteId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this risk appetite statement"
+        },
+        {
+          "name": "appetiteName",
+          "type": "Text",
+          "required": true,
+          "description": "Name of the appetite statement"
+        },
+        {
+          "name": "appetiteLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Overall organisational risk appetite: Averse, Minimalist, Cautious, Open, Hungry"
+        },
+        {
+          "name": "toleranceThreshold",
+          "type": "Text",
+          "required": true,
+          "description": "Maximum tolerable risk level before mandatory escalation: Low, Medium, High, Critical"
+        },
+        {
+          "name": "categoryAppetites",
+          "type": "Text",
+          "required": false,
+          "description": "Per-category appetite overrides as structured text"
+        },
+        {
+          "name": "approvedBy",
+          "type": "Text",
+          "required": true,
+          "description": "Governance body or individual that approved this appetite statement"
+        },
+        {
+          "name": "approvalDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date the appetite statement was approved"
+        },
+        {
+          "name": "reviewDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Next scheduled review date"
+        },
+        {
+          "name": "scope",
+          "type": "Text",
+          "required": true,
+          "description": "Scope this appetite applies to: Enterprise, Division, Business-Unit, Programme"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "description": "Statement status: Draft, Approved, Under-Review, Superseded"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "erm:Control",
+      "name": "Control",
+      "description": "An enterprise-level control or safeguard implemented to modify risk (ISO 31000:2018 clause 3.8). Domain-agnostic Tier 1 parent — RMF-IS27005 Control (ISO 27001 Annex A) specialises this. Single authoritative source for controls across GRC; SEC-FW and COMP-FW reference rather than duplicate.",
+      "properties": [
+        {
+          "name": "controlId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the control"
+        },
+        {
+          "name": "controlName",
+          "type": "Text",
+          "required": true,
+          "description": "Name of the control"
+        },
+        {
+          "name": "controlDescription",
+          "type": "Text",
+          "required": false,
+          "description": "Detailed description of the control purpose, scope, and operation"
+        },
+        {
+          "name": "controlType",
+          "type": "Text",
+          "required": true,
+          "description": "Control type: Preventive, Detective, Corrective, Deterrent, Compensating"
+        },
+        {
+          "name": "controlNature",
+          "type": "Text",
+          "required": true,
+          "description": "Control nature: Technical, Administrative, Physical, Legal"
+        },
+        {
+          "name": "automationLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Automation level: Manual, Semi-Automated, Automated, Continuous, AI-Driven"
+        },
+        {
+          "name": "effectiveness",
+          "type": "Number",
+          "required": false,
+          "description": "Assessed effectiveness score (1=Ineffective, 2=Partially-Effective, 3=Effective, 4=Highly-Effective, 5=Optimised)"
+        },
+        {
+          "name": "testingFrequency",
+          "type": "Text",
+          "required": false,
+          "description": "How often the control is tested: Continuous, Monthly, Quarterly, Semi-Annual, Annual, Ad-Hoc"
+        },
+        {
+          "name": "lastTestDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Date of the last control effectiveness test"
+        },
+        {
+          "name": "nextTestDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Next scheduled test date"
+        },
+        {
+          "name": "implementationStatus",
+          "type": "Text",
+          "required": true,
+          "description": "Implementation status: Planned, In-Progress, Implemented, Operational, Decommissioned"
+        },
+        {
+          "name": "controlOwner",
+          "type": "Text",
+          "required": true,
+          "description": "Person or role responsible for the control"
+        },
+        {
+          "name": "riskReduction",
+          "type": "Text",
+          "required": false,
+          "description": "Expected risk reduction: Likelihood-Only, Impact-Only, Both, Neither"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "erm:ResilienceCapability",
+      "name": "ResilienceCapability",
+      "description": "An organisational resilience capability defining recovery and continuity posture. Aligned to FCA/PRA Operational Resilience (Important Business Services, impact tolerances), DORA Chapter II (ICT risk management), and NIS2 Article 21. 8 resilience types including 2 AI-specific.",
+      "properties": [
+        {
+          "name": "capabilityId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the resilience capability"
+        },
+        {
+          "name": "capabilityName",
+          "type": "Text",
+          "required": true,
+          "description": "Name of the resilience capability"
+        },
+        {
+          "name": "resilienceType",
+          "type": "Text",
+          "required": true,
+          "description": "Resilience type: Business-Continuity, Disaster-Recovery, Cyber-Resilience, Operational-Resilience, Supply-Chain-Resilience, Data-Resilience, AI-Model-Failover, AI-Pipeline-Recovery"
+        },
+        {
+          "name": "rto",
+          "type": "Text",
+          "required": true,
+          "description": "Recovery Time Objective — maximum acceptable downtime"
+        },
+        {
+          "name": "rpo",
+          "type": "Text",
+          "required": true,
+          "description": "Recovery Point Objective — maximum acceptable data loss"
+        },
+        {
+          "name": "impactTolerance",
+          "type": "Text",
+          "required": false,
+          "description": "FCA/PRA impact tolerance — maximum tolerable disruption"
+        },
+        {
+          "name": "importantBusinessService",
+          "type": "Text",
+          "required": false,
+          "description": "FCA/PRA Important Business Service this capability protects"
+        },
+        {
+          "name": "testResult",
+          "type": "Text",
+          "required": false,
+          "description": "Most recent test result: Passed, Passed-With-Issues, Failed, Not-Tested"
+        },
+        {
+          "name": "lastTestDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Date of the last resilience test"
+        },
+        {
+          "name": "nextTestDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Scheduled date for the next test"
+        },
+        {
+          "name": "degradedModeCapability",
+          "type": "Boolean",
+          "required": false,
+          "description": "Whether the service can operate in a degraded mode while recovering"
+        },
+        {
+          "name": "degradedModeDescription",
+          "type": "Text",
+          "required": false,
+          "description": "Description of degraded mode capabilities and limitations"
+        },
+        {
+          "name": "owner",
+          "type": "Text",
+          "required": true,
+          "description": "Person or role responsible for maintaining this resilience capability"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "description": "Capability status: Planned, Implementing, Operational, Tested, Needs-Improvement"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "erm:RiskAssessment",
+      "name": "RiskAssessment",
+      "description": "A structured enterprise risk assessment exercise encompassing risk identification, analysis, and evaluation (ISO 31000:2018 clause 6.4). Domain-agnostic parent of RMF-IS27005 RiskAssessment. Bridge target for NCSC-CAF JP-CAF-003 alignment.",
+      "properties": [
+        {
+          "name": "assessmentId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the risk assessment"
+        },
+        {
+          "name": "assessmentName",
+          "type": "Text",
+          "required": true,
+          "description": "Name or title of the assessment exercise"
+        },
+        {
+          "name": "assessmentType",
+          "type": "Text",
+          "required": true,
+          "description": "Assessment type: Enterprise-Wide, Domain-Specific, Project, Vendor, AI-System, Regulatory-Change, Incident-Triggered"
+        },
+        {
+          "name": "methodology",
+          "type": "Text",
+          "required": true,
+          "description": "Methodology: Qualitative, Quantitative, Semi-Quantitative, Scenario-Based, Bow-Tie"
+        },
+        {
+          "name": "assessmentDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date the assessment was conducted"
+        },
+        {
+          "name": "assessor",
+          "type": "Text",
+          "required": true,
+          "description": "Person, team, or external party conducting the assessment"
+        },
+        {
+          "name": "assessmentStatus",
+          "type": "Text",
+          "required": true,
+          "description": "Status: Planned, In-Progress, Completed, Approved, Superseded"
+        },
+        {
+          "name": "risksIdentified",
+          "type": "Number",
+          "required": false,
+          "description": "Number of risks identified during the assessment"
+        },
+        {
+          "name": "newRisksCount",
+          "type": "Number",
+          "required": false,
+          "description": "Number of newly identified risks"
+        },
+        {
+          "name": "closedRisksCount",
+          "type": "Number",
+          "required": false,
+          "description": "Number of risks closed as a result of the assessment"
+        },
+        {
+          "name": "approvedBy",
+          "type": "Text",
+          "required": false,
+          "description": "Governance body or individual who approved the assessment results"
+        },
+        {
+          "name": "nextReviewDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Scheduled date for the next periodic assessment"
+        },
+        {
+          "name": "scope",
+          "type": "Text",
+          "required": true,
+          "description": "Scope: Enterprise, Division, Business-Unit, Programme, Project, Third-Party, Vendor"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:GRCContext",
+      "name": "GRCContext",
+      "description": "External GRC-FW entity — top-level governance context that oversees risk registers",
+      "oaa:externalOntology": "grc-fw:GRCFrameworkOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:GovernanceAssurance",
+      "name": "GovernanceAssurance",
+      "description": "External GRC-FW entity — assurance activity that evaluates risks",
+      "oaa:externalOntology": "grc-fw:GRCFrameworkOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:Risk",
+      "name": "Risk (RMF-IS27005)",
+      "description": "External RMF-IS27005 entity — ISO 27005 information security risk specialisation of erm:Risk",
+      "oaa:externalOntology": "rmf:RMFOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:Control",
+      "name": "Control (RMF-IS27005)",
+      "description": "External RMF-IS27005 entity — ISO 27001 Annex A security control specialisation of erm:Control",
+      "oaa:externalOntology": "rmf:RMFOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "rmf:RiskAssessment",
+      "name": "RiskAssessment (RMF-IS27005)",
+      "description": "External RMF-IS27005 entity — ISO 27005 risk assessment specialisation of erm:RiskAssessment",
+      "oaa:externalOntology": "rmf:RMFOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ncsc-caf:ContributingOutcome",
+      "name": "ContributingOutcome",
+      "description": "External NCSC-CAF entity — CAF Objective A contributing outcomes for risk management alignment",
+      "oaa:externalOntology": "ncsc-caf:NCSCCAFOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "mcsb:SecurityControl",
+      "name": "SecurityControl",
+      "description": "External MCSB entity — Microsoft Cloud Security Benchmark control",
+      "oaa:externalOntology": "mcsb:MCSBOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "vsom:StrategicObjective",
+      "name": "StrategicObjective",
+      "description": "External VSOM entity — VSEM bridge target for risk-threatens-objective alignment",
+      "oaa:externalOntology": "vsom:VSOMOntology",
+      "oaa:stubEntity": true
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "Property",
+      "@id": "erm:containsRisk",
+      "name": "Contains Risk",
+      "description": "Links a RiskRegister to the individual risks it contains",
+      "domainIncludes": [
+        "erm:RiskRegister"
+      ],
+      "rangeIncludes": [
+        "erm:Risk"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:belongsToRegister",
+      "name": "Belongs To Register",
+      "description": "Links a Risk to the RiskRegister it belongs to",
+      "domainIncludes": [
+        "erm:Risk"
+      ],
+      "rangeIncludes": [
+        "erm:RiskRegister"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:hasAppetite",
+      "name": "Has Appetite",
+      "description": "Links a RiskRegister to its governing risk appetite statement",
+      "domainIncludes": [
+        "erm:RiskRegister"
+      ],
+      "rangeIncludes": [
+        "erm:RiskAppetite"
+      ],
+      "cardinality": "0..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:mitigatedByControl",
+      "name": "Mitigated By Control",
+      "description": "Links a Risk to the controls that mitigate it",
+      "domainIncludes": [
+        "erm:Risk"
+      ],
+      "rangeIncludes": [
+        "erm:Control"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:controlMitigatesRisk",
+      "name": "Control Mitigates Risk",
+      "description": "Inverse — links a Control to the risks it mitigates",
+      "domainIncludes": [
+        "erm:Control"
+      ],
+      "rangeIncludes": [
+        "erm:Risk"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:protectsAgainstRisk",
+      "name": "Protects Against Risk",
+      "description": "Links a ResilienceCapability to the risks it provides protection for",
+      "domainIncludes": [
+        "erm:ResilienceCapability"
+      ],
+      "rangeIncludes": [
+        "erm:Risk"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:hasResilienceCapability",
+      "name": "Has Resilience Capability",
+      "description": "Links a Risk to the resilience capabilities that provide recovery should it materialise",
+      "domainIncludes": [
+        "erm:Risk"
+      ],
+      "rangeIncludes": [
+        "erm:ResilienceCapability"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:assessesRegister",
+      "name": "Assesses Register",
+      "description": "Links a RiskAssessment to the RiskRegister it evaluates",
+      "domainIncludes": [
+        "erm:RiskAssessment"
+      ],
+      "rangeIncludes": [
+        "erm:RiskRegister"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:assessmentIdentifiesRisk",
+      "name": "Assessment Identifies Risk",
+      "description": "Links a RiskAssessment to individual risks identified during the assessment",
+      "domainIncludes": [
+        "erm:RiskAssessment"
+      ],
+      "rangeIncludes": [
+        "erm:Risk"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:controlTestedByAssessment",
+      "name": "Control Tested By Assessment",
+      "description": "Links a Control to a RiskAssessment that tests its effectiveness",
+      "domainIncludes": [
+        "erm:Control"
+      ],
+      "rangeIncludes": [
+        "erm:RiskAssessment"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:resilienceTestedByAssessment",
+      "name": "Resilience Tested By Assessment",
+      "description": "Links a ResilienceCapability to a RiskAssessment that validates it",
+      "domainIncludes": [
+        "erm:ResilienceCapability"
+      ],
+      "rangeIncludes": [
+        "erm:RiskAssessment"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:governedBy",
+      "name": "Governed By",
+      "description": "Links a RiskRegister to the GRCContext that governs it — reverse of grc-fw:governsRisk",
+      "domainIncludes": [
+        "erm:RiskRegister"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GRCContext"
+      ],
+      "cardinality": "1..1",
+      "oaa:crossOntologyRef": "GRC-FW"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:assessedByAssurance",
+      "name": "Assessed By Assurance",
+      "description": "Links a Risk to governance assurance activities that evaluate it — reverse of grc-fw:assuranceAssessesRisk",
+      "domainIncludes": [
+        "erm:Risk"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernanceAssurance"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "GRC-FW"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:specialisedByInfoSecRisk",
+      "name": "Specialised By InfoSec Risk",
+      "description": "Links an enterprise Risk to its ISO 27005 information security risk specialisation — Tier 1 to Tier 2",
+      "domainIncludes": [
+        "erm:Risk"
+      ],
+      "rangeIncludes": [
+        "rmf:Risk"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "RMF-IS27005"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:specialisedByInfoSecAssessment",
+      "name": "Specialised By InfoSec Assessment",
+      "description": "Links an enterprise RiskAssessment to its ISO 27005 assessment specialisation — Tier 1 to Tier 2",
+      "domainIncludes": [
+        "erm:RiskAssessment"
+      ],
+      "rangeIncludes": [
+        "rmf:RiskAssessment"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "RMF-IS27005"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:specialisedByInfoSecControl",
+      "name": "Specialised By InfoSec Control",
+      "description": "Links an enterprise Control to its ISO 27001 Annex A security control specialisation — Tier 1 to Tier 2",
+      "domainIncludes": [
+        "erm:Control"
+      ],
+      "rangeIncludes": [
+        "rmf:Control"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "RMF-IS27005"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:assessedByCAFOutcome",
+      "name": "Assessed By CAF Outcome",
+      "description": "Links a RiskRegister to NCSC CAF Objective A contributing outcomes for cyber risk management alignment",
+      "domainIncludes": [
+        "erm:RiskRegister"
+      ],
+      "rangeIncludes": [
+        "ncsc-caf:ContributingOutcome"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "NCSC-CAF"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:controlAlignsToBenchmark",
+      "name": "Control Aligns To Benchmark",
+      "description": "Links an enterprise Control to MCSB SecurityControl for cloud security benchmark alignment",
+      "domainIncludes": [
+        "erm:Control"
+      ],
+      "rangeIncludes": [
+        "mcsb:SecurityControl"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "MCSB"
+    },
+    {
+      "@type": "Property",
+      "@id": "erm:riskThreatsObjective",
+      "name": "Risk Threatens Objective",
+      "description": "VSEM bridge — links a Risk to the strategic objectives it threatens, enabling risk-informed strategic planning",
+      "domainIncludes": [
+        "erm:Risk"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategicObjective"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM",
+      "oaa:vsemBridge": true
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-ERM-001",
+      "name": "Risk Requires Register",
+      "condition": "IF a Risk is created",
+      "action": "THEN it MUST have exactly one belongsToRegister relationship to a RiskRegister",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ERM-002",
+      "name": "Risk Requires Owner",
+      "condition": "IF a Risk is identified",
+      "action": "THEN riskOwner MUST be specified",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ERM-003",
+      "name": "Inherent Risk Score Calculation",
+      "condition": "IF a Risk has inherentLikelihood and inherentImpact",
+      "action": "THEN inherentRiskScore MUST equal inherentLikelihood * inherentImpact AND inherentRiskLevel MUST be derived (1-4=Low, 5-9=Medium, 10-15=High, 16-25=Critical)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ERM-004",
+      "name": "Residual Risk Score Calculation",
+      "condition": "IF a Risk has residualLikelihood and residualImpact",
+      "action": "THEN residualRiskScore MUST equal residualLikelihood * residualImpact AND residualRiskLevel MUST be derived consistently",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ERM-005",
+      "name": "Critical Risk Requires Response",
+      "condition": "IF a Risk has inherentRiskLevel of Critical",
+      "action": "THEN response MUST be specified and MUST NOT be Accept unless approved at board level",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ERM-006",
+      "name": "Mitigate Response Requires Controls",
+      "condition": "IF a Risk has response of Mitigate",
+      "action": "THEN it MUST have at least one mitigatedByControl relationship to a Control with implementationStatus of Implemented or Operational",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ERM-007",
+      "name": "Accept Response Requires Appetite Validation",
+      "condition": "IF a Risk has response of Accept",
+      "action": "THEN residualRiskLevel MUST be at or below the RiskAppetite.toleranceThreshold of the parent register",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ERM-008",
+      "name": "Register Requires Governance Link",
+      "condition": "IF a RiskRegister is created with scope of Enterprise or Division",
+      "action": "THEN it MUST have a governedBy relationship to a grc-fw:GRCContext",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ERM-009",
+      "name": "Risk Appetite Requires Approval",
+      "condition": "IF a RiskAppetite has status of Approved",
+      "action": "THEN approvedBy and approvalDate MUST be specified",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ERM-010",
+      "name": "Resilience Capability Requires RTO RPO",
+      "condition": "IF a ResilienceCapability is created",
+      "action": "THEN rto and rpo MUST be specified",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ERM-011",
+      "name": "Control Effectiveness Requires Testing",
+      "condition": "IF a Control has effectiveness score specified",
+      "action": "THEN lastTestDate MUST be specified — effectiveness claims require evidence",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-ERM-012",
+      "name": "Assessment Must Link To Register",
+      "condition": "IF a RiskAssessment is created",
+      "action": "THEN it MUST have exactly one assessesRegister relationship to a RiskRegister",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ERM-013",
+      "name": "Risk Category Validation",
+      "condition": "IF a Risk has riskCategory specified",
+      "action": "THEN riskCategory MUST be one of the 23 defined values in the RiskCategory enumeration",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-ERM-014",
+      "name": "Escalation Trigger for Critical Risks",
+      "condition": "IF a Risk has residualRiskLevel of Critical or trend of Increasing with residualRiskLevel of High",
+      "action": "THEN escalationTrigger MUST be specified AND riskStatus SHOULD be Escalated",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-ERM-015",
+      "name": "Operational Resilience Impact Tolerance",
+      "condition": "IF a ResilienceCapability has resilienceType of Operational-Resilience",
+      "action": "THEN impactTolerance and importantBusinessService SHOULD be specified (FCA/PRA PS21/3)",
+      "severity": "warning"
+    }
+  ],
+  "oaa:enumerations": [
+    {
+      "@id": "erm:RegisterScope",
+      "@type": "DefinedTermSet",
+      "name": "RegisterScope",
+      "description": "Scope levels for risk registers — 7 levels from enterprise to vendor",
+      "hasDefinedTerm": [
+        {
+          "@id": "erm:scope/enterprise",
+          "name": "Enterprise",
+          "description": "Enterprise-wide risk register"
+        },
+        {
+          "@id": "erm:scope/division",
+          "name": "Division",
+          "description": "Division-level risk register"
+        },
+        {
+          "@id": "erm:scope/business-unit",
+          "name": "Business-Unit",
+          "description": "Business unit or department level"
+        },
+        {
+          "@id": "erm:scope/programme",
+          "name": "Programme",
+          "description": "Programme-level risk register"
+        },
+        {
+          "@id": "erm:scope/project",
+          "name": "Project",
+          "description": "Project-level risk register"
+        },
+        {
+          "@id": "erm:scope/third-party",
+          "name": "Third-Party",
+          "description": "Third-party or outsourced service"
+        },
+        {
+          "@id": "erm:scope/vendor",
+          "name": "Vendor",
+          "description": "Vendor-specific risk register"
+        }
+      ]
+    },
+    {
+      "@id": "erm:RiskCategory",
+      "@type": "DefinedTermSet",
+      "name": "RiskCategory",
+      "description": "23-value risk category taxonomy. Grouping: Traditional (5), Technology (3), AI-Specific (9), Operational-Extended (6).",
+      "hasDefinedTerm": [
+        {
+          "@id": "erm:riskcat/strategic",
+          "name": "Strategic",
+          "description": "Risks to strategic direction, market position, and competitive advantage",
+          "group": "Traditional"
+        },
+        {
+          "@id": "erm:riskcat/operational",
+          "name": "Operational",
+          "description": "Risks to business processes, people, systems, and operations",
+          "group": "Traditional"
+        },
+        {
+          "@id": "erm:riskcat/financial",
+          "name": "Financial",
+          "description": "Risks to revenue, cash flow, liquidity, credit, and financial performance",
+          "group": "Traditional"
+        },
+        {
+          "@id": "erm:riskcat/compliance",
+          "name": "Compliance",
+          "description": "Risks from regulatory non-compliance, legal obligations, and contractual breaches",
+          "group": "Traditional"
+        },
+        {
+          "@id": "erm:riskcat/reputational",
+          "name": "Reputational",
+          "description": "Risks to brand, stakeholder confidence, and public trust",
+          "group": "Traditional"
+        },
+        {
+          "@id": "erm:riskcat/technology",
+          "name": "Technology",
+          "description": "Risks from technology failure, obsolescence, and infrastructure dependency",
+          "group": "Technology"
+        },
+        {
+          "@id": "erm:riskcat/cybersecurity",
+          "name": "Cybersecurity",
+          "description": "Risks from cyber threats, data breaches, and security incidents",
+          "group": "Technology"
+        },
+        {
+          "@id": "erm:riskcat/data-quality",
+          "name": "Data-Quality",
+          "description": "Risks from poor data quality, integrity, and governance",
+          "group": "Technology"
+        },
+        {
+          "@id": "erm:riskcat/ai-model-performance",
+          "name": "AI-Model-Performance",
+          "description": "Risks from AI model degradation, drift, accuracy loss",
+          "group": "AI-Specific"
+        },
+        {
+          "@id": "erm:riskcat/ai-bias-fairness",
+          "name": "AI-Bias-Fairness",
+          "description": "Risks from AI bias, discrimination, and unfair outcomes — EU AI Act Art 10, 15",
+          "group": "AI-Specific"
+        },
+        {
+          "@id": "erm:riskcat/ai-safety",
+          "name": "AI-Safety",
+          "description": "Risks from AI systems causing harm to individuals or the environment",
+          "group": "AI-Specific"
+        },
+        {
+          "@id": "erm:riskcat/ai-explainability",
+          "name": "AI-Explainability",
+          "description": "Risks from inability to explain AI decisions",
+          "group": "AI-Specific"
+        },
+        {
+          "@id": "erm:riskcat/ai-data-poisoning",
+          "name": "AI-Data-Poisoning",
+          "description": "Risks from malicious manipulation of training data",
+          "group": "AI-Specific"
+        },
+        {
+          "@id": "erm:riskcat/ai-adversarial",
+          "name": "AI-Adversarial",
+          "description": "Risks from adversarial attacks on AI systems",
+          "group": "AI-Specific"
+        },
+        {
+          "@id": "erm:riskcat/ai-hallucination",
+          "name": "AI-Hallucination",
+          "description": "Risks from AI-generated content that is factually incorrect or fabricated",
+          "group": "AI-Specific"
+        },
+        {
+          "@id": "erm:riskcat/supply-chain-ai",
+          "name": "Supply-Chain-AI",
+          "description": "Risks from AI dependency in supply chain — vendor model lock-in, data provenance",
+          "group": "AI-Specific"
+        },
+        {
+          "@id": "erm:riskcat/shadow-ai",
+          "name": "Shadow-AI",
+          "description": "Risks from unapproved or ungoverned AI usage",
+          "group": "AI-Specific"
+        },
+        {
+          "@id": "erm:riskcat/vendor-dependency",
+          "name": "Vendor-Dependency",
+          "description": "Risks from excessive reliance on single vendors",
+          "group": "Operational-Extended"
+        },
+        {
+          "@id": "erm:riskcat/skills-gap",
+          "name": "Skills-Gap",
+          "description": "Risks from workforce capability gaps and talent retention",
+          "group": "Operational-Extended"
+        },
+        {
+          "@id": "erm:riskcat/change-management",
+          "name": "Change-Management",
+          "description": "Risks from inadequate change management and transformation failure",
+          "group": "Operational-Extended"
+        },
+        {
+          "@id": "erm:riskcat/business-continuity",
+          "name": "Business-Continuity",
+          "description": "Risks to business continuity from disruption or disaster",
+          "group": "Operational-Extended"
+        },
+        {
+          "@id": "erm:riskcat/regulatory-change",
+          "name": "Regulatory-Change",
+          "description": "Risks from regulatory changes and compliance deadline pressures",
+          "group": "Operational-Extended"
+        },
+        {
+          "@id": "erm:riskcat/third-party",
+          "name": "Third-Party",
+          "description": "Risks from third-party relationships and outsourcing",
+          "group": "Operational-Extended"
+        }
+      ]
+    },
+    {
+      "@id": "erm:RiskResponse",
+      "@type": "DefinedTermSet",
+      "name": "RiskResponse",
+      "description": "Risk response strategies — ISO 31000:2018 clause 6.5.2",
+      "hasDefinedTerm": [
+        {
+          "@id": "erm:response/avoid",
+          "name": "Avoid",
+          "description": "Eliminate the risk by removing the activity or cause"
+        },
+        {
+          "@id": "erm:response/mitigate",
+          "name": "Mitigate",
+          "description": "Reduce likelihood or impact through controls"
+        },
+        {
+          "@id": "erm:response/transfer",
+          "name": "Transfer",
+          "description": "Transfer risk to a third party (insurance, outsourcing, contractual)"
+        },
+        {
+          "@id": "erm:response/accept",
+          "name": "Accept",
+          "description": "Accept the risk within appetite — requires appropriate authority"
+        },
+        {
+          "@id": "erm:response/exploit",
+          "name": "Exploit",
+          "description": "Actively pursue the risk for strategic opportunity (upside risk)"
+        }
+      ]
+    },
+    {
+      "@id": "erm:AppetiteLevel",
+      "@type": "DefinedTermSet",
+      "name": "AppetiteLevel",
+      "description": "Risk appetite levels from most conservative to most aggressive",
+      "hasDefinedTerm": [
+        {
+          "@id": "erm:appetite/averse",
+          "name": "Averse",
+          "description": "Avoidance of risk — accept only negligible residual risk"
+        },
+        {
+          "@id": "erm:appetite/minimalist",
+          "name": "Minimalist",
+          "description": "Accept minimal risk — preference for ultra-safe options"
+        },
+        {
+          "@id": "erm:appetite/cautious",
+          "name": "Cautious",
+          "description": "Accept moderate risk — preference for safe delivery"
+        },
+        {
+          "@id": "erm:appetite/open",
+          "name": "Open",
+          "description": "Accept higher risk — willing to consider all options"
+        },
+        {
+          "@id": "erm:appetite/hungry",
+          "name": "Hungry",
+          "description": "Actively seek risk — eager to pursue opportunities"
+        }
+      ]
+    },
+    {
+      "@id": "erm:ControlType",
+      "@type": "DefinedTermSet",
+      "name": "ControlType",
+      "description": "Control type classification by function",
+      "hasDefinedTerm": [
+        {
+          "@id": "erm:ctltype/preventive",
+          "name": "Preventive",
+          "description": "Prevents the risk event from occurring"
+        },
+        {
+          "@id": "erm:ctltype/detective",
+          "name": "Detective",
+          "description": "Detects the risk event when it occurs"
+        },
+        {
+          "@id": "erm:ctltype/corrective",
+          "name": "Corrective",
+          "description": "Corrects the impact after the risk event"
+        },
+        {
+          "@id": "erm:ctltype/deterrent",
+          "name": "Deterrent",
+          "description": "Deters threat actors from exploiting a vulnerability"
+        },
+        {
+          "@id": "erm:ctltype/compensating",
+          "name": "Compensating",
+          "description": "Alternative control when the primary is not feasible"
+        }
+      ]
+    },
+    {
+      "@id": "erm:ControlNature",
+      "@type": "DefinedTermSet",
+      "name": "ControlNature",
+      "description": "Control nature classification by implementation mechanism",
+      "hasDefinedTerm": [
+        {
+          "@id": "erm:ctlnat/technical",
+          "name": "Technical",
+          "description": "Technology-based control"
+        },
+        {
+          "@id": "erm:ctlnat/administrative",
+          "name": "Administrative",
+          "description": "Policy, procedure, or process-based control"
+        },
+        {
+          "@id": "erm:ctlnat/physical",
+          "name": "Physical",
+          "description": "Physical security control"
+        },
+        {
+          "@id": "erm:ctlnat/legal",
+          "name": "Legal",
+          "description": "Legal or contractual control"
+        }
+      ]
+    },
+    {
+      "@id": "erm:AutomationLevel",
+      "@type": "DefinedTermSet",
+      "name": "AutomationLevel",
+      "description": "Control automation spectrum from manual to AI-driven",
+      "hasDefinedTerm": [
+        {
+          "@id": "erm:auto/manual",
+          "name": "Manual",
+          "description": "Entirely human-operated"
+        },
+        {
+          "@id": "erm:auto/semi-automated",
+          "name": "Semi-Automated",
+          "description": "Partially automated with human oversight"
+        },
+        {
+          "@id": "erm:auto/automated",
+          "name": "Automated",
+          "description": "Fully automated execution"
+        },
+        {
+          "@id": "erm:auto/continuous",
+          "name": "Continuous",
+          "description": "Continuous automated monitoring and response"
+        },
+        {
+          "@id": "erm:auto/ai-driven",
+          "name": "AI-Driven",
+          "description": "AI/ML-driven adaptive control"
+        }
+      ]
+    },
+    {
+      "@id": "erm:ResilienceType",
+      "@type": "DefinedTermSet",
+      "name": "ResilienceType",
+      "description": "Resilience capability types including 2 AI-specific",
+      "hasDefinedTerm": [
+        {
+          "@id": "erm:restype/business-continuity",
+          "name": "Business-Continuity",
+          "description": "Business continuity planning — ISO 22301"
+        },
+        {
+          "@id": "erm:restype/disaster-recovery",
+          "name": "Disaster-Recovery",
+          "description": "IT disaster recovery with RTO/RPO targets"
+        },
+        {
+          "@id": "erm:restype/cyber-resilience",
+          "name": "Cyber-Resilience",
+          "description": "Cyber incident response and recovery — NIST CSF Recover"
+        },
+        {
+          "@id": "erm:restype/operational-resilience",
+          "name": "Operational-Resilience",
+          "description": "FCA/PRA operational resilience — IBS and impact tolerances"
+        },
+        {
+          "@id": "erm:restype/supply-chain-resilience",
+          "name": "Supply-Chain-Resilience",
+          "description": "Supply chain and third-party continuity"
+        },
+        {
+          "@id": "erm:restype/data-resilience",
+          "name": "Data-Resilience",
+          "description": "Data backup, replication, and integrity recovery"
+        },
+        {
+          "@id": "erm:restype/ai-model-failover",
+          "name": "AI-Model-Failover",
+          "description": "AI model failover to backup model or human-in-the-loop"
+        },
+        {
+          "@id": "erm:restype/ai-pipeline-recovery",
+          "name": "AI-Pipeline-Recovery",
+          "description": "AI/ML pipeline recovery — training data, model retraining, feature store"
+        }
+      ]
+    },
+    {
+      "@id": "erm:RiskLevel",
+      "@type": "DefinedTermSet",
+      "name": "RiskLevel",
+      "description": "5x5 matrix risk level classification",
+      "hasDefinedTerm": [
+        {
+          "@id": "erm:risklevel/low",
+          "name": "Low",
+          "description": "Risk score 1-4 — manage by routine procedures"
+        },
+        {
+          "@id": "erm:risklevel/medium",
+          "name": "Medium",
+          "description": "Risk score 5-9 — manage by specific monitoring"
+        },
+        {
+          "@id": "erm:risklevel/high",
+          "name": "High",
+          "description": "Risk score 10-15 — senior management attention"
+        },
+        {
+          "@id": "erm:risklevel/critical",
+          "name": "Critical",
+          "description": "Risk score 16-25 — board-level attention, immediate action"
+        }
+      ]
+    },
+    {
+      "@id": "erm:RiskVelocity",
+      "@type": "DefinedTermSet",
+      "name": "RiskVelocity",
+      "description": "Speed at which a risk could materialise",
+      "hasDefinedTerm": [
+        {
+          "@id": "erm:velocity/immediate",
+          "name": "Immediate",
+          "description": "Impact within hours"
+        },
+        {
+          "@id": "erm:velocity/days",
+          "name": "Days",
+          "description": "Impact within 1-7 days"
+        },
+        {
+          "@id": "erm:velocity/weeks",
+          "name": "Weeks",
+          "description": "Impact within 1-4 weeks"
+        },
+        {
+          "@id": "erm:velocity/months",
+          "name": "Months",
+          "description": "Impact over 1-6 months"
+        },
+        {
+          "@id": "erm:velocity/years",
+          "name": "Years",
+          "description": "Impact develops over years"
+        }
+      ]
+    },
+    {
+      "@id": "erm:AssessmentType",
+      "@type": "DefinedTermSet",
+      "name": "AssessmentType",
+      "description": "Types of enterprise risk assessment exercises",
+      "hasDefinedTerm": [
+        {
+          "@id": "erm:asstype/enterprise-wide",
+          "name": "Enterprise-Wide",
+          "description": "Full enterprise risk assessment"
+        },
+        {
+          "@id": "erm:asstype/domain-specific",
+          "name": "Domain-Specific",
+          "description": "Assessment focused on a specific risk domain"
+        },
+        {
+          "@id": "erm:asstype/project",
+          "name": "Project",
+          "description": "Project-level risk assessment"
+        },
+        {
+          "@id": "erm:asstype/vendor",
+          "name": "Vendor",
+          "description": "Vendor or third-party risk assessment"
+        },
+        {
+          "@id": "erm:asstype/ai-system",
+          "name": "AI-System",
+          "description": "AI system risk assessment — EU AI Act conformity"
+        },
+        {
+          "@id": "erm:asstype/regulatory-change",
+          "name": "Regulatory-Change",
+          "description": "Assessment triggered by regulatory change"
+        },
+        {
+          "@id": "erm:asstype/incident-triggered",
+          "name": "Incident-Triggered",
+          "description": "Post-incident risk reassessment"
+        }
+      ]
+    }
+  ],
+  "crossOntologyReferences": {
+    "bridges": [
+      {
+        "to": "grc-fw:",
+        "entity": "GRCContext",
+        "relationship": "governedBy",
+        "description": "RiskRegister governed by GRC governance context"
+      },
+      {
+        "to": "grc-fw:",
+        "entity": "GovernanceAssurance",
+        "relationship": "assessedByAssurance",
+        "description": "Risk assessed by governance assurance activities"
+      },
+      {
+        "to": "rmf:",
+        "entity": "Risk",
+        "relationship": "specialisedByInfoSecRisk",
+        "description": "Enterprise risk specialises into ISO 27005 infosec risk"
+      },
+      {
+        "to": "rmf:",
+        "entity": "RiskAssessment",
+        "relationship": "specialisedByInfoSecAssessment",
+        "description": "Enterprise assessment specialises into ISO 27005 assessment"
+      },
+      {
+        "to": "rmf:",
+        "entity": "Control",
+        "relationship": "specialisedByInfoSecControl",
+        "description": "Enterprise control specialises into ISO 27001 Annex A control"
+      },
+      {
+        "to": "ncsc-caf:",
+        "entity": "ContributingOutcome",
+        "relationship": "assessedByCAFOutcome",
+        "description": "Risk register assessed by CAF Objective A outcomes"
+      },
+      {
+        "to": "mcsb:",
+        "entity": "SecurityControl",
+        "relationship": "controlAlignsToBenchmark",
+        "description": "Enterprise control aligns to MCSB security benchmark"
+      },
+      {
+        "to": "vsom:",
+        "entity": "StrategicObjective",
+        "relationship": "riskThreatsObjective",
+        "description": "VSEM bridge — risk threatens strategic objective"
+      }
+    ],
+    "description": "ERM-ONT bridges UP to GRC-FW (governance oversight), DOWN to RMF-IS27005 (Tier 2 ISO 27005 specialisation), ACROSS to NCSC-CAF (cyber risk assessment) and MCSB (security benchmark), and VSEM to VSOM (risk-threatens-strategy)"
+  },
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-17",
+    "modifiedBy": "Azlan EA-AAA",
+    "changeNotes": "Initial release: 6 owned entities (RiskRegister, Risk, RiskAppetite, Control, ResilienceCapability, RiskAssessment). 19 relationships (11 internal + 8 cross-ontology including 1 VSEM bridge). 15 business rules. 11 enumerations. 8 join patterns. ISO 31000:2018 aligned. 23 risk categories including 9 AI-specific. Satisfies grc-fw:governsRisk and grc-fw:assuranceAssessesRisk forward references. Epic 30 F30.2.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-02-17",
+        "notes": "Initial release. Enterprise risk management aligned to ISO 31000:2018, COBIT APO12/EDM03, NCSC Cyber Gov Code Principle A, FCA/PRA Operational Resilience, DORA Chapter II, NIS2 Article 21. Tier 1 parent for RMF-IS27005 (Tier 2). Single authoritative source for enterprise controls across GRC. Epic 30 F30.2."
+      }
+    ]
+  },
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "ERM-ONT",
+  "oaa:series": "RCSG-SERIES",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of RiskRegister within this ontology?",
+      "targetEntities": [
+        "erm:RiskRegister"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of Risk within this ontology?",
+      "targetEntities": [
+        "erm:Risk"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of RiskAppetite within this ontology?",
+      "targetEntities": [
+        "erm:RiskAppetite"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of Control within this ontology?",
+      "targetEntities": [
+        "erm:Control"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of ResilienceCapability within this ontology?",
+      "targetEntities": [
+        "erm:ResilienceCapability"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of RiskAssessment within this ontology?",
+      "targetEntities": [
+        "erm:RiskAssessment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of GRCContext within this ontology?",
+      "targetEntities": [
+        "grc-fw:GRCContext"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of GovernanceAssurance within this ontology?",
+      "targetEntities": [
+        "grc-fw:GovernanceAssurance"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of Risk (RMF-IS27005) within this ontology?",
+      "targetEntities": [
+        "rmf:Risk"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of Control (RMF-IS27005) within this ontology?",
+      "targetEntities": [
+        "rmf:Control"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the role and purpose of RiskAssessment (RMF-IS27005) within this ontology?",
+      "targetEntities": [
+        "rmf:RiskAssessment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-012",
+      "question": "What is the role and purpose of ContributingOutcome within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:ContributingOutcome"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-013",
+      "question": "What is the role and purpose of SecurityControl within this ontology?",
+      "targetEntities": [
+        "mcsb:SecurityControl"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-014",
+      "question": "What is the role and purpose of StrategicObjective within this ontology?",
+      "targetEntities": [
+        "vsom:StrategicObjective"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

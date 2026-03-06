@@ -1,0 +1,2400 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ds": "https://platformcore.io/ontology/ds/",
+    "efs": "https://platformcore.io/ontology/efs/",
+    "emc": "https://platformcore.io/ontology/emc/",
+    "pe": "https://platformcore.io/ontology/pe/",
+    "org-ctx": "https://platformcore.io/ontology/org-context/",
+    "rrr": "https://platformcore.io/ontology/rrr/",
+    "grc": "https://platformcore.io/ontology/grc/",
+    "ppm": "https://oaa-ontology.org/v6/ppm/"
+  },
+  "@id": "https://platformcore.io/ontology/ds/schema",
+  "@type": "owl:Ontology",
+  "name": "Design System (DS) Ontology",
+  "description": "End-to-end design system ontology modelling the three-tier token cascade (Primitive → Semantic → Component), Figma source integration, multi-brand variant support, atomic design patterns, theme mode management, design rule codification, and application skeleton architecture. v2.0.0 adds Application, AppZone, NavLayer, NavItem, and ZoneComponent entities enabling ontology-driven dynamic UI construction. v3.0.0 makes navigation a first-class ontology concern: (1) Action entity type models every UI action with function reference, guard conditions, state sync, role-specific hover hints, and WCAG accessibility metadata; (2) NavItems reference Actions via ds:executesAction and carry ds:stateBinding for data-driven UI sync; (3) AppZones carry ds:domSelector for zone-to-DOM binding; (4) NavItems support hierarchical parent-child relationships via ds:parentNavItem for drill-down navigation and breadcrumb trails; (5) NavLayers are reusable components that can be placed in multiple zones, pages, modules, application skeletons, and across frameworks via ds:navLayerInZone (1..*); (6) NavItems carry ds:cssClass for styling overrides. Eliminates all manual JS sync maps — adding a new button requires only JSONLD data changes, zero JS code changes. Follows the 4-tier EMC cascade (PFC → PFI → Product → App) for skeleton inheritance. Bridges to EFS for feature realisation, EMC for PFI instance configuration and brand/skeleton resolution, PE for design workflow governance, and ORG-CONTEXT for brand correlation. Aligned with W3C Design Tokens Community Group specification, WCAG 2.1, and Brad Frost's Atomic Design methodology.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "3.1.0",
+  "oaa:previousVersion": "3.0.0",
+  "oaa:domain": "Design System",
+  "oaa:status": "Production",
+  "version": "3.1.0",
+  "dateCreated": "2026-02-09",
+  "dateModified": "2026-03-04",
+  "creator": {
+    "@type": "Organization",
+    "name": "Azlan EA-AAA",
+    "description": "Enterprise Architecture Advisory & Automation"
+  },
+  "oaa:imports": [
+    {
+      "@id": "efs:schema",
+      "name": "EFS-ONT",
+      "version": "2.0.0",
+      "description": "Enterprise Framework Services providing Feature entity for design component to feature realisation mapping",
+      "importedEntities": [
+        "efs:Feature"
+      ]
+    },
+    {
+      "@id": "emc:schema",
+      "name": "EMC-ONT",
+      "version": "2.0.0",
+      "description": "Enterprise Model Composition providing InstanceConfiguration for PFI-driven brand and design system resolution",
+      "importedEntities": [
+        "emc:InstanceConfiguration"
+      ]
+    },
+    {
+      "@id": "pe:schema",
+      "name": "PE-ONT",
+      "version": "3.0.0",
+      "description": "Process Engineering providing Process entity for design workflow governance",
+      "importedEntities": [
+        "pe:Process"
+      ]
+    },
+    {
+      "@id": "org-ctx:schema",
+      "name": "ORG-CONTEXT-ONT",
+      "version": "2.3.0",
+      "description": "Organization Context providing Brand entity for design system to organizational brand correlation",
+      "importedEntities": [
+        "org-ctx:Brand"
+      ]
+    },
+    {
+      "@id": "rrr:schema",
+      "name": "RRR-ONT",
+      "version": "3.0.0",
+      "description": "Roles, Responsibilities, Results providing Role entity for RBAC-driven navigation access control — Action allowedRoles references actual organizational role definitions",
+      "importedEntities": [
+        "rrr:Role"
+      ]
+    },
+    {
+      "@id": "grc:schema",
+      "name": "GRC-FW-ONT",
+      "version": "3.0.0",
+      "description": "GRC Governance Framework providing Control entity for security governance of UI action access — links navigation RBAC to compliance controls",
+      "importedEntities": [
+        "grc:Control"
+      ]
+    },
+    {
+      "@id": "ppm:schema",
+      "name": "PPM-ONT",
+      "version": "4.1.0",
+      "description": "Portfolio, Programme & Project Management providing Project and WorkBreakdownStructure entities for skeleton-to-delivery traceability",
+      "importedEntities": [
+        "ppm:Project",
+        "ppm:WorkBreakdownStructure"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-DS-001",
+      "name": "Design Component Feature Realisation Bridge",
+      "description": "Design components realise EFS features, connecting UI implementation to agile delivery backlog items",
+      "joinPath": "ds:DesignComponent → ds:realizesFeature → efs:Feature",
+      "useCase": "Trace which UI components implement which product features"
+    },
+    {
+      "patternId": "JP-DS-002",
+      "name": "Design System PFI Configuration Bridge",
+      "description": "EMC instance configuration determines which design system, brand variant, and Figma source to load for a given PFI product",
+      "joinPath": "ds:DesignSystem → ds:configuredByInstance → emc:InstanceConfiguration",
+      "useCase": "PFI-driven brand resolution: EMC tells which DS config URL, Figma file key, and tokens to load"
+    },
+    {
+      "patternId": "JP-DS-003",
+      "name": "Design Workflow Process Bridge",
+      "description": "Design system extraction, validation, and deployment governed by PE process engineering workflows",
+      "joinPath": "ds:DesignSystem → ds:governedByProcess → pe:Process",
+      "useCase": "Govern the Figma → Extract → Validate → Store → Render pipeline via PE process"
+    },
+    {
+      "patternId": "JP-DS-004",
+      "name": "Organization to Figma Traceability Bridge",
+      "description": "Correlate organizations to design systems and Figma source files via brand ownership",
+      "joinPath": "org-ctx:Brand → ds:ownedByBrand → ds:DesignSystem → ds:hasVariant → ds:BrandVariant → ds:hasFigmaSource → ds:FigmaSource",
+      "useCase": "Trace from any org to its design systems, brand variants, and Figma source URLs"
+    },
+    {
+      "patternId": "JP-DS-005",
+      "name": "Design Rule to Component Constraint Bridge",
+      "description": "Component design rules constrain specific DesignComponent token bindings and rendering behaviour",
+      "joinPath": "ds:DesignComponent → ds:hasComponentRule → ds:ComponentDesignRule → ds:constrainsToken → ds:ComponentToken",
+      "useCase": "Trace from any component to the design rules constraining its token bindings and rendering"
+    },
+    {
+      "patternId": "JP-SPEC-001",
+      "name": "Zone Realises Epic Bridge",
+      "description": "Application zone realises an EFS Epic — the zone exists to deliver this epic's scope",
+      "joinPath": "ds:AppZone → ds:realizesEpic → efs:Epic",
+      "useCase": "Answer: Which epic does this zone deliver? Trace from UI structure to product scope.",
+      "oaa:addedInVersion": "3.1.0"
+    },
+    {
+      "patternId": "JP-SPEC-002",
+      "name": "Zone Realises Features Bridge",
+      "description": "Application zone realises one or more EFS Features from its parent epic",
+      "joinPath": "ds:AppZone → ds:realizesFeatures → efs:Feature",
+      "useCase": "Answer: Which features does this zone implement? Enumerate feature coverage per zone.",
+      "oaa:addedInVersion": "3.1.0"
+    },
+    {
+      "patternId": "JP-SPEC-003",
+      "name": "Zone Gated By Project Bridge",
+      "description": "Application zone is gated by a PPM Project for delivery governance",
+      "joinPath": "ds:AppZone → ds:gatedByProject → ppm:Project",
+      "useCase": "Answer: Which project governs this zone? Trace from UI structure to delivery plan.",
+      "oaa:addedInVersion": "3.1.0"
+    },
+    {
+      "patternId": "JP-SPEC-004",
+      "name": "Zone Target Milestone Bridge",
+      "description": "Application zone targets a PPM WBS milestone for delivery",
+      "joinPath": "ds:AppZone → ds:targetMilestone → ppm:WorkBreakdownStructure",
+      "useCase": "Answer: When does this zone ship? Time-based scoping of skeleton construction.",
+      "oaa:addedInVersion": "3.1.0"
+    },
+    {
+      "patternId": "JP-SPEC-005",
+      "name": "NavItem Realises Feature Bridge",
+      "description": "Navigation item realises an EFS Feature — button/toggle delivers a specific product feature",
+      "joinPath": "ds:NavItem → ds:realizesFeature → efs:Feature",
+      "useCase": "Answer: Which feature does this button deliver? Fine-grain nav-to-backlog traceability.",
+      "oaa:addedInVersion": "3.1.0"
+    },
+    {
+      "patternId": "JP-SPEC-006",
+      "name": "ZoneComponent Realises Story Bridge",
+      "description": "Zone component realises an EFS Story — finest-grain traceability from UI component to user story",
+      "joinPath": "ds:ZoneComponent → ds:realizesStory → efs:Story",
+      "useCase": "Answer: Which user story does this component implement? Component-level backlog mapping.",
+      "oaa:addedInVersion": "3.1.0"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "ds:DesignSystem",
+      "@type": "rdfs:Class",
+      "name": "DesignSystem",
+      "description": "Root container for a design system definition. Encapsulates the token taxonomy (primitives, semantics, components), UI components, brand variants, theme modes, design rules, and Figma source bindings. Each PFI product instance resolves to one active DesignSystem via EMC InstanceConfiguration. Aligned with W3C Design Tokens Community Group specification.",
+      "oaa:properties": [
+        {
+          "name": "systemId",
+          "type": "xsd:string",
+          "description": "Unique identifier for the design system",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "description": "Human-readable name (e.g., 'BAIV Design System')",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "xsd:string",
+          "description": "Semantic version of the design system",
+          "required": true
+        },
+        {
+          "name": "namespace",
+          "type": "xsd:anyURI",
+          "description": "Namespace URI for this design system's tokens",
+          "required": true
+        },
+        {
+          "name": "themeModeSupport",
+          "type": "xsd:boolean",
+          "description": "Whether the design system supports light/dark theme modes",
+          "required": true
+        },
+        {
+          "name": "configUrl",
+          "type": "xsd:anyURI",
+          "description": "URL to the published DS configuration JSON file for runtime resolution",
+          "required": false
+        },
+        {
+          "name": "isActive",
+          "type": "xsd:boolean",
+          "description": "Whether this is the currently active design system (only one active per context)",
+          "required": true
+        },
+        {
+          "name": "pfiInstanceName",
+          "type": "xsd:string",
+          "description": "PF-Instance identifier this design system belongs to (e.g. PFI-VHF, PFI-BAIV). Enables filtering without traversing EMC.",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:TokenCategory",
+      "@type": "rdfs:Class",
+      "name": "TokenCategory",
+      "description": "A grouping of design tokens by type or intent. At the primitive tier: colors, spacing, radius, typography, shadows. At the semantic tier: surface, text, border, accent, feedback. At the component tier: grouped by component name (button, card, input, etc.). Aligned with W3C Design Tokens $type grouping.",
+      "oaa:properties": [
+        {
+          "name": "categoryName",
+          "type": "xsd:string",
+          "description": "Category identifier (e.g., 'colors', 'spacing', 'surface', 'button')",
+          "required": true
+        },
+        {
+          "name": "tier",
+          "type": "ds:TokenTier",
+          "description": "Which tier this category belongs to (Primitive, Semantic, or Component)",
+          "required": true
+        },
+        {
+          "name": "defaultMutabilityTier",
+          "type": "ds:MutabilityTier",
+          "description": "Default mutability classification for tokens in this category. Spacing and radius categories default to PF-Core; colour categories default to PF-Instance. Individual tokens may override this default.",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "description": "Purpose and scope of this token category",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:PrimitiveToken",
+      "@type": "rdfs:Class",
+      "name": "PrimitiveToken",
+      "description": "A raw, context-free design value at the base tier of the token cascade. Primitives define the foundational palette: colour scales (e.g., blue-50 through blue-950), spacing units (xs through 3xl), border radii, typography values (font families, sizes, weights, line heights), and shadows. Aligned with W3C Design Tokens $value specification.",
+      "oaa:properties": [
+        {
+          "name": "tokenName",
+          "type": "xsd:string",
+          "description": "Dot-notation token path (e.g., 'color.blue.500', 'spacing.md')",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "xsd:string",
+          "description": "Raw CSS value (e.g., 'hsl(217 91% 60%)', '1rem', '0.5rem')",
+          "required": true
+        },
+        {
+          "name": "valueType",
+          "type": "ds:TokenValueType",
+          "description": "Type classification of the token value",
+          "required": true
+        },
+        {
+          "name": "mutabilityTier",
+          "type": "ds:MutabilityTier",
+          "description": "Whether this token is structurally immutable (PF-Core) or brand-variable (PF-Instance). Spacing and radius primitives are PF-Core; colour primitives are PF-Instance.",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "description": "Human-readable description of the primitive",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:SemanticToken",
+      "@type": "rdfs:Class",
+      "name": "SemanticToken",
+      "description": "An intent-based design token at the middle tier of the cascade. Semantic tokens convey design purpose rather than raw values, referencing primitives via the $ref/alias pattern. Examples: text.primary → color.neutral.900, surface.default → color.neutral.50, accent.primary → color.teal.600. Each semantic token can have light and dark mode variants. Aligned with W3C Design Tokens alias specification.",
+      "oaa:properties": [
+        {
+          "name": "tokenName",
+          "type": "xsd:string",
+          "description": "Intent-based token path (e.g., 'text.primary', 'surface.default', 'accent.primary')",
+          "required": true
+        },
+        {
+          "name": "lightModeValue",
+          "type": "xsd:string",
+          "description": "Resolved value or primitive reference for light mode",
+          "required": true
+        },
+        {
+          "name": "darkModeValue",
+          "type": "xsd:string",
+          "description": "Resolved value or primitive reference for dark mode",
+          "required": false
+        },
+        {
+          "name": "mutabilityTier",
+          "type": "ds:MutabilityTier",
+          "description": "Whether this token is structurally immutable (PF-Core) or brand-variable (PF-Instance). Most semantic tokens are PF-Instance (brand-variable). Structural semantic tokens (e.g. container surfaces) may be classified PF-Core by the Design Director.",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "description": "Design intent description",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:ComponentToken",
+      "@type": "rdfs:Class",
+      "name": "ComponentToken",
+      "description": "A component-specific design token at the top tier of the cascade. Component tokens bind to specific UI component parts and states, referencing semantic tokens for consistency. Examples: button.primary.background → accent.primary, card.default.border → border.subtle, input.focus.ring → accent.primaryHover. Enables component-level theming without direct primitive access.",
+      "oaa:properties": [
+        {
+          "name": "tokenName",
+          "type": "xsd:string",
+          "description": "Component-scoped token path (e.g., 'button.primary.background')",
+          "required": true
+        },
+        {
+          "name": "componentName",
+          "type": "xsd:string",
+          "description": "Target component (e.g., 'button', 'card', 'input')",
+          "required": true
+        },
+        {
+          "name": "partOrState",
+          "type": "xsd:string",
+          "description": "Component part or interaction state (e.g., 'background', 'hover', 'disabled', 'focusRing')",
+          "required": true
+        },
+        {
+          "name": "mutabilityTier",
+          "type": "ds:MutabilityTier",
+          "description": "Whether this token is structurally immutable (PF-Core) or brand-variable (PF-Instance). Dimensional tokens (radius, height, width, padding) are PF-Core; colour tokens are PF-Instance.",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "description": "Usage context for this component token",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:DesignComponent",
+      "@type": "rdfs:Class",
+      "name": "DesignComponent",
+      "description": "A UI component definition within the design system, classified by atomic design level (atom, molecule, organism, template, page). Components consume component tokens and can be generated as React/CSS code for Shadcn/ui integration or as Figma Make input. Components may optionally allow token overrides for contextual customisation.",
+      "oaa:properties": [
+        {
+          "name": "componentName",
+          "type": "xsd:string",
+          "description": "Component identifier (e.g., 'Button', 'Card', 'InputGroup')",
+          "required": true
+        },
+        {
+          "name": "category",
+          "type": "xsd:string",
+          "description": "UI category (e.g., 'Form', 'Feedback', 'Layout', 'Navigation', 'Data')",
+          "required": true
+        },
+        {
+          "name": "baseComponent",
+          "type": "xsd:string",
+          "description": "Underlying framework component (e.g., 'shadcn/ui Button', 'radix Checkbox')",
+          "required": false
+        },
+        {
+          "name": "allowsOverrides",
+          "type": "xsd:boolean",
+          "description": "Whether the component accepts tokenOverrides prop for contextual customisation",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "description": "Component purpose and usage guidelines",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:BrandVariant",
+      "@type": "rdfs:Class",
+      "name": "BrandVariant",
+      "description": "A brand-specific configuration within the design system. Each PFI product (BAIV, W4M, co-branded clients) has a BrandVariant that binds to a Figma source file and may override tokens at any tier. Brand switching is achieved by swapping the active BrandVariant, which changes the Figma source URL and token overrides while preserving the component architecture.",
+      "oaa:properties": [
+        {
+          "name": "brandId",
+          "type": "xsd:string",
+          "description": "Unique brand identifier (e.g., 'baiv', 'w4m', 'azlan-pfc')",
+          "required": true
+        },
+        {
+          "name": "brandName",
+          "type": "xsd:string",
+          "description": "Human-readable brand name (e.g., 'Be AI Visible', 'Work4Me')",
+          "required": true
+        },
+        {
+          "name": "isActive",
+          "type": "xsd:boolean",
+          "description": "Whether this brand variant is currently active",
+          "required": true
+        },
+        {
+          "name": "tokenOverrides",
+          "type": "xsd:string",
+          "description": "JSON path to brand-specific token overrides file or inline overrides",
+          "required": false
+        },
+        {
+          "name": "overridableScope",
+          "type": "ds:MutabilityTier",
+          "description": "Which mutability tier this variant is permitted to override. Must be PF-Instance — brands cannot override PF-Core structural tokens (spacing, radius, type scale, component dimensions).",
+          "required": true
+        },
+        {
+          "name": "namespace",
+          "type": "xsd:anyURI",
+          "description": "Brand-specific namespace for token scoping",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:FigmaSource",
+      "@type": "rdfs:Class",
+      "name": "FigmaSource",
+      "description": "Figma file source metadata for design token extraction. Each BrandVariant binds to one FigmaSource specifying the Figma file key, file name, variable collections, and sync state. Extraction is performed via Figma MCP tools (get_variable_defs, get_design_context, get_screenshot). Sync staleness tracked to ensure tokens stay current with design.",
+      "oaa:properties": [
+        {
+          "name": "fileKey",
+          "type": "xsd:string",
+          "description": "Figma file key identifier (e.g., 'bXCyfNwzc8Z9kEeFIeIB8C')",
+          "required": true
+        },
+        {
+          "name": "fileName",
+          "type": "xsd:string",
+          "description": "Human-readable Figma file name (e.g., 'BAIV Figma Variables v3')",
+          "required": true
+        },
+        {
+          "name": "fileUrl",
+          "type": "xsd:anyURI",
+          "description": "Full Figma file URL for MCP access",
+          "required": true
+        },
+        {
+          "name": "lastSyncedAt",
+          "type": "xsd:dateTime",
+          "description": "Timestamp of last successful token extraction sync",
+          "required": false
+        },
+        {
+          "name": "syncStatus",
+          "type": "ds:SyncStatus",
+          "description": "Current sync state (Synced, Stale, NeverSynced, Error)",
+          "required": true
+        },
+        {
+          "name": "variableCollections",
+          "type": "xsd:string",
+          "description": "Comma-separated list of Figma variable collection names to extract",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:ThemeMode",
+      "@type": "rdfs:Class",
+      "name": "ThemeMode",
+      "description": "A theme mode configuration specifying how semantic tokens resolve for a given display context. Standard modes are Light and Dark (mapped to CSS prefers-color-scheme). System mode auto-detects from OS settings. HighContrast mode supports accessibility requirements. Each mode defines alternate token resolution paths.",
+      "oaa:properties": [
+        {
+          "name": "modeType",
+          "type": "ds:ThemeModeType",
+          "description": "Mode type (Light, Dark, System, HighContrast)",
+          "required": true
+        },
+        {
+          "name": "isDefault",
+          "type": "xsd:boolean",
+          "description": "Whether this is the default mode when no preference is detected",
+          "required": true
+        },
+        {
+          "name": "cssMediaQuery",
+          "type": "xsd:string",
+          "description": "CSS media query that activates this mode (e.g., '(prefers-color-scheme: dark)')",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "description": "Mode purpose and behaviour description",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:DesignPattern",
+      "@type": "rdfs:Class",
+      "name": "DesignPattern",
+      "description": "An atomic design classification level defining the complexity hierarchy of UI components. Follows Brad Frost's Atomic Design methodology: Atoms (basic HTML elements, single tokens), Molecules (simple component groups), Organisms (complex UI sections), Templates (page-level wireframes), Pages (specific instances with real content). Used to classify DesignComponents and govern composition rules.",
+      "oaa:properties": [
+        {
+          "name": "level",
+          "type": "ds:AtomicDesignLevel",
+          "description": "Atomic design level classification",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "description": "Pattern name (e.g., 'Form Field Group', 'Navigation Bar', 'Dashboard Layout')",
+          "required": true
+        },
+        {
+          "name": "composableFrom",
+          "type": "xsd:string",
+          "description": "Comma-separated list of lower-level patterns this pattern can compose from",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "description": "Pattern usage guidelines and composition rules",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:PageDefinition",
+      "@type": "rdfs:Class",
+      "name": "PageDefinition",
+      "description": "A page-level design composition specifying which components appear in which slots with resolved token bindings. Pages compose organisms and templates into navigable views. Aligned with Figma Make page token outputs.",
+      "oaa:properties": [
+        {
+          "name": "pageId",
+          "type": "xsd:string",
+          "description": "Unique page identifier (slug)",
+          "required": true
+        },
+        {
+          "name": "pageName",
+          "type": "xsd:string",
+          "description": "Human-readable page name",
+          "required": true
+        },
+        {
+          "name": "route",
+          "type": "xsd:string",
+          "description": "URL route path (e.g. /home, /dashboard)",
+          "required": false
+        },
+        {
+          "name": "componentSlots",
+          "type": "xsd:string",
+          "description": "JSON array of {slotName, componentRef, tokenOverrides}",
+          "required": true
+        },
+        {
+          "name": "brand",
+          "type": "xsd:string",
+          "description": "Brand identifier this page belongs to",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "xsd:string",
+          "description": "Semantic version of this page definition",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "description": "Page purpose and content description",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:TemplateDefinition",
+      "@type": "rdfs:Class",
+      "name": "TemplateDefinition",
+      "description": "A template-level wireframe specifying structural layout slots without brand-specific token resolution. Templates define the skeleton that pages instantiate with real content and brand tokens.",
+      "oaa:properties": [
+        {
+          "name": "templateId",
+          "type": "xsd:string",
+          "description": "Unique template identifier (slug)",
+          "required": true
+        },
+        {
+          "name": "templateName",
+          "type": "xsd:string",
+          "description": "Human-readable template name",
+          "required": true
+        },
+        {
+          "name": "layoutSlots",
+          "type": "xsd:string",
+          "description": "JSON array of {slotName, slotType, requiredLevel}",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "xsd:string",
+          "description": "Semantic version of this template definition",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "description": "Template structure and usage guidelines",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:DesignRule",
+      "@type": "rdfs:Class",
+      "name": "DesignRule",
+      "description": "A design rule governing visual rendering, styling constraints, or WCAG compliance for DS entities. Rules codify the DR-* normative specifications (DR-GRAPH, DR-EDGE, DR-SERIES, DR-BRAND, DR-DS, DR-FONT, DR-STATUS, DR-CANVAS) as first-class ontology instances. Each rule has a condition-action-severity pattern and can target components, tokens, or the system globally. PF-Core rules are immutable across brands; PF-Instance rules can be overridden per BrandVariant.",
+      "oaa:properties": [
+        {
+          "name": "ruleId",
+          "type": "xsd:string",
+          "description": "Unique rule identifier following DR-* convention (e.g., 'DR-GRAPH-001', 'DR-CANVAS-001', 'DR-DS-003')",
+          "required": true
+        },
+        {
+          "name": "ruleName",
+          "type": "xsd:string",
+          "description": "Human-readable rule name (e.g., 'Canvas Background Immutability')",
+          "required": true
+        },
+        {
+          "name": "ruleCategory",
+          "type": "ds:RuleCategory",
+          "description": "Category matching DR-* prefix: Graph, Edge, Series, Brand, DS, Font, Status, Canvas, Component, WCAG",
+          "required": true
+        },
+        {
+          "name": "scope",
+          "type": "ds:RuleScope",
+          "description": "Where the rule applies: GlobalSystem, ComponentDefinition, ComponentInstance, BrandVariant, TokenTier",
+          "required": true
+        },
+        {
+          "name": "condition",
+          "type": "xsd:string",
+          "description": "When the rule is evaluated — IF clause (e.g., 'IF luminance < 0.05', 'IF ComponentToken exists')",
+          "required": true
+        },
+        {
+          "name": "requirement",
+          "type": "xsd:string",
+          "description": "What the rule enforces — THEN clause with normative MUST/SHOULD (e.g., 'THEN contrast ratio MUST be >= 4.5:1')",
+          "required": true
+        },
+        {
+          "name": "severity",
+          "type": "xsd:string",
+          "description": "Rule violation severity: error (blocks save), warning (advisory), info (informational)",
+          "required": true
+        },
+        {
+          "name": "priority",
+          "type": "xsd:integer",
+          "description": "Evaluation priority (1 = highest, evaluated first). Lower numbers take precedence in conflict resolution.",
+          "required": true
+        },
+        {
+          "name": "wcagLevel",
+          "type": "xsd:string",
+          "description": "WCAG conformance level if applicable: A, AA, or AAA. Null for non-accessibility rules.",
+          "required": false
+        },
+        {
+          "name": "mutabilityTier",
+          "type": "ds:MutabilityTier",
+          "description": "PF-Core (immutable across all brands) or PF-Instance (can be overridden per BrandVariant)",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "description": "Detailed explanation of the rule's purpose, rationale, and WCAG implications",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:ComponentDesignRule",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": {
+        "@id": "ds:DesignRule"
+      },
+      "name": "ComponentDesignRule",
+      "description": "A design rule scoped to a specific DesignComponent or component category. Extends DesignRule with component-targeting and constraint-typing properties. Used to codify per-component rendering constraints such as minimum contrast ratios, allowed border-radius values, required token bindings, and cross-component dependency rules. Supports instance-versioned rules where brands carry version-specific constraints.",
+      "oaa:properties": [
+        {
+          "name": "targetComponent",
+          "type": "@id",
+          "description": "Reference to the specific DesignComponent this rule applies to, or null for category-level rules",
+          "required": false
+        },
+        {
+          "name": "targetCategory",
+          "type": "ds:AtomicDesignLevel",
+          "description": "Atomic design level this rule applies to: Atom, Molecule, Organism, Template, Page. Applies to all components at this level when targetComponent is null.",
+          "required": false
+        },
+        {
+          "name": "constraintType",
+          "type": "ds:ConstraintType",
+          "description": "Type of constraint: MinValue, MaxValue, AllowedValues, Immutable, DependsOn, ContrastRatio, LuminanceRange, MustReference",
+          "required": true
+        },
+        {
+          "name": "constraintTarget",
+          "type": "xsd:string",
+          "description": "The property or token being constrained (e.g., 'ds:tokenName', 'min-width', 'contrast-ratio', 'border-radius', 'background')",
+          "required": true
+        },
+        {
+          "name": "constraintValue",
+          "type": "xsd:string",
+          "description": "The constraint threshold or set of allowed values (e.g., '4.5', '8px,12px,16px', 'true')",
+          "required": true
+        }
+      ]
+    },
+    {
+      "@id": "efs:Feature",
+      "@type": "rdfs:Class",
+      "oaa:externalOntology": "EFS-ONT",
+      "name": "Feature",
+      "description": "External: EFS Feature — distinct functionality delivering user or business value, decomposable into user stories. Design components realise features."
+    },
+    {
+      "@id": "emc:InstanceConfiguration",
+      "@type": "rdfs:Class",
+      "oaa:externalOntology": "EMC-ONT",
+      "name": "InstanceConfiguration",
+      "description": "External: EMC PFI Instance Configuration — pre-defined configuration specifying which ontologies, design system, and instance data to load for a given PFI product."
+    },
+    {
+      "@id": "pe:Process",
+      "@type": "rdfs:Class",
+      "oaa:externalOntology": "PE-ONT",
+      "name": "Process",
+      "description": "External: PE Process — a defined sequence of activities and gates governing how work progresses. Design system extraction/validation/deployment follows PE process workflows."
+    },
+    {
+      "@id": "org-ctx:Brand",
+      "@type": "rdfs:Class",
+      "oaa:externalOntology": "ORG-CONTEXT-ONT",
+      "name": "Brand",
+      "description": "External: ORG-CONTEXT Brand — organizational brand carrying market identity and value proposition. Design systems bind to brands for visual identity governance."
+    },
+    {
+      "@id": "rrr:Role",
+      "@type": "rdfs:Class",
+      "oaa:externalOntology": "RRR-ONT",
+      "name": "Role",
+      "description": "External: RRR Role — organizational role definition (e.g. admin, author, viewer, designer, pfi-manager). Referenced by Action.allowedRoles for RBAC kinetic layer control of navigation access. Links UI access decisions to actual organizational role governance."
+    },
+    {
+      "@id": "grc:Control",
+      "@type": "rdfs:Class",
+      "oaa:externalOntology": "GRC-FW-ONT",
+      "name": "Control",
+      "description": "External: GRC Control — security/compliance control governing access to functionality. Actions that modify data, export sensitive information, or change system configuration should reference the GRC control that authorises them."
+    },
+    {
+      "@id": "ds:Application",
+      "@type": "rdfs:Class",
+      "name": "Application",
+      "description": "Root container for an application skeleton definition. Defines the structural layout (zones, navigation layers, component tree) for a specific platform application. The skeleton is encoded as JSONLD instance data and read at runtime to dynamically construct the UI. Each PFI product resolves to one Application via EMC InstanceConfiguration. Follows the 4-tier cascade: PFC base skeleton inherited and extended by PFI, Product, and App tiers.",
+      "oaa:properties": [
+        {
+          "name": "appId",
+          "type": "xsd:string",
+          "description": "Unique application identifier (e.g. 'pfc-visualiser', 'baiv-dashboard')",
+          "required": true
+        },
+        {
+          "name": "appName",
+          "type": "xsd:string",
+          "description": "Human-readable application name",
+          "required": true
+        },
+        {
+          "name": "version",
+          "type": "xsd:string",
+          "description": "Semantic version of the application skeleton",
+          "required": true
+        },
+        {
+          "name": "appType",
+          "type": "ds:AppType",
+          "description": "Classification: SPA, MPA, or Hybrid",
+          "required": true
+        },
+        {
+          "name": "rootRoute",
+          "type": "xsd:string",
+          "description": "Default route path (e.g. '/')",
+          "required": false
+        },
+        {
+          "name": "cascadeTier",
+          "type": "ds:CascadeTier",
+          "description": "Which EMC cascade tier this skeleton belongs to (PFC, PFI, Product, App)",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "description": "Application purpose and scope",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:AppZone",
+      "@type": "rdfs:Class",
+      "name": "AppZone",
+      "description": "A spatial region within the application layout. Zones have a behaviour type (Fixed, Floating, Sliding, Overlay, Conditional), position, dimensions, and visibility rules. The zone registry is read at runtime to construct the DOM skeleton. Each zone consumes a set of design tokens and may host navigation layers and component placements.",
+      "oaa:properties": [
+        {
+          "name": "zoneId",
+          "type": "xsd:string",
+          "description": "Zone code (e.g. 'Z1', 'Z6', 'Z4b', 'Z18')",
+          "required": true
+        },
+        {
+          "name": "zoneName",
+          "type": "xsd:string",
+          "description": "Human-readable zone label (e.g. 'Header', 'Graph Canvas', 'Sidebar Details')",
+          "required": true
+        },
+        {
+          "name": "zoneType",
+          "type": "ds:ZoneType",
+          "description": "Behaviour classification: Fixed, Floating, Sliding, Overlay, Conditional",
+          "required": true
+        },
+        {
+          "name": "position",
+          "type": "xsd:string",
+          "description": "CSS position hint (e.g. 'top', 'right', 'left', 'center', 'bottom-left', 'bottom-right', 'cursor')",
+          "required": false
+        },
+        {
+          "name": "defaultWidth",
+          "type": "xsd:string",
+          "description": "Default width (e.g. '380px', '100%', 'auto')",
+          "required": false
+        },
+        {
+          "name": "defaultVisible",
+          "type": "xsd:boolean",
+          "description": "Whether zone is visible on initial load",
+          "required": true
+        },
+        {
+          "name": "visibilityCondition",
+          "type": "xsd:string",
+          "description": "State expression controlling visibility (e.g. 'state.authoringMode === true', 'state.activeInstanceId !== null')",
+          "required": false
+        },
+        {
+          "name": "zIndex",
+          "type": "xsd:integer",
+          "description": "CSS z-index stacking order",
+          "required": false
+        },
+        {
+          "name": "cascadeTier",
+          "type": "ds:CascadeTier",
+          "description": "PFC (immutable across all apps), PFI (instance-configurable), Product, or App level",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "description": "Zone purpose and content summary",
+          "required": false
+        },
+        {
+          "name": "domSelector",
+          "type": "xsd:string",
+          "description": "CSS selector for zone-to-DOM binding at runtime (e.g. '#dynamic-nav-bar', '#sidebar', 'header'). Read by the skeleton loader to resolve zone highlight overlays and multi-zone nav rendering. Eliminates manual ZONE_DOM_SELECTORS JS maps.",
+          "required": false
+        },
+        {
+          "name": "realizesEpic",
+          "type": "xsd:string",
+          "description": "Reference to the EFS Epic @id that this zone realises. Links skeleton structure to product scope — answers 'Which epic does this zone deliver?'. Populated by pfc-zone-allocator skill.",
+          "required": false,
+          "oaa:addedInVersion": "3.1.0"
+        },
+        {
+          "name": "realizesFeatures",
+          "type": "xsd:string",
+          "description": "Array of EFS Feature @ids that this zone realises. A zone may deliver multiple features from its parent epic. Populated by pfc-zone-allocator skill.",
+          "required": false,
+          "oaa:isArray": true,
+          "oaa:addedInVersion": "3.1.0"
+        },
+        {
+          "name": "gatedByProject",
+          "type": "xsd:string",
+          "description": "Reference to the PPM Project @id that gates this zone's delivery. Links skeleton structure to delivery timeline — answers 'Which project governs this zone?'. Populated by pfc-zone-allocator skill.",
+          "required": false,
+          "oaa:addedInVersion": "3.1.0"
+        },
+        {
+          "name": "targetMilestone",
+          "type": "xsd:string",
+          "description": "Reference to the PPM WBS milestone @id that this zone targets for delivery. Enables time-based scoping — answers 'When does this zone ship?'.",
+          "required": false,
+          "oaa:addedInVersion": "3.1.0"
+        },
+        {
+          "name": "specStatus",
+          "type": "ds:SpecStatus",
+          "description": "Application specification lifecycle status of this zone: planned (in spec), in-design (Figma/Pencil), in-dev (code started), shipped (live), deferred (deprioritised). Populated by pfc-spec-composer and updated through delivery lifecycle.",
+          "required": false,
+          "oaa:addedInVersion": "3.1.0"
+        }
+      ]
+    },
+    {
+      "@id": "ds:NavLayer",
+      "@type": "rdfs:Class",
+      "name": "NavLayer",
+      "description": "A navigation capability layer grouping related UI actions. L1 = Main Capabilities, L2 = View Controls, L3 = Context/Mode + Management/Admin, L4 = Custom PFI Filters. NavLayers are rendered into their host zone(s) at runtime based on the active cascade tier. A layer can be placed in multiple zones via the navLayerInZone relationship (cardinality 1..*), making it a reusable navigation component across pages, modules, and application tiers. PFI and Product tiers can add NavItems to L4 without modifying PFC layers.",
+      "oaa:properties": [
+        {
+          "name": "layerId",
+          "type": "xsd:string",
+          "description": "Layer code (e.g. 'L1', 'L2', 'L3-context', 'L3-admin', 'L4')",
+          "required": true
+        },
+        {
+          "name": "layerName",
+          "type": "xsd:string",
+          "description": "Human-readable label (e.g. 'Main Capabilities', 'View Controls')",
+          "required": true
+        },
+        {
+          "name": "layerLevel",
+          "type": "xsd:integer",
+          "description": "Numeric level (1-4) controlling render priority and grouping",
+          "required": true
+        },
+        {
+          "name": "renderOrder",
+          "type": "xsd:integer",
+          "description": "Order within the host zone (lower = rendered first)",
+          "required": true
+        },
+        {
+          "name": "reusable",
+          "type": "xsd:boolean",
+          "description": "Whether this nav layer is a reusable component that can be placed in multiple zones, pages, modules, application skeletons, or even across different application frameworks. When true, the layer's navLayerInZone can reference multiple zones and the layer renders identically in each. Enables shared navigation patterns (e.g. a common export toolbar) used across the PFC Visualiser, BAIV dashboard, W4M SaaS app etc. Default false for single-zone layers.",
+          "required": false
+        },
+        {
+          "name": "cascadeTier",
+          "type": "ds:CascadeTier",
+          "description": "Which cascade tier this layer belongs to",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "description": "Layer purpose and grouping rationale",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "ds:NavItem",
+      "@type": "rdfs:Class",
+      "name": "NavItem",
+      "description": "A single navigation action within a NavLayer. Renders as a button, toggle, dropdown, select, separator, or chip in the toolbar. NavItems reference the JS function they invoke and can carry visibility conditions for context-sensitive display. Keyboard shortcuts and icons are optional. PFI/Product/App tiers can add NavItems to any layer.",
+      "oaa:properties": [
+        {
+          "name": "itemId",
+          "type": "xsd:string",
+          "description": "Unique item identifier (e.g. 'nav-load-registry', 'nav-physics-toggle', 'nav-pfi-custom-1')",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "xsd:string",
+          "description": "Button/control label text",
+          "required": true
+        },
+        {
+          "name": "itemType",
+          "type": "ds:NavItemType",
+          "description": "Control type: Button, Toggle, Dropdown, Select, Separator, Chip",
+          "required": true
+        },
+        {
+          "name": "action",
+          "type": "xsd:string",
+          "description": "JS function name to invoke on activation (e.g. 'toggleAudit', 'togglePhysics', 'loadRegistry')",
+          "required": true
+        },
+        {
+          "name": "icon",
+          "type": "xsd:string",
+          "description": "Unicode emoji or icon class reference",
+          "required": false
+        },
+        {
+          "name": "shortcut",
+          "type": "xsd:string",
+          "description": "Keyboard shortcut (e.g. 'P', 'Ctrl+L', 'Escape')",
+          "required": false
+        },
+        {
+          "name": "visibilityCondition",
+          "type": "xsd:string",
+          "description": "State expression for conditional display (e.g. 'state.activeView === \"mermaid\"')",
+          "required": false
+        },
+        {
+          "name": "renderOrder",
+          "type": "xsd:integer",
+          "description": "Order within the parent NavLayer (lower = first)",
+          "required": true
+        },
+        {
+          "name": "stateBinding",
+          "type": "xsd:string",
+          "description": "State property path for automatic UI synchronisation. For Toggle items: maps to aria-pressed (e.g. 'state.physicsEnabled'). For Chip items: comparison value matched against state.activeView (e.g. 'graph'). For Button items: disabled condition (e.g. 'state.authoringUndoLength === 0'). Eliminates hardcoded sync logic in syncDynamicNavState — all state sync is data-driven from this property.",
+          "required": false
+        },
+        {
+          "name": "cssClass",
+          "type": "xsd:string",
+          "description": "Optional CSS class name(s) applied to this nav item's DOM element for styling overrides (e.g. 'nav-exit-warning' for the red Exit Authoring button). Multiple classes separated by spaces.",
+          "required": false
+        },
+        {
+          "name": "realizesFeature",
+          "type": "xsd:string",
+          "description": "Reference to the EFS Feature @id that this nav item realises. Links individual navigation actions to product features — answers 'Which feature does this button deliver?'. Populated by pfc-zone-allocator skill.",
+          "required": false,
+          "oaa:addedInVersion": "3.1.0"
+        },
+        {
+          "name": "cascadeTier",
+          "type": "ds:CascadeTier",
+          "description": "Which cascade tier owns this item. PFI/Product/App tiers can add or hide items.",
+          "required": true
+        }
+      ]
+    },
+    {
+      "@id": "ds:ZoneComponent",
+      "@type": "rdfs:Class",
+      "name": "ZoneComponent",
+      "description": "A component placement binding a DesignComponent to an AppZone with optional token overrides. Encodes the component tree within each zone: which components render, in what order, with what configuration. Supports the quasi-OO inheritance model where components inherit tokens from their zone and can override specific bindings.",
+      "oaa:properties": [
+        {
+          "name": "placementId",
+          "type": "xsd:string",
+          "description": "Unique placement identifier (e.g. 'zc-z1-header-title', 'zc-z9-sidebar-card')",
+          "required": true
+        },
+        {
+          "name": "renderOrder",
+          "type": "xsd:integer",
+          "description": "Order within the zone (lower = rendered first)",
+          "required": true
+        },
+        {
+          "name": "slotName",
+          "type": "xsd:string",
+          "description": "Named slot within the zone (e.g. 'primary', 'secondary', 'footer')",
+          "required": false
+        },
+        {
+          "name": "tokenOverrides",
+          "type": "xsd:string",
+          "description": "JSON string of token overrides for this placement context",
+          "required": false
+        },
+        {
+          "name": "visibilityCondition",
+          "type": "xsd:string",
+          "description": "State expression for conditional rendering",
+          "required": false
+        },
+        {
+          "name": "realizesStory",
+          "type": "xsd:string",
+          "description": "Reference to the EFS Story @id that this zone component realises. Links individual UI components to user stories — answers 'Which story does this component implement?'. Populated by pfc-zone-allocator skill.",
+          "required": false,
+          "oaa:addedInVersion": "3.1.0"
+        },
+        {
+          "name": "cascadeTier",
+          "type": "ds:CascadeTier",
+          "description": "Which cascade tier owns this placement",
+          "required": true
+        }
+      ]
+    },
+    {
+      "@id": "ds:Action",
+      "@type": "rdfs:Class",
+      "name": "Action",
+      "description": "A discrete UI action invocable by a navigation item. Models the runtime behaviour of toolbar buttons, toggles, and dropdown items. Each Action has a unique actionId, a reference to the JS function it invokes (functionRef), optional parameter typing, guard conditions that prevent execution when prerequisites are unmet, state sync configuration for post-execution UI updates, and accessibility metadata. Replaces the manual ACTION_REGISTRY JS object with ontology-driven action resolution — the skeleton loader resolves window[functionRef] at wire-up time.",
+      "oaa:properties": [
+        {
+          "name": "actionId",
+          "type": "xsd:string",
+          "description": "Unique action identifier (e.g. 'action-toggleAuditPanel', 'action-exportPNG')",
+          "required": true
+        },
+        {
+          "name": "actionName",
+          "type": "xsd:string",
+          "description": "Human-readable action name (e.g. 'Toggle Audit Panel', 'Export PNG')",
+          "required": true
+        },
+        {
+          "name": "functionRef",
+          "type": "xsd:string",
+          "description": "JS function name exposed on window scope for runtime resolution (e.g. 'toggleAudit', 'exportPNG'). The loader resolves window[functionRef] at wire-up time.",
+          "required": true
+        },
+        {
+          "name": "parameterType",
+          "type": "ds:ActionParameterType",
+          "description": "Parameter passing convention: None (no param), String (action:param colon syntax), Select (value from <select> element)",
+          "required": true
+        },
+        {
+          "name": "guardCondition",
+          "type": "xsd:string",
+          "description": "State expression that must evaluate to true for the action to execute (e.g. 'state.currentData !== null'). When false, the action is blocked and guardMessage is shown. Null means no guard.",
+          "required": false
+        },
+        {
+          "name": "guardMessage",
+          "type": "xsd:string",
+          "description": "User-facing alert message shown when guardCondition blocks execution (e.g. 'Load an ontology first')",
+          "required": false
+        },
+        {
+          "name": "triggersSyncAfter",
+          "type": "xsd:boolean",
+          "description": "Whether to automatically call syncDynamicNavState() after this action executes. Toggles and mode switches set this true to update aria-pressed, chip active states, and visibility conditions.",
+          "required": true
+        },
+        {
+          "name": "accessibilityHint",
+          "type": "xsd:string",
+          "description": "ARIA label / alt text for screen readers (e.g. 'Toggle the OAA compliance audit panel')",
+          "required": false
+        },
+        {
+          "name": "hoverHint",
+          "type": "xsd:string",
+          "description": "Default tooltip text shown on mouse hover (e.g. 'Open the OAA compliance audit panel to review gate results'). Displayed for all users when no role-specific hint matches.",
+          "required": false
+        },
+        {
+          "name": "roleHints",
+          "type": "xsd:string",
+          "description": "JSON object mapping user roles to role-specific hover tooltip text. Keys are role identifiers (e.g. 'admin', 'viewer', 'author', 'designer', 'pfi-manager'). Values are hint strings. At runtime the loader checks the current user role against these keys and displays the matching hint instead of the default hoverHint. Example: {\"admin\": \"Configure audit thresholds and review gate overrides\", \"viewer\": \"View compliance results — read-only\", \"author\": \"Run audit before saving your ontology changes\"}",
+          "required": false
+        },
+        {
+          "name": "allowedRoles",
+          "type": "xsd:string",
+          "description": "Comma-separated list of user role identifiers permitted to execute this action (e.g. 'admin,author,designer'). Defines the RBAC kinetic layer — which users can access and trigger this UI function. When set, the runtime loader checks state.userRole against this list before enabling the action. If the user's role is not in the list, the button is rendered disabled or hidden (controlled by rbacDenyBehaviour). When null/empty, the action is available to all roles (no RBAC restriction).",
+          "required": false
+        },
+        {
+          "name": "rbacDenyBehaviour",
+          "type": "ds:RBACDenyBehaviour",
+          "description": "How the UI handles denied RBAC access: Hide (remove from toolbar entirely), Disable (render greyed-out with tooltip explaining required role), or Readonly (visible but non-interactive). Defaults to Disable when not specified.",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "ds:hasTokenCategory",
+      "@type": "owl:ObjectProperty",
+      "name": "hasTokenCategory",
+      "description": "Design system organises tokens into categories by type and tier",
+      "domainIncludes": "ds:DesignSystem",
+      "rangeIncludes": "ds:TokenCategory",
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ds:hasPrimitive",
+      "@type": "owl:ObjectProperty",
+      "name": "hasPrimitive",
+      "description": "Token category contains primitive tokens (raw design values)",
+      "domainIncludes": "ds:TokenCategory",
+      "rangeIncludes": "ds:PrimitiveToken",
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ds:referencesPrimitive",
+      "@type": "owl:ObjectProperty",
+      "name": "referencesPrimitive",
+      "description": "Semantic token references a primitive token for its resolved value — the core cascade mechanism. Aligned with W3C Design Tokens $ref/alias pattern.",
+      "domainIncludes": "ds:SemanticToken",
+      "rangeIncludes": "ds:PrimitiveToken",
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ds:referencesSemantic",
+      "@type": "owl:ObjectProperty",
+      "name": "referencesSemantic",
+      "description": "Component token references a semantic token for design-intent consistency — second level of the cascade mechanism",
+      "domainIncludes": "ds:ComponentToken",
+      "rangeIncludes": "ds:SemanticToken",
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ds:hasComponent",
+      "@type": "owl:ObjectProperty",
+      "name": "hasComponent",
+      "description": "Design system contains UI component definitions",
+      "domainIncludes": "ds:DesignSystem",
+      "rangeIncludes": "ds:DesignComponent",
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ds:consumesTokens",
+      "@type": "owl:ObjectProperty",
+      "name": "consumesTokens",
+      "description": "Design component consumes component tokens for its visual properties (background, border, text, spacing, etc.)",
+      "domainIncludes": "ds:DesignComponent",
+      "rangeIncludes": "ds:ComponentToken",
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ds:hasVariant",
+      "@type": "owl:ObjectProperty",
+      "name": "hasVariant",
+      "description": "Design system supports multiple brand variants (BAIV, W4M, co-branded clients)",
+      "domainIncludes": "ds:DesignSystem",
+      "rangeIncludes": "ds:BrandVariant",
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ds:hasFigmaSource",
+      "@type": "owl:ObjectProperty",
+      "name": "hasFigmaSource",
+      "description": "Brand variant binds to a Figma file as single source of truth for design tokens",
+      "domainIncludes": "ds:BrandVariant",
+      "rangeIncludes": "ds:FigmaSource",
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ds:supportsMode",
+      "@type": "owl:ObjectProperty",
+      "name": "supportsMode",
+      "description": "Design system supports theme modes (light, dark, system, high-contrast)",
+      "domainIncludes": "ds:DesignSystem",
+      "rangeIncludes": "ds:ThemeMode",
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ds:hasDesignLevel",
+      "@type": "owl:ObjectProperty",
+      "name": "hasDesignLevel",
+      "description": "Design component is classified at an atomic design level (atom, molecule, organism, template, page)",
+      "domainIncludes": "ds:DesignComponent",
+      "rangeIncludes": "ds:DesignPattern",
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ds:realizesFeature",
+      "@type": "owl:ObjectProperty",
+      "name": "realizesFeature",
+      "description": "Design component realises an EFS feature specification, connecting UI implementation to agile delivery backlog",
+      "domainIncludes": "ds:DesignComponent",
+      "rangeIncludes": "efs:Feature",
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "EFS-ONT"
+    },
+    {
+      "@id": "ds:configuredByInstance",
+      "@type": "owl:ObjectProperty",
+      "name": "configuredByInstance",
+      "description": "Design system configuration is determined by EMC PFI instance configuration — specifying which brand, Figma source, and token file URL to load",
+      "domainIncludes": "ds:DesignSystem",
+      "rangeIncludes": "emc:InstanceConfiguration",
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "EMC-ONT"
+    },
+    {
+      "@id": "ds:governedByProcess",
+      "@type": "owl:ObjectProperty",
+      "name": "governedByProcess",
+      "description": "Design system extraction, validation, and deployment workflow governed by PE process engineering",
+      "domainIncludes": "ds:DesignSystem",
+      "rangeIncludes": "pe:Process",
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "PE-ONT"
+    },
+    {
+      "@id": "ds:ownedByBrand",
+      "@type": "owl:ObjectProperty",
+      "name": "ownedByBrand",
+      "description": "Design system is owned by an organizational brand, correlating visual identity to organizational structure",
+      "domainIncludes": "ds:DesignSystem",
+      "rangeIncludes": "org-ctx:Brand",
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "ORG-CONTEXT-ONT"
+    },
+    {
+      "@id": "ds:hasPage",
+      "@type": "owl:ObjectProperty",
+      "name": "hasPage",
+      "description": "Design system contains page definitions specifying component composition per route",
+      "domainIncludes": "ds:DesignSystem",
+      "rangeIncludes": "ds:PageDefinition",
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ds:instantiatesTemplate",
+      "@type": "owl:ObjectProperty",
+      "name": "instantiatesTemplate",
+      "description": "Page instantiates a template by populating its layout slots with brand-specific content and tokens",
+      "domainIncludes": "ds:PageDefinition",
+      "rangeIncludes": "ds:TemplateDefinition",
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ds:containsComponent",
+      "@type": "owl:ObjectProperty",
+      "name": "containsComponent",
+      "description": "Page or template contains design components in named slots",
+      "domainIncludes": [
+        "ds:PageDefinition",
+        "ds:TemplateDefinition"
+      ],
+      "rangeIncludes": "ds:DesignComponent",
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ds:hasDesignRule",
+      "@type": "owl:ObjectProperty",
+      "name": "hasDesignRule",
+      "description": "Design system contains design rules governing rendering, styling, and compliance. System-level rules apply globally across all components and tokens.",
+      "domainIncludes": "ds:DesignSystem",
+      "rangeIncludes": "ds:DesignRule",
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ds:hasComponentRule",
+      "@type": "owl:ObjectProperty",
+      "name": "hasComponentRule",
+      "description": "Design component has component-specific design rules constraining its token bindings, rendering, or behaviour",
+      "domainIncludes": "ds:DesignComponent",
+      "rangeIncludes": "ds:ComponentDesignRule",
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ds:constrainsToken",
+      "@type": "owl:ObjectProperty",
+      "name": "constrainsToken",
+      "description": "Design rule constrains specific semantic or component tokens (e.g., minimum contrast ratio for a token binding)",
+      "domainIncludes": "ds:DesignRule",
+      "rangeIncludes": [
+        "ds:SemanticToken",
+        "ds:ComponentToken"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ds:overriddenByBrand",
+      "@type": "owl:ObjectProperty",
+      "name": "overriddenByBrand",
+      "description": "PF-Instance design rules can be overridden by specific brand variants. Only rules with mutabilityTier = PF-Instance are eligible for brand override.",
+      "domainIncludes": "ds:DesignRule",
+      "rangeIncludes": "ds:BrandVariant",
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ds:hasZone",
+      "@type": "owl:ObjectProperty",
+      "name": "hasZone",
+      "description": "Application contains spatial zones that compose its layout. Each zone is a bounded UI region with its own behaviour type, position, and token consumption pattern.",
+      "domainIncludes": "ds:Application",
+      "rangeIncludes": "ds:AppZone",
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ds:hasNavLayer",
+      "@type": "owl:ObjectProperty",
+      "name": "hasNavLayer",
+      "description": "Application defines navigation capability layers (L1–L4) that group related UI actions into the toolbar hierarchy",
+      "domainIncludes": "ds:Application",
+      "rangeIncludes": "ds:NavLayer",
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ds:hasNavItem",
+      "@type": "owl:ObjectProperty",
+      "name": "hasNavItem",
+      "description": "Navigation layer contains individual navigation actions (buttons, toggles, dropdowns) rendered in render order",
+      "domainIncludes": "ds:NavLayer",
+      "rangeIncludes": "ds:NavItem",
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ds:placedInZone",
+      "@type": "owl:ObjectProperty",
+      "name": "placedInZone",
+      "description": "Zone component placement is bound to a specific application zone",
+      "domainIncludes": "ds:ZoneComponent",
+      "rangeIncludes": "ds:AppZone",
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ds:placesComponent",
+      "@type": "owl:ObjectProperty",
+      "name": "placesComponent",
+      "description": "Zone component placement renders a specific DesignComponent within its host zone",
+      "domainIncludes": "ds:ZoneComponent",
+      "rangeIncludes": "ds:DesignComponent",
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ds:zoneTokenSet",
+      "@type": "owl:ObjectProperty",
+      "name": "zoneTokenSet",
+      "description": "Application zone consumes tokens from specific token categories. Enables zone-level token scoping and the Token Map panel's zone-based browsing.",
+      "domainIncludes": "ds:AppZone",
+      "rangeIncludes": "ds:TokenCategory",
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "ds:navLayerInZone",
+      "@type": "owl:ObjectProperty",
+      "name": "navLayerInZone",
+      "description": "Navigation layer renders within one or more host zones. Single-zone layers (cardinality 1) are typical — e.g. L1 renders in Z2 Toolbar. Reusable layers (ds:reusable = true) can be placed in multiple zones, pages, modules, or even across application skeletons and frameworks — enabling shared navigation patterns like a common export bar used across the PFC Visualiser, BAIV dashboard, and W4M SaaS app.",
+      "domainIncludes": "ds:NavLayer",
+      "rangeIncludes": "ds:AppZone",
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "ds:actionRequiresRole",
+      "@type": "owl:ObjectProperty",
+      "name": "actionRequiresRole",
+      "description": "Action requires the user to hold one of these RRR roles for execution. Links the RBAC kinetic layer to actual organizational role definitions in RRR-ONT. At runtime, the loader checks state.userRole against the set of required roles. If no roles are specified, the action is unrestricted.",
+      "domainIncludes": "ds:Action",
+      "rangeIncludes": "rrr:Role",
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    },
+    {
+      "@id": "ds:actionGovernedByControl",
+      "@type": "owl:ObjectProperty",
+      "name": "actionGovernedByControl",
+      "description": "Action is governed by a GRC security/compliance control. Exports, data modifications, system configuration changes, and PFI lifecycle operations should reference the GRC control that authorises them. Enables audit trail: which compliance control covers this UI capability.",
+      "domainIncludes": "ds:Action",
+      "rangeIncludes": "grc:Control",
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "GRC-FW-ONT"
+    },
+    {
+      "@id": "ds:parentNavItem",
+      "@type": "owl:ObjectProperty",
+      "name": "parentNavItem",
+      "description": "Hierarchical parent of this navigation item. Creates a tree structure where sub-items reference their parent for drill-down navigation, breadcrumb trails, and nested menu structures. Export dropdown sub-items (exportPNG, exportSVG, etc.) reference the Export parent. Authoring-mode items can reference their conceptual top-level ancestor. Enables traversal from any leaf nav item up to its root, and from any parent down to all its children via inverse query.",
+      "domainIncludes": "ds:NavItem",
+      "rangeIncludes": "ds:NavItem",
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ds:appUsesDesignSystem",
+      "@type": "owl:ObjectProperty",
+      "name": "appUsesDesignSystem",
+      "description": "Application skeleton consumes tokens from this design system for all zone and component styling",
+      "domainIncludes": "ds:Application",
+      "rangeIncludes": "ds:DesignSystem",
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ds:configuredByApp",
+      "@type": "owl:ObjectProperty",
+      "name": "configuredByApp",
+      "description": "Application skeleton resolution is determined by EMC PFI instance configuration — specifying which base app, PFI overrides, and product overrides to load",
+      "domainIncludes": "ds:Application",
+      "rangeIncludes": "emc:InstanceConfiguration",
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "EMC-ONT"
+    },
+    {
+      "@id": "ds:extendsApp",
+      "@type": "owl:ObjectProperty",
+      "name": "extendsApp",
+      "description": "Application skeleton extends a base skeleton from a lower cascade tier. PFI extends PFC, Product extends PFI, App extends Product. The extension adds, overrides, or hides zones, nav items, and components while preserving the base structure.",
+      "domainIncludes": "ds:Application",
+      "rangeIncludes": "ds:Application",
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ds:belongsToLayer",
+      "@type": "owl:ObjectProperty",
+      "name": "belongsToLayer",
+      "description": "Inverse of ds:hasNavItem. NavItem declares its parent NavLayer for flat-graph JSONLD authoring. Used in instance data where NavItems are top-level @graph entries rather than nested under their NavLayer.",
+      "domainIncludes": "ds:NavItem",
+      "rangeIncludes": "ds:NavLayer",
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "ds:executesAction",
+      "@type": "owl:ObjectProperty",
+      "name": "executesAction",
+      "description": "Navigation item executes this action on activation. Links a NavItem to its Action entity for ontology-driven action resolution. The runtime loader reads this relationship to wire click/change handlers, check guards, resolve function references, and apply accessibility hints. Non-Separator NavItems should have exactly one executesAction relationship. Replaces the ds:action string property with a proper entity reference.",
+      "domainIncludes": "ds:NavItem",
+      "rangeIncludes": "ds:Action",
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "ds:realizesEpic",
+      "@type": "owl:ObjectProperty",
+      "name": "realizesEpic",
+      "description": "Application zone realises an EFS Epic — the zone exists to deliver this epic's scope. Bridges skeleton structure to product backlog. Populated by pfc-zone-allocator skill from EFS PRD output.",
+      "domainIncludes": "ds:AppZone",
+      "rangeIncludes": "efs:Epic",
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "EFS-ONT",
+      "oaa:addedInVersion": "3.1.0"
+    },
+    {
+      "@id": "ds:realizesFeatures",
+      "@type": "owl:ObjectProperty",
+      "name": "realizesFeatures",
+      "description": "Application zone realises one or more EFS Features from its parent epic. A dashboard zone may deliver multiple features (charts, filters, drill-downs).",
+      "domainIncludes": "ds:AppZone",
+      "rangeIncludes": "efs:Feature",
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "EFS-ONT",
+      "oaa:addedInVersion": "3.1.0"
+    },
+    {
+      "@id": "ds:gatedByProject",
+      "@type": "owl:ObjectProperty",
+      "name": "gatedByProject",
+      "description": "Application zone is gated by a PPM Project — delivery timeline and resource allocation governed by this project. Bridges skeleton structure to delivery plan.",
+      "domainIncludes": "ds:AppZone",
+      "rangeIncludes": "ppm:Project",
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "PPM-ONT",
+      "oaa:addedInVersion": "3.1.0"
+    },
+    {
+      "@id": "ds:targetMilestone",
+      "@type": "owl:ObjectProperty",
+      "name": "targetMilestone",
+      "description": "Application zone targets a PPM WBS milestone for delivery. Enables time-based scoping and Gantt-view of skeleton construction.",
+      "domainIncludes": "ds:AppZone",
+      "rangeIncludes": "ppm:WorkBreakdownStructure",
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "PPM-ONT",
+      "oaa:addedInVersion": "3.1.0"
+    },
+    {
+      "@id": "ds:realizesFeature",
+      "@type": "owl:ObjectProperty",
+      "name": "realizesFeature",
+      "description": "Navigation item realises an EFS Feature — this button/toggle exists to deliver a specific product feature. Bridges nav actions to product scope.",
+      "domainIncludes": "ds:NavItem",
+      "rangeIncludes": "efs:Feature",
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "EFS-ONT",
+      "oaa:addedInVersion": "3.1.0"
+    },
+    {
+      "@id": "ds:realizesStory",
+      "@type": "owl:ObjectProperty",
+      "name": "realizesStory",
+      "description": "Zone component realises an EFS Story — this UI component implements a specific user story. Finest-grain traceability from skeleton to backlog.",
+      "domainIncludes": "ds:ZoneComponent",
+      "rangeIncludes": "efs:Story",
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "EFS-ONT",
+      "oaa:addedInVersion": "3.1.0"
+    }
+  ],
+  "enumerations": [
+    {
+      "@id": "ds:MutabilityTier",
+      "@type": "oaa:Enumeration",
+      "name": "MutabilityTier",
+      "description": "Token mutability classification for brand override governance. PF-Core tokens are structurally immutable across all brands (spacing, radius, typography scale, component dimensions). PF-Instance tokens are brand-variable (colours, font families, semantic colour values).",
+      "values": [
+        "PF-Core",
+        "PF-Instance"
+      ]
+    },
+    {
+      "@id": "ds:TokenTier",
+      "@type": "oaa:Enumeration",
+      "name": "TokenTier",
+      "description": "Three-tier token cascade hierarchy",
+      "values": [
+        "Primitive",
+        "Semantic",
+        "Component"
+      ]
+    },
+    {
+      "@id": "ds:AtomicDesignLevel",
+      "@type": "oaa:Enumeration",
+      "name": "AtomicDesignLevel",
+      "description": "Brad Frost's Atomic Design component complexity hierarchy",
+      "values": [
+        "Atom",
+        "Molecule",
+        "Organism",
+        "Template",
+        "Page"
+      ]
+    },
+    {
+      "@id": "ds:ThemeModeType",
+      "@type": "oaa:Enumeration",
+      "name": "ThemeModeType",
+      "description": "Supported theme mode types mapped to CSS prefers-color-scheme and accessibility modes",
+      "values": [
+        "Light",
+        "Dark",
+        "System",
+        "HighContrast"
+      ]
+    },
+    {
+      "@id": "ds:TokenValueType",
+      "@type": "oaa:Enumeration",
+      "name": "TokenValueType",
+      "description": "W3C Design Tokens $type classification for primitive token values",
+      "values": [
+        "Color",
+        "Spacing",
+        "Radius",
+        "Typography",
+        "Shadow",
+        "Border",
+        "Opacity"
+      ]
+    },
+    {
+      "@id": "ds:SyncStatus",
+      "@type": "oaa:Enumeration",
+      "name": "SyncStatus",
+      "description": "Figma source synchronisation state tracking",
+      "values": [
+        "Synced",
+        "Stale",
+        "NeverSynced",
+        "Error"
+      ]
+    },
+    {
+      "@id": "ds:RuleScope",
+      "@type": "oaa:Enumeration",
+      "name": "RuleScope",
+      "description": "Where a design rule applies within the design system hierarchy. Determines evaluation context and override eligibility.",
+      "values": [
+        "GlobalSystem",
+        "ComponentDefinition",
+        "ComponentInstance",
+        "BrandVariant",
+        "TokenTier"
+      ]
+    },
+    {
+      "@id": "ds:RuleCategory",
+      "@type": "oaa:Enumeration",
+      "name": "RuleCategory",
+      "description": "Category classification matching the DR-* prefix convention used in DESIGN-SYSTEM-SPEC.md normative rules",
+      "values": [
+        "Graph",
+        "Edge",
+        "Series",
+        "Brand",
+        "DS",
+        "Font",
+        "Status",
+        "Canvas",
+        "Container",
+        "Component",
+        "WCAG"
+      ]
+    },
+    {
+      "@id": "ds:ConstraintType",
+      "@type": "oaa:Enumeration",
+      "name": "ConstraintType",
+      "description": "Type of constraint applied by a ComponentDesignRule to a specific component property or token binding",
+      "values": [
+        "MinValue",
+        "MaxValue",
+        "AllowedValues",
+        "Immutable",
+        "DependsOn",
+        "ContrastRatio",
+        "LuminanceRange",
+        "MustReference"
+      ]
+    },
+    {
+      "@id": "ds:ZoneType",
+      "@type": "oaa:Enumeration",
+      "name": "ZoneType",
+      "description": "Behaviour classification for application zones. Fixed zones are always rendered in place. Floating zones overlay the canvas. Sliding zones animate in from a screen edge. Overlay zones sit above all content (modals, tooltips). Conditional zones render only when a state condition is met.",
+      "values": [
+        "Fixed",
+        "Floating",
+        "Sliding",
+        "Overlay",
+        "Conditional"
+      ]
+    },
+    {
+      "@id": "ds:CascadeTier",
+      "@type": "oaa:Enumeration",
+      "name": "CascadeTier",
+      "description": "4-tier EMC cascade for application skeleton inheritance. PFC = Platform Foundation Core (immutable base). PFI = PF-Instance (adds instance-specific zones/nav). Product = product-level customisation. App = final app-level overrides. Each tier inherits from the previous and can add or override items but cannot modify PFC items marked as PF-Core.",
+      "values": [
+        "PFC",
+        "PFI",
+        "Product",
+        "App"
+      ]
+    },
+    {
+      "@id": "ds:SpecStatus",
+      "@type": "oaa:Enumeration",
+      "name": "SpecStatus",
+      "description": "Application specification lifecycle status for zones. Tracks each zone through the strategy-to-delivery pipeline from initial specification through design, development, and deployment.",
+      "values": [
+        "planned",
+        "in-design",
+        "in-dev",
+        "shipped",
+        "deferred"
+      ],
+      "oaa:addedInVersion": "3.1.0"
+    },
+    {
+      "@id": "ds:NavItemType",
+      "@type": "oaa:Enumeration",
+      "name": "NavItemType",
+      "description": "Control types for navigation items rendered in toolbar layers. Button = single click action. Toggle = on/off state. Dropdown = expandable menu. Select = choice list. Separator = visual divider. Chip = compact toggleable tag (e.g. view tab chips).",
+      "values": [
+        "Button",
+        "Toggle",
+        "Dropdown",
+        "Select",
+        "Separator",
+        "Chip"
+      ]
+    },
+    {
+      "@id": "ds:AppType",
+      "@type": "oaa:Enumeration",
+      "name": "AppType",
+      "description": "Application architecture classification. SPA = Single Page Application (current visualiser). MPA = Multi Page Application. Hybrid = SPA with server-side routing for some pages.",
+      "values": [
+        "SPA",
+        "MPA",
+        "Hybrid"
+      ]
+    },
+    {
+      "@id": "ds:RBACDenyBehaviour",
+      "@type": "oaa:Enumeration",
+      "name": "RBACDenyBehaviour",
+      "description": "How the UI handles a navigation action when the current user's role is not in the allowedRoles list. Controls the kinetic layer RBAC presentation: Hide removes the control entirely (user never sees it), Disable renders it greyed-out with a tooltip explaining the required role, Readonly shows the control visually but prevents interaction.",
+      "values": [
+        "Hide",
+        "Disable",
+        "Readonly"
+      ]
+    },
+    {
+      "@id": "ds:ActionParameterType",
+      "@type": "oaa:Enumeration",
+      "name": "ActionParameterType",
+      "description": "How parameters are passed to an action's function at runtime. None = no parameters (most buttons). String = parameterised colon syntax where the action string contains 'actionId:param' (e.g. view mode switches). Select = value taken from a <select> element's current selection (e.g. layout picker, instance picker, brand picker).",
+      "values": [
+        "None",
+        "String",
+        "Select"
+      ]
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "ds:rule-semantic-must-ref-primitive",
+      "name": "SemanticMustReferencePrimitive",
+      "description": "Semantic tokens must reference a primitive token to maintain the cascade",
+      "condition": "IF SemanticToken exists",
+      "action": "THEN it MUST have exactly one referencesPrimitive relationship",
+      "severity": "error",
+      "oaa:priority": 1
+    },
+    {
+      "@id": "ds:rule-component-must-ref-semantic",
+      "name": "ComponentMustReferenceSemantic",
+      "description": "Component tokens must reference a semantic token to maintain design intent",
+      "condition": "IF ComponentToken exists",
+      "action": "THEN it MUST have exactly one referencesSemantic relationship",
+      "severity": "error",
+      "oaa:priority": 1
+    },
+    {
+      "@id": "ds:rule-component-tokens-exist",
+      "name": "ConsumedTokensMustExist",
+      "description": "All component tokens consumed by a design component must be defined",
+      "condition": "IF DesignComponent has consumesTokens references",
+      "action": "THEN all referenced ComponentTokens MUST exist in the design system",
+      "severity": "error",
+      "oaa:priority": 2
+    },
+    {
+      "@id": "ds:rule-theme-mode-completeness",
+      "name": "ThemeModeCompleteness",
+      "description": "When theme mode support is enabled, all semantic tokens must define both light and dark mode values",
+      "condition": "IF DesignSystem.themeModeSupport = true",
+      "action": "THEN all SemanticTokens MUST have both lightModeValue AND darkModeValue defined",
+      "severity": "error",
+      "oaa:priority": 2
+    },
+    {
+      "@id": "ds:rule-figma-sync-staleness",
+      "name": "FigmaSyncStaleness",
+      "description": "Figma sources older than 7 days should be flagged as stale",
+      "condition": "IF FigmaSource.lastSyncedAt is older than 7 days",
+      "action": "THEN syncStatus MUST be set to 'Stale'",
+      "severity": "warning",
+      "oaa:priority": 4
+    },
+    {
+      "@id": "ds:rule-brand-must-have-figma",
+      "name": "BrandMustHaveFigmaSource",
+      "description": "Every brand variant must bind to a Figma source file",
+      "condition": "IF BrandVariant exists",
+      "action": "THEN it MUST have exactly one hasFigmaSource relationship",
+      "severity": "error",
+      "oaa:priority": 1
+    },
+    {
+      "@id": "ds:rule-component-should-realise-feature",
+      "name": "ComponentShouldRealiseFeature",
+      "description": "Design components should trace to EFS features for backlog traceability",
+      "condition": "IF DesignComponent exists",
+      "action": "THEN it SHOULD have at least one realizesFeature relationship",
+      "severity": "warning",
+      "oaa:priority": 5
+    },
+    {
+      "@id": "ds:rule-instance-must-specify-brand",
+      "name": "InstanceMustSpecifyBrand",
+      "description": "When configured by an EMC instance, the instance must specify a valid brand variant",
+      "condition": "IF DesignSystem has configuredByInstance relationship",
+      "action": "THEN the referenced InstanceConfiguration MUST specify a valid brandId",
+      "severity": "warning",
+      "oaa:priority": 4
+    },
+    {
+      "@id": "ds:rule-brand-override-immutability",
+      "name": "BrandOverrideImmutability",
+      "description": "Brand variant token overrides must only target PF-Instance tokens. PF-Core tokens (spacing, radius, typography scale, component dimensions) are structurally immutable and must remain consistent across all brands to preserve layout integrity.",
+      "condition": "IF BrandVariant.tokenOverrides contains a token reference",
+      "action": "THEN the referenced token.mutabilityTier MUST equal 'PF-Instance'",
+      "severity": "error",
+      "oaa:priority": 1
+    },
+    {
+      "@id": "ds:rule-design-rule-must-have-condition",
+      "name": "DesignRuleMustHaveCondition",
+      "description": "Every design rule must specify both a condition (IF) and requirement (THEN) clause",
+      "condition": "IF DesignRule exists",
+      "action": "THEN it MUST have non-empty condition AND requirement properties",
+      "severity": "error",
+      "oaa:priority": 1
+    },
+    {
+      "@id": "ds:rule-component-rule-must-target",
+      "name": "ComponentRuleMustTarget",
+      "description": "Component design rules must specify either a targetComponent or targetCategory (or both)",
+      "condition": "IF ComponentDesignRule exists",
+      "action": "THEN it MUST have targetComponent OR targetCategory defined (at least one)",
+      "severity": "error",
+      "oaa:priority": 2
+    },
+    {
+      "@id": "ds:rule-pf-core-rule-not-overridable",
+      "name": "PFCoreRuleNotOverridable",
+      "description": "Design rules with mutabilityTier PF-Core cannot be overridden by any brand variant",
+      "condition": "IF DesignRule.mutabilityTier = 'PF-Core'",
+      "action": "THEN it MUST NOT have any overriddenByBrand relationships",
+      "severity": "error",
+      "oaa:priority": 1
+    },
+    {
+      "@id": "ds:rule-cascade-immutability",
+      "name": "CascadeTierImmutability",
+      "description": "Higher cascade tiers (PFI, Product, App) must not modify entities owned by lower tiers where the property has PF-Core mutability. PFC zones, PFC nav items, and PFC component placements are structurally immutable — higher tiers can only add new items or override PF-Instance properties.",
+      "condition": "IF a higher cascade tier skeleton overrides an entity with cascadeTier = 'PFC'",
+      "action": "THEN it MUST NOT modify properties where the entity's cascadeTier = 'PFC' AND the property is structural (zoneType, position, layerLevel, action)",
+      "severity": "error",
+      "oaa:priority": 1
+    },
+    {
+      "@id": "ds:rule-zone-must-have-type",
+      "name": "ZonesMustHaveType",
+      "description": "Every application zone must specify its behaviour type and initial visibility to enable correct runtime DOM construction",
+      "condition": "IF AppZone exists",
+      "action": "THEN zoneType AND defaultVisible MUST be set",
+      "severity": "error",
+      "oaa:priority": 2
+    },
+    {
+      "@id": "ds:rule-navitem-must-have-action",
+      "name": "NavItemMustHaveAction",
+      "description": "Every navigation item must reference a valid JS function name for invocation. Without an action, the nav item cannot be activated at runtime. Prefer executesAction entity reference over legacy action string.",
+      "condition": "IF NavItem exists AND itemType is not 'Separator'",
+      "action": "THEN it MUST have either an executesAction reference to a ds:Action entity OR a non-empty action string",
+      "severity": "error",
+      "oaa:priority": 2
+    },
+    {
+      "@id": "ds:rule-action-must-have-functionref",
+      "name": "ActionMustHaveFunctionRef",
+      "description": "Every Action entity must specify a functionRef for runtime resolution. The loader resolves window[functionRef] at wire-up time — a missing or incorrect reference means the button does nothing.",
+      "condition": "IF Action exists",
+      "action": "THEN functionRef MUST be a non-empty string matching a function exposed on the window scope",
+      "severity": "error",
+      "oaa:priority": 2
+    },
+    {
+      "@id": "ds:rule-action-guard-must-have-message",
+      "name": "ActionGuardMustHaveMessage",
+      "description": "When a guard condition blocks execution, users need feedback. Any Action with a guardCondition must also provide a guardMessage.",
+      "condition": "IF Action has guardCondition set to a non-null value",
+      "action": "THEN guardMessage MUST also be a non-empty string",
+      "severity": "warning",
+      "oaa:priority": 3
+    },
+    {
+      "@id": "ds:rule-reusable-layer-consistency",
+      "name": "ReusableLayerConsistency",
+      "description": "A reusable NavLayer placed in multiple zones must render the same set of NavItems in each zone. The NavItem set is defined by belongsToLayer references. Zone-specific visibility is handled by visibilityCondition on individual NavItems, not by varying the item set per zone.",
+      "condition": "IF NavLayer has reusable = true AND navLayerInZone references more than one zone",
+      "action": "THEN the same set of NavItems (by belongsToLayer) MUST render in all referenced zones",
+      "severity": "error",
+      "oaa:priority": 2
+    },
+    {
+      "@id": "ds:rule-navitem-parent-no-cycles",
+      "name": "NavItemParentNoCycles",
+      "description": "The parentNavItem hierarchy must be acyclic. A NavItem cannot be its own ancestor. Cycles would cause infinite loops in breadcrumb generation and menu tree rendering.",
+      "condition": "IF NavItem has parentNavItem reference",
+      "action": "THEN following parentNavItem chain MUST NOT reach the same NavItem (no circular references)",
+      "severity": "error",
+      "oaa:priority": 1
+    },
+    {
+      "@id": "ds:rule-dropdown-should-have-children",
+      "name": "DropdownShouldHaveChildren",
+      "description": "Dropdown-type NavItems should have at least one child item referencing them via parentNavItem. A dropdown with no children is a UX anti-pattern — it opens an empty menu.",
+      "condition": "IF NavItem.itemType = 'Dropdown'",
+      "action": "THEN at least one other NavItem SHOULD reference it via parentNavItem",
+      "severity": "warning",
+      "oaa:priority": 3
+    },
+    {
+      "@id": "ds:rule-nav-accessibility-hint",
+      "name": "NavAccessibilityHint",
+      "description": "Interactive NavItems (Button, Toggle, Dropdown, Chip) should have an accessibilityHint on their Action entity for screen reader support. Aligned with WCAG 2.1 SC 1.3.1 (Info and Relationships) and SC 4.1.2 (Name, Role, Value).",
+      "condition": "IF NavItem.itemType is one of Button, Toggle, Dropdown, Chip AND executesAction references an Action",
+      "action": "THEN the referenced Action SHOULD have a non-empty accessibilityHint",
+      "severity": "warning",
+      "oaa:priority": 4
+    }
+  ],
+  "oaa:joinPatterns_v2": [
+    {
+      "patternId": "JP-DS-006",
+      "name": "Zone Token Family Bridge",
+      "description": "Trace from an application zone to the token categories it consumes, enabling zone-scoped token browsing",
+      "joinPath": "ds:Application → ds:hasZone → ds:AppZone → ds:zoneTokenSet → ds:TokenCategory",
+      "useCase": "Token Map panel zone-based browsing: show all tokens consumed by Z6 Canvas or Z9 Sidebar"
+    },
+    {
+      "patternId": "JP-DS-007",
+      "name": "Navigation Hierarchy Bridge",
+      "description": "Navigate the full navigation hierarchy from application root through layers to individual action items",
+      "joinPath": "ds:Application → ds:hasNavLayer → ds:NavLayer → ds:hasNavItem → ds:NavItem",
+      "useCase": "Dynamic toolbar construction: read nav layers and items to build toolbar DOM at runtime"
+    },
+    {
+      "patternId": "JP-DS-008",
+      "name": "Zone Component Token Chain",
+      "description": "Trace from a zone through its component placements to the design components and their consumed tokens",
+      "joinPath": "ds:AppZone → ds:ZoneComponent → ds:placesComponent → ds:DesignComponent → ds:consumesTokens → ds:ComponentToken",
+      "useCase": "Component-level token auditing: which tokens does each component in each zone actually use"
+    },
+    {
+      "patternId": "JP-DS-009",
+      "name": "Navigation Action Resolution Bridge",
+      "description": "Navigate from a NavItem to its action definition including guard conditions, function reference, parameter type, and accessibility metadata. Used by the skeleton loader at runtime to wire click handlers without manual registry maps.",
+      "joinPath": "ds:NavItem → ds:executesAction → ds:Action",
+      "useCase": "Dynamic toolbar construction: resolve action from nav item, check guard, wire function handler, apply ARIA hint"
+    },
+    {
+      "patternId": "JP-DS-010",
+      "name": "Navigation Parent-Child Hierarchy Bridge",
+      "description": "Navigate the hierarchical tree of navigation items from parent to children and back. Export dropdown sub-items reference their Export parent. Authoring-mode items can reference top-level ancestors. Enables breadcrumb generation and drill-down navigation.",
+      "joinPath": "ds:NavItem ← ds:parentNavItem ← ds:NavItem (children)",
+      "useCase": "Breadcrumb trail: trace from a sub-item up through its parent chain. Menu tree: find all children of a dropdown parent."
+    },
+    {
+      "patternId": "JP-DS-011",
+      "name": "Reusable NavLayer Cross-Zone Bridge",
+      "description": "A reusable navigation layer placed in multiple zones, enabling shared navigation patterns across pages, modules, application skeletons, and frameworks. The same L1 export layer could render in both the Visualiser toolbar and a BAIV dashboard sidebar.",
+      "joinPath": "ds:NavLayer → ds:navLayerInZone → ds:AppZone [1..*]",
+      "useCase": "Cross-skeleton navigation reuse: place a common export bar in multiple app skeletons without duplicating NavItems"
+    },
+    {
+      "patternId": "JP-DS-012",
+      "name": "Action RBAC Role Governance Bridge",
+      "description": "Navigate from a UI action to the organizational roles that are permitted to trigger it, linking the kinetic layer RBAC to RRR role definitions and GRC security controls.",
+      "joinPath": "ds:NavItem → ds:executesAction → ds:Action → ds:actionRequiresRole → rrr:Role",
+      "useCase": "RBAC audit: which organizational roles can access which toolbar actions. Security compliance: which GRC controls govern data export and configuration actions."
+    },
+    {
+      "patternId": "JP-DS-013",
+      "name": "Action Security Control Bridge",
+      "description": "Navigate from a UI action to the GRC compliance control governing its availability. Enables security audit trail from UI capability to compliance framework.",
+      "joinPath": "ds:Action → ds:actionGovernedByControl → grc:Control",
+      "useCase": "GRC compliance: which security control authorises this export/config/lifecycle action"
+    }
+  ],
+  "crossOntologyReferences": {
+    "description": "DS-ONT bridges to four ontologies: EFS for feature realisation (connecting UI components to agile backlog), EMC for PFI instance-driven brand and app skeleton resolution, PE for design workflow process governance, and ORG-CONTEXT for brand correlation.",
+    "keyBridges": [
+      {
+        "from": "ds:DesignComponent",
+        "to": "efs:Feature",
+        "relationship": "realizesFeature",
+        "series": "PE-Series → PE-Series",
+        "purpose": "Trace UI component implementation to product feature specifications"
+      },
+      {
+        "from": "ds:DesignSystem",
+        "to": "emc:InstanceConfiguration",
+        "relationship": "configuredByInstance",
+        "series": "PE-Series → Orchestration",
+        "purpose": "PFI-driven brand resolution: which DS config URL, Figma key, and tokens to load for BAIV/W4M/etc."
+      },
+      {
+        "from": "ds:DesignSystem",
+        "to": "pe:Process",
+        "relationship": "governedByProcess",
+        "series": "PE-Series → PE-Series",
+        "purpose": "Figma → Extract → Validate → Store → Render pipeline governance"
+      },
+      {
+        "from": "ds:DesignSystem",
+        "to": "org-ctx:Brand",
+        "relationship": "ownedByBrand",
+        "series": "PE-Series → Foundation",
+        "purpose": "Design system to organizational brand correlation"
+      },
+      {
+        "from": "ds:Application",
+        "to": "emc:InstanceConfiguration",
+        "relationship": "configuredByApp",
+        "series": "PE-Series → Orchestration",
+        "purpose": "PFI-driven app skeleton resolution: which base app, zone overrides, and nav layer extensions to load"
+      },
+      {
+        "from": "ds:Action",
+        "to": "rrr:Role",
+        "relationship": "actionRequiresRole",
+        "series": "PE-Series → VE-Series",
+        "purpose": "RBAC kinetic layer: which organizational roles can trigger this UI action"
+      },
+      {
+        "from": "ds:Action",
+        "to": "grc:Control",
+        "relationship": "actionGovernedByControl",
+        "series": "PE-Series → RCSG-Series",
+        "purpose": "Security governance: which GRC control authorises this data export, config change, or lifecycle operation"
+      }
+    ],
+    "existingExternalRefs": [
+      {
+        "from": "emc:InstanceConfiguration",
+        "to": "ds:DesignSystem",
+        "description": "EMC instances reference DS configs as part of PFI product composition"
+      },
+      {
+        "from": "emc:InstanceConfiguration",
+        "to": "ds:Application",
+        "description": "EMC instances reference app skeleton configs via appSkeletonConfig property for dynamic UI construction"
+      }
+    ]
+  },
+  "oaa:ontologyId": "DS-ONT",
+  "oaa:series": "PE-Series",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of DesignSystem within this ontology?",
+      "targetEntities": [
+        "ds:DesignSystem"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of TokenCategory within this ontology?",
+      "targetEntities": [
+        "ds:TokenCategory"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of PrimitiveToken within this ontology?",
+      "targetEntities": [
+        "ds:PrimitiveToken"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of SemanticToken within this ontology?",
+      "targetEntities": [
+        "ds:SemanticToken"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of ComponentToken within this ontology?",
+      "targetEntities": [
+        "ds:ComponentToken"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of DesignComponent within this ontology?",
+      "targetEntities": [
+        "ds:DesignComponent"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of BrandVariant within this ontology?",
+      "targetEntities": [
+        "ds:BrandVariant"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of FigmaSource within this ontology?",
+      "targetEntities": [
+        "ds:FigmaSource"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of ThemeMode within this ontology?",
+      "targetEntities": [
+        "ds:ThemeMode"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of DesignPattern within this ontology?",
+      "targetEntities": [
+        "ds:DesignPattern"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the role and purpose of PageDefinition within this ontology?",
+      "targetEntities": [
+        "ds:PageDefinition"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-012",
+      "question": "What is the role and purpose of TemplateDefinition within this ontology?",
+      "targetEntities": [
+        "ds:TemplateDefinition"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-013",
+      "question": "What is the role and purpose of DesignRule within this ontology?",
+      "targetEntities": [
+        "ds:DesignRule"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-014",
+      "question": "What is the role and purpose of ComponentDesignRule within this ontology?",
+      "targetEntities": [
+        "ds:ComponentDesignRule"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-015",
+      "question": "What is the role and purpose of Feature within this ontology?",
+      "targetEntities": [
+        "efs:Feature"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-016",
+      "question": "What is the role and purpose of InstanceConfiguration within this ontology?",
+      "targetEntities": [
+        "emc:InstanceConfiguration"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-017",
+      "question": "What is the role and purpose of Process within this ontology?",
+      "targetEntities": [
+        "pe:Process"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-018",
+      "question": "What is the role and purpose of Brand within this ontology?",
+      "targetEntities": [
+        "org-ctx:Brand"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-019",
+      "question": "What is the role and purpose of Application within this ontology?",
+      "targetEntities": [
+        "ds:Application"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-020",
+      "question": "What is the role and purpose of AppZone within this ontology?",
+      "targetEntities": [
+        "ds:AppZone"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-021",
+      "question": "What is the role and purpose of NavLayer within this ontology?",
+      "targetEntities": [
+        "ds:NavLayer"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-022",
+      "question": "What is the role and purpose of NavItem within this ontology?",
+      "targetEntities": [
+        "ds:NavItem"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-023",
+      "question": "What is the role and purpose of ZoneComponent within this ontology?",
+      "targetEntities": [
+        "ds:ZoneComponent"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-024",
+      "question": "What is the role and purpose of Action within this ontology?",
+      "targetEntities": [
+        "ds:Action"
+      ],
+      "targetRelationships": [
+        "ds:executesAction"
+      ],
+      "targetRules": [
+        "ds:rule-action-must-have-functionref",
+        "ds:rule-action-guard-must-have-message"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,344 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pe": "https://platformcore.io/ontology/process-engineering/",
+    "ds": "https://platformcore.io/ontology/ds/",
+    "oaa": "https://oaa-ontology.org/v6/"
+  },
+  "@type": "pe:Process",
+  "pe:processId": "PE-DS-EXTRACT-001",
+  "pe:processName": "Design System Token Extraction Pipeline",
+  "pe:processType": "development",
+  "pe:description": "Six-phase end-to-end pipeline: extract design tokens from Figma via MCP, classify into three-tier cascade (Primitive/Semantic/Component), validate against DS-ONT business rules, populate DS instance JSONLD, commit and deploy to GitHub Pages, and verify live accessibility. Eliminates manual post-population steps.",
+  "pe:businessObjective": "Fully automated design-to-data-to-deployment flow: Figma source of truth into ontology-compliant instance data, committed, pushed, and verified live — zero manual intervention after invocation.",
+  "pe:scope": "Single Figma file key per brand variant; outputs one DS instance JSONLD per execution; updates registry entry; commits, pushes, and verifies GitHub Pages deployment.",
+  "pe:owner": "Azlan EA-AAA / Design-Director Agent",
+  "pe:status": "active",
+  "pe:version": "2.1.0",
+  "pe:estimatedDuration": "PT8M",
+  "pe:automationLevel": 98,
+
+  "pe:inputs": [
+    {
+      "@type": "pe:ProcessInput",
+      "pe:inputId": "INPUT-FIGMA-KEY",
+      "pe:name": "Figma File Key",
+      "pe:description": "The Figma file key for the target brand's design system (e.g. JowntVHgYzfuZmaLHNRVTZ for RCS)",
+      "pe:required": true,
+      "pe:example": "62j96Z3fx6OlZYZJJVPhG4"
+    },
+    {
+      "@type": "pe:ProcessInput",
+      "pe:inputId": "INPUT-BRAND-ID",
+      "pe:name": "Brand Identifier",
+      "pe:description": "Lowercase brand slug used for file naming and registry entry (e.g. rcs, pand, wwg)",
+      "pe:required": true,
+      "pe:example": "wwg"
+    },
+    {
+      "@type": "pe:ProcessInput",
+      "pe:inputId": "INPUT-BRAND-NAME",
+      "pe:name": "Brand Display Name",
+      "pe:description": "Human-readable brand name for pfiInstanceName field (e.g. RCS, PAND, WWG)",
+      "pe:required": true,
+      "pe:example": "WWG"
+    },
+    {
+      "@type": "pe:ProcessInput",
+      "pe:inputId": "INPUT-FIGMA-URL",
+      "pe:name": "Figma File URL",
+      "pe:description": "Full Figma design URL for provenance tracking in extraction log and FigmaSource entity",
+      "pe:required": false,
+      "pe:example": "https://www.figma.com/design/62j96Z3fx6OlZYZJJVPhG4/WWG-Design-System-v1.1"
+    }
+  ],
+
+  "pe:hasPhase": [
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-1-EXTRACT",
+      "pe:phaseName": "Figma Variable Extraction",
+      "pe:phaseNumber": 1,
+      "pe:description": "Call Figma MCP tools on target file to extract raw design token data. Handles both Variables API (get_variable_defs) and visual swatch files (get_metadata + get_design_context fallback).",
+      "pe:entryConditions": "figmaFileKey provided; Figma MCP authenticated and connected",
+      "pe:exitConditions": "Raw extraction data contains colour, spacing, and radius tokens; extraction log started",
+      "pe:activities": [
+        "1. Call get_metadata(fileKey, nodeId=0:1) to discover page structure and enumerate section node IDs (Colour Tokens, Typography, Size/Radii/Borders sections).",
+        "2. For each discovered section node, call get_variable_defs(fileKey, nodeId=<sectionNodeId>) to extract token name/value pairs. IMPORTANT: get_variable_defs returns empty on root page 0:1 — section-level node IDs are required.",
+        "3. If get_variable_defs returns empty for a section, fallback to get_design_context(fileKey, nodeId) to extract hex values from CSS/Tailwind output.",
+        "4. Record all extracted token name/value pairs, source node IDs, and section membership in extraction log JSON.",
+        "5. Note any brand-specific anomalies (e.g. overlapping token names across sections, distinct surface vs border hex values)."
+      ],
+      "pe:estimatedDuration": "PT2M",
+      "pe:parallelExecution": false,
+      "pe:toolsRequired": ["get_variable_defs", "get_metadata", "get_design_context"],
+      "pe:knownPatterns": {
+        "primaryStrategy": "Always call get_metadata first to discover section node IDs, then get_variable_defs on each section. Never call get_variable_defs on root page 0:1 — it returns empty.",
+        "baivNodeIDs": "BAIV (bXCyfNwzc8Z9kEeFIeIB8C): ColourTokens=1:29, Primary=1:30, Secondary=26:209, Error=25:140, Warning=26:163, Success=26:186, Information=26:232, Accent=26:278, Greyscale=1:53, Typography=106:198, Size=59:184",
+        "tokenYield": "BAIV yields ~153 raw tokens across 11 section nodes (~134 after deduplication): 94 colour, 23 typography, 25 size/radii/borders, 11 greyscale/neutral",
+        "fallbackStrategy": "If get_variable_defs returns empty for a specific section node, fallback to get_design_context on that section to extract hex values from CSS output"
+      }
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-2-CLASSIFY",
+      "pe:phaseName": "Token Tier Classification",
+      "pe:phaseNumber": 2,
+      "pe:description": "Classify extracted Figma variables into Primitive, Semantic, and Component tiers per DS-ONT TokenTier enumeration using codified classification ruleset DS-CLASSIFY-001.",
+      "pe:entryConditions": "Raw extraction data from Phase 1 available; DS-CLASSIFY-001 ruleset loaded",
+      "pe:exitConditions": "All tokens classified into exactly one tier; tier counts logged; excludePatterns applied",
+      "pe:activities": [
+        "1. Load classification ruleset from ds-token-classification-rules.json (DS-CLASSIFY-001).",
+        "2. For each extracted token, apply sectionToTierMap: match the source section name to determine default tier (Primitive/Semantic) and semantic group (primary, error, neutral, etc.).",
+        "3. Apply variableNameToTokenName mappings: convert Figma slash-paths (Surface/Subtle, Font Family/Font Headings) to DS-ONT dot-paths (primary.surface.subtle, typography.fontFamily.headings).",
+        "4. Apply excludePatterns: remove noise variables (lrg duplicates, Background/ duplicates, var(--sds-*) system refs, YellowBdr/ duplicates).",
+        "5. Apply valueTypeInference: determine ds:valueType (Color/Typography/Spacing/Radius/Border) from value format if not explicitly mapped.",
+        "6. Generate TokenCategory entries per DS-ONT schema (colors, typography, spacing, borderRadius, surface, border, text, component).",
+        "7. Log tier counts and deduplication stats; verify within expectedYields range."
+      ],
+      "pe:estimatedDuration": "PT30S",
+      "pe:parallelExecution": false,
+      "pe:classificationRuleset": "ds-token-classification-rules.json (DS-CLASSIFY-001 v1.0.0)"
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-3-VALIDATE",
+      "pe:phaseName": "DS-ONT Schema Validation",
+      "pe:phaseNumber": 3,
+      "pe:description": "Validate classified tokens against DS-ONT business rules BR-DS-001 through BR-DS-008 using codified validation ruleset DS-VALIDATE-001.",
+      "pe:entryConditions": "Classified token arrays from Phase 2 available; DS-VALIDATE-001 ruleset loaded",
+      "pe:exitConditions": "Zero severity=error violations; warnings documented in extraction log",
+      "pe:activities": [
+        "1. Load validation ruleset from ds-token-validation-rules.json (DS-VALIDATE-001).",
+        "2. BR-DS-001 (error): Verify all SemanticToken values trace to a PrimitiveToken or are valid hex.",
+        "3. BR-DS-002 (error): Verify all ComponentToken references resolve to a SemanticToken @id.",
+        "4. BR-DS-003 (error): Verify DesignComponents with allowsOverrides=true have >= 1 binding.",
+        "5. BR-DS-004 (warning): If themeModeSupport=true, check SemanticTokens have both light+dark values.",
+        "6. BR-DS-005 (warning): Check FigmaSource lastSyncedAt within 7 days.",
+        "7. BR-DS-006 (error): Verify BrandVariant overrides target only PF-Instance tier tokens.",
+        "8. BR-DS-007 (error): Verify required property completeness per entity type (8 schemas).",
+        "9. BR-DS-008 (error): Verify all 14 CSS-var-required semantic token names present.",
+        "10. Generate GATE-3 report: per-rule pass/fail/warning/skip and summary counts."
+      ],
+      "pe:estimatedDuration": "PT30S",
+      "pe:parallelExecution": false,
+      "pe:validationRuleset": "ds-token-validation-rules.json (DS-VALIDATE-001 v1.0.0)"
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-4-POPULATE",
+      "pe:phaseName": "DS Instance Population",
+      "pe:phaseNumber": 4,
+      "pe:description": "Generate the DS instance JSONLD file and extraction log conforming to DS-ONT entity definitions.",
+      "pe:entryConditions": "Validation gate passed with zero blocking errors",
+      "pe:exitConditions": "Valid JSONLD file written; extraction log written; registry entry updated",
+      "pe:activities": [
+        "1. Assemble @graph array: DesignSystem root, TokenCategories, PrimitiveTokens[], SemanticTokens[], ComponentTokens[], BrandVariant, FigmaSource, ThemeModes, DesignPatterns.",
+        "2. Write to instance-data/{brand}-ds-instance-v{version}.jsonld.",
+        "3. Write extraction log to instance-data/{brand}-extraction-log.json with gate results and extractedNodes.",
+        "4. Update Entry-ONT-DS-001.json artifacts.instanceData[]: add brand entry with status=populated, extractedAt=today, extractionLog path, peProcessRef=PE-DS-EXTRACT-001.",
+        "5. Validate output: python3 json.load() + count @graph entities by @type."
+      ],
+      "pe:estimatedDuration": "PT1M",
+      "pe:parallelExecution": false
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-5-COMMIT-DEPLOY",
+      "pe:phaseName": "Commit and Deploy",
+      "pe:phaseNumber": 5,
+      "pe:description": "Stage all generated files, commit with standard message format, handle upstream changes via rebase, push to remote, and confirm GitHub Actions workflow triggers.",
+      "pe:entryConditions": "GATE-4 passed; JSONLD, extraction log, and registry entry all written to disk",
+      "pe:exitConditions": "git push succeeds; GitHub Actions Pages workflow triggered",
+      "pe:activities": [
+        "1. Run vitest tests to confirm no regressions: npx vitest run from visualiser dir.",
+        "2. git add the 3 files: {brand}-ds-instance-v{version}.jsonld, {brand}-extraction-log.json, Entry-ONT-DS-001.json.",
+        "3. git commit with message: feat(ds): add {BRAND} brand instance data via PE-DS-EXTRACT-001.",
+        "4. git pull --rebase to incorporate any upstream changes (stash uncommitted work if needed).",
+        "5. git push to origin/main.",
+        "6. Verify push succeeded (exit code 0) and check gh run list for triggered Pages workflow."
+      ],
+      "pe:estimatedDuration": "PT1M",
+      "pe:parallelExecution": false,
+      "pe:errorRecovery": {
+        "rebaseFailed": "Stash local changes (git stash), pull --rebase, pop stash, resolve conflicts if any, then re-commit and push.",
+        "pushRejected": "Pull --rebase first, then push again. Never force-push to main.",
+        "testsFailed": "Abort commit. Investigate and fix the failing test before retrying."
+      }
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-6-VERIFY-LIVE",
+      "pe:phaseName": "Live Deployment Verification",
+      "pe:phaseNumber": 6,
+      "pe:description": "Confirm the deployed JSONLD is accessible on GitHub Pages, the registry entry reflects the new brand, and the visualiser dropdown will populate correctly.",
+      "pe:entryConditions": "GATE-5 passed; GitHub Actions workflow completed successfully",
+      "pe:exitConditions": "Live URL returns valid JSON with correct entity counts; registry entry accessible with brand listed",
+      "pe:activities": [
+        "1. Wait for GitHub Actions workflow to complete (gh run list --limit 1, check status=completed).",
+        "2. Fetch the deployed JSONLD file: https://ajrmooreuk.github.io/Azlan-EA-AAA/PBS/ONTOLOGIES/ontology-library/PE-Series/DS-ONT/instance-data/{brand}-ds-instance-v{version}.jsonld.",
+        "3. Verify HTTP 200 and valid JSON response with expected @graph entry count.",
+        "4. Fetch the deployed Entry-ONT-DS-001.json and confirm artifacts.instanceData contains the new brand entry.",
+        "5. Log verification results in extraction log (append liveVerification object).",
+        "6. Advise user to hard-refresh (Cmd+Shift+R) if they had the visualiser open during deployment — GitHub Pages CDN may cache old files for up to 10 minutes."
+      ],
+      "pe:estimatedDuration": "PT2M",
+      "pe:parallelExecution": false,
+      "pe:cdnCacheNote": "GitHub Pages CDN caches files with max-age up to 600s. New files may take 1-2 minutes to propagate after workflow completion. Hard refresh (Cmd+Shift+R) bypasses browser cache."
+    }
+  ],
+
+  "pe:hasGate": [
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-1-EXTRACTION-COMPLETE",
+      "pe:gateName": "Extraction Completeness Gate",
+      "pe:gateType": "completeness",
+      "pe:afterPhase": "PHASE-1-EXTRACT",
+      "pe:description": "Verify raw extraction contains minimum viable token set",
+      "pe:criteria": "At least 10 colour tokens, 3 spacing tokens, 2 radius tokens extracted",
+      "pe:threshold": 80,
+      "pe:automated": true,
+      "pe:blockingFactor": "blocking"
+    },
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-2-CLASSIFICATION-VALID",
+      "pe:gateName": "Classification Validity Gate",
+      "pe:gateType": "quality",
+      "pe:afterPhase": "PHASE-2-CLASSIFY",
+      "pe:description": "All tokens classified into exactly one tier with valid valueType",
+      "pe:criteria": "Zero unclassified tokens; all tokens have DS-ONT enum-valid valueType",
+      "pe:threshold": 100,
+      "pe:automated": true,
+      "pe:blockingFactor": "blocking"
+    },
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-3-SCHEMA-VALID",
+      "pe:gateName": "DS-ONT Schema Validation Gate",
+      "pe:gateType": "compliance",
+      "pe:afterPhase": "PHASE-3-VALIDATE",
+      "pe:description": "Instance data conforms to DS-ONT business rules",
+      "pe:criteria": "Zero severity=error rule violations from BR-DS-001 through BR-DS-008",
+      "pe:threshold": 100,
+      "pe:automated": true,
+      "pe:blockingFactor": "blocking"
+    },
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-4-OUTPUT-VALID",
+      "pe:gateName": "Output JSONLD Structural Gate",
+      "pe:gateType": "quality",
+      "pe:afterPhase": "PHASE-4-POPULATE",
+      "pe:description": "Output file is valid JSON-LD with correct @context and @graph",
+      "pe:criteria": "Valid JSON; @context contains ds: prefix; @graph has DesignSystem + BrandVariant + FigmaSource + at least 1 token per tier; python3 json.load() succeeds; entity counts match extraction log",
+      "pe:threshold": 100,
+      "pe:automated": true,
+      "pe:blockingFactor": "blocking"
+    },
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-5-DEPLOYED",
+      "pe:gateName": "Deployment Success Gate",
+      "pe:gateType": "operational",
+      "pe:afterPhase": "PHASE-5-COMMIT-DEPLOY",
+      "pe:description": "Code committed, pushed, and GitHub Actions Pages workflow completed successfully",
+      "pe:criteria": "git push exit code 0; gh run list shows latest workflow status=completed/success; vitest tests pass (excluding known pre-existing failures)",
+      "pe:threshold": 100,
+      "pe:automated": true,
+      "pe:blockingFactor": "blocking"
+    },
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-6-LIVE-VERIFIED",
+      "pe:gateName": "Live Accessibility Gate",
+      "pe:gateType": "acceptance",
+      "pe:afterPhase": "PHASE-6-VERIFY-LIVE",
+      "pe:description": "Deployed JSONLD accessible on GitHub Pages with correct content",
+      "pe:criteria": "HTTP 200 from GitHub Pages URL; response parses as valid JSON; @graph entity count matches GATE-4 verified count; Entry-ONT-DS-001.json on Pages includes new brand in instanceData array",
+      "pe:threshold": 100,
+      "pe:automated": true,
+      "pe:blockingFactor": "blocking"
+    }
+  ],
+
+  "pe:augmentedBy": [
+    {
+      "@type": "pe:AIAgent",
+      "pe:agentId": "AGENT-DS-EXTRACTOR",
+      "pe:agentName": "Design Token Extraction Agent",
+      "pe:agentType": "generation",
+      "pe:description": "Claude Code agent with Figma MCP access executing the six-phase extraction-to-deployment pipeline",
+      "pe:capabilities": "Figma MCP (get_variable_defs, get_metadata, get_design_context); token classification; JSONLD generation; DS-ONT business rule validation; git operations (add, commit, pull --rebase, push); GitHub CLI (gh run list); HTTP verification (WebFetch)",
+      "pe:autonomyLevel": "supervised",
+      "pe:model": "claude-opus-4-6",
+      "pe:qualityThreshold": 90
+    }
+  ],
+
+  "pe:measures": [
+    {
+      "@type": "pe:ProcessMetric",
+      "pe:metricId": "METRIC-TOKEN-COUNT",
+      "pe:metricName": "Extracted Token Count",
+      "pe:metricType": "output",
+      "pe:formula": "primitiveCount + semanticCount + componentCount",
+      "pe:unit": "tokens",
+      "pe:target": 50,
+      "pe:collectionMethod": "automated",
+      "pe:frequency": "per-execution"
+    },
+    {
+      "@type": "pe:ProcessMetric",
+      "pe:metricId": "METRIC-VALIDATION-SCORE",
+      "pe:metricName": "Business Rule Compliance",
+      "pe:metricType": "quality",
+      "pe:formula": "(rules_passed / total_rules) * 100",
+      "pe:unit": "percent",
+      "pe:target": 100,
+      "pe:collectionMethod": "automated",
+      "pe:frequency": "per-execution"
+    },
+    {
+      "@type": "pe:ProcessMetric",
+      "pe:metricId": "METRIC-E2E-DURATION",
+      "pe:metricName": "End-to-End Pipeline Duration",
+      "pe:metricType": "efficiency",
+      "pe:formula": "PHASE-6 completion timestamp - PHASE-1 start timestamp",
+      "pe:unit": "seconds",
+      "pe:target": 480,
+      "pe:collectionMethod": "automated",
+      "pe:frequency": "per-execution"
+    },
+    {
+      "@type": "pe:ProcessMetric",
+      "pe:metricId": "METRIC-DEPLOY-LATENCY",
+      "pe:metricName": "Deploy-to-Live Latency",
+      "pe:metricType": "operational",
+      "pe:formula": "GATE-6 verified timestamp - git push timestamp",
+      "pe:unit": "seconds",
+      "pe:target": 120,
+      "pe:collectionMethod": "automated",
+      "pe:frequency": "per-execution"
+    }
+  ],
+
+  "pe:versionHistory": [
+    {
+      "pe:version": "1.0.0",
+      "pe:date": "2026-02-09",
+      "pe:changes": "Initial 4-phase pipeline: Extract, Classify, Validate, Populate. 4 gates, 1 agent, 2 metrics. Manual commit/push/verify steps required after Phase 4."
+    },
+    {
+      "pe:version": "2.0.0",
+      "pe:date": "2026-02-10",
+      "pe:changes": "Added Phase 5 (Commit & Deploy) and Phase 6 (Live Verification) with GATE-5 and GATE-6. Added explicit inputs schema, error recovery procedures, CDN cache advisory, known Figma template patterns, and 2 new operational metrics. Automation level raised from 90% to 98%. Eliminates all manual post-population steps."
+    },
+    {
+      "pe:version": "2.1.0",
+      "pe:date": "2026-02-13",
+      "pe:changes": "Fixed Phase 1 extraction strategy: get_metadata FIRST to discover section node IDs, THEN get_variable_defs per section. Root page 0:1 returns empty — section-level targeting required. Updated known patterns with verified BAIV node IDs and actual token yield (~134 deduplicated). Promoted get_variable_defs from fallback to primary extraction method."
+    }
+  ]
+}

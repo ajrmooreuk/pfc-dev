@@ -1,0 +1,264 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ind": "https://oaa-ontology.org/v6/individual-types/",
+    "rrr": "https://oaa-ontology.org/v5/rrr/",
+    "org": "https://oaa-ontology.org/v5/organization/",
+    "vp": "https://oaa-ontology.org/v5/value-proposition/"
+  },
+  "@type": "InstanceDataSet",
+  "@id": "ind:instances:airl-caf-v0.1",
+  "metadata": {
+    "name": "AIRL CAF Individual Types — Instance Data",
+    "version": "0.1.0",
+    "status": "prototype",
+    "parentSchema": "ind-v1.0.0-oaa-v6.json",
+    "owningInstance": "PFI-AIRL-CAF-AZA",
+    "domain": "CyberSec / RegTech — UK NCSC CAF Audit & Advisory",
+    "description": "Individual type instances for AIRL CAF platform. Pure B2B — all individuals operate within organisational hierarchy. Cross-refs: NCSC-CAF-ONT, GRC-FW-ONT.",
+    "dateCreated": "2026-02-20",
+    "individualCount": 5
+  },
+  "examples": [
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:airl-ciso",
+      "indTypeId": "ind:airl-ciso",
+      "name": "Chief Information Security Officer",
+      "channel": "B2B",
+      "typeCategory": "B2B_Executive",
+      "description": "Senior executive accountable for information security strategy, NCSC CAF compliance, and cyber risk posture. Subclasses RRR CISO. Reports to Board/CEO on NIS Regulations, GovAssure, and cyber insurance readiness.",
+      "motivations": "CAF compliance, Board assurance, cyber insurance eligibility, incident response maturity, audit readiness",
+      "painSummary": "CAF self-assessment burden, GovAssure timeline pressure, evidencing IGP compliance, skills shortage, Board comms gap",
+      "decisionStyle": "Analytical",
+      "budgetAuthority": "Approver",
+      "typicalEngagement": "Relational",
+      "vpStakeholderType": "DecisionMaker",
+      "rrrSubclass": "rrr:CISO", "rrrSeniorityLevel": 2,
+      "relationships": {
+        "hasQualifier": ["ind:q-ciso-firmographic-01", "ind:q-ciso-contextual-01"],
+        "hasIndustryProfile": ["ind:ip-ciso-cybersec"],
+        "hasPurchaseBehaviour": "ind:pb-ciso-cybersec",
+        "subclassesRRRRole": "rrr:CISO",
+        "hasOrgRelation": "org:OES-NISRegulatedEntity",
+        "populatesICP": ["vp:icp-airl-caf-executive"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-ciso-firmographic-01",
+      "qualifierId": "ind:q-ciso-firmographic-01", "criteriaType": "Firmographic",
+      "criteriaName": "regulatoryScope", "operator": "contains", "value": "NIS Regulations,GovAssure,NCSC-CAF", "weight": 1.0
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-ciso-contextual-01",
+      "qualifierId": "ind:q-ciso-contextual-01", "criteriaType": "Contextual",
+      "criteriaName": "sectorType", "operator": "contains", "value": "OES,RDSP,LocalAuthority,NHS,CriticalInfrastructure", "weight": 0.9
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-ciso-cybersec",
+      "profileId": "ind:ip-ciso-cybersec", "industry": "CyberSec / RegTech",
+      "industrySegment": "UK Public Sector Cyber Compliance", "owningInstance": "PFI-AIRL-CAF-AZA",
+      "typicalBudgetRange": "50k-500k annual (CAF tooling, audits, remediation)",
+      "purchaseFrequency": "Annual (GovAssure cycle)",
+      "seasonality": "GovAssure deadline-driven (annual); CAF self-assessment Q1-Q2",
+      "regulatoryContext": "NIS Regulations 2018, GovAssure, NCSC CAF v4.0, PSN, Cyber Essentials Plus",
+      "industrySpecificTraits": "Evidence-driven procurement. Needs audit trail. Values pre-populated CAF mappings. Board-reportable dashboards critical."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-ciso-cybersec",
+      "behaviourId": "ind:pb-ciso-cybersec", "buyerJourneyType": "Mandated",
+      "decisionTimeframe": "1-3 months (procurement cycle)",
+      "influencers": "NCSC guidance, sector regulators (Ofgem/Ofcom/CQC), peer CISOs, consultancy recommendations",
+      "trustSignals": "NCSC-endorsed, CHECK/CREST accreditation, public sector references, UK data residency",
+      "priceElasticity": "Low", "channelPreference": "G-Cloud, direct procurement, Crown Commercial Service"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:airl-security-architect",
+      "indTypeId": "ind:airl-security-architect",
+      "name": "Security Architect / Technical Lead",
+      "channel": "B2B",
+      "typeCategory": "B2B_Technical",
+      "description": "Technical specialist responsible for CAF IGP evidence, security architecture, and remediation implementation. Subclasses RRR CTO. Translates CAF requirements into technical controls.",
+      "motivations": "Technical accuracy, IGP evidence quality, architecture coherence, tool integration, reducing manual evidence collection",
+      "painSummary": "559 IGPs to evidence, tool sprawl, evidence freshness, CAF-to-control mapping complexity",
+      "decisionStyle": "Analytical",
+      "budgetAuthority": "Recommender",
+      "typicalEngagement": "Relational",
+      "vpStakeholderType": "TechnicalEvaluator",
+      "rrrSubclass": "rrr:CTO", "rrrSeniorityLevel": 3,
+      "relationships": {
+        "hasQualifier": ["ind:q-sa-behavioral-01"],
+        "hasIndustryProfile": ["ind:ip-sa-cybersec"],
+        "hasPurchaseBehaviour": "ind:pb-sa-cybersec",
+        "subclassesRRRRole": "rrr:CTO",
+        "hasOrgRelation": "org:OES-NISRegulatedEntity",
+        "populatesICP": ["vp:icp-airl-caf-technical"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-sa-behavioral-01",
+      "qualifierId": "ind:q-sa-behavioral-01", "criteriaType": "Behavioral",
+      "criteriaName": "cafEvidenceCollectionHoursPerCycle", "operator": "greaterThan", "value": "200", "weight": 0.8
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-sa-cybersec",
+      "profileId": "ind:ip-sa-cybersec", "industry": "CyberSec / RegTech",
+      "industrySegment": "Security Architecture", "owningInstance": "PFI-AIRL-CAF-AZA",
+      "typicalBudgetRange": "Tool eval 10k-100k; remediation 50k-2M",
+      "purchaseFrequency": "Project-based + annual renewals",
+      "regulatoryContext": "NIS Regulations, NCSC CAF v4.0, Cyber Essentials, ISO 27001",
+      "industrySpecificTraits": "API-first mindset. Values automation. Needs CAF IGP mapping to Azure/AWS controls. Wants evidence-as-code."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-sa-cybersec",
+      "behaviourId": "ind:pb-sa-cybersec", "buyerJourneyType": "Researched",
+      "decisionTimeframe": "2-6 weeks (technical eval)",
+      "influencers": "NCSC technical docs, vendor POCs, peer architects, security community (CIISec, ISC2)",
+      "trustSignals": "API documentation, CAF coverage matrix, demo environment, technical references",
+      "priceElasticity": "Medium", "channelPreference": "Technical demo, POC, vendor direct, community recommendations"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:airl-compliance-manager",
+      "indTypeId": "ind:airl-compliance-manager",
+      "name": "Compliance & Governance Manager",
+      "channel": "B2B",
+      "typeCategory": "B2B_Professional",
+      "description": "Manager responsible for regulatory compliance, GRC framework alignment, and audit coordination. Subclasses RRR ComplianceOfficer. Bridge between CISO strategy and operational evidence.",
+      "motivations": "Audit readiness, policy alignment, evidence completeness, regulator relationship, framework mapping (CAF↔ISO↔GDPR)",
+      "painSummary": "Multi-framework mapping, evidence duplication across CAF/ISO/GDPR, audit fatigue, policy versioning",
+      "decisionStyle": "Procedural",
+      "budgetAuthority": "Influencer",
+      "typicalEngagement": "Relational",
+      "vpStakeholderType": "UserBuyer",
+      "rrrSubclass": "rrr:ComplianceOfficer", "rrrSeniorityLevel": 3,
+      "relationships": {
+        "hasQualifier": ["ind:q-cm-contextual-01"],
+        "hasIndustryProfile": ["ind:ip-cm-cybersec"],
+        "hasPurchaseBehaviour": "ind:pb-cm-cybersec",
+        "subclassesRRRRole": "rrr:ComplianceOfficer",
+        "hasOrgRelation": "org:OES-NISRegulatedEntity",
+        "populatesICP": ["vp:icp-airl-caf-compliance"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-cm-contextual-01",
+      "qualifierId": "ind:q-cm-contextual-01", "criteriaType": "Contextual",
+      "criteriaName": "frameworksCovered", "operator": "contains", "value": "NCSC-CAF,ISO27001,GDPR,CyberEssentials,DSPT", "weight": 0.9
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-cm-cybersec",
+      "profileId": "ind:ip-cm-cybersec", "industry": "CyberSec / RegTech",
+      "industrySegment": "Compliance & Governance", "owningInstance": "PFI-AIRL-CAF-AZA",
+      "typicalBudgetRange": "GRC tooling 20k-150k/yr",
+      "purchaseFrequency": "Annual renewal + project",
+      "regulatoryContext": "NIS Regulations, GDPR, Data Protection Act 2018, ISO 27001, DSPT (NHS)",
+      "industrySpecificTraits": "Spreadsheet fatigue. Values cross-framework mapping. Needs audit evidence export. Compliance calendar critical."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-cm-cybersec",
+      "behaviourId": "ind:pb-cm-cybersec", "buyerJourneyType": "Mandated",
+      "decisionTimeframe": "1-2 months",
+      "influencers": "CISO direction, regulatory deadlines, audit findings, peer compliance teams",
+      "trustSignals": "Framework coverage breadth, audit-ready exports, change history, role-based access",
+      "priceElasticity": "Medium", "channelPreference": "G-Cloud, vendor demo, webinar, compliance community"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:airl-audit-partner",
+      "indTypeId": "ind:airl-audit-partner",
+      "name": "External Audit Partner / Assessor",
+      "channel": "B2B",
+      "typeCategory": "B2B_Professional",
+      "description": "CHECK/CREST-accredited external assessor conducting CAF audits, GovAssure assessments, or penetration tests. Subclasses RRR Auditor. Works within audit firm/consultancy.",
+      "motivations": "Assessment quality, client throughput, CAF objective coverage, evidence sufficiency, consistent methodology",
+      "painSummary": "Evidence collection friction, client readiness variation, IGP interpretation ambiguity, report standardisation",
+      "decisionStyle": "Methodical",
+      "budgetAuthority": "None (client budget)",
+      "typicalEngagement": "Project",
+      "vpStakeholderType": "TechnicalEvaluator",
+      "rrrSubclass": "rrr:Auditor", "rrrSeniorityLevel": 3,
+      "relationships": {
+        "hasQualifier": ["ind:q-ap-firmographic-01"],
+        "hasIndustryProfile": ["ind:ip-ap-cybersec"],
+        "hasPurchaseBehaviour": "ind:pb-ap-cybersec",
+        "subclassesRRRRole": "rrr:Auditor",
+        "hasOrgRelation": "org:AuditFirm-CHECKAccredited",
+        "populatesICP": ["vp:icp-airl-caf-assessor"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-ap-firmographic-01",
+      "qualifierId": "ind:q-ap-firmographic-01", "criteriaType": "Firmographic",
+      "criteriaName": "accreditation", "operator": "contains", "value": "CHECK,CREST,NCSC-CertifiedProvider", "weight": 1.0
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-ap-cybersec",
+      "profileId": "ind:ip-ap-cybersec", "industry": "CyberSec / RegTech",
+      "industrySegment": "Cyber Assessment & Audit", "owningInstance": "PFI-AIRL-CAF-AZA",
+      "typicalBudgetRange": "N/A (assessor role — client pays 15k-150k per assessment)",
+      "purchaseFrequency": "Per-engagement",
+      "regulatoryContext": "NCSC CHECK scheme, CREST accreditation, GovAssure methodology",
+      "industrySpecificTraits": "Values pre-structured evidence packs. Needs secure evidence sharing. Methodology-driven. Wants re-usable assessment templates."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-ap-cybersec",
+      "behaviourId": "ind:pb-ap-cybersec", "buyerJourneyType": "Mandated",
+      "decisionTimeframe": "Engagement-based (client procurement)",
+      "influencers": "NCSC methodology, GovAssure requirements, firm methodology, peer assessors",
+      "trustSignals": "CAF coverage completeness, evidence export quality, secure collaboration, audit trail",
+      "priceElasticity": "N/A", "channelPreference": "Direct from client, firm methodology portal"
+    },
+
+    {
+      "@type": "ind:IndividualType",
+      "@id": "ind:airl-board-sponsor",
+      "indTypeId": "ind:airl-board-sponsor",
+      "name": "Board-Level Sponsor / SRO",
+      "channel": "B2B",
+      "typeCategory": "B2B_Executive",
+      "description": "Non-executive director or Senior Responsible Owner accountable for cyber resilience at board level. Subclasses RRR CEO. Receives CISO reports, approves budgets, signs GovAssure declarations.",
+      "motivations": "Board assurance, NIS compliance, cyber insurance, reputational risk, personal liability under NIS Regs",
+      "painSummary": "Technical complexity, board-level reporting gap, understanding maturity vs compliance, insurance implications",
+      "decisionStyle": "Strategic",
+      "budgetAuthority": "Approver",
+      "typicalEngagement": "Periodic",
+      "vpStakeholderType": "EconomicBuyer",
+      "rrrSubclass": "rrr:CEO", "rrrSeniorityLevel": 1,
+      "relationships": {
+        "hasQualifier": ["ind:q-bs-contextual-01"],
+        "hasIndustryProfile": ["ind:ip-bs-cybersec"],
+        "hasPurchaseBehaviour": "ind:pb-bs-cybersec",
+        "subclassesRRRRole": "rrr:CEO",
+        "hasOrgRelation": "org:OES-NISRegulatedEntity",
+        "populatesICP": ["vp:icp-airl-caf-board"]
+      }
+    },
+    {
+      "@type": "ind:IndividualQualifier", "@id": "ind:q-bs-contextual-01",
+      "qualifierId": "ind:q-bs-contextual-01", "criteriaType": "Contextual",
+      "criteriaName": "boardCyberOversight", "operator": "equals", "value": "true", "weight": 1.0
+    },
+    {
+      "@type": "ind:IndustryProfile", "@id": "ind:ip-bs-cybersec",
+      "profileId": "ind:ip-bs-cybersec", "industry": "CyberSec / RegTech",
+      "industrySegment": "Board-Level Cyber Governance", "owningInstance": "PFI-AIRL-CAF-AZA",
+      "typicalBudgetRange": "Approves 100k-5M cyber programme budgets",
+      "purchaseFrequency": "Annual (budget cycle)",
+      "regulatoryContext": "NIS Regulations (personal liability for OES), Companies Act (director duties), FRC guidance",
+      "industrySpecificTraits": "Needs executive summary dashboards, not technical detail. Values maturity trend lines, peer benchmarking, insurance readiness scores."
+    },
+    {
+      "@type": "ind:PurchaseBehaviour", "@id": "ind:pb-bs-cybersec",
+      "behaviourId": "ind:pb-bs-cybersec", "buyerJourneyType": "Advised",
+      "decisionTimeframe": "Board cycle (quarterly review, annual budget)",
+      "influencers": "CISO briefings, NED network, sector regulators, auditors, cyber insurance brokers",
+      "trustSignals": "Board-level reporting, peer org references, industry recognition, clear ROI narrative",
+      "priceElasticity": "Low", "channelPreference": "Executive briefing, CISO recommendation, board paper"
+    }
+  ]
+}

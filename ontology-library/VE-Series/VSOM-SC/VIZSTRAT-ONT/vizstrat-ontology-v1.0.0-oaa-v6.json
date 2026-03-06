@@ -1,0 +1,1277 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "viz": "https://oaa-ontology.org/v6/vizstrat/",
+    "nar": "https://oaa-ontology.org/v6/narrative/",
+    "csc": "https://oaa-ontology.org/v6/cascade/",
+    "cul": "https://oaa-ontology.org/v6/culture/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/",
+    "bsc": "https://oaa-ontology.org/v6/bsc/",
+    "rsn": "https://oaa-ontology.org/v6/reason/",
+    "pfl": "https://oaa-ontology.org/v6/portfolio/",
+    "mac": "https://oaa-ontology.org/v6/macro/",
+    "ind": "https://oaa-ontology.org/v6/industry/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/",
+    "okr": "https://oaa-ontology.org/v6/okr/",
+    "rrr": "https://oaa-ontology.org/v6/rrr/",
+    "ppm": "https://oaa-ontology.org/v6/ppm/",
+    "efs": "https://platformcore.io/ontology/efs/",
+    "ea": "https://oaa-ontology.org/v6/ea-core/",
+    "orgctx": "https://oaa-ontology.org/v6/org-context/"
+  },
+  "@id": "https://oaa-ontology.org/v6/vizstrat/schema",
+  "@type": "owl:Ontology",
+  "name": "Visual Strategy Artefacts & Deck Patterns Ontology",
+  "alternateName": "VIZSTRAT-ONT — Templates, Decks, Diagrams, Data Source Mapping & Skeleton Diagrams",
+  "description": "The capstone SC ontology. Formalizes the visual output layer of strategy communication: 9 single-artefact templates (One Slider, Use Case Map, Directional Costing, Priority Map, Technology Radar, Build/Buy/Partner, Due Diligence, Audit & Traceability, Architectural Definition), 6 composed deck patterns (Ghost, Ask, Strategy, Roadmap, Tactical Plan, Strategy Plan), Mermaid diagram patterns, data source mappings to SA ontology entities, audience-appropriate view configurations, skeleton diagrams for idea-to-execution graph traversal, and artefact versioning for evolution tracking. Templates are atomic; decks are composed. An AI agent selects deck pattern based on communication objective, applies SC communication pattern, renders templates from SA data, and assembles into audience-appropriate delivery. Part of VE-Series VSOM-SC (Strategy Communication).",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "Strategy Visualisation, Communication Artefacts, Decision Support",
+  "oaa:status": "Draft",
+  "dateCreated": "2026-02-13",
+  "dateModified": "2026-02-13",
+  "creator": {
+    "@type": "Organization",
+    "name": "W4M Strategic Patterns Framework"
+  },
+  "oaa:imports": [
+    {
+      "@id": "nar:schema",
+      "name": "NARRATIVE-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "nar:StrategicNarrative",
+        "nar:CommunicationPattern",
+        "nar:CommunicationObjective",
+        "nar:CommunicationLifecycle"
+      ],
+      "importedRelationships": [
+        "nar:patternAchievesObjective"
+      ]
+    },
+    {
+      "@id": "csc:schema",
+      "name": "CASCADE-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "csc:CascadeLevel",
+        "csc:AudienceCascade"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "vsom:schema",
+      "name": "VSOM-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "vsom:VSOMFramework",
+        "vsom:StrategicReviewCycle"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "bsc:schema",
+      "name": "BSC-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "bsc:StrategyMap",
+        "bsc:BalancedScorecard",
+        "bsc:BSCObjective",
+        "bsc:StrategicValueChain",
+        "bsc:CausalLink"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "rsn:schema",
+      "name": "REASON-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "rsn:StrategicQuestion",
+        "rsn:MECETree",
+        "rsn:LogicTree",
+        "rsn:AnalysisSynthesis"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "pfl:schema",
+      "name": "PORTFOLIO-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "pfl:StrategicDirectionSummary",
+        "pfl:StrategicInvestmentMap",
+        "pfl:GrowthShareMatrix",
+        "pfl:ThreeHorizonsModel"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "mac:schema",
+      "name": "MACRO-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "mac:ScenarioSet",
+        "mac:PESTELFactor"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "ind:schema",
+      "name": "INDUSTRY-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "ind:PortersFiveForces",
+        "ind:AnsoffGrowthPath"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "rrr:schema",
+      "name": "RRR-ONT",
+      "version": "4.0.0",
+      "importedEntities": [
+        "rrr:ExecutiveRole"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "okr:schema",
+      "name": "OKR-ONT",
+      "version": "2.0.0",
+      "importedEntities": [
+        "okr:Objective"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "kpi:schema",
+      "name": "KPI-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "kpi:KPI"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "ppm:schema",
+      "name": "PPM-ONT",
+      "version": "4.0.0",
+      "importedEntities": [
+        "ppm:Initiative",
+        "ppm:Portfolio"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "efs:schema",
+      "name": "EFS-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "efs:Epic"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "ea:schema",
+      "name": "EA-CORE-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "ea:BusinessCapability",
+        "ea:ApplicationService"
+      ],
+      "importedRelationships": []
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-VIZ-001",
+      "name": "Objective-to-Artefact Pipeline",
+      "description": "Full pipeline from communication objective to rendered artefact: select deck pattern, select communication pattern, render templates from SA data, assemble into audience-appropriate delivery.",
+      "joinPath": "nar:CommunicationObjective → viz:DeckPattern [WHERE objective + audience match] → viz:deckComposedOf → viz:DeckComposition → viz:compositionHasTemplate → viz:ArtefactTemplate → viz:templateHasDataSource → viz:DataSourceMapping → [SA entities]",
+      "useCase": "End-to-end artefact generation from communication objective"
+    },
+    {
+      "patternId": "JP-VIZ-002",
+      "name": "Skeleton-to-Execution Traversal",
+      "description": "From strategic question through MECE decomposition, SA analysis, SC communication, to execution artefacts. The skeleton diagram provides the structural outline; the pipeline fills it with data.",
+      "joinPath": "rsn:StrategicQuestion → viz:skeletonStartsFromQuestion → viz:SkeletonDiagram → [rsn:MECETree → SA analysis → pfl:StrategicDirectionSummary → nar:StrategicNarrative → viz:DeckPattern → okr:Objective → ppm:Initiative]",
+      "useCase": "Trace from initial strategic idea to execution plan via visual skeleton"
+    },
+    {
+      "patternId": "JP-VIZ-003",
+      "name": "Artefact Evolution Tracking",
+      "description": "Track how visual artefacts change between strategic review cycles. Each review cycle produces updated artefacts; versions enable diff comparison.",
+      "joinPath": "vsom:StrategicReviewCycle → viz:ArtefactVersion [current] → viz:ArtefactVersion [previous] → diff",
+      "useCase": "Strategy evolution visualisation — what changed and why"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "viz:VisualArtefact",
+      "@type": "rdfs:Class",
+      "name": "VisualArtefact",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "Base entity for any rendered visual strategy output. A VisualArtefact is a concrete, audience-targeted communication deliverable generated from SA data through SC patterns. It has a template type, data sources, an audience view, and a version history. Artefacts can be standalone (single template) or composed into decks.",
+      "oaa:properties": [
+        {
+          "name": "artefactId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "templateRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to viz:ArtefactTemplate @id defining the type"
+        },
+        {
+          "name": "narrativeRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to nar:StrategicNarrative @id providing narrative context"
+        },
+        {
+          "name": "audienceViewRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to viz:AudienceView @id for audience-appropriate rendering"
+        },
+        {
+          "name": "renderedDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "renderedBy",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Agent",
+            "Human",
+            "AgentReviewedByHuman"
+          ]
+        },
+        {
+          "name": "format",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "PDF",
+            "Slide",
+            "MermaidDiagram",
+            "InteractiveDashboard",
+            "HTMLPage",
+            "Markdown"
+          ],
+          "description": "Output format"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Draft",
+            "InReview",
+            "Approved",
+            "Published",
+            "Superseded"
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "viz:ArtefactTemplate",
+      "@type": "rdfs:Class",
+      "name": "ArtefactTemplate",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "One of 9 single-artefact template types. Each template defines a focused view of a specific strategic dimension. Templates are atomic — they produce one artefact from specific SA data sources for a specific audience. Templates can be composed into deck patterns for structured communication sequences.",
+      "oaa:properties": [
+        {
+          "name": "templateId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "templateCode",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "OneSlider",
+            "UseCaseMap",
+            "DirectionalCosting",
+            "PriorityMap",
+            "TechnologyRadar",
+            "BuildBuyPartner",
+            "DueDiligence",
+            "AuditTraceability",
+            "ArchitecturalDefinition"
+          ],
+          "description": "Machine-readable template type"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "purpose",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What this template communicates and why"
+        },
+        {
+          "name": "primaryAudience",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Primary audience levels for this template",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "diagramPatternRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to viz:DiagramPattern @id for Mermaid rendering"
+        }
+      ],
+      "_templateDefinitions": {
+        "OneSlider": {
+          "purpose": "Entire strategic direction on a single page — where we play, how we win, what we measure, who owns what",
+          "primaryAudience": [
+            "Board",
+            "CSuite",
+            "Leadership",
+            "Teams",
+            "Individuals"
+          ],
+          "saDataSources": [
+            "pfl:StrategicDirectionSummary",
+            "bsc:BalancedScorecard",
+            "rrr:ExecutiveRole"
+          ]
+        },
+        "UseCaseMap": {
+          "purpose": "Visual map of strategic use cases — who does what, in what context, to achieve what outcome",
+          "primaryAudience": [
+            "Leadership",
+            "Teams"
+          ],
+          "saDataSources": [
+            "bsc:StrategicValueChain",
+            "orgctx:OrganizationContext",
+            "ppm:Initiative"
+          ]
+        },
+        "DirectionalCosting": {
+          "purpose": "Rough-order cost model for strategic initiatives — direction, not precision",
+          "primaryAudience": [
+            "Board",
+            "CSuite"
+          ],
+          "saDataSources": [
+            "pfl:StrategicInvestmentMap",
+            "pfl:ThreeHorizonsModel",
+            "ppm:Initiative"
+          ]
+        },
+        "PriorityMap": {
+          "purpose": "2x2 or ranked view of strategic priorities by impact vs effort",
+          "primaryAudience": [
+            "CSuite",
+            "Leadership"
+          ],
+          "saDataSources": [
+            "rsn:LogicTree",
+            "bsc:BSCObjective",
+            "pfl:GrowthShareMatrix"
+          ]
+        },
+        "TechnologyRadar": {
+          "purpose": "ThoughtWorks-style radar: Adopt / Trial / Assess / Hold",
+          "primaryAudience": [
+            "CSuite",
+            "Leadership"
+          ],
+          "saDataSources": [
+            "ind:PortersFiveForces",
+            "mac:PESTELFactor",
+            "orgctx:OrganizationContext"
+          ]
+        },
+        "BuildBuyPartner": {
+          "purpose": "Decision framework for capability sourcing: build, buy, or partner",
+          "primaryAudience": [
+            "CSuite"
+          ],
+          "saDataSources": [
+            "ind:AnsoffGrowthPath",
+            "bsc:StrategicValueChain",
+            "pfl:ThreeHorizonsModel"
+          ]
+        },
+        "DueDiligence": {
+          "purpose": "Structured assessment of a strategic opportunity, acquisition, or partnership",
+          "primaryAudience": [
+            "Board",
+            "CSuite"
+          ],
+          "saDataSources": [
+            "mac:ScenarioSet",
+            "ind:PortersFiveForces",
+            "pfl:GrowthShareMatrix"
+          ]
+        },
+        "AuditTraceability": {
+          "purpose": "End-to-end traceability from strategic direction through to execution",
+          "primaryAudience": [
+            "Board",
+            "Leadership"
+          ],
+          "saDataSources": [
+            "vsom:VSOMFramework",
+            "bsc:BSCObjective",
+            "okr:Objective",
+            "ppm:Initiative",
+            "efs:Epic"
+          ]
+        },
+        "ArchitecturalDefinition": {
+          "purpose": "Strategic architecture view: capability map, technology landscape, target state",
+          "primaryAudience": [
+            "CSuite",
+            "Leadership"
+          ],
+          "saDataSources": [
+            "bsc:StrategicValueChain",
+            "ea:BusinessCapability",
+            "ea:ApplicationService",
+            "pfl:ThreeHorizonsModel"
+          ]
+        }
+      }
+    },
+    {
+      "@id": "viz:DeckPattern",
+      "@type": "rdfs:Class",
+      "name": "DeckPattern",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "One of 6 composed deck patterns. Decks are ordered sequences of templates assembled for a specific communication purpose with a specific SC communication pattern. Each deck has a structural logic — not just a slide order. An AI agent selects a deck pattern based on communication objective and audience, then renders each template from SA data.",
+      "oaa:properties": [
+        {
+          "name": "deckPatternId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "deckCode",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "GhostDeck",
+            "AskDeck",
+            "StrategyDeck",
+            "Roadmap",
+            "TacticalPlan",
+            "StrategyPlan"
+          ],
+          "description": "Machine-readable deck type"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "purpose",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Communication purpose of this deck pattern"
+        },
+        {
+          "name": "structuralLogic",
+          "type": "xsd:string",
+          "required": true,
+          "description": "How the deck is structured (e.g. 'Context → Problem → Options → Recommendation → Ask → Next Steps')"
+        },
+        {
+          "name": "communicationPatternRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to nar:CommunicationPattern @id governing overall approach"
+        },
+        {
+          "name": "primaryAudience",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Primary audience levels",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "templateCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Typical number of templates in this deck"
+        }
+      ],
+      "_deckDefinitions": {
+        "GhostDeck": {
+          "purpose": "Pre-meeting alignment — circulated before so attendees arrive prepared",
+          "structuralLogic": "Direction summary → Key questions → Decision points → Pre-read data",
+          "communicationPattern": "RentedBrain",
+          "primaryAudience": [
+            "Board",
+            "CSuite"
+          ]
+        },
+        "AskDeck": {
+          "purpose": "Secure a specific decision, approval, or resource",
+          "structuralLogic": "Context (30 sec) → Problem/opportunity → Options evaluated → Recommendation → The Ask → Next steps",
+          "communicationPattern": "ArsRhetorica",
+          "primaryAudience": [
+            "Board",
+            "CSuite"
+          ]
+        },
+        "StrategyDeck": {
+          "purpose": "Comprehensive strategic direction presentation — the full narrative",
+          "structuralLogic": "Narrative arc: Context → Challenge → Choice → Commitment → Cadence",
+          "communicationPattern": "DramaticStructure",
+          "primaryAudience": [
+            "Board",
+            "CSuite",
+            "Leadership"
+          ]
+        },
+        "Roadmap": {
+          "purpose": "Time-phased view of strategic execution",
+          "structuralLogic": "Now → Next → Later (or Q1-Q4 / H1-H2 / Year 1-3)",
+          "communicationPattern": "FaitAccompli",
+          "primaryAudience": [
+            "CSuite",
+            "Leadership",
+            "Teams"
+          ]
+        },
+        "TacticalPlan": {
+          "purpose": "Near-term execution detail per team or initiative",
+          "structuralLogic": "Objective → Actions → Owners → Timeline → Success criteria → Dependencies → Risks",
+          "communicationPattern": "ScalableBusinessMachines",
+          "primaryAudience": [
+            "Leadership",
+            "Teams"
+          ]
+        },
+        "StrategyPlan": {
+          "purpose": "Full strategic planning document — the authoritative reference",
+          "structuralLogic": "Executive summary → Full narrative arc → SA summaries → BSC + OKR cascade → Investment map → Roadmap → Governance → Appendices",
+          "communicationPattern": "DramaticStructure",
+          "primaryAudience": [
+            "CSuite",
+            "Leadership"
+          ]
+        }
+      }
+    },
+    {
+      "@id": "viz:DeckComposition",
+      "@type": "rdfs:Class",
+      "name": "DeckComposition",
+      "rdfs:subClassOf": "schema:ItemList",
+      "description": "Ordered sequence of artefact templates within a deck. Each entry in the composition specifies which template is rendered, its position in the sequence, and narrative transition guidance (how it connects to the next template).",
+      "oaa:properties": [
+        {
+          "name": "compositionId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "deckPatternRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to viz:DeckPattern @id"
+        },
+        {
+          "name": "templateRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to viz:ArtefactTemplate @id"
+        },
+        {
+          "name": "sequenceOrder",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Position in the deck (1-based)"
+        },
+        {
+          "name": "narrativeTransition",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How to transition from this template to the next (e.g. 'Having seen what it costs, let us look at when it happens')"
+        },
+        {
+          "name": "optional",
+          "type": "xsd:boolean",
+          "required": false,
+          "description": "Whether this template can be omitted based on audience or context"
+        }
+      ]
+    },
+    {
+      "@id": "viz:DiagramPattern",
+      "@type": "rdfs:Class",
+      "name": "DiagramPattern",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Mermaid/graph diagram rendering pattern for a specific artefact template. Defines the preferred diagram type, layout direction, node and edge semantics, and structural rules. Diagrams are first-class SC artefacts — they make strategy structure visible, traversable, and shareable.",
+      "oaa:properties": [
+        {
+          "name": "patternId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "templateRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to viz:ArtefactTemplate @id this pattern renders"
+        },
+        {
+          "name": "mermaidType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "flowchart",
+            "sequenceDiagram",
+            "stateDiagram-v2",
+            "gantt",
+            "quadrantChart"
+          ],
+          "description": "Preferred Mermaid diagram type"
+        },
+        {
+          "name": "layoutDirection",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "TD",
+            "LR",
+            "BT",
+            "RL"
+          ],
+          "description": "Preferred layout direction for flowcharts"
+        },
+        {
+          "name": "nodeSemantics",
+          "type": "xsd:string",
+          "required": false,
+          "description": "What nodes represent in this diagram pattern"
+        },
+        {
+          "name": "edgeSemantics",
+          "type": "xsd:string",
+          "required": false,
+          "description": "What edges represent in this diagram pattern"
+        },
+        {
+          "name": "structuralRules",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Constraints on the diagram structure (e.g. 'DAG only', 'max 4 levels deep')"
+        }
+      ],
+      "_diagramMappings": {
+        "OneSlider": {
+          "mermaidType": "flowchart",
+          "layoutDirection": "LR",
+          "nodeSemantics": "Central direction node → strategic pillars"
+        },
+        "UseCaseMap": {
+          "mermaidType": "flowchart",
+          "layoutDirection": "TD",
+          "nodeSemantics": "Actors → Goals → Scenarios → Outcomes"
+        },
+        "DirectionalCosting": {
+          "mermaidType": "flowchart",
+          "layoutDirection": "TD",
+          "nodeSemantics": "Total budget → Themes → Initiatives → Cost ranges"
+        },
+        "PriorityMap": {
+          "mermaidType": "quadrantChart",
+          "nodeSemantics": "Strategic priorities plotted by impact vs effort"
+        },
+        "TechnologyRadar": {
+          "mermaidType": "flowchart",
+          "layoutDirection": "LR",
+          "nodeSemantics": "Concentric rings: Adopt / Trial / Assess / Hold"
+        },
+        "BuildBuyPartner": {
+          "mermaidType": "flowchart",
+          "layoutDirection": "TD",
+          "nodeSemantics": "Capability → Evaluation criteria → Decision"
+        },
+        "DueDiligence": {
+          "mermaidType": "flowchart",
+          "layoutDirection": "LR",
+          "nodeSemantics": "Opportunity → Criteria → Evidence → Assessment"
+        },
+        "AuditTraceability": {
+          "mermaidType": "flowchart",
+          "layoutDirection": "TD",
+          "nodeSemantics": "Strategy → Objectives → KPIs → Initiatives → Epics"
+        },
+        "ArchitecturalDefinition": {
+          "mermaidType": "flowchart",
+          "layoutDirection": "TD",
+          "nodeSemantics": "Subgraphs per architectural layer"
+        }
+      }
+    },
+    {
+      "@id": "viz:DataSourceMapping",
+      "@type": "rdfs:Class",
+      "name": "DataSourceMapping",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Mapping from SA ontology entities to visual artefact data inputs. Each template has specific SA data requirements — DataSourceMapping makes this explicit and machine-traversable. An AI agent follows these mappings to pull the right data from the right SA ontologies when rendering a template.",
+      "oaa:properties": [
+        {
+          "name": "mappingId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "templateRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to viz:ArtefactTemplate @id"
+        },
+        {
+          "name": "saEntityRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to SA ontology entity @id (e.g. pfl:StrategicDirectionSummary)"
+        },
+        {
+          "name": "saOntologyName",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Name of the SA ontology providing data (e.g. PORTFOLIO-ONT)"
+        },
+        {
+          "name": "dataRole",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "PrimarySource",
+            "SecondarySource",
+            "ContextSource",
+            "MetricSource"
+          ],
+          "description": "Role of this data in the artefact"
+        },
+        {
+          "name": "requiredProperties",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Specific properties from the SA entity needed for rendering",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "transformationNotes",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How the SA data should be transformed for this artefact"
+        }
+      ]
+    },
+    {
+      "@id": "viz:AudienceView",
+      "@type": "rdfs:Class",
+      "name": "AudienceView",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Audience-appropriate detail level configuration for an artefact. The same data can be rendered at different levels of detail for different audiences. AudienceView controls what is shown, what is hidden, and how data is aggregated for each cascade level. Implements progressive disclosure: start with direction summary, drill into BSC perspectives, zoom to team OKRs.",
+      "oaa:properties": [
+        {
+          "name": "viewId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "templateRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to viz:ArtefactTemplate @id"
+        },
+        {
+          "name": "cascadeLevelRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to csc:CascadeLevel @id this view is configured for"
+        },
+        {
+          "name": "detailLevel",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Executive",
+            "Managerial",
+            "Operational",
+            "Personal"
+          ]
+        },
+        {
+          "name": "visibleElements",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Which artefact elements are visible at this detail level",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "hiddenElements",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Which artefact elements are hidden at this detail level",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "aggregationRules",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How data is rolled up for this audience (e.g. 'show portfolio totals not individual initiative costs')"
+        }
+      ]
+    },
+    {
+      "@id": "viz:ArtefactVersion",
+      "@type": "rdfs:Class",
+      "name": "ArtefactVersion",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "A versioned snapshot of a visual artefact tied to a strategic review cycle. Each review cycle may produce updated artefacts. Versions enable diff comparison: what changed in the visual representation between cycles, reflecting how the underlying strategy evolved.",
+      "oaa:properties": [
+        {
+          "name": "versionId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "artefactRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to viz:VisualArtefact @id"
+        },
+        {
+          "name": "versionNumber",
+          "type": "xsd:string",
+          "required": true
+        },
+        {
+          "name": "reviewCycleRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:StrategicReviewCycle @id that triggered this version"
+        },
+        {
+          "name": "changesSummary",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Summary of what changed from previous version"
+        },
+        {
+          "name": "snapshotDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Draft",
+            "Approved",
+            "Published",
+            "Superseded"
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "viz:SkeletonDiagram",
+      "@type": "rdfs:Class",
+      "name": "SkeletonDiagram",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "A structural outline for idea-to-execution graph traversal. A skeleton diagram is the 'napkin sketch' that becomes a traversable graph — it scopes the structural outline of a strategic idea before full SA analysis or SC communication. The progression: Idea → Skeleton → SA analysis → SC communication → Execution. Each node in the skeleton references an ontology entity type; each edge references a relationship type. AI agents generate skeletons from strategic questions; humans refine before full analysis.",
+      "oaa:properties": [
+        {
+          "name": "skeletonId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "strategicQuestionRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to rsn:StrategicQuestion @id this skeleton explores"
+        },
+        {
+          "name": "mermaidCode",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Mermaid diagram code for the skeleton"
+        },
+        {
+          "name": "nodeEntityTypes",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Ontology entity types referenced in skeleton nodes",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "scopeDescription",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What strategic territory this skeleton covers"
+        },
+        {
+          "name": "generatedBy",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Agent",
+            "Human",
+            "AgentReviewedByHuman"
+          ]
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Sketch",
+            "Refined",
+            "AnalysisInProgress",
+            "Complete"
+          ]
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "viz:artefactUsesTemplate",
+      "@type": "owl:ObjectProperty",
+      "name": "Artefact Uses Template",
+      "description": "A visual artefact is an instance of an artefact template",
+      "domainIncludes": [
+        "viz:VisualArtefact"
+      ],
+      "rangeIncludes": [
+        "viz:ArtefactTemplate"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "viz:templateHasDataSource",
+      "@type": "owl:ObjectProperty",
+      "name": "Template Has Data Source",
+      "description": "Artefact template has data source mappings to SA ontology entities",
+      "domainIncludes": [
+        "viz:ArtefactTemplate"
+      ],
+      "rangeIncludes": [
+        "viz:DataSourceMapping"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "viz:templateHasDiagramPattern",
+      "@type": "owl:ObjectProperty",
+      "name": "Template Has Diagram Pattern",
+      "description": "Artefact template has a Mermaid diagram rendering pattern",
+      "domainIncludes": [
+        "viz:ArtefactTemplate"
+      ],
+      "rangeIncludes": [
+        "viz:DiagramPattern"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "viz:deckComposedOf",
+      "@type": "owl:ObjectProperty",
+      "name": "Deck Composed Of",
+      "description": "Deck pattern is composed of ordered template entries",
+      "domainIncludes": [
+        "viz:DeckPattern"
+      ],
+      "rangeIncludes": [
+        "viz:DeckComposition"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "viz:compositionHasTemplate",
+      "@type": "owl:ObjectProperty",
+      "name": "Composition Has Template",
+      "description": "Deck composition entry references a specific artefact template",
+      "domainIncludes": [
+        "viz:DeckComposition"
+      ],
+      "rangeIncludes": [
+        "viz:ArtefactTemplate"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "viz:deckUsesPattern",
+      "@type": "owl:ObjectProperty",
+      "name": "Deck Uses Pattern",
+      "description": "Deck pattern uses a narrative communication pattern for overall structural approach",
+      "domainIncludes": [
+        "viz:DeckPattern"
+      ],
+      "rangeIncludes": [
+        "nar:CommunicationPattern"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "NARRATIVE-ONT"
+    },
+    {
+      "@id": "viz:deckTargetsAudience",
+      "@type": "owl:ObjectProperty",
+      "name": "Deck Targets Audience",
+      "description": "Deck pattern targets specific cascade audience levels",
+      "domainIncludes": [
+        "viz:DeckPattern"
+      ],
+      "rangeIncludes": [
+        "csc:CascadeLevel"
+      ],
+      "oaa:cardinality": "1..*",
+      "oaa:crossOntologyRef": "CASCADE-ONT"
+    },
+    {
+      "@id": "viz:artefactHasAudienceView",
+      "@type": "owl:ObjectProperty",
+      "name": "Artefact Has Audience View",
+      "description": "Visual artefact has audience-specific view configurations",
+      "domainIncludes": [
+        "viz:VisualArtefact"
+      ],
+      "rangeIncludes": [
+        "viz:AudienceView"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "viz:artefactHasVersion",
+      "@type": "owl:ObjectProperty",
+      "name": "Artefact Has Version",
+      "description": "Visual artefact has versioned snapshots",
+      "domainIncludes": [
+        "viz:VisualArtefact"
+      ],
+      "rangeIncludes": [
+        "viz:ArtefactVersion"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "viz:skeletonStartsFromQuestion",
+      "@type": "owl:ObjectProperty",
+      "name": "Skeleton Starts From Question",
+      "description": "Skeleton diagram starts from a strategic question for idea-to-execution traversal",
+      "domainIncludes": [
+        "viz:SkeletonDiagram"
+      ],
+      "rangeIncludes": [
+        "rsn:StrategicQuestion"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "REASON-ONT"
+    },
+    {
+      "@id": "viz:artefactRendersFromSA",
+      "@type": "owl:ObjectProperty",
+      "name": "Artefact Renders From SA",
+      "description": "Data source mapping references SA ontology entities as data input",
+      "domainIncludes": [
+        "viz:DataSourceMapping"
+      ],
+      "rangeIncludes": [
+        "pfl:StrategicDirectionSummary",
+        "bsc:StrategyMap",
+        "rsn:MECETree",
+        "mac:ScenarioSet"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "PORTFOLIO-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-VIZ-001",
+      "name": "Artefact Must Have Template",
+      "condition": "IF a VisualArtefact is created",
+      "action": "THEN templateRef MUST reference a valid viz:ArtefactTemplate @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-VIZ-002",
+      "name": "Deck Must Have Composition",
+      "condition": "IF a DeckPattern is instantiated",
+      "action": "THEN it MUST have at least two DeckComposition entries (a deck with one template is just a template)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-VIZ-003",
+      "name": "Data Source Must Reference Valid SA Entity",
+      "condition": "IF a DataSourceMapping is created",
+      "action": "THEN saEntityRef MUST reference a valid entity @id from the specified saOntologyName",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-VIZ-004",
+      "name": "Skeleton Must Reference Strategic Question",
+      "condition": "IF a SkeletonDiagram is created",
+      "action": "THEN strategicQuestionRef MUST reference a valid rsn:StrategicQuestion @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-VIZ-005",
+      "name": "Published Artefact Must Have Approved Version",
+      "condition": "IF a VisualArtefact has status 'Published'",
+      "action": "THEN it MUST have at least one ArtefactVersion with status 'Approved' or 'Published'",
+      "severity": "error"
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-13",
+    "modifiedBy": "OAA v6.1.0 Agent",
+    "changeNotes": "Initial release of VIZSTRAT-ONT as part of VE-Series VSOM-SC (Strategy Communication). Capstone ontology with 15 imports — the widest dependency graph in the library. Formalizes 9 artefact templates, 6 deck patterns, diagram patterns, data source mappings, audience views, skeleton diagrams, and artefact versioning. Cross-references all SC ontologies plus VSOM-SA pipeline.",
+    "versionHistory": []
+  },
+  "oaa:ontologyId": "VIZ-ONT",
+  "oaa:series": "VE-Series / VSOM-SC",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of VisualArtefact within this ontology?",
+      "targetEntities": [
+        "viz:VisualArtefact"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of ArtefactTemplate within this ontology?",
+      "targetEntities": [
+        "viz:ArtefactTemplate"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of DeckPattern within this ontology?",
+      "targetEntities": [
+        "viz:DeckPattern"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of DeckComposition within this ontology?",
+      "targetEntities": [
+        "viz:DeckComposition"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of DiagramPattern within this ontology?",
+      "targetEntities": [
+        "viz:DiagramPattern"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of DataSourceMapping within this ontology?",
+      "targetEntities": [
+        "viz:DataSourceMapping"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of AudienceView within this ontology?",
+      "targetEntities": [
+        "viz:AudienceView"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of ArtefactVersion within this ontology?",
+      "targetEntities": [
+        "viz:ArtefactVersion"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of SkeletonDiagram within this ontology?",
+      "targetEntities": [
+        "viz:SkeletonDiagram"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

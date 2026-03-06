@@ -1,0 +1,1285 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ga": "https://platformcore.io/ontology/ga/",
+    "org": "https://platformcore.io/ontology/org/",
+    "org-ctx": "https://platformcore.io/ontology/org-context/",
+    "vsom": "https://platformcore.io/ontology/vsom/",
+    "cl": "https://platformcore.io/ontology/cl/",
+    "org-mat": "https://platformcore.io/ontology/org-mat/",
+    "ppm": "https://platformcore.io/ontology/ppm/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "oaa": "https://platformcore.io/ontology/oaa/"
+  },
+  "@id": "ga:GapAnalysisOntology",
+  "@type": "DefinedTermSet",
+  "name": "Gap Analysis Ontology",
+  "description": "Comprehensive ontology for comparative gap analysis supporting the CGA Agent. Models gaps, threats, opportunities, recommendations, and priority matrices with full cross-ontology integration to ORG-CONTEXT, VSOM, CL, ORG-MAT, and PPM.",
+  "version": "2.0.0",
+  "oaa:version": "6.1.0",
+  "dateCreated": "2026-02-01",
+  "dateModified": "2026-02-07",
+  "creator": {
+    "@type": "Organization",
+    "@id": "ga:PlatformCore"
+  },
+  "hasDefinedTerm": [
+    {
+      "@id": "ga:GapAnalysisReport",
+      "@type": "DefinedTerm",
+      "name": "Gap Analysis Report",
+      "description": "Container for a complete gap analysis including identified gaps, threats, opportunities, priority matrix, recommendations, and executive summary",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "skos:note": "Central hub entity — all other GA entities connect through this report container",
+      "ga:properties": [
+        {
+          "@id": "ga:reportIdentifier",
+          "@type": "PropertyValue",
+          "name": "Identifier",
+          "description": "Unique identifier for this gap analysis report",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:sessionId",
+          "@type": "PropertyValue",
+          "name": "Session ID",
+          "description": "Analysis session identifier for traceability",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:analysisType",
+          "@type": "PropertyValue",
+          "name": "Analysis Type",
+          "description": "Type of analysis: comparative, structural, competitive, capability, or content",
+          "valueReference": "ga:AnalysisTypeEnum"
+        },
+        {
+          "@id": "ga:domainInstance",
+          "@type": "PropertyValue",
+          "name": "Domain Instance",
+          "description": "PF-Instance identifier (e.g., BAIV, AIR, W4M)",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:reportStatus",
+          "@type": "PropertyValue",
+          "name": "Status",
+          "description": "Report lifecycle status: draft, reviewed, or approved",
+          "valueReference": "ga:ReportStatusEnum"
+        },
+        {
+          "@id": "ga:entityCount",
+          "@type": "QuantitativeValue",
+          "name": "Entity Count",
+          "description": "Number of entities analysed in this report"
+        },
+        {
+          "@id": "ga:relationshipCount",
+          "@type": "QuantitativeValue",
+          "name": "Relationship Count",
+          "description": "Number of relationships analysed in this report"
+        },
+        {
+          "@id": "ga:timeframe",
+          "@type": "PropertyValue",
+          "name": "Timeframe",
+          "description": "Analysis timeframe or planning horizon",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:comparators",
+          "@type": "PropertyValue",
+          "name": "Comparators",
+          "description": "Entities or frameworks being compared in the analysis",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "ga:IdentifiedGap",
+      "@type": "DefinedTerm",
+      "name": "Identified Gap",
+      "description": "A gap identified through analysis with type classification, severity rating, confidence score, and supporting evidence linkage",
+      "ga:properties": [
+        {
+          "@id": "ga:gapId",
+          "@type": "PropertyValue",
+          "name": "Gap ID",
+          "description": "Unique identifier for this identified gap",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:gapType",
+          "@type": "PropertyValue",
+          "name": "Gap Type",
+          "description": "Classification: structural_hole, capability, content, competitive, market, or technology",
+          "valueReference": "ga:GapTypeEnum"
+        },
+        {
+          "@id": "ga:gapTitle",
+          "@type": "PropertyValue",
+          "name": "Title",
+          "description": "Short descriptive title for the gap",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:gapDescription",
+          "@type": "PropertyValue",
+          "name": "Description",
+          "description": "Detailed description of the gap and its implications",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:gapSeverity",
+          "@type": "PropertyValue",
+          "name": "Severity",
+          "description": "Severity classification: critical, high, medium, or low",
+          "valueReference": "ga:SeverityEnum"
+        },
+        {
+          "@id": "ga:confidence",
+          "@type": "QuantitativeValue",
+          "name": "Confidence",
+          "description": "Confidence score from 0 to 1 based on evidence quality"
+        },
+        {
+          "@id": "ga:affectedEntities",
+          "@type": "PropertyValue",
+          "name": "Affected Entities",
+          "description": "List of entities affected by this gap",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "ga:GapEvidence",
+      "@type": "DefinedTerm",
+      "name": "Gap Evidence",
+      "description": "Supporting evidence for an identified gap including data source, metric values, collection date, and methodology used",
+      "ga:properties": [
+        {
+          "@id": "ga:evidenceSource",
+          "@type": "PropertyValue",
+          "name": "Source",
+          "description": "Evidence source (e.g., InfraNodus, market research, competitor audit)",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:evidenceMetric",
+          "@type": "PropertyValue",
+          "name": "Metric",
+          "description": "Metric name used for measurement (e.g., betweenness_centrality)",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:evidenceValue",
+          "@type": "QuantitativeValue",
+          "name": "Value",
+          "description": "Measured metric value supporting the gap identification"
+        },
+        {
+          "@id": "ga:dateCollected",
+          "@type": "PropertyValue",
+          "name": "Date Collected",
+          "description": "When the evidence was collected",
+          "valueReference": "xsd:dateTime"
+        },
+        {
+          "@id": "ga:methodology",
+          "@type": "PropertyValue",
+          "name": "Methodology",
+          "description": "Methodology used to collect and validate the evidence",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "ga:BusinessImpact",
+      "@type": "DefinedTerm",
+      "name": "Business Impact",
+      "description": "Assessment of business impact from a gap including revenue risk, competitive risk, opportunity cost, and estimated financial value",
+      "ga:properties": [
+        {
+          "@id": "ga:revenueRisk",
+          "@type": "PropertyValue",
+          "name": "Revenue Risk",
+          "description": "Revenue impact severity: critical, high, medium, or low",
+          "valueReference": "ga:SeverityEnum"
+        },
+        {
+          "@id": "ga:competitiveRisk",
+          "@type": "PropertyValue",
+          "name": "Competitive Risk",
+          "description": "Competitive position impact: critical, high, medium, or low",
+          "valueReference": "ga:SeverityEnum"
+        },
+        {
+          "@id": "ga:opportunityCost",
+          "@type": "PropertyValue",
+          "name": "Opportunity Cost",
+          "description": "Description of foregone opportunities",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:estimatedValue",
+          "@type": "QuantitativeValue",
+          "name": "Estimated Value",
+          "description": "Estimated monetary impact of the gap"
+        },
+        {
+          "@id": "ga:timeToImpact",
+          "@type": "PropertyValue",
+          "name": "Time to Impact",
+          "description": "Estimated time before the gap causes material impact",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "ga:StructuralHole",
+      "@type": "DefinedTerm",
+      "name": "Structural Hole",
+      "description": "A disconnected cluster in a knowledge graph identified through network analysis, representing missing connections between concept areas",
+      "rdfs:subClassOf": "ga:IdentifiedGap",
+      "ga:properties": [
+        {
+          "@id": "ga:betweennessCentrality",
+          "@type": "QuantitativeValue",
+          "name": "Betweenness Centrality",
+          "description": "Network centrality score (0 to 1) indicating structural importance"
+        },
+        {
+          "@id": "ga:clusterSize",
+          "@type": "QuantitativeValue",
+          "name": "Cluster Size",
+          "description": "Number of nodes in the disconnected cluster"
+        },
+        {
+          "@id": "ga:disconnectedNodes",
+          "@type": "PropertyValue",
+          "name": "Disconnected Nodes",
+          "description": "List of node identifiers in the disconnected cluster",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:graphDensity",
+          "@type": "QuantitativeValue",
+          "name": "Graph Density",
+          "description": "Local graph density around the structural hole"
+        }
+      ]
+    },
+    {
+      "@id": "ga:BridgeConcept",
+      "@type": "DefinedTerm",
+      "name": "Bridge Concept",
+      "description": "A concept that could connect disconnected areas in a knowledge graph, serving as a potential resolution for structural holes",
+      "ga:properties": [
+        {
+          "@id": "ga:conceptName",
+          "@type": "PropertyValue",
+          "name": "Concept Name",
+          "description": "Name of the bridging concept",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:connectsGaps",
+          "@type": "PropertyValue",
+          "name": "Connects Gaps",
+          "description": "List of gap IDs this concept could bridge",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:bridgeStrength",
+          "@type": "QuantitativeValue",
+          "name": "Bridge Strength",
+          "description": "Estimated strength of the bridge (0 to 1)"
+        },
+        {
+          "@id": "ga:implementationComplexity",
+          "@type": "PropertyValue",
+          "name": "Implementation Complexity",
+          "description": "Complexity to implement: low, medium, or high",
+          "valueReference": "ga:ComplexityEnum"
+        },
+        {
+          "@id": "ga:relatedConcepts",
+          "@type": "PropertyValue",
+          "name": "Related Concepts",
+          "description": "Other concepts related to this bridge",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "ga:ThreatAssessment",
+      "@type": "DefinedTerm",
+      "name": "Threat Assessment",
+      "description": "Assessment of a competitive or market threat derived from identified gaps, with probability, impact, and calculated risk score",
+      "ga:properties": [
+        {
+          "@id": "ga:threatId",
+          "@type": "PropertyValue",
+          "name": "Threat ID",
+          "description": "Unique identifier for this threat",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:threatType",
+          "@type": "PropertyValue",
+          "name": "Threat Type",
+          "description": "Classification: competitive, market, capability, technology, or regulatory",
+          "valueReference": "ga:ThreatTypeEnum"
+        },
+        {
+          "@id": "ga:threatDescription",
+          "@type": "PropertyValue",
+          "name": "Description",
+          "description": "Detailed description of the threat and its context",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:probability",
+          "@type": "QuantitativeValue",
+          "name": "Probability",
+          "description": "Probability of threat materialising (0 to 1)"
+        },
+        {
+          "@id": "ga:impact",
+          "@type": "QuantitativeValue",
+          "name": "Impact",
+          "description": "Severity of impact if threat materialises (0 to 1)"
+        },
+        {
+          "@id": "ga:riskScore",
+          "@type": "QuantitativeValue",
+          "name": "Risk Score",
+          "description": "Calculated as probability * impact (0 to 1)"
+        },
+        {
+          "@id": "ga:timeHorizon",
+          "@type": "PropertyValue",
+          "name": "Time Horizon",
+          "description": "Expected timeframe: immediate, short-term, medium-term, or long-term",
+          "valueReference": "ga:TimeHorizonEnum"
+        }
+      ]
+    },
+    {
+      "@id": "ga:MitigationOption",
+      "@type": "DefinedTerm",
+      "name": "Mitigation Option",
+      "description": "A potential mitigation strategy for a threat including effort estimation, effectiveness rating, cost, and implementation timeline",
+      "ga:properties": [
+        {
+          "@id": "ga:mitigationOption",
+          "@type": "PropertyValue",
+          "name": "Option",
+          "description": "Description of the mitigation strategy",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:effort",
+          "@type": "PropertyValue",
+          "name": "Effort",
+          "description": "Estimated implementation effort: low, medium, or high",
+          "valueReference": "ga:EffortEnum"
+        },
+        {
+          "@id": "ga:effectiveness",
+          "@type": "QuantitativeValue",
+          "name": "Effectiveness",
+          "description": "Estimated effectiveness of the mitigation (0 to 1)"
+        },
+        {
+          "@id": "ga:mitigationCost",
+          "@type": "QuantitativeValue",
+          "name": "Cost",
+          "description": "Estimated monetary cost of implementing the mitigation"
+        },
+        {
+          "@id": "ga:timeToImplement",
+          "@type": "PropertyValue",
+          "name": "Time to Implement",
+          "description": "Estimated implementation timeline",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "ga:OpportunityAssessment",
+      "@type": "DefinedTerm",
+      "name": "Opportunity Assessment",
+      "description": "Assessment of a strategic opportunity derived from gap analysis with feasibility scoring, time-to-value estimation, and required capabilities",
+      "ga:properties": [
+        {
+          "@id": "ga:opportunityId",
+          "@type": "PropertyValue",
+          "name": "Opportunity ID",
+          "description": "Unique identifier for this opportunity",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:opportunityType",
+          "@type": "PropertyValue",
+          "name": "Opportunity Type",
+          "description": "Classification: market, capability, content, partnership, technology, or innovation",
+          "valueReference": "ga:OpportunityTypeEnum"
+        },
+        {
+          "@id": "ga:opportunityTitle",
+          "@type": "PropertyValue",
+          "name": "Title",
+          "description": "Short descriptive title for the opportunity",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:opportunityDescription",
+          "@type": "PropertyValue",
+          "name": "Description",
+          "description": "Detailed description of the opportunity and its value",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:feasibility",
+          "@type": "QuantitativeValue",
+          "name": "Feasibility",
+          "description": "Feasibility score from 0 to 1"
+        },
+        {
+          "@id": "ga:timeToValue",
+          "@type": "PropertyValue",
+          "name": "Time to Value",
+          "description": "Estimated time to realise value from this opportunity",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:requiredCapabilities",
+          "@type": "PropertyValue",
+          "name": "Required Capabilities",
+          "description": "Capabilities needed to pursue this opportunity",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "ga:PotentialValue",
+      "@type": "DefinedTerm",
+      "name": "Potential Value",
+      "description": "Estimated value of an opportunity including revenue impact, market share gain, competitive advantage, and strategic value rating",
+      "ga:properties": [
+        {
+          "@id": "ga:revenueImpact",
+          "@type": "QuantitativeValue",
+          "name": "Revenue Impact",
+          "description": "Estimated revenue impact of pursuing this opportunity"
+        },
+        {
+          "@id": "ga:marketShareGain",
+          "@type": "PropertyValue",
+          "name": "Market Share Gain",
+          "description": "Estimated market share improvement",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:competitiveAdvantage",
+          "@type": "PropertyValue",
+          "name": "Competitive Advantage",
+          "description": "Description of competitive advantage gained",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:strategicValue",
+          "@type": "PropertyValue",
+          "name": "Strategic Value",
+          "description": "Strategic value rating: critical, high, medium, or low",
+          "valueReference": "ga:SeverityEnum"
+        },
+        {
+          "@id": "ga:confidenceLevel",
+          "@type": "QuantitativeValue",
+          "name": "Confidence Level",
+          "description": "Confidence in value estimate (0 to 1)"
+        }
+      ]
+    },
+    {
+      "@id": "ga:PriorityMatrix",
+      "@type": "DefinedTerm",
+      "name": "Priority Matrix",
+      "description": "Impact/effort prioritisation matrix with weighted dimensions and quadrants for systematic gap and opportunity ranking",
+      "ga:properties": [
+        {
+          "@id": "ga:dimensions",
+          "@type": "PropertyValue",
+          "name": "Dimensions",
+          "description": "Scoring dimensions: impact, effort, urgency, alignment",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:weightImpact",
+          "@type": "QuantitativeValue",
+          "name": "Weight Impact",
+          "description": "Weight for impact dimension (default 0.4)"
+        },
+        {
+          "@id": "ga:weightEffort",
+          "@type": "QuantitativeValue",
+          "name": "Weight Effort",
+          "description": "Weight for effort dimension (default 0.3)"
+        },
+        {
+          "@id": "ga:weightUrgency",
+          "@type": "QuantitativeValue",
+          "name": "Weight Urgency",
+          "description": "Weight for urgency dimension (default 0.15)"
+        },
+        {
+          "@id": "ga:weightAlignment",
+          "@type": "QuantitativeValue",
+          "name": "Weight Alignment",
+          "description": "Weight for strategic alignment dimension (default 0.15)"
+        }
+      ]
+    },
+    {
+      "@id": "ga:PriorityQuadrant",
+      "@type": "DefinedTerm",
+      "name": "Priority Quadrant",
+      "description": "A quadrant in the priority matrix categorising items as Quick Wins, Major Projects, Fill-Ins, or Hard Slogs based on impact and effort",
+      "ga:properties": [
+        {
+          "@id": "ga:quadrantType",
+          "@type": "PropertyValue",
+          "name": "Quadrant Type",
+          "description": "Quadrant classification: quickWins, majorProjects, fillIns, or hardSlogs",
+          "valueReference": "ga:QuadrantTypeEnum"
+        },
+        {
+          "@id": "ga:impactLevel",
+          "@type": "PropertyValue",
+          "name": "Impact Level",
+          "description": "Impact axis: high or low",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:effortLevel",
+          "@type": "PropertyValue",
+          "name": "Effort Level",
+          "description": "Effort axis: high or low",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:itemCount",
+          "@type": "QuantitativeValue",
+          "name": "Item Count",
+          "description": "Number of ranked items in this quadrant"
+        }
+      ]
+    },
+    {
+      "@id": "ga:RankedItem",
+      "@type": "DefinedTerm",
+      "name": "Ranked Item",
+      "description": "An item ranked within the priority matrix with composite score, rank position, item type classification, and prioritisation rationale",
+      "ga:properties": [
+        {
+          "@id": "ga:rankedItemId",
+          "@type": "PropertyValue",
+          "name": "Item ID",
+          "description": "Reference to the gap, threat, or opportunity being ranked",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:itemType",
+          "@type": "PropertyValue",
+          "name": "Item Type",
+          "description": "Type of ranked item: gap, threat, or opportunity",
+          "valueReference": "ga:ItemTypeEnum"
+        },
+        {
+          "@id": "ga:rank",
+          "@type": "QuantitativeValue",
+          "name": "Rank",
+          "description": "Priority rank position (1 = highest)"
+        },
+        {
+          "@id": "ga:compositeScore",
+          "@type": "QuantitativeValue",
+          "name": "Composite Score",
+          "description": "Weighted composite priority score (0 to 1)"
+        },
+        {
+          "@id": "ga:rationale",
+          "@type": "PropertyValue",
+          "name": "Rationale",
+          "description": "Reasoning behind the priority ranking",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "ga:Recommendation",
+      "@type": "DefinedTerm",
+      "name": "Recommendation",
+      "description": "Actionable recommendation derived from gap analysis with implementation phases, expected outcomes, and strategic alignment to VSOM objectives",
+      "ga:properties": [
+        {
+          "@id": "ga:recommendationId",
+          "@type": "PropertyValue",
+          "name": "Recommendation ID",
+          "description": "Unique identifier for this recommendation",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:recommendationTitle",
+          "@type": "PropertyValue",
+          "name": "Title",
+          "description": "Short descriptive title for the recommendation",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:recommendationDescription",
+          "@type": "PropertyValue",
+          "name": "Description",
+          "description": "Detailed description of the recommended action",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:actionType",
+          "@type": "PropertyValue",
+          "name": "Action Type",
+          "description": "Type: content, capability, process, partnership, or technology",
+          "valueReference": "ga:ActionTypeEnum"
+        },
+        {
+          "@id": "ga:priority",
+          "@type": "PropertyValue",
+          "name": "Priority",
+          "description": "Priority level: critical, high, medium, or low",
+          "valueReference": "ga:SeverityEnum"
+        },
+        {
+          "@id": "ga:estimatedEffort",
+          "@type": "PropertyValue",
+          "name": "Estimated Effort",
+          "description": "Estimated effort for implementation",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:recDependencies",
+          "@type": "PropertyValue",
+          "name": "Dependencies",
+          "description": "Other recommendations or conditions this depends on",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:recRisks",
+          "@type": "PropertyValue",
+          "name": "Risks",
+          "description": "Implementation risks for this recommendation",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "ga:ImplementationPhase",
+      "@type": "DefinedTerm",
+      "name": "Implementation Phase",
+      "description": "A phase in the recommendation implementation plan with deliverables, effort estimate, and prerequisite conditions",
+      "ga:properties": [
+        {
+          "@id": "ga:phaseNumber",
+          "@type": "QuantitativeValue",
+          "name": "Phase",
+          "description": "Phase sequence number"
+        },
+        {
+          "@id": "ga:phaseName",
+          "@type": "PropertyValue",
+          "name": "Phase Name",
+          "description": "Descriptive name for this implementation phase",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:deliverables",
+          "@type": "PropertyValue",
+          "name": "Deliverables",
+          "description": "Expected deliverables from this phase",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:phaseEffort",
+          "@type": "PropertyValue",
+          "name": "Estimated Effort",
+          "description": "Estimated effort for this phase",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:prerequisites",
+          "@type": "PropertyValue",
+          "name": "Prerequisites",
+          "description": "Conditions that must be met before starting this phase",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "ga:ExpectedOutcome",
+      "@type": "DefinedTerm",
+      "name": "Expected Outcome",
+      "description": "Expected outcomes from implementing a recommendation including gaps closed, threats addressed, opportunities enabled, and value created",
+      "ga:properties": [
+        {
+          "@id": "ga:gapsClosed",
+          "@type": "PropertyValue",
+          "name": "Gaps Closed",
+          "description": "List of gap IDs addressed by this outcome",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:threatsAddressed",
+          "@type": "PropertyValue",
+          "name": "Threats Addressed",
+          "description": "List of threat IDs mitigated by this outcome",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:opportunitiesEnabled",
+          "@type": "PropertyValue",
+          "name": "Opportunities Enabled",
+          "description": "List of opportunity IDs enabled by this outcome",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:valueCreated",
+          "@type": "PropertyValue",
+          "name": "Value Created",
+          "description": "Description of value created by achieving this outcome",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "ga:OutcomeMetric",
+      "@type": "DefinedTerm",
+      "name": "Outcome Metric",
+      "description": "A metric for measuring recommendation outcomes with baseline value, target value, measurement unit, and frequency",
+      "ga:properties": [
+        {
+          "@id": "ga:metricName",
+          "@type": "PropertyValue",
+          "name": "Metric Name",
+          "description": "Name of the measurement metric",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:baseline",
+          "@type": "QuantitativeValue",
+          "name": "Baseline",
+          "description": "Current baseline value for this metric"
+        },
+        {
+          "@id": "ga:target",
+          "@type": "QuantitativeValue",
+          "name": "Target",
+          "description": "Target value to achieve for this metric"
+        },
+        {
+          "@id": "ga:unit",
+          "@type": "PropertyValue",
+          "name": "Unit",
+          "description": "Unit of measurement for this metric",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:measurementFrequency",
+          "@type": "PropertyValue",
+          "name": "Measurement Frequency",
+          "description": "How often the metric should be measured",
+          "valueReference": "xsd:string"
+        }
+      ]
+    },
+    {
+      "@id": "ga:ExecutiveSummary",
+      "@type": "DefinedTerm",
+      "name": "Executive Summary",
+      "description": "High-level summary of gap analysis findings and recommendations for stakeholder communication and decision-making",
+      "ga:properties": [
+        {
+          "@id": "ga:keyFindings",
+          "@type": "PropertyValue",
+          "name": "Key Findings",
+          "description": "List of critical findings from the analysis",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:criticalGapsCount",
+          "@type": "QuantitativeValue",
+          "name": "Critical Gaps Count",
+          "description": "Number of gaps rated as critical severity"
+        },
+        {
+          "@id": "ga:highPriorityOpportunities",
+          "@type": "QuantitativeValue",
+          "name": "High Priority Opportunities",
+          "description": "Number of high-priority opportunities identified"
+        },
+        {
+          "@id": "ga:totalThreatsIdentified",
+          "@type": "QuantitativeValue",
+          "name": "Total Threats",
+          "description": "Total number of threats identified"
+        },
+        {
+          "@id": "ga:recommendedNextSteps",
+          "@type": "PropertyValue",
+          "name": "Recommended Next Steps",
+          "description": "Prioritised list of immediate next steps",
+          "valueReference": "xsd:string"
+        },
+        {
+          "@id": "ga:estimatedTotalValue",
+          "@type": "QuantitativeValue",
+          "name": "Estimated Total Value",
+          "description": "Estimated total monetary value across all opportunities"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:identifiesGap",
+      "name": "identifiesGap",
+      "description": "A GapAnalysisReport identifies one or more gaps through its analysis process",
+      "domainIncludes": "ga:GapAnalysisReport",
+      "rangeIncludes": "ga:IdentifiedGap",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:hasEvidence",
+      "name": "hasEvidence",
+      "description": "An IdentifiedGap is supported by one or more GapEvidence records",
+      "domainIncludes": "ga:IdentifiedGap",
+      "rangeIncludes": "ga:GapEvidence",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:hasBusinessImpact",
+      "name": "hasBusinessImpact",
+      "description": "An IdentifiedGap has a BusinessImpact assessment quantifying its consequences",
+      "domainIncludes": "ga:IdentifiedGap",
+      "rangeIncludes": "ga:BusinessImpact",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:specialisedAsStructuralHole",
+      "name": "specialisedAsStructuralHole",
+      "description": "An IdentifiedGap may be further classified as a StructuralHole when it involves graph disconnection",
+      "domainIncludes": "ga:IdentifiedGap",
+      "rangeIncludes": "ga:StructuralHole",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:hasBridgeConcept",
+      "name": "hasBridgeConcept",
+      "description": "A StructuralHole has one or more potential BridgeConcepts that could resolve the disconnection",
+      "domainIncludes": "ga:StructuralHole",
+      "rangeIncludes": "ga:BridgeConcept",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:identifiesThreat",
+      "name": "identifiesThreat",
+      "description": "A GapAnalysisReport identifies one or more ThreatAssessments from its findings",
+      "domainIncludes": "ga:GapAnalysisReport",
+      "rangeIncludes": "ga:ThreatAssessment",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:threatRelatedToGap",
+      "name": "threatRelatedToGap",
+      "description": "A ThreatAssessment is derived from one or more IdentifiedGaps",
+      "domainIncludes": "ga:ThreatAssessment",
+      "rangeIncludes": "ga:IdentifiedGap",
+      "cardinality": "n:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:hasMitigation",
+      "name": "hasMitigation",
+      "description": "A ThreatAssessment has one or more potential MitigationOptions",
+      "domainIncludes": "ga:ThreatAssessment",
+      "rangeIncludes": "ga:MitigationOption",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:identifiesOpportunity",
+      "name": "identifiesOpportunity",
+      "description": "A GapAnalysisReport identifies one or more strategic OpportunityAssessments",
+      "domainIncludes": "ga:GapAnalysisReport",
+      "rangeIncludes": "ga:OpportunityAssessment",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:opportunityRelatedToGap",
+      "name": "opportunityRelatedToGap",
+      "description": "An OpportunityAssessment is derived from one or more IdentifiedGaps",
+      "domainIncludes": "ga:OpportunityAssessment",
+      "rangeIncludes": "ga:IdentifiedGap",
+      "cardinality": "n:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:hasPotentialValue",
+      "name": "hasPotentialValue",
+      "description": "An OpportunityAssessment has a PotentialValue estimation quantifying its worth",
+      "domainIncludes": "ga:OpportunityAssessment",
+      "rangeIncludes": "ga:PotentialValue",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:enabledByBridge",
+      "name": "enabledByBridge",
+      "description": "An OpportunityAssessment may be enabled by one or more BridgeConcepts",
+      "domainIncludes": "ga:OpportunityAssessment",
+      "rangeIncludes": "ga:BridgeConcept",
+      "cardinality": "n:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:hasPriorityMatrix",
+      "name": "hasPriorityMatrix",
+      "description": "A GapAnalysisReport has one PriorityMatrix for systematic prioritisation",
+      "domainIncludes": "ga:GapAnalysisReport",
+      "rangeIncludes": "ga:PriorityMatrix",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:hasQuadrant",
+      "name": "hasQuadrant",
+      "description": "A PriorityMatrix is divided into PriorityQuadrants for impact/effort classification",
+      "domainIncludes": "ga:PriorityMatrix",
+      "rangeIncludes": "ga:PriorityQuadrant",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:containsItem",
+      "name": "containsItem",
+      "description": "A PriorityQuadrant contains one or more RankedItems positioned by their scores",
+      "domainIncludes": "ga:PriorityQuadrant",
+      "rangeIncludes": "ga:RankedItem",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:hasRecommendation",
+      "name": "hasRecommendation",
+      "description": "A GapAnalysisReport produces one or more actionable Recommendations",
+      "domainIncludes": "ga:GapAnalysisReport",
+      "rangeIncludes": "ga:Recommendation",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:addressesGap",
+      "name": "addressesGap",
+      "description": "A Recommendation directly addresses one or more IdentifiedGaps",
+      "domainIncludes": "ga:Recommendation",
+      "rangeIncludes": "ga:IdentifiedGap",
+      "cardinality": "n:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:addressesThreat",
+      "name": "addressesThreat",
+      "description": "A Recommendation addresses one or more ThreatAssessments",
+      "domainIncludes": "ga:Recommendation",
+      "rangeIncludes": "ga:ThreatAssessment",
+      "cardinality": "n:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:enablesOpportunity",
+      "name": "enablesOpportunity",
+      "description": "A Recommendation enables one or more OpportunityAssessments to be pursued",
+      "domainIncludes": "ga:Recommendation",
+      "rangeIncludes": "ga:OpportunityAssessment",
+      "cardinality": "n:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:hasImplementationPhase",
+      "name": "hasImplementationPhase",
+      "description": "A Recommendation has one or more ImplementationPhases defining its execution plan",
+      "domainIncludes": "ga:Recommendation",
+      "rangeIncludes": "ga:ImplementationPhase",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:hasExpectedOutcome",
+      "name": "hasExpectedOutcome",
+      "description": "A Recommendation has one or more ExpectedOutcomes defining its success criteria",
+      "domainIncludes": "ga:Recommendation",
+      "rangeIncludes": "ga:ExpectedOutcome",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:hasOutcomeMetric",
+      "name": "hasOutcomeMetric",
+      "description": "An ExpectedOutcome is measured by one or more OutcomeMetrics",
+      "domainIncludes": "ga:ExpectedOutcome",
+      "rangeIncludes": "ga:OutcomeMetric",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:hasExecutiveSummary",
+      "name": "hasExecutiveSummary",
+      "description": "A GapAnalysisReport has one ExecutiveSummary for stakeholder communication",
+      "domainIncludes": "ga:GapAnalysisReport",
+      "rangeIncludes": "ga:ExecutiveSummary",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:hasGapAnalysis",
+      "name": "hasGapAnalysis",
+      "description": "An ORG-CONTEXT OrganizationContext has gap analysis reports through the analysis bridge",
+      "domainIncludes": "org-ctx:OrganizationContext",
+      "rangeIncludes": "ga:GapAnalysisReport",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:strategicContext",
+      "name": "strategicContext",
+      "description": "A GapAnalysisReport is aligned to a VSOM strategic framework for strategic context",
+      "domainIncludes": "ga:GapAnalysisReport",
+      "rangeIncludes": "vsom:VSOMFramework",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:analysesLandscape",
+      "name": "analysesLandscape",
+      "description": "A GapAnalysisReport analyses the competitive landscape from the CL ontology",
+      "domainIncludes": "ga:GapAnalysisReport",
+      "rangeIncludes": "org-ctx:CompetitiveLandscape",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:affectsMaturity",
+      "name": "affectsMaturity",
+      "description": "An IdentifiedGap affects maturity dimension scores in the ORG-MAT ontology",
+      "domainIncludes": "ga:IdentifiedGap",
+      "rangeIncludes": "org-mat:DimensionScore",
+      "cardinality": "n:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:alignsToObjective",
+      "name": "alignsToObjective",
+      "description": "A Recommendation aligns to VSOM strategic objectives for traceability",
+      "domainIncludes": "ga:Recommendation",
+      "rangeIncludes": "vsom:ObjectivesComponent",
+      "cardinality": "n:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:spawnsProject",
+      "name": "spawnsProject",
+      "description": "A Recommendation spawns a PPM Project when approved for implementation",
+      "domainIncludes": "ga:Recommendation",
+      "rangeIncludes": "ppm:Project",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:inSegment",
+      "name": "inSegment",
+      "description": "An OpportunityAssessment targets a specific CL MarketSegment",
+      "domainIncludes": "ga:OpportunityAssessment",
+      "rangeIncludes": "org-ctx:MarketSegment",
+      "cardinality": "n:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "ga:involvedCompetitor",
+      "name": "involvedCompetitor",
+      "description": "A ThreatAssessment involves a specific competitor from the CL ontology",
+      "domainIncludes": "ga:ThreatAssessment",
+      "rangeIncludes": "org-ctx:CompetitorProfile",
+      "cardinality": "n:n"
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "ga:rule-gap-evidence-required",
+      "name": "GapEvidenceRequired",
+      "description": "Every identified gap must have at least one evidence source for credibility",
+      "condition": "IF ga:IdentifiedGap exists",
+      "action": "THEN COUNT(ga:hasEvidence) >= 1",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "ga:rule-threat-risk-score",
+      "name": "ThreatRiskScoreCalculation",
+      "description": "Threat risk score must equal probability multiplied by impact for consistency",
+      "condition": "IF ga:ThreatAssessment.probability AND ga:ThreatAssessment.impact ARE SET",
+      "action": "THEN ga:riskScore MUST EQUAL probability * impact",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "ga:rule-low-confidence-escalation",
+      "name": "LowConfidenceEscalation",
+      "description": "Gaps with confidence below 0.6 require human review before actioning",
+      "condition": "IF ga:IdentifiedGap.confidence < 0.6",
+      "action": "THEN flag for human review with escalation note",
+      "priority": 2,
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "@id": "ga:rule-recommendation-linkage",
+      "name": "RecommendationLinkageRequired",
+      "description": "Recommendations must link to at least one gap, threat, or opportunity for traceability",
+      "condition": "IF ga:Recommendation exists",
+      "action": "THEN at least one of addressesGap, addressesThreat, or enablesOpportunity MUST exist",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "ga:rule-minimum-comparative-entities",
+      "name": "MinimumComparativeEntities",
+      "description": "Comparative analysis requires at least 3 entities to be meaningful",
+      "condition": "IF ga:GapAnalysisReport.analysisType = 'comparative'",
+      "action": "THEN ga:entityCount >= 3",
+      "priority": 2,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "ga:rule-priority-matrix-weights",
+      "name": "PriorityMatrixWeightsSum",
+      "description": "Priority matrix dimension weights must sum to 1.0 for valid scoring",
+      "condition": "IF ga:PriorityMatrix weights ARE SET",
+      "action": "THEN weightImpact + weightEffort + weightUrgency + weightAlignment = 1.0",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "ga:rule-strategic-alignment-high-priority",
+      "name": "StrategicAlignmentForHighPriority",
+      "description": "Critical and high priority recommendations should have strategic alignment to VSOM objectives",
+      "condition": "IF ga:Recommendation.priority IN ['critical', 'high']",
+      "action": "THEN ga:alignsToObjective relationship SHOULD exist",
+      "priority": 3,
+      "severity": "warning",
+      "enforcementLevel": "recommended"
+    },
+    {
+      "@id": "ga:rule-executive-summary-completeness",
+      "name": "ExecutiveSummaryCompleteness",
+      "description": "Executive summary must have key findings and recommended next steps",
+      "condition": "IF ga:ExecutiveSummary exists",
+      "action": "THEN keyFindings AND recommendedNextSteps MUST have at least one item each",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    }
+  ],
+  "crossOntologyReferences": {
+    "foundationSeries": [
+      "org-ctx:"
+    ],
+    "veSeries": [
+      "vsom:"
+    ],
+    "peSeries": [
+      "ppm:",
+      "org-mat:"
+    ],
+    "description": "GA is a Foundation-series analysis ontology bridging strategy to execution. It receives context from ORG-CONTEXT (including competitive landscape, market segments, and competitor profiles), aligns to VSOM strategic frameworks, measures against ORG-MAT maturity, and spawns PPM projects from recommendations.",
+    "lineageAlignment": {
+      "org-ctx:OrganizationContext": "ORG-CONTEXT provides the organizational context that scopes gap analysis",
+      "vsom:VSOMFramework": "VSOM provides strategic framework alignment for gap analysis findings",
+      "vsom:ObjectivesComponent": "VSOM objectives provide strategic alignment targets for recommendations",
+      "org-ctx:CompetitiveLandscape": "CL provides the competitive landscape context for competitive gap analysis",
+      "org-ctx:MarketSegment": "CL market segments scope opportunities identified in gap analysis",
+      "org-ctx:CompetitorProfile": "CL competitor profiles inform threat assessments",
+      "org-mat:DimensionScore": "ORG-MAT maturity dimensions are affected by identified gaps",
+      "ppm:Project": "PPM projects are spawned from actioned recommendations"
+    },
+    "keyBridges": [
+      {
+        "from": "org-ctx:OrganizationContext",
+        "to": "ga:GapAnalysisReport",
+        "relationship": "hasGapAnalysis"
+      },
+      {
+        "from": "ga:GapAnalysisReport",
+        "to": "vsom:VSOMFramework",
+        "relationship": "strategicContext"
+      },
+      {
+        "from": "ga:GapAnalysisReport",
+        "to": "org-ctx:CompetitiveLandscape",
+        "relationship": "analysesLandscape"
+      },
+      {
+        "from": "ga:IdentifiedGap",
+        "to": "org-mat:DimensionScore",
+        "relationship": "affectsMaturity"
+      },
+      {
+        "from": "ga:Recommendation",
+        "to": "vsom:ObjectivesComponent",
+        "relationship": "alignsToObjective"
+      },
+      {
+        "from": "ga:Recommendation",
+        "to": "ppm:Project",
+        "relationship": "spawnsProject"
+      },
+      {
+        "from": "ga:OpportunityAssessment",
+        "to": "org-ctx:MarketSegment",
+        "relationship": "inSegment"
+      },
+      {
+        "from": "ga:ThreatAssessment",
+        "to": "org-ctx:CompetitorProfile",
+        "relationship": "involvedCompetitor"
+      }
+    ]
+  },
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "GA-ONT",
+  "oaa:series": "ANALYSIS LAYER"
+}

@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OAA Ontology Visualiser</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<link rel="stylesheet" href="css/viewer.css">
+</head>
+<body>
+
+<header>
+  <h1>OAA Ontology Visualiser</h1>
+  <span id="file-name" style="font-size:13px; color:#666;"></span>
+  <span id="registry-version-detail" style="display:none; font-size:11px; color:#888; margin-left:4px;"></span>
+  <span id="bookmark-toggle" style="display:none; cursor:pointer; font-size:16px; margin-left:4px;" onclick="toggleBookmark()" title="Bookmark this ontology">&#x2606;</span>
+  <span id="compliance-status" style="display:none;" class="compliance-badge" onclick="toggleAudit()" title="Click to view OAA v7.0.0 compliance report">
+    <span class="dot"></span>
+    <span id="compliance-text">OAA v7.0.0</span>
+  </span>
+  <span class="stats" id="stats"></span>
+</header>
+
+<!-- Static toolbar removed — all navigation now skeleton-driven via Z2-dyn, Z4, Z4b (F40.17b + F40.20) -->
+<!-- Hidden file input retained for Open File action -->
+<input type="file" id="file-input" accept=".json,.jsonld,.mmd,.mermaid" style="display:none;">
+
+<!-- Z2: Dynamic Navigation Bar — sole toolbar, skeleton-driven (F40.17b + F40.20) -->
+<div class="dynamic-nav-bar" id="dynamic-nav-bar"></div>
+
+<!-- Z4: Dynamic Authoring Bar — skeleton-driven (L5-authoring layer) -->
+<div class="dynamic-nav-bar dynamic-authoring-bar" id="dynamic-authoring-bar"></div>
+
+<!-- Z4b: Dynamic Selection Bar — skeleton-driven (L6-selection layer) -->
+<div class="dynamic-nav-bar dynamic-selection-bar" id="dynamic-selection-bar"></div>
+
+<!-- EMC Cascade Navigation Bar (F19.4+ — PFC → PFI → Product → App) -->
+<div class="emc-nav-bar" id="emc-nav-bar">
+  <div class="emc-nav-accent" id="emc-nav-accent"></div>
+
+  <!-- Level 0: PFC (always visible) -->
+  <div class="emc-nav-level emc-nav-level--active" id="emc-nav-pfc" data-level="0">
+    <button class="emc-nav-btn emc-nav-btn--active" id="emc-nav-pfc-btn" onclick="setEMCLevel(0)" title="PF-Core — all ontology templates">
+      <span class="emc-nav-label" id="emc-nav-pfc-label">PF-Core</span>
+    </button>
+  </div>
+
+  <span class="emc-nav-sep" id="emc-nav-sep-1" style="display:none;">&#x203A;</span>
+
+  <!-- Level 1: PFI Instance -->
+  <div class="emc-nav-level emc-nav-level--disabled" id="emc-nav-pfi" data-level="1">
+    <button class="emc-nav-btn" id="emc-nav-pfi-btn" onclick="toggleEMCDropdown(1)" disabled title="Select PF-Instance">
+      <span class="emc-nav-label" id="emc-nav-pfi-label">Instance</span>
+      <span class="emc-nav-arrow">&#x25BC;</span>
+    </button>
+    <div class="emc-nav-dropdown" id="emc-nav-pfi-dropdown" style="display:none;">
+      <div id="emc-nav-pfi-list"></div>
+    </div>
+  </div>
+
+  <span class="emc-nav-sep" id="emc-nav-sep-2" style="display:none;">&#x203A;</span>
+
+  <!-- Level 2: Product -->
+  <div class="emc-nav-level emc-nav-level--disabled" id="emc-nav-product" data-level="2">
+    <button class="emc-nav-btn" id="emc-nav-product-btn" onclick="toggleEMCDropdown(2)" disabled title="Select product">
+      <span class="emc-nav-label" id="emc-nav-product-label">Product</span>
+      <span class="emc-nav-arrow">&#x25BC;</span>
+    </button>
+    <div class="emc-nav-dropdown" id="emc-nav-product-dropdown" style="display:none;">
+      <div id="emc-nav-product-list"></div>
+    </div>
+  </div>
+
+  <span class="emc-nav-sep" id="emc-nav-sep-3" style="display:none;">&#x203A;</span>
+
+  <!-- Level 3: Application (future placeholder) -->
+  <div class="emc-nav-level emc-nav-level--placeholder" id="emc-nav-app" data-level="3">
+    <button class="emc-nav-btn emc-nav-btn--placeholder" disabled title="Application tier — coming in F19.6">
+      <span class="emc-nav-label">App</span>
+    </button>
+  </div>
+
+  <!-- Scope chips + persona chips (relocated from toolbar) -->
+  <div class="emc-nav-chips" id="emc-nav-chips">
+    <div class="scope-chips" id="scope-chips" style="display:none;"></div>
+    <div class="scope-chips" id="persona-chips" style="display:none;"></div>
+  </div>
+
+  <!-- Right-aligned context summary -->
+  <div class="emc-nav-summary" id="emc-nav-summary">
+    <span class="emc-nav-brand" id="emc-nav-brand"></span>
+    <span class="emc-nav-tier" id="emc-nav-tier">Core Templates</span>
+  </div>
+</div>
+
+<!-- Old context/authoring/selection bars removed — now skeleton-driven via Z4, Z4b (F40.20) -->
+
+<div class="breadcrumb-bar" id="breadcrumb" style="display:none;">
+  <button class="breadcrumb-home" onclick="navigateToTier0()" title="Return to series overview">&#x2302; Home</button>
+  <span id="breadcrumb-path"></span>
+  <div id="tier-depth-gauge" class="tier-depth-gauge" style="display:none;">
+    <span class="tier-level" data-tier="0" onclick="navigateBack(0)">
+      <span class="tier-icon">&#x25A6;</span> Series
+    </span>
+    <span class="tier-arrow">&#x2192;</span>
+    <span class="tier-level" data-tier="1" onclick="navigateBack(1)">
+      <span class="tier-icon">&#x25C9;</span> Ontology
+    </span>
+    <span class="tier-arrow">&#x2192;</span>
+    <span class="tier-level" data-tier="2">
+      <span class="tier-icon">&#x25CF;</span> Entity
+    </span>
+  </div>
+  <div id="tier0-toggle" style="display:none;">
+    <button class="tier-toggle active" data-view="series" onclick="navigateToTier0()">Series (5)</button>
+    <button class="tier-toggle" data-view="ontologies" onclick="showAllOntologies()">Ontologies (28)</button>
+    <button class="tier-toggle" data-view="connections" onclick="showConnectionMap()" title="Show ontology-to-ontology dependency graph">Connections</button>
+  </div>
+  <div id="series-toggle" style="display:none; margin-left:8px;">
+    <button class="series-toggle" data-series="VE-Series" onclick="toggleSeriesHighlight('VE-Series')" title="Highlight VE-Series (VSOM→OKR→VP→PMF→EFS)">
+      <span class="series-dot" style="background:#cec528"></span> VE
+    </button>
+    <button class="series-toggle" data-series="PE-Series" onclick="toggleSeriesHighlight('PE-Series')" title="Highlight PE-Series (PPM→PE→EFS→EA)">
+      <span class="series-dot" style="background:#b87333"></span> PE
+    </button>
+    <button class="series-toggle" data-series="Foundation" onclick="toggleSeriesHighlight('Foundation')" title="Highlight Foundation ontologies">
+      <span class="series-dot" style="background:#FF9800"></span> Foundation
+    </button>
+    <button class="series-toggle" data-series="RCSG-Series" onclick="toggleSeriesHighlight('RCSG-Series')" title="Highlight RCSG-Series ontologies">
+      <span class="series-dot" style="background:#9C27B0"></span> RCSG
+    </button>
+    <button class="series-toggle" data-series="Orchestration" onclick="toggleSeriesHighlight('Orchestration')" title="Highlight Orchestration ontologies">
+      <span class="series-dot" style="background:#00BCD4"></span> Orchestration
+    </button>
+  </div>
+  <div id="cross-edge-filter" style="display:none; margin-left:4px;">
+    <button id="btn-cross-edge-filter" class="cross-edge-filter-btn" onclick="toggleCrossEdgeFilter()" title="Show only cross-ontology edges">
+      Cross-refs Only
+    </button>
+  </div>
+  <div id="bridge-filter" style="display:none; margin-left:auto;">
+    <button id="btn-bridge-filter" class="bridge-filter-btn" onclick="toggleBridgeFilter()" title="Show only bridge nodes (referenced by 3+ ontologies)">
+      &#x1F309; Bridges (<span id="bridge-count">0</span>)
+    </button>
+    <div id="bridge-type-filters" style="display:none;"></div>
+  </div>
+</div>
+
+<div id="graph-container">
+  <div id="drop-zone">
+    <div class="drop-area" id="drop-area">
+      <h2>Drop JSON Ontology or Mermaid Diagram Here</h2>
+      <p>or click "Open File" above</p>
+      <div class="formats">Supports: OAA v7.0.0, JSON-LD, UniRegistry, Agent Registry, .mmd/.mermaid diagrams<br>Validates ontologies against OAA v7.0.0 compliance gates (G1-G8, G20-G24) with completeness scoring<br>Use "Load from GitHub" to fetch from a private repo, or "Load Registry" for the full unified registry</div>
+    </div>
+  </div>
+  <div id="network"></div>
+  <!-- Mermaid Diagram Container (Epic 9F) -->
+  <div id="mermaid-container" style="display:none;">
+    <!-- Mermaid Drop-Zone / Empty State -->
+    <div id="mermaid-drop-zone" class="mermaid-drop-zone">
+      <div class="mermaid-drop-area" id="mermaid-drop-area">
+        <h2>Drop Mermaid Diagram Here</h2>
+        <p>or click to browse for .mmd / .mermaid files</p>
+        <input type="file" id="mermaid-file-input" accept=".mmd,.mermaid" style="display:none;">
+        <div class="mermaid-drop-actions">
+          <button class="oaa-btn oaa-btn-secondary" onclick="openMermaidFilePicker()">Browse Files</button>
+          <button class="oaa-btn oaa-btn-secondary" onclick="startMermaidFromTemplate()">Start from Template</button>
+        </div>
+        <div class="formats">Supports: .mmd and .mermaid diagram files</div>
+      </div>
+    </div>
+    <div id="mermaid-diagram-tabs" class="mermaid-tabs" style="display:none;"></div>
+    <div id="mermaid-render" class="mermaid-render-area"></div>
+    <div id="mermaid-editor-error" class="mermaid-editor-error" style="display:none;"></div>
+  </div>
+  <!-- Mermaid Editor Panel (Epic 9F) -->
+  <div class="mermaid-editor-panel" id="mermaid-editor-panel">
+    <button class="close-btn" onclick="toggleMermaidEditor()">&times;</button>
+    <h3>Mermaid Editor</h3>
+    <div class="mermaid-editor-toolbar">
+      <select id="mermaid-type-select" onchange="insertMermaidTemplate(this.value)">
+        <option value="">Template...</option>
+        <option value="flowchart">Flowchart</option>
+        <option value="sequence">Sequence Diagram</option>
+        <option value="state">State Diagram</option>
+        <option value="gantt">Gantt Chart</option>
+        <option value="classDiagram">Class Diagram</option>
+      </select>
+      <button class="oaa-btn oaa-btn-secondary" onclick="downloadMermaidSource()" style="font-size:11px;">Download .mmd</button>
+    </div>
+    <textarea id="mermaid-source-editor" class="mermaid-source-textarea"
+      oninput="onMermaidSourceChange()"
+      spellcheck="false"></textarea>
+  </div>
+  <!-- Mindmap Canvas Container (F9F.8) -->
+  <div id="mindmap-container" style="display:none;">
+    <div class="mindmap-toolbar" id="mindmap-toolbar">
+      <button onclick="addIdeaNodeUI()" title="Add a new idea node">+ Idea</button>
+      <button id="btn-mm-connect" onclick="toggleEdgeModeUI()" title="Draw connection between nodes">Connect</button>
+      <select id="mm-edge-type-select" title="Edge type for new connections">
+        <option value="supports">supports</option>
+        <option value="implements">implements</option>
+        <option value="derives-from">derives-from</option>
+        <option value="challenges">challenges</option>
+        <option value="informs">informs</option>
+        <option value="depends-on">depends-on</option>
+        <option value="conflicts-with">conflicts-with</option>
+        <option value="extends">extends</option>
+        <option value="refines">refines</option>
+        <option value="custom">custom</option>
+      </select>
+      <span style="border-left:1px solid #3a3d47; height:20px;"></span>
+      <button onclick="addActionCardUI()" title="Add an action/form card">+ Action</button>
+      <span style="border-left:1px solid #3a3d47; height:20px;"></span>
+      <button onclick="toggleMindmapLanesUI()" title="Toggle ideation lanes/zones">Lanes</button>
+      <span style="border-left:1px solid #3a3d47; height:20px;"></span>
+      <button onclick="saveWorkspaceUI()" title="Save workspace">Save</button>
+      <button onclick="showWorkspaceManagerUI()" title="Manage workspaces">Workspaces</button>
+      <span style="border-left:1px solid #3a3d47; height:20px;"></span>
+      <div class="export-dropdown" id="mm-export-dropdown">
+        <button onclick="toggleMindmapExportMenu()">Export &#x25BC;</button>
+        <div class="export-menu" id="mm-export-menu" style="display:none;">
+          <button onclick="exportMindmapJSON()">Workspace JSON</button>
+          <button onclick="exportMindmapMermaid()">Mermaid Mindmap</button>
+        </div>
+      </div>
+      <span class="mindmap-workspace-name" id="mm-workspace-name" style="margin-left:auto; color:#888; font-size:12px;"></span>
+      <span class="mindmap-dirty-dot" id="mm-dirty-dot" style="display:none; color:#fca5a5;">&#x2022;</span>
+    </div>
+    <div id="mindmap-network" class="mindmap-network">
+      <div id="mindmap-empty-hint" class="mindmap-empty-hint">
+        <h2>Mindmap / Ideation Canvas</h2>
+        <p>Double-click anywhere to add an idea, or use the toolbar above</p>
+        <p class="formats">+ Idea &middot; + Action Card &middot; Connect nodes &middot; Toggle Lanes</p>
+      </div>
+    </div>
+    <!-- Mindmap Properties Panel (F9F.8) -->
+    <div class="mindmap-properties-panel" id="mindmap-properties-panel">
+    <button class="close-btn" onclick="closeMindmapPropertiesUI()">&times;</button>
+    <h3 id="mm-props-title">Node Properties</h3>
+    <div id="mm-props-body">
+      <div class="field">
+        <label class="field-label">Label</label>
+        <input type="text" id="mm-prop-label" class="library-input" style="width:100%;" oninput="onMindmapLabelChange()">
+      </div>
+      <div class="field">
+        <label class="field-label">Type</label>
+        <span id="mm-prop-type" class="field-value"></span>
+      </div>
+      <div class="field">
+        <label class="field-label">Notes</label>
+        <textarea id="mm-prop-notes" class="library-input" rows="4" style="width:100%; resize:vertical;" oninput="onMindmapNotesChange()"></textarea>
+      </div>
+      <div class="field" id="mm-prop-ref-section" style="display:none;">
+        <label class="field-label">Ontology Reference</label>
+        <div id="mm-prop-ref-details" class="field-value"></div>
+      </div>
+      <div class="field" id="mm-prop-action-section" style="display:none;">
+        <label class="field-label">Action Fields</label>
+        <div id="mm-prop-action-fields"></div>
+      </div>
+      <div style="margin-top:12px;">
+        <button class="oaa-btn" onclick="deleteMindmapNodeUI()" style="background:#cf057d; border-color:#cf057d;">Delete Node</button>
+      </div>
+    </div>
+    </div>
+  </div>
+  <!-- Skeleton Graph Container (F40.22) -->
+  <div id="skeleton-graph-container" style="display:none;">
+    <div id="skeleton-graph-network" style="width:100%; height:100%;"></div>
+  </div>
+  <!-- Decision Tree Container (F40.1) -->
+  <div id="decision-tree-container" style="display:none;">
+    <div id="decision-tree-network" style="width:100%; height:100%;"></div>
+    <div id="dt-scoring-panel" class="dt-scoring-panel"></div>
+    <!-- Skill Builder Build Panel (F34.11) -->
+    <div id="skill-builder-panel" class="dt-scoring-panel" style="display:none;"></div>
+  </div>
+  <!-- Registry Browser Container (F40.3) -->
+  <div id="registry-browser-container" style="display:none;"></div>
+  <div class="sidebar" id="sidebar">
+    <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+    <h3 id="sidebar-title">Node Details</h3>
+    <div class="sidebar-tabs" id="sidebar-tabs">
+      <button class="sidebar-tab active" onclick="switchTab('details')">Details</button>
+      <button class="sidebar-tab" onclick="switchTab('connections')">Connections</button>
+      <button class="sidebar-tab" onclick="switchTab('schema')">Schema</button>
+      <button class="sidebar-tab" onclick="switchTab('data')">Data</button>
+      <button class="sidebar-tab" id="sidebar-tab-bindings" onclick="showBindingsTab()" style="display:none;">Bindings</button>
+      <button class="sidebar-tab" id="sidebar-tab-kano" onclick="switchTab('kano')" style="display:none;">Kano</button>
+    </div>
+    <div id="tab-details" class="tab-content"><p style="color:#666">Click a node to see details</p></div>
+    <div id="tab-connections" class="tab-content" style="display:none;"></div>
+    <div id="tab-schema" class="tab-content" style="display:none;"></div>
+    <div id="tab-data" class="tab-content" style="display:none;"></div>
+    <div id="tab-bindings" class="tab-content" style="display:none;"></div>
+    <div id="tab-kano" class="tab-content" style="display:none;"></div>
+  </div>
+  <div class="legend" id="legend" style="display:none;"></div>
+
+  <!-- Layer Filter Panel (F8.7 — Multilayer Semantic Filtering) -->
+  <div class="layer-panel" id="layer-panel" style="display:none;">
+    <div class="layer-panel-header">
+      <h4>Layers</h4>
+      <div class="layer-mode-switch">
+        <button class="layer-mode-btn active" data-mode="or" onclick="setLayerModeUI('or')">OR</button>
+        <button class="layer-mode-btn" data-mode="and" onclick="setLayerModeUI('and')">AND</button>
+      </div>
+      <button class="layer-reset-btn" onclick="clearLayerFilterUI()" title="Show all layers">Reset</button>
+    </div>
+    <div class="layer-presets">
+      <select id="layer-preset-select" class="library-input" onchange="applyLayerPresetUI(this.value)" style="font-size:11px; padding:4px 6px;">
+        <option value="">Presets...</option>
+        <option value="strategicOverview">Strategic Overview</option>
+        <option value="complianceAudit">Compliance Audit</option>
+        <option value="crossRefOnly">Cross-Ref Only</option>
+        <option value="fullMesh">Full Mesh</option>
+      </select>
+    </div>
+    <div class="layer-chips" id="layer-chips"></div>
+    <div class="layer-search" id="layer-search-section">
+      <input type="text" id="layer-search-input" class="library-input" placeholder="Search nodes..." oninput="layerSearchUI(this.value)" style="font-size:11px;">
+      <label class="layer-search-all-label"><input type="checkbox" id="layer-search-all-cb" onchange="layerSearchUI(document.getElementById('layer-search-input').value)"> All layers</label>
+    </div>
+  </div>
+
+  <!-- Strategic Lens Panel (Epic 9G — VESM / BSC / Role-Authority) -->
+  <div class="strategic-lens-panel" id="strategic-lens-panel" style="display:none;">
+    <div class="strategic-lens-header">
+      <h4>Strategic Lens</h4>
+      <button class="layer-reset-btn" onclick="clearStrategicLens()" title="Clear all lens filters">Reset</button>
+      <button class="close-btn" onclick="toggleStrategicLensPanel()" style="margin-left:auto;">&times;</button>
+    </div>
+    <div class="strategic-lens-tabs">
+      <button class="sl-tab active" data-tab="vesm" onclick="setStrategicLensTab('vesm')">VESM</button>
+      <button class="sl-tab" data-tab="bsc" onclick="setStrategicLensTab('bsc')">BSC</button>
+      <button class="sl-tab" data-tab="role" onclick="setStrategicLensTab('role')">Role</button>
+    </div>
+
+    <!-- VESM Tab (S9G.1.1) -->
+    <div class="sl-tab-content" id="sl-tab-vesm">
+      <div class="sl-section-label">Tiers</div>
+      <div class="sl-chips" id="vesm-tier-chips"></div>
+      <div class="sl-section-label" style="margin-top:8px;">Scope</div>
+      <div class="sl-scope-bar">
+        <button class="sl-scope-btn active" data-scope="all" onclick="setVESMScope('all')">All</button>
+        <button class="sl-scope-btn" data-scope="corporate" onclick="setVESMScope('corporate')">Corp</button>
+        <button class="sl-scope-btn" data-scope="functional" onclick="setVESMScope('functional')">Func</button>
+        <button class="sl-scope-btn" data-scope="bu" onclick="setVESMScope('bu')">BU</button>
+        <button class="sl-scope-btn" data-scope="product" onclick="setVESMScope('product')">Prod</button>
+      </div>
+      <div class="sl-stats" id="vesm-stats"></div>
+    </div>
+
+    <!-- BSC Tab (S9G.1.2) -->
+    <div class="sl-tab-content" id="sl-tab-bsc" style="display:none;">
+      <div class="sl-section-label">Perspectives</div>
+      <div class="sl-chips" id="bsc-perspective-chips"></div>
+      <div class="sl-section-label" style="margin-top:8px;">Overlay</div>
+      <div class="sl-scope-bar">
+        <label class="sl-radio-label"><input type="radio" name="bsc-overlay" value="border" checked onchange="setBSCOverlayMode('border')"> Borders</label>
+        <label class="sl-radio-label"><input type="radio" name="bsc-overlay" value="group" onchange="setBSCOverlayMode('group')"> Clustering</label>
+      </div>
+      <div class="sl-stats" id="bsc-stats"></div>
+    </div>
+
+    <!-- Role Tab (S9G.1.3) -->
+    <div class="sl-tab-content" id="sl-tab-role" style="display:none;">
+      <div class="sl-section-label">Role</div>
+      <select id="role-select" class="library-input" onchange="setRoleFilter(this.value)" style="font-size:11px; padding:4px 6px; width:100%; margin-bottom:8px;">
+        <option value="">None</option>
+      </select>
+      <div class="sl-section-label">RACI Filter</div>
+      <div class="sl-chips" id="raci-chips"></div>
+      <div class="sl-stats" id="role-stats"></div>
+    </div>
+  </div>
+
+  <div class="audit-panel" id="audit-panel">
+    <button class="close-btn" onclick="toggleAudit()">&times;</button>
+    <h3>OAA v7.0.0 Compliance</h3>
+    <div id="completeness-score"></div>
+    <div id="oaa-compliance-content"><p style="color:#666">Load a graph to see compliance report</p></div>
+    <div style="margin-top:12px;">
+      <button id="btn-run-oaa" onclick="runOAAUpgrade()" style="display:none;" class="oaa-btn" title="Generate Claude Code command to upgrade this ontology">Upgrade with OAA v7</button>
+      <button id="btn-save-library" onclick="showSaveToLibrary()" style="display:none;" class="oaa-btn" title="Save compliant ontology to library">Save to Library</button>
+      <button id="btn-export-audit" onclick="exportAuditFile()" style="display:none;" class="oaa-btn oaa-btn-secondary" title="Export audit report">Export Report</button>
+    </div>
+    <h3 style="margin-top:16px;">Graph Audit</h3>
+    <div id="audit-content"><p style="color:#666">Load a graph to see audit results</p></div>
+  </div>
+
+  <!-- DS Token Panel (Epic 7 — Feature 7.6 / Epic 8) -->
+  <div class="ds-panel" id="ds-panel">
+    <button class="close-btn" onclick="toggleDSPanel()">&times;</button>
+    <h3>Design System Tokens</h3>
+    <div id="ds-summary" class="ds-section">
+      <p style="color:#666; font-size:12px;">Load Registry and select a brand to view DS tokens.</p>
+    </div>
+    <div id="ds-categories" class="ds-section" style="display:none;"></div>
+    <div id="ds-primitives" class="ds-section" style="display:none;"></div>
+    <div id="ds-semantics" class="ds-section" style="display:none;"></div>
+    <div id="ds-components" class="ds-section" style="display:none;"></div>
+    <div id="ds-bridges" class="ds-section" style="display:none;"></div>
+    <div id="ds-pages" class="ds-section" style="display:none;"></div>
+    <div id="ds-templates" class="ds-section" style="display:none;"></div>
+    <div id="ds-actions" class="ds-section" style="display:none;">
+      <button class="oaa-btn" onclick="applyDSToVisualiser()" title="Apply this brand's tokens as CSS custom properties">Apply to Visualiser</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="resetDSTheme()" title="Reset to default visualiser theme">Reset Theme</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="showDSWorkflow()" title="View DS token extraction workflow as Mermaid diagram">DS Workflow</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="focusDSBridges()" title="Highlight DS cross-ontology bridges in merged graph">DS Bridges</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="showDSComponentEditor()" title="Author a new DesignComponent with token bindings">+ Component</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="showPageTemplateEditor('page')" title="Define a new page with component slots">+ Page</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="showPageTemplateEditor('template')" title="Define a new template with layout slots">+ Template</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="importFigmaMake()" title="Import a Figma Make token file as a page definition">Import Figma Make</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="exportDSPages()" title="Export pages with resolved tokens for Design-Director">Export Pages</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="copyDSPagesToClipboard()" title="Copy page definitions to clipboard">Copy Pages</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="generateComponentCode()" title="Generate React/Shadcn component wrappers with token bindings as .tsx">Generate Code</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="downloadCSSTokens()" title="Download all tokens as CSS custom properties">Download CSS</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="exportFigmaMake()" title="Export component definitions as Figma Make-compatible JSON">Export Figma Make</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="previewComponents()" title="Preview components with resolved tokens in sandbox">Preview</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="downloadComponentCSS()" title="Download component-scoped CSS bundle with resolved tokens">Component CSS</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="showLLMPrompt()" title="Generate LLM prompt for component transcription">LLM Prompt</button>
+    </div>
+  </div>
+
+  <!-- Admin Design Token Tree Panel -->
+  <div class="admin-panel" id="admin-panel">
+    <button class="close-btn" onclick="toggleAdminPanel()">&times;</button>
+    <h3>Design Token Tree</h3>
+    <div id="admin-panel-content"></div>
+  </div>
+
+  <!-- App Skeleton Inspector Panel (F40.18 — Z22) -->
+  <div class="skeleton-panel" id="skeleton-panel">
+    <button class="close-btn" onclick="toggleSkeletonPanel()">&times;</button>
+    <h3>App Skeleton Inspector</h3>
+    <div id="skeleton-edit-toolbar" class="skeleton-edit-toolbar"></div>
+    <div id="skeleton-spatial-diagram"></div>
+    <div class="skeleton-tabs">
+      <button class="skeleton-tab active" onclick="switchSkeletonTab('zones')">Zones</button>
+      <button class="skeleton-tab" onclick="switchSkeletonTab('functions')">Functions</button>
+      <button class="skeleton-tab" onclick="switchSkeletonTab('nav')">Nav Layers</button>
+      <button class="skeleton-tab" onclick="switchSkeletonTab('properties')">Properties</button>
+    </div>
+    <div id="skeleton-tab-zones" class="skeleton-tab-content"></div>
+    <div id="skeleton-tab-functions" class="skeleton-tab-content" style="display:none;"></div>
+    <div id="skeleton-tab-nav" class="skeleton-tab-content" style="display:none;"></div>
+    <div id="skeleton-tab-properties" class="skeleton-tab-content" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- PFI Lifecycle Panel (F40.17 — Z21) -->
+<div id="pfi-lifecycle-panel" class="sidebar-panel left-panel" style="display:none; position:fixed; left:0; top:80px; width:420px; height:calc(100vh - 80px); background:var(--viz-surface-elevated, #252837); border-right:1px solid var(--viz-border-subtle, #2a2d37); z-index:60; overflow-y:auto; padding:16px;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+    <h3 style="margin:0; font-size:14px; color:var(--viz-accent);">PFI Lifecycle</h3>
+    <button class="close-btn" onclick="togglePFILifecyclePanel()">&times;</button>
+  </div>
+  <div id="pfi-lifecycle-content"></div>
+</div>
+
+<!-- Snapshot Manager Modal (F40.17 — Z18) -->
+<div id="snapshot-modal" class="modal-overlay" style="display:none;">
+  <div class="modal-content" style="max-width:600px; padding:16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h3 style="margin:0; font-size:14px;">Snapshot Manager</h3>
+      <button class="close-btn" onclick="closeSnapshotModal()">&times;</button>
+    </div>
+    <div id="snapshot-modal-body"></div>
+  </div>
+</div>
+
+<!-- DS Component Preview Sandbox (S8.3.4) -->
+<div class="modal-overlay" id="ds-preview-modal" style="display:none;">
+  <div class="modal-content" style="width:90vw; height:85vh; max-width:1200px; padding:0; position:relative;">
+    <button class="close-btn" onclick="closePreviewModal()" style="position:absolute; top:8px; right:12px; z-index:10;">&times;</button>
+    <div style="padding:8px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--viz-border-default, #2a2d37);">
+      <h3 style="margin:0; font-size:14px;">Component Preview</h3>
+      <span id="ds-preview-brand" style="color:#888; font-size:12px;"></span>
+    </div>
+    <iframe id="ds-preview-iframe" style="width:100%; height:calc(100% - 44px); border:none; background:#fff;"></iframe>
+  </div>
+</div>
+
+<!-- Backlog Manager Panel (Epic 8C — PE-Ontology-Management-Functions) -->
+<div class="backlog-panel" id="backlog-panel">
+  <button class="close-btn" onclick="closeBacklogPanel()">&times;</button>
+  <h3>Feature Backlog</h3>
+  <div class="backlog-view-tabs">
+    <button class="backlog-view-tab active" data-view="overview" onclick="switchBacklogView('overview')">Overview</button>
+    <button class="backlog-view-tab" data-view="daily" onclick="switchBacklogView('daily')">Daily</button>
+    <button class="backlog-view-tab" data-view="weekly" onclick="switchBacklogView('weekly')">Weekly</button>
+    <button class="backlog-view-tab" data-view="matrix" onclick="switchBacklogView('matrix')">Priority</button>
+  </div>
+  <div class="backlog-actions" style="display:flex; gap:8px; margin-bottom:12px;">
+    <button class="oaa-btn" onclick="showFeatureForm()" style="font-size:11px; padding:6px 10px;">+ Feature</button>
+    <button class="oaa-btn" onclick="showQuickCaptureModal()" style="font-size:11px; padding:6px 10px; background:#6366f1;">Quick Capture</button>
+    <button class="oaa-btn oaa-btn-secondary" onclick="showEpicForm()" style="font-size:11px; padding:6px 10px;">+ Epic</button>
+    <button class="oaa-btn oaa-btn-secondary" onclick="showImportBacklogModal()" style="font-size:11px; padding:6px 10px;">Import</button>
+    <div class="export-dropdown" style="position:relative; display:inline-block;">
+      <button class="oaa-btn oaa-btn-secondary" onclick="toggleBacklogExportMenu()" style="font-size:11px; padding:6px 10px;">Export &#x25BC;</button>
+      <div id="backlog-export-menu" style="display:none; position:absolute; top:100%; left:0; background:var(--viz-surface-elevated); border:1px solid var(--viz-border-subtle); border-radius:4px; z-index:10; min-width:120px;">
+        <button style="display:block; width:100%; text-align:left; background:none; border:none; color:var(--viz-text-primary); padding:6px 12px; font-size:11px; cursor:pointer;" onclick="doExportBacklog('json')">JSON</button>
+        <button style="display:block; width:100%; text-align:left; background:none; border:none; color:var(--viz-text-primary); padding:6px 12px; font-size:11px; cursor:pointer;" onclick="doExportBacklog('markdown')">Markdown</button>
+      </div>
+    </div>
+  </div>
+  <div class="backlog-search">
+    <input type="text" id="backlog-search-input" class="library-input" placeholder="Search features..." oninput="filterBacklogEntries(this.value)">
+  </div>
+  <div id="backlog-content"><p class="library-empty">No features yet. Click + Feature to start.</p></div>
+</div>
+
+<!-- Quick-Switch Context Drawer (S8.8.6 — F8.8) -->
+<div class="context-drawer" id="context-drawer">
+  <button class="close-btn" onclick="toggleContextDrawer()">&times;</button>
+  <h3>Switch Context</h3>
+  <div id="context-drawer-content">
+    <p style="color:#666; font-size:12px;">Load Registry to see PFI instances.</p>
+  </div>
+</div>
+
+<!-- Requirement Category Panel (9F.1) -->
+<div class="category-panel" id="category-panel">
+  <button class="close-btn" onclick="toggleCategoryPanel()">&times;</button>
+  <h3 style="margin:0 0 12px 0; font-size:14px; color:var(--viz-accent);">Requirement Categories</h3>
+  <div class="maturity-slider-row">
+    <label class="maturity-label">Maturity Level: <span id="maturity-value">5</span></label>
+    <input type="range" id="maturity-slider" min="1" max="5" value="5" step="1" oninput="setMaturityLevel(this.value)">
+    <div class="maturity-exclusion-note" id="maturity-exclusion-note" style="display:none;">KPI, GA excluded at maturity &lt; 3</div>
+  </div>
+  <div class="compliance-toggle-row">
+    <label class="compliance-toggle-label">
+      <input type="checkbox" id="compliance-scope-cb" onchange="toggleComplianceScope(this.checked)">
+      <span>RCSG Governance Overlay</span>
+    </label>
+    <span class="compliance-toggle-note">+RCSG-FW, MCSB, GDPR, PII</span>
+  </div>
+  <div id="category-overlap-info" style="font-size:11px; color:var(--viz-text-secondary); margin:8px 0;"></div>
+  <div id="category-panel-content"></div>
+</div>
+
+<!-- Feature Form Modal (Epic 8C) -->
+<div id="feature-form-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:560px; max-height:85vh; overflow-y:auto;">
+    <button class="close-btn" onclick="closeFeatureForm()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;" id="feature-form-title">New Feature</h3>
+    <form onsubmit="event.preventDefault(); doSaveFeature();">
+      <label class="author-label">Title *</label>
+      <input type="text" id="feature-title" class="library-input" placeholder="Feature title" required>
+
+      <label class="author-label">Category *</label>
+      <select id="feature-category" class="library-input">
+        <option value="visualiser">Visualiser</option>
+        <option value="ontology">Ontology</option>
+        <option value="toolkit">Toolkit</option>
+        <option value="workbench">Workbench</option>
+      </select>
+
+      <label class="author-label">Epic</label>
+      <select id="feature-epic" class="library-input">
+        <option value="">-- Unassigned --</option>
+      </select>
+
+      <label class="author-label">User Story</label>
+      <textarea id="feature-user-story" class="library-input" placeholder="As a [user], I want [feature] so that [benefit]" rows="2" style="resize:vertical;"></textarea>
+
+      <label class="author-label">Description</label>
+      <textarea id="feature-description" class="library-input" placeholder="Detailed description..." rows="3" style="resize:vertical;"></textarea>
+
+      <label class="author-label">Acceptance Criteria</label>
+      <div id="feature-criteria-list"></div>
+      <button type="button" class="oaa-btn oaa-btn-secondary" onclick="addCriterionRow()" style="font-size:11px; margin:6px 0 12px;">+ Add Criterion</button>
+
+      <div style="display:flex; gap:16px; margin-bottom:12px;">
+        <div style="flex:1;">
+          <label class="author-label">Value (1-5)</label>
+          <input type="number" id="feature-value" class="library-input" min="1" max="5" value="3" oninput="updatePriorityPreview()">
+        </div>
+        <div style="flex:1;">
+          <label class="author-label">Significance (1-5)</label>
+          <input type="number" id="feature-significance" class="library-input" min="1" max="5" value="3" oninput="updatePriorityPreview()">
+        </div>
+        <div style="flex:1;">
+          <label class="author-label">Priority</label>
+          <div id="feature-computed-priority" class="backlog-priority-badge backlog-priority-medium" style="font-size:18px; font-weight:600; text-align:center; padding:8px;">9</div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:16px; margin-bottom:12px;">
+        <div style="flex:1;">
+          <label class="author-label">Status</label>
+          <select id="feature-status" class="library-input">
+            <option value="draft">Draft</option>
+            <option value="pending-review">Pending Review</option>
+            <option value="approved">Approved</option>
+            <option value="proposed">Proposed</option>
+            <option value="prioritised">Prioritised</option>
+            <option value="in-progress">In Progress</option>
+            <option value="done">Done</option>
+            <option value="archived">Archived</option>
+          </select>
+        </div>
+        <div style="flex:1; display:flex; align-items:flex-end; padding-bottom:4px;">
+          <label style="font-size:12px; color:var(--viz-text-secondary); display:flex; align-items:center; gap:6px;">
+            <input type="checkbox" id="feature-daily-focus"> Daily Focus
+          </label>
+        </div>
+      </div>
+
+      <label class="author-label">Tags</label>
+      <input type="text" id="feature-tags" class="library-input" placeholder="comma-separated tags">
+
+      <label class="author-label">Notes</label>
+      <textarea id="feature-notes" class="library-input" placeholder="Additional notes..." rows="2" style="resize:vertical;"></textarea>
+
+      <!-- Review Section (HITL) -->
+      <div id="feature-review-section" style="display:none; border-top:1px solid var(--viz-border-subtle); padding-top:12px; margin-top:12px;">
+        <label class="author-label" style="color:#fcd34d;">Review</label>
+        <div id="feature-review-info" style="font-size:11px; color:var(--viz-text-secondary); margin-bottom:8px;"></div>
+        <div id="feature-rejection-history" style="font-size:11px; color:var(--viz-text-secondary); margin-bottom:8px;"></div>
+        <button type="button" class="oaa-btn" id="btn-submit-review" onclick="doSubmitForReview()" style="display:none; font-size:11px; background:#6366f1;">Submit for Review</button>
+      </div>
+
+      <div id="feature-form-error" style="color:#fca5a5; font-size:12px; display:none; margin-bottom:8px;"></div>
+      <div style="display:flex; gap:8px; margin-top:12px;">
+        <button type="submit" class="oaa-btn">Save Feature</button>
+        <button type="button" class="oaa-btn oaa-btn-secondary" id="btn-delete-feature" onclick="doDeleteFeature()" style="display:none; color:#fca5a5;">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Epic Form Modal (Epic 8C) -->
+<div id="epic-form-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:460px;">
+    <button class="close-btn" onclick="closeEpicForm()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;" id="epic-form-title">New Epic</h3>
+    <form onsubmit="event.preventDefault(); doSaveEpic();">
+      <label class="author-label">Title *</label>
+      <input type="text" id="epic-title" class="library-input" placeholder="Epic title" required>
+      <label class="author-label">Description</label>
+      <textarea id="epic-description" class="library-input" placeholder="Epic goal / description..." rows="3" style="resize:vertical;"></textarea>
+      <label class="author-label">Category</label>
+      <select id="epic-category" class="library-input">
+        <option value="visualiser">Visualiser</option>
+        <option value="ontology">Ontology</option>
+        <option value="toolkit">Toolkit</option>
+        <option value="workbench">Workbench</option>
+      </select>
+      <label class="author-label">Status</label>
+      <select id="epic-status" class="library-input">
+        <option value="planning">Planning</option>
+        <option value="active">Active</option>
+        <option value="done">Done</option>
+        <option value="archived">Archived</option>
+      </select>
+      <div style="display:flex; gap:8px; margin-top:12px;">
+        <button type="submit" class="oaa-btn">Save Epic</button>
+        <button type="button" class="oaa-btn oaa-btn-secondary" id="btn-delete-epic" onclick="doDeleteEpic()" style="display:none; color:#fca5a5;">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Import Backlog Modal (Epic 8C) -->
+<div id="import-backlog-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:420px;">
+    <button class="close-btn" onclick="closeImportBacklogModal()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">Import Backlog</h3>
+    <p style="font-size:12px; color:var(--viz-text-secondary); margin-bottom:12px;">Import features and epics from a JSON export or a BACKLOG.md Markdown file.</p>
+    <input type="file" id="import-backlog-file" accept=".json,.md,.markdown" class="library-input">
+    <div style="display:flex; gap:8px; margin-top:12px;">
+      <button class="oaa-btn" onclick="doImportBacklog()">Import</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="closeImportBacklogModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Capture Modal (Epic 8C — AI Capture) -->
+<div id="capture-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:520px;">
+    <button class="close-btn" onclick="closeQuickCaptureModal()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:8px;">Quick Capture</h3>
+    <p style="font-size:12px; color:var(--viz-text-secondary); margin-bottom:12px;">Describe your feature idea in a few sentences. Claude will generate a full structured entry.</p>
+    <textarea id="capture-brief-text" class="library-input backlog-capture-input" placeholder="e.g. Add ability to compare two ontology versions side by side with diff highlighting and export the changelog as PDF" rows="5" style="resize:vertical;"></textarea>
+    <div style="display:flex; gap:8px; margin-top:12px;">
+      <button class="oaa-btn" onclick="doGenerateFeaturePrompt()" style="background:#6366f1;">Generate with Claude</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="closeQuickCaptureModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Capture Paste-back Modal (Epic 8C — AI Capture) -->
+<div id="capture-paste-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:520px;">
+    <button class="close-btn" onclick="closeCapturePasteModal()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:8px;">Paste Claude Output</h3>
+    <p style="font-size:12px; color:var(--viz-text-secondary); margin-bottom:12px;">Paste the JSON output from the Claude CLI command below.</p>
+    <textarea id="capture-paste-text" class="library-input backlog-capture-input" placeholder='{"title": "...", "description": "...", ...}' rows="8" style="resize:vertical; font-family:monospace; font-size:11px;"></textarea>
+    <div style="display:flex; gap:8px; margin-top:12px;">
+      <button class="oaa-btn" onclick="doImportCapturedFeature()">Import Feature</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="closeCapturePasteModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- OAA Upgrade Modal -->
+<div id="oaa-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content">
+    <button class="close-btn" onclick="closeOAAModal()">&times;</button>
+    <h3>Run OAA v7.0.0 Upgrade</h3>
+    <div id="oaa-modal-body"></div>
+  </div>
+</div>
+
+<!-- Save to Library Modal -->
+<div id="save-library-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:500px;">
+    <button class="close-btn" onclick="closeSaveLibraryModal()">&times;</button>
+    <h3>Save to Ontology Library</h3>
+    <div id="save-library-body"></div>
+  </div>
+</div>
+
+<!-- Ontology Library Panel -->
+<div class="library-panel" id="library-panel">
+  <button class="close-btn" onclick="toggleLibrary()">&times;</button>
+  <h3>Ontology Library</h3>
+  <div class="library-view-tabs">
+    <button class="library-view-tab active" data-view="registry" onclick="switchLibraryView('registry')">Registry</button>
+    <button class="library-view-tab" data-view="deps" onclick="switchLibraryView('deps')">Dependencies</button>
+    <button class="library-view-tab" data-view="saved" onclick="switchLibraryView('saved')">Saved</button>
+    <button class="library-view-tab" data-view="recent" onclick="switchLibraryView('recent')">Recent</button>
+    <button class="library-view-tab" data-view="skills" onclick="switchLibraryView('skills')">Skills</button>
+  </div>
+  <div class="library-search" id="library-search">
+    <input type="text" id="library-search-input" class="library-input" placeholder="Search ontologies..." oninput="filterLibraryEntries(this.value)">
+  </div>
+  <div class="library-filter-chips" id="library-filter-chips" style="display:none;">
+    <button class="library-filter-chip active" data-filter="all" onclick="setLibraryFilter('all')">All</button>
+    <button class="library-filter-chip" data-filter="processes" onclick="setLibraryFilter('processes')">Processes <span class="library-filter-count" id="process-count">0</span></button>
+    <button class="library-filter-chip" data-filter="applications" onclick="setLibraryFilter('applications')">Applications <span class="library-filter-count" id="app-count">0</span></button>
+  </div>
+  <div id="library-saved-actions" style="display:none; margin-bottom:12px; gap:8px;">
+    <button class="oaa-btn oaa-btn-secondary" onclick="exportLibrary()" style="font-size:11px; padding:6px 10px;">Export</button>
+    <button class="oaa-btn oaa-btn-secondary" onclick="importLibrary()" style="font-size:11px; padding:6px 10px;">Import</button>
+  </div>
+  <div id="library-dep-graph" style="display:none; width:100%; height:400px; border-radius:6px; margin-bottom:12px;"></div>
+  <div id="library-content"><p class="library-empty">Loading...</p></div>
+</div>
+
+<!-- Diff Comparison Modal (Epic 4) -->
+<div id="diff-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:560px;">
+    <button class="close-btn" onclick="closeDiffModal()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">Compare Ontology Versions</h3>
+    <p style="color:#888; font-size:13px; margin-bottom:16px;">Load a previous version to compare against the currently loaded ontology.</p>
+    <div style="margin-bottom:12px;">
+      <span style="font-size:12px; color:#888;">Current:</span>
+      <span id="diff-current-name" style="color:#9dfff5; font-size:13px; font-weight:600;"></span>
+    </div>
+    <div style="margin-bottom:16px;">
+      <label for="diff-file-input" class="oaa-btn oaa-btn-secondary" style="display:inline-block; cursor:pointer; font-size:12px; padding:6px 14px;">Choose Previous Version JSON</label>
+      <input type="file" id="diff-file-input" accept=".json" style="display:none;">
+      <span id="diff-file-name" style="color:#888; font-size:12px; margin-left:8px;"></span>
+    </div>
+    <div id="diff-results" style="display:none;"></div>
+    <div style="margin-top:12px; display:flex; gap:8px;">
+      <button class="oaa-btn" id="btn-run-diff" disabled onclick="runDiff()">Compare</button>
+      <button class="oaa-btn oaa-btn-secondary" id="btn-export-changelog" style="display:none;" onclick="exportChangelog()">Export Changelog</button>
+    </div>
+  </div>
+</div>
+
+<!-- GitHub Settings Modal (Epic 5) -->
+<div id="github-settings-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:480px;">
+    <button class="close-btn" onclick="closeGitHubSettings()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">GitHub Settings</h3>
+    <div id="gh-token-status" style="margin-bottom:12px;"></div>
+    <label style="font-size:12px; color:#888;">Personal Access Token:</label>
+    <input type="password" id="gh-pat-input" class="library-input" placeholder="ghp_..." style="width:100%; margin:8px 0;">
+    <label style="display:flex; align-items:center; gap:6px; font-size:12px; color:#888; margin-bottom:12px; cursor:pointer;">
+      <input type="checkbox" id="gh-persist-pat"> Remember across sessions (localStorage)
+    </label>
+    <div style="display:flex; gap:8px;">
+      <button class="oaa-btn" onclick="saveGitHubPAT()">Save &amp; Validate</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="doClearGitHubPAT()">Clear Token</button>
+    </div>
+  </div>
+</div>
+
+<!-- GitHub Browser Modal (Epic 5) -->
+<div id="github-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:600px;">
+    <button class="close-btn" onclick="closeGitHubModal()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">Load from GitHub</h3>
+    <!-- Step 1: Repo input -->
+    <div id="gh-step-repo">
+      <label style="font-size:12px; color:#888;">Repository (owner/repo):</label>
+      <input type="text" id="gh-repo-input" class="library-input" placeholder="owner/repo" style="width:100%; margin:8px 0;">
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button class="oaa-btn" onclick="ghConnect()">Connect</button>
+        <span id="gh-status-dot" class="density-dot" title="GitHub: not connected"></span>
+      </div>
+      <div id="gh-repo-error" style="color:#fca5a5; font-size:12px; display:none; margin-top:8px;"></div>
+    </div>
+    <!-- Step 2: Branch/tag selector + file tree -->
+    <div id="gh-step-browse" style="display:none;">
+      <div style="display:flex; gap:8px; margin-bottom:12px; align-items:center;">
+        <select id="gh-ref-select" class="library-input" onchange="ghNavigate('')" style="flex:1; padding:6px;"></select>
+        <button class="oaa-btn oaa-btn-secondary" onclick="ghDisconnect()" style="font-size:11px; padding:4px 10px;">Change Repo</button>
+      </div>
+      <div id="gh-breadcrumb" style="font-size:12px; color:#888; margin-bottom:8px;"></div>
+      <div id="gh-file-tree" style="max-height:300px; overflow-y:auto; border:1px solid #2a2d37; border-radius:6px;"></div>
+      <div id="gh-loading" style="display:none; margin-top:8px;" class="registry-loading"><div class="spinner"></div>Loading...</div>
+      <div id="gh-preview" style="display:none; margin-top:12px;">
+        <div id="gh-preview-name" style="color:#9dfff5; font-size:13px;"></div>
+        <button class="oaa-btn" style="margin-top:8px;" onclick="ghLoadSelected()">Load This File</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- URL Load Modal (Epic 5) -->
+<div id="url-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:520px;">
+    <button class="close-btn" onclick="closeURLModal()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">Load from URL</h3>
+    <p style="color:#888; font-size:13px; margin-bottom:12px;">Paste a URL to any JSON ontology or registry index file.</p>
+    <input type="text" id="url-input" class="library-input" placeholder="https://example.com/ontology.json" style="margin-bottom:4px;">
+    <div id="url-error" style="color:#fca5a5; font-size:12px; display:none; margin-bottom:8px;"></div>
+    <div id="url-loading" style="display:none; margin-bottom:8px;" class="registry-loading"><div class="spinner"></div>Loading...</div>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <button class="oaa-btn" onclick="loadFromURL()">Load</button>
+      <label style="display:flex; align-items:center; gap:6px; font-size:12px; color:#888; cursor:pointer;">
+        <input type="checkbox" id="url-registry-mode"> Load as registry index
+      </label>
+    </div>
+  </div>
+</div>
+
+<!-- Create Ontology Modal (Epic 7) -->
+<div id="create-ontology-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:480px;">
+    <button class="close-btn" onclick="closeCreateOntologyModal()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">Create New Ontology</h3>
+    <form onsubmit="event.preventDefault(); doCreateOntologyUI();">
+      <label class="author-label">Name *</label>
+      <input type="text" id="create-ont-name" class="library-input" placeholder="e.g. Value Stream Ontology" required style="width:100%; margin-bottom:10px;">
+      <label class="author-label">Namespace *</label>
+      <input type="text" id="create-ont-namespace" class="library-input" placeholder="e.g. vsom" required style="width:100%; margin-bottom:10px;">
+      <label class="author-label">Description</label>
+      <textarea id="create-ont-description" class="library-input" placeholder="Brief description..." rows="2" style="width:100%; margin-bottom:10px; resize:vertical;"></textarea>
+      <label class="author-label">Category</label>
+      <select id="create-ont-category" class="library-input" style="width:100%; margin-bottom:12px;">
+        <option value="custom">Custom</option>
+        <option value="VE-Series">VE-Series</option>
+        <option value="PE-Series">PE-Series</option>
+        <option value="Foundation">Foundation</option>
+        <option value="Competitive">Competitive</option>
+        <option value="RCSG-Series">RCSG-Series</option>
+        <option value="Orchestration">Orchestration</option>
+      </select>
+      <div id="create-ontology-error" style="color:#fca5a5; font-size:12px; display:none; margin-bottom:8px;"></div>
+      <button type="submit" class="oaa-btn">Create</button>
+    </form>
+  </div>
+</div>
+
+<!-- Entity Editor Modal (Epic 7) -->
+<div id="entity-editor-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:560px;">
+    <button class="close-btn" onclick="closeEntityEditorUI()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">Add Entity</h3>
+    <label class="author-label">Entity ID *</label>
+    <input type="text" id="entity-id" class="library-input" placeholder="e.g. pf:MyEntity" style="width:100%; margin-bottom:10px;">
+    <label class="author-label">Name *</label>
+    <input type="text" id="entity-name" class="library-input" placeholder="e.g. MyEntity" style="width:100%; margin-bottom:10px;">
+    <label class="author-label">Type</label>
+    <select id="entity-type" class="library-input" style="width:100%; margin-bottom:10px;">
+      <option value="class">class</option>
+      <option value="supporting">supporting</option>
+      <option value="framework">framework</option>
+      <option value="agent">agent</option>
+      <option value="core">core</option>
+      <option value="layer">layer</option>
+      <option value="concept">concept</option>
+    </select>
+    <label class="author-label">Description</label>
+    <textarea id="entity-description" class="library-input" placeholder="Entity description..." rows="2" style="width:100%; margin-bottom:10px; resize:vertical;"></textarea>
+    <label class="author-label">Properties</label>
+    <div id="entity-properties" class="prop-table"></div>
+    <button class="oaa-btn oaa-btn-secondary" onclick="addPropertyRowUI()" style="font-size:11px; margin:6px 0 12px;">+ Add Property</button>
+    <div id="entity-editor-error" style="color:#fca5a5; font-size:12px; display:none; margin-bottom:8px;"></div>
+    <div style="display:flex; gap:8px;">
+      <button class="oaa-btn" onclick="doSaveEntityUI()">Save Entity</button>
+      <button class="oaa-btn oaa-btn-secondary" id="btn-delete-entity" onclick="doDeleteEntityUI()" style="display:none; color:#fca5a5;">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Relationship Editor Modal (Epic 7) -->
+<div id="relationship-editor-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:520px;">
+    <button class="close-btn" onclick="closeRelationshipEditorUI()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">Add Relationship</h3>
+    <label class="author-label">Name *</label>
+    <input type="text" id="rel-name" class="library-input" placeholder="e.g. relatesTo" style="width:100%; margin-bottom:10px;">
+    <label class="author-label">Domain (from entities) *</label>
+    <select id="rel-domain" class="library-input" multiple size="4" style="width:100%; margin-bottom:10px;"></select>
+    <label class="author-label">Range (to entities) *</label>
+    <select id="rel-range" class="library-input" multiple size="4" style="width:100%; margin-bottom:10px;"></select>
+    <label class="author-label">Cardinality</label>
+    <input type="text" id="rel-cardinality" class="library-input" placeholder="e.g. 0..*" value="0..*" style="width:100%; margin-bottom:10px;">
+    <label class="author-label">Description</label>
+    <textarea id="rel-description" class="library-input" placeholder="Relationship description..." rows="2" style="width:100%; margin-bottom:12px; resize:vertical;"></textarea>
+    <div id="rel-editor-error" style="color:#fca5a5; font-size:12px; display:none; margin-bottom:8px;"></div>
+    <div style="display:flex; gap:8px;">
+      <button class="oaa-btn" onclick="doSaveRelationshipUI()">Save Relationship</button>
+      <button class="oaa-btn oaa-btn-secondary" id="btn-delete-rel" onclick="doDeleteRelationshipUI()" style="display:none; color:#fca5a5;">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Version Bump Modal (Epic 7) -->
+<div id="version-bump-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:380px;">
+    <button class="close-btn" onclick="closeVersionBumpModalUI()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">New Revision</h3>
+    <p style="color:#888; font-size:13px; margin-bottom:8px;">Current version: <strong id="version-current" style="color:#9dfff5;"></strong></p>
+    <div style="display:flex; gap:8px; margin-top:12px;">
+      <button class="oaa-btn" onclick="doVersionBumpUI('patch')">Patch</button>
+      <button class="oaa-btn" onclick="doVersionBumpUI('minor')">Minor</button>
+      <button class="oaa-btn" onclick="doVersionBumpUI('major')">Major</button>
+    </div>
+  </div>
+</div>
+
+<!-- Fork Modal (Epic 7) -->
+<div id="fork-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:460px;">
+    <button class="close-btn" onclick="closeForkModalUI()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">Fork Ontology</h3>
+    <p style="color:#888; font-size:13px; margin-bottom:12px;">Create a copy with a new name and namespace. Version resets to 1.0.0.</p>
+    <label class="author-label">New Name *</label>
+    <input type="text" id="fork-name" class="library-input" placeholder="e.g. My Custom Ontology" style="width:100%; margin-bottom:10px;">
+    <label class="author-label">New Namespace *</label>
+    <input type="text" id="fork-namespace" class="library-input" placeholder="e.g. my-ont" style="width:100%; margin-bottom:12px;">
+    <div id="fork-error" style="color:#fca5a5; font-size:12px; display:none; margin-bottom:8px;"></div>
+    <button class="oaa-btn" onclick="doForkOntologyUI()">Fork</button>
+  </div>
+</div>
+
+<!-- Save Selection Modal (Epic 7 — Feature 7.5) -->
+<div id="save-selection-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:380px;">
+    <button class="close-btn" onclick="closeSaveSelectionModalUI()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">Save Selection</h3>
+    <label class="author-label">Selection Name</label>
+    <input type="text" id="selection-save-name" class="library-input" placeholder="e.g. Core entities" style="width:100%; margin-bottom:12px;">
+    <button class="oaa-btn" onclick="doSaveSelectionUI()">Save</button>
+  </div>
+</div>
+
+<!-- Revision History Modal (Epic 7 — Feature 7.2.3) -->
+<div id="revision-history-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:640px; max-height:80vh; overflow-y:auto;">
+    <button class="close-btn" onclick="closeRevisionHistoryUI()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">Revision History</h3>
+    <div id="revision-history-content"><p style="color:#666; font-size:13px;">No revisions yet.</p></div>
+    <div style="margin-top:16px; display:flex; gap:8px;">
+      <button class="oaa-btn oaa-btn-secondary" onclick="doExportRevisionDocsUI()" title="Export all revisions as Markdown">Export Revision Docs</button>
+    </div>
+  </div>
+</div>
+
+<!-- Glossary Editor Modal (Epic 7 — Feature 7.2.2) -->
+<div id="glossary-editor-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:600px; max-height:80vh; overflow-y:auto;">
+    <button class="close-btn" onclick="closeGlossaryEditorUI()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">Glossary Manager</h3>
+    <div style="display:flex; gap:8px; margin-bottom:12px;">
+      <input type="text" id="glossary-search" class="library-input" placeholder="Search glossary terms..." oninput="doSearchGlossaryUI()" style="flex:1;">
+      <button class="oaa-btn oaa-btn-secondary" onclick="showAddGlossaryFormUI()" style="white-space:nowrap;">+ New Term</button>
+    </div>
+    <div id="glossary-add-form" style="display:none; padding:12px; background:#1a1d27; border-radius:6px; margin-bottom:12px;">
+      <label class="author-label">Term *</label>
+      <input type="text" id="glossary-new-term" class="library-input" placeholder="e.g. DesignToken" style="width:100%; margin-bottom:8px;">
+      <label class="author-label">Definition *</label>
+      <textarea id="glossary-new-def" class="library-input" placeholder="Definition of the term..." rows="2" style="width:100%; margin-bottom:8px; resize:vertical;"></textarea>
+      <label class="author-label">Ontology Reference</label>
+      <input type="text" id="glossary-new-ont" class="library-input" placeholder="e.g. DS-ONT" style="width:100%; margin-bottom:10px;">
+      <div id="glossary-add-error" style="color:#fca5a5; font-size:12px; display:none; margin-bottom:8px;"></div>
+      <button class="oaa-btn" onclick="doAddGlossaryEntryUI()">Add Entry</button>
+    </div>
+    <div id="glossary-results"></div>
+  </div>
+</div>
+
+<!-- Glossary Link Modal (Epic 7 — Feature 7.2.5) -->
+<div id="glossary-link-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:460px;">
+    <button class="close-btn" onclick="closeGlossaryLinkModalUI()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:8px;">Link Glossary to Node</h3>
+    <p style="color:#888; font-size:12px; margin-bottom:12px;">Entity: <strong id="glossary-link-entity" style="color:#e0e0e0;"></strong></p>
+    <div id="glossary-link-current" style="margin-bottom:12px;"></div>
+    <input type="text" id="glossary-link-search" class="library-input" placeholder="Search glossary to link..." oninput="doSearchGlossaryForLinkUI()" style="width:100%; margin-bottom:8px;">
+    <div id="glossary-link-results" style="max-height:200px; overflow-y:auto;"></div>
+  </div>
+</div>
+
+<!-- Mindmap Workspace Manager Modal (F9F.8) -->
+<div id="mm-workspace-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:520px;">
+    <button class="close-btn" onclick="closeWorkspaceManagerUI()">&times;</button>
+    <h3 style="color:#9dfff5; margin-bottom:12px;">Mindmap Workspaces</h3>
+    <div style="margin-bottom:12px; display:flex; gap:8px;">
+      <input type="text" id="mm-new-workspace-name" class="library-input" placeholder="New workspace name..." style="flex:1; margin-bottom:0;">
+      <button class="oaa-btn" onclick="createNewWorkspaceUI()">Create</button>
+    </div>
+    <div id="mm-workspace-list"></div>
+  </div>
+</div>
+
+<!-- DS Component Editor Modal (S7.6.4) -->
+<div id="ds-component-editor-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:560px; max-height:85vh; overflow-y:auto;">
+    <button class="close-btn" onclick="closeDSComponentEditor()">&times;</button>
+    <h3 id="ds-component-title" style="color:#FF9800;">Add Design Component</h3>
+    <div id="ds-component-error" class="author-error" style="display:none;"></div>
+    <label class="author-label">Component Name *</label>
+    <input type="text" id="ds-comp-name" class="library-input" placeholder="e.g. Button, Card, InputGroup">
+    <label class="author-label">Atomic Design Level *</label>
+    <select id="ds-comp-level" class="library-input">
+      <option value="Atom">Atom</option>
+      <option value="Molecule">Molecule</option>
+      <option value="Organism">Organism</option>
+      <option value="Template">Template</option>
+      <option value="Page">Page</option>
+    </select>
+    <label class="author-label">Category</label>
+    <input type="text" id="ds-comp-category" class="library-input" placeholder="e.g. Form, Feedback, Layout">
+    <label class="author-label">Base Component</label>
+    <input type="text" id="ds-comp-base" class="library-input" placeholder="e.g. shadcn/ui Button">
+    <label class="author-label" style="display:flex; align-items:center; gap:8px;">Allows Token Overrides <input type="checkbox" id="ds-comp-overrides"></label>
+    <label class="author-label">Description</label>
+    <textarea id="ds-comp-description" class="library-input" rows="2"></textarea>
+    <h4 style="color:#FF9800; margin-top:16px;">Token Bindings</h4>
+    <div id="ds-token-bindings"></div>
+    <button class="oaa-btn oaa-btn-secondary" onclick="addTokenBindingRow()" style="font-size:11px; margin-top:8px;">+ Token Binding</button>
+    <div style="margin-top:16px; display:flex; gap:8px;">
+      <button class="oaa-btn" onclick="doSaveDSComponent()">Save Component</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="closeDSComponentEditor()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- DS Page/Template Editor Modal (S7.6.5) -->
+<div id="ds-page-template-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:560px; max-height:85vh; overflow-y:auto;">
+    <button class="close-btn" onclick="closePageTemplateEditor()">&times;</button>
+    <h3 id="ds-pt-title" style="color:#2196F3;">Define Page</h3>
+    <div id="ds-pt-error" class="author-error" style="display:none;"></div>
+    <label class="author-label">Name *</label>
+    <input type="text" id="ds-pt-name" class="library-input" placeholder="e.g. Landing Page, Dashboard Template">
+    <div id="ds-pt-route-row">
+      <label class="author-label">Route</label>
+      <input type="text" id="ds-pt-route" class="library-input" placeholder="e.g. /home, /dashboard">
+    </div>
+    <label class="author-label">Description</label>
+    <textarea id="ds-pt-description" class="library-input" rows="2"></textarea>
+    <h4 style="color:#2196F3; margin-top:16px;">Component Slots</h4>
+    <div id="ds-pt-slots"></div>
+    <button class="oaa-btn oaa-btn-secondary" onclick="addComponentSlot()" style="font-size:11px; margin-top:8px;">+ Component Slot</button>
+    <div style="margin-top:16px; display:flex; gap:8px;">
+      <button class="oaa-btn" onclick="doSavePageTemplate()">Save</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="closePageTemplateEditor()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Context Switch Confirmation Modal (S8.8.3 — F8.8) -->
+<div id="context-switch-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:400px; text-align:center;">
+    <h3 style="color:var(--viz-accent); margin-bottom:12px;">Switch Context</h3>
+    <p id="context-switch-message" style="color:var(--viz-text-secondary); margin-bottom:20px;"></p>
+    <div style="display:flex; gap:8px; justify-content:center;">
+      <button class="oaa-btn" onclick="confirmContextSwitch()">Switch</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="cancelContextSwitch()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Figma Make Import (hidden file input for S7.6.5) -->
+<input type="file" id="figma-make-file-input" accept=".json" style="display:none;">
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,835 @@
+{
+  "@context": {
+    "vp": "https://pbs.azlan.me/ontology/vp#",
+    "vsom": "https://pbs.azlan.me/ontology/vsom#",
+    "efs": "https://pbs.azlan.me/ontology/efs#",
+    "org": "https://pbs.azlan.me/ontology/org#",
+    "pf": "https://pbs.azlan.me/ontology/pf#",
+    "raci": "https://pbs.azlan.me/ontology/raci#",
+    "rcsg": "https://pbs.azlan.me/ontology/rcsg#",
+    "schema": "https://schema.org/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "oaa": "https://pbs.azlan.me/oaa#"
+  },
+  "@id": "vp:rcs-value-proposition-instance",
+  "@type": "oaa:OntologyInstance",
+  "oaa:instanceOf": "vp:value-proposition-ontology",
+  "oaa:schemaVersion": "1.2.3",
+  "oaa:instanceVersion": "1.0.0",
+  "oaa:brand": "rcs",
+  "oaa:brandFullName": "Regulatory Compliance & Security",
+  "oaa:organizationContextRef": "org:ctx-rcs",
+  "oaa:created": "2026-02-12",
+  "oaa:createdBy": "PFI Instance Generator",
+  "oaa:description": "RCS product value proposition instance — Regulatory compliance and security assessment combining W4M, AIR, and Azure security baselines. Bridges RCSG-Series ontologies (MCSB, GDPR, PII, AZALZ) into a unified compliance dashboard.",
+
+  "oaa:imports": [
+    { "@id": "vsom:vsom-ontology", "version": ">=2.0.0", "purpose": "Strategic objective alignment" },
+    { "@id": "org:org-ontology", "version": ">=3.0.0", "purpose": "Organization context scoping" },
+    { "@id": "efs:efs-ontology", "version": ">=3.0.0", "purpose": "Epic/Feature/Story mapping" },
+    { "@id": "pf:rrr-ontology", "version": ">=2.0.0", "purpose": "Role-based ICP mapping" },
+    { "@id": "rcsg:mcsb-ontology", "version": ">=1.0.0", "purpose": "Microsoft Cloud Security Benchmark" },
+    { "@id": "rcsg:gdpr-ontology", "version": ">=1.0.0", "purpose": "GDPR compliance framework" },
+    { "@id": "rcsg:pii-ontology", "version": ">=1.0.0", "purpose": "PII protection framework" }
+  ],
+
+  "entities": [
+    {
+      "@id": "vp:rcs-vp-001",
+      "@type": "vp:ValueProposition",
+      "name": "RCS Unified Compliance & Security Value Proposition",
+      "description": "Regulatory compliance and security assessment platform combining multiple framework assessment into a unified compliance dashboard with cross-framework gap analysis",
+      "vpId": "vp:rcs-vp-001",
+      "primaryStatement": "For CISOs, Compliance Officers, and IT Directors in regulated industries who need unified compliance visibility across multiple security frameworks, RCS provides a multi-framework compliance assessment and gap analysis platform that delivers cross-framework coverage mapping, automated audit preparation, and continuous compliance monitoring — unlike point-solution compliance tools or framework-specific assessments — because our approach unifies MCSB, GDPR, PII, and Azure security baselines through RCSG-Series ontologies with automated cross-referencing and gap detection across overlapping requirements.",
+      "alternativeStatement": "RCS eliminates compliance fragmentation by unifying MCSB, GDPR, PII, and Azure security assessments into a single, ontology-driven compliance dashboard that automatically maps overlapping requirements, identifies coverage gaps, and reduces audit preparation time by 60%.",
+      "keyBenefits": "60% reduction in audit preparation time; Unified compliance dashboard across MCSB, GDPR, PII, Azure; Automated cross-framework gap analysis; Continuous compliance monitoring replacing point-in-time audits; 85%+ compliance coverage score within 90 days",
+      "uniqueDifferentiators": "Multi-framework unification (MCSB+GDPR+PII+Azure); Ontology-driven cross-referencing; Automated overlap detection across frameworks; Azure-native integration via AZALZ-ONT; RCSG-Series semantic compliance model",
+      "organizationContextRef": "org:ctx-rcs",
+      "status": "Active",
+      "validationDate": "2026-01-20"
+    },
+
+    {
+      "@id": "vp:rcs-icp-regulated",
+      "@type": "vp:IdealCustomerProfile",
+      "name": "Regulated Industry Enterprise",
+      "description": "Enterprises in regulated industries subject to multiple compliance frameworks simultaneously, requiring unified compliance management across GDPR, cloud security baselines, and data protection regulations",
+      "icpId": "icp:rcs-regulated",
+      "customerType": "B2B",
+      "segmentDescription": "Mid-to-large enterprises (500-20,000 employees) in regulated industries — Financial Services, Healthcare, Insurance, Government, Legal — subject to 3+ compliance frameworks simultaneously. Typically have dedicated compliance teams, annual audit cycles, and regulatory reporting obligations. Annual compliance budgets >$2M.",
+      "demographics": "Industry: Financial Services, Healthcare, Insurance, Government, Legal, Pharmaceuticals. Size: 500-20,000 employees. Geography: UK, EU, Middle East. Revenue: $100M-$20B",
+      "firmographics": "Azure-first or Azure-heavy cloud estate. Multi-cloud in transition. Existing compliance tooling (fragmented). Dedicated CISO office. Internal audit function. External auditor relationships.",
+      "psychographics": "Risk-averse, compliance-first culture. Fear of regulatory penalties and reputational damage. Value audit-readiness over innovation. Seek predictability in compliance posture. Board-level visibility on compliance status.",
+      "willingnessToPayIndicator": "High",
+      "marketSize": 28000000000,
+      "acquisitionCost": 65000,
+      "lifetimeValue": 520000
+    },
+
+    {
+      "@id": "vp:rcs-icp-ciso",
+      "@type": "vp:RoleBasedICP",
+      "name": "CISO — Strategic Security & Compliance Leader",
+      "description": "Chief Information Security Officer responsible for overall security posture, regulatory compliance strategy, and board-level risk reporting. Primary decision-maker for compliance platform investments.",
+      "icpId": "icp:rcs-ciso",
+      "customerType": "B2B",
+      "segmentDescription": "CISOs in regulated enterprises responsible for security strategy, compliance programme oversight, and board-level risk reporting. Typically manage compliance budgets of $2M-$20M with 10-50 person security/compliance teams.",
+      "willingnessToPayIndicator": "High",
+      "roleRef": "pf:exec-ciso",
+      "parentICP": "vp:rcs-icp-regulated",
+      "seniorityLevel": 1,
+      "functionScope": "Strategic",
+      "decisionAuthority": "Final",
+      "budgetRange": "$2M-$20M annually for security and compliance",
+      "problemScopeFilter": "Strategic"
+    },
+    {
+      "@id": "vp:rcs-icp-compliance-director",
+      "@type": "vp:RoleBasedICP",
+      "name": "Compliance Director — Tactical Framework Manager",
+      "description": "Director responsible for managing compliance across multiple regulatory frameworks, coordinating audit preparation, and ensuring cross-framework requirement coverage.",
+      "icpId": "icp:rcs-compliance-dir",
+      "customerType": "B2B",
+      "segmentDescription": "Compliance Directors, Regulatory Affairs Directors, GRC Directors managing day-to-day compliance operations across multiple frameworks. Coordinate between security, legal, and business units.",
+      "willingnessToPayIndicator": "High",
+      "roleRef": "pf:func-compliance-director",
+      "parentICP": "vp:rcs-icp-ciso",
+      "seniorityLevel": 3,
+      "functionScope": "Tactical",
+      "decisionAuthority": "Recommender",
+      "budgetRange": "$200K-$2M for compliance tooling and assessments",
+      "problemScopeFilter": "Tactical"
+    },
+    {
+      "@id": "vp:rcs-icp-security-analyst",
+      "@type": "vp:RoleBasedICP",
+      "name": "Security Analyst — Operational Compliance Practitioner",
+      "description": "Analyst-level practitioner responsible for executing compliance assessments, collecting evidence, mapping controls, and preparing audit documentation.",
+      "icpId": "icp:rcs-security-analyst",
+      "customerType": "B2B",
+      "segmentDescription": "Security Analysts, Compliance Analysts, GRC Analysts executing day-to-day compliance evidence collection, control mapping, and audit preparation across framework-specific requirements.",
+      "willingnessToPayIndicator": "Medium",
+      "roleRef": "pf:func-security-analyst",
+      "parentICP": "vp:rcs-icp-compliance-director",
+      "seniorityLevel": 5,
+      "functionScope": "Operational",
+      "decisionAuthority": "User",
+      "budgetRange": "$5K-$25K for analyst tooling",
+      "problemScopeFilter": "Operational"
+    },
+
+    {
+      "@id": "vp:rcs-prob-fragmented",
+      "@type": "vp:Problem",
+      "name": "Fragmented Multi-Framework Compliance",
+      "description": "Enterprises subject to multiple regulatory frameworks manage compliance in silos, with separate teams, tools, and evidence repositories for each framework",
+      "problemId": "prob:rcs-fragmented",
+      "problemStatement": "CISOs in regulated industries struggle with fragmented compliance across multiple frameworks (MCSB, GDPR, PII, Azure Security Baseline) when demonstrating regulatory adherence, resulting in 40% duplicated effort across frameworks, $500K-$2M annual wasted spend on overlapping assessments, and critical gaps at framework intersection points that auditors consistently flag.",
+      "problemType": "Functional",
+      "severity": "Critical",
+      "frequency": "Constant",
+      "isGrowing": true,
+      "marketSizeImpact": 8000000000,
+      "scopeLevel": "Strategic",
+      "ownerRole": "pf:exec-ciso"
+    },
+    {
+      "@id": "vp:rcs-prob-audit-prep",
+      "@type": "vp:Problem",
+      "name": "Costly and Time-Consuming Audit Preparation",
+      "description": "Compliance directors spend 3-6 months preparing for each audit cycle, manually mapping controls to framework requirements and collecting evidence from disparate systems",
+      "problemId": "prob:rcs-audit-prep",
+      "problemStatement": "Compliance Directors struggle with audit preparation overhead when coordinating evidence collection across MCSB, GDPR, and PII requirements, resulting in 3-6 month preparation cycles per framework, $200K-$500K in annual audit prep costs, and 30% of compliance team capacity consumed by evidence gathering rather than remediation.",
+      "problemType": "Economic",
+      "severity": "Major",
+      "frequency": "Frequent",
+      "isGrowing": false,
+      "scopeLevel": "Tactical",
+      "ownerRole": "pf:func-compliance-director"
+    },
+    {
+      "@id": "vp:rcs-prob-control-mapping",
+      "@type": "vp:Problem",
+      "name": "Manual Cross-Framework Control Mapping",
+      "description": "Security analysts manually map controls across MCSB, GDPR, PII, and Azure security baselines, producing inconsistent and error-prone cross-references",
+      "problemId": "prob:rcs-control-mapping",
+      "problemStatement": "Security Analysts struggle with manual control mapping when cross-referencing MCSB controls to GDPR articles to PII requirements, resulting in 60+ hours per mapping cycle, 15-20% error rate in cross-references, and inability to identify true coverage gaps across overlapping frameworks.",
+      "problemType": "Functional",
+      "severity": "Major",
+      "frequency": "Frequent",
+      "isGrowing": true,
+      "scopeLevel": "Operational",
+      "ownerRole": "pf:func-security-analyst"
+    },
+
+    {
+      "@id": "vp:rcs-pain-duplicate-effort",
+      "@type": "vp:PainPoint",
+      "name": "40% Duplicated Compliance Effort",
+      "painId": "pain:rcs-duplicate",
+      "painDescription": "40% of compliance effort is duplicated across MCSB, GDPR, and PII frameworks due to overlapping requirements assessed separately by different teams with different tools",
+      "painDimension": "Economic",
+      "customerImpact": "Teams independently assess the same controls for different frameworks; evidence collected multiple times; remediation prioritised per-framework rather than holistically",
+      "quantifiedImpact": 800000,
+      "impactUnit": "Currency"
+    },
+    {
+      "@id": "vp:rcs-pain-gap-blindspot",
+      "@type": "vp:PainPoint",
+      "name": "Cross-Framework Gap Blindspots",
+      "painId": "pain:rcs-gap-blindspot",
+      "painDescription": "Critical compliance gaps exist at framework intersection points (e.g., GDPR data processing mapped to MCSB data protection controls) that per-framework assessments consistently miss",
+      "painDimension": "Functional",
+      "customerImpact": "Auditors discover gaps that internal assessments missed; regulatory penalties for intersection-point failures; board-level compliance confidence undermined",
+      "quantifiedImpact": 35,
+      "impactUnit": "Percentage"
+    },
+    {
+      "@id": "vp:rcs-pain-audit-timeline",
+      "@type": "vp:PainPoint",
+      "name": "3-6 Month Audit Preparation Cycles",
+      "painId": "pain:rcs-audit-timeline",
+      "painDescription": "Each audit preparation cycle takes 3-6 months of dedicated compliance team effort, with evidence collection from 10-20 disparate systems and manual mapping of 200+ controls per framework",
+      "painDimension": "Economic",
+      "customerImpact": "Compliance team locked in perpetual audit preparation; no capacity for proactive remediation; annual audit cost $200K-$500K per framework",
+      "quantifiedImpact": 350000,
+      "impactUnit": "Currency"
+    },
+    {
+      "@id": "vp:rcs-pain-mapping-errors",
+      "@type": "vp:PainPoint",
+      "name": "15-20% Control Mapping Error Rate",
+      "painId": "pain:rcs-mapping-errors",
+      "painDescription": "Manual cross-framework control mapping has a 15-20% error rate, with analysts misinterpreting requirement overlaps or missing nuanced differences between MCSB, GDPR, and PII controls",
+      "painDimension": "Functional",
+      "customerImpact": "Incorrect control mappings lead to false compliance confidence; audit findings on mapping errors; remediation effort misdirected to wrong controls",
+      "quantifiedImpact": 60,
+      "impactUnit": "Hours"
+    },
+    {
+      "@id": "vp:rcs-pain-regulatory-penalty",
+      "@type": "vp:PainPoint",
+      "name": "Regulatory Penalty Exposure",
+      "painId": "pain:rcs-penalty",
+      "painDescription": "GDPR fines up to 4% of global turnover, MCSB non-compliance risks Azure service restrictions, PII breaches trigger mandatory notification — fragmented compliance increases penalty exposure",
+      "painDimension": "Economic",
+      "customerImpact": "Financial exposure to multi-million-pound penalties; reputational damage from compliance failures; board and shareholder confidence erosion",
+      "quantifiedImpact": 20000000,
+      "impactUnit": "Currency"
+    },
+
+    {
+      "@id": "vp:rcs-gain-unified-dashboard",
+      "@type": "vp:Gain",
+      "name": "Unified Compliance Dashboard",
+      "gainId": "gain:rcs-unified",
+      "gainDescription": "Single compliance dashboard showing real-time coverage status across all frameworks (MCSB, GDPR, PII, Azure) with automated cross-reference mapping and gap highlighting",
+      "gainType": "Required",
+      "gainCategory": "Functional",
+      "priority": "Critical",
+      "quantifiedValue": 90
+    },
+    {
+      "@id": "vp:rcs-gain-automated-mapping",
+      "@type": "vp:Gain",
+      "name": "Automated Cross-Framework Mapping",
+      "gainId": "gain:rcs-auto-mapping",
+      "gainDescription": "Automatic mapping of overlapping controls across MCSB, GDPR, PII, and Azure baselines using RCSG-Series ontology relationships, eliminating manual cross-referencing",
+      "gainType": "Expected",
+      "gainCategory": "Functional",
+      "priority": "High",
+      "quantifiedValue": 80
+    },
+    {
+      "@id": "vp:rcs-gain-continuous-monitoring",
+      "@type": "vp:Gain",
+      "name": "Continuous Compliance Monitoring",
+      "gainId": "gain:rcs-continuous",
+      "gainDescription": "Shift from point-in-time audit snapshots to continuous compliance monitoring with real-time alerting on compliance drift and automated evidence collection",
+      "gainType": "Desired",
+      "gainCategory": "Economic",
+      "priority": "High",
+      "quantifiedValue": 70
+    },
+
+    {
+      "@id": "vp:rcs-sol-001",
+      "@type": "vp:Solution",
+      "name": "RCS Unified Compliance Assessment Platform",
+      "description": "A multi-framework compliance assessment platform built on RCSG-Series ontologies (MCSB-ONT, GDPR-ONT, PII-ONT, AZALZ-ONT), providing unified compliance dashboards, automated cross-framework control mapping, continuous compliance monitoring, and audit-ready evidence management",
+      "solutionId": "sol:rcs-platform",
+      "coreFunctionality": "Multi-framework compliance dashboard (MCSB, GDPR, PII, Azure Security Baseline); Automated cross-framework control mapping via RCSG-Series ontology relationships; Gap analysis with cross-framework intersection coverage; Continuous compliance monitoring with drift detection; Audit-ready evidence management with automated collection; Azure-native integration via AZALZ-ONT; Remediation priority scoring based on cross-framework impact; Regulatory change impact assessment",
+      "deliveryMethod": "Platform",
+      "pricingModel": "Subscription",
+      "timeToValue": "P30D"
+    },
+
+    {
+      "@id": "vp:rcs-ben-audit-time",
+      "@type": "vp:Benefit",
+      "name": "60% Audit Preparation Time Reduction",
+      "benefitId": "ben:rcs-audit-time",
+      "benefitDescription": "60% reduction in audit preparation time through automated evidence collection, pre-mapped controls, and continuous compliance monitoring that replaces manual per-framework preparation cycles",
+      "benefitType": "Quantifiable",
+      "benefitCategory": "TimeSavings",
+      "quantifiedValue": 60,
+      "measurementMethod": "Calendar time from audit announcement to audit-ready state; compliance team hours spent on evidence collection and control mapping per audit cycle",
+      "realizationTimeframe": "P3M"
+    },
+    {
+      "@id": "vp:rcs-ben-coverage-score",
+      "@type": "vp:Benefit",
+      "name": "85%+ Cross-Framework Compliance Coverage",
+      "benefitId": "ben:rcs-coverage",
+      "benefitDescription": "Achieve and maintain 85%+ compliance coverage score across all applicable frameworks within 90 days, with automated gap identification for remaining coverage improvements",
+      "benefitType": "Quantifiable",
+      "benefitCategory": "ComplianceAssurance",
+      "quantifiedValue": 85,
+      "measurementMethod": "Weighted compliance coverage percentage across MCSB, GDPR, PII, and Azure baselines based on control implementation and evidence completeness",
+      "realizationTimeframe": "P3M"
+    },
+    {
+      "@id": "vp:rcs-ben-duplicate-elimination",
+      "@type": "vp:Benefit",
+      "name": "Eliminate 40% Duplicate Effort",
+      "benefitId": "ben:rcs-dedup",
+      "benefitDescription": "Eliminate 40% duplicated compliance effort by automatically identifying overlapping requirements across frameworks and consolidating assessment activities",
+      "benefitType": "Quantifiable",
+      "benefitCategory": "CostReduction",
+      "quantifiedValue": 40,
+      "measurementMethod": "Compliance team hours per assessment cycle; number of unique vs. duplicated control assessments; total compliance programme cost year-over-year",
+      "realizationTimeframe": "P2M"
+    },
+    {
+      "@id": "vp:rcs-ben-penalty-reduction",
+      "@type": "vp:Benefit",
+      "name": "Reduced Regulatory Penalty Exposure",
+      "benefitId": "ben:rcs-penalty-reduction",
+      "benefitDescription": "Significant reduction in regulatory penalty exposure through comprehensive cross-framework gap identification and continuous compliance monitoring that prevents compliance drift",
+      "benefitType": "Qualitative",
+      "benefitCategory": "RiskReduction",
+      "measurementMethod": "Number of audit findings; severity of audit findings; time-to-remediate; regulatory penalty events",
+      "realizationTimeframe": "P6M"
+    },
+    {
+      "@id": "vp:rcs-ben-remediation-velocity",
+      "@type": "vp:Benefit",
+      "name": "2x Remediation Velocity",
+      "benefitId": "ben:rcs-remediation",
+      "benefitDescription": "2x improvement in remediation velocity by prioritising fixes based on cross-framework impact — fixing one control gap can resolve requirements across multiple frameworks simultaneously",
+      "benefitType": "Quantifiable",
+      "benefitCategory": "TimeSavings",
+      "quantifiedValue": 200,
+      "measurementMethod": "Number of compliance gaps closed per month; cross-framework impact score per remediation action; time from gap identification to resolution",
+      "realizationTimeframe": "P3M"
+    },
+
+    {
+      "@id": "vp:rcs-diff-multi-framework",
+      "@type": "vp:Differentiator",
+      "name": "Multi-Framework Unification",
+      "differentiatorId": "diff:rcs-multi-framework",
+      "differentiatorDescription": "Unified compliance view across MCSB, GDPR, PII, and Azure Security Baseline using RCSG-Series ontologies — most competitors handle one framework at a time with manual cross-referencing for overlap",
+      "differentiatorType": "Approach",
+      "competitiveAdvantage": "Automatically maps overlapping requirements across all 4 frameworks. Competitors require separate assessments per framework with manual reconciliation. Average enterprise runs 3-4 framework-specific tools.",
+      "defensibility": "High",
+      "customerImportance": "High"
+    },
+    {
+      "@id": "vp:rcs-diff-ontology-crossref",
+      "@type": "vp:Differentiator",
+      "name": "Ontology-Driven Cross-Referencing",
+      "differentiatorId": "diff:rcs-ontology-crossref",
+      "differentiatorDescription": "RCSG-Series ontologies encode semantic relationships between compliance requirements across frameworks, enabling automated cross-referencing with 95%+ accuracy — replacing error-prone manual mapping",
+      "differentiatorType": "Technology",
+      "competitiveAdvantage": "Semantic mapping means the system understands requirement meaning, not just keyword matching. 95% accuracy vs. 80-85% for manual mapping. Cross-references updated automatically when frameworks change.",
+      "defensibility": "High",
+      "customerImportance": "High"
+    },
+    {
+      "@id": "vp:rcs-diff-azure-native",
+      "@type": "vp:Differentiator",
+      "name": "Azure-Native Integration",
+      "differentiatorId": "diff:rcs-azure-native",
+      "differentiatorDescription": "Native integration with Azure compliance infrastructure via AZALZ-ONT, enabling automated evidence collection from Azure Policy, Defender for Cloud, and Azure Security Benchmark without manual export/import",
+      "differentiatorType": "Integration",
+      "competitiveAdvantage": "Direct API integration with Azure compliance tooling. Competitors rely on manual evidence export. Real-time compliance status vs. point-in-time snapshots.",
+      "defensibility": "Medium",
+      "customerImportance": "High"
+    },
+    {
+      "@id": "vp:rcs-diff-overlap-detection",
+      "@type": "vp:Differentiator",
+      "name": "Automated Overlap Detection",
+      "differentiatorId": "diff:rcs-overlap",
+      "differentiatorDescription": "Automatically identifies requirement overlaps across MCSB, GDPR, PII, and Azure baselines, showing which single remediation action resolves requirements in multiple frameworks simultaneously",
+      "differentiatorType": "Capability",
+      "competitiveAdvantage": "Prioritise remediation by cross-framework impact: one fix can close gaps in 3+ frameworks. Competitors assess and remediate per-framework without cross-framework impact scoring.",
+      "defensibility": "Medium",
+      "customerImportance": "Medium"
+    },
+
+    {
+      "@id": "vp:rcs-alt-big4-compliance",
+      "@type": "vp:CompetitiveAlternative",
+      "name": "Big 4 Compliance Advisory",
+      "alternativeId": "alt:rcs-big4",
+      "alternativeType": "DirectCompetitor",
+      "marketShare": 30,
+      "strengths": "Regulatory expertise; audit firm relationships; industry-specific knowledge; trusted brand; comprehensive engagement model",
+      "weaknesses": "Consultant-dependent; $300K-$1M per framework assessment; point-in-time snapshots; manual cross-framework reconciliation; 4-6 month engagement cycles",
+      "pricingComparison": "Higher"
+    },
+    {
+      "@id": "vp:rcs-alt-grc-platforms",
+      "@type": "vp:CompetitiveAlternative",
+      "name": "GRC Platforms (ServiceNow, Archer, OneTrust)",
+      "alternativeId": "alt:rcs-grc",
+      "alternativeType": "DirectCompetitor",
+      "marketShare": 35,
+      "strengths": "Established market presence; workflow automation; audit trail; integration ecosystem; enterprise-grade scalability",
+      "weaknesses": "Framework-by-framework approach; limited cross-framework intelligence; expensive (>$500K/year); long implementation (6-12 months); requires GRC analyst expertise; no semantic cross-referencing",
+      "pricingComparison": "Higher"
+    },
+    {
+      "@id": "vp:rcs-alt-framework-specific",
+      "@type": "vp:CompetitiveAlternative",
+      "name": "Framework-Specific Tools (Vanta, Drata, Wiz)",
+      "alternativeId": "alt:rcs-specific",
+      "alternativeType": "Substitute",
+      "marketShare": 25,
+      "strengths": "Deep framework expertise; automated evidence collection; fast implementation; modern UX; cloud-native; lower cost per framework",
+      "weaknesses": "Single-framework focus; no cross-framework mapping; requires multiple tools for multi-framework compliance; vendor proliferation; integration complexity",
+      "pricingComparison": "Lower"
+    },
+    {
+      "@id": "vp:rcs-alt-spreadsheet",
+      "@type": "vp:CompetitiveAlternative",
+      "name": "Internal Spreadsheet-Based Compliance",
+      "alternativeId": "alt:rcs-spreadsheet",
+      "alternativeType": "Workaround",
+      "marketShare": 10,
+      "strengths": "Zero tool cost; fully customisable; internal knowledge retention; no vendor dependency",
+      "weaknesses": "60+ hours per framework per cycle; 15-20% mapping error rate; no automation; no continuous monitoring; audit-readiness depends on individual knowledge; not scalable",
+      "pricingComparison": "Lower"
+    },
+
+    {
+      "@id": "vp:rcs-evid-compliance-survey",
+      "@type": "vp:ValidationEvidence",
+      "name": "Multi-Framework Compliance Burden Survey",
+      "evidenceId": "evid:rcs-survey",
+      "evidenceType": "Survey",
+      "evidenceSource": "RCS Market Research — Multi-Framework Compliance Burden Survey (UK Financial Services)",
+      "evidenceDate": "2025-11-01",
+      "evidenceDescription": "Survey of 200 compliance professionals in UK Financial Services revealed: 87% manage 3+ frameworks; 72% report significant duplicate effort; 65% cannot identify cross-framework gaps; average compliance team spends 40% of time on evidence collection rather than remediation",
+      "evidenceStrength": "Strong",
+      "sampleSize": 200
+    },
+    {
+      "@id": "vp:rcs-evid-ico-penalty",
+      "@type": "vp:ValidationEvidence",
+      "name": "ICO GDPR Penalty Analysis",
+      "evidenceId": "evid:rcs-ico",
+      "evidenceType": "IndustryReport",
+      "evidenceSource": "ICO Annual Report 2025 — GDPR Enforcement Statistics",
+      "evidenceDate": "2025-07-01",
+      "evidenceDescription": "ICO enforcement data shows 45% increase in GDPR penalty actions year-over-year, with average fine of £1.2M. 60% of penalty cases involved gaps at framework intersection points (data processing controls meeting GDPR Article 32 + cloud security requirements).",
+      "evidenceStrength": "Strong",
+      "sampleSize": 350
+    },
+    {
+      "@id": "vp:rcs-evid-pilot",
+      "@type": "vp:ValidationEvidence",
+      "name": "RCS Pilot Programme Results",
+      "evidenceId": "evid:rcs-pilot",
+      "evidenceType": "InternalData",
+      "evidenceSource": "RCS Pilot Programme — 3 Financial Services + 2 Healthcare Clients",
+      "evidenceDate": "2026-01-15",
+      "evidenceDescription": "RCS pilot with 5 regulated enterprise clients demonstrated: 55% audit preparation time reduction; 88% cross-framework compliance coverage within 60 days; 38% elimination of duplicate assessment effort; zero audit findings on cross-framework mapping gaps",
+      "evidenceStrength": "Moderate",
+      "sampleSize": 5
+    },
+
+    {
+      "@id": "vp:rcs-sm-audit-prep-time",
+      "@type": "vp:SuccessMetric",
+      "name": "Audit Preparation Time Reduction",
+      "metricId": "sm:rcs-audit-time",
+      "description": "Calendar days from audit announcement to audit-ready state across all applicable frameworks, compared to manual preparation baseline",
+      "baseline": 120,
+      "target": 48,
+      "measurementMethod": "Track calendar days from external audit notification to compliance team sign-off on audit readiness across all frameworks.",
+      "measurementFrequency": "P3M"
+    },
+    {
+      "@id": "vp:rcs-sm-compliance-score",
+      "@type": "vp:SuccessMetric",
+      "name": "Cross-Framework Compliance Coverage Score",
+      "metricId": "sm:rcs-coverage-score",
+      "description": "Weighted compliance coverage percentage across all applicable frameworks (MCSB, GDPR, PII, Azure Security Baseline)",
+      "baseline": 62,
+      "target": 88,
+      "measurementMethod": "Automated compliance coverage calculation: (controls implemented and evidenced / total applicable controls) weighted by framework criticality.",
+      "measurementFrequency": "P1M"
+    },
+    {
+      "@id": "vp:rcs-sm-audit-findings",
+      "@type": "vp:SuccessMetric",
+      "name": "Audit Finding Count",
+      "metricId": "sm:rcs-audit-findings",
+      "description": "Number of material audit findings per external audit cycle, particularly cross-framework intersection gaps",
+      "baseline": 12,
+      "target": 3,
+      "measurementMethod": "Count material and significant audit findings per external audit cycle. Track separately: per-framework findings vs. cross-framework intersection findings.",
+      "measurementFrequency": "P6M"
+    },
+    {
+      "@id": "vp:rcs-sm-remediation-velocity",
+      "@type": "vp:SuccessMetric",
+      "name": "Remediation Velocity (Gaps/Month)",
+      "metricId": "sm:rcs-remediation",
+      "description": "Number of compliance gaps remediated per month, weighted by cross-framework impact",
+      "baseline": 8,
+      "target": 20,
+      "measurementMethod": "Count compliance gaps resolved per month. Weight each resolution by number of frameworks impacted (1x for single-framework, 2x for dual, 3x for tri-framework impact).",
+      "measurementFrequency": "P1M"
+    },
+
+    {
+      "@id": "vp:rcs-sh-ciso",
+      "@type": "vp:Stakeholder",
+      "name": "CISO",
+      "stakeholderId": "sh:rcs-ciso",
+      "stakeholderRole": "DecisionMaker",
+      "influenceLevel": "High",
+      "interests": "Board-level compliance confidence; regulatory penalty avoidance; unified risk view; audit efficiency; team productivity",
+      "objections": "Already invested in GRC platform; integration complexity with existing tooling; concern about replacing established processes mid-audit-cycle"
+    },
+    {
+      "@id": "vp:rcs-sh-compliance-dir",
+      "@type": "vp:Stakeholder",
+      "name": "Compliance Director",
+      "stakeholderId": "sh:rcs-compliance-dir",
+      "stakeholderRole": "Champion",
+      "influenceLevel": "High",
+      "interests": "Cross-framework visibility; audit preparation efficiency; team capacity for remediation vs. evidence collection; continuous monitoring",
+      "objections": "Learning curve for ontology-based approach; migration from existing GRC workflows; accuracy of automated cross-referencing"
+    },
+    {
+      "@id": "vp:rcs-sh-security-analyst",
+      "@type": "vp:Stakeholder",
+      "name": "Security/Compliance Analyst",
+      "stakeholderId": "sh:rcs-analyst",
+      "stakeholderRole": "PrimaryUser",
+      "influenceLevel": "Medium",
+      "interests": "Reduced manual mapping effort; automated evidence collection; clear remediation priorities; skill development in cross-framework compliance",
+      "objections": "Yet another tool to learn; worried about accuracy of automated mappings; concern that automation reduces analyst value"
+    },
+    {
+      "@id": "vp:rcs-sh-auditor",
+      "@type": "vp:Stakeholder",
+      "name": "External Auditor / Regulator",
+      "stakeholderId": "sh:rcs-auditor",
+      "stakeholderRole": "Influencer",
+      "influenceLevel": "High",
+      "interests": "Complete audit trail; evidence quality; cross-framework control mapping accuracy; continuous compliance evidence vs. point-in-time",
+      "objections": "Unfamiliar with ontology-based compliance; requires validation of cross-framework mapping methodology"
+    },
+
+    {
+      "@id": "vp:rcs-msg-csuite",
+      "@type": "vp:MessagingFramework",
+      "name": "CISO / C-Suite Compliance Messaging",
+      "frameworkId": "msg:rcs-csuite",
+      "primaryMessage": "Eliminate compliance fragmentation and regulatory penalty risk — see your entire compliance posture across MCSB, GDPR, PII, and Azure in a single, continuously updated dashboard that your auditors will trust.",
+      "supportingMessages": "1. 60% reduction in audit preparation time through automated cross-framework mapping. 2. 85%+ compliance coverage within 90 days across all applicable frameworks. 3. Eliminate 40% duplicate compliance effort by unifying overlapping requirements. 4. Zero audit findings on cross-framework mapping gaps in pilot deployments.",
+      "emotionalHooks": "Sleep-at-night confidence in compliance posture; board-level credibility through quantified compliance; protection from headline-making regulatory penalties; control over compliance programme rather than being controlled by it",
+      "useCustomerLanguage": true
+    },
+    {
+      "@id": "vp:rcs-msg-director",
+      "@type": "vp:MessagingFramework",
+      "name": "Compliance Director Operational Messaging",
+      "frameworkId": "msg:rcs-director",
+      "primaryMessage": "Free your compliance team from perpetual audit preparation — automated cross-framework mapping and continuous monitoring means your team spends time on remediation, not evidence collection.",
+      "supportingMessages": "1. Automated cross-referencing across MCSB, GDPR, PII, and Azure with 95% accuracy. 2. Continuous compliance monitoring replaces point-in-time audit snapshots. 3. Single remediation action can close gaps across multiple frameworks simultaneously. 4. Audit-ready evidence packages generated automatically.",
+      "emotionalHooks": "Team empowerment through automation; escape from audit-prep treadmill; professional recognition for proactive compliance programme; confidence in cross-framework coverage",
+      "useCustomerLanguage": true
+    },
+    {
+      "@id": "vp:rcs-msg-analyst",
+      "@type": "vp:MessagingFramework",
+      "name": "Security Analyst Practitioner Messaging",
+      "frameworkId": "msg:rcs-analyst",
+      "primaryMessage": "Stop spending 60+ hours per cycle manually mapping controls across frameworks — get automated cross-references with 95% accuracy and focus your expertise on remediation and risk reduction.",
+      "supportingMessages": "1. Automated control mapping replaces manual spreadsheet cross-referencing. 2. Evidence collection integrated with Azure compliance APIs. 3. Clear remediation priorities ranked by cross-framework impact. 4. Continuous learning: system improves mapping accuracy from your feedback.",
+      "emotionalHooks": "Freedom from tedious mapping work; valued for expertise not data entry; confidence in mapping accuracy; professional growth in cross-framework compliance",
+      "useCustomerLanguage": true
+    },
+
+    {
+      "@id": "vp:rcs-raci-validation",
+      "@type": "vp:VPRACIAssignment",
+      "vpRaciId": "vpraci:rcs-validation-ciso",
+      "vpActivity": "VP_Validation",
+      "role": "pf:exec-ciso",
+      "raciType": "Accountable",
+      "vpEntityRef": "vp:rcs-vp-001",
+      "organizationScope": "org:ctx-rcs"
+    },
+    {
+      "@id": "vp:rcs-raci-validation-dir",
+      "@type": "vp:VPRACIAssignment",
+      "vpRaciId": "vpraci:rcs-validation-dir",
+      "vpActivity": "VP_Validation",
+      "role": "pf:func-compliance-director",
+      "raciType": "Responsible",
+      "vpEntityRef": "vp:rcs-vp-001",
+      "organizationScope": "org:ctx-rcs"
+    },
+    {
+      "@id": "vp:rcs-raci-icp-research",
+      "@type": "vp:VPRACIAssignment",
+      "vpRaciId": "vpraci:rcs-icp-dir",
+      "vpActivity": "ICP_Research",
+      "role": "pf:func-compliance-director",
+      "raciType": "Accountable",
+      "organizationScope": "org:ctx-rcs"
+    },
+    {
+      "@id": "vp:rcs-raci-icp-research-analyst",
+      "@type": "vp:VPRACIAssignment",
+      "vpRaciId": "vpraci:rcs-icp-analyst",
+      "vpActivity": "ICP_Research",
+      "role": "pf:func-security-analyst",
+      "raciType": "Responsible",
+      "organizationScope": "org:ctx-rcs"
+    },
+    {
+      "@id": "vp:rcs-raci-problem-discovery",
+      "@type": "vp:VPRACIAssignment",
+      "vpRaciId": "vpraci:rcs-problem-dir",
+      "vpActivity": "Problem_Discovery",
+      "role": "pf:func-compliance-director",
+      "raciType": "Responsible",
+      "organizationScope": "org:ctx-rcs"
+    },
+    {
+      "@id": "vp:rcs-raci-problem-discovery-acc",
+      "@type": "vp:VPRACIAssignment",
+      "vpRaciId": "vpraci:rcs-problem-ciso",
+      "vpActivity": "Problem_Discovery",
+      "role": "pf:exec-ciso",
+      "raciType": "Accountable",
+      "organizationScope": "org:ctx-rcs"
+    },
+    {
+      "@id": "vp:rcs-raci-solution-design",
+      "@type": "vp:VPRACIAssignment",
+      "vpRaciId": "vpraci:rcs-solution-dir",
+      "vpActivity": "Solution_Design",
+      "role": "pf:func-compliance-director",
+      "raciType": "Accountable",
+      "organizationScope": "org:ctx-rcs"
+    },
+    {
+      "@id": "vp:rcs-raci-solution-design-analyst",
+      "@type": "vp:VPRACIAssignment",
+      "vpRaciId": "vpraci:rcs-solution-analyst",
+      "vpActivity": "Solution_Design",
+      "role": "pf:func-security-analyst",
+      "raciType": "Responsible",
+      "organizationScope": "org:ctx-rcs"
+    },
+    {
+      "@id": "vp:rcs-raci-competitive",
+      "@type": "vp:VPRACIAssignment",
+      "vpRaciId": "vpraci:rcs-competitive-dir",
+      "vpActivity": "Competitive_Analysis",
+      "role": "pf:func-compliance-director",
+      "raciType": "Accountable",
+      "organizationScope": "org:ctx-rcs"
+    },
+    {
+      "@id": "vp:rcs-raci-messaging",
+      "@type": "vp:VPRACIAssignment",
+      "vpRaciId": "vpraci:rcs-messaging-ciso",
+      "vpActivity": "Messaging_Development",
+      "role": "pf:exec-ciso",
+      "raciType": "Accountable",
+      "organizationScope": "org:ctx-rcs"
+    },
+    {
+      "@id": "vp:rcs-raci-messaging-dir",
+      "@type": "vp:VPRACIAssignment",
+      "vpRaciId": "vpraci:rcs-messaging-dir",
+      "vpActivity": "Messaging_Development",
+      "role": "pf:func-compliance-director",
+      "raciType": "Responsible",
+      "organizationScope": "org:ctx-rcs"
+    },
+    {
+      "@id": "vp:rcs-raci-benefit-measure",
+      "@type": "vp:VPRACIAssignment",
+      "vpRaciId": "vpraci:rcs-benefit-analyst",
+      "vpActivity": "Benefit_Measurement",
+      "role": "pf:func-security-analyst",
+      "raciType": "Responsible",
+      "organizationScope": "org:ctx-rcs"
+    },
+    {
+      "@id": "vp:rcs-raci-benefit-measure-acc",
+      "@type": "vp:VPRACIAssignment",
+      "vpRaciId": "vpraci:rcs-benefit-dir",
+      "vpActivity": "Benefit_Measurement",
+      "role": "pf:func-compliance-director",
+      "raciType": "Accountable",
+      "organizationScope": "org:ctx-rcs"
+    }
+  ],
+
+  "relationships": [
+    { "@type": "vp:belongsToOrgContext", "from": "vp:rcs-vp-001", "to": "org:ctx-rcs" },
+    { "@type": "vp:alignsToObjective", "from": "vp:rcs-vp-001", "to": "vsom:obj-regulatory-compliance" },
+    { "@type": "vp:alignsToObjective", "from": "vp:rcs-vp-001", "to": "vsom:obj-security-posture" },
+    { "@type": "vp:drivesOutcome", "from": "vp:rcs-vp-001", "to": "vsom:outcome-compliance-assurance" },
+
+    { "@type": "vp:targetsICP", "from": "vp:rcs-vp-001", "to": "vp:rcs-icp-regulated" },
+    { "@type": "vp:targetsICP", "from": "vp:rcs-vp-001", "to": "vp:rcs-icp-ciso" },
+    { "@type": "vp:targetsICP", "from": "vp:rcs-vp-001", "to": "vp:rcs-icp-compliance-director" },
+    { "@type": "vp:targetsICP", "from": "vp:rcs-vp-001", "to": "vp:rcs-icp-security-analyst" },
+
+    { "@type": "vp:addressesProblem", "from": "vp:rcs-vp-001", "to": "vp:rcs-prob-fragmented" },
+    { "@type": "vp:addressesProblem", "from": "vp:rcs-vp-001", "to": "vp:rcs-prob-audit-prep" },
+    { "@type": "vp:addressesProblem", "from": "vp:rcs-vp-001", "to": "vp:rcs-prob-control-mapping" },
+
+    { "@type": "vp:offeredThrough", "from": "vp:rcs-vp-001", "to": "vp:rcs-sol-001" },
+    { "@type": "vp:supportedByEvidence", "from": "vp:rcs-vp-001", "to": "vp:rcs-evid-compliance-survey" },
+    { "@type": "vp:supportedByEvidence", "from": "vp:rcs-vp-001", "to": "vp:rcs-evid-ico-penalty" },
+    { "@type": "vp:supportedByEvidence", "from": "vp:rcs-vp-001", "to": "vp:rcs-evid-pilot" },
+    { "@type": "vp:communicatedVia", "from": "vp:rcs-vp-001", "to": "vp:rcs-msg-csuite" },
+    { "@type": "vp:differentiatesFrom", "from": "vp:rcs-vp-001", "to": "vp:rcs-alt-big4-compliance" },
+    { "@type": "vp:differentiatesFrom", "from": "vp:rcs-vp-001", "to": "vp:rcs-alt-grc-platforms" },
+    { "@type": "vp:differentiatesFrom", "from": "vp:rcs-vp-001", "to": "vp:rcs-alt-framework-specific" },
+    { "@type": "vp:differentiatesFrom", "from": "vp:rcs-vp-001", "to": "vp:rcs-alt-spreadsheet" },
+
+    { "@type": "vp:icpHasStakeholder", "from": "vp:rcs-icp-ciso", "to": "vp:rcs-sh-ciso" },
+    { "@type": "vp:icpHasStakeholder", "from": "vp:rcs-icp-compliance-director", "to": "vp:rcs-sh-compliance-dir" },
+    { "@type": "vp:icpHasStakeholder", "from": "vp:rcs-icp-security-analyst", "to": "vp:rcs-sh-security-analyst" },
+    { "@type": "vp:icpHasStakeholder", "from": "vp:rcs-icp-regulated", "to": "vp:rcs-sh-auditor" },
+
+    { "@type": "vp:roleRef", "from": "vp:rcs-icp-ciso", "to": "pf:exec-ciso" },
+    { "@type": "vp:roleRef", "from": "vp:rcs-icp-compliance-director", "to": "pf:func-compliance-director" },
+    { "@type": "vp:roleRef", "from": "vp:rcs-icp-security-analyst", "to": "pf:func-security-analyst" },
+
+    { "@type": "vp:icpReportsTo", "from": "vp:rcs-icp-security-analyst", "to": "vp:rcs-icp-compliance-director" },
+    { "@type": "vp:icpReportsTo", "from": "vp:rcs-icp-compliance-director", "to": "vp:rcs-icp-ciso" },
+
+    { "@type": "vp:manifestsAsPersona", "from": "vp:rcs-icp-ciso", "to": "efs:persona-security-exec" },
+    { "@type": "vp:manifestsAsPersona", "from": "vp:rcs-icp-compliance-director", "to": "efs:persona-compliance-lead" },
+    { "@type": "vp:manifestsAsPersona", "from": "vp:rcs-icp-security-analyst", "to": "efs:persona-compliance-analyst" },
+
+    { "@type": "vp:icpHasProblem", "from": "vp:rcs-icp-ciso", "to": "vp:rcs-prob-fragmented" },
+    { "@type": "vp:icpHasProblem", "from": "vp:rcs-icp-compliance-director", "to": "vp:rcs-prob-audit-prep" },
+    { "@type": "vp:icpHasProblem", "from": "vp:rcs-icp-security-analyst", "to": "vp:rcs-prob-control-mapping" },
+
+    { "@type": "vp:problemRollsUpTo", "from": "vp:rcs-prob-control-mapping", "to": "vp:rcs-prob-audit-prep" },
+    { "@type": "vp:problemRollsUpTo", "from": "vp:rcs-prob-audit-prep", "to": "vp:rcs-prob-fragmented" },
+
+    { "@type": "vp:problemHasPainPoint", "from": "vp:rcs-prob-fragmented", "to": "vp:rcs-pain-duplicate-effort" },
+    { "@type": "vp:problemHasPainPoint", "from": "vp:rcs-prob-fragmented", "to": "vp:rcs-pain-gap-blindspot" },
+    { "@type": "vp:problemHasPainPoint", "from": "vp:rcs-prob-fragmented", "to": "vp:rcs-pain-regulatory-penalty" },
+    { "@type": "vp:problemHasPainPoint", "from": "vp:rcs-prob-audit-prep", "to": "vp:rcs-pain-audit-timeline" },
+    { "@type": "vp:problemHasPainPoint", "from": "vp:rcs-prob-control-mapping", "to": "vp:rcs-pain-mapping-errors" },
+
+    { "@type": "vp:problemValidatedBy", "from": "vp:rcs-prob-fragmented", "to": "vp:rcs-evid-compliance-survey" },
+    { "@type": "vp:problemValidatedBy", "from": "vp:rcs-prob-fragmented", "to": "vp:rcs-evid-ico-penalty" },
+    { "@type": "vp:problemValidatedBy", "from": "vp:rcs-prob-audit-prep", "to": "vp:rcs-evid-compliance-survey" },
+    { "@type": "vp:problemValidatedBy", "from": "vp:rcs-prob-control-mapping", "to": "vp:rcs-evid-pilot" },
+
+    { "@type": "vp:mapsToEpic", "from": "vp:rcs-prob-fragmented", "to": "efs:epic-unified-compliance" },
+    { "@type": "vp:mapsToEpic", "from": "vp:rcs-prob-audit-prep", "to": "efs:epic-audit-automation" },
+
+    { "@type": "vp:solutionAddressesProblem", "from": "vp:rcs-sol-001", "to": "vp:rcs-prob-fragmented" },
+    { "@type": "vp:solutionAddressesProblem", "from": "vp:rcs-sol-001", "to": "vp:rcs-prob-audit-prep" },
+    { "@type": "vp:solutionAddressesProblem", "from": "vp:rcs-sol-001", "to": "vp:rcs-prob-control-mapping" },
+
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:rcs-sol-001", "to": "vp:rcs-ben-audit-time" },
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:rcs-sol-001", "to": "vp:rcs-ben-coverage-score" },
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:rcs-sol-001", "to": "vp:rcs-ben-duplicate-elimination" },
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:rcs-sol-001", "to": "vp:rcs-ben-penalty-reduction" },
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:rcs-sol-001", "to": "vp:rcs-ben-remediation-velocity" },
+
+    { "@type": "vp:solutionDifferentiatedBy", "from": "vp:rcs-sol-001", "to": "vp:rcs-diff-multi-framework" },
+    { "@type": "vp:solutionDifferentiatedBy", "from": "vp:rcs-sol-001", "to": "vp:rcs-diff-ontology-crossref" },
+    { "@type": "vp:solutionDifferentiatedBy", "from": "vp:rcs-sol-001", "to": "vp:rcs-diff-azure-native" },
+    { "@type": "vp:solutionDifferentiatedBy", "from": "vp:rcs-sol-001", "to": "vp:rcs-diff-overlap-detection" },
+
+    { "@type": "vp:solutionDeliversGain", "from": "vp:rcs-sol-001", "to": "vp:rcs-gain-unified-dashboard" },
+    { "@type": "vp:solutionDeliversGain", "from": "vp:rcs-sol-001", "to": "vp:rcs-gain-automated-mapping" },
+    { "@type": "vp:solutionDeliversGain", "from": "vp:rcs-sol-001", "to": "vp:rcs-gain-continuous-monitoring" },
+
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:rcs-ben-audit-time", "to": "vp:rcs-pain-audit-timeline" },
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:rcs-ben-coverage-score", "to": "vp:rcs-pain-gap-blindspot" },
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:rcs-ben-duplicate-elimination", "to": "vp:rcs-pain-duplicate-effort" },
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:rcs-ben-penalty-reduction", "to": "vp:rcs-pain-regulatory-penalty" },
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:rcs-ben-remediation-velocity", "to": "vp:rcs-pain-mapping-errors" },
+
+    { "@type": "vp:benefitEvidencedBy", "from": "vp:rcs-ben-audit-time", "to": "vp:rcs-evid-pilot" },
+    { "@type": "vp:benefitEvidencedBy", "from": "vp:rcs-ben-coverage-score", "to": "vp:rcs-evid-pilot" },
+    { "@type": "vp:benefitEvidencedBy", "from": "vp:rcs-ben-duplicate-elimination", "to": "vp:rcs-evid-compliance-survey" },
+    { "@type": "vp:benefitEvidencedBy", "from": "vp:rcs-ben-penalty-reduction", "to": "vp:rcs-evid-ico-penalty" },
+
+    { "@type": "vp:benefitMeasuredBy", "from": "vp:rcs-ben-audit-time", "to": "vp:rcs-sm-audit-prep-time" },
+    { "@type": "vp:benefitMeasuredBy", "from": "vp:rcs-ben-coverage-score", "to": "vp:rcs-sm-compliance-score" },
+    { "@type": "vp:benefitMeasuredBy", "from": "vp:rcs-ben-remediation-velocity", "to": "vp:rcs-sm-remediation-velocity" },
+
+    { "@type": "vp:realizesInStory", "from": "vp:rcs-ben-audit-time", "to": "efs:story-audit-dashboard" },
+    { "@type": "vp:realizesInStory", "from": "vp:rcs-ben-coverage-score", "to": "efs:story-compliance-score" },
+
+    { "@type": "vp:metricMapsToAC", "from": "vp:rcs-sm-compliance-score", "to": "efs:ac-coverage-target" },
+    { "@type": "vp:metricMapsToAC", "from": "vp:rcs-sm-audit-findings", "to": "efs:ac-zero-crossref-findings" },
+
+    { "@type": "vp:messagingTargetsStakeholder", "from": "vp:rcs-msg-csuite", "to": "vp:rcs-sh-ciso" },
+    { "@type": "vp:messagingTargetsStakeholder", "from": "vp:rcs-msg-director", "to": "vp:rcs-sh-compliance-dir" },
+    { "@type": "vp:messagingTargetsStakeholder", "from": "vp:rcs-msg-analyst", "to": "vp:rcs-sh-security-analyst" },
+
+    { "@type": "vp:gainMapsToFeature", "from": "vp:rcs-gain-unified-dashboard", "to": "efs:feature-compliance-dashboard" },
+    { "@type": "vp:gainMapsToFeature", "from": "vp:rcs-gain-automated-mapping", "to": "efs:feature-crossref-mapping" },
+    { "@type": "vp:gainMapsToFeature", "from": "vp:rcs-gain-continuous-monitoring", "to": "efs:feature-compliance-monitor" },
+
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:rcs-vp-001", "to": "vp:rcs-raci-validation" },
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:rcs-vp-001", "to": "vp:rcs-raci-validation-dir" },
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:rcs-prob-fragmented", "to": "vp:rcs-raci-problem-discovery" },
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:rcs-prob-fragmented", "to": "vp:rcs-raci-problem-discovery-acc" },
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:rcs-sol-001", "to": "vp:rcs-raci-solution-design" },
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:rcs-sol-001", "to": "vp:rcs-raci-solution-design-analyst" }
+  ],
+
+  "oaa:designDirectorPipeline": {
+    "description": "RCS VP feeds into the Design Director pipeline with strong RCSG-Series integration for compliance dashboard components",
+    "upstreamDependencies": [
+      { "ontology": "VSOM-ONT", "entities": ["vsom:obj-regulatory-compliance", "vsom:obj-security-posture"], "role": "Strategic alignment" },
+      { "ontology": "ORG-ONT", "entities": ["org:ctx-rcs"], "role": "Organisation context scoping" },
+      { "ontology": "RRR-ONT", "entities": ["pf:exec-ciso", "pf:func-compliance-director", "pf:func-security-analyst"], "role": "Role-based ICP mapping" },
+      { "ontology": "MCSB-ONT", "entities": ["rcsg:mcsb-control", "rcsg:mcsb-benchmark"], "role": "Microsoft Cloud Security Benchmark controls" },
+      { "ontology": "GDPR-ONT", "entities": ["rcsg:gdpr-article", "rcsg:gdpr-obligation"], "role": "GDPR compliance requirements" },
+      { "ontology": "PII-ONT", "entities": ["rcsg:pii-category", "rcsg:pii-safeguard"], "role": "PII protection framework" },
+      { "ontology": "AZALZ-ONT", "entities": ["rcsg:azure-policy", "rcsg:azure-baseline"], "role": "Azure security baseline" }
+    ],
+    "downstreamConsumers": [
+      { "ontology": "EFS-ONT", "bridgeType": "manifestsAsPersona + mapsToEpic + gainMapsToFeature", "role": "ICP->Persona, Problem->Epic, Gain->Feature" },
+      { "ontology": "PMF-ONT", "bridgeType": "VP validation feeds PMF compliance-market fit", "role": "RCS compliance value validated against market need" },
+      { "ontology": "DS-ONT", "bridgeType": "Via EFS: compliance dashboard features -> DS components", "role": "RCS dashboard UI components in design system (rcs-ds-instance exists)" }
+    ],
+    "emcComposition": {
+      "category": "PRODUCT",
+      "ontologiesComposed": ["VP-ONT", "PMF-ONT", "PE-ONT", "CA-ONT"],
+      "instanceBrand": "rcs",
+      "complianceCategory": "COMPLIANCE",
+      "complianceOntologies": ["MCSB-ONT", "GDPR-ONT", "PII-ONT", "AZALZ-ONT"]
+    }
+  }
+}

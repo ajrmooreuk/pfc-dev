@@ -1,0 +1,518 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platformcore.io/ontology/",
+    "emc": "https://platformcore.io/ontology/emc/",
+    "oaa": "https://platformcore.io/ontology/oaa/",
+    "vsom": "https://platformcore.io/ontology/vsom/",
+    "okr": "https://platformcore.io/ontology/okr/",
+    "ppm": "https://platformcore.io/ontology/ppm/",
+    "ea": "https://platformcore.io/ontology/ea/",
+    "mcsb": "https://platformcore.io/ontology/mcsb/",
+    "gdpr": "https://platformcore.io/ontology/gdpr/",
+    "org": "https://platformcore.io/ontology/org/",
+    "ca": "https://platformcore.io/ontology/ca/"
+  },
+  "@type": "pf:Ontology",
+  "@id": "emc:emc-ontology",
+  "name": "EMC Ontology (Enterprise Model Composition)",
+  "description": "Orchestration ontology that defines how to compose enterprise models by selecting and connecting ontologies based on PFC/PFI context, product scope, organisation context, and requirement categories. Acts as the wiring diagram for building tech-agnostic data and information models across all 6 ontology series.",
+  "version": "3.0.0",
+  "oaaVersion": "6.1.0",
+  "created": "2026-02-02",
+  "lastModified": "2026-02-13",
+  "author": "PF-Core Orchestration Module",
+  "schemaOrgAlignment": 0.75,
+  "pfCoreModule": "Orchestration",
+  "pfCoreInstances": ["W4M-EMC", "BAIV-EMC"],
+
+  "metadata": {
+    "domain": "Enterprise Model Orchestration",
+    "purpose": "Enable high-level scoping of requirements to automatically determine which ontologies to connect for a given enterprise model configuration, bridging all 6 series (VE, PE, RCSG, Foundation, Competitive, Orchestration)",
+    "scope": "Cross-series ontology composition covering PFC templates and PFI product instances",
+    "targetAudience": ["Enterprise Architects", "Platform Engineers", "Solution Architects", "AI Agent Developers"],
+    "seriesBridges": ["VE-Series", "PE-Series", "RCSG-Series", "Foundation", "Competitive", "Orchestration"]
+  },
+
+  "hasDefinedTerm": [
+    {
+      "@type": "DefinedTerm",
+      "@id": "emc:ScopingDimension",
+      "name": "ScopingDimension",
+      "description": "A dimension used to determine ontology composition. Four scoping dimensions control which ontologies are activated: Context Level (PFC vs PFI), Product Context, Organisation Context, and Requirement Scope.",
+      "termCode": "SD",
+      "inDefinedTermSet": "emc:emc-ontology",
+      "schemaType": "schema:Intangible",
+      "properties": {
+        "dimensionId": { "type": "string", "description": "Unique identifier for the dimension", "example": "emc:dim:context-level" },
+        "dimensionName": { "type": "string", "description": "Human-readable dimension name" },
+        "dimensionDescription": { "type": "string", "description": "What this dimension controls" },
+        "determines": { "type": "array", "items": { "type": "string" }, "description": "What aspects of composition this dimension determines" }
+      },
+      "instances": [
+        { "@id": "emc:ScopingDimension-ContextLevel", "dimensionName": "Context Level", "description": "PFC (Platform Foundation Core) vs PFI (Platform Foundation Instance) — determines template vs instance data access" },
+        { "@id": "emc:ScopingDimension-ProductContext", "dimensionName": "Product Context", "description": "Specific product or solution being modelled (e.g. BAIV-AIV) — determines product-specific ontology instances" },
+        { "@id": "emc:ScopingDimension-OrgContext", "dimensionName": "Organisation Context", "description": "Client organisational profile and maturity — determines role applicability and process complexity" },
+        { "@id": "emc:ScopingDimension-RequirementScope", "dimensionName": "Requirement Scope", "description": "Category of requirements being addressed — determines which ontology series to activate" }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "emc:ContextLevel",
+      "name": "ContextLevel",
+      "description": "Enumeration distinguishing PFC (core ontology schemas and templates) from PFI (product/client-specific implementations). This dimension determines whether to access reusable templates or deployed instances.",
+      "termCode": "CL",
+      "inDefinedTermSet": "emc:emc-ontology",
+      "schemaType": "schema:Enumeration",
+      "properties": {
+        "levelCode": { "type": "string", "description": "Short code for the context level" },
+        "levelDescription": { "type": "string", "description": "What this level provides" }
+      },
+      "instances": [
+        { "@id": "emc:ContextLevel-PFC", "levelCode": "PFC", "description": "Platform Foundation Core — core ontology schemas and templates for reuse" },
+        { "@id": "emc:ContextLevel-PFI", "levelCode": "PFI", "description": "Platform Foundation Instance — product/client-specific implementations with instance data" }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "emc:RequirementCategory",
+      "name": "RequirementCategory",
+      "description": "High-level requirement categories that map to specific ontology compositions. Each category activates a defined set of required, recommended, and optional ontologies from across all series.",
+      "termCode": "RC",
+      "inDefinedTermSet": "emc:emc-ontology",
+      "schemaType": "schema:Intangible",
+      "properties": {
+        "categoryCode": { "type": "string", "description": "Short code for the category", "example": "STRATEGIC" },
+        "categoryName": { "type": "string", "description": "Human-readable category name" },
+        "useCases": { "type": "array", "items": { "type": "string" }, "description": "Typical use cases for this category" },
+        "requiredOntologies": { "type": "array", "items": { "type": "string" }, "description": "Ontologies that must be loaded" },
+        "recommendedOntologies": { "type": "array", "items": { "type": "string" }, "description": "Ontologies recommended for completeness" },
+        "optionalOntologies": { "type": "array", "items": { "type": "string" }, "description": "Ontologies that may be added for depth" }
+      },
+      "instances": [
+        { "@id": "emc:RequirementCategory-Strategic", "categoryCode": "STRATEGIC", "categoryName": "Strategic Planning & Alignment", "description": "Vision, strategy, objectives, and organisational alignment — activates VE-Series (VSOM, OKR) plus Foundation" },
+        { "@id": "emc:RequirementCategory-Product", "categoryCode": "PRODUCT", "categoryName": "Product Development & Go-to-Market", "description": "Value proposition, product-market fit, feature development — activates VE-Series (VP, PMF) plus PE and Competitive" },
+        { "@id": "emc:RequirementCategory-PPM", "categoryCode": "PPM", "categoryName": "Portfolio, Program & Project Management", "description": "Project execution, resource management, delivery tracking — activates PE-Series (PPM, EFS, PE)" },
+        { "@id": "emc:RequirementCategory-Competitive", "categoryCode": "COMPETITIVE", "categoryName": "Competitive Intelligence & Analysis", "description": "Market landscape, competitor analysis, gap identification — activates Competitive (CL, CA, GA)" },
+        { "@id": "emc:RequirementCategory-OrgDesign", "categoryCode": "ORG-DESIGN", "categoryName": "Organisation Design & Governance", "description": "Roles, responsibilities, RACI, RBAC, organisational structure — activates Foundation (ORG, ORG-MAT) plus VE (RRR)" },
+        { "@id": "emc:RequirementCategory-Process", "categoryCode": "PROCESS", "categoryName": "Process Engineering & Automation", "description": "Process design, AI augmentation, workflow orchestration — activates PE-Series with AI agent support" },
+        { "@id": "emc:RequirementCategory-Enterprise", "categoryCode": "ENTERPRISE", "categoryName": "Full Enterprise Model", "description": "Complete enterprise architecture with all ontology series activated — digital transformation, platform development" },
+        { "@id": "emc:RequirementCategory-Compliance", "categoryCode": "COMPLIANCE", "categoryName": "Compliance, Security & Governance", "description": "Regulatory compliance, security controls, data protection — activates RCSG-Series (MCSB, GDPR, PII) plus EA governance" },
+        { "@id": "emc:RequirementCategory-Agentic", "categoryCode": "AGENTIC", "categoryName": "Agentic AI Solution Build", "description": "AI-augmented solutions using ontologies as tech-agnostic layer — activates PE-Series with AI agent definitions" }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "emc:OntologySeries",
+      "name": "OntologySeries",
+      "description": "A logical grouping of related ontologies into a series. The library comprises 6 series: VE (Value Engineering), PE (Process Engineering), RCSG (Regulation, Compliance, Security, Governance), Foundation, Competitive, and Orchestration.",
+      "termCode": "OS",
+      "inDefinedTermSet": "emc:emc-ontology",
+      "schemaType": "schema:Intangible",
+      "properties": {
+        "seriesCode": { "type": "string", "description": "Short code for the series" },
+        "seriesName": { "type": "string", "description": "Full series name" },
+        "ontologyCount": { "type": "integer", "description": "Number of ontologies in this series" },
+        "ontologyIds": { "type": "array", "items": { "type": "string" }, "description": "List of ontology IDs in this series" }
+      },
+      "instances": [
+        { "@id": "emc:OntologySeries-VE", "seriesCode": "VE", "seriesName": "VE-Series (Value Engineering)", "ontologyCount": 6, "description": "Strategic value chain: VSOM, OKR, VP, RRR, PMF, KPI — from vision to measurable outcomes" },
+        { "@id": "emc:OntologySeries-PE", "seriesCode": "PE", "seriesName": "PE-Series (Process Engineering)", "ontologyCount": 4, "description": "Execution and delivery: PPM, PE, EFS, EA — portfolio management to enterprise architecture" },
+        { "@id": "emc:OntologySeries-RCSG", "seriesCode": "RCSG", "seriesName": "RCSG-Series (Regulation, Compliance, Security, Governance)", "ontologyCount": 5, "description": "Governance layer: MCSB, GDPR, PII, MCSB2, AZALZ — security controls and regulatory compliance" },
+        { "@id": "emc:OntologySeries-Foundation", "seriesCode": "FOUNDATION", "seriesName": "Foundation", "ontologyCount": 4, "description": "Core organisational context: ORG, ORG-CONTEXT, ORG-MAT, AIR — the base layer for all compositions" },
+        { "@id": "emc:OntologySeries-Competitive", "seriesCode": "COMPETITIVE", "seriesName": "Competitive", "ontologyCount": 3, "description": "Market intelligence: CA, CL, GA — competitive analysis, landscape, and gap identification" },
+        { "@id": "emc:OntologySeries-Orchestration", "seriesCode": "ORCHESTRATION", "seriesName": "Orchestration", "ontologyCount": 1, "description": "This series — EMC composition and wiring rules for cross-series assembly" }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "emc:OntologyComposition",
+      "name": "OntologyComposition",
+      "description": "A resolved set of ontologies to load for a given requirement category and scoping context. Contains required, recommended, and optional ontology lists with dependency chain resolution.",
+      "termCode": "OC",
+      "inDefinedTermSet": "emc:emc-ontology",
+      "schemaType": "schema:Intangible",
+      "properties": {
+        "compositionId": { "type": "string", "description": "Unique identifier for the composition" },
+        "requiredOntologies": { "type": "array", "items": { "type": "string" }, "description": "Must-load ontologies" },
+        "recommendedOntologies": { "type": "array", "items": { "type": "string" }, "description": "Recommended for completeness" },
+        "optionalOntologies": { "type": "array", "items": { "type": "string" }, "description": "Optional depth ontologies" },
+        "activeSeries": { "type": "array", "items": { "type": "string" }, "description": "Which series are activated" }
+      }
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "emc:CompositionRule",
+      "name": "CompositionRule",
+      "description": "A rule that governs how ontologies are selected and composed based on scoping dimensions. Rules are prioritised and executed in sequence to resolve the final ontology composition.",
+      "termCode": "CR",
+      "inDefinedTermSet": "emc:emc-ontology",
+      "schemaType": "schema:Intangible",
+      "properties": {
+        "ruleId": { "type": "string", "description": "Unique rule identifier", "example": "emc:rule:foundation-always" },
+        "ruleName": { "type": "string", "description": "Human-readable rule name" },
+        "condition": { "type": "string", "description": "When this rule applies" },
+        "action": { "type": "string", "description": "What the rule does" },
+        "priority": { "type": "integer", "description": "Execution priority (1 = highest)" }
+      },
+      "instances": [
+        { "@id": "emc:CompositionRule-FoundationAlways", "ruleName": "Foundation Always Required", "priority": 1, "description": "Any enterprise model must include ORG-ONT as the base foundation layer" },
+        { "@id": "emc:CompositionRule-DependencyChain", "ruleName": "Dependency Chain Resolution", "priority": 2, "description": "When ontology X is required, automatically include all ontologies in X.dependencies" },
+        { "@id": "emc:CompositionRule-MaturityFilter", "ruleName": "Maturity-Based Filtering", "priority": 3, "description": "When organisation maturity is below threshold, exclude advanced ontologies (KPI, GA)" },
+        { "@id": "emc:CompositionRule-PFIInstance", "ruleName": "PFI Instance Data Loading", "priority": 4, "description": "When context level is PFI and product specified, load product-specific instance data" },
+        { "@id": "emc:CompositionRule-RCSGGovernance", "ruleName": "RCSG Governance Overlay", "priority": 5, "description": "When compliance requirement scope is active, include RCSG-Series (MCSB, GDPR, PII) as governance overlay" },
+        { "@id": "emc:CompositionRule-AgenticBuild", "ruleName": "Agentic Build Requirements", "priority": 6, "description": "When requirement scope is AGENTIC, include PE-Process-Engr-ONT with AI agent definitions" }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "emc:GraphPattern",
+      "name": "GraphPattern",
+      "description": "A reusable pattern for composing ontologies into unified graph models. Patterns define how entities from different ontologies connect and traverse across series boundaries.",
+      "termCode": "GP",
+      "inDefinedTermSet": "emc:emc-ontology",
+      "schemaType": "schema:Intangible",
+      "properties": {
+        "patternId": { "type": "string", "description": "Unique pattern identifier" },
+        "patternName": { "type": "string", "description": "Human-readable pattern name" },
+        "hub": { "type": "string", "description": "Central entity or ontology (if hub-spoke)" },
+        "spokes": { "type": "array", "items": { "type": "string" }, "description": "Connected series (if hub-spoke)" },
+        "useCase": { "type": "string", "description": "When to apply this pattern" }
+      },
+      "instances": [
+        { "@id": "emc:GraphPattern-HubSpoke", "patternName": "Hub-Spoke Pattern", "description": "ORG-CONTEXT as central hub connecting VE, PE, RCSG, Competitive, and Orchestration series as spokes for full enterprise model" },
+        { "@id": "emc:GraphPattern-LineageChain", "patternName": "Lineage Chain Pattern", "description": "Sequential dependency from strategy to execution: VSOM → OKR → VP → PMF → EFS with traceability" },
+        { "@id": "emc:GraphPattern-BridgeJoin", "patternName": "Bridge Join Pattern", "description": "Cross-ontology relationships via join points enabling cross-domain queries (VP↔RRR, EFS↔PPM, VSOM↔OKR, EA↔RCSG)" },
+        { "@id": "emc:GraphPattern-GovernanceOverlay", "patternName": "Governance Overlay Pattern", "description": "RCSG-Series overlays onto PE and VE series providing compliance and security governance cross-references" }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "emc:InstanceConfiguration",
+      "name": "InstanceConfiguration",
+      "description": "A pre-defined PFI configuration for a specific product instance. Specifies which ontologies to load, what instance data files to use, and how to filter by organisation context.",
+      "termCode": "IC",
+      "inDefinedTermSet": "emc:emc-ontology",
+      "schemaType": "schema:Intangible",
+      "properties": {
+        "instanceId": { "type": "string", "description": "Unique instance identifier" },
+        "productCode": { "type": "string", "description": "Product code (e.g. BAIV-AIV)" },
+        "contextLevel": { "type": "string", "description": "Always PFI for instances" },
+        "requirementScopes": { "type": "array", "items": { "type": "string" }, "description": "Active requirement scopes" },
+        "requiredOntologies": { "type": "array", "items": { "type": "string" }, "description": "Ontologies to load" },
+        "instanceDataFiles": { "type": "array", "items": { "type": "object" }, "description": "Product-specific data files" },
+        "designSystemConfig": {
+          "type": "object",
+          "description": "DS-ONT brand resolution — maps this PFI instance to a design system brand for automatic theme application",
+          "properties": {
+            "brand": { "type": ["string", "null"], "description": "DS-ONT brand key (null = PF-Core defaults)" },
+            "fallback": { "type": "string", "description": "Fallback brand if primary is null or missing" },
+            "configVersion": { "type": "string", "description": "Version pin for DS config schema" }
+          }
+        }
+      },
+      "instances": [
+        { "@id": "emc:InstanceConfiguration-BAIV", "productCode": "BAIV-AIV", "description": "BAIV AI Visibility platform — B2B marketing product with VP, RRR, EFS, CA ontologies and BAIV-specific instance data" }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "vsom:Vision",
+      "name": "Vision",
+      "description": "External VSOM entity representing the organisational vision that anchors VE-Series strategic planning compositions. EMC orchestrates vision-to-execution flows through this entry point.",
+      "oaa:externalOntology": "vsom:VisionStrategyObjectivesMetricsOntology"
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "okr:Objective",
+      "name": "Objective",
+      "description": "External OKR entity representing a strategic objective. EMC maps requirement categories to OKR objectives for goal-driven ontology composition.",
+      "oaa:externalOntology": "okr:OKROntology"
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "ppm:Portfolio",
+      "name": "Portfolio",
+      "description": "External PPM entity representing a project portfolio. EMC orchestrates portfolio-to-delivery flows through PE-Series activation.",
+      "oaa:externalOntology": "ppm:PortfolioProgramProjectManagementOntology"
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "ea:Initiative",
+      "name": "Initiative",
+      "description": "External EA entity representing an enterprise architecture initiative. EMC connects EA initiatives to compliance and governance through RCSG-Series.",
+      "oaa:externalOntology": "ea:EnterpriseArchitectureOntology"
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "mcsb:SecurityControl",
+      "name": "SecurityControl",
+      "description": "External MCSB entity representing a cloud security benchmark control. EMC activates RCSG-Series governance overlay when compliance requirements are in scope.",
+      "oaa:externalOntology": "mcsb:MCSBOntology"
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "gdpr:ComplianceObligation",
+      "name": "ComplianceObligation",
+      "description": "External GDPR entity representing a regulatory compliance obligation. EMC includes GDPR obligations in governance-aware compositions.",
+      "oaa:externalOntology": "gdpr:GDPRRegulatoryFrameworkOntology"
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "org:Organisation",
+      "name": "Organisation",
+      "description": "External ORG entity representing the organisational context. EMC scopes all compositions to organisation context as the mandatory foundation layer.",
+      "oaa:externalOntology": "org:OrganisationFoundationOntology"
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "ca:CompetitiveAnalysis",
+      "name": "CompetitiveAnalysis",
+      "description": "External CA entity representing competitive analysis activities. EMC activates the Competitive series for market intelligence compositions.",
+      "oaa:externalOntology": "ca:CompetitiveAnalysisOntology"
+    }
+  ],
+
+  "relationships": [
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:hasScopingDimension",
+      "name": "hasScopingDimension",
+      "description": "The EMC ontology defines scoping dimensions that control composition",
+      "domainIncludes": "emc:emc-ontology",
+      "rangeIncludes": "emc:ScopingDimension",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:hasCategory",
+      "name": "hasCategory",
+      "description": "The EMC ontology defines requirement categories that map to compositions",
+      "domainIncludes": "emc:emc-ontology",
+      "rangeIncludes": "emc:RequirementCategory",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:producesComposition",
+      "name": "producesComposition",
+      "description": "A requirement category produces a specific ontology composition when activated",
+      "domainIncludes": "emc:RequirementCategory",
+      "rangeIncludes": "emc:OntologyComposition",
+      "cardinality": "1:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:scopedByDimension",
+      "name": "scopedByDimension",
+      "description": "A requirement category is further refined by scoping dimensions",
+      "domainIncludes": "emc:RequirementCategory",
+      "rangeIncludes": "emc:ScopingDimension",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:governedByRule",
+      "name": "governedByRule",
+      "description": "An ontology composition is governed by composition rules that determine final output",
+      "domainIncludes": "emc:OntologyComposition",
+      "rangeIncludes": "emc:CompositionRule",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:usesPattern",
+      "name": "usesPattern",
+      "description": "An ontology composition uses a graph pattern for cross-series assembly",
+      "domainIncludes": "emc:OntologyComposition",
+      "rangeIncludes": "emc:GraphPattern",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:activatesSeries",
+      "name": "activatesSeries",
+      "description": "A requirement category activates one or more ontology series in its composition",
+      "domainIncludes": "emc:RequirementCategory",
+      "rangeIncludes": "emc:OntologySeries",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:hasContextLevel",
+      "name": "hasContextLevel",
+      "description": "A scoping dimension distinguishes between PFC and PFI context levels",
+      "domainIncludes": "emc:ScopingDimension",
+      "rangeIncludes": "emc:ContextLevel",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:hasInstanceConfig",
+      "name": "hasInstanceConfig",
+      "description": "A PFI context level has pre-defined instance configurations for specific products",
+      "domainIncludes": "emc:ContextLevel",
+      "rangeIncludes": "emc:InstanceConfiguration",
+      "cardinality": "1:n"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:orchestratesVESeries",
+      "name": "orchestratesVESeries",
+      "description": "EMC requirement categories orchestrate VE-Series by connecting to strategic vision and objectives for value engineering compositions",
+      "domainIncludes": "emc:RequirementCategory",
+      "rangeIncludes": "vsom:Vision",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:orchestratesOKR",
+      "name": "orchestratesOKR",
+      "description": "EMC requirement categories connect to OKR objectives for goal-driven composition filtering",
+      "domainIncludes": "emc:RequirementCategory",
+      "rangeIncludes": "okr:Objective",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:orchestratesPESeries",
+      "name": "orchestratesPESeries",
+      "description": "EMC requirement categories orchestrate PE-Series by connecting to portfolio management for execution-layer compositions",
+      "domainIncludes": "emc:RequirementCategory",
+      "rangeIncludes": "ppm:Portfolio",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:orchestratesEAInitiatives",
+      "name": "orchestratesEAInitiatives",
+      "description": "EMC requirement categories connect to EA initiatives for enterprise architecture compositions with governance",
+      "domainIncludes": "emc:RequirementCategory",
+      "rangeIncludes": "ea:Initiative",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:orchestratesRCSGSeries",
+      "name": "orchestratesRCSGSeries",
+      "description": "EMC requirement categories orchestrate RCSG-Series by activating security controls and compliance obligations as governance overlay",
+      "domainIncludes": "emc:RequirementCategory",
+      "rangeIncludes": "mcsb:SecurityControl",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:orchestratesCompliance",
+      "name": "orchestratesCompliance",
+      "description": "EMC requirement categories connect to GDPR compliance obligations for regulatory-aware compositions",
+      "domainIncludes": "emc:RequirementCategory",
+      "rangeIncludes": "gdpr:ComplianceObligation",
+      "cardinality": "n:m"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:orchestratesFoundation",
+      "name": "orchestratesFoundation",
+      "description": "EMC requirement categories orchestrate Foundation by scoping all compositions to organisation context as the mandatory base layer",
+      "domainIncludes": "emc:RequirementCategory",
+      "rangeIncludes": "org:Organisation",
+      "cardinality": "n:1"
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "emc:orchestratesCompetitive",
+      "name": "orchestratesCompetitive",
+      "description": "EMC requirement categories orchestrate Competitive series by connecting to competitive analysis for market intelligence compositions",
+      "domainIncludes": "emc:RequirementCategory",
+      "rangeIncludes": "ca:CompetitiveAnalysis",
+      "cardinality": "n:m"
+    }
+  ],
+
+  "businessRules": [
+    {
+      "@id": "emc:rule-foundation-always-required",
+      "name": "FoundationAlwaysRequired",
+      "description": "Every enterprise model composition must include Foundation ORG-ONT as the base layer",
+      "condition": "IF emc:OntologyComposition is created",
+      "action": "THEN emc:OntologyComposition.requiredOntologies MUST include org:Organisation",
+      "priority": 1,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "emc:rule-dependency-chain-resolution",
+      "name": "DependencyChainResolution",
+      "description": "When an ontology is included in a composition, all its dependencies must also be included",
+      "condition": "IF ontology X is in emc:OntologyComposition.requiredOntologies",
+      "action": "THEN all ontologies in X.dependencies MUST also be in requiredOntologies",
+      "priority": 2,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "emc:rule-category-minimum-ontologies",
+      "name": "CategoryMinimumOntologies",
+      "description": "Every requirement category must activate at least one required ontology",
+      "condition": "IF emc:RequirementCategory is specified",
+      "action": "THEN emc:RequirementCategory.requiredOntologies.length >= 1",
+      "priority": 3,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "emc:rule-pfi-requires-product",
+      "name": "PFIRequiresProductContext",
+      "description": "PFI context level requires a product context to be specified for instance data loading",
+      "condition": "IF emc:ContextLevel = PFI",
+      "action": "THEN emc:ScopingDimension-ProductContext MUST be specified",
+      "priority": 4,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    },
+    {
+      "@id": "emc:rule-maturity-filter",
+      "name": "MaturityBasedFiltering",
+      "description": "Organisations with maturity below threshold should not include advanced ontologies",
+      "condition": "IF emc:ScopingDimension-OrgContext.maturityLevel < 3",
+      "action": "THEN exclude advanced ontologies (KPI-ONT, GA-ONT) from composition",
+      "priority": 5,
+      "severity": "warning",
+      "enforcementLevel": "advisory"
+    },
+    {
+      "@id": "emc:rule-rcsg-governance-overlay",
+      "name": "RCSGGovernanceOverlay",
+      "description": "When compliance or security requirements are in scope, RCSG-Series must be activated as governance overlay",
+      "condition": "IF emc:RequirementCategory.categoryCode = COMPLIANCE OR ea:Initiative references compliance",
+      "action": "THEN activate emc:OntologySeries-RCSG with MCSB and GDPR ontologies",
+      "priority": 6,
+      "severity": "warning",
+      "enforcementLevel": "advisory"
+    },
+    {
+      "@id": "emc:rule-enterprise-all-series",
+      "name": "EnterpriseAllSeries",
+      "description": "Full enterprise model composition must activate all 6 ontology series",
+      "condition": "IF emc:RequirementCategory.categoryCode = ENTERPRISE",
+      "action": "THEN emc:OntologyComposition.activeSeries MUST include VE, PE, RCSG, Foundation, Competitive, Orchestration",
+      "priority": 7,
+      "severity": "error",
+      "enforcementLevel": "mandatory"
+    }
+  ],
+
+  "crossOntologyReferences": {
+    "description": "EMC serves as the orchestration hub connecting all 6 ontology series",
+    "keyBridges": [
+      { "from": "emc:RequirementCategory", "to": "vsom:Vision", "relationship": "orchestratesVESeries", "series": "VE-Series" },
+      { "from": "emc:RequirementCategory", "to": "okr:Objective", "relationship": "orchestratesOKR", "series": "VE-Series" },
+      { "from": "emc:RequirementCategory", "to": "ppm:Portfolio", "relationship": "orchestratesPESeries", "series": "PE-Series" },
+      { "from": "emc:RequirementCategory", "to": "ea:Initiative", "relationship": "orchestratesEAInitiatives", "series": "PE-Series" },
+      { "from": "emc:RequirementCategory", "to": "mcsb:SecurityControl", "relationship": "orchestratesRCSGSeries", "series": "RCSG-Series" },
+      { "from": "emc:RequirementCategory", "to": "gdpr:ComplianceObligation", "relationship": "orchestratesCompliance", "series": "RCSG-Series" },
+      { "from": "emc:RequirementCategory", "to": "org:Organisation", "relationship": "orchestratesFoundation", "series": "Foundation" },
+      { "from": "emc:RequirementCategory", "to": "ca:CompetitiveAnalysis", "relationship": "orchestratesCompetitive", "series": "Competitive" }
+    ]
+  }
+}

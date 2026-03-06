@@ -1,0 +1,494 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "nut": "https://oaa-ontology.org/v7/nutrition/",
+    "vp": "https://oaa-ontology.org/v6/vp/",
+    "rrr": "https://oaa-ontology.org/v5/rrr/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "nut:InstanceDataSet",
+  "@id": "nut:vhf-instance-v1.0.0",
+  "metadata": {
+    "title": "VHF Nutrition App — NUT-ONT Instance Data",
+    "version": "1.0.0",
+    "created": "2026-03-05",
+    "author": "PF-Core Platform Team",
+    "owningInstance": "PFI-VHF",
+    "sourceOntology": "NUT-ONT v1.0.0",
+    "oaaVersion": "7.0.0",
+    "description": "NUT-ONT instance data for VHF Nutrition App. 1 coach, 12 client profiles (9 good, 3 poor-data for validation), 5 goals, 16 meal themes, 14 allergens, 30 diet types, 30 recipes. Migrated from VHF-RMP-ONT v1.0.0 legacy format to NUT-ONT nut: namespace. Seed data for PFC Ontology Visualiser graph rendering.",
+    "migrationSource": "pfi-vhf-nutrition-app-dev/instance-data/ontologies/VHF-RECIPE-MEALPLAN-ONT/test-data/",
+    "visualiserConfig": {
+      "graphRenderTarget": "PFC Ontology Visualiser",
+      "emcCompositionRef": "emc:InstanceConfiguration-VHF",
+      "joinPatterns": ["JP-NUT-001", "JP-NUT-002", "JP-NUT-003", "JP-NUT-004", "JP-NUT-005", "JP-NUT-006", "JP-NUT-007"]
+    }
+  },
+  "examples": [
+
+    {"_section": "=== COACH ==="},
+
+    {
+      "@type": "nut:Coach",
+      "@id": "nut:coach-james-kerby",
+      "name": "James Kerby",
+      "givenName": "James",
+      "familyName": "Kerby",
+      "jobTitle": "Personal Trainer Coach & Clinical Weight-Loss Practitioner",
+      "nut:qualifications": [
+        "Level 5 Clinical Weight Loss Practitioner",
+        "Diploma in Sports Science",
+        "Nutrition and Weight Management Qualified"
+      ],
+      "nut:specialisms": ["weight-loss", "strength-training", "injury-rehabilitation", "seniors", "sports-performance"],
+      "nut:manages": [
+        {"@id": "nut:client-tp-001"}, {"@id": "nut:client-tp-002"}, {"@id": "nut:client-tp-003"},
+        {"@id": "nut:client-tp-004"}, {"@id": "nut:client-tp-005"}, {"@id": "nut:client-tp-006"},
+        {"@id": "nut:client-tp-007"}, {"@id": "nut:client-tp-008"}, {"@id": "nut:client-tp-009"},
+        {"@id": "nut:client-tp-010"}, {"@id": "nut:client-tp-011"}, {"@id": "nut:client-tp-012"}
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Viridian Health & Fitness",
+        "address": {"@type": "PostalAddress", "streetAddress": "Woodhams Farm, Kings Worthy", "addressLocality": "Winchester", "addressRegion": "Hampshire", "addressCountry": "GB"}
+      }
+    },
+
+    {"_section": "=== GOALS (5) ==="},
+
+    {"@type": "nut:Goal", "@id": "nut:goal-weight-loss", "name": "Weight Loss", "description": "Reduce body weight through caloric deficit while preserving lean mass", "nut:goalMapsToBenefit": {"@id": "vp:benefit-weight-management"}},
+    {"@type": "nut:Goal", "@id": "nut:goal-muscle-gain", "name": "Muscle Gain", "description": "Increase lean muscle mass through caloric surplus and high protein intake", "nut:goalMapsToBenefit": {"@id": "vp:benefit-nutritional-quality"}},
+    {"@type": "nut:Goal", "@id": "nut:goal-maintenance", "name": "Maintenance", "description": "Maintain current weight and body composition", "nut:goalMapsToBenefit": {"@id": "vp:benefit-dietary-compliance"}},
+    {"@type": "nut:Goal", "@id": "nut:goal-sports-performance", "name": "Sports Performance", "description": "Optimise nutrition for athletic training and competition", "nut:goalMapsToBenefit": {"@id": "vp:benefit-nutritional-quality"}},
+    {"@type": "nut:Goal", "@id": "nut:goal-medical-management", "name": "Medical Management", "description": "Nutrition therapy aligned with medical conditions and clinical protocols", "nut:goalMapsToBenefit": {"@id": "vp:benefit-dietary-compliance"}},
+
+    {"_section": "=== MEAL THEMES (16) ==="},
+
+    {"@type": "nut:MealTheme", "@id": "nut:theme-HighProtein", "name": "High Protein", "nut:targetsGoal": [{"@id": "nut:goal-muscle-gain"}, {"@id": "nut:goal-weight-loss"}]},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-Mediterranean", "name": "Mediterranean", "nut:targetsGoal": [{"@id": "nut:goal-maintenance"}]},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-QuickWeeknight", "name": "Quick Weeknight", "nut:targetsGoal": []},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-DiabeticFriendly", "name": "Diabetic Friendly", "nut:targetsGoal": [{"@id": "nut:goal-medical-management"}]},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-AsianFusion", "name": "Asian Fusion", "nut:targetsGoal": []},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-BatchCookSunday", "name": "Batch Cook Sunday", "nut:targetsGoal": []},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-BudgetFriendly", "name": "Budget Friendly", "nut:targetsGoal": []},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-PCOSSupport", "name": "PCOS Support", "nut:targetsGoal": [{"@id": "nut:goal-medical-management"}]},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-AntiInflammatory", "name": "Anti-Inflammatory", "nut:targetsGoal": [{"@id": "nut:goal-medical-management"}]},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-BritishComfort", "name": "British Comfort", "nut:targetsGoal": []},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-LowCarb", "name": "Low Carb", "nut:targetsGoal": [{"@id": "nut:goal-weight-loss"}]},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-EnergyBoost", "name": "Energy Boost", "nut:targetsGoal": [{"@id": "nut:goal-sports-performance"}]},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-LowFODMAP", "name": "Low FODMAP", "nut:targetsGoal": [{"@id": "nut:goal-medical-management"}]},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-FamilyMeals", "name": "Family Meals", "nut:targetsGoal": []},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-GutHealth", "name": "Gut Health", "nut:targetsGoal": [{"@id": "nut:goal-medical-management"}]},
+    {"@type": "nut:MealTheme", "@id": "nut:theme-SpringFresh", "name": "Spring Fresh", "nut:targetsGoal": []},
+
+    {"_section": "=== ALLERGENS (14 UK Major) ==="},
+
+    {"@type": "nut:Allergen", "@id": "nut:allergen-cereals", "name": "Cereals containing gluten"},
+    {"@type": "nut:Allergen", "@id": "nut:allergen-crustaceans", "name": "Crustaceans"},
+    {"@type": "nut:Allergen", "@id": "nut:allergen-eggs", "name": "Eggs"},
+    {"@type": "nut:Allergen", "@id": "nut:allergen-fish", "name": "Fish"},
+    {"@type": "nut:Allergen", "@id": "nut:allergen-peanuts", "name": "Peanuts"},
+    {"@type": "nut:Allergen", "@id": "nut:allergen-soya", "name": "Soya"},
+    {"@type": "nut:Allergen", "@id": "nut:allergen-milk", "name": "Milk"},
+    {"@type": "nut:Allergen", "@id": "nut:allergen-nuts", "name": "Tree Nuts"},
+    {"@type": "nut:Allergen", "@id": "nut:allergen-sesame", "name": "Sesame"},
+    {"@type": "nut:Allergen", "@id": "nut:allergen-celery", "name": "Celery"},
+    {"@type": "nut:Allergen", "@id": "nut:allergen-mustard", "name": "Mustard"},
+    {"@type": "nut:Allergen", "@id": "nut:allergen-lupin", "name": "Lupin"},
+    {"@type": "nut:Allergen", "@id": "nut:allergen-molluscs", "name": "Molluscs"},
+    {"@type": "nut:Allergen", "@id": "nut:allergen-sulphites", "name": "Sulphur dioxide and sulphites"},
+
+    {"_section": "=== DIET TYPES (sample — 18 used by clients) ==="},
+
+    {"@type": "nut:DietType", "@id": "nut:diet-diabetic", "name": "Diabetic", "nut:dietCategory": "Medical"},
+    {"@type": "nut:DietType", "@id": "nut:diet-low-carb", "name": "Low Carb", "nut:dietCategory": "Lifestyle"},
+    {"@type": "nut:DietType", "@id": "nut:diet-hindu-vegetarian", "name": "Hindu Vegetarian", "nut:dietCategory": "Religious"},
+    {"@type": "nut:DietType", "@id": "nut:diet-high-protein", "name": "High Protein", "nut:dietCategory": "Lifestyle"},
+    {"@type": "nut:DietType", "@id": "nut:diet-halal", "name": "Halal", "nut:dietCategory": "Religious"},
+    {"@type": "nut:DietType", "@id": "nut:diet-anti-inflammatory", "name": "Anti-Inflammatory", "nut:dietCategory": "Medical"},
+    {"@type": "nut:DietType", "@id": "nut:diet-mediterranean", "name": "Mediterranean", "nut:dietCategory": "Lifestyle"},
+    {"@type": "nut:DietType", "@id": "nut:diet-low-sodium", "name": "Low Sodium", "nut:dietCategory": "Medical"},
+    {"@type": "nut:DietType", "@id": "nut:diet-vegan", "name": "Vegan", "nut:dietCategory": "Ethical"},
+    {"@type": "nut:DietType", "@id": "nut:diet-kosher", "name": "Kosher", "nut:dietCategory": "Religious"},
+    {"@type": "nut:DietType", "@id": "nut:diet-low-fodmap", "name": "Low FODMAP", "nut:dietCategory": "Medical"},
+    {"@type": "nut:DietType", "@id": "nut:diet-keto", "name": "Ketogenic", "nut:dietCategory": "Lifestyle"},
+    {"@type": "nut:DietType", "@id": "nut:diet-jain", "name": "Jain", "nut:dietCategory": "Religious"},
+    {"@type": "nut:DietType", "@id": "nut:diet-gluten-free", "name": "Gluten Free", "nut:dietCategory": "Medical"},
+    {"@type": "nut:DietType", "@id": "nut:diet-renal", "name": "Renal Diet", "nut:dietCategory": "Medical"},
+    {"@type": "nut:DietType", "@id": "nut:diet-pescatarian", "name": "Pescatarian", "nut:dietCategory": "Ethical"},
+    {"@type": "nut:DietType", "@id": "nut:diet-carnivore", "name": "Carnivore", "nut:dietCategory": "Lifestyle"},
+    {"@type": "nut:DietType", "@id": "nut:diet-vegetarian", "name": "Vegetarian", "nut:dietCategory": "Ethical"},
+
+    {"_section": "=== CLIENTS — GOOD DATA (9) ==="},
+
+    {
+      "@type": "nut:Client",
+      "@id": "nut:client-tp-001",
+      "name": "Sarah Mitchell",
+      "gender": "Female",
+      "birthDate": "1985-03-15",
+      "nut:dataQuality": "good",
+      "nut:hasProfile": {
+        "@type": "nut:HealthProfile",
+        "nut:height": {"value": 168, "unitCode": "CMT"},
+        "nut:weight": {"value": 82, "unitCode": "KGM"},
+        "nut:bmi": 29.1,
+        "nut:activityLevel": "moderately_active",
+        "nut:medicalCondition": [{"name": "Type 2 Diabetes", "code": "E11", "codingSystem": "ICD-10", "status": "managed"}]
+      },
+      "nut:hasGoal": {"@id": "nut:goal-weight-loss"},
+      "nut:hasMacroTarget": {"@type": "nut:MacroTarget", "nut:dailyCalories": 1650, "nut:proteinGrams": 120, "nut:carbsGrams": 140, "nut:fatsGrams": 55},
+      "nut:followsDiet": [{"@id": "nut:diet-diabetic"}, {"@id": "nut:diet-low-carb"}],
+      "nut:hasAllergen": [{"@id": "nut:allergen-nuts"}, {"@id": "nut:allergen-peanuts"}],
+      "nut:prefersTheme": [{"@id": "nut:theme-QuickWeeknight"}, {"@id": "nut:theme-HighProtein"}, {"@id": "nut:theme-DiabeticFriendly"}],
+      "nut:coachedBy": {"@id": "nut:coach-james-kerby"}
+    },
+    {
+      "@type": "nut:Client",
+      "@id": "nut:client-tp-002",
+      "name": "Raj Patel",
+      "gender": "Male",
+      "birthDate": "1990-07-22",
+      "nut:dataQuality": "good",
+      "nut:hasProfile": {
+        "@type": "nut:HealthProfile",
+        "nut:height": {"value": 178, "unitCode": "CMT"},
+        "nut:weight": {"value": 72, "unitCode": "KGM"},
+        "nut:bmi": 22.7,
+        "nut:activityLevel": "very_active",
+        "nut:medicalCondition": []
+      },
+      "nut:hasGoal": {"@id": "nut:goal-muscle-gain"},
+      "nut:hasMacroTarget": {"@type": "nut:MacroTarget", "nut:dailyCalories": 2800, "nut:proteinGrams": 168, "nut:carbsGrams": 350, "nut:fatsGrams": 78},
+      "nut:followsDiet": [{"@id": "nut:diet-hindu-vegetarian"}, {"@id": "nut:diet-high-protein"}],
+      "nut:hasAllergen": [],
+      "nut:prefersTheme": [{"@id": "nut:theme-HighProtein"}, {"@id": "nut:theme-AsianFusion"}, {"@id": "nut:theme-BatchCookSunday"}],
+      "nut:coachedBy": {"@id": "nut:coach-james-kerby"}
+    },
+    {
+      "@type": "nut:Client",
+      "@id": "nut:client-tp-003",
+      "name": "Fatima Al-Rashid",
+      "gender": "Female",
+      "birthDate": "1988-11-03",
+      "nut:dataQuality": "good",
+      "nut:hasProfile": {
+        "@type": "nut:HealthProfile",
+        "nut:height": {"value": 162, "unitCode": "CMT"},
+        "nut:weight": {"value": 78, "unitCode": "KGM"},
+        "nut:bmi": 29.7,
+        "nut:activityLevel": "lightly_active",
+        "nut:medicalCondition": [{"name": "Polycystic Ovary Syndrome (PCOS)", "code": "E28.2", "codingSystem": "ICD-10", "status": "active"}]
+      },
+      "nut:hasGoal": {"@id": "nut:goal-weight-loss"},
+      "nut:hasMacroTarget": {"@type": "nut:MacroTarget", "nut:dailyCalories": 1500, "nut:proteinGrams": 112, "nut:carbsGrams": 120, "nut:fatsGrams": 58},
+      "nut:followsDiet": [{"@id": "nut:diet-halal"}, {"@id": "nut:diet-anti-inflammatory"}],
+      "nut:hasAllergen": [{"@id": "nut:allergen-sesame"}],
+      "nut:prefersTheme": [{"@id": "nut:theme-PCOSSupport"}, {"@id": "nut:theme-Mediterranean"}, {"@id": "nut:theme-BudgetFriendly"}],
+      "nut:coachedBy": {"@id": "nut:coach-james-kerby"}
+    },
+    {
+      "@type": "nut:Client",
+      "@id": "nut:client-tp-004",
+      "name": "Tom Jeffries",
+      "gender": "Male",
+      "birthDate": "1972-01-19",
+      "nut:dataQuality": "good",
+      "nut:hasProfile": {
+        "@type": "nut:HealthProfile",
+        "nut:height": {"value": 180, "unitCode": "CMT"},
+        "nut:weight": {"value": 88, "unitCode": "KGM"},
+        "nut:bmi": 27.2,
+        "nut:activityLevel": "lightly_active",
+        "nut:medicalCondition": [
+          {"name": "Osteoarthritis (knee)", "code": "M17", "codingSystem": "ICD-10", "status": "post-operative"},
+          {"name": "Hypertension", "code": "I10", "codingSystem": "ICD-10", "status": "managed"}
+        ]
+      },
+      "nut:hasGoal": {"@id": "nut:goal-maintenance"},
+      "nut:hasMacroTarget": {"@type": "nut:MacroTarget", "nut:dailyCalories": 2100, "nut:proteinGrams": 105, "nut:carbsGrams": 240, "nut:fatsGrams": 75},
+      "nut:followsDiet": [{"@id": "nut:diet-mediterranean"}, {"@id": "nut:diet-low-sodium"}, {"@id": "nut:diet-anti-inflammatory"}],
+      "nut:hasAllergen": [],
+      "nut:prefersTheme": [{"@id": "nut:theme-Mediterranean"}, {"@id": "nut:theme-AntiInflammatory"}, {"@id": "nut:theme-BritishComfort"}],
+      "nut:coachedBy": {"@id": "nut:coach-james-kerby"}
+    },
+    {
+      "@type": "nut:Client",
+      "@id": "nut:client-tp-005",
+      "name": "Emma Chen",
+      "gender": "Female",
+      "birthDate": "1995-06-30",
+      "nut:dataQuality": "good",
+      "nut:hasProfile": {
+        "@type": "nut:HealthProfile",
+        "nut:height": {"value": 170, "unitCode": "CMT"},
+        "nut:weight": {"value": 60, "unitCode": "KGM"},
+        "nut:bmi": 20.8,
+        "nut:activityLevel": "extremely_active",
+        "nut:medicalCondition": []
+      },
+      "nut:hasGoal": {"@id": "nut:goal-sports-performance"},
+      "nut:hasMacroTarget": {"@type": "nut:MacroTarget", "nut:dailyCalories": 2600, "nut:proteinGrams": 130, "nut:carbsGrams": 390, "nut:fatsGrams": 65},
+      "nut:followsDiet": [{"@id": "nut:diet-vegan"}, {"@id": "nut:diet-high-protein"}],
+      "nut:hasAllergen": [{"@id": "nut:allergen-soya"}, {"@id": "nut:allergen-nuts"}, {"@id": "nut:allergen-peanuts"}],
+      "nut:prefersTheme": [{"@id": "nut:theme-HighProtein"}, {"@id": "nut:theme-EnergyBoost"}, {"@id": "nut:theme-AsianFusion"}],
+      "nut:coachedBy": {"@id": "nut:coach-james-kerby"}
+    },
+    {
+      "@type": "nut:Client",
+      "@id": "nut:client-tp-006",
+      "name": "David Goldstein",
+      "gender": "Male",
+      "birthDate": "1980-09-14",
+      "nut:dataQuality": "good",
+      "nut:hasProfile": {
+        "@type": "nut:HealthProfile",
+        "nut:height": {"value": 175, "unitCode": "CMT"},
+        "nut:weight": {"value": 95, "unitCode": "KGM"},
+        "nut:bmi": 31.0,
+        "nut:activityLevel": "sedentary",
+        "nut:medicalCondition": [{"name": "Irritable Bowel Syndrome (IBS-D)", "code": "K58.0", "codingSystem": "ICD-10", "status": "active"}]
+      },
+      "nut:hasGoal": {"@id": "nut:goal-weight-loss"},
+      "nut:hasMacroTarget": {"@type": "nut:MacroTarget", "nut:dailyCalories": 1800, "nut:proteinGrams": 135, "nut:carbsGrams": 160, "nut:fatsGrams": 65},
+      "nut:followsDiet": [{"@id": "nut:diet-kosher"}, {"@id": "nut:diet-low-fodmap"}],
+      "nut:hasAllergen": [{"@id": "nut:allergen-crustaceans"}, {"@id": "nut:allergen-molluscs"}],
+      "nut:prefersTheme": [{"@id": "nut:theme-LowFODMAP"}, {"@id": "nut:theme-HighProtein"}, {"@id": "nut:theme-FamilyMeals"}],
+      "nut:coachedBy": {"@id": "nut:coach-james-kerby"}
+    },
+    {
+      "@type": "nut:Client",
+      "@id": "nut:client-tp-007",
+      "name": "Karen Whitfield",
+      "gender": "Female",
+      "birthDate": "1968-04-07",
+      "nut:dataQuality": "good",
+      "nut:hasProfile": {
+        "@type": "nut:HealthProfile",
+        "nut:height": {"value": 165, "unitCode": "CMT"},
+        "nut:weight": {"value": 90, "unitCode": "KGM"},
+        "nut:bmi": 33.1,
+        "nut:activityLevel": "lightly_active",
+        "nut:medicalCondition": [{"name": "Hypothyroidism", "code": "E03.9", "codingSystem": "ICD-10", "status": "managed"}]
+      },
+      "nut:hasGoal": {"@id": "nut:goal-weight-loss"},
+      "nut:hasMacroTarget": {"@type": "nut:MacroTarget", "nut:dailyCalories": 1500, "nut:proteinGrams": 94, "nut:carbsGrams": 20, "nut:fatsGrams": 117},
+      "nut:followsDiet": [{"@id": "nut:diet-keto"}],
+      "nut:hasAllergen": [{"@id": "nut:allergen-eggs"}, {"@id": "nut:allergen-milk"}],
+      "nut:prefersTheme": [{"@id": "nut:theme-LowCarb"}, {"@id": "nut:theme-BritishComfort"}, {"@id": "nut:theme-QuickWeeknight"}],
+      "nut:coachedBy": {"@id": "nut:coach-james-kerby"}
+    },
+    {
+      "@type": "nut:Client",
+      "@id": "nut:client-tp-009",
+      "name": "Priya Sharma",
+      "gender": "Female",
+      "birthDate": "1992-08-25",
+      "nut:dataQuality": "good",
+      "nut:hasProfile": {
+        "@type": "nut:HealthProfile",
+        "nut:height": {"value": 158, "unitCode": "CMT"},
+        "nut:weight": {"value": 52, "unitCode": "KGM"},
+        "nut:bmi": 20.8,
+        "nut:activityLevel": "moderately_active",
+        "nut:medicalCondition": []
+      },
+      "nut:hasGoal": {"@id": "nut:goal-muscle-gain"},
+      "nut:hasMacroTarget": {"@type": "nut:MacroTarget", "nut:dailyCalories": 2000, "nut:proteinGrams": 104, "nut:carbsGrams": 260, "nut:fatsGrams": 56},
+      "nut:followsDiet": [{"@id": "nut:diet-jain"}, {"@id": "nut:diet-high-protein"}],
+      "nut:hasAllergen": [],
+      "nut:prefersTheme": [{"@id": "nut:theme-HighProtein"}, {"@id": "nut:theme-AsianFusion"}, {"@id": "nut:theme-BudgetFriendly"}],
+      "nut:coachedBy": {"@id": "nut:coach-james-kerby"}
+    },
+    {
+      "@type": "nut:Client",
+      "@id": "nut:client-tp-011",
+      "name": "Linda Okafor",
+      "gender": "Female",
+      "birthDate": "1975-02-28",
+      "nut:dataQuality": "good",
+      "nut:hasProfile": {
+        "@type": "nut:HealthProfile",
+        "nut:height": {"value": 172, "unitCode": "CMT"},
+        "nut:weight": {"value": 68, "unitCode": "KGM"},
+        "nut:bmi": 23.0,
+        "nut:activityLevel": "lightly_active",
+        "nut:medicalCondition": [
+          {"name": "Coeliac Disease", "code": "K90.0", "codingSystem": "ICD-10", "status": "active"},
+          {"name": "Chronic Kidney Disease Stage 2", "code": "N18.2", "codingSystem": "ICD-10", "status": "active"}
+        ]
+      },
+      "nut:hasGoal": {"@id": "nut:goal-medical-management"},
+      "nut:hasMacroTarget": {"@type": "nut:MacroTarget", "nut:dailyCalories": 1800, "nut:proteinGrams": 72, "nut:carbsGrams": 230, "nut:fatsGrams": 65},
+      "nut:followsDiet": [{"@id": "nut:diet-gluten-free"}, {"@id": "nut:diet-renal"}, {"@id": "nut:diet-pescatarian"}],
+      "nut:hasAllergen": [{"@id": "nut:allergen-cereals"}],
+      "nut:prefersTheme": [{"@id": "nut:theme-Mediterranean"}, {"@id": "nut:theme-GutHealth"}, {"@id": "nut:theme-SpringFresh"}],
+      "nut:coachedBy": {"@id": "nut:coach-james-kerby"}
+    },
+
+    {"_section": "=== CLIENTS — POOR DATA (3, for validation testing) ==="},
+
+    {
+      "@type": "nut:Client",
+      "@id": "nut:client-tp-008",
+      "name": "Marcus Williams",
+      "gender": "Male",
+      "birthDate": "1998-12-01",
+      "nut:dataQuality": "poor",
+      "nut:validationErrors": ["height is null", "dailyCalories 800 below 1500 male minimum", "proteinGrams*4=800 exceeds dailyCalories", "macros don't sum to calories"],
+      "nut:hasProfile": {"@type": "nut:HealthProfile", "nut:height": null, "nut:weight": {"value": 110, "unitCode": "KGM"}, "nut:bmi": null, "nut:activityLevel": "very_active", "nut:medicalCondition": [{"name": "asthma", "status": "active"}]},
+      "nut:hasGoal": {"@id": "nut:goal-weight-loss"},
+      "nut:hasMacroTarget": {"@type": "nut:MacroTarget", "nut:dailyCalories": 800, "nut:proteinGrams": 200, "nut:carbsGrams": 50, "nut:fatsGrams": 20},
+      "nut:followsDiet": [{"@id": "nut:diet-carnivore"}],
+      "nut:hasAllergen": [],
+      "nut:coachedBy": {"@id": "nut:coach-james-kerby"}
+    },
+    {
+      "@type": "nut:Client",
+      "@id": "nut:client-tp-010",
+      "name": "Jake Thompson",
+      "gender": "Male",
+      "birthDate": "2001-03-10",
+      "nut:dataQuality": "poor",
+      "nut:validationErrors": ["vegan + carnivore mutually exclusive", "milk allergen conflicts with keto", "3 incompatible diet types"],
+      "nut:hasProfile": {"@type": "nut:HealthProfile", "nut:height": {"value": 185, "unitCode": "CMT"}, "nut:weight": {"value": 78, "unitCode": "KGM"}, "nut:bmi": 22.8, "nut:activityLevel": "moderately_active", "nut:medicalCondition": []},
+      "nut:hasGoal": {"@id": "nut:goal-maintenance"},
+      "nut:hasMacroTarget": {"@type": "nut:MacroTarget", "nut:dailyCalories": 2500, "nut:proteinGrams": 150, "nut:carbsGrams": 250, "nut:fatsGrams": 83},
+      "nut:followsDiet": [{"@id": "nut:diet-vegan"}, {"@id": "nut:diet-carnivore"}, {"@id": "nut:diet-keto"}],
+      "nut:hasAllergen": [{"@id": "nut:allergen-milk"}],
+      "nut:coachedBy": {"@id": "nut:coach-james-kerby"}
+    },
+    {
+      "@type": "nut:Client",
+      "@id": "nut:client-tp-012",
+      "name": "Ben Fraser",
+      "gender": "Male",
+      "birthDate": "1993-10-17",
+      "nut:dataQuality": "poor",
+      "nut:validationErrors": ["no goal set", "no macro targets", "weight in stones not kg", "free-text dietary restriction"],
+      "nut:hasProfile": {"@type": "nut:HealthProfile", "nut:height": {"value": 182, "unitCode": "CMT"}, "nut:weight": {"value": 13, "unitCode": "STN"}, "nut:bmi": null, "nut:activityLevel": null, "nut:medicalCondition": null},
+      "nut:hasGoal": null,
+      "nut:hasMacroTarget": null,
+      "nut:followsDiet": [],
+      "nut:hasAllergen": [],
+      "nut:coachedBy": {"@id": "nut:coach-james-kerby"}
+    },
+
+    {"_section": "=== SAMPLE RECIPES (first 5 of 30 — full set in VHF dev repo test-recipes.jsonld) ==="},
+
+    {
+      "@type": "nut:Recipe",
+      "@id": "nut:recipe-r-001",
+      "nut:recipeId": "r-001",
+      "name": "Grilled Chicken Breast with Roasted Mediterranean Vegetables",
+      "nut:recipeCategory": "Dinner",
+      "nut:recipeCuisine": "British",
+      "nut:difficulty": "easy",
+      "nut:ukAvailable": true,
+      "nut:costPerServing": "GBP 2.80",
+      "nut:prepTime": "PT15M",
+      "nut:cookTime": "PT25M",
+      "nut:recipeYield": "2 servings",
+      "nut:hasNutritionProfile": {"@type": "nut:NutritionProfile", "nut:calories": 380, "nut:proteinContent": 42, "nut:carbohydrateContent": 12, "nut:fatContent": 18, "nut:fiberContent": 4, "nut:servingSize": "1 serving"},
+      "nut:suitableForDietType": [{"@id": "nut:diet-halal"}, {"@id": "nut:diet-high-protein"}, {"@id": "nut:diet-low-carb"}, {"@id": "nut:diet-mediterranean"}, {"@id": "nut:diet-gluten-free"}],
+      "nut:excludesAllergen": [{"@id": "nut:allergen-milk"}, {"@id": "nut:allergen-eggs"}, {"@id": "nut:allergen-nuts"}, {"@id": "nut:allergen-soya"}, {"@id": "nut:allergen-cereals"}],
+      "nut:belongsToTheme": [{"@id": "nut:theme-HighProtein"}, {"@id": "nut:theme-Mediterranean"}, {"@id": "nut:theme-QuickWeeknight"}]
+    },
+    {
+      "@type": "nut:Recipe",
+      "@id": "nut:recipe-r-002",
+      "nut:recipeId": "r-002",
+      "name": "Paneer Tikka with Cucumber Raita and Brown Rice",
+      "nut:recipeCategory": "Dinner",
+      "nut:recipeCuisine": "Indian",
+      "nut:difficulty": "easy",
+      "nut:ukAvailable": true,
+      "nut:costPerServing": "GBP 2.50",
+      "nut:prepTime": "PT20M",
+      "nut:cookTime": "PT15M",
+      "nut:recipeYield": "2 servings",
+      "nut:hasNutritionProfile": {"@type": "nut:NutritionProfile", "nut:calories": 520, "nut:proteinContent": 32, "nut:carbohydrateContent": 48, "nut:fatContent": 22, "nut:fiberContent": 4, "nut:servingSize": "1 serving"},
+      "nut:suitableForDietType": [{"@id": "nut:diet-vegetarian"}, {"@id": "nut:diet-hindu-vegetarian"}, {"@id": "nut:diet-high-protein"}, {"@id": "nut:diet-halal"}],
+      "nut:excludesAllergen": [{"@id": "nut:allergen-nuts"}, {"@id": "nut:allergen-eggs"}, {"@id": "nut:allergen-soya"}, {"@id": "nut:allergen-fish"}],
+      "nut:belongsToTheme": [{"@id": "nut:theme-HighProtein"}, {"@id": "nut:theme-AsianFusion"}, {"@id": "nut:theme-BudgetFriendly"}]
+    },
+    {
+      "@type": "nut:Recipe",
+      "@id": "nut:recipe-r-003",
+      "nut:recipeId": "r-003",
+      "name": "Salmon and Sweet Potato Tray Bake",
+      "nut:recipeCategory": "Dinner",
+      "nut:recipeCuisine": "British",
+      "nut:difficulty": "easy",
+      "nut:ukAvailable": true,
+      "nut:costPerServing": "GBP 3.50",
+      "nut:prepTime": "PT10M",
+      "nut:cookTime": "PT30M",
+      "nut:recipeYield": "2 servings",
+      "nut:hasNutritionProfile": {"@type": "nut:NutritionProfile", "nut:calories": 450, "nut:proteinContent": 35, "nut:carbohydrateContent": 38, "nut:fatContent": 18, "nut:fiberContent": 7, "nut:servingSize": "1 serving"},
+      "nut:suitableForDietType": [{"@id": "nut:diet-pescatarian"}, {"@id": "nut:diet-anti-inflammatory"}, {"@id": "nut:diet-mediterranean"}, {"@id": "nut:diet-gluten-free"}, {"@id": "nut:diet-high-protein"}],
+      "nut:excludesAllergen": [{"@id": "nut:allergen-milk"}, {"@id": "nut:allergen-eggs"}, {"@id": "nut:allergen-nuts"}, {"@id": "nut:allergen-soya"}, {"@id": "nut:allergen-cereals"}],
+      "nut:belongsToTheme": [{"@id": "nut:theme-HighProtein"}, {"@id": "nut:theme-AntiInflammatory"}, {"@id": "nut:theme-QuickWeeknight"}]
+    },
+    {
+      "@type": "nut:Recipe",
+      "@id": "nut:recipe-r-004",
+      "nut:recipeId": "r-004",
+      "name": "Turkey Mince Lettuce Wraps with Asian Slaw",
+      "nut:recipeCategory": "Lunch",
+      "nut:recipeCuisine": "Asian",
+      "nut:difficulty": "easy",
+      "nut:ukAvailable": true,
+      "nut:costPerServing": "GBP 2.20",
+      "nut:prepTime": "PT15M",
+      "nut:cookTime": "PT10M",
+      "nut:recipeYield": "2 servings",
+      "nut:hasNutritionProfile": {"@type": "nut:NutritionProfile", "nut:calories": 280, "nut:proteinContent": 28, "nut:carbohydrateContent": 8, "nut:fatContent": 14, "nut:fiberContent": 3, "nut:servingSize": "1 serving"},
+      "nut:suitableForDietType": [{"@id": "nut:diet-low-carb"}, {"@id": "nut:diet-high-protein"}, {"@id": "nut:diet-gluten-free"}, {"@id": "nut:diet-keto"}],
+      "nut:excludesAllergen": [{"@id": "nut:allergen-milk"}, {"@id": "nut:allergen-eggs"}, {"@id": "nut:allergen-cereals"}, {"@id": "nut:allergen-nuts"}],
+      "nut:belongsToTheme": [{"@id": "nut:theme-LowCarb"}, {"@id": "nut:theme-AsianFusion"}, {"@id": "nut:theme-QuickWeeknight"}]
+    },
+    {
+      "@type": "nut:Recipe",
+      "@id": "nut:recipe-r-005",
+      "nut:recipeId": "r-005",
+      "name": "Overnight Oats with Berries and Seeds",
+      "nut:recipeCategory": "Breakfast",
+      "nut:recipeCuisine": "British",
+      "nut:difficulty": "easy",
+      "nut:ukAvailable": true,
+      "nut:costPerServing": "GBP 1.20",
+      "nut:prepTime": "PT5M",
+      "nut:cookTime": "PT0M",
+      "nut:recipeYield": "1 serving",
+      "nut:hasNutritionProfile": {"@type": "nut:NutritionProfile", "nut:calories": 380, "nut:proteinContent": 14, "nut:carbohydrateContent": 52, "nut:fatContent": 12, "nut:fiberContent": 8, "nut:servingSize": "1 serving"},
+      "nut:suitableForDietType": [{"@id": "nut:diet-vegetarian"}, {"@id": "nut:diet-high-protein"}, {"@id": "nut:diet-mediterranean"}],
+      "nut:excludesAllergen": [{"@id": "nut:allergen-eggs"}, {"@id": "nut:allergen-fish"}, {"@id": "nut:allergen-crustaceans"}],
+      "nut:belongsToTheme": [{"@id": "nut:theme-QuickWeeknight"}, {"@id": "nut:theme-BudgetFriendly"}, {"@id": "nut:theme-BatchCookSunday"}]
+    },
+
+    {"_section": "=== VALIDATION REFERENCE DATA ==="},
+
+    {
+      "@type": "nut:ValidationRanges",
+      "@id": "nut:vhf-validation-ranges",
+      "name": "VHF Valid Data Ranges for Meal Plan Generation",
+      "nut:clientRanges": {
+        "height_cm": {"min": 140, "max": 210},
+        "weight_kg": {"min": 40, "max": 180},
+        "age_years": {"min": 16, "max": 90}
+      },
+      "nut:macroRanges": {
+        "dailyCalories": {"min_female": 1200, "min_male": 1500, "max": 5000},
+        "macroCalorieCheck": "proteinG*4 + carbsG*4 + fatsG*9 must equal dailyCalories within 5%"
+      },
+      "nut:planRanges": {
+        "days": 7,
+        "mealsPerDay": {"min": 3, "max": 6},
+        "dailyCalorieVariance": "within 10%",
+        "recipeRepetition": "max 2 per recipe per 7-day plan"
+      }
+    }
+  ]
+}

@@ -1,0 +1,492 @@
+{
+  "@context": {
+    "baiv": "https://baiv.ai/ontology/",
+    "mcsb": "https://baiv.ai/ontology/mcsb/"
+  },
+  "@type": "Dataset",
+  "name": "MCSB Ontology Test Data",
+  "description": "Test data for the Microsoft Cloud Security Benchmark Ontology following 60-20-10-10 distribution (typical/edge/boundary/invalid)",
+  "version": "1.0.0",
+  "dateCreated": "2026-01-23",
+  "distribution": {
+    "typical": 60,
+    "edge": 20,
+    "boundary": 10,
+    "invalid": 10
+  },
+
+  "testData": {
+    "ControlDomain": {
+      "typical": [
+        {
+          "@id": "mcsb:domain:NS",
+          "@type": "ControlDomain",
+          "domainCode": "NS",
+          "domainName": "Network Security",
+          "description": "Network Security covers controls to secure and protect networks, including securing virtual networks, establishing private connections, preventing and mitigating external attacks, and securing DNS.",
+          "controlCount": 10,
+          "responsibilityModel": {"responsibilityType": "Client"}
+        },
+        {
+          "@id": "mcsb:domain:IM",
+          "@type": "ControlDomain",
+          "domainCode": "IM",
+          "domainName": "Identity Management",
+          "description": "Identity Management covers controls to establish a secure identity and access controls using identity and access management systems, including the use of single sign-on, strong authentications, managed identities for applications, conditional access, and account anomalies monitoring.",
+          "controlCount": 9,
+          "responsibilityModel": {"responsibilityType": "Joint"}
+        },
+        {
+          "@id": "mcsb:domain:PA",
+          "@type": "ControlDomain",
+          "domainCode": "PA",
+          "domainName": "Privileged Access",
+          "description": "Privileged Access covers controls to protect privileged access to your tenant and resources, including a range of controls to protect your administrative model, administrative accounts, and privileged access workstations against deliberate and inadvertent risk.",
+          "controlCount": 8,
+          "responsibilityModel": {"responsibilityType": "Joint"}
+        }
+      ],
+      "edge": [
+        {
+          "@id": "mcsb:domain:GS",
+          "@type": "ControlDomain",
+          "domainCode": "GS",
+          "domainName": "Governance and Strategy",
+          "description": "Governance and Strategy provides guidance for ensuring a coherent security strategy and documented governance approach to guide and sustain security assurance, including establishing roles and responsibilities for the different cloud security functions, unified technical strategy, and supporting policies and standards.",
+          "controlCount": 11,
+          "responsibilityModel": {"responsibilityType": "Client"}
+        }
+      ],
+      "boundary": [
+        {
+          "@id": "mcsb:domain:ES",
+          "@type": "ControlDomain",
+          "domainCode": "ES",
+          "domainName": "Endpoint Security",
+          "description": "Endpoint Security covers controls in endpoint detection and response, including use of EDR and anti-malware service for endpoints in cloud environments.",
+          "controlCount": 3,
+          "responsibilityModel": {"responsibilityType": "Joint"}
+        }
+      ],
+      "invalid": [
+        {
+          "@id": "mcsb:domain:INVALID1",
+          "@type": "ControlDomain",
+          "domainCode": "INVALID",
+          "domainName": "",
+          "description": "Short",
+          "controlCount": -1,
+          "_testNote": "Invalid: domainCode wrong format, empty name, description too short, negative count"
+        }
+      ]
+    },
+
+    "SecurityControl": {
+      "typical": [
+        {
+          "@id": "mcsb:control:NS-1",
+          "@type": "SecurityControl",
+          "controlId": "NS-1",
+          "controlName": "Establish network segmentation boundaries",
+          "recommendation": "Establish network segmentation boundaries",
+          "securityPrinciple": "Ensure that your virtual network deployment aligns to your enterprise segmentation strategy defined in the GS-2 security control. Any workload that could incur higher risk for the organization should be in isolated virtual networks.",
+          "belongsToDomain": "mcsb:domain:NS",
+          "responsibility": {"responsibilityType": "Client"},
+          "componentScope": "Azure Environment Assumed"
+        },
+        {
+          "@id": "mcsb:control:NS-2",
+          "@type": "SecurityControl",
+          "controlId": "NS-2",
+          "controlName": "Secure cloud native services with network controls",
+          "recommendation": "Secure cloud services by establishing a private access point for the resources",
+          "securityPrinciple": "Secure cloud services by establishing a private access point for the resources. You should also disable or restrict access from public network when possible.",
+          "belongsToDomain": "mcsb:domain:NS",
+          "responsibility": {"responsibilityType": "Client"},
+          "componentScope": "Azure Environment Assumed"
+        },
+        {
+          "@id": "mcsb:control:IM-1",
+          "@type": "SecurityControl",
+          "controlId": "IM-1",
+          "controlName": "Use centralized identity and authentication system",
+          "recommendation": "Use a centralized identity and authentication system to govern your organization's identities and authentications for cloud and non-cloud resources",
+          "securityPrinciple": "Use a centralized identity and authentication system to govern your organization's identities and authentications for cloud and non-cloud resources.",
+          "belongsToDomain": "mcsb:domain:IM",
+          "responsibility": {"responsibilityType": "Joint"},
+          "componentScope": "Azure Environment Assumed"
+        }
+      ],
+      "edge": [
+        {
+          "@id": "mcsb:control:GS-11",
+          "@type": "SecurityControl",
+          "controlId": "GS-11",
+          "controlName": "Define and implement multi-cloud security strategy",
+          "recommendation": "Define and implement multi-cloud security strategy",
+          "securityPrinciple": "Ensure a coherent multi-cloud security strategy that addresses security requirements across multiple cloud platforms including Azure, AWS, and GCP.",
+          "belongsToDomain": "mcsb:domain:GS",
+          "responsibility": {"responsibilityType": "Client"},
+          "componentScope": "Multi-Cloud Environment"
+        }
+      ],
+      "boundary": [
+        {
+          "@id": "mcsb:control:ES-3",
+          "@type": "SecurityControl",
+          "controlId": "ES-3",
+          "controlName": "Ensure anti-malware software and signatures are updated",
+          "recommendation": "Ensure anti-malware signatures are updated rapidly and consistently",
+          "securityPrinciple": "Ensure anti-malware signatures are updated rapidly and consistently for the anti-malware solution. This is the minimum threshold control for endpoint security.",
+          "belongsToDomain": "mcsb:domain:ES",
+          "responsibility": {"responsibilityType": "Client"},
+          "componentScope": "Azure Environment"
+        }
+      ],
+      "invalid": [
+        {
+          "@id": "mcsb:control:INVALID",
+          "@type": "SecurityControl",
+          "controlId": "XX-99",
+          "controlName": "",
+          "recommendation": "",
+          "securityPrinciple": "Too short",
+          "belongsToDomain": "mcsb:domain:NONEXISTENT",
+          "_testNote": "Invalid: controlId has invalid domain prefix, empty name/recommendation, principle too short, invalid domain reference"
+        }
+      ]
+    },
+
+    "ImplementationGuidance": {
+      "typical": [
+        {
+          "@id": "mcsb:guidance:NS-1-Azure",
+          "@type": "ImplementationGuidance",
+          "cloudPlatform": "Azure",
+          "guidanceText": "Create a virtual network (VNet) as a fundamental segmentation approach in your Azure network, so resources such as VMs can be deployed into the VNet within a network boundary. To further segment the network, you can create subnets inside VNet for smaller sub-networks. Use network security groups (NSG) as a network layer control to restrict or monitor traffic by port, protocol, source IP address, or destination IP address.",
+          "implementationContext": "Use Azure Virtual Network concepts and best practices. Consider application security groups (ASGs) to simplify complex configuration.",
+          "additionalResources": [
+            "https://docs.microsoft.com/azure/virtual-network/concepts-and-best-practices",
+            "https://docs.microsoft.com/azure/virtual-network/tutorial-filter-network-traffic"
+          ],
+          "forControl": "mcsb:control:NS-1"
+        },
+        {
+          "@id": "mcsb:guidance:NS-1-AWS",
+          "@type": "ImplementationGuidance",
+          "cloudPlatform": "AWS",
+          "guidanceText": "Create a Virtual Private Cloud (VPC) as a fundamental segmentation approach in your AWS network, so resources such as EC2 instances can be deployed into the VPC within a network boundary. To further segment the network, you can create subnets inside VPC for smaller sub-networks. For EC2 instances, use Security Groups as a stateful firewall to restrict traffic by port, protocol, source IP address, or destination IP address.",
+          "implementationContext": "At the VPC subnet level, use Network Access Control List (NACL) as a stateless firewall for explicit rules.",
+          "additionalResources": [
+            "https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html",
+            "https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html"
+          ],
+          "forControl": "mcsb:control:NS-1"
+        },
+        {
+          "@id": "mcsb:guidance:IM-1-Azure",
+          "@type": "ImplementationGuidance",
+          "cloudPlatform": "Azure",
+          "guidanceText": "Azure Active Directory (Azure AD) is Azure's identity and authentication management service. You should standardize on Azure AD to govern your organization's identity and authentication in Microsoft cloud resources, your organization's resources such as applications on Azure, and your enterprise identities in Active Directory by synchronization.",
+          "implementationContext": "For Azure services that apply, avoid use of local authentication methods and instead use Azure Active Directory to centralize your service authentications.",
+          "additionalResources": [
+            "https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-access-create-new-tenant",
+            "https://docs.microsoft.com/azure/active-directory/b2b/identity-providers"
+          ],
+          "forControl": "mcsb:control:IM-1"
+        }
+      ],
+      "edge": [
+        {
+          "@id": "mcsb:guidance:GS-11-MultiCloud",
+          "@type": "ImplementationGuidance",
+          "cloudPlatform": "Multi-Cloud",
+          "guidanceText": "Implement a unified security strategy across Azure, AWS, and other cloud platforms. Use Microsoft Defender for Cloud to monitor and manage security posture across multiple cloud environments. Establish consistent identity, network, and data protection policies.",
+          "implementationContext": "Consider using Azure Arc for hybrid and multi-cloud management. Implement consistent security baselines across platforms.",
+          "additionalResources": [
+            "https://docs.microsoft.com/azure/defender-for-cloud/multicloud-resource-types"
+          ],
+          "forControl": "mcsb:control:GS-11"
+        }
+      ],
+      "boundary": [
+        {
+          "@id": "mcsb:guidance:ES-3-Azure-Minimal",
+          "@type": "ImplementationGuidance",
+          "cloudPlatform": "Azure",
+          "guidanceText": "Follow recommendations in Microsoft Defender for Cloud to keep all endpoints up to date with the latest signatures. Microsoft Antimalware and Microsoft Defender for Endpoint will automatically install the latest signatures and engine updates by default.",
+          "forControl": "mcsb:control:ES-3"
+        }
+      ],
+      "invalid": [
+        {
+          "@id": "mcsb:guidance:INVALID",
+          "@type": "ImplementationGuidance",
+          "cloudPlatform": "InvalidPlatform",
+          "guidanceText": "Short",
+          "forControl": "mcsb:control:NONEXISTENT",
+          "_testNote": "Invalid: Invalid platform, guidance too short, references non-existent control"
+        }
+      ]
+    },
+
+    "ComplianceMapping": {
+      "typical": [
+        {
+          "@id": "mcsb:mapping:NS-1-NIST",
+          "@type": "ComplianceMapping",
+          "framework": "NIST",
+          "frameworkVersion": "SP800-53 r4",
+          "mappedControlIds": ["AC-4", "SC-2", "SC-7"],
+          "mappingType": "partial",
+          "mapsToControl": "mcsb:control:NS-1"
+        },
+        {
+          "@id": "mcsb:mapping:NS-1-CIS-v8",
+          "@type": "ComplianceMapping",
+          "framework": "CIS_v8",
+          "frameworkVersion": "v8",
+          "mappedControlIds": ["3.12", "13.4", "4.4"],
+          "mappingType": "partial",
+          "mapsToControl": "mcsb:control:NS-1"
+        },
+        {
+          "@id": "mcsb:mapping:NS-1-PCI",
+          "@type": "ComplianceMapping",
+          "framework": "PCI_DSS",
+          "frameworkVersion": "v3.2.1",
+          "mappedControlIds": ["1.1", "1.2", "1.3"],
+          "mappingType": "partial",
+          "mapsToControl": "mcsb:control:NS-1"
+        }
+      ],
+      "edge": [
+        {
+          "@id": "mcsb:mapping:IM-3-NIST-ONLY",
+          "@type": "ComplianceMapping",
+          "framework": "NIST",
+          "frameworkVersion": "SP800-53 r4",
+          "mappedControlIds": ["AC-2", "AC-3", "IA-4", "IA-5", "IA-9"],
+          "mappingType": "full",
+          "mappingNotes": "IM-3 has no CIS or PCI-DSS mapping - NIST only",
+          "mapsToControl": "mcsb:control:IM-3"
+        }
+      ],
+      "boundary": [
+        {
+          "@id": "mcsb:mapping:GS-1-NIST",
+          "@type": "ComplianceMapping",
+          "framework": "NIST",
+          "frameworkVersion": "SP800-53 r4",
+          "mappedControlIds": ["PL-9", "PM-10", "PM-13", "AT-1", "AT-3"],
+          "mappingType": "partial",
+          "mappingNotes": "Governance controls with multiple NIST mappings across different families",
+          "mapsToControl": "mcsb:control:GS-1"
+        }
+      ],
+      "invalid": [
+        {
+          "@id": "mcsb:mapping:INVALID",
+          "@type": "ComplianceMapping",
+          "framework": "INVALID_FRAMEWORK",
+          "mappedControlIds": [],
+          "mapsToControl": "mcsb:control:NONEXISTENT",
+          "_testNote": "Invalid: Invalid framework, empty control IDs, non-existent control reference"
+        }
+      ]
+    },
+
+    "ResponsibilityAssignment": {
+      "typical": [
+        {
+          "@id": "mcsb:responsibility:Client",
+          "@type": "ResponsibilityAssignment",
+          "responsibilityType": "Client",
+          "responsibilityLabel": "Customer/Client Responsibility",
+          "clientActions": ["Implement control", "Maintain configuration", "Monitor compliance", "Remediate gaps"]
+        },
+        {
+          "@id": "mcsb:responsibility:Joint",
+          "@type": "ResponsibilityAssignment",
+          "responsibilityType": "Joint",
+          "responsibilityLabel": "Shared Responsibility",
+          "clientActions": ["Configure service", "Define policies", "Monitor usage"],
+          "providerActions": ["Provide secure service", "Maintain infrastructure", "Provide documentation"]
+        },
+        {
+          "@id": "mcsb:responsibility:Provider",
+          "@type": "ResponsibilityAssignment",
+          "responsibilityType": "Provider",
+          "responsibilityLabel": "Cloud Provider Responsibility",
+          "providerActions": ["Implement control", "Maintain security", "Provide attestation"]
+        }
+      ],
+      "edge": [
+        {
+          "@id": "mcsb:responsibility:ClientSolProvider",
+          "@type": "ResponsibilityAssignment",
+          "responsibilityType": "ClientSolProvider",
+          "responsibilityLabel": "Client and Solution Provider Shared Responsibility",
+          "clientActions": ["Oversee implementation", "Validate compliance"],
+          "sharedActions": ["Coordinate implementation", "Share documentation"]
+        }
+      ],
+      "boundary": [
+        {
+          "@id": "mcsb:responsibility:JointMinimal",
+          "@type": "ResponsibilityAssignment",
+          "responsibilityType": "Joint",
+          "responsibilityLabel": "Minimal Joint Responsibility",
+          "clientActions": ["Configure"],
+          "providerActions": ["Provide service"]
+        }
+      ],
+      "invalid": [
+        {
+          "@id": "mcsb:responsibility:INVALID",
+          "@type": "ResponsibilityAssignment",
+          "responsibilityType": "InvalidType",
+          "responsibilityLabel": "",
+          "_testNote": "Invalid: Invalid responsibility type, empty label"
+        }
+      ]
+    },
+
+    "ComplianceFramework": {
+      "typical": [
+        {
+          "@id": "mcsb:framework:NIST",
+          "@type": "ComplianceFramework",
+          "frameworkCode": "NIST",
+          "frameworkName": "NIST SP800-53 Security and Privacy Controls",
+          "currentVersion": "r4",
+          "governingBody": "National Institute of Standards and Technology",
+          "frameworkUrl": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-4/final",
+          "frameworkDescription": "Security and privacy controls for federal information systems and organizations providing a catalog of security controls to protect organizational operations."
+        },
+        {
+          "@id": "mcsb:framework:CIS_v8",
+          "@type": "ComplianceFramework",
+          "frameworkCode": "CIS_v8",
+          "frameworkName": "CIS Controls v8",
+          "currentVersion": "v8",
+          "governingBody": "Center for Internet Security",
+          "frameworkUrl": "https://www.cisecurity.org/controls/v8",
+          "frameworkDescription": "Prioritized set of actions that collectively form a defense-in-depth set of best practices to mitigate the most common attacks against systems and networks."
+        },
+        {
+          "@id": "mcsb:framework:PCI_DSS",
+          "@type": "ComplianceFramework",
+          "frameworkCode": "PCI_DSS",
+          "frameworkName": "PCI Data Security Standard",
+          "currentVersion": "v3.2.1",
+          "governingBody": "PCI Security Standards Council",
+          "frameworkUrl": "https://www.pcisecuritystandards.org/",
+          "frameworkDescription": "Information security standard for organizations that handle branded credit cards from major card schemes to reduce credit card fraud."
+        }
+      ],
+      "edge": [
+        {
+          "@id": "mcsb:framework:CIS_v7",
+          "@type": "ComplianceFramework",
+          "frameworkCode": "CIS_v7",
+          "frameworkName": "CIS Controls v7.1",
+          "currentVersion": "v7.1",
+          "governingBody": "Center for Internet Security",
+          "frameworkDescription": "Legacy version of CIS Controls still referenced in some MCSB mappings for backward compatibility."
+        }
+      ],
+      "boundary": [
+        {
+          "@id": "mcsb:framework:NIST-minimal",
+          "@type": "ComplianceFramework",
+          "frameworkCode": "NIST",
+          "frameworkName": "NIST SP800-53",
+          "currentVersion": "r4",
+          "frameworkDescription": "Minimal NIST framework reference without full details."
+        }
+      ],
+      "invalid": [
+        {
+          "@id": "mcsb:framework:INVALID",
+          "@type": "ComplianceFramework",
+          "frameworkCode": "INVALID_CODE",
+          "frameworkName": "",
+          "currentVersion": "",
+          "frameworkDescription": "Short",
+          "_testNote": "Invalid: Invalid framework code, empty name, empty version, description too short"
+        }
+      ]
+    },
+
+    "ControlAssessment": {
+      "typical": [
+        {
+          "@id": "mcsb:assessment:NS-1-2026-01",
+          "@type": "ControlAssessment",
+          "assessmentId": "ASSESS-NS-1-2026-01",
+          "assessedControl": "mcsb:control:NS-1",
+          "assessmentDate": "2026-01-15",
+          "assessmentStatus": "Compliant",
+          "remediationNotes": "Network segmentation fully implemented with VNets, NSGs, and ASGs.",
+          "evidenceLinks": ["https://evidence.example.com/ns1-vnet-config"]
+        },
+        {
+          "@id": "mcsb:assessment:IM-1-2026-01",
+          "@type": "ControlAssessment",
+          "assessmentId": "ASSESS-IM-1-2026-01",
+          "assessedControl": "mcsb:control:IM-1",
+          "assessmentDate": "2026-01-15",
+          "assessmentStatus": "PartiallyCompliant",
+          "implementationGaps": ["Legacy applications still using local authentication", "Service accounts not using managed identities"],
+          "remediationPriority": "Medium",
+          "remediationNotes": "Plan to migrate legacy apps to Azure AD by Q2 2026."
+        },
+        {
+          "@id": "mcsb:assessment:PA-1-2026-01",
+          "@type": "ControlAssessment",
+          "assessmentId": "ASSESS-PA-1-2026-01",
+          "assessedControl": "mcsb:control:PA-1",
+          "assessmentDate": "2026-01-15",
+          "assessmentStatus": "NonCompliant",
+          "implementationGaps": ["Excessive global administrators", "No separation of privileged accounts", "Shared admin credentials"],
+          "remediationPriority": "Critical",
+          "remediationNotes": "Immediate action required. Reduce global admins to 2-3, implement PIM."
+        }
+      ],
+      "edge": [
+        {
+          "@id": "mcsb:assessment:ES-1-NA",
+          "@type": "ControlAssessment",
+          "assessmentId": "ASSESS-ES-1-NA",
+          "assessedControl": "mcsb:control:ES-1",
+          "assessmentDate": "2026-01-15",
+          "assessmentStatus": "NotApplicable",
+          "remediationNotes": "Serverless architecture only - no VMs requiring EDR."
+        }
+      ],
+      "boundary": [
+        {
+          "@id": "mcsb:assessment:GS-1-NotAssessed",
+          "@type": "ControlAssessment",
+          "assessmentId": "ASSESS-GS-1-PENDING",
+          "assessedControl": "mcsb:control:GS-1",
+          "assessmentDate": "2026-01-23",
+          "assessmentStatus": "NotAssessed",
+          "remediationNotes": "Assessment scheduled for Q1 2026 governance review."
+        }
+      ],
+      "invalid": [
+        {
+          "@id": "mcsb:assessment:INVALID",
+          "@type": "ControlAssessment",
+          "assessmentId": "",
+          "assessedControl": "mcsb:control:NONEXISTENT",
+          "assessmentDate": "invalid-date",
+          "assessmentStatus": "NonCompliant",
+          "_testNote": "Invalid: Empty ID, non-existent control, invalid date, NonCompliant without gaps"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,1882 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ofm": "https://oaa-ontology.org/v6/order-fulfilment/",
+    "lsc": "https://oaa-ontology.org/v6/logistics/",
+    "vp": "https://oaa-ontology.org/v5/vp/",
+    "rrr": "https://oaa-ontology.org/v5/rrr/",
+    "org-ctx": "https://platformcore.io/ontology/org-context/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/"
+  },
+  "@type": "InstanceDataSet",
+  "@id": "ofm:instances:wwg-ofm-v1.0",
+  "metadata": {
+    "name": "W4M-WWG OFM Instance Data — Customer Orders & Fulfilment",
+    "version": "1.0.0",
+    "status": "active",
+    "parentSchema": "ofm-ontology-v1.0.0-oaa-v7.json",
+    "owningInstance": "PFI-W4M-WWG",
+    "sourceOntology": "OFM-ONT v1.0.0",
+    "oaaVersion": "7.0.0",
+    "instanceScope": "fulfilment",
+    "industry": "Food & Beverage / Specialist Food Import-Distribution",
+    "market": "UK Specialist Food Import — 4 Inbound Corridors (AU, NZ, IS, IE)",
+    "domain": "Order Fulfilment / Stock Allocation / Margin Management / Customer Delivery",
+    "description": "Complete OFM graph for W4M-WWG (World Wide Gourmet), a UK specialist food importer operating 4 inbound corridors (Australia, New Zealand, Iceland, Ireland). Contains 5 sales orders across 4 customer types, 18 order lines, 12 stock allocations linking to LSC corridor shipments, 8 storage events showing cost accumulation, 5 delivery windows, 5 dispatch legs, 4 customer change scenarios with margin impact, 12 margin impact waterfall entries, 8 fulfilment risks, 4 demand patterns, and 1 capacity forecast. Cross-references LSC-ONT instance data for all 4 corridors.",
+    "dateCreated": "2026-02-24",
+    "parentEpic": "Epic 45 (#634)",
+    "parentFeature": "F45.3 (#637)",
+    "derivedFrom": "ofm:instances:wwg-ofm-v0.1 (PFC-OFM-Core reference)",
+    "crossReferences": [
+      "lsc:instances:wwg-au-uk-meat-v1.0",
+      "lsc:instances:wwg-nz-uk-dairy-lamb-v1.0",
+      "lsc:instances:wwg-is-uk-seafood-v1.0",
+      "lsc:instances:wwg-ie-uk-dairy-beef-v1.0"
+    ]
+  },
+
+  "examples": [
+
+    {"_section": "=== SALES ORDERS (5 Orders across customer types) ==="},
+
+    {
+      "@type": "ofm:SalesOrder",
+      "@id": "ofm:wwg-order-001",
+      "orderId": "ofm:wwg-order-001",
+      "orderReference": "WWG-SO-2026-0347",
+      "customerName": "Belgravia Dining Group",
+      "customerType": "RestaurantChain",
+      "customerAccount": "BDG-001",
+      "corridorSource": "AU-UK",
+      "commodityDescription": "AU chilled grass-fed beef (primals)",
+      "commodityClass": "Chilled",
+      "totalWeight": "6 tonnes",
+      "orderValue": 42000,
+      "currency": "GBP",
+      "bookedMargin": 8400,
+      "bookedMarginPercent": 20.0,
+      "orderStatus": "Confirmed",
+      "orderDate": "2026-03-01",
+      "requestedDeliveryDate": "2026-03-22",
+      "deliveryLocation": "Central London (Mayfair depot)",
+      "deliveryPostcode": "W1K 5AB",
+      "specialInstructions": "Temperature-controlled delivery 0-2C; 2-hour delivery window; named chef sign-off required",
+      "paymentTerms": "30 days net",
+      "lineCount": 3,
+      "relationships": {
+        "hasOrderLines": ["ofm:wwg-line-001-01", "ofm:wwg-line-001-02", "ofm:wwg-line-001-03"],
+        "hasDeliveryWindow": "ofm:wwg-dw-001",
+        "hasDispatchLeg": "ofm:wwg-dispatch-001",
+        "allocatedFromCorridor": "lsc:wwg-chain-au-uk-beef-001",
+        "customerChangeHistory": ["ofm:wwg-change-003"]
+      }
+    },
+    {
+      "@type": "ofm:SalesOrder",
+      "@id": "ofm:wwg-order-002",
+      "orderId": "ofm:wwg-order-002",
+      "orderReference": "WWG-SO-2026-0348",
+      "customerName": "Northern Wholesale Foods",
+      "customerType": "Wholesaler",
+      "customerAccount": "NWF-014",
+      "corridorSource": "NZ-UK",
+      "commodityDescription": "NZ dairy products and lamb (mixed chilled/frozen)",
+      "commodityClass": "Mixed",
+      "totalWeight": "12 tonnes",
+      "orderValue": 65000,
+      "currency": "GBP",
+      "bookedMargin": 9750,
+      "bookedMarginPercent": 15.0,
+      "orderStatus": "Allocated",
+      "orderDate": "2026-02-25",
+      "requestedDeliveryDate": "2026-03-28",
+      "deliveryLocation": "Manchester (Trafford Park cold store)",
+      "deliveryPostcode": "M17 1SN",
+      "specialInstructions": "Dual-temp vehicle required (chilled dairy + frozen lamb); forklift offload; POD required",
+      "paymentTerms": "45 days net",
+      "lineCount": 4,
+      "relationships": {
+        "hasOrderLines": ["ofm:wwg-line-002-01", "ofm:wwg-line-002-02", "ofm:wwg-line-002-03", "ofm:wwg-line-002-04"],
+        "hasDeliveryWindow": "ofm:wwg-dw-002",
+        "hasDispatchLeg": "ofm:wwg-dispatch-002",
+        "allocatedFromCorridor": "lsc:wwg-nz-chain-nz-uk-dairy-lamb-001",
+        "customerChangeHistory": ["ofm:wwg-change-001"]
+      }
+    },
+    {
+      "@type": "ofm:SalesOrder",
+      "@id": "ofm:wwg-order-003",
+      "orderId": "ofm:wwg-order-003",
+      "orderReference": "WWG-SO-2026-0349",
+      "customerName": "Fresh & Wild Catering",
+      "customerType": "FoodServiceDistributor",
+      "customerAccount": "FWC-007",
+      "corridorSource": "IS-UK",
+      "commodityDescription": "IS seafood (cod, haddock, salmon fillets)",
+      "commodityClass": "Chilled",
+      "totalWeight": "3 tonnes",
+      "orderValue": 28000,
+      "currency": "GBP",
+      "bookedMargin": 5600,
+      "bookedMarginPercent": 20.0,
+      "orderStatus": "InDispatch",
+      "orderDate": "2026-03-03",
+      "requestedDeliveryDate": "2026-03-18",
+      "deliveryLocation": "Birmingham (Aston Cross food hub)",
+      "deliveryPostcode": "B6 5RQ",
+      "specialInstructions": "Chilled 0-2C; short shelf life product — deliver AM slot only; catering contract ref CC-2026-0089",
+      "paymentTerms": "14 days net",
+      "lineCount": 3,
+      "relationships": {
+        "hasOrderLines": ["ofm:wwg-line-003-01", "ofm:wwg-line-003-02", "ofm:wwg-line-003-03"],
+        "hasDeliveryWindow": "ofm:wwg-dw-003",
+        "hasDispatchLeg": "ofm:wwg-dispatch-003",
+        "allocatedFromCorridor": "lsc:wwg-is-chain-is-uk-seafood-001",
+        "customerChangeHistory": ["ofm:wwg-change-004"]
+      }
+    },
+    {
+      "@type": "ofm:SalesOrder",
+      "@id": "ofm:wwg-order-004",
+      "orderId": "ofm:wwg-order-004",
+      "orderReference": "WWG-SO-2026-0350",
+      "customerName": "GourmetBox Online",
+      "customerType": "OnlineSpecialist",
+      "customerAccount": "GBO-022",
+      "corridorSource": "Mixed (AU, IS, IE)",
+      "commodityDescription": "Mixed corridors — AU wagyu steak, IS smoked salmon, IE Kerrygold butter, IE mature cheddar",
+      "commodityClass": "Chilled",
+      "totalWeight": "1.5 tonnes",
+      "orderValue": 18500,
+      "currency": "GBP",
+      "bookedMargin": 4625,
+      "bookedMarginPercent": 25.0,
+      "orderStatus": "Delivered",
+      "orderDate": "2026-02-20",
+      "requestedDeliveryDate": "2026-03-10",
+      "actualDeliveryDate": "2026-03-10",
+      "deliveryLocation": "Daventry fulfilment centre (GourmetBox pick-pack facility)",
+      "deliveryPostcode": "NN11 8YJ",
+      "specialInstructions": "Premium packaging spec; individual portion labels required; 5-day minimum shelf life at handover",
+      "paymentTerms": "7 days net (pre-approved credit)",
+      "lineCount": 4,
+      "relationships": {
+        "hasOrderLines": ["ofm:wwg-line-004-01", "ofm:wwg-line-004-02", "ofm:wwg-line-004-03", "ofm:wwg-line-004-04"],
+        "hasDeliveryWindow": "ofm:wwg-dw-004",
+        "hasDispatchLeg": "ofm:wwg-dispatch-004",
+        "allocatedFromCorridors": [
+          "lsc:wwg-chain-au-uk-beef-001",
+          "lsc:wwg-is-chain-is-uk-seafood-001",
+          "lsc:wwg-ie-chain-ie-uk-dairy-beef-001"
+        ],
+        "customerChangeHistory": []
+      }
+    },
+    {
+      "@type": "ofm:SalesOrder",
+      "@id": "ofm:wwg-order-005",
+      "orderId": "ofm:wwg-order-005",
+      "orderReference": "WWG-SO-2026-0351",
+      "customerName": "Celtic Foods Distribution",
+      "customerType": "Wholesaler",
+      "customerAccount": "CFD-009",
+      "corridorSource": "IE-UK",
+      "commodityDescription": "IE dairy and beef (bulk wholesale)",
+      "commodityClass": "Chilled",
+      "totalWeight": "8 tonnes",
+      "orderValue": 38000,
+      "currency": "GBP",
+      "bookedMargin": 4940,
+      "bookedMarginPercent": 13.0,
+      "orderStatus": "Confirmed",
+      "orderDate": "2026-03-02",
+      "requestedDeliveryDate": "2026-03-25",
+      "deliveryLocation": "Bristol (Avonmouth distribution park)",
+      "deliveryPostcode": "BS11 8AZ",
+      "specialInstructions": "Bulk pallet delivery; tail-lift not required; booking ref required 24h in advance",
+      "paymentTerms": "60 days net",
+      "lineCount": 4,
+      "relationships": {
+        "hasOrderLines": ["ofm:wwg-line-005-01", "ofm:wwg-line-005-02", "ofm:wwg-line-005-03", "ofm:wwg-line-005-04"],
+        "hasDeliveryWindow": "ofm:wwg-dw-005",
+        "hasDispatchLeg": "ofm:wwg-dispatch-005",
+        "allocatedFromCorridor": "lsc:wwg-ie-chain-ie-uk-dairy-beef-001",
+        "customerChangeHistory": ["ofm:wwg-change-002"]
+      }
+    },
+
+    {"_section": "=== ORDER LINES (18 Lines across 5 orders) ==="},
+
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-001-01",
+      "lineId": "ofm:wwg-line-001-01",
+      "parentOrder": "ofm:wwg-order-001",
+      "lineNumber": 1,
+      "productDescription": "AU Grass-Fed Beef Sirloin (vacuum-packed primals)",
+      "commodityClass": "Chilled",
+      "quantity": "2.5 tonnes",
+      "unitPrice": 7200,
+      "unitPricePer": "tonne",
+      "lineValue": 18000,
+      "currency": "GBP",
+      "committedShelfLife": "52 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-22",
+      "lineStatus": "Confirmed",
+      "corridorSource": "AU-UK",
+      "temperatureRequirement": "0-2C",
+      "relationships": {
+        "allocatedBy": ["ofm:wwg-alloc-001"],
+        "partOfOrder": "ofm:wwg-order-001"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-001-02",
+      "lineId": "ofm:wwg-line-001-02",
+      "parentOrder": "ofm:wwg-order-001",
+      "lineNumber": 2,
+      "productDescription": "AU Grass-Fed Beef Ribeye (vacuum-packed primals)",
+      "commodityClass": "Chilled",
+      "quantity": "2.0 tonnes",
+      "unitPrice": 7800,
+      "unitPricePer": "tonne",
+      "lineValue": 15600,
+      "currency": "GBP",
+      "committedShelfLife": "50 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-22",
+      "lineStatus": "Confirmed",
+      "corridorSource": "AU-UK",
+      "temperatureRequirement": "0-2C",
+      "relationships": {
+        "allocatedBy": ["ofm:wwg-alloc-002"],
+        "partOfOrder": "ofm:wwg-order-001"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-001-03",
+      "lineId": "ofm:wwg-line-001-03",
+      "parentOrder": "ofm:wwg-order-001",
+      "lineNumber": 3,
+      "productDescription": "AU Grass-Fed Beef Fillet (vacuum-packed primals)",
+      "commodityClass": "Chilled",
+      "quantity": "1.5 tonnes",
+      "unitPrice": 5600,
+      "unitPricePer": "tonne",
+      "lineValue": 8400,
+      "currency": "GBP",
+      "committedShelfLife": "52 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-22",
+      "lineStatus": "Confirmed",
+      "corridorSource": "AU-UK",
+      "temperatureRequirement": "0-2C",
+      "relationships": {
+        "allocatedBy": ["ofm:wwg-alloc-003"],
+        "partOfOrder": "ofm:wwg-order-001"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-002-01",
+      "lineId": "ofm:wwg-line-002-01",
+      "parentOrder": "ofm:wwg-order-002",
+      "lineNumber": 1,
+      "productDescription": "NZ Unsalted Butter (25kg blocks, Fonterra)",
+      "commodityClass": "Chilled",
+      "quantity": "3.0 tonnes",
+      "unitPrice": 4800,
+      "unitPricePer": "tonne",
+      "lineValue": 14400,
+      "currency": "GBP",
+      "committedShelfLife": "120 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-28",
+      "lineStatus": "Allocated",
+      "corridorSource": "NZ-UK",
+      "temperatureRequirement": "2-5C",
+      "relationships": {
+        "allocatedBy": ["ofm:wwg-alloc-004"],
+        "partOfOrder": "ofm:wwg-order-002"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-002-02",
+      "lineId": "ofm:wwg-line-002-02",
+      "parentOrder": "ofm:wwg-order-002",
+      "lineNumber": 2,
+      "productDescription": "NZ Mature Cheddar (20kg blocks, Mainland)",
+      "commodityClass": "Chilled",
+      "quantity": "3.0 tonnes",
+      "unitPrice": 5200,
+      "unitPricePer": "tonne",
+      "lineValue": 15600,
+      "currency": "GBP",
+      "committedShelfLife": "180 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-28",
+      "lineStatus": "Allocated",
+      "corridorSource": "NZ-UK",
+      "temperatureRequirement": "2-5C",
+      "relationships": {
+        "allocatedBy": ["ofm:wwg-alloc-005"],
+        "partOfOrder": "ofm:wwg-order-002"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-002-03",
+      "lineId": "ofm:wwg-line-002-03",
+      "parentOrder": "ofm:wwg-order-002",
+      "lineNumber": 3,
+      "productDescription": "NZ Lamb Rack (French-trimmed, frozen, Silver Fern Farms)",
+      "commodityClass": "Frozen",
+      "quantity": "3.0 tonnes",
+      "unitPrice": 6400,
+      "unitPricePer": "tonne",
+      "lineValue": 19200,
+      "currency": "GBP",
+      "committedShelfLife": "365 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-28",
+      "lineStatus": "Allocated",
+      "corridorSource": "NZ-UK",
+      "temperatureRequirement": "-18C or below",
+      "relationships": {
+        "allocatedBy": ["ofm:wwg-alloc-006"],
+        "partOfOrder": "ofm:wwg-order-002"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-002-04",
+      "lineId": "ofm:wwg-line-002-04",
+      "parentOrder": "ofm:wwg-order-002",
+      "lineNumber": 4,
+      "productDescription": "NZ Lamb Shoulder (bone-in, frozen, Silver Fern Farms)",
+      "commodityClass": "Frozen",
+      "quantity": "3.0 tonnes",
+      "unitPrice": 5267,
+      "unitPricePer": "tonne",
+      "lineValue": 15800,
+      "currency": "GBP",
+      "committedShelfLife": "365 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-28",
+      "lineStatus": "Allocated",
+      "corridorSource": "NZ-UK",
+      "temperatureRequirement": "-18C or below",
+      "relationships": {
+        "allocatedBy": ["ofm:wwg-alloc-007"],
+        "partOfOrder": "ofm:wwg-order-002"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-003-01",
+      "lineId": "ofm:wwg-line-003-01",
+      "parentOrder": "ofm:wwg-order-003",
+      "lineNumber": 1,
+      "productDescription": "IS Atlantic Cod Fillet (skinless, pin-bone out, Thorbjorn hf)",
+      "commodityClass": "Chilled",
+      "quantity": "1.2 tonnes",
+      "unitPrice": 9500,
+      "unitPricePer": "tonne",
+      "lineValue": 11400,
+      "currency": "GBP",
+      "committedShelfLife": "8 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-18",
+      "lineStatus": "InDispatch",
+      "corridorSource": "IS-UK",
+      "temperatureRequirement": "0-2C",
+      "relationships": {
+        "allocatedBy": ["ofm:wwg-alloc-008"],
+        "partOfOrder": "ofm:wwg-order-003"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-003-02",
+      "lineId": "ofm:wwg-line-003-02",
+      "parentOrder": "ofm:wwg-order-003",
+      "lineNumber": 2,
+      "productDescription": "IS Haddock Fillet (skinless, Thorbjorn hf)",
+      "commodityClass": "Chilled",
+      "quantity": "1.0 tonnes",
+      "unitPrice": 8800,
+      "unitPricePer": "tonne",
+      "lineValue": 8800,
+      "currency": "GBP",
+      "committedShelfLife": "7 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-18",
+      "lineStatus": "Cancelled",
+      "corridorSource": "IS-UK",
+      "temperatureRequirement": "0-2C",
+      "cancellationReason": "Customer cancelled line — catering contract CC-2026-0089 reduced scope",
+      "relationships": {
+        "allocatedBy": ["ofm:wwg-alloc-009"],
+        "partOfOrder": "ofm:wwg-order-003",
+        "cancelledByChange": "ofm:wwg-change-004"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-003-03",
+      "lineId": "ofm:wwg-line-003-03",
+      "parentOrder": "ofm:wwg-order-003",
+      "lineNumber": 3,
+      "productDescription": "IS Atlantic Salmon Fillet (skin-on, Thorbjorn hf)",
+      "commodityClass": "Chilled",
+      "quantity": "0.8 tonnes",
+      "unitPrice": 9750,
+      "unitPricePer": "tonne",
+      "lineValue": 7800,
+      "currency": "GBP",
+      "committedShelfLife": "9 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-18",
+      "lineStatus": "InDispatch",
+      "corridorSource": "IS-UK",
+      "temperatureRequirement": "0-2C",
+      "relationships": {
+        "allocatedBy": ["ofm:wwg-alloc-010"],
+        "partOfOrder": "ofm:wwg-order-003"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-004-01",
+      "lineId": "ofm:wwg-line-004-01",
+      "parentOrder": "ofm:wwg-order-004",
+      "lineNumber": 1,
+      "productDescription": "AU Wagyu Beef Steak (MB4-5, vacuum-packed portions)",
+      "commodityClass": "Chilled",
+      "quantity": "0.4 tonnes",
+      "unitPrice": 18000,
+      "unitPricePer": "tonne",
+      "lineValue": 7200,
+      "currency": "GBP",
+      "committedShelfLife": "45 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-10",
+      "lineStatus": "Delivered",
+      "corridorSource": "AU-UK",
+      "temperatureRequirement": "0-2C",
+      "relationships": {
+        "allocatedBy": ["ofm:wwg-alloc-011"],
+        "partOfOrder": "ofm:wwg-order-004"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-004-02",
+      "lineId": "ofm:wwg-line-004-02",
+      "parentOrder": "ofm:wwg-order-004",
+      "lineNumber": 2,
+      "productDescription": "IS Smoked Salmon (sliced, 200g retail packs, Thorbjorn hf)",
+      "commodityClass": "Chilled",
+      "quantity": "0.3 tonnes",
+      "unitPrice": 14000,
+      "unitPricePer": "tonne",
+      "lineValue": 4200,
+      "currency": "GBP",
+      "committedShelfLife": "21 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-10",
+      "lineStatus": "Delivered",
+      "corridorSource": "IS-UK",
+      "temperatureRequirement": "0-4C",
+      "relationships": {
+        "allocatedBy": ["ofm:wwg-alloc-012"],
+        "partOfOrder": "ofm:wwg-order-004"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-004-03",
+      "lineId": "ofm:wwg-line-004-03",
+      "parentOrder": "ofm:wwg-order-004",
+      "lineNumber": 3,
+      "productDescription": "IE Kerrygold Butter (227g blocks, retail-ready, Ornua)",
+      "commodityClass": "Chilled",
+      "quantity": "0.5 tonnes",
+      "unitPrice": 6200,
+      "unitPricePer": "tonne",
+      "lineValue": 3100,
+      "currency": "GBP",
+      "committedShelfLife": "90 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-10",
+      "lineStatus": "Delivered",
+      "corridorSource": "IE-UK",
+      "temperatureRequirement": "2-5C",
+      "relationships": {
+        "allocatedBy": [],
+        "partOfOrder": "ofm:wwg-order-004"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-004-04",
+      "lineId": "ofm:wwg-line-004-04",
+      "parentOrder": "ofm:wwg-order-004",
+      "lineNumber": 4,
+      "productDescription": "IE Mature Cheddar (200g retail wedges, Kerrygold)",
+      "commodityClass": "Chilled",
+      "quantity": "0.3 tonnes",
+      "unitPrice": 13333,
+      "unitPricePer": "tonne",
+      "lineValue": 4000,
+      "currency": "GBP",
+      "committedShelfLife": "120 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-10",
+      "lineStatus": "Delivered",
+      "corridorSource": "IE-UK",
+      "temperatureRequirement": "2-5C",
+      "relationships": {
+        "allocatedBy": [],
+        "partOfOrder": "ofm:wwg-order-004"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-005-01",
+      "lineId": "ofm:wwg-line-005-01",
+      "parentOrder": "ofm:wwg-order-005",
+      "lineNumber": 1,
+      "productDescription": "IE Unsalted Butter Bulk (25kg blocks, Ornua)",
+      "commodityClass": "Chilled",
+      "quantity": "2.5 tonnes",
+      "unitPrice": 4600,
+      "unitPricePer": "tonne",
+      "lineValue": 11500,
+      "currency": "GBP",
+      "committedShelfLife": "90 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-25",
+      "lineStatus": "Confirmed",
+      "corridorSource": "IE-UK",
+      "temperatureRequirement": "2-5C",
+      "relationships": {
+        "allocatedBy": [],
+        "partOfOrder": "ofm:wwg-order-005"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-005-02",
+      "lineId": "ofm:wwg-line-005-02",
+      "parentOrder": "ofm:wwg-order-005",
+      "lineNumber": 2,
+      "productDescription": "IE Cheddar Bulk (20kg blocks, Carbery)",
+      "commodityClass": "Chilled",
+      "quantity": "2.5 tonnes",
+      "unitPrice": 5000,
+      "unitPricePer": "tonne",
+      "lineValue": 12500,
+      "currency": "GBP",
+      "committedShelfLife": "150 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-25",
+      "lineStatus": "Confirmed",
+      "corridorSource": "IE-UK",
+      "temperatureRequirement": "2-5C",
+      "relationships": {
+        "allocatedBy": [],
+        "partOfOrder": "ofm:wwg-order-005"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-005-03",
+      "lineId": "ofm:wwg-line-005-03",
+      "parentOrder": "ofm:wwg-order-005",
+      "lineNumber": 3,
+      "productDescription": "IE Beef Sirloin (vacuum-packed, ABP Food Group)",
+      "commodityClass": "Chilled",
+      "quantity": "1.5 tonnes",
+      "unitPrice": 6200,
+      "unitPricePer": "tonne",
+      "lineValue": 9300,
+      "currency": "GBP",
+      "committedShelfLife": "28 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-25",
+      "lineStatus": "Confirmed",
+      "corridorSource": "IE-UK",
+      "temperatureRequirement": "0-2C",
+      "relationships": {
+        "allocatedBy": [],
+        "partOfOrder": "ofm:wwg-order-005"
+      }
+    },
+    {
+      "@type": "ofm:OrderLine",
+      "@id": "ofm:wwg-line-005-04",
+      "lineId": "ofm:wwg-line-005-04",
+      "parentOrder": "ofm:wwg-order-005",
+      "lineNumber": 4,
+      "productDescription": "IE Beef Mince (80/20, 10kg catering packs, ABP Food Group)",
+      "commodityClass": "Chilled",
+      "quantity": "1.5 tonnes",
+      "unitPrice": 3133,
+      "unitPricePer": "tonne",
+      "lineValue": 4700,
+      "currency": "GBP",
+      "committedShelfLife": "14 days remaining at dispatch",
+      "requestedDeliveryDate": "2026-03-25",
+      "lineStatus": "QuantityReduced",
+      "originalQuantity": "1.5 tonnes",
+      "revisedQuantity": "0.9 tonnes",
+      "corridorSource": "IE-UK",
+      "temperatureRequirement": "0-2C",
+      "relationships": {
+        "allocatedBy": [],
+        "partOfOrder": "ofm:wwg-order-005",
+        "reducedByChange": "ofm:wwg-change-002"
+      }
+    },
+
+    {"_section": "=== STOCK ALLOCATIONS (12 Allocations linking LSC shipments to order lines) ==="},
+
+    {
+      "@type": "ofm:StockAllocation",
+      "@id": "ofm:wwg-alloc-001",
+      "allocationId": "ofm:wwg-alloc-001",
+      "allocatedQuantity": "2.5 tonnes",
+      "allocationDate": "2026-03-05",
+      "allocationStatus": "Confirmed",
+      "batchRef": "AU-BNE-2026-W09-SIRLOIN",
+      "shelfLifeAtAllocation": "58 days",
+      "storageLocation": "Daventry DC — Zone A (Chilled 0-2C)",
+      "temperatureZone": "Chilled",
+      "palletPositions": 8,
+      "relationships": {
+        "allocatedTo": "ofm:wwg-line-001-01",
+        "allocatedFrom": "lsc:wwg-shipment-example-001",
+        "storedAt": "lsc:wwg-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:StockAllocation",
+      "@id": "ofm:wwg-alloc-002",
+      "allocationId": "ofm:wwg-alloc-002",
+      "allocatedQuantity": "2.0 tonnes",
+      "allocationDate": "2026-03-05",
+      "allocationStatus": "Confirmed",
+      "batchRef": "AU-BNE-2026-W09-RIBEYE",
+      "shelfLifeAtAllocation": "56 days",
+      "storageLocation": "Daventry DC — Zone A (Chilled 0-2C)",
+      "temperatureZone": "Chilled",
+      "palletPositions": 7,
+      "relationships": {
+        "allocatedTo": "ofm:wwg-line-001-02",
+        "allocatedFrom": "lsc:wwg-shipment-example-001",
+        "storedAt": "lsc:wwg-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:StockAllocation",
+      "@id": "ofm:wwg-alloc-003",
+      "allocationId": "ofm:wwg-alloc-003",
+      "allocatedQuantity": "1.5 tonnes",
+      "allocationDate": "2026-03-05",
+      "allocationStatus": "Confirmed",
+      "batchRef": "AU-BNE-2026-W09-FILLET",
+      "shelfLifeAtAllocation": "58 days",
+      "storageLocation": "Daventry DC — Zone A (Chilled 0-2C)",
+      "temperatureZone": "Chilled",
+      "palletPositions": 5,
+      "relationships": {
+        "allocatedTo": "ofm:wwg-line-001-03",
+        "allocatedFrom": "lsc:wwg-shipment-example-001",
+        "storedAt": "lsc:wwg-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:StockAllocation",
+      "@id": "ofm:wwg-alloc-004",
+      "allocationId": "ofm:wwg-alloc-004",
+      "allocatedQuantity": "3.0 tonnes",
+      "allocationDate": "2026-03-08",
+      "allocationStatus": "Allocated",
+      "batchRef": "NZ-LYT-2026-W08-BUTTER",
+      "shelfLifeAtAllocation": "126 days",
+      "storageLocation": "Daventry DC — Zone B (Chilled 2-5C)",
+      "temperatureZone": "Chilled",
+      "palletPositions": 10,
+      "relationships": {
+        "allocatedTo": "ofm:wwg-line-002-01",
+        "allocatedFrom": "lsc:wwg-nz-shipment-example-001",
+        "storedAt": "lsc:wwg-nz-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:StockAllocation",
+      "@id": "ofm:wwg-alloc-005",
+      "allocationId": "ofm:wwg-alloc-005",
+      "allocatedQuantity": "3.0 tonnes",
+      "allocationDate": "2026-03-08",
+      "allocationStatus": "Allocated",
+      "batchRef": "NZ-LYT-2026-W08-CHEDDAR",
+      "shelfLifeAtAllocation": "186 days",
+      "storageLocation": "Daventry DC — Zone B (Chilled 2-5C)",
+      "temperatureZone": "Chilled",
+      "palletPositions": 10,
+      "relationships": {
+        "allocatedTo": "ofm:wwg-line-002-02",
+        "allocatedFrom": "lsc:wwg-nz-shipment-example-001",
+        "storedAt": "lsc:wwg-nz-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:StockAllocation",
+      "@id": "ofm:wwg-alloc-006",
+      "allocationId": "ofm:wwg-alloc-006",
+      "allocatedQuantity": "3.0 tonnes",
+      "allocationDate": "2026-03-08",
+      "allocationStatus": "Allocated",
+      "batchRef": "NZ-LYT-2026-W08-LAMB-RACK",
+      "shelfLifeAtAllocation": "371 days",
+      "storageLocation": "Daventry DC — Zone D (Frozen -18C)",
+      "temperatureZone": "Frozen",
+      "palletPositions": 10,
+      "relationships": {
+        "allocatedTo": "ofm:wwg-line-002-03",
+        "allocatedFrom": "lsc:wwg-nz-shipment-example-001",
+        "storedAt": "lsc:wwg-nz-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:StockAllocation",
+      "@id": "ofm:wwg-alloc-007",
+      "allocationId": "ofm:wwg-alloc-007",
+      "allocatedQuantity": "3.0 tonnes",
+      "allocationDate": "2026-03-08",
+      "allocationStatus": "Allocated",
+      "batchRef": "NZ-LYT-2026-W08-LAMB-SHOULDER",
+      "shelfLifeAtAllocation": "371 days",
+      "storageLocation": "Daventry DC — Zone D (Frozen -18C)",
+      "temperatureZone": "Frozen",
+      "palletPositions": 10,
+      "relationships": {
+        "allocatedTo": "ofm:wwg-line-002-04",
+        "allocatedFrom": "lsc:wwg-nz-shipment-example-001",
+        "storedAt": "lsc:wwg-nz-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:StockAllocation",
+      "@id": "ofm:wwg-alloc-008",
+      "allocationId": "ofm:wwg-alloc-008",
+      "allocatedQuantity": "1.2 tonnes",
+      "allocationDate": "2026-03-12",
+      "allocationStatus": "Dispatched",
+      "batchRef": "IS-RVK-2026-W10-COD",
+      "shelfLifeAtAllocation": "10 days",
+      "storageLocation": "Daventry DC — Zone A (Chilled 0-2C)",
+      "temperatureZone": "Chilled",
+      "palletPositions": 4,
+      "relationships": {
+        "allocatedTo": "ofm:wwg-line-003-01",
+        "allocatedFrom": "lsc:wwg-is-shipment-example-001",
+        "storedAt": "lsc:wwg-is-node-grimsby-cold-store"
+      }
+    },
+    {
+      "@type": "ofm:StockAllocation",
+      "@id": "ofm:wwg-alloc-009",
+      "allocationId": "ofm:wwg-alloc-009",
+      "allocatedQuantity": "1.0 tonnes",
+      "allocationDate": "2026-03-12",
+      "allocationStatus": "Cancelled",
+      "batchRef": "IS-RVK-2026-W10-HADDOCK",
+      "shelfLifeAtAllocation": "9 days",
+      "storageLocation": "Daventry DC — Zone A (Chilled 0-2C)",
+      "temperatureZone": "Chilled",
+      "palletPositions": 3,
+      "cancellationReason": "Order line cancelled by customer — stock returned to available pool for reallocation",
+      "relationships": {
+        "allocatedTo": "ofm:wwg-line-003-02",
+        "allocatedFrom": "lsc:wwg-is-shipment-example-001",
+        "storedAt": "lsc:wwg-is-node-grimsby-cold-store",
+        "cancelledByChange": "ofm:wwg-change-004"
+      }
+    },
+    {
+      "@type": "ofm:StockAllocation",
+      "@id": "ofm:wwg-alloc-010",
+      "allocationId": "ofm:wwg-alloc-010",
+      "allocatedQuantity": "0.8 tonnes",
+      "allocationDate": "2026-03-12",
+      "allocationStatus": "Dispatched",
+      "batchRef": "IS-RVK-2026-W10-SALMON",
+      "shelfLifeAtAllocation": "11 days",
+      "storageLocation": "Daventry DC — Zone A (Chilled 0-2C)",
+      "temperatureZone": "Chilled",
+      "palletPositions": 3,
+      "relationships": {
+        "allocatedTo": "ofm:wwg-line-003-03",
+        "allocatedFrom": "lsc:wwg-is-shipment-example-001",
+        "storedAt": "lsc:wwg-is-node-grimsby-cold-store"
+      }
+    },
+    {
+      "@type": "ofm:StockAllocation",
+      "@id": "ofm:wwg-alloc-011",
+      "allocationId": "ofm:wwg-alloc-011",
+      "allocatedQuantity": "0.4 tonnes",
+      "allocationDate": "2026-03-04",
+      "allocationStatus": "Delivered",
+      "batchRef": "AU-BNE-2026-W08-WAGYU",
+      "shelfLifeAtAllocation": "50 days",
+      "storageLocation": "Daventry DC — Zone A (Chilled 0-2C)",
+      "temperatureZone": "Chilled",
+      "palletPositions": 2,
+      "relationships": {
+        "allocatedTo": "ofm:wwg-line-004-01",
+        "allocatedFrom": "lsc:wwg-shipment-example-001",
+        "storedAt": "lsc:wwg-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:StockAllocation",
+      "@id": "ofm:wwg-alloc-012",
+      "allocationId": "ofm:wwg-alloc-012",
+      "allocatedQuantity": "0.3 tonnes",
+      "allocationDate": "2026-03-06",
+      "allocationStatus": "Delivered",
+      "batchRef": "IS-RVK-2026-W09-SMOKED-SALMON",
+      "shelfLifeAtAllocation": "23 days",
+      "storageLocation": "Daventry DC — Zone A (Chilled 0-2C)",
+      "temperatureZone": "Chilled",
+      "palletPositions": 1,
+      "relationships": {
+        "allocatedTo": "ofm:wwg-line-004-02",
+        "allocatedFrom": "lsc:wwg-is-shipment-example-001",
+        "storedAt": "lsc:wwg-is-node-grimsby-cold-store"
+      }
+    },
+
+    {"_section": "=== STORAGE EVENTS (8 Events showing cost accumulation for key batches) ==="},
+
+    {
+      "@type": "ofm:StorageEvent",
+      "@id": "ofm:wwg-storage-evt-001",
+      "eventId": "ofm:wwg-storage-evt-001",
+      "eventDate": "2026-03-06",
+      "batchRef": "AU-BNE-2026-W09-SIRLOIN",
+      "allocationRef": "ofm:wwg-alloc-001",
+      "palletsStored": 8,
+      "dailyRate": 3.20,
+      "dailyRatePer": "pallet",
+      "temperatureMultiplier": 1.4,
+      "temperatureZone": "Chilled",
+      "dailyCost": 35.84,
+      "cumulativeCost": 35.84,
+      "shelfLifeRemaining": "57 days",
+      "capacityUtilisation": 0.72,
+      "dwellDays": 1,
+      "storageLocation": "Daventry DC — Zone A",
+      "relationships": {
+        "forAllocation": "ofm:wwg-alloc-001",
+        "atFacility": "lsc:wwg-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:StorageEvent",
+      "@id": "ofm:wwg-storage-evt-002",
+      "eventId": "ofm:wwg-storage-evt-002",
+      "eventDate": "2026-03-15",
+      "batchRef": "AU-BNE-2026-W09-SIRLOIN",
+      "allocationRef": "ofm:wwg-alloc-001",
+      "palletsStored": 8,
+      "dailyRate": 3.20,
+      "dailyRatePer": "pallet",
+      "temperatureMultiplier": 1.4,
+      "temperatureZone": "Chilled",
+      "dailyCost": 35.84,
+      "cumulativeCost": 358.40,
+      "shelfLifeRemaining": "48 days",
+      "capacityUtilisation": 0.78,
+      "dwellDays": 10,
+      "storageLocation": "Daventry DC — Zone A",
+      "note": "Inbound AU shipment delayed 2 days at Singapore transhipment — storage accumulating above plan",
+      "relationships": {
+        "forAllocation": "ofm:wwg-alloc-001",
+        "atFacility": "lsc:wwg-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:StorageEvent",
+      "@id": "ofm:wwg-storage-evt-003",
+      "eventId": "ofm:wwg-storage-evt-003",
+      "eventDate": "2026-03-09",
+      "batchRef": "NZ-LYT-2026-W08-LAMB-RACK",
+      "allocationRef": "ofm:wwg-alloc-006",
+      "palletsStored": 10,
+      "dailyRate": 3.20,
+      "dailyRatePer": "pallet",
+      "temperatureMultiplier": 1.8,
+      "temperatureZone": "Frozen",
+      "dailyCost": 57.60,
+      "cumulativeCost": 57.60,
+      "shelfLifeRemaining": "370 days",
+      "capacityUtilisation": 0.85,
+      "dwellDays": 1,
+      "storageLocation": "Daventry DC — Zone D (Frozen)",
+      "relationships": {
+        "forAllocation": "ofm:wwg-alloc-006",
+        "atFacility": "lsc:wwg-nz-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:StorageEvent",
+      "@id": "ofm:wwg-storage-evt-004",
+      "eventId": "ofm:wwg-storage-evt-004",
+      "eventDate": "2026-04-02",
+      "batchRef": "NZ-LYT-2026-W08-LAMB-RACK",
+      "allocationRef": "ofm:wwg-alloc-006",
+      "palletsStored": 10,
+      "dailyRate": 3.20,
+      "dailyRatePer": "pallet",
+      "temperatureMultiplier": 1.8,
+      "temperatureZone": "Frozen",
+      "dailyCost": 57.60,
+      "cumulativeCost": 1440.00,
+      "shelfLifeRemaining": "346 days",
+      "capacityUtilisation": 0.88,
+      "dwellDays": 25,
+      "storageLocation": "Daventry DC — Zone D (Frozen)",
+      "note": "Customer date push-back (Order 002) added 5 extra storage days — frozen multiplier 1.8x accelerating cost",
+      "relationships": {
+        "forAllocation": "ofm:wwg-alloc-006",
+        "atFacility": "lsc:wwg-nz-node-cold-store-daventry",
+        "triggeredByChange": "ofm:wwg-change-001"
+      }
+    },
+    {
+      "@type": "ofm:StorageEvent",
+      "@id": "ofm:wwg-storage-evt-005",
+      "eventId": "ofm:wwg-storage-evt-005",
+      "eventDate": "2026-03-13",
+      "batchRef": "IS-RVK-2026-W10-COD",
+      "allocationRef": "ofm:wwg-alloc-008",
+      "palletsStored": 4,
+      "dailyRate": 3.20,
+      "dailyRatePer": "pallet",
+      "temperatureMultiplier": 1.4,
+      "temperatureZone": "Chilled",
+      "dailyCost": 17.92,
+      "cumulativeCost": 17.92,
+      "shelfLifeRemaining": "9 days",
+      "capacityUtilisation": 0.74,
+      "dwellDays": 1,
+      "storageLocation": "Daventry DC — Zone A",
+      "note": "IS seafood — critical shelf life; must dispatch within 48 hours",
+      "relationships": {
+        "forAllocation": "ofm:wwg-alloc-008",
+        "atFacility": "lsc:wwg-is-node-grimsby-cold-store"
+      }
+    },
+    {
+      "@type": "ofm:StorageEvent",
+      "@id": "ofm:wwg-storage-evt-006",
+      "eventId": "ofm:wwg-storage-evt-006",
+      "eventDate": "2026-03-14",
+      "batchRef": "IS-RVK-2026-W10-HADDOCK",
+      "allocationRef": "ofm:wwg-alloc-009",
+      "palletsStored": 3,
+      "dailyRate": 3.20,
+      "dailyRatePer": "pallet",
+      "temperatureMultiplier": 1.4,
+      "temperatureZone": "Chilled",
+      "dailyCost": 13.44,
+      "cumulativeCost": 26.88,
+      "shelfLifeRemaining": "7 days",
+      "capacityUtilisation": 0.74,
+      "dwellDays": 2,
+      "storageLocation": "Daventry DC — Zone A",
+      "note": "Haddock allocation cancelled by customer — stock returned to available pool; shelf life pressure means reallocation or forced sale within 5 days",
+      "relationships": {
+        "forAllocation": "ofm:wwg-alloc-009",
+        "atFacility": "lsc:wwg-is-node-grimsby-cold-store",
+        "triggeredByChange": "ofm:wwg-change-004"
+      }
+    },
+    {
+      "@type": "ofm:StorageEvent",
+      "@id": "ofm:wwg-storage-evt-007",
+      "eventId": "ofm:wwg-storage-evt-007",
+      "eventDate": "2026-03-05",
+      "batchRef": "AU-BNE-2026-W08-WAGYU",
+      "allocationRef": "ofm:wwg-alloc-011",
+      "palletsStored": 2,
+      "dailyRate": 3.20,
+      "dailyRatePer": "pallet",
+      "temperatureMultiplier": 1.4,
+      "temperatureZone": "Chilled",
+      "dailyCost": 8.96,
+      "cumulativeCost": 8.96,
+      "shelfLifeRemaining": "49 days",
+      "capacityUtilisation": 0.72,
+      "dwellDays": 1,
+      "storageLocation": "Daventry DC — Zone A",
+      "note": "Premium wagyu — fast turnaround, minimal dwell. Model allocation.",
+      "relationships": {
+        "forAllocation": "ofm:wwg-alloc-011",
+        "atFacility": "lsc:wwg-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:StorageEvent",
+      "@id": "ofm:wwg-storage-evt-008",
+      "eventId": "ofm:wwg-storage-evt-008",
+      "eventDate": "2026-03-20",
+      "batchRef": "IE-DUB-2026-W10-BEEF-MINCE",
+      "allocationRef": "ofm:wwg-line-005-04",
+      "palletsStored": 5,
+      "dailyRate": 3.20,
+      "dailyRatePer": "pallet",
+      "temperatureMultiplier": 1.4,
+      "temperatureZone": "Chilled",
+      "dailyCost": 22.40,
+      "cumulativeCost": 44.80,
+      "shelfLifeRemaining": "12 days",
+      "capacityUtilisation": 0.76,
+      "dwellDays": 2,
+      "storageLocation": "Daventry DC — Overflow Zone C",
+      "note": "IE beef mince — 40% quantity reduction by customer creates 0.6t orphaned stock. Overflow storage until reallocation or forced sale.",
+      "relationships": {
+        "forAllocation": "ofm:wwg-line-005-04",
+        "atFacility": "lsc:wwg-ie-node-daventry-cold-store",
+        "triggeredByChange": "ofm:wwg-change-002"
+      }
+    },
+
+    {"_section": "=== DELIVERY WINDOWS (5 Windows, one per order) ==="},
+
+    {
+      "@type": "ofm:DeliveryWindow",
+      "@id": "ofm:wwg-dw-001",
+      "windowId": "ofm:wwg-dw-001",
+      "parentOrder": "ofm:wwg-order-001",
+      "scheduledDispatchDate": "2026-03-21",
+      "scheduledDeliveryDate": "2026-03-22",
+      "windowStatus": "Confirmed",
+      "deliverySlot": "06:00-08:00 (AM pre-service)",
+      "vehicleRequirements": "7.5t rigid, chilled 0-2C, tail-lift, FORS Silver certified, Central London ULEZ compliant",
+      "receivingContact": "Head Chef — Belgravia Dining Group (Mayfair)",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-001",
+        "dispatchFrom": "lsc:wwg-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:DeliveryWindow",
+      "@id": "ofm:wwg-dw-002",
+      "windowId": "ofm:wwg-dw-002",
+      "parentOrder": "ofm:wwg-order-002",
+      "scheduledDispatchDate": "2026-04-01",
+      "scheduledDeliveryDate": "2026-04-02",
+      "windowStatus": "Revised",
+      "originalDeliveryDate": "2026-03-28",
+      "deliverySlot": "08:00-12:00 (AM)",
+      "vehicleRequirements": "18t artic, dual-temp (chilled + frozen compartments), forklift offload, Trafford Park booking ref required",
+      "receivingContact": "Goods-In Manager — Northern Wholesale Foods",
+      "note": "Delivery pushed back 5 days at customer request (Change 001)",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-002",
+        "dispatchFrom": "lsc:wwg-nz-node-cold-store-daventry",
+        "revisedByChange": "ofm:wwg-change-001"
+      }
+    },
+    {
+      "@type": "ofm:DeliveryWindow",
+      "@id": "ofm:wwg-dw-003",
+      "windowId": "ofm:wwg-dw-003",
+      "parentOrder": "ofm:wwg-order-003",
+      "scheduledDispatchDate": "2026-03-17",
+      "scheduledDeliveryDate": "2026-03-18",
+      "windowStatus": "InTransit",
+      "deliverySlot": "06:00-09:00 (AM only — catering prep window)",
+      "vehicleRequirements": "7.5t rigid, chilled 0-2C, tail-lift, Birmingham city centre access",
+      "receivingContact": "Operations Manager — Fresh & Wild Catering",
+      "note": "Haddock line cancelled — delivery reduced to 2 lines (cod + salmon). Expedited dispatch due to shelf life pressure.",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-003",
+        "dispatchFrom": "lsc:wwg-is-node-grimsby-cold-store"
+      }
+    },
+    {
+      "@type": "ofm:DeliveryWindow",
+      "@id": "ofm:wwg-dw-004",
+      "windowId": "ofm:wwg-dw-004",
+      "parentOrder": "ofm:wwg-order-004",
+      "scheduledDispatchDate": "2026-03-09",
+      "scheduledDeliveryDate": "2026-03-10",
+      "windowStatus": "Delivered",
+      "deliverySlot": "10:00-14:00 (daytime)",
+      "vehicleRequirements": "3.5t van, chilled 0-4C, tail-lift, Daventry industrial estate access",
+      "receivingContact": "Fulfilment Manager — GourmetBox Online",
+      "deliveryOutcome": "OnTime",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-004",
+        "dispatchFrom": "lsc:wwg-node-cold-store-daventry"
+      }
+    },
+    {
+      "@type": "ofm:DeliveryWindow",
+      "@id": "ofm:wwg-dw-005",
+      "windowId": "ofm:wwg-dw-005",
+      "parentOrder": "ofm:wwg-order-005",
+      "scheduledDispatchDate": "2026-03-24",
+      "scheduledDeliveryDate": "2026-03-25",
+      "windowStatus": "Confirmed",
+      "deliverySlot": "07:00-11:00 (AM)",
+      "vehicleRequirements": "18t artic, chilled 0-4C, forklift offload, Avonmouth booking ref required 24h in advance",
+      "receivingContact": "Warehouse Supervisor — Celtic Foods Distribution",
+      "note": "Beef mince line quantity reduced 40% — vehicle now under-utilised; consolidation opportunity with other Bristol-bound orders",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-005",
+        "dispatchFrom": "lsc:wwg-ie-node-daventry-cold-store"
+      }
+    },
+
+    {"_section": "=== DISPATCH LEGS (5 Legs, one per order) ==="},
+
+    {
+      "@type": "ofm:DispatchLeg",
+      "@id": "ofm:wwg-dispatch-001",
+      "dispatchId": "ofm:wwg-dispatch-001",
+      "parentOrder": "ofm:wwg-order-001",
+      "origin": "Daventry DC (DIRFT), Northamptonshire",
+      "destination": "Central London (Mayfair depot), W1K 5AB",
+      "carrierName": "Reed Boardall Temperature Controlled Logistics",
+      "vehicleType": "7.5t rigid chilled",
+      "temperatureClass": "Chilled (0-2C)",
+      "routeDescription": "Daventry DC → M1 South → M25 → A40 → Central London (Mayfair). Overnight departure for AM delivery.",
+      "estimatedTransitHours": 4.5,
+      "distanceKm": 130,
+      "dispatchCost": 385,
+      "currency": "GBP",
+      "deliveryOutcome": "Pending",
+      "isConsolidated": false,
+      "note": "Single-customer drop; premium restaurant chain requires named chef sign-off at delivery",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-001",
+        "departingFrom": "lsc:wwg-node-cold-store-daventry",
+        "deliveryWindow": "ofm:wwg-dw-001"
+      }
+    },
+    {
+      "@type": "ofm:DispatchLeg",
+      "@id": "ofm:wwg-dispatch-002",
+      "dispatchId": "ofm:wwg-dispatch-002",
+      "parentOrder": "ofm:wwg-order-002",
+      "origin": "Daventry DC (DIRFT), Northamptonshire",
+      "destination": "Manchester (Trafford Park cold store), M17 1SN",
+      "carrierName": "DHL Temperature Controlled Logistics",
+      "vehicleType": "18t artic dual-temp",
+      "temperatureClass": "Dual-Temp (Chilled 2-5C + Frozen -18C)",
+      "routeDescription": "Daventry DC → M1 North → M6 → M56 → Trafford Park. Overnight departure.",
+      "estimatedTransitHours": 5.0,
+      "distanceKm": 210,
+      "dispatchCost": 620,
+      "currency": "GBP",
+      "deliveryOutcome": "Pending",
+      "isConsolidated": false,
+      "note": "Dual-temp vehicle required for mixed dairy (chilled) and lamb (frozen). Date push-back means dispatch now 2026-04-01.",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-002",
+        "departingFrom": "lsc:wwg-nz-node-cold-store-daventry",
+        "deliveryWindow": "ofm:wwg-dw-002"
+      }
+    },
+    {
+      "@type": "ofm:DispatchLeg",
+      "@id": "ofm:wwg-dispatch-003",
+      "dispatchId": "ofm:wwg-dispatch-003",
+      "parentOrder": "ofm:wwg-order-003",
+      "origin": "Grimsby Cold Store / Daventry DC",
+      "destination": "Birmingham (Aston Cross food hub), B6 5RQ",
+      "carrierName": "Clipper Logistics (temperature-controlled division)",
+      "vehicleType": "7.5t rigid chilled",
+      "temperatureClass": "Chilled (0-2C)",
+      "routeDescription": "Grimsby → A180 → M180 → M1 South → M42 → A38 → Birmingham. Expedited same-day dispatch.",
+      "estimatedTransitHours": 3.5,
+      "distanceKm": 190,
+      "dispatchCost": 445,
+      "currency": "GBP",
+      "deliveryOutcome": "InTransit",
+      "isConsolidated": false,
+      "note": "Expedited dispatch — shelf life critical (IS seafood, 8-9 days remaining). Haddock line cancelled; vehicle now carries 2 of 3 original lines.",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-003",
+        "departingFrom": "lsc:wwg-is-node-grimsby-cold-store",
+        "deliveryWindow": "ofm:wwg-dw-003"
+      }
+    },
+    {
+      "@type": "ofm:DispatchLeg",
+      "@id": "ofm:wwg-dispatch-004",
+      "dispatchId": "ofm:wwg-dispatch-004",
+      "parentOrder": "ofm:wwg-order-004",
+      "origin": "Daventry DC (DIRFT), Northamptonshire",
+      "destination": "Daventry fulfilment centre (GourmetBox pick-pack), NN11 8YJ",
+      "carrierName": "WWG Internal Fleet",
+      "vehicleType": "3.5t van chilled",
+      "temperatureClass": "Chilled (0-4C)",
+      "routeDescription": "Daventry DC → local A361 → GourmetBox facility (2.5 km same industrial estate)",
+      "estimatedTransitHours": 0.25,
+      "distanceKm": 2.5,
+      "dispatchCost": 45,
+      "currency": "GBP",
+      "deliveryOutcome": "Delivered",
+      "isConsolidated": true,
+      "consolidatedWith": "2 other GourmetBox drops",
+      "note": "Model order — minimal cost, short transit, premium margin. Internal fleet handles same-estate deliveries.",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-004",
+        "departingFrom": "lsc:wwg-node-cold-store-daventry",
+        "deliveryWindow": "ofm:wwg-dw-004"
+      }
+    },
+    {
+      "@type": "ofm:DispatchLeg",
+      "@id": "ofm:wwg-dispatch-005",
+      "dispatchId": "ofm:wwg-dispatch-005",
+      "parentOrder": "ofm:wwg-order-005",
+      "origin": "Daventry DC (DIRFT), Northamptonshire",
+      "destination": "Bristol (Avonmouth distribution park), BS11 8AZ",
+      "carrierName": "Fraikin Temperature Controlled",
+      "vehicleType": "18t artic chilled",
+      "temperatureClass": "Chilled (0-4C)",
+      "routeDescription": "Daventry DC → M1 South → M45 → A45 → M5 South → Avonmouth. Overnight departure.",
+      "estimatedTransitHours": 3.0,
+      "distanceKm": 155,
+      "dispatchCost": 520,
+      "currency": "GBP",
+      "deliveryOutcome": "Pending",
+      "isConsolidated": false,
+      "note": "Vehicle under-utilised due to 40% beef mince reduction. Consolidation opportunity with other Bristol/South West orders — potential saving GBP 180 if combined.",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-005",
+        "departingFrom": "lsc:wwg-ie-node-daventry-cold-store",
+        "deliveryWindow": "ofm:wwg-dw-005"
+      }
+    },
+
+    {"_section": "=== CUSTOMER CHANGES (4 Worked examples) ==="},
+
+    {
+      "@type": "ofm:CustomerChange",
+      "@id": "ofm:wwg-change-001",
+      "changeId": "ofm:wwg-change-001",
+      "parentOrder": "ofm:wwg-order-002",
+      "changeType": "DatePushBack",
+      "changeDate": "2026-03-15",
+      "requestedBy": "Northern Wholesale Foods — Buying Manager",
+      "description": "Customer requests delivery date pushed back 5 days from 2026-03-28 to 2026-04-02. Reason: warehouse receiving bay maintenance at Trafford Park.",
+      "originalValue": "2026-03-28",
+      "revisedValue": "2026-04-02",
+      "impactSummary": "5 extra storage days at Daventry DC. Frozen lamb incurs 1.8x multiplier = GBP 576 additional storage cost. Chilled dairy incurs 1.4x = GBP 448 additional. Total incremental cost: GBP 1,024. Margin erosion from 15.0% to 13.4%.",
+      "changeStatus": "Accepted",
+      "relationships": {
+        "affectsOrder": "ofm:wwg-order-002",
+        "affectsDeliveryWindow": "ofm:wwg-dw-002",
+        "causesMarginImpact": ["ofm:wwg-margin-002-01", "ofm:wwg-margin-002-02"],
+        "triggersStorageEvent": "ofm:wwg-storage-evt-004"
+      }
+    },
+    {
+      "@type": "ofm:CustomerChange",
+      "@id": "ofm:wwg-change-002",
+      "changeId": "ofm:wwg-change-002",
+      "parentOrder": "ofm:wwg-order-005",
+      "changeType": "QuantityReduction",
+      "changeDate": "2026-03-18",
+      "requestedBy": "Celtic Foods Distribution — Category Manager",
+      "description": "Customer reduces IE beef mince line (005-04) by 40%, from 1.5 tonnes to 0.9 tonnes. Reason: end customer (restaurant chain) reduced forecast volume.",
+      "originalValue": "1.5 tonnes",
+      "revisedValue": "0.9 tonnes",
+      "affectedLine": "ofm:wwg-line-005-04",
+      "impactSummary": "0.6 tonnes orphaned stock with 12 days shelf life remaining. Must reallocate within 5 days or forced sale at 40% discount. Revenue loss: GBP 1,880. Storage cost for orphaned pallets: GBP 67. Margin erosion from 13.0% to 8.0%.",
+      "changeStatus": "Accepted",
+      "relationships": {
+        "affectsOrder": "ofm:wwg-order-005",
+        "affectsLine": "ofm:wwg-line-005-04",
+        "causesMarginImpact": ["ofm:wwg-margin-005-01", "ofm:wwg-margin-005-02"],
+        "triggersStorageEvent": "ofm:wwg-storage-evt-008"
+      }
+    },
+    {
+      "@type": "ofm:CustomerChange",
+      "@id": "ofm:wwg-change-003",
+      "changeId": "ofm:wwg-change-003",
+      "parentOrder": "ofm:wwg-order-001",
+      "changeType": "SpecChange",
+      "changeDate": "2026-03-12",
+      "requestedBy": "Belgravia Dining Group — Head Chef (Mayfair)",
+      "description": "Customer changes ribeye specification to rump steak on line 001-02. Reason: menu change at flagship restaurant. Requires re-picking from different batch and relabelling.",
+      "originalValue": "AU Grass-Fed Beef Ribeye",
+      "revisedValue": "AU Grass-Fed Beef Rump Steak",
+      "affectedLine": "ofm:wwg-line-001-02",
+      "impactSummary": "Rework cost: GBP 320 (re-pick, relabel, QC re-check). Rump steak lower unit price (GBP 6,200/tonne vs GBP 7,800/tonne) — revenue reduction GBP 3,200 on line. Original ribeye allocation returned to stock (2.0t, 44 days shelf life — low reallocation risk). Net margin impact: GBP 3,520 erosion.",
+      "changeStatus": "Accepted",
+      "relationships": {
+        "affectsOrder": "ofm:wwg-order-001",
+        "affectsLine": "ofm:wwg-line-001-02",
+        "causesMarginImpact": ["ofm:wwg-margin-001-02", "ofm:wwg-margin-001-03"]
+      }
+    },
+    {
+      "@type": "ofm:CustomerChange",
+      "@id": "ofm:wwg-change-004",
+      "changeId": "ofm:wwg-change-004",
+      "parentOrder": "ofm:wwg-order-003",
+      "changeType": "FullLineCancellation",
+      "changeDate": "2026-03-14",
+      "requestedBy": "Fresh & Wild Catering — Operations Manager",
+      "description": "Customer cancels haddock fillet line (003-02) entirely. Reason: catering contract CC-2026-0089 reduced scope — client event cancelled. Cod and salmon lines remain.",
+      "originalValue": "1.0 tonnes IS Haddock Fillet",
+      "revisedValue": "0 (cancelled)",
+      "affectedLine": "ofm:wwg-line-003-02",
+      "impactSummary": "1.0 tonnes IS haddock returned to available pool with 7 days shelf life. Revenue loss: GBP 8,800. Must reallocate within 3 days or face forced sale at 50% discount. Expedited dispatch cost for remaining lines: GBP 120 premium. Net margin impact: GBP 4,460 erosion on cancelled line + GBP 120 expedite cost.",
+      "changeStatus": "Accepted",
+      "relationships": {
+        "affectsOrder": "ofm:wwg-order-003",
+        "affectsLine": "ofm:wwg-line-003-02",
+        "cancelsAllocation": "ofm:wwg-alloc-009",
+        "causesMarginImpact": ["ofm:wwg-margin-003-02", "ofm:wwg-margin-003-03"],
+        "triggersStorageEvent": "ofm:wwg-storage-evt-006"
+      }
+    },
+
+    {"_section": "=== MARGIN IMPACTS (12 Waterfall entries across orders) ==="},
+
+    {
+      "@type": "ofm:MarginImpact",
+      "@id": "ofm:wwg-margin-001-01",
+      "impactId": "ofm:wwg-margin-001-01",
+      "parentOrder": "ofm:wwg-order-001",
+      "waterfallStep": 1,
+      "impactType": "InboundDelay",
+      "description": "AU shipment delayed 2 days at Singapore transhipment — additional 2 days storage at Daventry DC for all 3 AU beef lines",
+      "grossImpact": -71.68,
+      "currency": "GBP",
+      "netMarginAfter": 8328.32,
+      "netMarginPercentAfter": 19.83,
+      "relationships": {
+        "forOrder": "ofm:wwg-order-001",
+        "erosionFromIncident": "lsc:wwg-inc-003-port-congestion",
+        "triggeredStorageEvent": "ofm:wwg-storage-evt-002"
+      }
+    },
+    {
+      "@type": "ofm:MarginImpact",
+      "@id": "ofm:wwg-margin-001-02",
+      "impactId": "ofm:wwg-margin-001-02",
+      "parentOrder": "ofm:wwg-order-001",
+      "waterfallStep": 2,
+      "impactType": "SpecChangeRework",
+      "description": "Ribeye-to-rump spec change — re-pick, relabel, QC re-check cost",
+      "grossImpact": -320.00,
+      "currency": "GBP",
+      "netMarginAfter": 8008.32,
+      "netMarginPercentAfter": 19.07,
+      "relationships": {
+        "forOrder": "ofm:wwg-order-001",
+        "causedByChange": "ofm:wwg-change-003"
+      }
+    },
+    {
+      "@type": "ofm:MarginImpact",
+      "@id": "ofm:wwg-margin-001-03",
+      "impactId": "ofm:wwg-margin-001-03",
+      "parentOrder": "ofm:wwg-order-001",
+      "waterfallStep": 3,
+      "impactType": "SpecChangeRevenueReduction",
+      "description": "Rump steak lower unit price than ribeye — GBP 3,200 revenue reduction on line 001-02",
+      "grossImpact": -3200.00,
+      "currency": "GBP",
+      "netMarginAfter": 4808.32,
+      "netMarginPercentAfter": 12.39,
+      "note": "Significant margin erosion — order drops from premium 20% to marginal 12.4%. Chef-driven spec changes are the primary margin risk for restaurant chain customers.",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-001",
+        "causedByChange": "ofm:wwg-change-003"
+      }
+    },
+    {
+      "@type": "ofm:MarginImpact",
+      "@id": "ofm:wwg-margin-002-01",
+      "impactId": "ofm:wwg-margin-002-01",
+      "parentOrder": "ofm:wwg-order-002",
+      "waterfallStep": 1,
+      "impactType": "DatePushBackStorage",
+      "description": "5-day delivery date push-back — additional frozen lamb storage at 1.8x multiplier",
+      "grossImpact": -576.00,
+      "currency": "GBP",
+      "netMarginAfter": 9174.00,
+      "netMarginPercentAfter": 14.11,
+      "relationships": {
+        "forOrder": "ofm:wwg-order-002",
+        "causedByChange": "ofm:wwg-change-001",
+        "triggeredStorageEvent": "ofm:wwg-storage-evt-004"
+      }
+    },
+    {
+      "@type": "ofm:MarginImpact",
+      "@id": "ofm:wwg-margin-002-02",
+      "impactId": "ofm:wwg-margin-002-02",
+      "parentOrder": "ofm:wwg-order-002",
+      "waterfallStep": 2,
+      "impactType": "DatePushBackStorage",
+      "description": "5-day delivery date push-back — additional chilled dairy storage at 1.4x multiplier",
+      "grossImpact": -448.00,
+      "currency": "GBP",
+      "netMarginAfter": 8726.00,
+      "netMarginPercentAfter": 13.42,
+      "note": "Wholesaler date push-backs are frequent (monthly pattern). Frozen multiplier 1.8x makes lamb storage particularly expensive. Consider contractual storage pass-through for push-backs exceeding 3 days.",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-002",
+        "causedByChange": "ofm:wwg-change-001"
+      }
+    },
+    {
+      "@type": "ofm:MarginImpact",
+      "@id": "ofm:wwg-margin-003-01",
+      "impactId": "ofm:wwg-margin-003-01",
+      "parentOrder": "ofm:wwg-order-003",
+      "waterfallStep": 1,
+      "impactType": "ShelfLifePressure",
+      "description": "IS seafood shelf life pressure — expedited dispatch to meet 8-day cod window, premium carrier surcharge",
+      "grossImpact": -120.00,
+      "currency": "GBP",
+      "netMarginAfter": 5480.00,
+      "netMarginPercentAfter": 19.57,
+      "relationships": {
+        "forOrder": "ofm:wwg-order-003",
+        "informedByLSCRisk": "lsc:wwg-is-ra-shelf-life"
+      }
+    },
+    {
+      "@type": "ofm:MarginImpact",
+      "@id": "ofm:wwg-margin-003-02",
+      "impactId": "ofm:wwg-margin-003-02",
+      "parentOrder": "ofm:wwg-order-003",
+      "waterfallStep": 2,
+      "impactType": "LineCancellationRevenueLoss",
+      "description": "Haddock line cancelled — GBP 8,800 revenue lost, allocation returned to pool",
+      "grossImpact": -8800.00,
+      "currency": "GBP",
+      "netMarginAfter": -3320.00,
+      "netMarginPercentAfter": -17.27,
+      "note": "Order now loss-making on haddock line. However, haddock stock may be reallocated to another customer if done within 3 days (7 days shelf life remaining).",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-003",
+        "causedByChange": "ofm:wwg-change-004"
+      }
+    },
+    {
+      "@type": "ofm:MarginImpact",
+      "@id": "ofm:wwg-margin-003-03",
+      "impactId": "ofm:wwg-margin-003-03",
+      "parentOrder": "ofm:wwg-order-003",
+      "waterfallStep": 3,
+      "impactType": "ForcedSaleDiscount",
+      "description": "If haddock not reallocated within 3 days — forced sale at 50% discount (worst case scenario)",
+      "grossImpact": -4400.00,
+      "currency": "GBP",
+      "netMarginAfter": -7720.00,
+      "netMarginPercentAfter": -40.21,
+      "note": "Worst-case waterfall step — only materialises if reallocation fails. IS seafood forced sales are the highest-risk margin event in the fulfilment graph.",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-003",
+        "causedByChange": "ofm:wwg-change-004"
+      }
+    },
+    {
+      "@type": "ofm:MarginImpact",
+      "@id": "ofm:wwg-margin-004-01",
+      "impactId": "ofm:wwg-margin-004-01",
+      "parentOrder": "ofm:wwg-order-004",
+      "waterfallStep": 1,
+      "impactType": "MinimalErosion",
+      "description": "Model order — clean delivery, no changes, minimal storage dwell (1 day). Only cost: standard dispatch fee.",
+      "grossImpact": -45.00,
+      "currency": "GBP",
+      "netMarginAfter": 4580.00,
+      "netMarginPercentAfter": 24.76,
+      "note": "GourmetBox Online is the model customer: small volumes, premium products, fast turnaround, same-estate delivery, no changes. 25% booked margin erodes to only 24.8%. All orders should aspire to this profile.",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-004"
+      }
+    },
+    {
+      "@type": "ofm:MarginImpact",
+      "@id": "ofm:wwg-margin-005-01",
+      "impactId": "ofm:wwg-margin-005-01",
+      "parentOrder": "ofm:wwg-order-005",
+      "waterfallStep": 1,
+      "impactType": "QuantityReductionRevenueLoss",
+      "description": "IE beef mince 40% quantity reduction — GBP 1,880 revenue lost on reduced volume",
+      "grossImpact": -1880.00,
+      "currency": "GBP",
+      "netMarginAfter": 3060.00,
+      "netMarginPercentAfter": 8.46,
+      "relationships": {
+        "forOrder": "ofm:wwg-order-005",
+        "causedByChange": "ofm:wwg-change-002"
+      }
+    },
+    {
+      "@type": "ofm:MarginImpact",
+      "@id": "ofm:wwg-margin-005-02",
+      "impactId": "ofm:wwg-margin-005-02",
+      "parentOrder": "ofm:wwg-order-005",
+      "waterfallStep": 2,
+      "impactType": "OrphanedStockStorage",
+      "description": "0.6 tonnes orphaned IE beef mince — overflow storage cost while seeking reallocation",
+      "grossImpact": -67.00,
+      "currency": "GBP",
+      "netMarginAfter": 2993.00,
+      "netMarginPercentAfter": 8.27,
+      "relationships": {
+        "forOrder": "ofm:wwg-order-005",
+        "causedByChange": "ofm:wwg-change-002",
+        "triggeredStorageEvent": "ofm:wwg-storage-evt-008"
+      }
+    },
+    {
+      "@type": "ofm:MarginImpact",
+      "@id": "ofm:wwg-margin-005-03",
+      "impactId": "ofm:wwg-margin-005-03",
+      "parentOrder": "ofm:wwg-order-005",
+      "waterfallStep": 3,
+      "impactType": "ForcedSaleDiscount",
+      "description": "If orphaned beef mince not reallocated — forced sale at 40% discount (worst case)",
+      "grossImpact": -1128.00,
+      "currency": "GBP",
+      "netMarginAfter": 1865.00,
+      "netMarginPercentAfter": 5.16,
+      "note": "Wholesaler quantity reductions create orphaned stock with short shelf life. IE corridor's short transit time (24h ferry) means stock arrives fresh but change windows are tight. Pattern: wholesalers reduce 2-3 times per quarter.",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-005",
+        "causedByChange": "ofm:wwg-change-002"
+      }
+    },
+
+    {"_section": "=== FULFILMENT RISKS (8 Risk assessments across orders) ==="},
+
+    {
+      "@type": "ofm:FulfilmentRisk",
+      "@id": "ofm:wwg-risk-001",
+      "riskId": "ofm:wwg-risk-001",
+      "parentOrder": "ofm:wwg-order-001",
+      "riskDescription": "AU inbound shipment delay at Singapore transhipment — 2-day delay already materialised, further delays possible if Suez congestion worsens",
+      "riskCategory": "InboundDelay",
+      "probability": 0.6,
+      "impact": "Medium",
+      "riskScore": 7.2,
+      "mitigationAction": "Pre-book Tilbury as alternative discharge port; maintain 3-day buffer stock of AU beef at Daventry DC",
+      "riskStatus": "Active",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-001",
+        "informedByLSCRisk": "lsc:wwg-ra-temp-breach"
+      }
+    },
+    {
+      "@type": "ofm:FulfilmentRisk",
+      "@id": "ofm:wwg-risk-002",
+      "riskId": "ofm:wwg-risk-002",
+      "parentOrder": "ofm:wwg-order-001",
+      "riskDescription": "Chef-driven spec changes on restaurant chain orders — Belgravia Dining Group changes menu weekly; further spec changes likely before dispatch",
+      "riskCategory": "CustomerChange",
+      "probability": 0.4,
+      "impact": "High",
+      "riskScore": 8.0,
+      "mitigationAction": "Implement 72-hour change cut-off clause in restaurant chain contracts; hold broader AU beef assortment as buffer",
+      "riskStatus": "Active",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-001",
+        "previouslyMaterialised": "ofm:wwg-change-003"
+      }
+    },
+    {
+      "@type": "ofm:FulfilmentRisk",
+      "@id": "ofm:wwg-risk-003",
+      "riskId": "ofm:wwg-risk-003",
+      "parentOrder": "ofm:wwg-order-002",
+      "riskDescription": "Wholesaler date push-backs eroding frozen lamb margin — 1.8x storage multiplier makes each push-back day expensive",
+      "riskCategory": "StorageCost",
+      "probability": 0.7,
+      "impact": "Medium",
+      "riskScore": 7.0,
+      "mitigationAction": "Introduce contractual storage pass-through for push-backs exceeding 3 days; negotiate frozen storage rate reduction with Daventry DC operator",
+      "riskStatus": "Active",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-002",
+        "previouslyMaterialised": "ofm:wwg-change-001"
+      }
+    },
+    {
+      "@type": "ofm:FulfilmentRisk",
+      "@id": "ofm:wwg-risk-004",
+      "riskId": "ofm:wwg-risk-004",
+      "parentOrder": "ofm:wwg-order-003",
+      "riskDescription": "IS seafood shelf life expiry before reallocation — haddock cancellation creates 1.0t with 7 days shelf life; reallocation window is 3 days",
+      "riskCategory": "ShelfLifeExpiry",
+      "probability": 0.5,
+      "impact": "Very High",
+      "riskScore": 9.0,
+      "mitigationAction": "Activate spot sale network (3 secondary buyers on standby); pre-negotiate IS seafood take-back price with Grimsby wholesale market",
+      "riskStatus": "Active",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-003",
+        "previouslyMaterialised": "ofm:wwg-change-004",
+        "informedByLSCRisk": "lsc:wwg-is-ra-shelf-life"
+      }
+    },
+    {
+      "@type": "ofm:FulfilmentRisk",
+      "@id": "ofm:wwg-risk-005",
+      "riskId": "ofm:wwg-risk-005",
+      "parentOrder": "ofm:wwg-order-003",
+      "riskDescription": "Further catering contract scope reductions — Fresh & Wild Catering's event pipeline is volatile; cod and salmon lines may also reduce",
+      "riskCategory": "CustomerChange",
+      "probability": 0.3,
+      "impact": "High",
+      "riskScore": 6.0,
+      "mitigationAction": "Require 7-day firm commitment window on IS seafood orders; diversify food service customer base beyond single catering contracts",
+      "riskStatus": "Monitoring",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-003"
+      }
+    },
+    {
+      "@type": "ofm:FulfilmentRisk",
+      "@id": "ofm:wwg-risk-006",
+      "riskId": "ofm:wwg-risk-006",
+      "parentOrder": "ofm:wwg-order-004",
+      "riskDescription": "Premium product shelf life at handover — GourmetBox requires minimum 5-day shelf life on all chilled products at their fulfilment centre",
+      "riskCategory": "ShelfLifeAtDelivery",
+      "probability": 0.2,
+      "impact": "Medium",
+      "riskScore": 3.0,
+      "mitigationAction": "Prioritise GourmetBox allocations from freshest available batches; schedule dispatch within 24 hours of allocation",
+      "riskStatus": "Low",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-004"
+      }
+    },
+    {
+      "@type": "ofm:FulfilmentRisk",
+      "@id": "ofm:wwg-risk-007",
+      "riskId": "ofm:wwg-risk-007",
+      "parentOrder": "ofm:wwg-order-005",
+      "riskDescription": "Further quantity reductions on IE bulk orders — Celtic Foods Distribution's end customers (restaurant chains) are cutting forecasts",
+      "riskCategory": "OrphanedStock",
+      "probability": 0.5,
+      "impact": "Medium",
+      "riskScore": 6.5,
+      "mitigationAction": "Reduce IE corridor order confirmation lead time from 14 days to 7 days; match IE inbound volumes more closely to confirmed (not forecast) demand",
+      "riskStatus": "Active",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-005",
+        "previouslyMaterialised": "ofm:wwg-change-002",
+        "informedByLSCRisk": "lsc:wwg-ie-ra-short-haul-buffer"
+      }
+    },
+    {
+      "@type": "ofm:FulfilmentRisk",
+      "@id": "ofm:wwg-risk-008",
+      "riskId": "ofm:wwg-risk-008",
+      "parentOrder": "ofm:wwg-order-005",
+      "riskDescription": "Windsor Framework regulatory changes affecting IE corridor — potential new documentation requirements or inspection delays on IE-UK dairy/beef",
+      "riskCategory": "RegulatoryChange",
+      "probability": 0.3,
+      "impact": "High",
+      "riskScore": 6.0,
+      "mitigationAction": "Monitor DAFM and APHA guidance monthly; maintain alternative direct Dublin-Holyhead routing to avoid NI land bridge complexity",
+      "riskStatus": "Monitoring",
+      "relationships": {
+        "forOrder": "ofm:wwg-order-005",
+        "informedByLSCRisk": "lsc:wwg-ie-ra-windsor-uncertainty"
+      }
+    },
+
+    {"_section": "=== DEMAND PATTERNS (4 Customer type patterns) ==="},
+
+    {
+      "@type": "ofm:DemandPattern",
+      "@id": "ofm:wwg-demand-pattern-001",
+      "patternId": "ofm:wwg-demand-pattern-001",
+      "customerType": "RestaurantChain",
+      "patternName": "Weekly Consistent — Restaurant Chains",
+      "orderFrequency": "Weekly",
+      "typicalVolume": "4-8 tonnes per order",
+      "volumeVariability": "Low (5-10% week-to-week)",
+      "seasonality": "Moderate — peaks in Q4 (Christmas/New Year) and summer (outdoor dining)",
+      "changeFrequency": "Rare — spec changes more common than volume changes",
+      "typicalChanges": "Product spec changes (chef-driven menu updates), delivery timing shifts (event catering)",
+      "marginProfile": "High booked margin (18-22%) but erosion risk from spec changes and premium delivery requirements",
+      "paymentTerms": "30 days net",
+      "representativeOrders": ["ofm:wwg-order-001"],
+      "forecastReliability": "High (90%+ accuracy at 7-day horizon)"
+    },
+    {
+      "@type": "ofm:DemandPattern",
+      "@id": "ofm:wwg-demand-pattern-002",
+      "patternId": "ofm:wwg-demand-pattern-002",
+      "customerType": "Wholesaler",
+      "patternName": "Monthly Bulk — Wholesalers",
+      "orderFrequency": "Monthly (sometimes bi-weekly for fast movers)",
+      "typicalVolume": "8-15 tonnes per order",
+      "volumeVariability": "High (20-40% month-to-month)",
+      "seasonality": "Strong — Christmas spike (2x normal), Easter spike (1.5x), summer BBQ season (1.3x)",
+      "changeFrequency": "Frequent — date push-backs and quantity reductions 2-3 times per quarter",
+      "typicalChanges": "Date push-backs (warehouse capacity), quantity reductions (end customer forecast changes), occasional full order cancellations",
+      "marginProfile": "Low booked margin (12-16%) with high erosion risk from date push-backs (storage accumulation) and quantity reductions (orphaned stock)",
+      "paymentTerms": "45-60 days net",
+      "representativeOrders": ["ofm:wwg-order-002", "ofm:wwg-order-005"],
+      "forecastReliability": "Medium (65-75% accuracy at 14-day horizon)"
+    },
+    {
+      "@type": "ofm:DemandPattern",
+      "@id": "ofm:wwg-demand-pattern-003",
+      "patternId": "ofm:wwg-demand-pattern-003",
+      "customerType": "FoodServiceDistributor",
+      "patternName": "Event-Driven Spikes — Food Service Distributors",
+      "orderFrequency": "Irregular — driven by catering contracts and events",
+      "typicalVolume": "2-5 tonnes per order",
+      "volumeVariability": "Very High (event-driven, 50%+ variation)",
+      "seasonality": "Event-driven — corporate events (Q1, Q4), weddings (May-September), festivals (summer)",
+      "changeFrequency": "Moderate — line cancellations when events cancel; volume increases when events expand",
+      "typicalChanges": "Full line cancellations (event cancellation), volume spikes (event expansion), very tight delivery windows",
+      "marginProfile": "Medium booked margin (18-22%) but high volatility — clean events deliver full margin, cancellations create total loss on short-shelf-life products",
+      "paymentTerms": "14-21 days net",
+      "representativeOrders": ["ofm:wwg-order-003"],
+      "forecastReliability": "Low (50-60% accuracy beyond 7-day horizon)"
+    },
+    {
+      "@type": "ofm:DemandPattern",
+      "@id": "ofm:wwg-demand-pattern-004",
+      "patternId": "ofm:wwg-demand-pattern-004",
+      "customerType": "OnlineSpecialist",
+      "patternName": "Weekly Small Premium — Online Specialists",
+      "orderFrequency": "Weekly",
+      "typicalVolume": "1-3 tonnes per order",
+      "volumeVariability": "Low (10-15% week-to-week)",
+      "seasonality": "Moderate — gift box peaks in Q4 (Christmas hampers), Valentine's Day, Mother's Day",
+      "changeFrequency": "Very Rare — online specialists commit firmly due to consumer pre-orders",
+      "typicalChanges": "Minimal — occasional product substitution if specific item unavailable",
+      "marginProfile": "Highest booked margin (22-28%) with minimal erosion — short transit (same-estate), fast turnaround, no changes",
+      "paymentTerms": "7 days net (pre-approved credit)",
+      "representativeOrders": ["ofm:wwg-order-004"],
+      "forecastReliability": "Very High (95%+ accuracy at 7-day horizon)"
+    },
+
+    {"_section": "=== CAPACITY FORECAST (14-day forward from Daventry DC) ==="},
+
+    {
+      "@type": "ofm:CapacityForecast",
+      "@id": "ofm:wwg-capacity-forecast-001",
+      "forecastId": "ofm:wwg-capacity-forecast-001",
+      "forecastDate": "2026-03-15",
+      "facilityName": "Daventry DC (DIRFT) — WWG Cold Chain Operations",
+      "facilityLocation": "DIRFT, Northamptonshire",
+      "forecastHorizon": "14 days (2026-03-15 to 2026-03-29)",
+      "totalChilledCapacity": "200 pallet positions (Zones A + B)",
+      "totalFrozenCapacity": "80 pallet positions (Zone D)",
+      "overflowCapacity": "40 pallet positions (Zone C — ambient/overflow chilled)",
+      "currentUtilisation": {
+        "chilled": 0.76,
+        "frozen": 0.85,
+        "overflow": 0.30
+      },
+      "inboundArrivals": [
+        {
+          "date": "2026-03-16",
+          "corridor": "AU-UK",
+          "description": "AU chilled beef shipment — 24 pallets (sirloin, ribeye, fillet, rump)",
+          "pallets": 24,
+          "zone": "Chilled (Zone A)",
+          "lscReference": "lsc:wwg-shipment-example-001"
+        },
+        {
+          "date": "2026-03-17",
+          "corridor": "IE-UK",
+          "description": "IE dairy and beef — 18 pallets (butter, cheddar, sirloin, mince)",
+          "pallets": 18,
+          "zone": "Chilled (Zone B)",
+          "lscReference": "lsc:wwg-ie-shipment-example-001"
+        },
+        {
+          "date": "2026-03-19",
+          "corridor": "IS-UK",
+          "description": "IS seafood — 8 pallets (cod, salmon, smoked salmon)",
+          "pallets": 8,
+          "zone": "Chilled (Zone A)",
+          "lscReference": "lsc:wwg-is-shipment-example-001"
+        },
+        {
+          "date": "2026-03-22",
+          "corridor": "NZ-UK",
+          "description": "NZ dairy + frozen lamb — 30 pallets (20 chilled dairy + 10 frozen lamb)",
+          "pallets": 30,
+          "zone": "Mixed (Zone B chilled + Zone D frozen)",
+          "lscReference": "lsc:wwg-nz-shipment-example-001"
+        },
+        {
+          "date": "2026-03-25",
+          "corridor": "AU-UK",
+          "description": "AU chilled beef (second March shipment) — 20 pallets",
+          "pallets": 20,
+          "zone": "Chilled (Zone A)"
+        },
+        {
+          "date": "2026-03-27",
+          "corridor": "IE-UK",
+          "description": "IE dairy (weekly top-up) — 12 pallets",
+          "pallets": 12,
+          "zone": "Chilled (Zone B)",
+          "lscReference": "lsc:wwg-ie-shipment-example-001"
+        }
+      ],
+      "outboundDispatches": [
+        {
+          "date": "2026-03-17",
+          "description": "Dispatch to Fresh & Wild Catering (Order 003) — IS seafood, 7 pallets",
+          "pallets": 7,
+          "orderReference": "ofm:wwg-order-003"
+        },
+        {
+          "date": "2026-03-21",
+          "description": "Dispatch to Belgravia Dining Group (Order 001) — AU beef, 20 pallets",
+          "pallets": 20,
+          "orderReference": "ofm:wwg-order-001"
+        },
+        {
+          "date": "2026-03-24",
+          "description": "Dispatch to Celtic Foods Distribution (Order 005) — IE dairy/beef, 15 pallets",
+          "pallets": 15,
+          "orderReference": "ofm:wwg-order-005"
+        },
+        {
+          "date": "2026-03-28",
+          "description": "GourmetBox weekly drop — mixed corridors, 6 pallets",
+          "pallets": 6,
+          "orderReference": "ofm:wwg-order-004"
+        },
+        {
+          "date": "2026-03-29",
+          "description": "Multiple wholesale dispatches (consolidation run), 25 pallets",
+          "pallets": 25
+        }
+      ],
+      "peakUtilisationDate": "2026-03-22",
+      "peakChilledUtilisation": 0.92,
+      "peakFrozenUtilisation": 0.95,
+      "capacityRisk": "High — NZ frozen lamb arrival on 2026-03-22 will push Zone D to 95% utilisation. If Order 002 dispatch is not completed by 2026-04-02 (push-back date), overflow into Zone C required at premium rate.",
+      "mitigationPlan": "Pre-book 10 overflow pallet positions in Zone C from 2026-03-20; negotiate spot rate with Daventry DC operator for frozen overflow (estimated GBP 4.80/pallet/day vs standard GBP 3.20)",
+      "relationships": {
+        "facility": "lsc:wwg-node-cold-store-daventry",
+        "affectedByChange": "ofm:wwg-change-001",
+        "informedByLSCRisk": "lsc:wwg-nz-ra-cold-storage"
+      }
+    }
+
+  ]
+}

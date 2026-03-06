@@ -1,0 +1,352 @@
+{
+  "@context": "https://schema.org/",
+  "@type": "DefinedTermSet",
+  "name": "Platform Foundation ROLES/RACI/RBAC Ontology Glossary",
+  "description": "Comprehensive glossary of all terms, entities, properties, and relationships in the ROLES/RACI/RBAC ontology",
+  "version": "3.0.0",
+  "dateCreated": "2025-10-11",
+  "hasDefinedTerm": [
+    {
+      "@type": "DefinedTerm",
+      "termCode": "pf:ExecutiveRole",
+      "name": "Executive Role",
+      "description": "A C-Suite or senior executive position with strategic accountability within an organization. Executive roles are filled by INDIVIDUALS and define high-level responsibilities, strategic focus areas, and alignment with organizational frameworks like VSOM and Balanced Scorecard.",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "schema:OrganizationalRole",
+      "synonyms": ["C-Suite Role", "Senior Executive Position", "Leadership Role"],
+      "relatedTerms": ["FunctionalRole", "RoleAssignment", "schema:Person", "schema:Organization"],
+      "usageExample": "CEO (Chief Executive Officer) is an ExecutiveRole in the 'Core Traditional CSuite' category with strategic focus on 'Corporate Leadership & Vision'",
+      "usageContext": "Use ExecutiveRole when defining C-Suite positions and senior leadership roles that have strategic accountability. ExecutiveRoles are typically seniorityLevel=1.",
+      "businessMeaning": "Represents the highest level of organizational leadership positions that set strategic direction, make major decisions, and are accountable for business outcomes.",
+      "technicalMeaning": "A class extending schema:OrganizationalRole with properties for roleCode, roleCategory, strategicFocus, VSOM alignment, BSC perspective, key frameworks, and metrics.",
+      "constraints": [
+        "roleCode must be 2-5 uppercase letters (e.g., CEO, CMO)",
+        "roleCategory must be one of 7 defined CSuite categories",
+        "seniorityLevel for C-Suite roles should be 1"
+      ],
+      "relationships": [
+        "Filled by INDIVIDUALS via RoleAssignment",
+        "May have reportsTo relationships to other ExecutiveRoles",
+        "Has collaboratesWith relationships for matrix management",
+        "Requires capabilities via hasCapability",
+        "Governed by AccessPolicies via governedBy",
+        "Assigned RACI accountability via RACIAssignment"
+      ],
+      "aiAgentUsage": "AI agents query ExecutiveRoles to understand organizational leadership structure, identify strategic accountability, resolve RACI assignments, and determine authorization through RBAC policies.",
+      "dateAdded": "2025-10-11",
+      "status": "active"
+    },
+    {
+      "@type": "DefinedTerm",
+      "termCode": "pf:FunctionalRole",
+      "name": "Functional Role",
+      "description": "An operational or functional position below executive level, typically within a specific department or function. Functional roles are filled by INDIVIDUALS and report to ExecutiveRoles.",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "schema:EmployeeRole",
+      "synonyms": ["Operational Role", "Departmental Role", "Staff Role"],
+      "relatedTerms": ["ExecutiveRole", "RoleAssignment", "Capability"],
+      "usageExample": "Marketing Manager is a FunctionalRole in the Marketing function with seniorityLevel=3 that reports to the CMO",
+      "usageContext": "Use FunctionalRole for non-executive positions that perform operational work within specific functional areas.",
+      "businessMeaning": "Represents day-to-day operational roles that execute strategy and perform functional activities within departments.",
+      "technicalMeaning": "A class extending schema:EmployeeRole with properties for function, roleTitle, and seniorityLevel.",
+      "constraints": [
+        "function must be from predefined list (Marketing, Sales, Operations, etc.)",
+        "seniorityLevel typically 2-10",
+        "Should have reportsTo relationship to an ExecutiveRole or higher-level FunctionalRole"
+      ],
+      "relationships": [
+        "Filled by INDIVIDUALS via RoleAssignment",
+        "Reports to ExecutiveRole or another FunctionalRole via reportsTo",
+        "Has capabilities via hasCapability",
+        "Governed by AccessPolicies",
+        "Assigned RACI accountability"
+      ],
+      "aiAgentUsage": "AI agents use FunctionalRoles to understand operational structure, resolve reporting relationships, determine task ownership, and evaluate permissions.",
+      "dateAdded": "2025-10-11",
+      "status": "active"
+    },
+    {
+      "@type": "DefinedTerm",
+      "termCode": "pf:RoleAssignment",
+      "name": "Role Assignment",
+      "description": "Assignment of an INDIVIDUAL (schema:Person) to a ROLE within an ORGANIZATION context. This is the bridge entity that connects real people to organizational positions and enables multi-venture role portfolios.",
+      "termType": "Entity",
+      "schemaOrgEquivalent": null,
+      "synonyms": ["Role Fulfillment", "Position Assignment", "Job Assignment"],
+      "relatedTerms": ["schema:Person", "ExecutiveRole", "FunctionalRole", "schema:Organization"],
+      "usageExample": "Amanda Moore (INDIVIDUAL) is assigned to CEO role (ExecutiveRole) at BAIV (Organization) with assignmentType='Primary' and timeCommitment=80%",
+      "usageContext": "Use RoleAssignment whenever an INDIVIDUAL fills a ROLE in an ORGANIZATION. One person can have multiple RoleAssignments across different organizations.",
+      "businessMeaning": "Represents the actual staffing of organizational positions - who is doing which job in which company.",
+      "technicalMeaning": "A reified relationship entity linking schema:Person to pf:ExecutiveRole or pf:FunctionalRole within a schema:Organization context, with temporal and commitment attributes.",
+      "constraints": [
+        "Each RoleAssignment must reference exactly one INDIVIDUAL, one ROLE, and one ORGANIZATION",
+        "If isActive=true, endDate must be null (BR-004)",
+        "Total timeCommitment across active assignments for a person should not exceed 100% (BR-005, warning)",
+        "assignmentType must be from predefined list"
+      ],
+      "relationships": [
+        "Links to INDIVIDUAL via individual property",
+        "Links to ROLE via assignedRole property",
+        "Links to ORGANIZATION via inOrganization property",
+        "Creates effective permission inheritance for USERS"
+      ],
+      "aiAgentUsage": "AI agents use RoleAssignment to resolve who currently holds which roles, determine permission inheritance for USERS, analyze capability coverage, and generate organizational charts. Critical for authorization queries.",
+      "dateAdded": "2025-10-11",
+      "status": "active"
+    },
+    {
+      "@type": "DefinedTerm",
+      "termCode": "raci:RACIAssignment",
+      "name": "RACI Assignment",
+      "description": "Defines who is Responsible, Accountable, Consulted, or Informed for a specific activity or process. RACI assignments are made to ROLES, not directly to INDIVIDUALS.",
+      "termType": "Entity",
+      "schemaOrgEquivalent": null,
+      "synonyms": ["Accountability Assignment", "RACI Matrix Entry", "Responsibility Assignment"],
+      "relatedTerms": ["schema:Action", "ExecutiveRole", "FunctionalRole", "BusinessProcess"],
+      "usageExample": "For activity 'AI Strategy Development', CEO role has raciType='Accountable' and CAIO role has raciType='Responsible'",
+      "usageContext": "Use RACIAssignment to define accountability for activities and processes. Each activity must have exactly one Accountable role and at least one Responsible role.",
+      "businessMeaning": "Clarifies who does the work (Responsible), who owns the outcome (Accountable), who provides input (Consulted), and who stays informed (Informed) for each business activity.",
+      "technicalMeaning": "Entity linking an activity/process to a ROLE with a raciType indicator. Enforces business rules for accountability clarity.",
+      "constraints": [
+        "Each activity must have exactly one Accountable ROLE (BR-001)",
+        "Each activity must have at least one Responsible ROLE (BR-002)",
+        "raciType must be one of: Responsible, Accountable, Consulted, Informed",
+        "RACI assignments apply to ROLES, never directly to INDIVIDUALS (BR-009)"
+      ],
+      "relationships": [
+        "Links to activity via activity property",
+        "Links to ROLE via role property",
+        "May be organization-scoped via organization property"
+      ],
+      "aiAgentUsage": "AI agents query RACIAssignments to answer 'who is accountable/responsible for X?', validate RACI matrices, generate RACI reports, and trace accountability chains from strategy to execution.",
+      "dateAdded": "2025-10-11",
+      "status": "active"
+    },
+    {
+      "@type": "DefinedTerm",
+      "termCode": "pf:Capability",
+      "name": "Capability",
+      "description": "An ability, skill, or competency that can be performed by a role or required for a role. Capabilities define what actions or activities a role should be able to perform.",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "schema:Action",
+      "synonyms": ["Competency", "Skill", "Ability"],
+      "relatedTerms": ["ExecutiveRole", "FunctionalRole"],
+      "usageExample": "Strategic Planning is a Capability of capabilityType='Strategic' with proficiencyRequired='Expert' for CEO role",
+      "usageContext": "Use Capability to define the skills and competencies required by roles. Helps with gap analysis and role definition.",
+      "businessMeaning": "Represents the skills and abilities needed to successfully perform a role's responsibilities.",
+      "technicalMeaning": "Entity extending schema:Action with properties for capabilityType, proficiencyRequired, and related frameworks.",
+      "constraints": [
+        "capabilityType must be from predefined list (Technical, Business, Leadership, etc.)",
+        "proficiencyRequired must be: Basic, Intermediate, Advanced, or Expert"
+      ],
+      "relationships": [
+        "Required by ROLES via hasCapability relationship"
+      ],
+      "aiAgentUsage": "AI agents use Capabilities to assess organizational capability coverage, identify skill gaps, match people to roles, and recommend training needs.",
+      "dateAdded": "2025-10-11",
+      "status": "active"
+    },
+    {
+      "@type": "DefinedTerm",
+      "termCode": "rbac:Permission",
+      "name": "Permission",
+      "description": "Authorization to perform an action on a resource. Permissions are granted to USERS (not roles directly) through AccessPolicies that bind roles to permissions.",
+      "termType": "Entity",
+      "schemaOrgEquivalent": null,
+      "synonyms": ["Access Right", "Authorization", "Privilege"],
+      "relatedTerms": ["AccessPolicy", "User", "ExecutiveRole", "FunctionalRole"],
+      "usageExample": "Permission with action='Approve', resource='Budget', conditions=[amount<10000], effect='Allow'",
+      "usageContext": "Use Permission to define what actions can be performed on what resources, with optional conditions. Permissions are packaged in AccessPolicies.",
+      "businessMeaning": "Defines what actions users are allowed or denied to perform on specific resources, with contextual conditions.",
+      "technicalMeaning": "Entity specifying action, resource, optional conditions, and effect (Allow/Deny). Core building block of RBAC system.",
+      "constraints": [
+        "action must be from predefined list (Create, Read, Update, Delete, etc.)",
+        "resource is required",
+        "effect must be Allow or Deny",
+        "conditions are optional AccessCondition objects"
+      ],
+      "relationships": [
+        "Granted by AccessPolicy via grantsPermission",
+        "May have AccessConditions"
+      ],
+      "aiAgentUsage": "AI agents evaluate Permissions when resolving authorization queries. They check action, resource, conditions, and apply conflict resolution rules.",
+      "dateAdded": "2025-10-11",
+      "status": "active"
+    },
+    {
+      "@type": "DefinedTerm",
+      "termCode": "rbac:AccessPolicy",
+      "name": "Access Policy",
+      "description": "Binds ROLES to PERMISSIONS. This is the core RBAC mechanism - USERS who fill roles inherit the permissions defined in the AccessPolicies for those roles.",
+      "termType": "Entity",
+      "schemaOrgEquivalent": null,
+      "synonyms": ["RBAC Policy", "Authorization Policy", "Permission Set"],
+      "relatedTerms": ["Permission", "ExecutiveRole", "FunctionalRole", "User", "schema:Organization"],
+      "usageExample": "AccessPolicy for CEO role grants permissions: [Approve Budget, Create Strategy, Read All Reports] with priority=100",
+      "usageContext": "Use AccessPolicy to group permissions and assign them to roles. When a USER fills a role via RoleAssignment, they inherit the permissions from that role's AccessPolicies.",
+      "businessMeaning": "Defines what a role is allowed to do in the system. Separates authorization from identity by using roles as the intermediary.",
+      "technicalMeaning": "Entity linking a ROLE to a set of Permissions, with optional organization scope, priority for conflict resolution, and active status.",
+      "constraints": [
+        "Must reference exactly one ROLE",
+        "Must grant at least one Permission",
+        "Priority is used for conflict resolution (higher wins)",
+        "Deny effect overrides Allow at same priority (BR-007)",
+        "Can be organization-scoped or global"
+      ],
+      "relationships": [
+        "Applies to ROLE via role property",
+        "Grants Permissions via permissions property",
+        "May be scoped to Organization",
+        "Governs roles via inverse governedBy relationship"
+      ],
+      "aiAgentUsage": "AI agents traverse AccessPolicies to determine what a USER can do. Resolution: User -> Person -> RoleAssignments -> Roles -> AccessPolicies -> Permissions. Critical for authorization decisions.",
+      "dateAdded": "2025-10-11",
+      "status": "active"
+    },
+    {
+      "@type": "DefinedTerm",
+      "termCode": "rbac:AccessCondition",
+      "name": "Access Condition",
+      "description": "A conditional constraint that must be satisfied for a permission to apply. Enables context-aware access control.",
+      "termType": "Entity",
+      "schemaOrgEquivalent": null,
+      "synonyms": ["Permission Condition", "Authorization Constraint", "Access Rule"],
+      "relatedTerms": ["Permission"],
+      "usageExample": "AccessCondition with attribute='amount', operator='lessThan', value='10000' restricts approval permission to budgets under $10K",
+      "usageContext": "Use AccessCondition to add contextual rules to permissions, such as value thresholds, time windows, or resource attributes.",
+      "businessMeaning": "Allows fine-grained control where permissions depend on the context (e.g., amount, time, location).",
+      "technicalMeaning": "Entity with attribute, operator, and value that evaluates to true/false at runtime.",
+      "constraints": [
+        "operator must be from predefined list (equals, lessThan, greaterThan, contains, etc.)",
+        "All three properties (attribute, operator, value) are required"
+      ],
+      "relationships": [
+        "Attached to Permission via conditions property"
+      ],
+      "aiAgentUsage": "AI agents evaluate AccessConditions at runtime when checking permissions. If conditions fail, permission is denied even if policy would otherwise allow.",
+      "dateAdded": "2025-10-11",
+      "status": "active"
+    },
+    {
+      "@type": "DefinedTerm",
+      "termCode": "pf:hasRoleAssignment",
+      "name": "Has Role Assignment",
+      "description": "Relationship linking an INDIVIDUAL (schema:Person) to their RoleAssignments. One person can have multiple RoleAssignments.",
+      "termType": "Relationship",
+      "schemaOrgEquivalent": null,
+      "synonyms": ["Holds Role", "Assigned To"],
+      "relatedTerms": ["schema:Person", "RoleAssignment"],
+      "usageExample": "Amanda Moore hasRoleAssignment [CEO at BAIV, Advisor at W4M]",
+      "usageContext": "Use to navigate from a person to all their role assignments across organizations.",
+      "businessMeaning": "Shows all the organizational positions a person currently or historically held.",
+      "technicalMeaning": "One-to-many relationship from schema:Person to pf:RoleAssignment. Cardinality: 0..*",
+      "relationships": [
+        "Source: schema:Person",
+        "Target: pf:RoleAssignment",
+        "Inverse: assignedToIndividual"
+      ],
+      "aiAgentUsage": "AI agents use this to answer 'what roles does person X hold?' and to resolve permissions by finding active role assignments.",
+      "dateAdded": "2025-10-11",
+      "status": "active"
+    },
+    {
+      "@type": "DefinedTerm",
+      "termCode": "pf:reportsTo",
+      "name": "Reports To",
+      "description": "Hierarchical reporting relationship between roles. Defines organizational structure and management chains.",
+      "termType": "Relationship",
+      "schemaOrgEquivalent": null,
+      "synonyms": ["Managed By", "Supervised By"],
+      "relatedTerms": ["ExecutiveRole", "FunctionalRole", "manages"],
+      "usageExample": "CMO (Chief Marketing Officer) reportsTo CEO",
+      "usageContext": "Use to define formal reporting relationships in organizational hierarchy. Must be acyclic (BR-003).",
+      "businessMeaning": "Defines who a role reports to in the management hierarchy.",
+      "technicalMeaning": "One-to-one relationship from Role to Role. Cardinality: 0..1. Must not create cycles.",
+      "constraints": [
+        "Must not create circular reporting chains (BR-003)",
+        "A role can report to at most one other role"
+      ],
+      "relationships": [
+        "Source: ExecutiveRole or FunctionalRole",
+        "Target: ExecutiveRole or FunctionalRole",
+        "Inverse: manages"
+      ],
+      "aiAgentUsage": "AI agents use reportsTo to generate org charts, determine management chains, and validate organizational structure.",
+      "dateAdded": "2025-10-11",
+      "status": "active"
+    },
+    {
+      "@type": "DefinedTerm",
+      "termCode": "pf:collaboratesWith",
+      "name": "Collaborates With",
+      "description": "Symmetric peer collaboration relationship between roles. Represents matrix management and cross-functional collaboration without hierarchy.",
+      "termType": "Relationship",
+      "schemaOrgEquivalent": null,
+      "synonyms": ["Works With", "Partners With", "Coordinates With"],
+      "relatedTerms": ["ExecutiveRole", "FunctionalRole"],
+      "usageExample": "CMO collaboratesWith CTO on digital marketing technology initiatives",
+      "usageContext": "Use to model peer relationships and matrix management structures where roles work together without hierarchical reporting.",
+      "businessMeaning": "Indicates roles that need to work together closely, share information, or coordinate activities.",
+      "technicalMeaning": "Many-to-many symmetric relationship. If A collaboratesWith B, then B collaboratesWith A. Cardinality: 0..*",
+      "constraints": [
+        "Symmetric relationship - must be bidirectional"
+      ],
+      "relationships": [
+        "Source: ExecutiveRole or FunctionalRole",
+        "Target: ExecutiveRole or FunctionalRole",
+        "Inverse: collaboratesWith (symmetric)"
+      ],
+      "aiAgentUsage": "AI agents use collaboratesWith to identify stakeholders for activities, suggest who to consult, and map cross-functional collaboration patterns.",
+      "dateAdded": "2025-10-11",
+      "status": "active"
+    },
+    {
+      "@type": "DefinedTerm",
+      "termCode": "raci:hasRACIAssignment",
+      "name": "Has RACI Assignment",
+      "description": "Relationship linking an activity or process to its RACI accountability assignments.",
+      "termType": "Relationship",
+      "schemaOrgEquivalent": null,
+      "synonyms": ["Has Accountability", "Has RACI"],
+      "relatedTerms": ["schema:Action", "RACIAssignment"],
+      "usageExample": "Activity 'Develop AI Strategy' hasRACIAssignment [CEO=Accountable, CAIO=Responsible, CMO=Consulted, CFO=Informed]",
+      "usageContext": "Use to link activities to their RACI definitions. Each activity should have complete RACI coverage.",
+      "businessMeaning": "Defines who is responsible, accountable, consulted, and informed for an activity.",
+      "technicalMeaning": "One-to-many relationship from Action to RACIAssignment. Cardinality: 1..*",
+      "constraints": [
+        "Each activity must have at least one RACIAssignment (typically 2-4)",
+        "Must satisfy BR-001 (one Accountable) and BR-002 (at least one Responsible)"
+      ],
+      "relationships": [
+        "Source: schema:Action or BusinessProcess",
+        "Target: raci:RACIAssignment",
+        "Inverse: raciFor"
+      ],
+      "aiAgentUsage": "AI agents traverse this relationship to answer accountability queries and generate RACI matrices.",
+      "dateAdded": "2025-10-11",
+      "status": "active"
+    },
+    {
+      "@type": "DefinedTerm",
+      "termCode": "rbac:governedBy",
+      "name": "Governed By",
+      "description": "Relationship linking a role to the access policies that govern its permissions.",
+      "termType": "Relationship",
+      "schemaOrgEquivalent": null,
+      "synonyms": ["Has Policy", "Authorized By"],
+      "relatedTerms": ["ExecutiveRole", "FunctionalRole", "AccessPolicy"],
+      "usageExample": "CEO role governedBy [CEO-Full-Access-Policy, Executive-Read-Policy]",
+      "usageContext": "Use to associate roles with their permission sets. USERS inherit permissions from policies governing their roles.",
+      "businessMeaning": "Defines what permissions a role has through policies.",
+      "technicalMeaning": "One-to-many relationship from Role to AccessPolicy. Cardinality: 0..*",
+      "relationships": [
+        "Source: ExecutiveRole or FunctionalRole",
+        "Target: rbac:AccessPolicy",
+        "Inverse: appliesTo"
+      ],
+      "aiAgentUsage": "AI agents traverse governedBy to collect all policies for a role during permission resolution.",
+      "dateAdded": "2025-10-11",
+      "status": "active"
+    }
+  ]
+}

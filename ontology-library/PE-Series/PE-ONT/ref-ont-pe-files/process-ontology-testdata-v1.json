@@ -1,0 +1,474 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "process": "https://ai-transformation.com/ontology/process/v1/"
+  },
+  "@type": "Dataset",
+  "@id": "process:testdata:process-engineering-v1",
+  "name": "Process Engineering Ontology Test Data v1.0.0",
+  "description": "Comprehensive test data set for validating Process Ontology instances",
+  "version": "1.0.0",
+  "dateCreated": "2025-10-04",
+  "distribution": {
+    "typical": 0.60,
+    "edge": 0.20, 
+    "boundary": 0.10,
+    "invalid": 0.10
+  },
+  "testCases": {
+    "Process": [
+      {
+        "@type": "process:Process",
+        "@id": "test:process:app-scaffold-typical",
+        "category": "typical",
+        "processId": "APP-SCAFFOLD-001",
+        "processName": "Application Scaffold Process",
+        "processType": "DevelopmentProcess",
+        "businessObjective": [
+          "Accelerate application development",
+          "Standardize architecture decisions",
+          "Enable AI-augmented development"
+        ],
+        "maturityLevel": "Defined",
+        "aiAugmentation": [
+          {
+            "@type": "process:AIAugmentationType",
+            "type": "CodeGeneration",
+            "level": "HighlyAutomated"
+          }
+        ],
+        "hasPhase": [
+          "test:phase:domain-definition",
+          "test:phase:code-generation"
+        ],
+        "measures": [
+          "test:metric:time-to-mvp",
+          "test:metric:code-quality"
+        ]
+      },
+      {
+        "@type": "process:Process", 
+        "@id": "test:process:innovation-pipeline-typical",
+        "category": "typical",
+        "processId": "INNOVATION-001",
+        "processName": "Idea to MVP Innovation Pipeline",
+        "processType": "InnovationProcess",
+        "businessObjective": [
+          "Accelerate innovation cycle",
+          "Validate hypotheses quickly"
+        ],
+        "maturityLevel": "Managed",
+        "hasPhase": [
+          "test:phase:ideation",
+          "test:phase:validation"
+        ],
+        "measures": [
+          "test:metric:innovation-velocity"
+        ]
+      },
+      {
+        "@type": "process:Process",
+        "@id": "test:process:minimal-edge",
+        "category": "edge",
+        "processId": "MIN-001", 
+        "processName": "Minimal Process",
+        "processType": "BusinessProcess",
+        "businessObjective": ["Single objective"],
+        "maturityLevel": "Initial",
+        "hasPhase": ["test:phase:single-phase"],
+        "measures": ["test:metric:simple-metric"]
+      },
+      {
+        "@type": "process:Process",
+        "@id": "test:process:maximum-boundary",
+        "category": "boundary",
+        "processId": "MAX-001",
+        "processName": "Maximum Complexity Process with Very Long Name That Tests Naming Limits",
+        "processType": "StrategicProcess", 
+        "businessObjective": [
+          "Objective 1", "Objective 2", "Objective 3", "Objective 4", "Objective 5",
+          "Objective 6", "Objective 7", "Objective 8", "Objective 9", "Objective 10"
+        ],
+        "maturityLevel": "AIAugmented",
+        "hasPhase": [
+          "test:phase:phase1", "test:phase:phase2", "test:phase:phase3", 
+          "test:phase:phase4", "test:phase:phase5"
+        ],
+        "measures": [
+          "test:metric:metric1", "test:metric:metric2", "test:metric:metric3"
+        ]
+      },
+      {
+        "@type": "process:Process",
+        "@id": "test:process:invalid-missing-required",
+        "category": "invalid", 
+        "processId": "INVALID-001",
+        "processName": "Invalid Process Missing Required Fields",
+        "processType": "BusinessProcess",
+        "expectedValidationError": "Missing required field: businessObjective"
+      }
+    ],
+    "ProcessPhase": [
+      {
+        "@type": "process:ProcessPhase",
+        "@id": "test:phase:domain-definition",
+        "category": "typical",
+        "phaseId": "PHASE-DOMAIN-001",
+        "phaseName": "Domain Definition",
+        "sequenceOrder": 1,
+        "parallelExecution": false,
+        "estimatedDuration": "P2D",
+        "partOfProcess": "test:process:app-scaffold-typical",
+        "produces": [
+          "test:artifact:ontology-config",
+          "test:artifact:requirements-doc"
+        ],
+        "hasGate": ["test:gate:domain-approval"],
+        "augmentedBy": ["test:agent:requirements-analyzer"]
+      },
+      {
+        "@type": "process:ProcessPhase", 
+        "@id": "test:phase:code-generation",
+        "category": "typical",
+        "phaseId": "PHASE-CODEGEN-001", 
+        "phaseName": "Code Generation",
+        "sequenceOrder": 2,
+        "parallelExecution": false,
+        "estimatedDuration": "P1D",
+        "partOfProcess": "test:process:app-scaffold-typical",
+        "dependsOn": ["test:phase:domain-definition"],
+        "produces": [
+          "test:artifact:typescript-types",
+          "test:artifact:zod-schemas"
+        ],
+        "hasGate": ["test:gate:code-quality"],
+        "augmentedBy": ["test:agent:code-generator"]
+      },
+      {
+        "@type": "process:ProcessPhase",
+        "@id": "test:phase:parallel-edge",
+        "category": "edge",
+        "phaseId": "PHASE-PARALLEL-001",
+        "phaseName": "Parallel Execution Phase",
+        "sequenceOrder": 1,
+        "parallelExecution": true,
+        "partOfProcess": "test:process:minimal-edge"
+      },
+      {
+        "@type": "process:ProcessPhase",
+        "@id": "test:phase:zero-duration-boundary", 
+        "category": "boundary",
+        "phaseId": "PHASE-INSTANT-001",
+        "phaseName": "Instantaneous Phase",
+        "sequenceOrder": 1,
+        "parallelExecution": false,
+        "estimatedDuration": "PT0S",
+        "partOfProcess": "test:process:minimal-edge"
+      },
+      {
+        "@type": "process:ProcessPhase",
+        "@id": "test:phase:invalid-circular",
+        "category": "invalid",
+        "phaseId": "PHASE-INVALID-001",
+        "phaseName": "Invalid Circular Dependency",
+        "sequenceOrder": 1,
+        "parallelExecution": false,
+        "dependsOn": ["test:phase:invalid-circular"],
+        "expectedValidationError": "Circular dependency detected"
+      }
+    ],
+    "ProcessArtifact": [
+      {
+        "@type": "process:ProcessArtifact",
+        "@id": "test:artifact:ontology-config", 
+        "category": "typical",
+        "artifactId": "ARTIFACT-CONFIG-001",
+        "artifactType": "Configuration",
+        "format": "JSON",
+        "qualityCriteria": [
+          "Valid JSON syntax",
+          "All required fields present", 
+          "Schema.org mappings validated"
+        ],
+        "producedBy": ["test:phase:domain-definition"]
+      },
+      {
+        "@type": "process:ProcessArtifact",
+        "@id": "test:artifact:typescript-types",
+        "category": "typical", 
+        "artifactId": "ARTIFACT-TYPES-001",
+        "artifactType": "Code",
+        "format": "TypeScript",
+        "qualityCriteria": [
+          "Compiles without errors",
+          "Follows naming conventions",
+          "100% type coverage"
+        ],
+        "producedBy": ["test:phase:code-generation"]
+      },
+      {
+        "@type": "process:ProcessArtifact",
+        "@id": "test:artifact:binary-edge",
+        "category": "edge",
+        "artifactId": "ARTIFACT-BINARY-001", 
+        "artifactType": "Model",
+        "format": "Binary",
+        "qualityCriteria": ["Valid format"],
+        "producedBy": ["test:phase:parallel-edge"]
+      },
+      {
+        "@type": "process:ProcessArtifact",
+        "@id": "test:artifact:empty-criteria-boundary",
+        "category": "boundary",
+        "artifactId": "ARTIFACT-MINIMAL-001",
+        "artifactType": "Document", 
+        "format": "Text",
+        "qualityCriteria": ["Exists"],
+        "producedBy": ["test:phase:zero-duration-boundary"]
+      },
+      {
+        "@type": "process:ProcessArtifact",
+        "@id": "test:artifact:invalid-no-producer",
+        "category": "invalid",
+        "artifactId": "ARTIFACT-ORPHAN-001",
+        "artifactType": "Document",
+        "format": "PDF",
+        "qualityCriteria": ["Valid PDF"],
+        "expectedValidationError": "Artifact must be produced by at least one phase"
+      }
+    ],
+    "ProcessGate": [
+      {
+        "@type": "process:ProcessGate",
+        "@id": "test:gate:domain-approval",
+        "category": "typical",
+        "gateId": "GATE-DOMAIN-001",
+        "gateType": "Approval",
+        "criteria": [
+          "Requirements analysis complete",
+          "Schema.org mappings validated",
+          "Business objectives defined"
+        ],
+        "approver": ["Enterprise Architect", "Domain Expert"],
+        "gatesPhase": "test:phase:domain-definition"
+      },
+      {
+        "@type": "process:ProcessGate",
+        "@id": "test:gate:code-quality",
+        "category": "typical",
+        "gateId": "GATE-QUALITY-001",
+        "gateType": "Validation",
+        "criteria": [
+          "Code compiles successfully", 
+          "Unit tests pass",
+          "Code coverage > 80%"
+        ],
+        "approver": ["Automated System"],
+        "gatesPhase": "test:phase:code-generation"
+      },
+      {
+        "@type": "process:ProcessGate",
+        "@id": "test:gate:minimal-edge",
+        "category": "edge",
+        "gateId": "GATE-MIN-001",
+        "gateType": "Decision",
+        "criteria": ["Single criterion"],
+        "approver": ["Single Role"],
+        "gatesPhase": "test:phase:parallel-edge"
+      },
+      {
+        "@type": "process:ProcessGate", 
+        "@id": "test:gate:maximum-boundary",
+        "category": "boundary",
+        "gateId": "GATE-MAX-001",
+        "gateType": "Validation",
+        "criteria": [
+          "Criterion 1", "Criterion 2", "Criterion 3", "Criterion 4", "Criterion 5",
+          "Criterion 6", "Criterion 7", "Criterion 8", "Criterion 9", "Criterion 10"
+        ],
+        "approver": [
+          "Role 1", "Role 2", "Role 3", "Role 4", "Role 5"
+        ],
+        "gatesPhase": "test:phase:zero-duration-boundary"
+      },
+      {
+        "@type": "process:ProcessGate",
+        "@id": "test:gate:invalid-no-criteria",
+        "category": "invalid",
+        "gateId": "GATE-INVALID-001",
+        "gateType": "Approval",
+        "approver": ["Someone"],
+        "expectedValidationError": "Gate must define at least one criterion"
+      }
+    ],
+    "ProcessMetric": [
+      {
+        "@type": "process:ProcessMetric",
+        "@id": "test:metric:time-to-mvp",
+        "category": "typical",
+        "metricId": "METRIC-TIME-001",
+        "metricName": "Time to MVP", 
+        "measurementType": "Time",
+        "targetValue": 14,
+        "unit": "days",
+        "measuresProcess": "test:process:app-scaffold-typical"
+      },
+      {
+        "@type": "process:ProcessMetric",
+        "@id": "test:metric:code-quality",
+        "category": "typical",
+        "metricId": "METRIC-QUALITY-001",
+        "metricName": "Code Quality Score",
+        "measurementType": "Quality",
+        "targetValue": 95,
+        "unit": "percentage",
+        "measuresProcess": "test:process:app-scaffold-typical"
+      },
+      {
+        "@type": "process:ProcessMetric",
+        "@id": "test:metric:zero-target-edge",
+        "category": "edge",
+        "metricId": "METRIC-ZERO-001",
+        "metricName": "Zero Target Metric",
+        "measurementType": "Cost", 
+        "targetValue": 0,
+        "unit": "dollars",
+        "measuresProcess": "test:process:minimal-edge"
+      },
+      {
+        "@type": "process:ProcessMetric",
+        "@id": "test:metric:maximum-value-boundary",
+        "category": "boundary",
+        "metricId": "METRIC-MAX-001",
+        "metricName": "Maximum Value Metric",
+        "measurementType": "KPI",
+        "targetValue": 999999999,
+        "unit": "units",
+        "measuresProcess": "test:process:maximum-boundary"
+      },
+      {
+        "@type": "process:ProcessMetric",
+        "@id": "test:metric:invalid-negative",
+        "category": "invalid",
+        "metricId": "METRIC-INVALID-001", 
+        "metricName": "Invalid Negative Metric",
+        "measurementType": "Time",
+        "targetValue": -5,
+        "unit": "days",
+        "expectedValidationError": "Target value cannot be negative for time metrics"
+      }
+    ],
+    "AIAgent": [
+      {
+        "@type": "process:AIAgent",
+        "@id": "test:agent:requirements-analyzer",
+        "category": "typical",
+        "agentId": "AGENT-REQ-001",
+        "agentType": "AnalysisAgent",
+        "capabilities": [
+          "Requirements extraction",
+          "Schema.org mapping",
+          "Conflict detection"
+        ],
+        "autonomyLevel": "Supervised",
+        "augments": ["test:phase:domain-definition"]
+      },
+      {
+        "@type": "process:AIAgent",
+        "@id": "test:agent:code-generator",
+        "category": "typical", 
+        "agentId": "AGENT-CODEGEN-001",
+        "agentType": "GenerationAgent",
+        "capabilities": [
+          "TypeScript generation",
+          "Schema creation",
+          "Validation logic"
+        ],
+        "autonomyLevel": "HighlyAutonomous",
+        "augments": ["test:phase:code-generation"]
+      },
+      {
+        "@type": "process:AIAgent",
+        "@id": "test:agent:minimal-edge",
+        "category": "edge",
+        "agentId": "AGENT-MIN-001",
+        "agentType": "MonitoringAgent",
+        "capabilities": ["Basic monitoring"],
+        "autonomyLevel": "Manual",
+        "augments": ["test:phase:parallel-edge"]
+      },
+      {
+        "@type": "process:AIAgent",
+        "@id": "test:agent:maximum-boundary",
+        "category": "boundary",
+        "agentId": "AGENT-MAX-001", 
+        "agentType": "OrchestrationAgent",
+        "capabilities": [
+          "Capability 1", "Capability 2", "Capability 3", "Capability 4", "Capability 5",
+          "Capability 6", "Capability 7", "Capability 8", "Capability 9", "Capability 10"
+        ],
+        "autonomyLevel": "FullyAutonomous",
+        "augments": [
+          "test:phase:phase1", "test:phase:phase2", "test:phase:phase3"
+        ]
+      },
+      {
+        "@type": "process:AIAgent",
+        "@id": "test:agent:invalid-no-capabilities",
+        "category": "invalid",
+        "agentId": "AGENT-INVALID-001",
+        "agentType": "AnalysisAgent", 
+        "autonomyLevel": "Supervised",
+        "expectedValidationError": "Agent must define at least one capability"
+      }
+    ]
+  },
+  "useCase scenarios": [
+    {
+      "id": "UC-SCENARIO-001",
+      "name": "Complete Application Scaffold Flow",
+      "description": "End-to-end process execution from requirements to deployment",
+      "instances": [
+        "test:process:app-scaffold-typical",
+        "test:phase:domain-definition", 
+        "test:phase:code-generation",
+        "test:artifact:ontology-config",
+        "test:artifact:typescript-types",
+        "test:gate:domain-approval",
+        "test:gate:code-quality",
+        "test:metric:time-to-mvp",
+        "test:agent:requirements-analyzer",
+        "test:agent:code-generator"
+      ]
+    },
+    {
+      "id": "UC-SCENARIO-002",
+      "name": "Parallel Phase Execution",
+      "description": "Process with parallel phases and edge case handling",
+      "instances": [
+        "test:process:minimal-edge",
+        "test:phase:parallel-edge",
+        "test:artifact:binary-edge",
+        "test:gate:minimal-edge",
+        "test:agent:minimal-edge"
+      ]
+    }
+  ],
+  "validationRules": [
+    {
+      "rule": "Process must have at least one phase",
+      "passTests": ["test:process:app-scaffold-typical", "test:process:minimal-edge"],
+      "failTests": ["test:process:invalid-missing-required"]
+    },
+    {
+      "rule": "Phases cannot have circular dependencies",
+      "passTests": ["test:phase:domain-definition", "test:phase:code-generation"],
+      "failTests": ["test:phase:invalid-circular"]
+    },
+    {
+      "rule": "Artifacts must be produced by at least one phase",
+      "passTests": ["test:artifact:ontology-config", "test:artifact:typescript-types"],
+      "failTests": ["test:artifact:invalid-no-producer"]
+    }
+  ]
+}

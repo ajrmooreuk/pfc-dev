@@ -1,0 +1,71 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-NUT-001",
+  "name": "NUT Ontology (Nutrition Coaching)",
+  "description": "Models nutrition coaching workflows: recipes, meal plans, client profiles, dietary constraints (30 diet types, 14 UK allergens), macro targeting, theme-driven curation (16 themes), and coaching protocols. 8-step MealPlanGenerationFlow process. Schema.org dual-typing for Recipe, Patient, NutritionInformation. Designed for B2C nutrition platforms, generalisable to B2B2C (dietitian intermediary). First PFI instance: VHF Nutrition (Coach James Kerby, Winchester UK).",
+  "version": "1.0.0",
+  "oaaVersion": "7.0.0",
+  "namespace": "nut:",
+  "prefix": "nut:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pending",
+    "gate2": "pending",
+    "gate2b": "pending",
+    "gate2c": "pending",
+    "gate3": "pending",
+    "gate4": "pending",
+    "gate5": "pending",
+    "gate7": "pending",
+    "gate8": "pending",
+    "gate20": "pending",
+    "gate21": "pending",
+    "gate22": "pending",
+    "gate23": "pending"
+  },
+  "artifacts": {
+    "ontology": "./nut-ontology-v1.0.0-oaa-v7.json",
+    "documentation": null,
+    "glossary": null,
+    "testData": null,
+    "validationReport": null,
+    "instanceData": [
+      "./instance-data/vhf/vhf-nut-clients-v1.0.0.jsonld",
+      "./instance-data/vhf/vhf-nut-recipes-v1.0.0.jsonld"
+    ]
+  },
+  "components": {
+    "entities": "Recipe (hub), Ingredient, NutritionProfile, Instruction, Substitution, MealPlan, MealPlanDay, Meal, MealType, DailyTotals, WeeklyTotals, ShoppingList, MealPrepGuide, PlanStatus, Client (hub), HealthProfile, Goal, MacroTarget, DietaryRestriction, Allergen, MedicalCondition, ProgressLog, DietType, EthicalDiet, ReligiousDiet, MedicalDiet, MacroDiet, LifestyleDiet, AllergenFreeDiet, MealTheme, SeasonalTheme, CuisineTheme, GoalTheme, LifestyleTheme, ClinicalTheme, Coach, Protocol, MealPlanGenerationFlow, ProcessStep",
+    "relationships": "38 relationships including 7 cross-ontology bridges (NUT→PE, NUT→CRT, NUT→IND, NUT→RRR, NUT→VP, NUT→KPI ×2)",
+    "businessRules": "16 rules (8 error, 8 warning) in IF-THEN format",
+    "competencyQuestions": "18 domain-specific CQs with targetEntities, targetRelationships, and targetRules",
+    "joinPatterns": "7 cross-ontology join patterns (NUT↔PE, NUT↔CRT, NUT↔VP, NUT↔KPI)"
+  },
+  "dependencies": [
+    "Entry-ONT-PE-001",
+    "Entry-ONT-CRT-001",
+    "Entry-ONT-IND-001",
+    "Entry-ONT-RRR-001",
+    "Entry-ONT-VP-001",
+    "Entry-ONT-KPI-001"
+  ],
+  "dependents": [],
+  "relationships": {
+    "crossOntology": [
+      { "target": "Entry-ONT-CRT-001", "type": "clientMapsToCustomerRole", "direction": "outgoing" },
+      { "target": "Entry-ONT-IND-001", "type": "clientMapsToIndividual", "direction": "outgoing" },
+      { "target": "Entry-ONT-RRR-001", "type": "coachMapsToRole", "direction": "outgoing" },
+      { "target": "Entry-ONT-PE-001", "type": "flowMapsToProcess", "direction": "outgoing" },
+      { "target": "Entry-ONT-VP-001", "type": "goalMapsToBenefit", "direction": "outgoing" },
+      { "target": "Entry-ONT-KPI-001", "type": "macroTargetMapsToKPI", "direction": "outgoing" },
+      { "target": "Entry-ONT-KPI-001", "type": "progressMapsToMeasurement", "direction": "outgoing" }
+    ]
+  },
+  "layer": "PE-SERIES",
+  "domain": "Nutrition Coaching / Meal Plan Generation / Dietary Management",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-26",
+  "lastModified": "2026-02-26",
+  "notes": "v1.0.0: Initial release. Converted from VHF-RMP-ONT v1.0.0 (VHF-App-Mk3). 39 entities, 38 relationships, 16 business rules, 7 join patterns, 18 CQs. Schema.org dual-typing retained. First PFI instance: VHF Nutrition (B2C, PoC). Part of Epic 50 (F50.1). Source: ajrmooreuk/VHF-App-Mk3 Epic 1 (#7)."
+}

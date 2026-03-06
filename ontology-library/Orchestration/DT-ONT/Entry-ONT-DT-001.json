@@ -1,0 +1,53 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-DT-001",
+  "name": "DT Ontology (Decision Tree — Extensibility Pattern Evaluation)",
+  "description": "Hypothesis-testing decision tree for evaluating extensibility patterns (Agent, Skill, Plugin, Cowork Plugin) within the Claude ecosystem. 7 hypothesis gates across 3 evaluation layers with weighted scoring route to 12 terminal recommendations.",
+  "version": "1.0.0",
+  "oaaVersion": "7.0.0",
+  "namespace": "https://platformcore.io/ontology/dt/",
+  "prefix": "dt:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "./pf-DT-ONT-v1.0.0.jsonld",
+    "previousVersions": [],
+    "documentation": null,
+    "glossary": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "entities": "EvaluationLayer, HypothesisGate, EvaluationCriterion, GateThreshold, Recommendation, AutomationDecisionRecord, TestScenario",
+    "relationships": "20 relationships including gate routing (12), layer containment (3), traversal/outcome (2), validation (1), cross-ontology (2)",
+    "businessRules": "15 rules (12 mandatory, 3 advisory) — scoring formula, threshold tiers, sequential evaluation, reset cascade",
+    "crossSeriesBridges": "PE (pe:AIAgent via agent-tier recommendations), VSOM (strategic objective alignment)"
+  },
+  "dependencies": [
+    "Entry-ONT-EMC-001"
+  ],
+  "dependents": [],
+  "relationships": {
+    "crossOntology": [
+      { "target": "Entry-ONT-EMC-001", "type": "orchestrationSibling", "direction": "bidirectional" },
+      { "target": "Entry-ONT-PE-001", "type": "agentBridge", "direction": "outgoing", "description": "Agent-tier recommendations bridge to pe:AIAgent" },
+      { "target": "Entry-ONT-VSOM-001", "type": "vsomAlignment", "direction": "outgoing", "description": "Decision records link to strategic objectives" }
+    ]
+  },
+  "layer": "ORCHESTRATION",
+  "domain": "Extensibility Pattern Evaluation",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-24",
+  "lastModified": "2026-02-24",
+  "notes": "v1.0.0: Initial release for F40.1 Extensibility Decision Tree Engine. Source data from PBS/STRATEGY/extensibility-decision-tree-v1.0.json. Visualiser integration as new decision-tree view mode with interactive scoring panel."
+}

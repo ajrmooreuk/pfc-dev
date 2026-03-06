@@ -1,0 +1,895 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "schema": "https://schema.org/",
+    "w4m": "https://w4m.ai/ontology/core#",
+    "vsom": "https://w4m.ai/ontology/vsom#",
+    "baiv": "https://w4m.ai/ontology/baiv#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "iso": "https://www.iso.org/standard/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  
+  "@type": "owl:Ontology",
+  "@id": "https://w4m.ai/ontology/vsom/1.0",
+  "name": "W4M VSOM Core Capability Ontology",
+  "alternateName": "Vision-Strategy-Objectives-Metrics Framework",
+  "description": "Comprehensive ontology for Vision, Strategy, Objectives, and Metrics framework integrated with W4M Core Capability and Business Framework. Business Impact is the Driver, Outcomes the Goal, and Value the Measure.",
+  "version": "1.0.0",
+  "dateCreated": "2025-11-14T14:30:00Z",
+  "dateModified": "2025-11-14T14:30:00Z",
+  "inLanguage": "en-GB",
+  "creator": {
+    "@type": "Organization",
+    "@id": "w4m:W4MFramework",
+    "name": "W4M Core Capability Framework"
+  },
+  "license": "https://w4m.ai/license/proprietary",
+  
+  "w4m:versionControl": {
+    "repositoryUrl": "https://github.com/w4m-framework/ontologies",
+    "branch": "main",
+    "commitHash": "pending",
+    "timezone": "Europe/London",
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2025-11-14T14:30:00Z",
+        "author": "W4M Framework Team",
+        "changes": "Initial schema.org-based VSOM ontology creation"
+      }
+    ]
+  },
+
+  "w4m:cardinalRules": {
+    "rule1": "All Entities can be related to context",
+    "rule2": "Organisations can be both customer, supplier, and influencer or stakeholder",
+    "rule3": "Markets may be vertical or horizontal",
+    "rule4": "VSOM means Vision Strategy Objectives and Metrics",
+    "rule5": "JSON Ontologies founded on Schema.org are the starting point",
+    "rule6": "Scope is all Organisations Scalable for Size and Complexity and maturity",
+    "rule7": "Markets and Sub Sectors use ISO Standards where applicable",
+    "rule8": "Business Models and Frameworks may be adopted and applicable to client, market, or multiple contexts"
+  },
+
+  "w4m:frameworkPrinciples": {
+    "driver": "Business Impact",
+    "goal": "Outcomes",
+    "measure": "Value",
+    "approach": "Quasi object-oriented, vertical market and horizontal matrix"
+  },
+
+  "classes": {
+    "Organization": {
+      "@id": "schema:Organization",
+      "@type": "owl:Class",
+      "rdfs:label": "Organization",
+      "rdfs:comment": "Business entity implementing VSOM framework - extends schema.org/Organization",
+      "w4m:entityType": "Core",
+      "w4m:uniqueIdentifier": "ORG-{UUID}",
+      "w4m:roles": ["Customer", "Supplier", "Influencer", "Stakeholder", "Partner"],
+      "properties": {
+        "identifier": "schema:identifier",
+        "name": "schema:name",
+        "legalName": "schema:legalName",
+        "foundingDate": "schema:foundingDate",
+        "numberOfEmployees": "schema:numberOfEmployees",
+        "address": "schema:address",
+        "contactPoint": "schema:contactPoint",
+        "parentOrganization": "schema:parentOrganization",
+        "subOrganization": "schema:subOrganization",
+        "w4m:maturityLevel": "vsom:OrganizationalMaturity",
+        "w4m:industryClassification": "vsom:IndustryClassification",
+        "w4m:organizationSize": "vsom:OrganizationSize",
+        "w4m:complexityLevel": "vsom:ComplexityLevel"
+      }
+    },
+
+    "VSOMFramework": {
+      "@id": "vsom:VSOMFramework",
+      "@type": "owl:Class",
+      "rdfs:label": "VSOM Framework",
+      "rdfs:comment": "Complete Vision-Strategy-Objectives-Metrics implementation framework - custom class beyond schema.org",
+      "rdfs:subClassOf": "schema:Intangible",
+      "w4m:entityType": "Framework",
+      "w4m:driver": "BusinessImpact",
+      "w4m:goal": "Outcomes",
+      "w4m:measure": "Value",
+      "components": {
+        "vision": "vsom:VisionComponent",
+        "strategy": "vsom:StrategyComponent",
+        "objectives": "vsom:ObjectivesComponent",
+        "metrics": "vsom:MetricsComponent"
+      }
+    },
+
+    "VisionComponent": {
+      "@id": "vsom:VisionComponent",
+      "@type": "owl:Class",
+      "rdfs:label": "Vision Component",
+      "rdfs:comment": "Long-term aspirational direction aligned with organizational purpose",
+      "rdfs:subClassOf": "schema:Thing",
+      "w4m:entityType": "Strategic",
+      "w4m:timeHorizon": "3-10 years",
+      "properties": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "dateCreated": "schema:dateCreated",
+        "dateModified": "schema:dateModified",
+        "vsom:visionStatement": {
+          "@type": "schema:Text",
+          "description": "Aspirational future state description"
+        },
+        "vsom:coreValues": {
+          "@type": "schema:ItemList",
+          "description": "Fundamental organizational beliefs and principles"
+        },
+        "vsom:visionHorizon": {
+          "@type": "schema:Duration",
+          "description": "Time horizon for vision realization"
+        },
+        "vsom:aspirationalDirection": {
+          "@type": "schema:Text",
+          "description": "Strategic direction the organization aspires to"
+        },
+        "vsom:purposeAlignment": {
+          "@type": "schema:Text",
+          "description": "Alignment with organizational purpose and mission"
+        }
+      }
+    },
+
+    "StrategyComponent": {
+      "@id": "vsom:StrategyComponent",
+      "@type": "owl:Class",
+      "rdfs:label": "Strategy Component",
+      "rdfs:comment": "Multi-layer strategic approach: Corporate, Marketing, Operational, Digital",
+      "rdfs:subClassOf": "schema:Action",
+      "w4m:entityType": "Strategic",
+      "w4m:timeHorizon": "1-3 years",
+      "properties": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "actionStatus": "schema:actionStatus",
+        "startTime": "schema:startTime",
+        "endTime": "schema:endTime",
+        "agent": "schema:agent",
+        "object": "schema:object",
+        "result": "schema:result",
+        "vsom:strategyType": {
+          "@type": "vsom:StrategyTypeEnum",
+          "values": ["Corporate", "Marketing", "Operational", "Digital", "AIVisibility", "Growth", "Innovation"]
+        },
+        "vsom:strategicThrust": {
+          "@type": "schema:Text",
+          "description": "Primary direction and focus of the strategy"
+        },
+        "vsom:competitiveAdvantage": {
+          "@type": "schema:Text",
+          "description": "Sustainable competitive positioning"
+        },
+        "vsom:resourceRequirements": {
+          "@type": "schema:MonetaryAmount",
+          "description": "Budget and resource allocation"
+        },
+        "vsom:riskAssessment": {
+          "@type": "vsom:RiskProfile",
+          "description": "Strategic risk evaluation"
+        }
+      }
+    },
+
+    "ObjectivesComponent": {
+      "@id": "vsom:ObjectivesComponent",
+      "@type": "owl:Class",
+      "rdfs:label": "Objectives Component",
+      "rdfs:comment": "Specific, measurable, achievable, relevant, time-bound goals",
+      "rdfs:subClassOf": "schema:Thing",
+      "w4m:entityType": "Tactical",
+      "w4m:timeHorizon": "Quarterly to Annual",
+      "properties": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "vsom:objectiveType": {
+          "@type": "vsom:ObjectiveTypeEnum",
+          "values": ["Strategic", "Tactical", "Operational", "Financial", "Customer", "Learning", "Internal"]
+        },
+        "vsom:targetValue": {
+          "@type": "schema:QuantitativeValue",
+          "description": "Target measurement for objective"
+        },
+        "vsom:baselineValue": {
+          "@type": "schema:QuantitativeValue",
+          "description": "Starting measurement for comparison"
+        },
+        "vsom:deadline": {
+          "@type": "schema:Date",
+          "description": "Target completion date"
+        },
+        "vsom:owner": {
+          "@type": "schema:Person",
+          "description": "Accountable person for objective"
+        },
+        "vsom:status": {
+          "@type": "vsom:ObjectiveStatusEnum",
+          "values": ["NotStarted", "InProgress", "OnTrack", "AtRisk", "Blocked", "Completed", "Cancelled"]
+        },
+        "vsom:priority": {
+          "@type": "schema:Integer",
+          "description": "Priority ranking (1=highest)"
+        },
+        "vsom:alignedStrategy": {
+          "@type": "vsom:StrategyComponent",
+          "description": "Strategy this objective supports"
+        }
+      }
+    },
+
+    "MetricsComponent": {
+      "@id": "vsom:MetricsComponent",
+      "@type": "owl:Class",
+      "rdfs:label": "Metrics Component",
+      "rdfs:comment": "KPIs, OKRs, and performance indicators measuring value delivery",
+      "rdfs:subClassOf": "schema:PropertyValue",
+      "w4m:entityType": "Measurement",
+      "w4m:measureType": "Value",
+      "properties": {
+        "name": "schema:name",
+        "value": "schema:value",
+        "unitCode": "schema:unitCode",
+        "unitText": "schema:unitText",
+        "minValue": "schema:minValue",
+        "maxValue": "schema:maxValue",
+        "vsom:metricType": {
+          "@type": "vsom:MetricTypeEnum",
+          "values": ["Leading", "Lagging", "Diagnostic", "Outcome", "Process", "Financial", "Customer", "Operational"]
+        },
+        "vsom:measurementFrequency": {
+          "@type": "schema:Duration",
+          "description": "How often metric is measured"
+        },
+        "vsom:threshold": {
+          "@type": "vsom:ThresholdDefinition",
+          "properties": {
+            "critical": "schema:Number",
+            "warning": "schema:Number",
+            "target": "schema:Number",
+            "stretch": "schema:Number"
+          }
+        },
+        "vsom:dataSource": {
+          "@type": "schema:Text",
+          "description": "Source system for metric data"
+        },
+        "vsom:calculationMethod": {
+          "@type": "schema:Text",
+          "description": "Formula or method for calculating metric"
+        },
+        "vsom:businessImpact": {
+          "@type": "vsom:ImpactLevel",
+          "values": ["Critical", "High", "Medium", "Low"],
+          "description": "Impact on business outcomes"
+        }
+      }
+    },
+
+    "Market": {
+      "@id": "vsom:Market",
+      "@type": "owl:Class",
+      "rdfs:label": "Market",
+      "rdfs:comment": "Market classification - vertical or horizontal",
+      "rdfs:subClassOf": "schema:Place",
+      "w4m:entityType": "Context",
+      "properties": {
+        "name": "schema:name",
+        "geo": "schema:geo",
+        "vsom:marketType": {
+          "@type": "vsom:MarketTypeEnum",
+          "values": ["Vertical", "Horizontal"]
+        },
+        "vsom:industryCode": {
+          "@type": "schema:Text",
+          "description": "ISO industry classification code"
+        },
+        "vsom:marketSize": {
+          "@type": "schema:MonetaryAmount",
+          "description": "Total addressable market value"
+        },
+        "vsom:growthRate": {
+          "@type": "schema:Number",
+          "description": "Annual growth rate percentage"
+        },
+        "vsom:maturityStage": {
+          "@type": "vsom:MarketMaturityEnum",
+          "values": ["Emerging", "Growing", "Mature", "Declining"]
+        }
+      }
+    },
+
+    "BusinessModel": {
+      "@id": "vsom:BusinessModel",
+      "@type": "owl:Class",
+      "rdfs:label": "Business Model",
+      "rdfs:comment": "Adoptable business model framework applicable to client and market",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "w4m:entityType": "Framework",
+      "properties": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "author": "schema:author",
+        "datePublished": "schema:datePublished",
+        "vsom:modelType": {
+          "@type": "schema:Text",
+          "description": "Classification of business model pattern"
+        },
+        "vsom:applicableIndustries": {
+          "@type": "schema:ItemList",
+          "description": "Industries where model applies"
+        },
+        "vsom:valueProposition": {
+          "@type": "schema:Text",
+          "description": "Core value delivery mechanism"
+        },
+        "vsom:revenueStreams": {
+          "@type": "schema:ItemList",
+          "description": "Revenue generation methods"
+        }
+      }
+    },
+
+    "VirtualModule": {
+      "@id": "vsom:VirtualModule",
+      "@type": "owl:Class",
+      "rdfs:label": "Virtual Module",
+      "rdfs:comment": "Clustered entities forming a functional module",
+      "rdfs:subClassOf": "schema:SoftwareApplication",
+      "w4m:entityType": "Module",
+      "properties": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "softwareVersion": "schema:softwareVersion",
+        "vsom:moduleType": {
+          "@type": "schema:Text",
+          "description": "Classification of virtual module"
+        },
+        "vsom:containedEntities": {
+          "@type": "schema:ItemList",
+          "description": "Entities clustered within this module"
+        },
+        "vsom:interfaces": {
+          "@type": "schema:ItemList",
+          "description": "Integration points with other modules"
+        }
+      }
+    },
+
+    "BusinessImpact": {
+      "@id": "vsom:BusinessImpact",
+      "@type": "owl:Class",
+      "rdfs:label": "Business Impact",
+      "rdfs:comment": "Driver of all VSOM activities - measures business effect",
+      "rdfs:subClassOf": "schema:Thing",
+      "w4m:entityType": "Driver",
+      "w4m:role": "Primary Driver",
+      "properties": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "vsom:impactType": {
+          "@type": "vsom:ImpactTypeEnum",
+          "values": ["Revenue", "Cost", "Risk", "Capability", "Market", "Customer", "Operational"]
+        },
+        "vsom:impactMagnitude": {
+          "@type": "schema:QuantitativeValue",
+          "description": "Quantified impact measurement"
+        },
+        "vsom:impactTimeframe": {
+          "@type": "schema:Duration",
+          "description": "Time to realize impact"
+        },
+        "vsom:confidenceLevel": {
+          "@type": "schema:Number",
+          "description": "Confidence in impact estimate (0-100%)"
+        }
+      }
+    },
+
+    "Outcome": {
+      "@id": "vsom:Outcome",
+      "@type": "owl:Class",
+      "rdfs:label": "Outcome",
+      "rdfs:comment": "Goal of VSOM framework - desired end state",
+      "rdfs:subClassOf": "schema:Thing",
+      "w4m:entityType": "Goal",
+      "w4m:role": "Primary Goal",
+      "properties": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "vsom:outcomeType": {
+          "@type": "vsom:OutcomeTypeEnum",
+          "values": ["Financial", "Customer", "Operational", "Strategic", "Capability", "Market"]
+        },
+        "vsom:targetState": {
+          "@type": "schema:Text",
+          "description": "Desired end state description"
+        },
+        "vsom:successCriteria": {
+          "@type": "schema:ItemList",
+          "description": "Criteria for outcome success"
+        },
+        "vsom:measurableIndicators": {
+          "@type": "schema:ItemList",
+          "description": "Quantifiable success indicators"
+        }
+      }
+    },
+
+    "ValueMeasure": {
+      "@id": "vsom:ValueMeasure",
+      "@type": "owl:Class",
+      "rdfs:label": "Value Measure",
+      "rdfs:comment": "Measurement of value delivered through VSOM implementation",
+      "rdfs:subClassOf": "schema:PropertyValue",
+      "w4m:entityType": "Measure",
+      "w4m:role": "Primary Measure",
+      "properties": {
+        "name": "schema:name",
+        "value": "schema:value",
+        "unitCode": "schema:unitCode",
+        "vsom:valueType": {
+          "@type": "vsom:ValueTypeEnum",
+          "values": ["Financial", "Strategic", "Operational", "Customer", "Innovation", "Capability"]
+        },
+        "vsom:valueDriver": {
+          "@type": "vsom:BusinessImpact",
+          "description": "Impact driving this value"
+        },
+        "vsom:valueOutcome": {
+          "@type": "vsom:Outcome",
+          "description": "Outcome this value supports"
+        },
+        "vsom:roi": {
+          "@type": "schema:Number",
+          "description": "Return on investment percentage"
+        }
+      }
+    },
+
+    "OrganizationalMaturity": {
+      "@id": "vsom:OrganizationalMaturity",
+      "@type": "owl:Class",
+      "rdfs:label": "Organizational Maturity",
+      "rdfs:comment": "Maturity level assessment for organizational capabilities",
+      "rdfs:subClassOf": "schema:Rating",
+      "w4m:entityType": "Assessment",
+      "properties": {
+        "ratingValue": "schema:ratingValue",
+        "bestRating": "schema:bestRating",
+        "worstRating": "schema:worstRating",
+        "vsom:maturityDomain": {
+          "@type": "schema:Text",
+          "description": "Area of maturity assessment"
+        },
+        "vsom:maturityLevel": {
+          "@type": "vsom:MaturityLevelEnum",
+          "values": ["Initial", "Repeatable", "Defined", "Managed", "Optimizing"]
+        },
+        "vsom:assessmentDate": {
+          "@type": "schema:Date",
+          "description": "Date of maturity assessment"
+        },
+        "vsom:targetMaturityLevel": {
+          "@type": "vsom:MaturityLevelEnum",
+          "description": "Desired maturity level"
+        }
+      }
+    },
+
+    "IndustryClassification": {
+      "@id": "vsom:IndustryClassification",
+      "@type": "owl:Class",
+      "rdfs:label": "Industry Classification",
+      "rdfs:comment": "ISO-based industry sector classification",
+      "rdfs:subClassOf": "schema:DefinedTerm",
+      "w4m:entityType": "Classification",
+      "w4m:standardReference": "ISO 19152",
+      "properties": {
+        "name": "schema:name",
+        "termCode": "schema:termCode",
+        "inDefinedTermSet": "schema:inDefinedTermSet",
+        "vsom:sectorCode": {
+          "@type": "schema:Text",
+          "description": "ISO industry sector code"
+        },
+        "vsom:subSectorCode": {
+          "@type": "schema:Text",
+          "description": "ISO sub-sector code"
+        },
+        "vsom:marketOrientation": {
+          "@type": "vsom:MarketTypeEnum",
+          "description": "Vertical or horizontal market orientation"
+        }
+      }
+    },
+
+    "ContextualRelationship": {
+      "@id": "vsom:ContextualRelationship",
+      "@type": "owl:Class",
+      "rdfs:label": "Contextual Relationship",
+      "rdfs:comment": "Relationship between entities within specific context",
+      "rdfs:subClassOf": "schema:Role",
+      "w4m:entityType": "Relationship",
+      "properties": {
+        "roleName": "schema:roleName",
+        "vsom:sourceEntity": {
+          "@type": "schema:Thing",
+          "description": "Source of relationship"
+        },
+        "vsom:targetEntity": {
+          "@type": "schema:Thing",
+          "description": "Target of relationship"
+        },
+        "vsom:relationshipType": {
+          "@type": "vsom:RelationshipTypeEnum",
+          "values": ["Supports", "Enables", "Measures", "Drives", "Constrains", "Influences", "Depends"]
+        },
+        "vsom:context": {
+          "@type": "schema:Text",
+          "description": "Contextual framing of relationship"
+        },
+        "vsom:strength": {
+          "@type": "schema:Number",
+          "description": "Relationship strength (0-100%)"
+        }
+      }
+    }
+  },
+
+  "properties": {
+    "objectProperties": {
+      "implementsVSOM": {
+        "@type": "owl:ObjectProperty",
+        "@id": "vsom:implementsVSOM",
+        "rdfs:label": "implements VSOM",
+        "rdfs:domain": "schema:Organization",
+        "rdfs:range": "vsom:VSOMFramework"
+      },
+      "hasVision": {
+        "@type": "owl:ObjectProperty",
+        "@id": "vsom:hasVision",
+        "rdfs:label": "has vision",
+        "rdfs:domain": "vsom:VSOMFramework",
+        "rdfs:range": "vsom:VisionComponent"
+      },
+      "hasStrategy": {
+        "@type": "owl:ObjectProperty",
+        "@id": "vsom:hasStrategy",
+        "rdfs:label": "has strategy",
+        "rdfs:domain": "vsom:VSOMFramework",
+        "rdfs:range": "vsom:StrategyComponent"
+      },
+      "hasObjective": {
+        "@type": "owl:ObjectProperty",
+        "@id": "vsom:hasObjective",
+        "rdfs:label": "has objective",
+        "rdfs:domain": "vsom:VSOMFramework",
+        "rdfs:range": "vsom:ObjectivesComponent"
+      },
+      "hasMetric": {
+        "@type": "owl:ObjectProperty",
+        "@id": "vsom:hasMetric",
+        "rdfs:label": "has metric",
+        "rdfs:domain": "vsom:VSOMFramework",
+        "rdfs:range": "vsom:MetricsComponent"
+      },
+      "drivesOutcome": {
+        "@type": "owl:ObjectProperty",
+        "@id": "vsom:drivesOutcome",
+        "rdfs:label": "drives outcome",
+        "rdfs:domain": "vsom:BusinessImpact",
+        "rdfs:range": "vsom:Outcome"
+      },
+      "measuresValue": {
+        "@type": "owl:ObjectProperty",
+        "@id": "vsom:measuresValue",
+        "rdfs:label": "measures value",
+        "rdfs:domain": "vsom:Outcome",
+        "rdfs:range": "vsom:ValueMeasure"
+      },
+      "operatesInMarket": {
+        "@type": "owl:ObjectProperty",
+        "@id": "vsom:operatesInMarket",
+        "rdfs:label": "operates in market",
+        "rdfs:domain": "schema:Organization",
+        "rdfs:range": "vsom:Market"
+      },
+      "adoptsBusinessModel": {
+        "@type": "owl:ObjectProperty",
+        "@id": "vsom:adoptsBusinessModel",
+        "rdfs:label": "adopts business model",
+        "rdfs:domain": "schema:Organization",
+        "rdfs:range": "vsom:BusinessModel"
+      },
+      "hasMaturityLevel": {
+        "@type": "owl:ObjectProperty",
+        "@id": "vsom:hasMaturityLevel",
+        "rdfs:label": "has maturity level",
+        "rdfs:domain": "schema:Organization",
+        "rdfs:range": "vsom:OrganizationalMaturity"
+      },
+      "classifiedAs": {
+        "@type": "owl:ObjectProperty",
+        "@id": "vsom:classifiedAs",
+        "rdfs:label": "classified as",
+        "rdfs:domain": "schema:Organization",
+        "rdfs:range": "vsom:IndustryClassification"
+      },
+      "containsModule": {
+        "@type": "owl:ObjectProperty",
+        "@id": "vsom:containsModule",
+        "rdfs:label": "contains module",
+        "rdfs:domain": "vsom:VSOMFramework",
+        "rdfs:range": "vsom:VirtualModule"
+      },
+      "relatesTo": {
+        "@type": "owl:ObjectProperty",
+        "@id": "vsom:relatesTo",
+        "rdfs:label": "relates to",
+        "rdfs:domain": "schema:Thing",
+        "rdfs:range": "schema:Thing",
+        "rdfs:comment": "Cardinal Rule 1: All entities can be related to context"
+      }
+    },
+
+    "dataProperties": {
+      "organizationId": {
+        "@type": "owl:DatatypeProperty",
+        "@id": "vsom:organizationId",
+        "rdfs:label": "organization ID",
+        "rdfs:domain": "schema:Organization",
+        "rdfs:range": "xsd:string",
+        "rdfs:comment": "Unique identifier for organization (ORG-{UUID})"
+      },
+      "versionNumber": {
+        "@type": "owl:DatatypeProperty",
+        "@id": "vsom:versionNumber",
+        "rdfs:label": "version number",
+        "rdfs:domain": "schema:Thing",
+        "rdfs:range": "xsd:string"
+      },
+      "createdTimestamp": {
+        "@type": "owl:DatatypeProperty",
+        "@id": "vsom:createdTimestamp",
+        "rdfs:label": "created timestamp",
+        "rdfs:domain": "schema:Thing",
+        "rdfs:range": "xsd:dateTime",
+        "rdfs:comment": "UK time zone (Europe/London)"
+      },
+      "modifiedTimestamp": {
+        "@type": "owl:DatatypeProperty",
+        "@id": "vsom:modifiedTimestamp",
+        "rdfs:label": "modified timestamp",
+        "rdfs:domain": "schema:Thing",
+        "rdfs:range": "xsd:dateTime",
+        "rdfs:comment": "UK time zone (Europe/London)"
+      },
+      "changeTracker": {
+        "@type": "owl:DatatypeProperty",
+        "@id": "vsom:changeTracker",
+        "rdfs:label": "change tracker",
+        "rdfs:domain": "schema:Thing",
+        "rdfs:range": "xsd:string",
+        "rdfs:comment": "Traceable change reference for collaboration"
+      }
+    }
+  },
+
+  "enumerations": {
+    "StrategyTypeEnum": {
+      "@id": "vsom:StrategyTypeEnum",
+      "@type": "schema:Enumeration",
+      "values": ["Corporate", "Marketing", "Operational", "Digital", "AIVisibility", "Growth", "Innovation", "Customer", "Financial"]
+    },
+    "ObjectiveTypeEnum": {
+      "@id": "vsom:ObjectiveTypeEnum",
+      "@type": "schema:Enumeration",
+      "values": ["Strategic", "Tactical", "Operational", "Financial", "Customer", "Learning", "Internal", "Growth"]
+    },
+    "ObjectiveStatusEnum": {
+      "@id": "vsom:ObjectiveStatusEnum",
+      "@type": "schema:Enumeration",
+      "values": ["NotStarted", "InProgress", "OnTrack", "AtRisk", "Blocked", "Completed", "Cancelled"]
+    },
+    "MetricTypeEnum": {
+      "@id": "vsom:MetricTypeEnum",
+      "@type": "schema:Enumeration",
+      "values": ["Leading", "Lagging", "Diagnostic", "Outcome", "Process", "Financial", "Customer", "Operational"]
+    },
+    "MarketTypeEnum": {
+      "@id": "vsom:MarketTypeEnum",
+      "@type": "schema:Enumeration",
+      "values": ["Vertical", "Horizontal"]
+    },
+    "MarketMaturityEnum": {
+      "@id": "vsom:MarketMaturityEnum",
+      "@type": "schema:Enumeration",
+      "values": ["Emerging", "Growing", "Mature", "Declining"]
+    },
+    "ImpactTypeEnum": {
+      "@id": "vsom:ImpactTypeEnum",
+      "@type": "schema:Enumeration",
+      "values": ["Revenue", "Cost", "Risk", "Capability", "Market", "Customer", "Operational"]
+    },
+    "ImpactLevelEnum": {
+      "@id": "vsom:ImpactLevelEnum",
+      "@type": "schema:Enumeration",
+      "values": ["Critical", "High", "Medium", "Low"]
+    },
+    "OutcomeTypeEnum": {
+      "@id": "vsom:OutcomeTypeEnum",
+      "@type": "schema:Enumeration",
+      "values": ["Financial", "Customer", "Operational", "Strategic", "Capability", "Market"]
+    },
+    "ValueTypeEnum": {
+      "@id": "vsom:ValueTypeEnum",
+      "@type": "schema:Enumeration",
+      "values": ["Financial", "Strategic", "Operational", "Customer", "Innovation", "Capability"]
+    },
+    "MaturityLevelEnum": {
+      "@id": "vsom:MaturityLevelEnum",
+      "@type": "schema:Enumeration",
+      "values": ["Initial", "Repeatable", "Defined", "Managed", "Optimizing"]
+    },
+    "RelationshipTypeEnum": {
+      "@id": "vsom:RelationshipTypeEnum",
+      "@type": "schema:Enumeration",
+      "values": ["Supports", "Enables", "Measures", "Drives", "Constrains", "Influences", "Depends"]
+    },
+    "OrganizationRoleEnum": {
+      "@id": "vsom:OrganizationRoleEnum",
+      "@type": "schema:Enumeration",
+      "values": ["Customer", "Supplier", "Influencer", "Stakeholder", "Partner", "Competitor"]
+    }
+  },
+
+  "integrations": {
+    "baivProcessIntegration": {
+      "@id": "vsom:BAIVProcessIntegration",
+      "description": "Integration with BAIV P1-P7 Process Framework",
+      "phases": {
+        "P1Configuration": {
+          "vsomInput": ["MarketingBudget", "BrandValues", "VisionStatement"],
+          "output": ["SystemReady", "BaselineConfiguration"]
+        },
+        "P2Discovery": {
+          "vsomInput": ["CurrentState", "CompetitorAnalysis", "MarketingStrategy"],
+          "output": ["DigitalFootprint", "CompetitiveLandscape"]
+        },
+        "P3Capture": {
+          "vsomInput": ["BaselineMetrics", "PerformanceTargets"],
+          "output": ["PerformanceData", "MetricBaselines"]
+        },
+        "P4Audit": {
+          "vsomInput": ["CurrentPerformance", "StrategyAlignment"],
+          "output": ["VisibilityScore", "GapIdentification"]
+        },
+        "P5Analytics": {
+          "vsomInput": ["KPIBaselines", "ObjectiveTargets"],
+          "output": ["OpportunityMatrix", "PerformanceInsights"]
+        },
+        "P6GapAnalysis": {
+          "vsomInput": ["ObjectivesVsCurrent", "TargetGaps"],
+          "output": ["GapReport", "PriorityMatrix"]
+        },
+        "P7Ideation": {
+          "vsomInput": ["AllVSOMElements", "GapAnalysis"],
+          "output": ["30DayActionPlan", "ImplementationRoadmap"]
+        }
+      }
+    },
+    "raciIntegration": {
+      "@id": "vsom:RACIIntegration",
+      "description": "Integration with RACI accountability matrix",
+      "matrixDimensions": {
+        "responsible": "schema:Person",
+        "accountable": "schema:Person",
+        "consulted": "schema:Person",
+        "informed": "schema:Person"
+      }
+    }
+  },
+
+  "testDataTemplate": {
+    "@id": "vsom:TestDataTemplate",
+    "description": "Template for generating test data and model values",
+    "sampleOrganization": {
+      "@type": "schema:Organization",
+      "identifier": "ORG-SAMPLE-001",
+      "name": "Sample Tech Enterprise",
+      "w4m:maturityLevel": "Developing",
+      "w4m:industryClassification": "Software Development",
+      "w4m:organizationSize": "Medium",
+      "w4m:roles": ["Customer", "Partner"]
+    },
+    "sampleVSOMFramework": {
+      "@type": "vsom:VSOMFramework",
+      "vision": {
+        "visionStatement": "To become the leading AI-enabled service provider in our market",
+        "visionHorizon": "P5Y",
+        "coreValues": ["Innovation", "Customer Success", "Integrity"]
+      },
+      "strategy": {
+        "strategyType": "Digital",
+        "strategicThrust": "AI-first transformation",
+        "resourceRequirements": {
+          "@type": "schema:MonetaryAmount",
+          "value": 500000,
+          "currency": "GBP"
+        }
+      },
+      "objectives": [
+        {
+          "name": "Increase AI Visibility Score",
+          "objectiveType": "Strategic",
+          "targetValue": 85,
+          "baselineValue": 45,
+          "deadline": "2025-12-31",
+          "status": "InProgress"
+        }
+      ],
+      "metrics": [
+        {
+          "name": "AI Visibility Score",
+          "metricType": "Outcome",
+          "value": 45,
+          "unitText": "percentage",
+          "threshold": {
+            "critical": 20,
+            "warning": 40,
+            "target": 75,
+            "stretch": 90
+          },
+          "measurementFrequency": "P1M"
+        }
+      ]
+    }
+  },
+
+  "validationRules": {
+    "schemaOrgCompliance": {
+      "description": "All entities must extend or reference schema.org types where applicable",
+      "priority": "Critical"
+    },
+    "uniqueOrganizationId": {
+      "description": "Each organization must have a unique ORG-{UUID} identifier",
+      "priority": "Critical"
+    },
+    "versionControl": {
+      "description": "All changes must be timestamped with UK time and version tracked",
+      "priority": "Critical"
+    },
+    "contextualRelationships": {
+      "description": "All entities can be related to context (Cardinal Rule 1)",
+      "priority": "High"
+    },
+    "isoCompliance": {
+      "description": "Market and sector classifications should use ISO standards",
+      "priority": "High"
+    }
+  },
+
+  "evolutionGuidelines": {
+    "versioningScheme": "Semantic Versioning (MAJOR.MINOR.PATCH)",
+    "changeManagement": {
+      "backwardCompatibility": "Required for MINOR and PATCH versions",
+      "breakingChanges": "Only allowed in MAJOR versions",
+      "deprecationPolicy": "Minimum 2 version notice before removal"
+    },
+    "collaborationProtocol": {
+      "multiClientUsage": "Ontology used across multiple clients",
+      "platformAgnostic": "Works with multiple platforms and partners",
+      "changeTracking": "All modifications referenced and traceable"
+    }
+  }
+}

@@ -1,0 +1,318 @@
+{
+  "@context": {
+    "sp": "https://pf-ontology.com/strategic-patterns/",
+    "vsom": "https://pf-ontology.com/vsom/",
+    "kpi": "https://pf-ontology.com/kpi/",
+    "rrr": "https://pf-ontology.com/rrr/",
+    "orgctx": "https://pf-ontology.com/org-context/",
+    "ea": "https://pf-ontology.com/ea-core/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#"
+  },
+  "@id": "sp:StrategicPatterns-OrgBSC",
+  "@type": "owl:Ontology",
+  "rdfs:label": "Strategic Patterns — Layer 3: Organization BSC, Value Chain & Stakeholder Alignment",
+  "description": "Balanced Scorecard as the connective tissue between VSOM strategy and KPI measurement, with stakeholder alignment (RACI/RRR), value chain engineering, and maturity assessment. NOTE: ORG-MAT merges into ORG-CONTEXT as types/subtypes tree.",
+  "version": "0.1.0-sketch",
+
+  "_architecturalNote": "The BSC is the NATURAL BRIDGE between VSOM and KPI-ONT. VSOM defines Vision → Strategy → Objectives → Metrics. BSC organizes those objectives and metrics into four perspectives. KPI-ONT already has KPI.category matching BSC perspectives (Financial, Customer, Operational, Learning & Growth). This pattern formalizes that bridge and extends it with Strategy Maps.",
+
+  "entities": {
+    "BalancedScorecard": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Balanced Scorecard",
+      "description": "Kaplan & Norton BSC — translates VSOM strategy into measurable objectives across four perspectives. The BSC IS the strategy execution framework that operationalizes VSOM. RRR roles own BSC perspective objectives.",
+      "properties": {
+        "bscId": { "type": "string", "required": true },
+        "vsomFrameworkRef": { "type": "string", "description": "→ vsom:VSOMFramework — the strategy being scorecarded", "required": true },
+        "contextRef": { "type": "string", "description": "→ orgctx:OrganizationContext" },
+        "scope": { "type": "string", "enum": ["corporate", "business-unit", "department", "team"] },
+        "period": { "type": "string", "description": "Fiscal period" },
+        "perspectives": {
+          "type": "object",
+          "properties": {
+            "financial": { "$ref": "#/entities/BSCPerspective" },
+            "customer": { "$ref": "#/entities/BSCPerspective" },
+            "internalProcess": { "$ref": "#/entities/BSCPerspective" },
+            "learningAndGrowth": { "$ref": "#/entities/BSCPerspective" }
+          }
+        },
+        "strategyMapRef": { "type": "string", "description": "→ sp:StrategyMap" },
+        "overallScore": { "type": "number", "min": 0, "max": 100 }
+      }
+    },
+
+    "BSCPerspective": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "BSC Perspective",
+      "description": "One of four BSC perspectives. Each contains strategic objectives (→ vsom:ObjectivesComponent) measured by KPIs (→ kpi:KPI). C-Suite roles from RRR-ONT own perspectives based on their bscPerspective property.",
+      "properties": {
+        "perspectiveId": { "type": "string", "required": true },
+        "perspectiveType": {
+          "type": "string",
+          "enum": ["Financial", "Customer", "Internal Process", "Learning & Growth"],
+          "required": true
+        },
+        "strategicTheme": { "type": "string", "description": "High-level theme connecting objectives in this perspective" },
+        "objectives": {
+          "type": "array",
+          "items": {
+            "objectiveId": "string",
+            "description": "string",
+            "vsomObjectiveRef": "string → vsom:ObjectivesComponent",
+            "okrObjectiveRef": "string → okr:Objective",
+            "ownerRoleRef": "string → rrr:ExecutiveRole",
+            "weight": "number:0-1",
+            "kpis": {
+              "type": "array",
+              "items": {
+                "kpiRef": "string → kpi:KPI",
+                "target": "number",
+                "actual": "number",
+                "status": "string:enum[on-track,at-risk,off-track]",
+                "trend": "string:enum[improving,stable,declining]"
+              }
+            }
+          }
+        },
+        "perspectiveScore": { "type": "number", "min": 0, "max": 100 },
+        "causeEffectLinks": {
+          "type": "array",
+          "items": "string",
+          "description": "→ other BSCPerspective objectives this perspective drives (for Strategy Map)"
+        }
+      },
+      "_rrrMapping": {
+        "Financial": ["CFO", "CEO", "CRO"],
+        "Customer": ["CCO", "CMO", "CSO-Sales"],
+        "InternalProcess": ["COO", "CTO", "CISO", "CPO-Product"],
+        "LearningAndGrowth": ["CHRO", "CLO", "CDO", "CIO", "CInO"]
+      }
+    },
+
+    "StrategyMap": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Strategy Map",
+      "description": "Visual cause-and-effect linkage across BSC perspectives. Shows how Learning & Growth → Internal Process → Customer → Financial objectives cascade. This IS the graph that connects VSOM strategy to measurable outcomes.",
+      "properties": {
+        "mapId": { "type": "string", "required": true },
+        "bscRef": { "type": "string", "description": "→ sp:BalancedScorecard" },
+        "vsomStrategyRef": { "type": "string", "description": "→ vsom:StrategyComponent" },
+        "causalChains": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "chainId": { "type": "string" },
+              "name": { "type": "string", "description": "E.g. 'Digital Capability → Customer Experience → Revenue Growth'" },
+              "links": {
+                "type": "array",
+                "items": {
+                  "fromObjective": "string → BSCPerspective.objectives[].objectiveId",
+                  "fromPerspective": "string:enum[Financial,Customer,InternalProcess,LearningAndGrowth]",
+                  "toObjective": "string",
+                  "toPerspective": "string",
+                  "linkType": "string:enum[drives,enables,influences,requires]",
+                  "strengthOfLink": "string:enum[strong,moderate,weak]",
+                  "lagTime": "string:enum[immediate,short-term,medium-term,long-term]"
+                }
+              }
+            }
+          }
+        }
+      },
+      "_graphNote": "The Strategy Map is a DIRECTED ACYCLIC GRAPH — it flows upward from Learning & Growth through Internal Process and Customer to Financial outcomes. An AI agent can traverse this graph to answer: 'If we invest in training (L&G), what is the causal chain to revenue impact (Financial)?'"
+    },
+
+    "StakeholderAlignment": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Stakeholder Alignment Assessment",
+      "description": "Maps stakeholders to their interest, influence, and alignment with strategic objectives. Bridges rrr:ExecutiveRole RACI to vsom:StrategyComponent.",
+      "properties": {
+        "assessmentId": { "type": "string", "required": true },
+        "vsomFrameworkRef": { "type": "string", "description": "→ vsom:VSOMFramework" },
+        "stakeholders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "roleRef": { "type": "string", "description": "→ rrr:ExecutiveRole or rrr:FunctionalRole" },
+              "interest": { "type": "string", "enum": ["high", "medium", "low"] },
+              "influence": { "type": "string", "enum": ["high", "medium", "low"] },
+              "alignment": { "type": "string", "enum": ["champion", "supporter", "neutral", "resistant", "blocker"] },
+              "strategicObjectivesOwned": {
+                "type": "array",
+                "items": "string → vsom:ObjectivesComponent"
+              },
+              "bscPerspectiveOwnership": {
+                "type": "array",
+                "items": "string:enum[Financial,Customer,InternalProcess,LearningAndGrowth]"
+              },
+              "raciAccountabilities": {
+                "type": "array",
+                "items": "string",
+                "description": "→ rrr:RACIAssignment.raciAccountable"
+              },
+              "engagementStrategy": { "type": "string" }
+            }
+          }
+        },
+        "alignmentScore": { "type": "number", "min": 0, "max": 100 },
+        "criticalGaps": { "type": "array", "items": "string" }
+      }
+    },
+
+    "StrategicValueChain": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Strategic Value Chain",
+      "description": "Organization-specific value chain connecting ea:BusinessCapability to value creation. Links to VE-Series value engineering patterns and BSC Internal Process perspective.",
+      "properties": {
+        "chainId": { "type": "string", "required": true },
+        "contextRef": { "type": "string", "description": "→ orgctx:OrganizationContext" },
+        "primaryActivities": {
+          "type": "array",
+          "items": {
+            "activityId": "string",
+            "name": "string",
+            "capabilityRef": "string → ea:BusinessCapability",
+            "bscPerspective": "InternalProcess",
+            "valueContribution": "number:%",
+            "costAllocation": "number:%",
+            "marginContribution": "number",
+            "maturityRef": "string → orgctx:MaturitySubType (merged)",
+            "processRef": "string → ea:BusinessProcess",
+            "strategicRole": "string:enum[differentiator,qualifier,enabler,commodity]"
+          }
+        },
+        "supportActivities": {
+          "type": "array",
+          "items": {
+            "activityId": "string",
+            "name": "string",
+            "capabilityRef": "string → ea:BusinessCapability",
+            "enablesActivities": "array:string → primaryActivities[].activityId"
+          }
+        },
+        "marginAnalysis": {
+          "totalRevenue": "number",
+          "totalCost": "number",
+          "margin": "number",
+          "valueDrivers": "array:string"
+        },
+        "veAnalysisRef": { "type": "string", "description": "→ kpi:VEAnalysis — value engineering optimization" }
+      }
+    },
+
+    "LifecycleStageAnalysis": {
+      "@type": "rdfs:Class",
+      "rdfs:label": "Lifecycle Stage Analysis",
+      "description": "Strategic analysis contextualised by organization/product lifecycle stage. Different stages demand different strategies, metrics, and leadership focus. Connects to orgctx types (merged maturity) and VSOM strategy iteration.",
+      "properties": {
+        "analysisId": { "type": "string", "required": true },
+        "contextRef": { "type": "string", "description": "→ orgctx:OrganizationContext" },
+        "lifecycleStage": {
+          "type": "string",
+          "enum": ["startup", "growth", "maturity", "renewal-or-decline"],
+          "description": "Aligns to orgctx lifecycle types (merged from maturity)"
+        },
+        "strategicPriorities": {
+          "type": "object",
+          "properties": {
+            "startup": {
+              "focus": "Product-Market Fit",
+              "pmfRef": "string → pmf:ProductMarketFit",
+              "dominantBSCPerspective": "Customer",
+              "keyMetrics": ["burn-rate", "CAC", "retention", "NPS"],
+              "leadershipFocus": ["CEO", "CPO", "CTO"]
+            },
+            "growth": {
+              "focus": "Scaling & Market Expansion",
+              "ansoffRef": "string → sp:AnsoffGrowthMatrix",
+              "dominantBSCPerspective": "Customer + Financial",
+              "keyMetrics": ["MRR-growth", "CAC:LTV", "market-share", "team-growth"],
+              "leadershipFocus": ["CEO", "CRO", "CMO", "COO"]
+            },
+            "maturity": {
+              "focus": "Optimization & Efficiency",
+              "veAnalysisRef": "string → kpi:VEAnalysis",
+              "dominantBSCPerspective": "Financial + Internal Process",
+              "keyMetrics": ["profit-margin", "ROIC", "operational-efficiency", "customer-retention"],
+              "leadershipFocus": ["CFO", "COO", "CHRO"]
+            },
+            "renewal": {
+              "focus": "Innovation & Transformation",
+              "innovationRef": "string → sp:InnovationWave (Layer 5)",
+              "dominantBSCPerspective": "Learning & Growth",
+              "keyMetrics": ["R&D-spend", "new-revenue-%", "innovation-pipeline", "digital-maturity"],
+              "leadershipFocus": ["CEO", "CInO", "CDO", "CTO"]
+            }
+          }
+        },
+        "vsomStrategyRef": { "type": "string", "description": "→ vsom:StrategyComponent adapted for lifecycle stage" }
+      }
+    }
+  },
+
+  "relationships": {
+    "operationalizesStrategy": {
+      "domain": "sp:BalancedScorecard",
+      "range": "vsom:VSOMFramework",
+      "cardinality": "1:1",
+      "description": "BSC translates VSOM strategy into measurable perspective objectives"
+    },
+    "perspectiveOwnedBy": {
+      "domain": "sp:BSCPerspective",
+      "range": "rrr:ExecutiveRole",
+      "cardinality": "n:m",
+      "description": "C-Suite roles own BSC perspectives based on rrr:ExecutiveRole.bscPerspective"
+    },
+    "objectiveMeasuredByKPI": {
+      "domain": "sp:BSCPerspective.objectives",
+      "range": "kpi:KPI",
+      "cardinality": "1:n"
+    },
+    "strategyMapVisualizes": {
+      "domain": "sp:StrategyMap",
+      "range": "sp:BalancedScorecard",
+      "cardinality": "1:1"
+    },
+    "stakeholderOwnsObjective": {
+      "domain": "sp:StakeholderAlignment.stakeholders",
+      "range": "vsom:ObjectivesComponent",
+      "cardinality": "n:m"
+    },
+    "valueChainCapability": {
+      "domain": "sp:StrategicValueChain",
+      "range": "ea:BusinessCapability",
+      "cardinality": "n:m"
+    },
+    "lifecycleShapesStrategy": {
+      "domain": "sp:LifecycleStageAnalysis",
+      "range": "vsom:StrategyComponent",
+      "cardinality": "n:1"
+    }
+  },
+
+  "joinPatterns": {
+    "JP-SP-020": {
+      "name": "VSOM-BSC-KPI Measurement Chain",
+      "path": "vsom:VSOMFramework → operationalizedBy → sp:BalancedScorecard → hasPerspective → sp:BSCPerspective → hasObjective → vsom:ObjectivesComponent → measuredBy → kpi:KPI → quantifiedBy → kpi:Metric",
+      "description": "The golden chain: Strategy → BSC → Perspective Objectives → KPIs → Metrics. This is how VSOM's MetricsComponent gets operationalized."
+    },
+    "JP-SP-021": {
+      "name": "BSC-RRR Accountability Bridge",
+      "path": "sp:BSCPerspective → perspectiveOwnedBy → rrr:ExecutiveRole → raciAccountable → rrr:RACIAssignment → assignedToObjective → vsom:ObjectivesComponent",
+      "description": "Each BSC perspective has C-Suite accountability via RRR roles"
+    },
+    "JP-SP-022": {
+      "name": "Strategy Map Causal Chain",
+      "path": "sp:StrategyMap.causalChains → links[LearningAndGrowth] → drives → links[InternalProcess] → drives → links[Customer] → drives → links[Financial]",
+      "description": "Bottom-up causal chain: invest in people/tech → improve processes → delight customers → grow revenue"
+    },
+    "JP-SP-023": {
+      "name": "Lifecycle-Strategy-BSC Adaptation",
+      "path": "sp:LifecycleStageAnalysis → lifecycleShapesStrategy → vsom:StrategyComponent; sp:LifecycleStageAnalysis.dominantBSCPerspective → sp:BSCPerspective",
+      "description": "Lifecycle stage determines which BSC perspective gets strategic emphasis"
+    }
+  }
+}

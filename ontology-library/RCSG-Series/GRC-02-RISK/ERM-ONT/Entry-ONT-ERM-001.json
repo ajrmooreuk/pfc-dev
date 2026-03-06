@@ -1,0 +1,117 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-ERM-001",
+  "name": "ERM Ontology (Enterprise Risk Management — ISO 31000)",
+  "description": "Domain-agnostic enterprise risk management ontology aligned to ISO 31000:2018. GRC Tier 1 domain governed by GRC-FW hub. 6 entities, 19 relationships (11 internal + 8 cross-ontology), 15 business rules, 11 enumerations, 8 join patterns. 23 risk categories including 9 AI-specific. Bridges UP to GRC-FW, DOWN to RMF-IS27005, ACROSS to NCSC-CAF and MCSB, VSEM to VSOM.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/erm/",
+  "prefix": "erm:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "skipped"
+  },
+  "validationDate": "2026-02-17",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "folder": "./",
+    "ontology": "./erm-ontology-v1.0.0.json",
+    "glossary": null,
+    "documentation": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "RiskRegister": "Enterprise risk register — 7 scope levels, review cadence, risk counts, appetite link",
+    "Risk": "Enterprise risk — 23 categories, 5x5 scoring, velocity, trend, 5 responses, escalation triggers",
+    "RiskAppetite": "Risk appetite statement — 5 appetite levels, tolerance thresholds, per-category overrides",
+    "Control": "Enterprise control — 5 types, 4 natures, 5 automation levels, effectiveness scoring",
+    "ResilienceCapability": "Resilience capability — 8 types inc. AI, RTO/RPO, FCA/PRA impact tolerances",
+    "RiskAssessment": "Risk assessment exercise — 7 types, 5 methodologies, lifecycle tracking"
+  },
+  "summary": {
+    "entities": [
+      { "id": "erm:RiskRegister", "name": "RiskRegister", "entityType": "class" },
+      { "id": "erm:Risk", "name": "Risk", "entityType": "class" },
+      { "id": "erm:RiskAppetite", "name": "RiskAppetite", "entityType": "class" },
+      { "id": "erm:Control", "name": "Control", "entityType": "class" },
+      { "id": "erm:ResilienceCapability", "name": "ResilienceCapability", "entityType": "class" },
+      { "id": "erm:RiskAssessment", "name": "RiskAssessment", "entityType": "class" }
+    ],
+    "relationships": [
+      { "name": "containsRisk", "source": "RiskRegister", "target": "Risk" },
+      { "name": "belongsToRegister", "source": "Risk", "target": "RiskRegister" },
+      { "name": "hasAppetite", "source": "RiskRegister", "target": "RiskAppetite" },
+      { "name": "mitigatedByControl", "source": "Risk", "target": "Control" },
+      { "name": "controlMitigatesRisk", "source": "Control", "target": "Risk" },
+      { "name": "protectsAgainstRisk", "source": "ResilienceCapability", "target": "Risk" },
+      { "name": "hasResilienceCapability", "source": "Risk", "target": "ResilienceCapability" },
+      { "name": "assessesRegister", "source": "RiskAssessment", "target": "RiskRegister" },
+      { "name": "assessmentIdentifiesRisk", "source": "RiskAssessment", "target": "Risk" },
+      { "name": "controlTestedByAssessment", "source": "Control", "target": "RiskAssessment" },
+      { "name": "resilienceTestedByAssessment", "source": "ResilienceCapability", "target": "RiskAssessment" },
+      { "name": "governedBy", "source": "RiskRegister", "target": "grc-fw:GRCContext" },
+      { "name": "assessedByAssurance", "source": "Risk", "target": "grc-fw:GovernanceAssurance" },
+      { "name": "specialisedByInfoSecRisk", "source": "Risk", "target": "rmf:Risk" },
+      { "name": "specialisedByInfoSecAssessment", "source": "RiskAssessment", "target": "rmf:RiskAssessment" },
+      { "name": "specialisedByInfoSecControl", "source": "Control", "target": "rmf:Control" },
+      { "name": "assessedByCAFOutcome", "source": "RiskRegister", "target": "ncsc-caf:ContributingOutcome" },
+      { "name": "controlAlignsToBenchmark", "source": "Control", "target": "mcsb:SecurityControl" },
+      { "name": "riskThreatsObjective", "source": "Risk", "target": "vsom:StrategicObjective" }
+    ]
+  },
+  "relationships": {
+    "internal": 11,
+    "crossOntology": 8,
+    "keyBridges": [
+      { "to": "grc-fw:", "entity": "GRCContext", "relationship": "governedBy" },
+      { "to": "grc-fw:", "entity": "GovernanceAssurance", "relationship": "assessedByAssurance" },
+      { "to": "rmf:", "entity": "Risk", "relationship": "specialisedByInfoSecRisk" },
+      { "to": "rmf:", "entity": "RiskAssessment", "relationship": "specialisedByInfoSecAssessment" },
+      { "to": "rmf:", "entity": "Control", "relationship": "specialisedByInfoSecControl" },
+      { "to": "ncsc-caf:", "entity": "ContributingOutcome", "relationship": "assessedByCAFOutcome" },
+      { "to": "mcsb:", "entity": "SecurityControl", "relationship": "controlAlignsToBenchmark" },
+      { "to": "vsom:", "entity": "StrategicObjective", "relationship": "riskThreatsObjective" }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-GRC-FW-001",
+    "Entry-ONT-RMF-001",
+    "Entry-ONT-NCSC-CAF-001",
+    "Entry-ONT-ALZ-001"
+  ],
+  "dependents": [],
+  "layer": "RCSG-SERIES",
+  "domain": "Enterprise Risk Management",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-17",
+  "lastModified": "2026-02-17",
+  "sourceDocument": "ISO 31000:2018 Risk Management — Guidelines",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-17",
+      "changes": "Initial release: 6 entities, 19 relationships (11 internal + 8 cross-ontology), 15 business rules, 11 enumerations, 8 join patterns. ISO 31000:2018 aligned. 23 risk categories inc. 9 AI-specific. Satisfies grc-fw:governsRisk and grc-fw:assuranceAssessesRisk forward references. Epic 30 F30.2."
+    }
+  ],
+  "notes": "ERM-ONT is the GRC Tier 1 domain-agnostic risk management ontology. Positioned between GRC-FW-ONT v3.0.0 (Tier 0 hub) and RMF-IS27005-ONT v1.0.0 (Tier 2 ISO 27005 specialisation). Single authoritative source for enterprise controls across GRC — SEC-FW and COMP-FW will reference erm:Control rather than creating domain-specific control entities. Satisfies forward references grc-fw:governsRisk (GRCContext→RiskRegister) and grc-fw:assuranceAssessesRisk (GovernanceAssurance→Risk).",
+  "oaa:joinPatterns": [
+    { "patternId": "JP-ERM-001", "name": "GRC Governance to Risk Register Bridge", "joinPath": "grc-fw:GRCContext → grc-fw:governsRisk → erm:RiskRegister → erm:containsRisk → erm:Risk" },
+    { "patternId": "JP-ERM-002", "name": "Risk Assessment to Treatment Lifecycle", "joinPath": "erm:RiskAssessment → erm:assessesRegister → erm:RiskRegister → erm:containsRisk → erm:Risk → erm:mitigatedByControl → erm:Control" },
+    { "patternId": "JP-ERM-003", "name": "Risk Appetite Governance Bridge", "joinPath": "erm:RiskRegister → erm:hasAppetite → erm:RiskAppetite" },
+    { "patternId": "JP-ERM-004", "name": "ERM to RMF Tier 1-to-Tier 2 Specialisation", "joinPath": "erm:Risk → erm:specialisedByInfoSecRisk → rmf:Risk → rmf:affectsAsset → rmf:Asset" },
+    { "patternId": "JP-ERM-005", "name": "ERM Control to MCSB Benchmark Alignment", "joinPath": "erm:Control → erm:controlAlignsToBenchmark → mcsb:SecurityControl" },
+    { "patternId": "JP-ERM-006", "name": "Risk Threatens Strategic Objective (VSEM Bridge)", "joinPath": "erm:Risk → erm:riskThreatsObjective → vsom:StrategicObjective" },
+    { "patternId": "JP-ERM-007", "name": "Resilience Capability to Risk Coverage", "joinPath": "erm:ResilienceCapability → erm:protectsAgainstRisk → erm:Risk" },
+    { "patternId": "JP-ERM-008", "name": "Assurance to Risk Assessment Bridge", "joinPath": "grc-fw:GovernanceAssurance → grc-fw:assuranceAssessesRisk → erm:Risk" }
+  ]
+}

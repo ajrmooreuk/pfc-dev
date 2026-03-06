@@ -1,0 +1,2048 @@
+{
+  "@context": "https://platformcore.io/ontology/join-patterns/",
+  "@type": "JoinPatternRegistry",
+  "registryVersion": "1.0.0",
+  "lastUpdated": "2026-03-04",
+  "description": "Central catalogue of all JP-* cross-ontology bridge patterns. Feeds into AR-XREF validation (F21.11/F21.19).",
+  "totalPatterns": 109,
+  "joinPatterns": [
+    {
+      "@id": "JP-VP-001",
+      "name": "VSOM-to-VP Strategic Alignment",
+      "sourceOntology": "VSOM-ONT",
+      "targetOntology": "VP-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vsom:ObjectivesComponent",
+          "target": "vp:ValueProposition",
+          "relationship": "vp:alignsToObjective"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-VP-001"
+    },
+    {
+      "@id": "JP-VP-002",
+      "name": "OKR-to-VP Value Chain",
+      "sourceOntology": "OKR-ONT",
+      "targetOntology": "VP-ONT",
+      "bridgeEntities": [
+        {
+          "source": "okr:KeyResult",
+          "target": "vp:ValueProposition",
+          "relationship": "vp:informsValue"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-VP-001"
+    },
+    {
+      "@id": "JP-VP-003",
+      "name": "VP-to-PMF Market Validation",
+      "sourceOntology": "VP-ONT",
+      "targetOntology": "PMF-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vp:ValueProposition",
+          "target": "pmf:ProductMarketFit",
+          "relationship": "vp:validatesMarket"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "Entry-ONT-VP-001"
+    },
+    {
+      "@id": "JP-VP-004",
+      "name": "VP-to-EFS Execution Mapping",
+      "sourceOntology": "VP-ONT",
+      "targetOntology": "EFS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vp:Problem",
+          "target": "efs:Epic",
+          "relationship": "vp:mapsToEpic"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-VP-001"
+    },
+    {
+      "@id": "JP-VP-005",
+      "name": "ICP-to-Persona Bridge",
+      "sourceOntology": "VP-ONT",
+      "targetOntology": "EFS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vp:IdealCustomerProfile",
+          "target": "efs:Persona",
+          "relationship": "vp:manifestsAsPersona"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-VP-001"
+    },
+    {
+      "@id": "JP-VP-006",
+      "name": "Org-Context Scoping",
+      "sourceOntology": "ORG-CONTEXT-ONT",
+      "targetOntology": "VP-ONT",
+      "bridgeEntities": [
+        {
+          "source": "org-ctx:OrganizationContext",
+          "target": "vp:ValueProposition",
+          "relationship": "vp:hasValueProposition"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-VP-001"
+    },
+    {
+      "@id": "JP-VP-RRR-001",
+      "name": "Value Proposition to Risk-Requirement-Result",
+      "sourceOntology": "VP-ONT",
+      "targetOntology": "RRR-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vp:Problem",
+          "target": "rrr:Risk",
+          "relationship": "mapsTo"
+        },
+        {
+          "source": "vp:Solution",
+          "target": "rrr:Requirement",
+          "relationship": "mapsTo"
+        },
+        {
+          "source": "vp:Benefit",
+          "target": "rrr:Result",
+          "relationship": "mapsTo"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "S29.3.3 (#369)"
+    },
+    {
+      "@id": "JP-VP-008",
+      "name": "RRR-to-ICP Role Bridge",
+      "sourceOntology": "RRR-ONT",
+      "targetOntology": "VP-ONT",
+      "bridgeEntities": [
+        {
+          "source": "rrr:ExecutiveRole",
+          "target": "vp:RoleBasedICP",
+          "relationship": "vp:roleRef"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "proposed",
+      "definedIn": "S29.3.3 (#369)"
+    },
+    {
+      "@id": "JP-VP-009",
+      "name": "Problem Roll-Up Chain",
+      "sourceOntology": "VP-ONT",
+      "targetOntology": "VP-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vp:Problem",
+          "target": "vp:Problem",
+          "relationship": "vp:problemRollsUpTo"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "proposed",
+      "definedIn": "S29.3.3 (#369)"
+    },
+    {
+      "@id": "JP-VP-010",
+      "name": "RACI-VP Activity Chain",
+      "sourceOntology": "RRR-ONT",
+      "targetOntology": "VP-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vp:VPRACIAssignment",
+          "target": "vp:Problem",
+          "relationship": "vp:addressesProblem"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "proposed",
+      "definedIn": "S29.3.3 (#369)"
+    },
+    {
+      "@id": "JP-VP-011",
+      "name": "ICP Hierarchy to EFS Persona",
+      "sourceOntology": "VP-ONT",
+      "targetOntology": "EFS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vp:RoleBasedICP",
+          "target": "efs:Persona",
+          "relationship": "vp:manifestsAsPersona"
+        }
+      ],
+      "cardinality": "*..*",
+      "status": "proposed",
+      "definedIn": "S29.3.3 (#369)"
+    },
+    {
+      "@id": "JP-RRR-001",
+      "name": "Context-to-Roles",
+      "sourceOntology": "ORG-CONTEXT-ONT",
+      "targetOntology": "RRR-ONT",
+      "bridgeEntities": [
+        {
+          "source": "org-ctx:OrganizationContext",
+          "target": "rrr:RoleTaxonomy",
+          "relationship": "rrr:hasRoleContext"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-RRR-001"
+    },
+    {
+      "@id": "JP-RRR-002",
+      "name": "VSOM-to-RRR Accountability",
+      "sourceOntology": "VSOM-ONT",
+      "targetOntology": "RRR-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vsom:VSOMComponent",
+          "target": "rrr:Role",
+          "relationship": "rrr:accountableRole"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-RRR-001"
+    },
+    {
+      "@id": "JP-KPI-001",
+      "name": "VSOM-to-KPI Metrics",
+      "sourceOntology": "VSOM-ONT",
+      "targetOntology": "KPI-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vsom:VSOMFramework",
+          "target": "kpi:KPI",
+          "relationship": "kpi:cascadesTo"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-KPI-001"
+    },
+    {
+      "@id": "JP-KPI-002",
+      "name": "OKR-to-KPI Tracking",
+      "sourceOntology": "OKR-ONT",
+      "targetOntology": "KPI-ONT",
+      "bridgeEntities": [
+        {
+          "source": "okr:Objective",
+          "target": "kpi:KPI",
+          "relationship": "kpi:tracksObjective"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-KPI-001"
+    },
+    {
+      "@id": "JP-KPI-003",
+      "name": "VE Cost-Value Analysis",
+      "sourceOntology": "KPI-ONT",
+      "targetOntology": "KPI-ONT",
+      "bridgeEntities": [
+        {
+          "source": "kpi:Objective",
+          "target": "kpi:VECostElement",
+          "relationship": "kpi:analysesValue"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-KPI-001"
+    },
+    {
+      "@id": "JP-GRC-005",
+      "name": "Assurance Finding to Policy Remediation",
+      "sourceOntology": "GRC-FW-ONT",
+      "targetOntology": "GRC-FW-ONT",
+      "bridgeEntities": [
+        {
+          "source": "grc-fw:GovernanceAssurance",
+          "target": "grc-fw:AssuranceFinding",
+          "relationship": "grc-fw:hasFinding"
+        },
+        {
+          "source": "grc-fw:AssuranceFinding",
+          "target": "grc-fw:GovernancePolicy",
+          "relationship": "grc-fw:findingAffectsPolicy"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-GRC-FW-001"
+    },
+    {
+      "@id": "JP-GRC-006",
+      "name": "GRCContext to SecurityPosture",
+      "sourceOntology": "GRC-FW-ONT",
+      "targetOntology": "SEC-FW-ONT",
+      "bridgeEntities": [
+        {
+          "source": "grc-fw:GRCContext",
+          "target": "sec-fw:SecurityPosture",
+          "relationship": "grc-fw:governsSecurity"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "Entry-ONT-GRC-FW-001"
+    },
+    {
+      "@id": "JP-GRC-007",
+      "name": "GRCContext to RiskRegister",
+      "sourceOntology": "GRC-FW-ONT",
+      "targetOntology": "ERM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "grc-fw:GRCContext",
+          "target": "erm:RiskRegister",
+          "relationship": "grc-fw:governsRisk"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "Entry-ONT-GRC-FW-001"
+    },
+    {
+      "@id": "JP-GRC-008",
+      "name": "GovernanceFramework to VisionStatement",
+      "sourceOntology": "GRC-FW-ONT",
+      "targetOntology": "VSOM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "grc-fw:GovernanceFramework",
+          "target": "vsom:VisionStatement",
+          "relationship": "grc-fw:alignsToVision"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "Entry-ONT-GRC-FW-001"
+    },
+    {
+      "@id": "JP-IND-RRR-001",
+      "name": "B2B IndividualType Subclasses RRR Role",
+      "sourceOntology": "IND-ONT",
+      "targetOntology": "RRR-ONT",
+      "bridgeEntities": [
+        {
+          "source": "indt:IndividualType",
+          "target": "rrr:ExecutiveRole",
+          "relationship": "indt:subclassesRRRRole"
+        },
+        {
+          "source": "indt:IndividualType",
+          "target": "rrr:FunctionalRole",
+          "relationship": "indt:subclassesRRRRole"
+        }
+      ],
+      "cardinality": "0..1",
+      "status": "proposed",
+      "definedIn": "Entry-ONT-INDT-001",
+      "designRule": "DR-IND-002: B2B individuals MUST subclass RRR + have org relation"
+    },
+    {
+      "@id": "JP-IND-ORG-001",
+      "name": "B2B IndividualType Has Org Relation",
+      "sourceOntology": "IND-ONT",
+      "targetOntology": "ORG-ONT",
+      "bridgeEntities": [
+        {
+          "source": "indt:IndividualType",
+          "target": "org:Organization",
+          "relationship": "indt:hasOrgRelation"
+        }
+      ],
+      "cardinality": "0..1",
+      "status": "proposed",
+      "definedIn": "Entry-ONT-INDT-001",
+      "designRule": "DR-IND-002: B2B channel requires org relation"
+    },
+    {
+      "@id": "JP-IND-VP-001",
+      "name": "IndividualType Populates ICP",
+      "sourceOntology": "IND-ONT",
+      "targetOntology": "VP-ONT",
+      "bridgeEntities": [
+        {
+          "source": "indt:IndividualType",
+          "target": "vp:IdealCustomerProfile",
+          "relationship": "indt:populatesICP"
+        },
+        {
+          "source": "indt:IndividualType",
+          "target": "vp:RoleBasedICP",
+          "relationship": "indt:populatesICP"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "proposed",
+      "definedIn": "Entry-ONT-INDT-001",
+      "designRule": "DR-IND-004: ICP is the class, IND is the individual"
+    },
+    {
+      "@id": "JP-IND-CTX-001",
+      "name": "IndustryProfile Maps to MarketSegment",
+      "sourceOntology": "IND-ONT",
+      "targetOntology": "ORG-CONTEXT-ONT",
+      "bridgeEntities": [
+        {
+          "source": "indt:IndustryProfile",
+          "target": "org-ctx:MarketSegment",
+          "relationship": "indt:industryProfileMapsToMarket"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "proposed",
+      "definedIn": "Entry-ONT-INDT-001",
+      "designRule": "DR-IND-006: Industry/market follows Foundation ORG-CONTEXT patterns"
+    },
+    {
+      "@id": "JP-IND-PE-001",
+      "name": "IndividualTypes Participate in PE Journeys",
+      "sourceOntology": "IND-ONT",
+      "targetOntology": "PE-ONT",
+      "bridgeEntities": [
+        {
+          "source": "indt:IndividualType",
+          "target": "pe:Process",
+          "relationship": "indt:participatesInJourney"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "proposed",
+      "definedIn": "Entry-ONT-INDT-001",
+      "designRule": "DR-IND-005: Customer journeys are PE processes — IND types are participants"
+    },
+    {
+      "@id": "JP-IND-ANT-001",
+      "name": "IndividualType Maps to Antiques Domain",
+      "sourceOntology": "IND-ONT",
+      "targetOntology": "ANTIQUES-ONT",
+      "bridgeEntities": [
+        {
+          "source": "indt:IndividualType",
+          "target": "ns:Owner",
+          "relationship": "indt:mapsToDomainEntity"
+        },
+        {
+          "source": "indt:IndividualType",
+          "target": "ns:Appraiser",
+          "relationship": "indt:mapsToDomainEntity"
+        }
+      ],
+      "cardinality": "0..*",
+      "status": "proposed",
+      "definedIn": "Entry-ONT-INDT-001",
+      "designRule": "DR-IND-007: Instance data owned by PFI brand/sub-brand"
+    },
+    {
+      "@id": "JP-EMC-001",
+      "name": "EMC-to-OrgContext Composition",
+      "sourceOntology": "EMC-ONT",
+      "targetOntology": "ORG-CONTEXT-ONT",
+      "bridgeEntities": [
+        {
+          "source": "emc:CompositionRule",
+          "target": "org-ctx:OrganizationContext",
+          "relationship": "emc:composesContext"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-EMC-002",
+      "name": "EMC-to-VSOM Strategic Composition",
+      "sourceOntology": "EMC-ONT",
+      "targetOntology": "VSOM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "emc:CompositionRule",
+          "target": "vsom:VSOMFramework",
+          "relationship": "emc:composesStrategy"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-EMC-003",
+      "name": "EMC-to-PPM Execution Composition",
+      "sourceOntology": "EMC-ONT",
+      "targetOntology": "PPM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "emc:CompositionRule",
+          "target": "ppm:Programme",
+          "relationship": "emc:composesExecution"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-ORG-001",
+      "name": "Org-to-OrgContext Hub Access",
+      "sourceOntology": "ORG-ONT",
+      "targetOntology": "ORG-CONTEXT-ONT",
+      "bridgeEntities": [
+        {
+          "source": "org:Organization",
+          "target": "org-ctx:OrganizationContext",
+          "relationship": "org:hasContext"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-VE-001",
+      "name": "VSOM-to-OKR Strategic Lineage",
+      "sourceOntology": "VSOM-ONT",
+      "targetOntology": "OKR-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vsom:StrategicObjective",
+          "target": "okr:Objective",
+          "relationship": "vsom:cascadesTo"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-VE-002",
+      "name": "OKR-to-VP Tactical-to-Value",
+      "sourceOntology": "OKR-ONT",
+      "targetOntology": "VP-ONT",
+      "bridgeEntities": [
+        {
+          "source": "okr:KeyResult",
+          "target": "vp:ValueProposition",
+          "relationship": "okr:informsValue"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-VE-003",
+      "name": "VP-to-PMF Market Fit",
+      "sourceOntology": "VP-ONT",
+      "targetOntology": "PMF-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vp:ValueProposition",
+          "target": "pmf:ProductMarketFit",
+          "relationship": "vp:validatesMarket"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-VE-004",
+      "name": "PMF-to-EFS Execution Handoff",
+      "sourceOntology": "PMF-ONT",
+      "targetOntology": "EFS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "pmf:GoToMarketReadiness",
+          "target": "efs:Epic",
+          "relationship": "pmf:executesVia"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-VSOM-001",
+      "name": "OrgContext-to-VSOM Full Context",
+      "sourceOntology": "ORG-CONTEXT-ONT",
+      "targetOntology": "VSOM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "org-ctx:OrganizationContext",
+          "target": "vsom:VSOMFramework",
+          "relationship": "org-ctx:strategicFramework"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-VSOM-002",
+      "name": "VSOM Metric-to-KPI Implementation",
+      "sourceOntology": "VSOM-ONT",
+      "targetOntology": "KPI-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vsom:Metric",
+          "target": "kpi:Indicator",
+          "relationship": "vsom:implementedBy"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "vsom-patterns/01-vsom-core-pattern"
+    },
+    {
+      "@id": "JP-VSOM-003",
+      "name": "VSOM Objective-to-RRR Accountability",
+      "sourceOntology": "VSOM-ONT",
+      "targetOntology": "RRR-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vsom:StrategicObjective",
+          "target": "rrr:Role",
+          "relationship": "vsom:ownedBy"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "vsom-patterns/01-vsom-core-pattern"
+    },
+    {
+      "@id": "JP-SA-001",
+      "name": "Industry Force to Strategic Threat",
+      "sourceOntology": "INDUSTRY-ONT",
+      "targetOntology": "REASON-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ind:CompetitiveForce",
+          "target": "rsn:Threat",
+          "relationship": "ind:threatenedBy"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "sa-patterns/01-sa-overview"
+    },
+    {
+      "@id": "JP-SA-002",
+      "name": "Macro Factor to Strategic Opportunity",
+      "sourceOntology": "MACRO-ONT",
+      "targetOntology": "REASON-ONT",
+      "bridgeEntities": [
+        {
+          "source": "mac:PESTELFactor",
+          "target": "rsn:Opportunity",
+          "relationship": "mac:createsOpportunity"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "sa-patterns/01-sa-overview"
+    },
+    {
+      "@id": "JP-SA-003",
+      "name": "Strength to BSC Objective",
+      "sourceOntology": "REASON-ONT",
+      "targetOntology": "BSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "rsn:Strength",
+          "target": "bsc:StrategicObjective",
+          "relationship": "rsn:supportsObjective"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "sa-patterns/01-sa-overview"
+    },
+    {
+      "@id": "JP-SA-004",
+      "name": "BSC Objective to Portfolio Vector",
+      "sourceOntology": "BSC-ONT",
+      "targetOntology": "PORTFOLIO-ONT",
+      "bridgeEntities": [
+        {
+          "source": "bsc:StrategicObjective",
+          "target": "pfl:InvestmentVector",
+          "relationship": "bsc:fundsVector"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "sa-patterns/01-sa-overview"
+    },
+    {
+      "@id": "JP-SA-005",
+      "name": "Portfolio Vector to Composition Agenda",
+      "sourceOntology": "PORTFOLIO-ONT",
+      "targetOntology": "EMC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "pfl:InvestmentVector",
+          "target": "emc:StrategicAgenda",
+          "relationship": "pfl:drivesAgenda"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "sa-patterns/01-sa-overview"
+    },
+    {
+      "@id": "JP-SA-006",
+      "name": "BSC Perspective to VSOM Stream",
+      "sourceOntology": "BSC-ONT",
+      "targetOntology": "VSOM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "bsc:Perspective",
+          "target": "vsom:StrategyStream",
+          "relationship": "bsc:mapsToStream"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "sa-patterns/01-sa-overview"
+    },
+    {
+      "@id": "JP-SA-007",
+      "name": "Reasoning Gap to VE Module",
+      "sourceOntology": "REASON-ONT",
+      "targetOntology": "VE-Series",
+      "bridgeEntities": [
+        {
+          "source": "rsn:Gap",
+          "target": "ve:Module",
+          "relationship": "rsn:routesToModule"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "sa-patterns/01-sa-overview"
+    },
+    {
+      "@id": "JP-SA-008",
+      "name": "Industry Rivalry to Composition Alert",
+      "sourceOntology": "INDUSTRY-ONT",
+      "targetOntology": "EMC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ind:CompetitiveRivalry",
+          "target": "emc:Alert",
+          "relationship": "ind:triggersAlert"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "sa-patterns/01-sa-overview"
+    },
+    {
+      "@id": "JP-SC-001",
+      "name": "Narrative to BSC Objectives",
+      "sourceOntology": "NARRATIVE-ONT",
+      "targetOntology": "BSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "nar:NarrativeFrame",
+          "target": "bsc:StrategicObjective",
+          "relationship": "nar:referencesObjective"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "sc-patterns/01-sc-overview"
+    },
+    {
+      "@id": "JP-SC-002",
+      "name": "Cascade to OKR Alignment",
+      "sourceOntology": "CASCADE-ONT",
+      "targetOntology": "OKR-ONT",
+      "bridgeEntities": [
+        {
+          "source": "csc:CascadedObjective",
+          "target": "okr:Objective",
+          "relationship": "csc:alignsToOKR"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "sc-patterns/01-sc-overview"
+    },
+    {
+      "@id": "JP-SC-003",
+      "name": "Cascade to Role Ownership",
+      "sourceOntology": "CASCADE-ONT",
+      "targetOntology": "RRR-ONT",
+      "bridgeEntities": [
+        {
+          "source": "csc:CascadedObjective",
+          "target": "rrr:Role",
+          "relationship": "csc:ownedByRole"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "sc-patterns/01-sc-overview"
+    },
+    {
+      "@id": "JP-SC-004",
+      "name": "Culture to Org Context",
+      "sourceOntology": "CULTURE-ONT",
+      "targetOntology": "ORG-CONTEXT-ONT",
+      "bridgeEntities": [
+        {
+          "source": "cul:CultureAssessment",
+          "target": "org-ctx:OrganizationContext",
+          "relationship": "cul:assessedWithin"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "sc-patterns/01-sc-overview"
+    },
+    {
+      "@id": "JP-SC-005",
+      "name": "VizStrat to Design Tokens",
+      "sourceOntology": "VIZSTRAT-ONT",
+      "targetOntology": "DS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "viz:VisualArtefact",
+          "target": "ds:DesignToken",
+          "relationship": "viz:usesToken"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "sc-patterns/01-sc-overview"
+    },
+    {
+      "@id": "JP-SC-006",
+      "name": "VizStrat to BSC Structure",
+      "sourceOntology": "VIZSTRAT-ONT",
+      "targetOntology": "BSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "viz:VisualStrategyMap",
+          "target": "bsc:Perspective",
+          "relationship": "viz:inheritsBSCStructure"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "sc-patterns/01-sc-overview"
+    },
+    {
+      "@id": "JP-MAT-001",
+      "name": "OrgContext to Maturity Profile",
+      "sourceOntology": "ORG-CONTEXT-ONT",
+      "targetOntology": "ORG-MAT-ONT",
+      "bridgeEntities": [
+        {
+          "source": "org-ctx:OrganizationContext",
+          "target": "mat:MaturityProfile",
+          "relationship": "org-ctx:assessesMaturity"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-GA-001",
+      "name": "OrgContext to Gap Analysis",
+      "sourceOntology": "ORG-CONTEXT-ONT",
+      "targetOntology": "GA-ONT",
+      "bridgeEntities": [
+        {
+          "source": "org-ctx:OrganizationContext",
+          "target": "ga:GapAnalysisReport",
+          "relationship": "org-ctx:hasGapAnalysis"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-GA-002",
+      "name": "Gap Analysis to VSOM Strategic Alignment",
+      "sourceOntology": "GA-ONT",
+      "targetOntology": "VSOM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ga:GapAnalysisReport",
+          "target": "vsom:VSOMFramework",
+          "relationship": "ga:strategicContext"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-GA-004",
+      "name": "Recommendation to Project Execution",
+      "sourceOntology": "GA-ONT",
+      "targetOntology": "PPM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ga:Recommendation",
+          "target": "ppm:Project",
+          "relationship": "ga:spawnsProject"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-PE-001",
+      "name": "OrgContext to Process Engineering",
+      "sourceOntology": "ORG-CONTEXT-ONT",
+      "targetOntology": "PE-ONT",
+      "bridgeEntities": [
+        {
+          "source": "org-ctx:OrganizationContext",
+          "target": "pe:ProcessContext",
+          "relationship": "org-ctx:hasProcessContext"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-PE-002",
+      "name": "PPM to Process Definitions",
+      "sourceOntology": "PPM-ONT",
+      "targetOntology": "PE-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ppm:Project",
+          "target": "pe:Process",
+          "relationship": "ppm:definesProcess"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-PE-003",
+      "name": "Process to EFS Framework Services",
+      "sourceOntology": "PE-ONT",
+      "targetOntology": "EFS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "pe:Process",
+          "target": "efs:Service",
+          "relationship": "pe:implementedByService"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-DS-001",
+      "name": "Primitive to Semantic Token Cascade",
+      "sourceOntology": "DS-ONT",
+      "targetOntology": "DS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ds:PrimitiveToken",
+          "target": "ds:SemanticToken",
+          "relationship": "ds:cascadesTo"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-DS-001"
+    },
+    {
+      "@id": "JP-EA-CORE-001",
+      "name": "Capability to Architecture Domain",
+      "sourceOntology": "EA-CORE-ONT",
+      "targetOntology": "EA-CORE-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ea:BusinessCapability",
+          "target": "ea:ArchitectureDomain",
+          "relationship": "ea:realizesCapability"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-EA-CORE-001"
+    },
+    {
+      "@id": "JP-CICD-PE-001",
+      "name": "CI/CD Pipeline to Process Engineering",
+      "sourceOntology": "CICD-ONT",
+      "targetOntology": "PE-ONT",
+      "bridgeEntities": [
+        {
+          "source": "cicd:Pipeline",
+          "target": "pe:Process",
+          "relationship": "cicd:automatesProcess"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-CICD-001"
+    },
+    {
+      "@id": "JP-CICD-PPM-001",
+      "name": "CI/CD Pipeline to PPM",
+      "sourceOntology": "CICD-ONT",
+      "targetOntology": "PPM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "cicd:Pipeline",
+          "target": "ppm:Release",
+          "relationship": "cicd:deliversRelease"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-CICD-001"
+    },
+    {
+      "@id": "JP-CICD-GRC-001",
+      "name": "CI/CD Security to GRC Governance",
+      "sourceOntology": "CICD-ONT",
+      "targetOntology": "GRC-FW-ONT",
+      "bridgeEntities": [
+        {
+          "source": "cicd:SecurityScan",
+          "target": "grc:GovernanceAction",
+          "relationship": "cicd:governedBy"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-CICD-001"
+    },
+    {
+      "@id": "JP-GRC-001",
+      "name": "Regulatory Requirement to Geography",
+      "sourceOntology": "GRC-FW-ONT",
+      "targetOntology": "CTX-ONT",
+      "bridgeEntities": [
+        {
+          "source": "grc:RegulatoryRequirement",
+          "target": "ctx:GeoContext",
+          "relationship": "grc:regulatoryShapedByGeo"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-GRC-FW-001"
+    },
+    {
+      "@id": "JP-GRC-003",
+      "name": "Governance-CAF Alignment",
+      "sourceOntology": "GRC-FW-ONT",
+      "targetOntology": "NCSC-CAF-ONT",
+      "bridgeEntities": [
+        {
+          "source": "grc:GovernanceAction",
+          "target": "caf:CAFPrinciple",
+          "relationship": "grc:governanceAlignedToCAF"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-GRC-FW-001"
+    },
+    {
+      "@id": "JP-ERM-001",
+      "name": "GRC Governance to Enterprise Risk",
+      "sourceOntology": "GRC-FW-ONT",
+      "targetOntology": "ERM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "grc:GRCContext",
+          "target": "erm:RiskRegister",
+          "relationship": "grc:governsRisk"
+        },
+        {
+          "source": "erm:RiskRegister",
+          "target": "erm:Risk",
+          "relationship": "erm:containsRisk"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-ERM-001"
+    },
+    {
+      "@id": "JP-ERM-004",
+      "name": "ERM to RMF InfoSec Specialization",
+      "sourceOntology": "ERM-ONT",
+      "targetOntology": "RMF-IS27005-ONT",
+      "bridgeEntities": [
+        {
+          "source": "erm:Risk",
+          "target": "rmf:Risk",
+          "relationship": "erm:specialisedByInfoSecRisk"
+        }
+      ],
+      "cardinality": "0..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-ERM-001"
+    },
+    {
+      "@id": "JP-ERM-005",
+      "name": "ERM Control to MCSB Benchmark",
+      "sourceOntology": "ERM-ONT",
+      "targetOntology": "MCSB-ONT",
+      "bridgeEntities": [
+        {
+          "source": "erm:Control",
+          "target": "mcsb:SecurityControl",
+          "relationship": "erm:controlAlignsToBenchmark"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-ERM-001"
+    },
+    {
+      "@id": "JP-ERM-006",
+      "name": "Risk Threatens Strategic Objective",
+      "sourceOntology": "ERM-ONT",
+      "targetOntology": "VSOM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "erm:Risk",
+          "target": "vsom:StrategicObjective",
+          "relationship": "erm:riskThreatsObjective"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-ERM-001"
+    },
+    {
+      "@id": "JP-ERM-007",
+      "name": "Resilience Capability Coverage",
+      "sourceOntology": "ERM-ONT",
+      "targetOntology": "ERM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "erm:ResilienceCapability",
+          "target": "erm:Risk",
+          "relationship": "erm:protectsAgainstRisk"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-ERM-001"
+    },
+    {
+      "@id": "JP-ERM-008",
+      "name": "Assurance to Risk Assessment",
+      "sourceOntology": "GRC-FW-ONT",
+      "targetOntology": "ERM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "grc:GovernanceAssurance",
+          "target": "erm:Risk",
+          "relationship": "grc:assuranceAssessesRisk"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-ERM-001"
+    },
+    {
+      "@id": "JP-RCSG-001",
+      "name": "GDPR to PII Governance",
+      "sourceOntology": "GDPR-ONT",
+      "targetOntology": "PII-ONT",
+      "bridgeEntities": [
+        {
+          "source": "gdpr:LegalBasis",
+          "target": "pii:PIIGovernance",
+          "relationship": "gdpr:regulatoryBasisFor"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-RCSG-003",
+      "name": "MCSB to EFS Security Controls",
+      "sourceOntology": "MCSB-ONT",
+      "targetOntology": "EFS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "mcsb:SecurityControl",
+          "target": "efs:Service",
+          "relationship": "mcsb:securesService"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-CL-001",
+      "name": "OrgContext to Competitive Landscape (DEPRECATED)",
+      "sourceOntology": "ORG-CONTEXT-ONT",
+      "targetOntology": "CL-ONT",
+      "bridgeEntities": [
+        {
+          "source": "org-ctx:OrganizationContext",
+          "target": "cl:CompetitiveLandscape",
+          "relationship": "org-ctx:hasCompetitiveLandscape"
+        }
+      ],
+      "cardinality": "1..1",
+      "status": "deprecated",
+      "supersededBy": "ORG-CONTEXT CompetitiveLandscape subtree (Epic 9C)",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-CL-002",
+      "name": "Landscape to Analysis (DEPRECATED)",
+      "sourceOntology": "CL-ONT",
+      "targetOntology": "CA-ONT",
+      "bridgeEntities": [
+        {
+          "source": "cl:CompetitiveLandscape",
+          "target": "ca:CompetitiveAnalysis",
+          "relationship": "cl:groundsAnalysis"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "deprecated",
+      "supersededBy": "ORG-CONTEXT CompetitiveLandscape subtree (Epic 9C)",
+      "definedIn": "ONTOLOGY-ARCHITECTURE"
+    },
+    {
+      "@id": "JP-VP-CRT-001",
+      "name": "VP to CRT Customer Role Bridge (PROPOSED)",
+      "sourceOntology": "VP-ONT",
+      "targetOntology": "CRT-ONT",
+      "bridgeEntities": [
+        {
+          "source": "vp:IdealCustomerProfile",
+          "target": "crt:CustomerRole",
+          "relationship": "vp:hasCustomerRole"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "proposed",
+      "definedIn": "BRIEF-CRT-ONT"
+    },
+    {
+      "@id": "JP-LSC-001",
+      "name": "End-to-End Journey Traversal",
+      "sourceOntology": "LSC-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "lsc:SupplyChain",
+          "target": "lsc:ShipmentLeg",
+          "relationship": "lsc:hasLeg"
+        },
+        {
+          "source": "lsc:ShipmentLeg",
+          "target": "lsc:ChainNode",
+          "relationship": "lsc:connectsFrom"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-LSC-001"
+    },
+    {
+      "@id": "JP-LSC-002",
+      "name": "Bottleneck Heat Map",
+      "sourceOntology": "LSC-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "lsc:ChainNode",
+          "target": "lsc:Bottleneck",
+          "relationship": "lsc:hasBottleneck"
+        },
+        {
+          "source": "lsc:Bottleneck",
+          "target": "lsc:RiskAssessment",
+          "relationship": "lsc:hasRiskAssessment"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-LSC-001"
+    },
+    {
+      "@id": "JP-LSC-003",
+      "name": "Incident Escalation Chain",
+      "sourceOntology": "LSC-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "lsc:Incident",
+          "target": "lsc:Escalation",
+          "relationship": "lsc:triggersEscalation"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-LSC-001"
+    },
+    {
+      "@id": "JP-LSC-004",
+      "name": "Compliance Gate Document Flow",
+      "sourceOntology": "LSC-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "lsc:ComplianceGate",
+          "target": "lsc:TradeDocument",
+          "relationship": "lsc:requiresDocument"
+        },
+        {
+          "source": "lsc:TradeDocument",
+          "target": "lsc:Party",
+          "relationship": "lsc:issuedBy"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-LSC-001"
+    },
+    {
+      "@id": "JP-LSC-005",
+      "name": "Net Impact Cascade",
+      "sourceOntology": "LSC-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "lsc:Bottleneck",
+          "target": "lsc:ImpactAssessment",
+          "relationship": "lsc:hasImpactProfile"
+        },
+        {
+          "source": "lsc:Incident",
+          "target": "lsc:ImpactAssessment",
+          "relationship": "lsc:hasImpact"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-LSC-001"
+    },
+    {
+      "@id": "JP-LSC-006",
+      "name": "Cold Chain Integrity Trace",
+      "sourceOntology": "LSC-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "lsc:Shipment",
+          "target": "lsc:ColdChainEvent",
+          "relationship": "lsc:hasColdChainEvent"
+        },
+        {
+          "source": "lsc:ColdChainEvent",
+          "target": "lsc:ChainNode",
+          "relationship": "lsc:recordedAt"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-LSC-001"
+    },
+    {
+      "@id": "JP-LSC-007",
+      "name": "Logistics-to-Governance Bridge",
+      "sourceOntology": "LSC-ONT",
+      "targetOntology": "GRC-FW-ONT",
+      "bridgeEntities": [
+        {
+          "source": "lsc:ComplianceGate",
+          "target": "grc-fw:ComplianceRequirement",
+          "relationship": "lsc:mapsToGRCRequirement"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-LSC-001"
+    },
+    {
+      "@id": "JP-LSC-008",
+      "name": "Party Context & Maturity Roll-Up",
+      "sourceOntology": "LSC-ONT",
+      "targetOntology": "ORG-CONTEXT-ONT",
+      "bridgeEntities": [
+        {
+          "source": "lsc:Party",
+          "target": "org:Organization",
+          "relationship": "lsc:partyMapsToOrg"
+        },
+        {
+          "source": "lsc:Party",
+          "target": "org-ctx:OrganizationContext",
+          "relationship": "lsc:partyHasOrgContext"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-LSC-001"
+    },
+    {
+      "@id": "JP-LSC-009",
+      "name": "Corridor Market & Jurisdiction Roll-Up",
+      "sourceOntology": "LSC-ONT",
+      "targetOntology": "ORG-CONTEXT-ONT",
+      "bridgeEntities": [
+        {
+          "source": "lsc:SupplyChain",
+          "target": "org-ctx:MarketContext",
+          "relationship": "lsc:operatesInMarket"
+        },
+        {
+          "source": "lsc:ChainNode",
+          "target": "org-ctx:MarketSegment",
+          "relationship": "lsc:nodeInJurisdiction"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-LSC-001"
+    },
+    {
+      "@id": "JP-OFM-001",
+      "name": "Order-to-Delivery Traversal",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "OFM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ofm:SalesOrder",
+          "target": "ofm:DeliveryWindow",
+          "relationship": "ofm:hasOrderLine -> hasAllocation -> hasDispatchLeg -> hasDeliveryWindow"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-002",
+      "name": "Margin Waterfall",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "OFM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ofm:OrderLine",
+          "target": "ofm:MarginImpact",
+          "relationship": "ofm:hasMarginImpact"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-003",
+      "name": "Supply-Demand Bridge",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "lsc:Shipment",
+          "target": "ofm:SalesOrder",
+          "relationship": "ofm:StockAllocation bridge"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-004",
+      "name": "Customer Change Impact",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "OFM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ofm:CustomerChange",
+          "target": "ofm:FulfilmentRisk",
+          "relationship": "ofm:affectsOrderLine -> hasFulfilmentRisk"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-005",
+      "name": "Storage Cost Accumulation",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "OFM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ofm:StockAllocation",
+          "target": "ofm:StorageEvent",
+          "relationship": "ofm:hasStorageEvent"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-006",
+      "name": "Supply Disruption to Demand Cascade",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "lsc:Incident",
+          "target": "ofm:FulfilmentRisk",
+          "relationship": "ofm:erosionFromIncident -> hasFulfilmentRisk"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-007",
+      "name": "Demand Pattern Recognition",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ofm:DemandPattern",
+          "target": "lsc:PredictivePattern",
+          "relationship": "ofm:correlatesWithSupplyPattern"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-008",
+      "name": "Capacity Planning",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ofm:CapacityForecast",
+          "target": "lsc:SupplyChain",
+          "relationship": "ofm:considersInboundFrom"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-009",
+      "name": "Fulfilment Risk Heat Map",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "OFM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ofm:SalesOrder",
+          "target": "ofm:FulfilmentRisk",
+          "relationship": "ofm:hasOrderLine -> hasFulfilmentRisk"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-010",
+      "name": "Order-to-Shipment Tracking",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ofm:SalesOrder",
+          "target": "lsc:Shipment",
+          "relationship": "ofm:fulfilledByShipment"
+        },
+        {
+          "source": "lsc:Shipment",
+          "target": "lsc:ChainNode",
+          "relationship": "lsc:currentlyAt"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-011",
+      "name": "SLA Compliance Dashboard",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ofm:ServiceLevelAgreement",
+          "target": "ofm:OrderMilestone",
+          "relationship": "ofm:slaMonitorsMilestone"
+        },
+        {
+          "source": "ofm:SLABreach",
+          "target": "lsc:Incident",
+          "relationship": "ofm:breachTriggeredByIncident"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-012",
+      "name": "Automated Assessment Flow",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "lsc:PredictivePattern",
+          "target": "ofm:SLABreach",
+          "relationship": "lsc:Hypothesis -> lsc:Scenario -> predicted breach"
+        },
+        {
+          "source": "ofm:RemediationAction",
+          "target": "ofm:CustomerNotification",
+          "relationship": "ofm:remediationNotifiesCustomer"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-013",
+      "name": "Profit Optimisation Chain",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ofm:SalesOrder",
+          "target": "ofm:LandedCost",
+          "relationship": "ofm:hasLandedCost"
+        },
+        {
+          "source": "ofm:LandedCost",
+          "target": "lsc:ImpactAssessment",
+          "relationship": "ofm:costImpactedBy"
+        },
+        {
+          "source": "ofm:MarginAnalysis",
+          "target": "pmf:ProductMarketFit",
+          "relationship": "ofm:marginValidatesPMF"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-014",
+      "name": "Complaint-to-Prevention Loop",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "LSC-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ofm:ComplaintCase",
+          "target": "lsc:Incident",
+          "relationship": "ofm:complaintRootCauseIncident"
+        },
+        {
+          "source": "ofm:RemediationAction",
+          "target": "lsc:RiskMitigation",
+          "relationship": "ofm:remediationInformsMitigation"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-015",
+      "name": "Customer Role Experience",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "CRT-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ofm:SalesOrder",
+          "target": "crt:CustomerRole",
+          "relationship": "ofm:orderPlacedByRole"
+        },
+        {
+          "source": "ofm:CustomerSatisfaction",
+          "target": "kpi:Metric",
+          "relationship": "ofm:satisfactionFeedsKPI"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-OFM-016",
+      "name": "VP-RRR Through Fulfilment",
+      "sourceOntology": "OFM-ONT",
+      "targetOntology": "VP-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ofm:ComplaintCase",
+          "target": "vp:Problem",
+          "relationship": "ofm:complaintRevealsVPProblem"
+        },
+        {
+          "source": "ofm:RemediationAction",
+          "target": "vp:Solution",
+          "relationship": "ofm:remediationMapsToVPSolution"
+        },
+        {
+          "source": "ofm:CustomerSatisfaction",
+          "target": "vp:Benefit",
+          "relationship": "ofm:satisfactionValidatesBenefit"
+        }
+      ],
+      "cardinality": "1..*",
+      "status": "active",
+      "definedIn": "Entry-ONT-OFM-001"
+    },
+    {
+      "@id": "JP-SPEC-001",
+      "name": "Zone Realises Epic",
+      "sourceOntology": "DS-ONT",
+      "targetOntology": "EFS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ds:AppZone",
+          "target": "efs:Epic",
+          "relationship": "ds:realizesEpic"
+        }
+      ],
+      "cardinality": "0..1",
+      "status": "active",
+      "definedIn": "Epic 49 F49.1"
+    },
+    {
+      "@id": "JP-SPEC-002",
+      "name": "Zone Realises Features",
+      "sourceOntology": "DS-ONT",
+      "targetOntology": "EFS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ds:AppZone",
+          "target": "efs:Feature",
+          "relationship": "ds:realizesFeatures"
+        }
+      ],
+      "cardinality": "0..*",
+      "status": "active",
+      "definedIn": "Epic 49 F49.1"
+    },
+    {
+      "@id": "JP-SPEC-003",
+      "name": "Zone Gated By Project",
+      "sourceOntology": "DS-ONT",
+      "targetOntology": "PPM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ds:AppZone",
+          "target": "ppm:Project",
+          "relationship": "ds:gatedByProject"
+        }
+      ],
+      "cardinality": "0..1",
+      "status": "active",
+      "definedIn": "Epic 49 F49.1"
+    },
+    {
+      "@id": "JP-SPEC-004",
+      "name": "Zone Target Milestone",
+      "sourceOntology": "DS-ONT",
+      "targetOntology": "PPM-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ds:AppZone",
+          "target": "ppm:WorkBreakdownStructure",
+          "relationship": "ds:targetMilestone"
+        }
+      ],
+      "cardinality": "0..1",
+      "status": "active",
+      "definedIn": "Epic 49 F49.1"
+    },
+    {
+      "@id": "JP-SPEC-005",
+      "name": "NavItem Realises Feature",
+      "sourceOntology": "DS-ONT",
+      "targetOntology": "EFS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ds:NavItem",
+          "target": "efs:Feature",
+          "relationship": "ds:realizesFeature"
+        }
+      ],
+      "cardinality": "0..1",
+      "status": "active",
+      "definedIn": "Epic 49 F49.1"
+    },
+    {
+      "@id": "JP-SPEC-006",
+      "name": "ZoneComponent Realises Story",
+      "sourceOntology": "DS-ONT",
+      "targetOntology": "EFS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ds:ZoneComponent",
+          "target": "efs:Story",
+          "relationship": "ds:realizesStory"
+        }
+      ],
+      "cardinality": "0..1",
+      "status": "active",
+      "definedIn": "Epic 49 F49.1"
+    },
+    {
+      "@id": "JP-SPEC-007",
+      "name": "Project Delivers Epic",
+      "sourceOntology": "PPM-ONT",
+      "targetOntology": "EFS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ppm:Project",
+          "target": "efs:Epic",
+          "relationship": "ppm:deliversEpic"
+        }
+      ],
+      "cardinality": "0..*",
+      "status": "active",
+      "definedIn": "Epic 49 F49.1"
+    },
+    {
+      "@id": "JP-SPEC-008",
+      "name": "WBS Decomposes Feature",
+      "sourceOntology": "PPM-ONT",
+      "targetOntology": "EFS-ONT",
+      "bridgeEntities": [
+        {
+          "source": "ppm:WorkBreakdownStructure",
+          "target": "efs:Feature",
+          "relationship": "ppm:decomposesFeature"
+        }
+      ],
+      "cardinality": "0..*",
+      "status": "active",
+      "definedIn": "Epic 49 F49.1"
+    }
+  ],
+  "seriesCoverage": {
+    "Orchestration": {
+      "count": 3,
+      "patterns": [
+        "JP-EMC-001",
+        "JP-EMC-002",
+        "JP-EMC-003"
+      ]
+    },
+    "VE-Series": {
+      "count": 16,
+      "patterns": [
+        "JP-VP-001",
+        "JP-VP-002",
+        "JP-VP-003",
+        "JP-VP-004",
+        "JP-VP-005",
+        "JP-VP-006",
+        "JP-VP-RRR-001",
+        "JP-VP-008",
+        "JP-VP-009",
+        "JP-VP-010",
+        "JP-VP-011",
+        "JP-RRR-001",
+        "JP-RRR-002",
+        "JP-KPI-001",
+        "JP-KPI-002",
+        "JP-KPI-003"
+      ]
+    },
+    "VE-Series/VSOM": {
+      "count": 7,
+      "patterns": [
+        "JP-VE-001",
+        "JP-VE-002",
+        "JP-VE-003",
+        "JP-VE-004",
+        "JP-VSOM-001",
+        "JP-VSOM-002",
+        "JP-VSOM-003"
+      ]
+    },
+    "VE-Series/VSOM-SA": {
+      "count": 8,
+      "patterns": [
+        "JP-SA-001",
+        "JP-SA-002",
+        "JP-SA-003",
+        "JP-SA-004",
+        "JP-SA-005",
+        "JP-SA-006",
+        "JP-SA-007",
+        "JP-SA-008"
+      ]
+    },
+    "VE-Series/VSOM-SC": {
+      "count": 6,
+      "patterns": [
+        "JP-SC-001",
+        "JP-SC-002",
+        "JP-SC-003",
+        "JP-SC-004",
+        "JP-SC-005",
+        "JP-SC-006"
+      ]
+    },
+    "Foundation": {
+      "count": 11,
+      "patterns": [
+        "JP-ORG-001",
+        "JP-MAT-001",
+        "JP-GA-001",
+        "JP-GA-002",
+        "JP-GA-004",
+        "JP-IND-RRR-001",
+        "JP-IND-ORG-001",
+        "JP-IND-VP-001",
+        "JP-IND-CTX-001",
+        "JP-IND-PE-001",
+        "JP-IND-ANT-001"
+      ]
+    },
+    "PE-Series": {
+      "count": 33,
+      "patterns": [
+        "JP-PE-001",
+        "JP-PE-002",
+        "JP-PE-003",
+        "JP-DS-001",
+        "JP-EA-CORE-001",
+        "JP-CICD-PE-001",
+        "JP-CICD-PPM-001",
+        "JP-CICD-GRC-001",
+        "JP-LSC-001",
+        "JP-LSC-002",
+        "JP-LSC-003",
+        "JP-LSC-004",
+        "JP-LSC-005",
+        "JP-LSC-006",
+        "JP-LSC-007",
+        "JP-LSC-008",
+        "JP-LSC-009",
+        "JP-OFM-001",
+        "JP-OFM-002",
+        "JP-OFM-003",
+        "JP-OFM-004",
+        "JP-OFM-005",
+        "JP-OFM-006",
+        "JP-OFM-007",
+        "JP-OFM-008",
+        "JP-OFM-009",
+        "JP-OFM-010",
+        "JP-OFM-011",
+        "JP-OFM-012",
+        "JP-OFM-013",
+        "JP-OFM-014",
+        "JP-OFM-015",
+        "JP-OFM-016"
+      ]
+    },
+    "RCSG-Series": {
+      "count": 17,
+      "patterns": [
+        "JP-GRC-001",
+        "JP-GRC-003",
+        "JP-GRC-005",
+        "JP-GRC-006",
+        "JP-GRC-007",
+        "JP-GRC-008",
+        "JP-ERM-001",
+        "JP-ERM-004",
+        "JP-ERM-005",
+        "JP-ERM-006",
+        "JP-ERM-007",
+        "JP-ERM-008",
+        "JP-RCSG-001",
+        "JP-RCSG-003"
+      ]
+    },
+    "Application-Spec": {
+      "count": 8,
+      "patterns": [
+        "JP-SPEC-001",
+        "JP-SPEC-002",
+        "JP-SPEC-003",
+        "JP-SPEC-004",
+        "JP-SPEC-005",
+        "JP-SPEC-006",
+        "JP-SPEC-007",
+        "JP-SPEC-008"
+      ]
+    },
+    "Deprecated": {
+      "count": 2,
+      "patterns": [
+        "JP-CL-001",
+        "JP-CL-002"
+      ]
+    },
+    "Proposed": {
+      "count": 1,
+      "patterns": [
+        "JP-VP-CRT-001"
+      ]
+    }
+  },
+  "statusSummary": {
+    "active": 95,
+    "proposed": 18,
+    "deprecated": 2
+  }
+}

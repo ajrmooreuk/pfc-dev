@@ -1,0 +1,60 @@
+flowchart LR
+    subgraph Strategy["Strategic Initiatives"]
+        S1["Graph-Native Risk<br/>Ontology Dev"]
+        S2["Client Prospecting<br/>via Benchmarking"]
+        S3["Continuous Risk<br/>Graph Deployment"]
+        S4["Regulatory Intelligence<br/>& Compliance Auto"]
+    end
+
+    subgraph Execution["Operational Capabilities"]
+        E1["Ontology Architecture<br/>& Schema.org Grounding"]
+        E2["Graph DB Engineering<br/>(Neo4j / Cosmos)"]
+        E3["Sector Risk Benchmarking<br/>& Lead Generation"]
+        E4["Client Risk Profiling<br/>& Intake Assessment"]
+        E5["OneLake / Fabric<br/>Graph Integration"]
+        E6["Power BI Risk<br/>Dashboard Design"]
+        E7["Regulatory Ontology<br/>Maintenance & Gap Reasoning"]
+        E8["AI-Augmented Advisory<br/>Report Generation"]
+    end
+
+    subgraph Platform["Technology Platform"]
+        P1["JSON-LD Ontology<br/>Prototype"]
+        P2["Neo4j Graph<br/>Database"]
+        P3["OneLake<br/>Lakehouse"]
+        P4["Power BI<br/>DirectLake"]
+    end
+
+    subgraph Metrics["KPIs"]
+        M1["500+ Ontology Classes"]
+        M2["2hr Graph Deployment"]
+        M3["100 Prospects"]
+        M4["25 Active Clients"]
+        M5["90% Retention"]
+        M6["£500K ARR"]
+    end
+
+    S1 -->|"requires"| E1
+    S1 -->|"requires"| E2
+    S2 -->|"requires"| E3
+    S2 -->|"requires"| E4
+    S3 -->|"requires"| E5
+    S3 -->|"requires"| E6
+    S4 -->|"requires"| E7
+    S4 -->|"requires"| E8
+
+    E1 -->|"produces"| P1
+    P1 -->|"deploys to"| P2
+    P2 -->|"syncs to"| P3
+    P3 -->|"consumed by"| P4
+
+    E1 -->|"produces"| M1
+    E5 -->|"produces"| M2
+    E3 -->|"produces"| M3
+    E5 -->|"produces"| M4
+    E7 -->|"produces"| M5
+    E6 -->|"produces"| M6
+
+    style Strategy fill:#e1bee7
+    style Execution fill:#ffe0b2
+    style Platform fill:#bbdefb
+    style Metrics fill:#c8e6c9

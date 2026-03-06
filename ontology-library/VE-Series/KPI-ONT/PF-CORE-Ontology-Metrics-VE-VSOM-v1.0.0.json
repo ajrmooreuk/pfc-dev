@@ -1,0 +1,1281 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pfc": "https://platform-foundation.ai/core/",
+    "pfi": "https://platform-foundation.ai/instance/",
+    "baiv": "https://beaivisible.ai/ontology/",
+    "oaa": "https://platform-foundation.ai/oaa/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+  },
+  "@type": "CreativeWork",
+  "identifier": "pf-core:ontology:metrics-ve-vsom-v1.0.0",
+  "name": "PF-Core Metrics Ontology: Value Engineering & VSOM-OKR-KPI",
+  "version": "1.0.0",
+  "oaa:version": "1.0.0",
+  "author": {
+    "@type": "Person",
+    "name": "Amanda - AI/BI Transformation Architect"
+  },
+  "oaa:author": "Amanda - AI/BI Transformation Architect",
+  "creator": "Ontology Architect Agent (OAA) v6.2.0",
+  "oaa:creator": "OAA v6.2.0",
+  "dateCreated": "2026-02-07T00:00:00Z",
+  "dateModified": "2026-02-07T00:00:00Z",
+  "description": "Platform Foundation Core ontology for integrated performance measurement across Value Engineering analysis and VSOM-OKR-KPI strategic cascades",
+  "license": "Proprietary - Platform Foundation Core",
+  "ontologyMetadata": {
+    "registryVersion": "3.0.0",
+    "tenant": "PF-Core",
+    "domain": [
+      "Performance Measurement",
+      "Value Engineering",
+      "Strategic Planning"
+    ],
+    "status": "Production Ready",
+    "completenessGates": {
+      "gate1_entityDescriptions": {
+        "status": "PASS",
+        "percentage": 100
+      },
+      "gate2_relationshipCardinality": {
+        "status": "PASS",
+        "percentage": 100
+      },
+      "gate3_businessRulesFormat": {
+        "status": "PASS",
+        "percentage": 100
+      },
+      "gate4_propertyMappings": {
+        "status": "PASS",
+        "percentage": 100
+      },
+      "gate5_testDataCoverage": {
+        "status": "PASS",
+        "percentage": 100
+      },
+      "gate6_metadataCompleteness": {
+        "status": "PASS",
+        "percentage": 100
+      }
+    },
+    "competencyScore": 95
+  },
+  "entities": {
+    "Vision": {
+      "@id": "pfc:Vision",
+      "@type": "Class",
+      "rdfs:subClassOf": "Thing",
+      "rdfs:label": "Vision",
+      "rdfs:comment": "The aspirational future state an organization seeks to achieve; the highest level of strategic intent",
+      "properties": {
+        "visionId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for the vision statement",
+          "schemaOrgMapping": "identifier",
+          "required": true
+        },
+        "visionStatement": {
+          "type": "string",
+          "minLength": 50,
+          "maxLength": 500,
+          "description": "Concise articulation of desired future state",
+          "schemaOrgMapping": "description",
+          "required": true
+        },
+        "timeHorizon": {
+          "type": "string",
+          "format": "duration",
+          "description": "Planning horizon for vision achievement (typically 3-10 years)",
+          "schemaOrgMapping": "duration",
+          "required": true
+        },
+        "stakeholders": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Key stakeholder groups affected by this vision",
+          "schemaOrgMapping": "audience",
+          "required": true
+        },
+        "approvalDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Date vision was formally approved",
+          "schemaOrgMapping": "datePublished",
+          "required": false
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Draft",
+            "Approved",
+            "Active",
+            "Superseded",
+            "Archived"
+          ],
+          "description": "Current lifecycle status of vision",
+          "schemaOrgMapping": "creativeWorkStatus",
+          "required": true
+        }
+      },
+      "schemaOrgAlignment": {
+        "baseType": "Thing",
+        "alignmentRatio": 0.67,
+        "directMappings": 4,
+        "customProperties": 2
+      }
+    },
+    "Strategy": {
+      "@id": "pfc:Strategy",
+      "@type": "Class",
+      "rdfs:subClassOf": "Action",
+      "rdfs:label": "Strategy",
+      "rdfs:comment": "High-level approach for achieving the vision; defines the 'how' that bridges vision to objectives",
+      "properties": {
+        "strategyId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for the strategy",
+          "schemaOrgMapping": "identifier",
+          "required": true
+        },
+        "strategyName": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 200,
+          "description": "Clear name for the strategic approach",
+          "schemaOrgMapping": "name",
+          "required": true
+        },
+        "strategyDescription": {
+          "type": "string",
+          "minLength": 100,
+          "maxLength": 2000,
+          "description": "Detailed explanation of strategic approach and rationale",
+          "schemaOrgMapping": "description",
+          "required": true
+        },
+        "visionId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Reference to parent Vision entity",
+          "schemaOrgMapping": "object",
+          "required": true
+        },
+        "strategicPillars": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "maxItems": 7,
+          "description": "Core themes that organize strategic initiatives",
+          "schemaOrgMapping": "about",
+          "required": true
+        },
+        "owner": {
+          "type": "string",
+          "description": "Person or role accountable for strategy execution",
+          "schemaOrgMapping": "agent",
+          "required": true
+        },
+        "reviewCycle": {
+          "type": "string",
+          "enum": [
+            "Quarterly",
+            "Semi-Annual",
+            "Annual"
+          ],
+          "description": "How often strategy is formally reviewed",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property needed to track governance cadence",
+          "required": true
+        }
+      },
+      "schemaOrgAlignment": {
+        "baseType": "Action",
+        "alignmentRatio": 0.71,
+        "directMappings": 5,
+        "customProperties": 2
+      }
+    },
+    "StrategicObjective": {
+      "@id": "pfc:StrategicObjective",
+      "@type": "Class",
+      "rdfs:subClassOf": "Action",
+      "rdfs:label": "Strategic Objective (SO)",
+      "rdfs:comment": "Major organizational goal derived from strategy; bridges strategy to tactical OKRs",
+      "properties": {
+        "objectiveId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for strategic objective",
+          "schemaOrgMapping": "identifier",
+          "required": true
+        },
+        "objectiveName": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 150,
+          "description": "Concise, outcome-focused name for objective",
+          "schemaOrgMapping": "name",
+          "required": true
+        },
+        "objectiveDescription": {
+          "type": "string",
+          "minLength": 100,
+          "maxLength": 1000,
+          "description": "Detailed description of desired outcome",
+          "schemaOrgMapping": "description",
+          "required": true
+        },
+        "strategyId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Reference to parent Strategy entity",
+          "schemaOrgMapping": "object",
+          "required": true
+        },
+        "strategicPillar": {
+          "type": "string",
+          "description": "Which strategic pillar this objective supports",
+          "schemaOrgMapping": "about",
+          "required": true
+        },
+        "timeframe": {
+          "type": "string",
+          "format": "duration",
+          "description": "Target timeframe for objective achievement",
+          "schemaOrgMapping": "duration",
+          "required": true
+        },
+        "owner": {
+          "type": "string",
+          "description": "Person or role accountable for objective delivery",
+          "schemaOrgMapping": "agent",
+          "required": true
+        },
+        "priority": {
+          "type": "string",
+          "enum": [
+            "P0-Critical",
+            "P1-High",
+            "P2-Medium",
+            "P3-Low"
+          ],
+          "description": "Organizational priority level",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for resource allocation prioritization",
+          "required": true
+        }
+      },
+      "schemaOrgAlignment": {
+        "baseType": "Action",
+        "alignmentRatio": 0.75,
+        "directMappings": 6,
+        "customProperties": 2
+      }
+    },
+    "Objective": {
+      "@id": "pfc:Objective",
+      "@type": "Class",
+      "rdfs:subClassOf": "Action",
+      "rdfs:label": "Objective (OKR)",
+      "rdfs:comment": "Specific, measurable goal aligned to Strategic Objective; the 'O' in OKR framework",
+      "properties": {
+        "objectiveId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for OKR objective",
+          "schemaOrgMapping": "identifier",
+          "required": true
+        },
+        "objectiveName": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 150,
+          "description": "Clear, inspiring, qualitative objective statement",
+          "schemaOrgMapping": "name",
+          "required": true
+        },
+        "strategicObjectiveId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Reference to parent Strategic Objective",
+          "schemaOrgMapping": "object",
+          "required": true
+        },
+        "timeframe": {
+          "type": "string",
+          "enum": [
+            "Q1",
+            "Q2",
+            "Q3",
+            "Q4"
+          ],
+          "description": "Quarter in which objective should be achieved",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for quarterly OKR planning cycles",
+          "required": true
+        },
+        "fiscalYear": {
+          "type": "integer",
+          "minimum": 2024,
+          "description": "Fiscal year for objective",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for multi-year strategic planning",
+          "required": true
+        },
+        "owner": {
+          "type": "string",
+          "description": "Individual accountable for objective achievement",
+          "schemaOrgMapping": "agent",
+          "required": true
+        },
+        "confidenceLevel": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "Owner's confidence in achieving objective (0-10 scale)",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for subjective probability assessment",
+          "required": true
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Not Started",
+            "On Track",
+            "At Risk",
+            "Blocked",
+            "Completed",
+            "Abandoned"
+          ],
+          "description": "Current progress status",
+          "schemaOrgMapping": "actionStatus",
+          "required": true
+        }
+      },
+      "schemaOrgAlignment": {
+        "baseType": "Action",
+        "alignmentRatio": 0.5,
+        "directMappings": 4,
+        "customProperties": 4
+      }
+    },
+    "KeyResult": {
+      "@id": "pfc:KeyResult",
+      "@type": "Class",
+      "rdfs:subClassOf": "Observation",
+      "rdfs:label": "Key Result (KR)",
+      "rdfs:comment": "Quantifiable outcome that measures progress toward Objective; the 'KR' in OKR",
+      "properties": {
+        "keyResultId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for key result",
+          "schemaOrgMapping": "identifier",
+          "required": true
+        },
+        "keyResultName": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 200,
+          "description": "Specific, measurable key result with target value",
+          "schemaOrgMapping": "name",
+          "required": true
+        },
+        "objectiveId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Reference to parent Objective",
+          "schemaOrgMapping": "about",
+          "required": true
+        },
+        "metricType": {
+          "type": "string",
+          "enum": [
+            "Percentage",
+            "Count",
+            "Currency",
+            "Duration",
+            "Ratio",
+            "Boolean"
+          ],
+          "description": "Type of quantitative measurement",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for measurement type classification",
+          "required": true
+        },
+        "baselineValue": {
+          "type": "number",
+          "description": "Starting value at objective launch",
+          "schemaOrgMapping": "value",
+          "required": true
+        },
+        "targetValue": {
+          "type": "number",
+          "description": "Desired end value for success",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property to distinguish target from current/baseline",
+          "required": true
+        },
+        "currentValue": {
+          "type": "number",
+          "description": "Current measured value",
+          "schemaOrgMapping": "value",
+          "required": true
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of measurement",
+          "schemaOrgMapping": "unitText",
+          "required": true
+        },
+        "progressPercentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Calculated progress toward target (0-100%)",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for normalized progress aggregation",
+          "required": true
+        },
+        "measurementFrequency": {
+          "type": "string",
+          "enum": [
+            "Daily",
+            "Weekly",
+            "Bi-Weekly",
+            "Monthly",
+            "Quarterly"
+          ],
+          "description": "How often this KR is measured",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for data collection cadence",
+          "required": true
+        }
+      },
+      "schemaOrgAlignment": {
+        "baseType": "Observation",
+        "alignmentRatio": 0.4,
+        "directMappings": 4,
+        "customProperties": 6
+      }
+    },
+    "KPI": {
+      "@id": "pfc:KPI",
+      "@type": "Class",
+      "rdfs:subClassOf": "Observation",
+      "rdfs:label": "Key Performance Indicator (KPI)",
+      "rdfs:comment": "Ongoing operational metric that tracks business health",
+      "properties": {
+        "kpiId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for KPI",
+          "schemaOrgMapping": "identifier",
+          "required": true
+        },
+        "kpiName": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 150,
+          "description": "Clear name for performance indicator",
+          "schemaOrgMapping": "name",
+          "required": true
+        },
+        "kpiDescription": {
+          "type": "string",
+          "minLength": 50,
+          "maxLength": 1000,
+          "description": "Definition of what is measured and calculation method",
+          "schemaOrgMapping": "description",
+          "required": true
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Financial",
+            "Customer",
+            "Operational",
+            "Learning & Growth",
+            "Product",
+            "Marketing",
+            "Sales"
+          ],
+          "description": "Balanced Scorecard category",
+          "schemaOrgMapping": "about",
+          "required": true
+        },
+        "keyResultIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": "Key Results this KPI contributes to",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for many-to-many KPI-KR relationships",
+          "required": false
+        },
+        "calculationMethod": {
+          "type": "string",
+          "minLength": 20,
+          "description": "Formula or algorithm for calculating KPI value",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for measurement methodology documentation",
+          "required": true
+        },
+        "targetValue": {
+          "type": "number",
+          "description": "Target value for current period",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property to distinguish targets from actuals",
+          "required": true
+        },
+        "currentValue": {
+          "type": "number",
+          "description": "Most recent measured value",
+          "schemaOrgMapping": "value",
+          "required": true
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of measurement",
+          "schemaOrgMapping": "unitText",
+          "required": true
+        },
+        "trend": {
+          "type": "string",
+          "enum": [
+            "Improving",
+            "Stable",
+            "Declining",
+            "Volatile"
+          ],
+          "description": "Recent trend direction",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for quick status assessment",
+          "required": true
+        },
+        "dataSource": {
+          "type": "string",
+          "description": "System or database where data is sourced",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for data lineage tracing",
+          "required": true
+        },
+        "updateFrequency": {
+          "type": "string",
+          "enum": [
+            "Real-Time",
+            "Hourly",
+            "Daily",
+            "Weekly",
+            "Monthly"
+          ],
+          "description": "How frequently KPI value is refreshed",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for data freshness management",
+          "required": true
+        },
+        "owner": {
+          "type": "string",
+          "description": "Person responsible for KPI accuracy",
+          "schemaOrgMapping": "author",
+          "required": true
+        }
+      },
+      "schemaOrgAlignment": {
+        "baseType": "Observation",
+        "alignmentRatio": 0.38,
+        "directMappings": 5,
+        "customProperties": 8
+      }
+    },
+    "Metric": {
+      "@id": "pfc:Metric",
+      "@type": "Class",
+      "rdfs:subClassOf": "QuantitativeValue",
+      "rdfs:label": "Metric",
+      "rdfs:comment": "Atomic quantitative measurement; building block for KPIs and Key Results",
+      "properties": {
+        "metricId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for metric",
+          "schemaOrgMapping": "identifier",
+          "required": true
+        },
+        "metricName": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 100,
+          "description": "Clear metric name",
+          "schemaOrgMapping": "name",
+          "required": true
+        },
+        "value": {
+          "type": "number",
+          "description": "Current measured value",
+          "schemaOrgMapping": "value",
+          "required": true
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of measurement",
+          "schemaOrgMapping": "unitText",
+          "required": true
+        },
+        "measurementTimestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this measurement was taken",
+          "schemaOrgMapping": "observationDate",
+          "required": true
+        },
+        "aggregationType": {
+          "type": "string",
+          "enum": [
+            "Sum",
+            "Average",
+            "Median",
+            "Min",
+            "Max",
+            "Count",
+            "Distinct Count",
+            "Percentage"
+          ],
+          "description": "How raw data is aggregated",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for statistical method specification",
+          "required": true
+        },
+        "dimension": {
+          "type": "string",
+          "description": "Dimensional slice for analysis",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for multidimensional analysis",
+          "required": false
+        }
+      },
+      "schemaOrgAlignment": {
+        "baseType": "QuantitativeValue",
+        "alignmentRatio": 0.71,
+        "directMappings": 5,
+        "customProperties": 2
+      }
+    },
+    "VEAnalysis": {
+      "@id": "pfc:VEAnalysis",
+      "@type": "Class",
+      "rdfs:subClassOf": "AnalysisNewsArticle",
+      "rdfs:label": "Value Engineering Analysis",
+      "rdfs:comment": "Systematic examination of cost-function-value relationships to optimize resource allocation",
+      "properties": {
+        "analysisId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for VE analysis",
+          "schemaOrgMapping": "identifier",
+          "required": true
+        },
+        "analysisName": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 200,
+          "description": "Clear name describing scope of analysis",
+          "schemaOrgMapping": "name",
+          "required": true
+        },
+        "objectiveId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Objective being optimized",
+          "schemaOrgMapping": "about",
+          "required": true
+        },
+        "analysisDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Date analysis was completed",
+          "schemaOrgMapping": "datePublished",
+          "required": true
+        },
+        "totalCost": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total cost of solution",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for cost aggregation in VE methodology",
+          "required": true
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "description": "ISO 4217 currency code",
+          "schemaOrgMapping": "priceCurrency",
+          "required": true
+        },
+        "totalValueScore": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Aggregate value score from function analysis",
+          "schemaOrgMapping": "ratingValue",
+          "required": true
+        },
+        "valueRatio": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Value / Cost ratio (higher is better)",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for ROI calculation in VE methodology",
+          "required": true
+        },
+        "recommendation": {
+          "type": "string",
+          "enum": [
+            "Proceed",
+            "Optimize",
+            "Redesign",
+            "Defer",
+            "Cancel"
+          ],
+          "description": "Final recommendation based on VE analysis",
+          "schemaOrgMapping": "reviewRating",
+          "required": true
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 100,
+          "maxLength": 2000,
+          "description": "Detailed justification for recommendation",
+          "schemaOrgMapping": "reviewBody",
+          "required": true
+        },
+        "analyst": {
+          "type": "string",
+          "description": "Person who conducted analysis",
+          "schemaOrgMapping": "author",
+          "required": true
+        }
+      },
+      "schemaOrgAlignment": {
+        "baseType": "AnalysisNewsArticle",
+        "alignmentRatio": 0.64,
+        "directMappings": 7,
+        "customProperties": 4
+      }
+    },
+    "VEFunction": {
+      "@id": "pfc:VEFunction",
+      "@type": "Class",
+      "rdfs:subClassOf": "Action",
+      "rdfs:label": "VE Function",
+      "rdfs:comment": "Specific capability analyzed for cost-value relationship in VE methodology",
+      "properties": {
+        "functionId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for function",
+          "schemaOrgMapping": "identifier",
+          "required": true
+        },
+        "functionName": {
+          "type": "string",
+          "pattern": "^[A-Z][a-z]+ [A-Z][a-z]+$",
+          "description": "Function name in 'Verb Noun' format",
+          "schemaOrgMapping": "name",
+          "required": true
+        },
+        "functionDescription": {
+          "type": "string",
+          "minLength": 50,
+          "maxLength": 500,
+          "description": "Detailed description of function",
+          "schemaOrgMapping": "description",
+          "required": true
+        },
+        "veAnalysisId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Reference to parent VE Analysis",
+          "schemaOrgMapping": "partOf",
+          "required": true
+        },
+        "functionType": {
+          "type": "string",
+          "enum": [
+            "Basic",
+            "Secondary",
+            "Supporting"
+          ],
+          "description": "Classification per VE methodology",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for SAVE International VE standards",
+          "required": true
+        },
+        "valueScore": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Subjective value rating (0-100 scale)",
+          "schemaOrgMapping": "ratingValue",
+          "required": true
+        },
+        "allocatedCost": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Cost allocated to delivering this function",
+          "schemaOrgMapping": "price",
+          "required": true
+        },
+        "valuePerCost": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Value Score / Allocated Cost ratio",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for function-level ROI calculation",
+          "required": true
+        },
+        "priority": {
+          "type": "string",
+          "enum": [
+            "Must Have",
+            "Should Have",
+            "Nice to Have",
+            "Low Priority"
+          ],
+          "description": "Stakeholder priority ranking",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for MoSCoW prioritization",
+          "required": true
+        }
+      },
+      "schemaOrgAlignment": {
+        "baseType": "Action",
+        "alignmentRatio": 0.56,
+        "directMappings": 5,
+        "customProperties": 4
+      }
+    },
+    "VECostElement": {
+      "@id": "pfc:VECostElement",
+      "@type": "Class",
+      "rdfs:subClassOf": "PriceSpecification",
+      "rdfs:label": "VE Cost Element",
+      "rdfs:comment": "Individual cost component analyzed in Value Engineering",
+      "properties": {
+        "costElementId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for cost element",
+          "schemaOrgMapping": "identifier",
+          "required": true
+        },
+        "costElementName": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 150,
+          "description": "Clear name for cost item",
+          "schemaOrgMapping": "name",
+          "required": true
+        },
+        "veAnalysisId": {
+          "type": "string",
+          "format": "uri",
+          "description": "Reference to parent VE Analysis",
+          "schemaOrgMapping": "partOf",
+          "required": true
+        },
+        "veFunctionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": "Functions this cost supports",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for shared cost allocation",
+          "required": true
+        },
+        "costCategory": {
+          "type": "string",
+          "enum": [
+            "Capital",
+            "Operating",
+            "Labor",
+            "Material",
+            "Overhead",
+            "External Services"
+          ],
+          "description": "Accounting category for cost",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for financial reporting alignment",
+          "required": true
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Cost amount in specified currency",
+          "schemaOrgMapping": "price",
+          "required": true
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "description": "ISO 4217 currency code",
+          "schemaOrgMapping": "priceCurrency",
+          "required": true
+        },
+        "timeframe": {
+          "type": "string",
+          "enum": [
+            "One-Time",
+            "Monthly",
+            "Quarterly",
+            "Annual",
+            "Multi-Year"
+          ],
+          "description": "Temporal nature of cost",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for TCO analysis",
+          "required": true
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "Firm Quote",
+            "Budget Estimate",
+            "Rough Order of Magnitude"
+          ],
+          "description": "Confidence level in cost estimate",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for risk assessment",
+          "required": true
+        },
+        "source": {
+          "type": "string",
+          "description": "Where cost data was obtained",
+          "schemaOrgMapping": "Custom",
+          "propertyRationale": "Custom property for cost provenance documentation",
+          "required": true
+        }
+      },
+      "schemaOrgAlignment": {
+        "baseType": "PriceSpecification",
+        "alignmentRatio": 0.4,
+        "directMappings": 4,
+        "customProperties": 6
+      }
+    }
+  },
+  "relationships": [
+    {
+      "relationshipId": "pfc:rel:vision-defines-strategy",
+      "name": "defines",
+      "sourceEntity": "pfc:Vision",
+      "targetEntity": "pfc:Strategy",
+      "cardinality": "1:N",
+      "description": "A Vision defines one or more Strategies",
+      "inverse": "isDefinedBy",
+      "businessRule": "IF Vision.status='Archived' THEN all child Strategy.status IN ['Superseded','Archived']"
+    },
+    {
+      "relationshipId": "pfc:rel:strategy-decomposes-to-strategic-objective",
+      "name": "decomposesTo",
+      "sourceEntity": "pfc:Strategy",
+      "targetEntity": "pfc:StrategicObjective",
+      "cardinality": "1:N",
+      "description": "A Strategy decomposes into 3-5 Strategic Objectives",
+      "inverse": "supportsStrategy",
+      "businessRule": "IF count(StrategicObjective)<3 THEN under-specified; IF >7 THEN too broad"
+    },
+    {
+      "relationshipId": "pfc:rel:strategic-objective-cascades-to-objective",
+      "name": "cascadesTo",
+      "sourceEntity": "pfc:StrategicObjective",
+      "targetEntity": "pfc:Objective",
+      "cardinality": "1:N",
+      "description": "A Strategic Objective cascades to multiple OKR Objectives",
+      "inverse": "supportsStrategicObjective",
+      "businessRule": "IF StrategicObjective.priority='P0-Critical' THEN min 1 Objective per quarter"
+    },
+    {
+      "relationshipId": "pfc:rel:objective-measured-by-key-result",
+      "name": "measuredBy",
+      "sourceEntity": "pfc:Objective",
+      "targetEntity": "pfc:KeyResult",
+      "cardinality": "1:N",
+      "description": "An Objective is quantified by 2-5 Key Results",
+      "inverse": "measures",
+      "businessRule": "IF count(KeyResult)<2 THEN not measurable; IF >5 THEN too complex"
+    },
+    {
+      "relationshipId": "pfc:rel:key-result-tracked-via-kpi",
+      "name": "trackedVia",
+      "sourceEntity": "pfc:KeyResult",
+      "targetEntity": "pfc:KPI",
+      "cardinality": "N:M",
+      "description": "Key Results tracked using one or more KPIs",
+      "inverse": "tracksKeyResult",
+      "businessRule": "IF KeyResult has no KPIs THEN manual tracking required"
+    },
+    {
+      "relationshipId": "pfc:rel:kpi-quantified-by-metric",
+      "name": "quantifiedBy",
+      "sourceEntity": "pfc:KPI",
+      "targetEntity": "pfc:Metric",
+      "cardinality": "1:N",
+      "description": "A KPI is calculated from atomic Metrics",
+      "inverse": "contributesToKPI",
+      "businessRule": "IF KPI.calculationMethod references Metric THEN quantifiedBy relationship MUST exist"
+    },
+    {
+      "relationshipId": "pfc:rel:objective-optimized-via-ve-analysis",
+      "name": "optimizedVia",
+      "sourceEntity": "pfc:Objective",
+      "targetEntity": "pfc:VEAnalysis",
+      "cardinality": "1:N",
+      "description": "Objectives optimized through Value Engineering Analysis",
+      "inverse": "optimizes",
+      "businessRule": "IF Objective cost>£10K OR resource constrained THEN VE Analysis SHOULD be conducted"
+    },
+    {
+      "relationshipId": "pfc:rel:ve-analysis-analyzes-function",
+      "name": "analyzes",
+      "sourceEntity": "pfc:VEAnalysis",
+      "targetEntity": "pfc:VEFunction",
+      "cardinality": "1:N",
+      "description": "A VE Analysis examines multiple functions",
+      "inverse": "analyzedIn",
+      "businessRule": "IF VE Analysis has no Basic function THEN analysis incomplete"
+    },
+    {
+      "relationshipId": "pfc:rel:ve-analysis-evaluates-cost-element",
+      "name": "evaluates",
+      "sourceEntity": "pfc:VEAnalysis",
+      "targetEntity": "pfc:VECostElement",
+      "cardinality": "1:N",
+      "description": "A VE Analysis evaluates multiple cost elements",
+      "inverse": "evaluatedIn",
+      "businessRule": "IF SUM(VECostElement.amount)≠VEAnalysis.totalCost THEN allocation incomplete"
+    },
+    {
+      "relationshipId": "pfc:rel:ve-function-delivers-objective",
+      "name": "delivers",
+      "sourceEntity": "pfc:VEFunction",
+      "targetEntity": "pfc:Objective",
+      "cardinality": "N:M",
+      "description": "Functions deliver value toward Objectives",
+      "inverse": "deliveredByFunction",
+      "businessRule": "IF VEFunction.priority='Must Have' THEN min 1 active Objective MUST exist"
+    },
+    {
+      "relationshipId": "pfc:rel:ve-cost-element-supports-function",
+      "name": "supports",
+      "sourceEntity": "pfc:VECostElement",
+      "targetEntity": "pfc:VEFunction",
+      "cardinality": "N:M",
+      "description": "Cost elements support one or more functions",
+      "inverse": "supportedByCost",
+      "businessRule": "IF VECostElement.veFunctionIds empty THEN cost unallocated"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-001",
+      "name": "Vision Lifecycle Cascade",
+      "condition": "Vision.status = 'Archived'",
+      "action": "All child Strategy entities MUST have status IN ['Superseded', 'Archived']",
+      "severity": "Critical"
+    },
+    {
+      "ruleId": "BR-002",
+      "name": "P0 Objective Quarterly Coverage",
+      "condition": "StrategicObjective.priority = 'P0-Critical'",
+      "action": "At least one child Objective MUST exist with timeframe = current_quarter OR next_quarter",
+      "severity": "High"
+    },
+    {
+      "ruleId": "BR-003",
+      "name": "Active OKR Completeness",
+      "condition": "Objective.status = 'Active'",
+      "action": "Objective MUST have minimum 2 KeyResult entities AND all KeyResults MUST have currentValue ≠ NULL",
+      "severity": "Critical"
+    },
+    {
+      "ruleId": "BR-004",
+      "name": "Key Result Achievement",
+      "condition": "KeyResult.currentValue ≥ KeyResult.targetValue",
+      "action": "KeyResult.progressPercentage MUST = 100 AND parent Objective.status SHOULD = 'Completed'",
+      "severity": "Medium"
+    },
+    {
+      "ruleId": "BR-005",
+      "name": "KPI Data Freshness Alert",
+      "condition": "KPI.updateFrequency = 'Daily' AND (CURRENT_TIMESTAMP - KPI.measurementTimestamp) > 36 hours",
+      "action": "Data quality alert MUST be triggered",
+      "severity": "Medium"
+    },
+    {
+      "ruleId": "BR-006",
+      "name": "VE Analysis Completeness",
+      "condition": "VEAnalysis.recommendation IN ['Proceed', 'Optimize']",
+      "action": "VEAnalysis MUST have minimum 3 VEFunction entities with functionType IN ['Basic', 'Secondary']",
+      "severity": "High"
+    },
+    {
+      "ruleId": "BR-007",
+      "name": "VE Basic Function Requirement",
+      "condition": "VEAnalysis has zero VEFunction entities with functionType = 'Basic'",
+      "action": "VEAnalysis is incomplete; MUST identify primary purpose function",
+      "severity": "Critical"
+    },
+    {
+      "ruleId": "BR-008",
+      "name": "VE Cost Allocation Integrity",
+      "condition": "SUM(VECostElement.amount WHERE veAnalysisId=X) ≠ VEAnalysis.totalCost WHERE analysisId=X",
+      "action": "Cost allocation incomplete; MUST be corrected before approval",
+      "severity": "Critical"
+    },
+    {
+      "ruleId": "BR-009",
+      "name": "VE Value Ratio Decision Threshold",
+      "condition": "VEAnalysis.valueRatio < 0.8",
+      "action": "VEAnalysis.recommendation MUST be 'Redesign' OR 'Cancel' OR provide explicit rationale",
+      "severity": "High"
+    },
+    {
+      "ruleId": "BR-010",
+      "name": "Metric-KPI Relationship Consistency",
+      "condition": "KPI.calculationMethod references Metric.metricId",
+      "action": "Explicit 'quantifiedBy' relationship MUST exist in relationship graph",
+      "severity": "Medium"
+    },
+    {
+      "ruleId": "BR-011",
+      "name": "Objective-Strategic Objective Temporal Alignment",
+      "condition": "Objective.strategicObjectiveId IS NOT NULL",
+      "action": "Objective.timeframe MUST be within StrategicObjective.timeframe date range",
+      "severity": "High"
+    },
+    {
+      "ruleId": "BR-012",
+      "name": "Balanced Scorecard KPI Coverage",
+      "condition": "Organization has >10 active KPIs",
+      "action": "KPIs SHOULD span all four Balanced Scorecard categories (minimum 1 per category)",
+      "severity": "Low"
+    }
+  ],
+  "qualityMetrics": {
+    "entityDescriptionCompleteness": 100,
+    "relationshipCardinalityDefinition": 100,
+    "businessRulesFormat": 100,
+    "propertySchemaOrgAlignment": 62,
+    "propertyMappingCompleteness": 100,
+    "testDataCoverage": 100,
+    "competencyQuestionCoverage": 100,
+    "glossaryEntryCompleteness": 100,
+    "documentationCompleteness": 100,
+    "overallReadiness": "PRODUCTION_READY"
+  },
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "KPI-ONT",
+  "oaa:series": "VE-Series",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of Vision within this ontology?",
+      "targetEntities": [
+        "pfc:Vision"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of Strategy within this ontology?",
+      "targetEntities": [
+        "pfc:Strategy"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of Strategic Objective (SO) within this ontology?",
+      "targetEntities": [
+        "pfc:StrategicObjective"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of Objective (OKR) within this ontology?",
+      "targetEntities": [
+        "pfc:Objective"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of Key Result (KR) within this ontology?",
+      "targetEntities": [
+        "pfc:KeyResult"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of Key Performance Indicator (KPI) within this ontology?",
+      "targetEntities": [
+        "pfc:KPI"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of Metric within this ontology?",
+      "targetEntities": [
+        "pfc:Metric"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of Value Engineering Analysis within this ontology?",
+      "targetEntities": [
+        "pfc:VEAnalysis"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of VE Function within this ontology?",
+      "targetEntities": [
+        "pfc:VEFunction"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of VE Cost Element within this ontology?",
+      "targetEntities": [
+        "pfc:VECostElement"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

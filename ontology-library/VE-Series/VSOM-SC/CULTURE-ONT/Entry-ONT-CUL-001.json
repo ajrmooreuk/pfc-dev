@@ -1,0 +1,85 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-CUL-001",
+  "name": "CULTURE Ontology (Strategic Culture Alignment)",
+  "description": "Culture-strategy alignment assessment: four-quadrant alignment matrix (Aligned, Aspirational, Legacy, Conflicting), observable cultural signals (behaviours, incentives, rituals, symbols, language), culture shift targets, and quadrant-specific communication response patterns. Addresses the execution gap between stated strategy and observable organisational culture. Part of VE-Series VSOM-SC sub-series.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://oaa-ontology.org/v6/culture/",
+  "prefix": "cul:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate7": "pass"
+  },
+  "validationDate": "2026-02-13",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./culture-ontology-v1.0.0-oaa-v6.json",
+    "documentation": null,
+    "glossary": "../../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "CultureStrategyAlignment": "Container for a culture-strategy alignment assessment",
+    "AlignmentQuadrant": "Classification of a strategic value in the alignment matrix: Aligned, Aspirational, Legacy, or Conflicting",
+    "CulturalSignal": "Observable organisational signal: behaviours, incentives, rituals, symbols, or language",
+    "CultureShiftTarget": "Measurable target for culture change linked to a strategic value",
+    "CommunicationResponse": "Quadrant-specific communication approach for addressing culture-strategy gaps",
+    "CultureValue": "A stated strategic value being assessed for cultural alignment",
+    "CultureAssessmentEntry": "Individual value-to-signal mapping with quadrant classification"
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "alignmentAssessesVSOM",
+        "from": "cul:CultureStrategyAlignment",
+        "to": "vsom:VSOMFramework",
+        "purpose": "Culture assessment evaluates alignment with VSOM strategy"
+      },
+      {
+        "name": "signalObservedInContext",
+        "from": "cul:CulturalSignal",
+        "to": "orgctx:OrganizationContext",
+        "purpose": "Cultural signals observed within organisational context"
+      },
+      {
+        "name": "responseUsesPattern",
+        "from": "cul:CommunicationResponse",
+        "to": "nar:CommunicationPattern",
+        "purpose": "Culture gap responses use narrative communication patterns"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-NAR-001",
+    "Entry-ONT-RRR-001"
+  ],
+  "dependents": [
+    "Entry-ONT-VIZ-001"
+  ],
+  "layer": "STRATEGIC LAYER (VE-Series / VSOM-SC)",
+  "subSeries": "VSOM-SC",
+  "domain": "Organisational Culture, Strategy Execution, Change Management",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-13",
+  "lastModified": "2026-02-13",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-13",
+      "changes": "Initial release — Culture-Strategy Alignment Matrix, Cultural Signals, Shift Targets, Communication Responses"
+    }
+  ],
+  "notes": "Layer C3 (Culture) of VSOM Strategy Communication. The most novel SC ontology — makes the gap between stated strategy and observable culture visible and measurable. Four quadrants define different communication responses to different alignment states."
+}

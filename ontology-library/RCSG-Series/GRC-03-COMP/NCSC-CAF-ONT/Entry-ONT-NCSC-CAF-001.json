@@ -1,0 +1,116 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-NCSC-CAF-001",
+  "name": "NCSC Cyber Assessment Framework (CAF) v4.0 Ontology",
+  "description": "UK National Cyber Security Centre Cyber Assessment Framework v4.0 ontology modelling 4 Objectives, 14 Principles, 41 Contributing Outcomes, and ~559 Indicators of Good Practice (IGPs) with three-tier achievement assessment. Supports CAF Profile customisation for sector-specific target outcomes as mandated by NIS Regulations and the UK Government Cyber Security Strategy.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/ncsc-caf/",
+  "prefix": "ncsc-caf:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "skipped"
+  },
+  "validationDate": "2026-02-14",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "folder": "./",
+    "ontology": "./ncsc-caf-ontology-v1.0.0.json",
+    "glossary": null,
+    "documentation": null,
+    "testData": null,
+    "validationReport": null,
+    "sourceData": "./ncsc-caf-v4-igps-source.csv"
+  },
+  "summary": {
+    "entities": [
+      { "id": "ncsc-caf:CAFObjective", "name": "CAFObjective", "entityType": "class" },
+      { "id": "ncsc-caf:CAFPrinciple", "name": "CAFPrinciple", "entityType": "class" },
+      { "id": "ncsc-caf:ContributingOutcome", "name": "ContributingOutcome", "entityType": "class" },
+      { "id": "ncsc-caf:IndicatorOfGoodPractice", "name": "IndicatorOfGoodPractice", "entityType": "class" },
+      { "id": "ncsc-caf:CAFAssessment", "name": "CAFAssessment", "entityType": "class" },
+      { "id": "ncsc-caf:OutcomeAssessment", "name": "OutcomeAssessment", "entityType": "class" },
+      { "id": "ncsc-caf:CAFProfile", "name": "CAFProfile", "entityType": "class" },
+      { "id": "ncsc-caf:ProfileOutcomeTarget", "name": "ProfileOutcomeTarget", "entityType": "class" },
+      { "id": "ncsc-caf:ComplianceMapping", "name": "ComplianceMapping", "entityType": "class" }
+    ],
+    "relationships": [
+      { "name": "hasPrinciple", "source": "CAFObjective", "target": "CAFPrinciple" },
+      { "name": "belongsToObjective", "source": "CAFPrinciple", "target": "CAFObjective" },
+      { "name": "hasContributingOutcome", "source": "CAFPrinciple", "target": "ContributingOutcome" },
+      { "name": "belongsToPrinciple", "source": "ContributingOutcome", "target": "CAFPrinciple" },
+      { "name": "hasIGP", "source": "ContributingOutcome", "target": "IndicatorOfGoodPractice" },
+      { "name": "assessesOutcome", "source": "OutcomeAssessment", "target": "ContributingOutcome" },
+      { "name": "hasOutcomeAssessment", "source": "CAFAssessment", "target": "OutcomeAssessment" },
+      { "name": "appliesProfile", "source": "CAFAssessment", "target": "CAFProfile" },
+      { "name": "hasOutcomeTarget", "source": "CAFProfile", "target": "ProfileOutcomeTarget" },
+      { "name": "hasComplianceMapping", "source": "ContributingOutcome", "target": "ComplianceMapping" },
+      { "name": "assessedUnderFramework", "source": "CAFAssessment", "target": "grc-fw:ComplianceFramework" },
+      { "name": "mapsToSecurityControl", "source": "ContributingOutcome", "target": "mcsb:SecurityControl" },
+      { "name": "mapsToControlDomain", "source": "CAFPrinciple", "target": "mcsb:ControlDomain" },
+      { "name": "alignsToRiskFramework", "source": "ContributingOutcome", "target": "rmf:RiskAssessment" },
+      { "name": "treatedByControl", "source": "OutcomeAssessment", "target": "rmf:Control" }
+    ]
+  },
+  "relationships": {
+    "crossOntology": 5,
+    "keyBridges": [
+      {
+        "to": "grc-fw:",
+        "entity": "ComplianceFramework",
+        "relationship": "assessedUnderFramework"
+      },
+      {
+        "to": "mcsb:",
+        "entity": "SecurityControl",
+        "relationship": "mapsToSecurityControl"
+      },
+      {
+        "to": "mcsb:",
+        "entity": "ControlDomain",
+        "relationship": "mapsToControlDomain"
+      },
+      {
+        "to": "rmf:",
+        "entity": "RiskAssessment",
+        "relationship": "alignsToRiskFramework"
+      },
+      {
+        "to": "rmf:",
+        "entity": "Control",
+        "relationship": "treatedByControl"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-GRC-FW-001",
+    "Entry-ONT-ALZ-001",
+    "Entry-ONT-RMF-001"
+  ],
+  "dependents": [
+    "Entry-ONT-DSPT-001"
+  ],
+  "layer": "RCSG-SERIES",
+  "domain": "UK Public Sector Cyber Security & Compliance",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-14",
+  "lastModified": "2026-02-14",
+  "sourceDocument": "NCSC Cyber Assessment Framework v4.0 (August 2025)",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-14",
+      "changes": "Initial release: 9 entities, 16 relationships, 12 business rules covering full CAF v4.0 hierarchy (4 Objectives, 14 Principles, 41 Contributing Outcomes, ~559 IGPs) with assessment, profiling, and cross-framework mapping capabilities"
+    }
+  ],
+  "notes": "NCSC-CAF-ONT provides a comprehensive model of the UK Cyber Assessment Framework v4.0 for AI-agent-driven compliance assessment. The ontology enables automated CAF assessment workflows, sector-specific CAF Profile targeting, gap analysis with remediation prioritisation, and cross-framework compliance mapping to MCSB (Azure cloud controls), RMF-IS27005 (ISO 27005 risk management), and GRC-FW (organisational compliance posture). Source data derived from Erreinion/NCSC_CAF_v4 structured IGP dataset."
+}

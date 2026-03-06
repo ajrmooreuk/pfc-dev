@@ -1,0 +1,1930 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "pe": "https://oaa-ontology.org/v6/process-engineering/",
+    "ds": "https://oaa-ontology.org/v6/design-system/",
+    "emc": "https://oaa-ontology.org/v6/emc/"
+  },
+  "@type": "owl:Ontology",
+  "@id": "pe:schema",
+  "name": "Process Engineering Ontology (PE-ONT)",
+  "description": "Comprehensive ontology for defining, orchestrating, and optimizing business processes with agentic AI augmentation. Supports cradle-to-grave process management from vision through execution and continuous improvement. v4.0.0 adds formal Skill and Plugin extensibility, and ProcessPath directed-graph composition for flexible cross-process and cross-series routing.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "4.0.0",
+  "oaa:previousVersion": "3.0.0",
+  "oaa:status": "compliant",
+  "oaa:series": "PE-Series",
+  "oaa:domain": "Business Process Management, Process Engineering, Agentic Orchestration, Skill Composition, Plugin Extensibility",
+  "dateCreated": "2026-01-18",
+  "dateModified": "2026-02-25",
+  "creator": {
+    "@type": "Organization",
+    "name": "Platform Foundation Core - Ontology Architect Agent"
+  },
+  "oaa:imports": [
+    {
+      "ontology": "DS-ONT",
+      "version": "3.0.0",
+      "usedEntities": [
+        "ds:DesignSystem"
+      ]
+    },
+    {
+      "ontology": "EMC-ONT",
+      "version": "5.0.0",
+      "usedEntities": [
+        "emc:InstanceConfiguration"
+      ]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-PE-001",
+      "name": "Skill Invocation Chain",
+      "description": "Trace which skills a process phase invokes, and which agents or plugins provide those skills",
+      "joinPath": "pe:ProcessPhase → invokesSkill → pe:Skill ← agentProvidesSkill ← pe:AIAgent; pe:Skill ← providesSkill ← pe:Plugin",
+      "useCase": "Discover all available skill providers for a given phase's skill requirements"
+    },
+    {
+      "patternId": "JP-PE-002",
+      "name": "Process Path Traversal",
+      "description": "Walk a ProcessPath directed graph from any entry-point step through links to reachable steps",
+      "joinPath": "pe:ProcessPath → hasPathStep → pe:PathStep [entryPoint=true]; pe:ProcessPath → hasPathLink → pe:PathLink → linkFrom/linkTo → pe:PathStep",
+      "useCase": "Enumerate all reachable process routes from a given entry point with binding strengths"
+    },
+    {
+      "patternId": "JP-PE-003",
+      "name": "Cross-Series Path Resolution",
+      "description": "Resolve path steps to their owning ontology processes across series boundaries",
+      "joinPath": "pe:PathStep → stepRefersToProcess → pe:Process [ontologyRef identifies series]; pe:PathStep → stepInvokesSkill → pe:Skill [owningOntology identifies series]",
+      "useCase": "Map a cross-series path (e.g. PPM→EFS→VSOM→OKR→KPI→VP) to concrete process definitions in each series"
+    },
+    {
+      "patternId": "JP-PE-004",
+      "name": "Plugin Dependency Resolution",
+      "description": "Resolve the full dependency tree of a plugin including transitive plugin requirements and their provided skills",
+      "joinPath": "pe:Plugin → pluginRequires → pe:Plugin (recursive); pe:Plugin → providesSkill → pe:Skill",
+      "useCase": "Determine the complete set of skills available when a plugin and all its dependencies are installed"
+    },
+    {
+      "patternId": "JP-PE-005",
+      "name": "Skill Dependency Chain",
+      "description": "Trace transitive skill dependencies to determine execution order",
+      "joinPath": "pe:Skill → skillDependsOn → pe:Skill (recursive)",
+      "useCase": "Build the execution DAG for a skill invocation, resolving all prerequisite skills"
+    },
+    {
+      "patternId": "JP-PE-006",
+      "name": "Instance-Scoped Path Discovery",
+      "description": "Find all process paths available for a given PFI instance configuration",
+      "joinPath": "pe:ProcessPath → pathScopedToInstance → emc:InstanceConfiguration; pe:ProcessPath [scope='cross-series'] (always available)",
+      "useCase": "Present instance-specific process routes alongside universal cross-series paths",
+      "oaa:crossOntologyRef": "EMC-ONT"
+    },
+    {
+      "patternId": "JP-PE-007",
+      "name": "Design System Plugin Bridge",
+      "description": "Connect design-system type plugins to their target DesignSystem entities",
+      "joinPath": "pe:Plugin [pluginType='design-system'] → pluginExtendsDesignSystem → ds:DesignSystem",
+      "useCase": "Discover which plugins extend a given design system and what skills they provide",
+      "oaa:crossOntologyRef": "DS-ONT"
+    },
+    {
+      "patternId": "JP-PE-008",
+      "name": "Phase-to-Value-Chain Lineage",
+      "description": "Trace a process phase through its parent process to the value chain, then through path compositions to downstream processes",
+      "joinPath": "pe:ProcessPhase ← hasPhase ← pe:Process → partOfValueChain → pe:ValueChain; pe:Process ← stepRefersToProcess ← pe:PathStep ← linkFrom ← pe:PathLink → linkTo → pe:PathStep → stepRefersToProcess → pe:Process",
+      "useCase": "Full process lineage: from a phase, up to its process, across to value chain siblings, and through path links to downstream processes"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "pe:Process",
+      "@type": "rdfs:Class",
+      "name": "Process",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A structured, repeatable sequence of activities and decision points that transforms inputs into outputs to achieve specific business outcomes, optimized through AI augmentation.",
+      "oaa:properties": [
+        {
+          "name": "processId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "processName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "processType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "development",
+            "discovery",
+            "analysis",
+            "deployment",
+            "optimization",
+            "governance",
+            "custom"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "businessObjective",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Strategic business objective this process supports"
+        },
+        {
+          "name": "scope",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Boundaries and coverage of the process"
+        },
+        {
+          "name": "owner",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:agent"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "draft",
+            "active",
+            "deprecated",
+            "archived"
+          ]
+        },
+        {
+          "name": "version",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:version"
+        },
+        {
+          "name": "estimatedDuration",
+          "type": "xsd:duration",
+          "required": false,
+          "schemaOrgMapping": "schema:duration"
+        },
+        {
+          "name": "automationLevel",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "AI augmentation percentage (0-100)"
+        }
+      ]
+    },
+    {
+      "@id": "pe:ProcessPhase",
+      "@type": "rdfs:Class",
+      "name": "ProcessPhase",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A distinct stage within a process that groups related activities, has specific deliverables, and includes quality gates for progression control.",
+      "oaa:properties": [
+        {
+          "name": "phaseId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "phaseName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "phaseNumber",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Sequential position in process"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "entryConditions",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Prerequisites before phase can begin"
+        },
+        {
+          "name": "exitConditions",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Criteria to complete phase"
+        },
+        {
+          "name": "activities",
+          "type": "xsd:string",
+          "required": true,
+          "description": "List of activities in this phase"
+        },
+        {
+          "name": "estimatedDuration",
+          "type": "xsd:duration",
+          "required": false
+        },
+        {
+          "name": "parallelExecution",
+          "type": "xsd:boolean",
+          "required": false,
+          "default": false
+        }
+      ]
+    },
+    {
+      "@id": "pe:ProcessArtifact",
+      "@type": "rdfs:Class",
+      "name": "ProcessArtifact",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "Tangible output or deliverable produced by a process phase, serving as evidence of completion and input to downstream activities.",
+      "oaa:properties": [
+        {
+          "name": "artifactId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "artifactName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "artifactType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "document",
+            "code",
+            "configuration",
+            "schema",
+            "test-suite",
+            "deployment-package",
+            "report",
+            "other"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "format",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:encodingFormat"
+        },
+        {
+          "name": "location",
+          "type": "xsd:anyURI",
+          "required": false,
+          "schemaOrgMapping": "schema:url"
+        },
+        {
+          "name": "mandatory",
+          "type": "xsd:boolean",
+          "required": true,
+          "default": true
+        }
+      ]
+    },
+    {
+      "@id": "pe:ProcessGate",
+      "@type": "rdfs:Class",
+      "name": "ProcessGate",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "Decision point or quality checkpoint that controls progression between process phases, enforcing quality standards and completion criteria.",
+      "oaa:properties": [
+        {
+          "name": "gateId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "gateName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "gateType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "quality",
+            "approval",
+            "completeness",
+            "compliance",
+            "risk-assessment",
+            "go-no-go"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "criteria",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Criteria to pass the gate"
+        },
+        {
+          "name": "threshold",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Percentage threshold (0-100)"
+        },
+        {
+          "name": "automated",
+          "type": "xsd:boolean",
+          "required": true,
+          "default": false
+        },
+        {
+          "name": "blockingFactor",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "blocking",
+            "warning",
+            "informational"
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "pe:ProcessMetric",
+      "@type": "rdfs:Class",
+      "name": "ProcessMetric",
+      "rdfs:subClassOf": "schema:PropertyValue",
+      "description": "Measurable indicator that tracks process performance, efficiency, quality, or business outcome achievement.",
+      "oaa:properties": [
+        {
+          "name": "metricId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "metricName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "metricType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "duration",
+            "quality",
+            "efficiency",
+            "cost",
+            "satisfaction",
+            "outcome",
+            "leading-indicator",
+            "lagging-indicator"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "formula",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Calculation formula"
+        },
+        {
+          "name": "unit",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:unitText"
+        },
+        {
+          "name": "target",
+          "type": "xsd:decimal",
+          "required": true,
+          "schemaOrgMapping": "schema:value"
+        },
+        {
+          "name": "collectionMethod",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "automated",
+            "manual",
+            "hybrid"
+          ]
+        },
+        {
+          "name": "frequency",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Measurement frequency"
+        }
+      ]
+    },
+    {
+      "@id": "pe:AIAgent",
+      "@type": "rdfs:Class",
+      "name": "AIAgent",
+      "rdfs:subClassOf": "schema:SoftwareApplication",
+      "description": "Artificial intelligence agent that augments or automates process activities, with defined capabilities, autonomy levels, and coordination protocols. In v4.0.0, capabilities are formalised via the agentProvidesSkill relationship to Skill entities.",
+      "oaa:properties": [
+        {
+          "name": "agentId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "agentName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "agentType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "analysis",
+            "generation",
+            "optimization",
+            "orchestration",
+            "validation",
+            "monitoring",
+            "custom"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "capabilities",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Legacy free-text capabilities list. Prefer agentProvidesSkill relationship to formal Skill entities.",
+          "oaa:deprecationNote": "Use pe:agentProvidesSkill relationship to pe:Skill entities instead. Retained for backward compatibility."
+        },
+        {
+          "name": "autonomyLevel",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "highly-autonomous",
+            "supervised",
+            "manual",
+            "hybrid"
+          ]
+        },
+        {
+          "name": "model",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Underlying AI model"
+        },
+        {
+          "name": "qualityThreshold",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Minimum quality score (0-100)"
+        }
+      ]
+    },
+    {
+      "@id": "pe:ProcessInstance",
+      "@type": "rdfs:Class",
+      "name": "ProcessInstance",
+      "rdfs:subClassOf": "schema:Event",
+      "description": "Specific execution of a process definition, tracking actual progress, performance, and outcomes for a particular initiative.",
+      "oaa:properties": [
+        {
+          "name": "instanceId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "instanceName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "initiated",
+            "in-progress",
+            "blocked",
+            "completed",
+            "failed",
+            "cancelled"
+          ]
+        },
+        {
+          "name": "currentPhase",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Currently executing phase"
+        },
+        {
+          "name": "startDate",
+          "type": "xsd:dateTime",
+          "required": true,
+          "schemaOrgMapping": "schema:startDate"
+        },
+        {
+          "name": "endDate",
+          "type": "xsd:dateTime",
+          "required": false,
+          "schemaOrgMapping": "schema:endDate"
+        },
+        {
+          "name": "progress",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Completion percentage (0-100)"
+        }
+      ]
+    },
+    {
+      "@id": "pe:Hypothesis",
+      "@type": "rdfs:Class",
+      "name": "Hypothesis",
+      "rdfs:subClassOf": "schema:Claim",
+      "description": "Testable assumption about process improvement or outcome prediction, validated through systematic measurement during process execution.",
+      "oaa:properties": [
+        {
+          "name": "hypothesisId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "statement",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:text",
+          "description": "Clear hypothesis statement"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "measurementMethod",
+          "type": "xsd:string",
+          "required": true,
+          "description": "How to validate"
+        },
+        {
+          "name": "target",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Target outcome"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "proposed",
+            "active",
+            "validated",
+            "invalidated",
+            "inconclusive"
+          ]
+        },
+        {
+          "name": "confidence",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Confidence level (0-100)"
+        }
+      ]
+    },
+    {
+      "@id": "pe:ValueChain",
+      "@type": "rdfs:Class",
+      "name": "ValueChain",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "Sequence of value-adding activities that transform inputs through processes to create customer value and business outcomes.",
+      "oaa:properties": [
+        {
+          "name": "valueChainId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "valueChainName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "customerValue",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Value delivered to customers"
+        },
+        {
+          "name": "inputs",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Required inputs"
+        },
+        {
+          "name": "outputs",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Outputs delivered"
+        }
+      ]
+    },
+    {
+      "@id": "pe:ProcessPattern",
+      "@type": "rdfs:Class",
+      "name": "ProcessPattern",
+      "rdfs:subClassOf": "schema:HowTo",
+      "description": "Reusable process template or best practice pattern that can be adapted across different contexts. ProcessPaths may implement ProcessPatterns via pathImplementsPattern.",
+      "oaa:properties": [
+        {
+          "name": "patternId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "patternName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "context",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Applicability context"
+        },
+        {
+          "name": "problem",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Problem addressed"
+        },
+        {
+          "name": "solution",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Solution approach"
+        },
+        {
+          "name": "benefits",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Key benefits"
+        }
+      ]
+    },
+
+    {
+      "@id": "pe:Skill",
+      "@type": "rdfs:Class",
+      "name": "Skill",
+      "rdfs:subClassOf": "schema:Action",
+      "oaa:addedInVersion": "4.0.0",
+      "description": "A typed, invokable capability with formal inputs and outputs. Skills are the atomic unit of callable behaviour — any ProcessPhase, AIAgent, or PathStep can invoke a Skill. Skills are cross-cutting: a single Skill (e.g. vsom:analyseVision) can be invoked from processes in any series without entering the full owning process. Skills may depend on other skills via skillDependsOn, and are provided by Plugins or AIAgents.",
+      "oaa:properties": [
+        {
+          "name": "skillId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "skillName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "version",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:version"
+        },
+        {
+          "name": "skillType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "analysis",
+            "transformation",
+            "generation",
+            "validation",
+            "extraction",
+            "orchestration",
+            "governance",
+            "visualisation",
+            "custom"
+          ]
+        },
+        {
+          "name": "inputs",
+          "type": "xsd:string",
+          "required": true,
+          "description": "JSON array of typed input parameters, each with name, dataType, and required flag. Example: [{\"name\":\"ontologyId\",\"dataType\":\"string\",\"required\":true}]"
+        },
+        {
+          "name": "outputs",
+          "type": "xsd:string",
+          "required": true,
+          "description": "JSON array of typed output parameters, each with name and dataType. Example: [{\"name\":\"analysisResult\",\"dataType\":\"object\"}]"
+        },
+        {
+          "name": "provider",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "agent",
+            "human",
+            "plugin",
+            "service",
+            "hybrid"
+          ],
+          "description": "What kind of provider executes this skill"
+        },
+        {
+          "name": "qualityThreshold",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Minimum quality score for skill output (0-100)"
+        },
+        {
+          "name": "idempotent",
+          "type": "xsd:boolean",
+          "required": false,
+          "default": false,
+          "description": "Whether invoking this skill multiple times with same inputs produces same outputs"
+        },
+        {
+          "name": "owningOntology",
+          "type": "xsd:string",
+          "required": false,
+          "description": "The ontology that defines the domain of this skill (e.g. VSOM-ONT, KPI-ONT). Enables cross-series skill invocation traceability."
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "draft",
+            "active",
+            "deprecated",
+            "archived"
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "pe:Plugin",
+      "@type": "rdfs:Class",
+      "name": "Plugin",
+      "rdfs:subClassOf": "schema:SoftwareApplication",
+      "oaa:addedInVersion": "4.0.0",
+      "description": "An extension bundle that provides one or more Skills plus configuration. Plugins are the deployment unit for extensibility — a design-system plugin might provide extractTokens, validateContrast, and syncFigma skills. Plugins follow the EMC cascade tier model (PFC/PFI/Product/App) and may depend on other plugins.",
+      "oaa:properties": [
+        {
+          "name": "pluginId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "pluginName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "version",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:version"
+        },
+        {
+          "name": "pluginType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "data-source",
+            "transformation",
+            "visualisation",
+            "integration",
+            "design-system",
+            "governance",
+            "analytics",
+            "custom"
+          ]
+        },
+        {
+          "name": "configSchema",
+          "type": "xsd:string",
+          "required": false,
+          "description": "JSON Schema defining the plugin's configuration surface. Consumers must supply valid configuration matching this schema."
+        },
+        {
+          "name": "cascadeTier",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "PFC",
+            "PFI",
+            "Product",
+            "App"
+          ],
+          "description": "Cascade tier at which this plugin operates. PFC plugins are platform-wide, PFI plugins are instance-scoped."
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "active",
+            "deprecated",
+            "experimental"
+          ]
+        },
+        {
+          "name": "entryPoint",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Module path or URL for plugin initialisation (e.g. './plugins/ds-figma/index.js')"
+        }
+      ]
+    },
+    {
+      "@id": "pe:ProcessPath",
+      "@type": "rdfs:Class",
+      "name": "ProcessPath",
+      "rdfs:subClassOf": "schema:Thing",
+      "oaa:addedInVersion": "4.0.0",
+      "description": "A directed graph of PathSteps connected by PathLinks, defining a reusable, flexible composition of processes and skills across ontology series. ProcessPaths have NO fixed start node — any PathStep marked as entryPoint can be entered directly. The graph encodes what CAN follow, not what MUST start. Binding strength on links (mandatory/recommended/optional/conditional) expresses flexibility. A single PathStep may appear in multiple ProcessPaths with different links. Mirrors EMC-ONT ComposedGraphSpec pattern for process composition.",
+      "oaa:properties": [
+        {
+          "name": "pathId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "pathName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "version",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:version"
+        },
+        {
+          "name": "pathType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "linear",
+            "branching",
+            "graph",
+            "pipeline"
+          ],
+          "description": "Topology hint: linear (simple chain), branching (fork/join), graph (arbitrary directed), pipeline (strict stages)"
+        },
+        {
+          "name": "scope",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "cross-series",
+            "intra-series",
+            "instance-specific"
+          ],
+          "description": "Whether this path spans ontology series, stays within one series, or is scoped to a PFI instance"
+        },
+        {
+          "name": "seriesRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Comma-separated list of ontology series this path spans (e.g. 'PE-Series,VE-Series'). Informational for cross-series paths."
+        },
+        {
+          "name": "instanceScope",
+          "type": "xsd:string",
+          "required": false,
+          "description": "PFI instance name if scope is instance-specific (e.g. 'PFI-BAIV', 'PFI-W4M-WWG')"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "draft",
+            "active",
+            "deprecated",
+            "archived"
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "pe:PathStep",
+      "@type": "rdfs:Class",
+      "name": "PathStep",
+      "rdfs:subClassOf": "schema:Action",
+      "oaa:addedInVersion": "4.0.0",
+      "description": "A node in a ProcessPath directed graph. Each step references either a Process (from any ontology series) or a Skill (for direct invocation without entering a full process). Steps declare whether they can be entered directly (entryPoint) and under what conditions they are available (conditionExpr). A single step can participate in multiple paths with different PathLinks.",
+      "oaa:properties": [
+        {
+          "name": "stepId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "stepName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "stepType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "required",
+            "optional",
+            "conditional",
+            "parallel"
+          ],
+          "description": "Whether this step must be executed (required), may be skipped (optional), depends on a condition (conditional), or can run concurrently with siblings (parallel)"
+        },
+        {
+          "name": "entryPoint",
+          "type": "xsd:boolean",
+          "required": true,
+          "default": false,
+          "description": "Whether this step can be entered directly without traversing prior links. At least one step per path must be an entry point."
+        },
+        {
+          "name": "conditionExpr",
+          "type": "xsd:string",
+          "required": false,
+          "description": "State expression determining when this step is available. Uses dot-notation state paths (e.g. 'scope.includes(VE-Series)', 'instance.ontologies.includes(LSC)'). Null means always available."
+        },
+        {
+          "name": "estimatedDuration",
+          "type": "xsd:duration",
+          "required": false,
+          "schemaOrgMapping": "schema:duration"
+        },
+        {
+          "name": "ontologyRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Ontology ID that owns the referenced process or skill (e.g. 'VSOM-ONT', 'PPM-ONT', 'KPI-ONT'). Enables cross-series traceability."
+        }
+      ]
+    },
+    {
+      "@id": "pe:PathLink",
+      "@type": "rdfs:Class",
+      "name": "PathLink",
+      "rdfs:subClassOf": "schema:Thing",
+      "oaa:addedInVersion": "4.0.0",
+      "description": "A directed edge in a ProcessPath graph connecting two PathSteps. PathLinks carry binding strength (how strongly the transition is recommended) and link type (sequential, parallel, fork, join, fallback). Conditional links activate only when their condition expression evaluates true. Weight enables priority ordering when multiple outbound links exist.",
+      "oaa:properties": [
+        {
+          "name": "linkId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "bindingStrength",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "mandatory",
+            "recommended",
+            "optional",
+            "conditional"
+          ],
+          "description": "How strongly this transition is prescribed. Mandatory: must follow if source step completes. Recommended: should follow, but alternatives exist. Optional: may follow. Conditional: follows only if condition is met."
+        },
+        {
+          "name": "linkType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "sequential",
+            "parallel",
+            "fork",
+            "join",
+            "fallback"
+          ],
+          "description": "Transition semantics. Sequential: one after another. Parallel: concurrent execution. Fork: one source to multiple targets. Join: multiple sources converge. Fallback: alternative if primary link fails."
+        },
+        {
+          "name": "condition",
+          "type": "xsd:string",
+          "required": false,
+          "description": "State expression that must evaluate true for this link to activate. Uses same dot-notation as PathStep.conditionExpr. Required when bindingStrength is 'conditional'."
+        },
+        {
+          "name": "weight",
+          "type": "xsd:integer",
+          "required": false,
+          "default": 0,
+          "description": "Priority weight when multiple outbound links exist from the same source step. Higher weight = higher priority. Used for path recommendation ordering."
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Human-readable description of why this transition exists"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "pe:hasPhase",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Phase",
+      "description": "A process contains one or more ordered phases",
+      "domainIncludes": [
+        "pe:Process"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessPhase"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "pe:produces",
+      "@type": "owl:ObjectProperty",
+      "name": "Produces",
+      "description": "A phase produces artifacts as deliverables",
+      "domainIncludes": [
+        "pe:ProcessPhase"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessArtifact"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "pe:hasGate",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Gate",
+      "description": "A phase has quality gates controlling progression",
+      "domainIncludes": [
+        "pe:ProcessPhase"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessGate"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "pe:measures",
+      "@type": "owl:ObjectProperty",
+      "name": "Measures",
+      "description": "A process tracks metrics for performance",
+      "domainIncludes": [
+        "pe:Process"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessMetric"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "pe:augmentedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Augmented By",
+      "description": "A phase is augmented by AI agents",
+      "domainIncludes": [
+        "pe:ProcessPhase"
+      ],
+      "rangeIncludes": [
+        "pe:AIAgent"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "pe:dependsOn",
+      "@type": "owl:ObjectProperty",
+      "name": "Depends On",
+      "description": "A phase depends on other phases completing first",
+      "domainIncludes": [
+        "pe:ProcessPhase"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessPhase"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "pe:instantiates",
+      "@type": "owl:ObjectProperty",
+      "name": "Instantiates",
+      "description": "A process definition creates execution instances",
+      "domainIncludes": [
+        "pe:Process"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessInstance"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "pe:validates",
+      "@type": "owl:ObjectProperty",
+      "name": "Validates",
+      "description": "A process validates hypotheses through measurement",
+      "domainIncludes": [
+        "pe:Process"
+      ],
+      "rangeIncludes": [
+        "pe:Hypothesis"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "pe:measuredBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Measured By",
+      "description": "A hypothesis is measured by process metrics",
+      "domainIncludes": [
+        "pe:Hypothesis"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessMetric"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "pe:partOfValueChain",
+      "@type": "owl:ObjectProperty",
+      "name": "Part Of Value Chain",
+      "description": "A process is part of a value chain",
+      "domainIncludes": [
+        "pe:Process"
+      ],
+      "rangeIncludes": [
+        "pe:ValueChain"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "pe:includes",
+      "@type": "owl:ObjectProperty",
+      "name": "Includes",
+      "description": "A value chain includes processes",
+      "domainIncludes": [
+        "pe:ValueChain"
+      ],
+      "rangeIncludes": [
+        "pe:Process"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "pe:implementsPattern",
+      "@type": "owl:ObjectProperty",
+      "name": "Implements Pattern",
+      "description": "A process implements reusable patterns",
+      "domainIncludes": [
+        "pe:Process"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessPattern"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "pe:inputTo",
+      "@type": "owl:ObjectProperty",
+      "name": "Input To",
+      "description": "An artifact serves as input to downstream phases",
+      "domainIncludes": [
+        "pe:ProcessArtifact"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessPhase"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "pe:coordinatesWith",
+      "@type": "owl:ObjectProperty",
+      "name": "Coordinates With",
+      "description": "An AI agent coordinates with other agents",
+      "domainIncludes": [
+        "pe:AIAgent"
+      ],
+      "rangeIncludes": [
+        "pe:AIAgent"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+
+    {
+      "@id": "pe:invokesSkill",
+      "@type": "owl:ObjectProperty",
+      "name": "Invokes Skill",
+      "description": "A process phase invokes a skill during execution. Enables cross-cutting skill invocation — a PPM phase can invoke a VSOM skill without entering the full VSOM process.",
+      "domainIncludes": [
+        "pe:ProcessPhase"
+      ],
+      "rangeIncludes": [
+        "pe:Skill"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:agentProvidesSkill",
+      "@type": "owl:ObjectProperty",
+      "name": "Agent Provides Skill",
+      "description": "An AI agent provides (can execute) a formal skill. Replaces the legacy free-text capabilities property with typed skill bindings.",
+      "domainIncludes": [
+        "pe:AIAgent"
+      ],
+      "rangeIncludes": [
+        "pe:Skill"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:skillDependsOn",
+      "@type": "owl:ObjectProperty",
+      "name": "Skill Depends On",
+      "description": "A skill depends on another skill's output. Enables skill chaining (e.g. validateOntology depends on parseOntology).",
+      "domainIncludes": [
+        "pe:Skill"
+      ],
+      "rangeIncludes": [
+        "pe:Skill"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:providesSkill",
+      "@type": "owl:ObjectProperty",
+      "name": "Provides Skill",
+      "description": "A plugin provides one or more skills as its callable surface. Every plugin must provide at least one skill.",
+      "domainIncludes": [
+        "pe:Plugin"
+      ],
+      "rangeIncludes": [
+        "pe:Skill"
+      ],
+      "oaa:cardinality": "1..*",
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:pluginRequires",
+      "@type": "owl:ObjectProperty",
+      "name": "Plugin Requires",
+      "description": "A plugin depends on another plugin being installed and active. Enables plugin dependency chains.",
+      "domainIncludes": [
+        "pe:Plugin"
+      ],
+      "rangeIncludes": [
+        "pe:Plugin"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:pluginExtendsDesignSystem",
+      "@type": "owl:ObjectProperty",
+      "name": "Plugin Extends Design System",
+      "description": "A design-system plugin extends a DesignSystem entity from DS-ONT. Cross-ontology bridge.",
+      "domainIncludes": [
+        "pe:Plugin"
+      ],
+      "rangeIncludes": [
+        "ds:DesignSystem"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:addedInVersion": "4.0.0",
+      "oaa:crossOntology": "DS-ONT"
+    },
+    {
+      "@id": "pe:hasPathStep",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Path Step",
+      "description": "A process path contains path steps as nodes in its directed graph.",
+      "domainIncludes": [
+        "pe:ProcessPath"
+      ],
+      "rangeIncludes": [
+        "pe:PathStep"
+      ],
+      "oaa:cardinality": "2..*",
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:hasPathLink",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Path Link",
+      "description": "A process path contains path links as directed edges between its steps.",
+      "domainIncludes": [
+        "pe:ProcessPath"
+      ],
+      "rangeIncludes": [
+        "pe:PathLink"
+      ],
+      "oaa:cardinality": "1..*",
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:stepRefersToProcess",
+      "@type": "owl:ObjectProperty",
+      "name": "Step Refers To Process",
+      "description": "A path step references a process definition from any ontology series. The process is identified by its @id (e.g. ppm:Process, vsom:Process). Cross-ontology by design.",
+      "domainIncludes": [
+        "pe:PathStep"
+      ],
+      "rangeIncludes": [
+        "pe:Process"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:addedInVersion": "4.0.0",
+      "oaa:crossOntology": "any"
+    },
+    {
+      "@id": "pe:stepInvokesSkill",
+      "@type": "owl:ObjectProperty",
+      "name": "Step Invokes Skill",
+      "description": "A path step invokes a skill directly instead of entering a full process. Mutually exclusive with stepRefersToProcess — a step references either a process OR a skill, not both.",
+      "domainIncludes": [
+        "pe:PathStep"
+      ],
+      "rangeIncludes": [
+        "pe:Skill"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:linkFrom",
+      "@type": "owl:ObjectProperty",
+      "name": "Link From",
+      "description": "The source path step of a directed link.",
+      "domainIncludes": [
+        "pe:PathLink"
+      ],
+      "rangeIncludes": [
+        "pe:PathStep"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:linkTo",
+      "@type": "owl:ObjectProperty",
+      "name": "Link To",
+      "description": "The target path step of a directed link.",
+      "domainIncludes": [
+        "pe:PathLink"
+      ],
+      "rangeIncludes": [
+        "pe:PathStep"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:pathImplementsPattern",
+      "@type": "owl:ObjectProperty",
+      "name": "Path Implements Pattern",
+      "description": "A process path implements a reusable process pattern. Multiple paths may implement the same pattern with different step configurations.",
+      "domainIncludes": [
+        "pe:ProcessPath"
+      ],
+      "rangeIncludes": [
+        "pe:ProcessPattern"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:pathScopedToInstance",
+      "@type": "owl:ObjectProperty",
+      "name": "Path Scoped To Instance",
+      "description": "A process path is scoped to a specific EMC instance configuration. Enables instance-specific paths (e.g. W4M-WWG has different paths than BAIV).",
+      "domainIncludes": [
+        "pe:ProcessPath"
+      ],
+      "rangeIncludes": [
+        "emc:InstanceConfiguration"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:addedInVersion": "4.0.0",
+      "oaa:crossOntology": "EMC-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "pe:BR-001",
+      "name": "Phase Sequence Validation",
+      "description": "Dependency phases must complete before dependent phase begins",
+      "condition": "IF a ProcessPhase has dependsOn relationships",
+      "action": "THEN all dependency phases MUST be completed before this phase can begin",
+      "severity": "error",
+      "appliesTo": [
+        "pe:ProcessPhase"
+      ]
+    },
+    {
+      "@id": "pe:BR-002",
+      "name": "Gate Enforcement",
+      "description": "Blocking gates must pass for phase completion",
+      "condition": "IF a ProcessPhase has blocking ProcessGates",
+      "action": "THEN all blocking gates MUST pass before phase can complete",
+      "severity": "error",
+      "appliesTo": [
+        "pe:ProcessPhase",
+        "pe:ProcessGate"
+      ]
+    },
+    {
+      "@id": "pe:BR-003",
+      "name": "Mandatory Artifact Production",
+      "description": "Mandatory artifacts must be produced before phase completion",
+      "condition": "IF a ProcessArtifact is marked as mandatory",
+      "action": "THEN the producing phase MUST NOT complete until artifact is produced and validated",
+      "severity": "error",
+      "appliesTo": [
+        "pe:ProcessArtifact",
+        "pe:ProcessPhase"
+      ]
+    },
+    {
+      "@id": "pe:BR-004",
+      "name": "Metric Threshold Monitoring",
+      "description": "Below-threshold metrics trigger alerts",
+      "condition": "IF actual ProcessMetric value falls below threshold",
+      "action": "THEN system MUST generate alert and trigger escalation path",
+      "severity": "warning",
+      "appliesTo": [
+        "pe:ProcessMetric"
+      ]
+    },
+    {
+      "@id": "pe:BR-005",
+      "name": "Agent Autonomy Supervision",
+      "description": "Supervised agents require human review",
+      "condition": "IF AIAgent has autonomyLevel equals 'supervised'",
+      "action": "THEN agent outputs MUST require human review before downstream use",
+      "severity": "error",
+      "appliesTo": [
+        "pe:AIAgent"
+      ]
+    },
+    {
+      "@id": "pe:BR-006",
+      "name": "Process Instance Blockers",
+      "description": "Instances with blockers must show blocked status",
+      "condition": "IF ProcessInstance has blockers",
+      "action": "THEN status MUST be 'blocked' until blockers are resolved",
+      "severity": "error",
+      "appliesTo": [
+        "pe:ProcessInstance"
+      ]
+    },
+    {
+      "@id": "pe:BR-007",
+      "name": "Circular Dependency Prevention",
+      "description": "Prevent circular phase dependencies",
+      "condition": "IF phase A dependsOn phase B AND phase B dependsOn phase A",
+      "action": "THEN configuration MUST be rejected as circular dependency",
+      "severity": "error",
+      "appliesTo": [
+        "pe:ProcessPhase"
+      ]
+    },
+    {
+      "@id": "pe:BR-008",
+      "name": "Value Chain Completeness",
+      "description": "Value chains must have complete process definitions",
+      "condition": "IF Process is partOfValueChain",
+      "action": "THEN all upstream processes in value chain MUST be defined",
+      "severity": "warning",
+      "appliesTo": [
+        "pe:Process",
+        "pe:ValueChain"
+      ]
+    },
+
+    {
+      "@id": "pe:BR-009",
+      "name": "Path Entry Point Required",
+      "description": "Every ProcessPath must have at least one PathStep with entryPoint=true",
+      "condition": "IF a ProcessPath exists",
+      "action": "THEN at least one of its PathSteps MUST have entryPoint set to true",
+      "severity": "error",
+      "appliesTo": [
+        "pe:ProcessPath",
+        "pe:PathStep"
+      ],
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:BR-010",
+      "name": "No Circular Path Links",
+      "description": "PathLink chains must not form cycles where mandatory binding strength would create infinite loops",
+      "condition": "IF a chain of PathLinks with bindingStrength 'mandatory' forms a cycle (A->B->...->A)",
+      "action": "THEN configuration MUST be rejected. Cycles are permitted only when all links in the cycle have bindingStrength 'optional' or 'conditional'.",
+      "severity": "error",
+      "appliesTo": [
+        "pe:PathLink",
+        "pe:PathStep"
+      ],
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:BR-011",
+      "name": "Mandatory Links Must Be Satisfiable",
+      "description": "Mandatory links must connect to steps that can actually be reached",
+      "condition": "IF a PathLink has bindingStrength 'mandatory'",
+      "action": "THEN the target PathStep MUST NOT have a conditionExpr that permanently evaluates false, AND the target step MUST have stepType 'required' or 'conditional' (not 'optional')",
+      "severity": "error",
+      "appliesTo": [
+        "pe:PathLink",
+        "pe:PathStep"
+      ],
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:BR-012",
+      "name": "Conditional Link Requires Condition",
+      "description": "PathLinks with bindingStrength 'conditional' must specify a condition expression",
+      "condition": "IF a PathLink has bindingStrength 'conditional'",
+      "action": "THEN the link MUST have a non-empty condition property",
+      "severity": "error",
+      "appliesTo": [
+        "pe:PathLink"
+      ],
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:BR-013",
+      "name": "Step Must Reference Process Or Skill",
+      "description": "Each PathStep must reference either a process or a skill, not both and not neither",
+      "condition": "IF a PathStep exists in a ProcessPath",
+      "action": "THEN the step MUST have exactly one of stepRefersToProcess OR stepInvokesSkill relationships (mutually exclusive, one required)",
+      "severity": "error",
+      "appliesTo": [
+        "pe:PathStep"
+      ],
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:BR-014",
+      "name": "Skill Must Have Provider",
+      "description": "Every active skill must be provided by at least one agent or plugin",
+      "condition": "IF a Skill has status 'active'",
+      "action": "THEN the Skill MUST be the target of at least one agentProvidesSkill OR providesSkill relationship",
+      "severity": "warning",
+      "appliesTo": [
+        "pe:Skill"
+      ],
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:BR-015",
+      "name": "No Circular Skill Dependencies",
+      "description": "Skill dependency chains must not form cycles",
+      "condition": "IF Skill A skillDependsOn Skill B AND Skill B skillDependsOn Skill A (directly or transitively)",
+      "action": "THEN configuration MUST be rejected as circular skill dependency",
+      "severity": "error",
+      "appliesTo": [
+        "pe:Skill"
+      ],
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:BR-016",
+      "name": "Plugin Must Provide Skills",
+      "description": "Every plugin must expose at least one skill",
+      "condition": "IF a Plugin exists",
+      "action": "THEN the Plugin MUST have at least one providesSkill relationship to a Skill entity",
+      "severity": "error",
+      "appliesTo": [
+        "pe:Plugin"
+      ],
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "pe:BR-017",
+      "name": "No Circular Plugin Dependencies",
+      "description": "Plugin dependency chains must not form cycles",
+      "condition": "IF Plugin A pluginRequires Plugin B AND Plugin B pluginRequires Plugin A (directly or transitively)",
+      "action": "THEN configuration MUST be rejected as circular plugin dependency",
+      "severity": "error",
+      "appliesTo": [
+        "pe:Plugin"
+      ],
+      "oaa:addedInVersion": "4.0.0"
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "4.0.0",
+    "oaaSchemaVersion": "7.0.0",
+    "lastModified": "2026-02-25",
+    "modifiedBy": "Ontology Architect Agent",
+    "changeNotes": "v4.0.0: Added Skill, Plugin, ProcessPath, PathStep, and PathLink entities. Added 14 new relationships (invokesSkill, agentProvidesSkill, skillDependsOn, providesSkill, pluginRequires, pluginExtendsDesignSystem, hasPathStep, hasPathLink, stepRefersToProcess, stepInvokesSkill, linkFrom, linkTo, pathImplementsPattern, pathScopedToInstance). Added 9 new business rules (BR-009 through BR-017). Deprecated AIAgent.capabilities free-text property in favour of agentProvidesSkill relationship. ProcessPath is a directed graph with no fixed start — entry determined by PathStep.entryPoint flag and runtime context. Mirrors EMC-ONT ComposedGraphSpec pattern for process composition.",
+    "versionHistory": [
+      {
+        "version": "3.0.0",
+        "date": "2026-02-09",
+        "notes": "Upgraded to OAA v6.1.0: converted 14 object cardinalities to string notation, updated namespace URIs to v6.",
+        "archivedPath": "archive/process-engineering-v3.0.0-oaa-v6.json"
+      },
+      {
+        "version": "2.0.0",
+        "date": "2026-02-01",
+        "notes": "Upgraded to OAA v5.0.0 JSON-LD compliance",
+        "archivedPath": "archive/process-engineering-v2.0.0-oaa-v5.json"
+      },
+      {
+        "version": "1.0.0",
+        "date": "2026-01-18",
+        "notes": "Initial creation in legacy format",
+        "archivedPath": "archive/process-engineering-v1.0.0-legacy.json"
+      }
+    ]
+  },
+  "oaa:ontologyId": "PE-ONT",
+  "oaa:series": "PE-Series",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of Process within this ontology?",
+      "targetEntities": [
+        "pe:Process"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of ProcessPhase within this ontology?",
+      "targetEntities": [
+        "pe:ProcessPhase"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of ProcessArtifact within this ontology?",
+      "targetEntities": [
+        "pe:ProcessArtifact"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of ProcessGate within this ontology?",
+      "targetEntities": [
+        "pe:ProcessGate"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of ProcessMetric within this ontology?",
+      "targetEntities": [
+        "pe:ProcessMetric"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of AIAgent within this ontology?",
+      "targetEntities": [
+        "pe:AIAgent"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of ProcessInstance within this ontology?",
+      "targetEntities": [
+        "pe:ProcessInstance"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of Hypothesis within this ontology?",
+      "targetEntities": [
+        "pe:Hypothesis"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of ValueChain within this ontology?",
+      "targetEntities": [
+        "pe:ValueChain"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of ProcessPattern within this ontology?",
+      "targetEntities": [
+        "pe:ProcessPattern"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What skills can be invoked from a given process phase, and which agents or plugins provide them?",
+      "targetEntities": [
+        "pe:Skill",
+        "pe:AIAgent",
+        "pe:Plugin"
+      ],
+      "targetRelationships": [
+        "pe:invokesSkill",
+        "pe:agentProvidesSkill",
+        "pe:providesSkill"
+      ],
+      "targetRules": [
+        "pe:BR-014"
+      ],
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "CQ-012",
+      "question": "What plugins are available at a given cascade tier, and what skills do they expose?",
+      "targetEntities": [
+        "pe:Plugin",
+        "pe:Skill"
+      ],
+      "targetRelationships": [
+        "pe:providesSkill",
+        "pe:pluginRequires"
+      ],
+      "targetRules": [
+        "pe:BR-016",
+        "pe:BR-017"
+      ],
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "CQ-013",
+      "question": "What are the possible process paths from a given entry point, and what binding strengths govern each transition?",
+      "targetEntities": [
+        "pe:ProcessPath",
+        "pe:PathStep",
+        "pe:PathLink"
+      ],
+      "targetRelationships": [
+        "pe:hasPathStep",
+        "pe:hasPathLink",
+        "pe:linkFrom",
+        "pe:linkTo"
+      ],
+      "targetRules": [
+        "pe:BR-009",
+        "pe:BR-010"
+      ],
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "CQ-014",
+      "question": "Can a path step invoke a skill directly without entering the full owning process?",
+      "targetEntities": [
+        "pe:PathStep",
+        "pe:Skill"
+      ],
+      "targetRelationships": [
+        "pe:stepInvokesSkill",
+        "pe:stepRefersToProcess"
+      ],
+      "targetRules": [
+        "pe:BR-013"
+      ],
+      "oaa:addedInVersion": "4.0.0"
+    },
+    {
+      "@id": "CQ-015",
+      "question": "Which process paths are available for a specific PFI instance, and how do they differ from cross-series paths?",
+      "targetEntities": [
+        "pe:ProcessPath"
+      ],
+      "targetRelationships": [
+        "pe:pathScopedToInstance"
+      ],
+      "targetRules": [],
+      "oaa:addedInVersion": "4.0.0"
+    }
+  ]
+}

@@ -1,0 +1,1297 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "cicd": "https://oaa-ontology.org/v6/cicd/"
+  },
+  "@id": "https://oaa-ontology.org/v6/cicd/schema",
+  "@type": "owl:Ontology",
+  "name": "PFC CI/CD Pipeline & Delivery Ontology",
+  "description": "Semantic model for the PF-Core hub-and-spoke CI/CD architecture. Defines the topology, repository triads, release pipelines, promotion steps, version pinning, core protection layers, and series-filtered ontology distribution that govern platform delivery across PFI instances.",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.1.0",
+  "oaa:previousVersion": "1.0.0",
+  "oaa:domain": "CI/CD Pipeline, Platform Delivery, DevOps Governance",
+  "oaa:status": "Production",
+  "dateCreated": "2026-02-19",
+  "dateModified": "2026-02-19",
+  "creator": {
+    "@type": "Organization",
+    "name": "Platform Foundation Core - Ontology Architect Agent"
+  },
+  "oaa:imports": [
+    {
+      "prefix": "pe",
+      "ontology": "PE-ONT",
+      "version": "3.0.0",
+      "namespace": "https://oaa-ontology.org/v6/process-engineering/"
+    },
+    {
+      "prefix": "ppm",
+      "ontology": "PPM-ONT",
+      "version": "3.0.0",
+      "namespace": "https://oaa-ontology.org/v6/ppm/"
+    },
+    {
+      "prefix": "emc",
+      "ontology": "EMC-ONT",
+      "version": "2.0.0",
+      "namespace": "https://oaa-ontology.org/v6/emc/"
+    },
+    {
+      "prefix": "org",
+      "ontology": "ORG-ONT",
+      "version": "3.0.0",
+      "namespace": "https://oaa-ontology.org/v6/org/"
+    },
+    {
+      "prefix": "grc",
+      "ontology": "GRC-FW-ONT",
+      "version": "3.0.0",
+      "namespace": "https://oaa-ontology.org/v6/grc-fw/"
+    },
+    {
+      "prefix": "kpi",
+      "ontology": "KPI-ONT",
+      "version": "3.0.0",
+      "namespace": "https://oaa-ontology.org/v6/kpi/"
+    },
+    {
+      "prefix": "vsom",
+      "ontology": "VSOM-ONT",
+      "version": "3.0.0",
+      "namespace": "https://oaa-ontology.org/v6/vsom/"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "cicd:CICDTopology",
+      "@type": "rdfs:Class",
+      "name": "CICDTopology",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "The overall hub-and-spoke CI/CD architecture connecting a central hub repository to multiple PFI instance triads via automated release and promotion pipelines.",
+      "oaa:properties": [
+        {
+          "name": "topologyId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "topologyName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "topologyType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "hub-and-spoke",
+            "peer-to-peer",
+            "centralised"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "hubRepository",
+          "type": "xsd:string",
+          "required": true,
+          "description": "GitHub owner/repo of the hub (e.g. ajrmooreuk/Azlan-EA-AAA)"
+        },
+        {
+          "name": "spokeCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of PFI spoke triads"
+        }
+      ]
+    },
+    {
+      "@id": "cicd:Repository",
+      "@type": "rdfs:Class",
+      "name": "Repository",
+      "rdfs:subClassOf": "schema:SoftwareSourceCode",
+      "description": "A GitHub repository with a defined role within the CI/CD topology — hub, spoke-dev, spoke-test, spoke-prod, or conventions tier.",
+      "oaa:properties": [
+        {
+          "name": "repoId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "repoName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "repoRole",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "hub",
+            "spoke-dev",
+            "spoke-test",
+            "spoke-prod",
+            "conventions-dev",
+            "conventions-test",
+            "conventions-prod"
+          ]
+        },
+        {
+          "name": "visibility",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "public",
+            "private"
+          ]
+        },
+        {
+          "name": "defaultBranch",
+          "type": "xsd:string",
+          "required": true,
+          "default": "main"
+        },
+        {
+          "name": "branchProtectionMode",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "multi-dev",
+            "team"
+          ]
+        },
+        {
+          "name": "reviewsRequired",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Minimum PR reviews (0 for multi-dev, 1+ for team)"
+        },
+        {
+          "name": "forcePushBlocked",
+          "type": "xsd:boolean",
+          "required": true,
+          "default": true
+        }
+      ]
+    },
+    {
+      "@id": "cicd:Triad",
+      "@type": "rdfs:Class",
+      "name": "Triad",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A dev/test/prod trio of repositories representing a single PFI instance or the conventions pipeline, with defined promotion paths between tiers.",
+      "oaa:properties": [
+        {
+          "name": "triadId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "triadName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "triadType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "pfi-instance",
+            "conventions",
+            "hub"
+          ]
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "active",
+            "provisioning",
+            "decommissioned"
+          ]
+        },
+        {
+          "name": "pfiId",
+          "type": "xsd:string",
+          "required": false,
+          "description": "PFI identifier from ont-registry-index (e.g. PFI-BAIV)"
+        }
+      ]
+    },
+    {
+      "@id": "cicd:Pipeline",
+      "@type": "rdfs:Class",
+      "name": "Pipeline",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A logical CI/CD pipeline that orchestrates one or more workflows to achieve a delivery objective — core release, convention sync, or instance promotion.",
+      "oaa:properties": [
+        {
+          "name": "pipelineId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "pipelineName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "pipelineType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "core-release",
+            "convention-sync",
+            "instance-promotion",
+            "pages-deploy"
+          ]
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "triggerPattern",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Primary trigger (e.g. tag pfc-v*, workflow_dispatch)"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "active",
+            "draft",
+            "deprecated"
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "cicd:Workflow",
+      "@type": "rdfs:Class",
+      "name": "Workflow",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A GitHub Actions workflow file (.yml) implementing part or all of a pipeline, with defined triggers, jobs, and concurrency controls.",
+      "oaa:properties": [
+        {
+          "name": "workflowId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "workflowName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "filePath",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Path relative to repo root (e.g. .github/workflows/pfc-release.yml)"
+        },
+        {
+          "name": "triggerEvents",
+          "type": "xsd:string",
+          "required": true,
+          "description": "JSON array of trigger events (push, workflow_dispatch, workflow_call)"
+        },
+        {
+          "name": "concurrencyGroup",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Concurrency group name"
+        },
+        {
+          "name": "cancelInProgress",
+          "type": "xsd:boolean",
+          "required": false,
+          "default": false
+        }
+      ]
+    },
+    {
+      "@id": "cicd:PromotionStep",
+      "@type": "rdfs:Class",
+      "name": "PromotionStep",
+      "rdfs:subClassOf": "schema:Action",
+      "description": "A controlled promotion of code and configuration from one tier to the next (dev→test, test→prod), with review requirements and scope controls.",
+      "oaa:properties": [
+        {
+          "name": "stepId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "sourceRole",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "spoke-dev",
+            "spoke-test",
+            "conventions-dev",
+            "conventions-test"
+          ]
+        },
+        {
+          "name": "targetRole",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "spoke-test",
+            "spoke-prod",
+            "conventions-test",
+            "conventions-prod"
+          ]
+        },
+        {
+          "name": "reviewsRequired",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Minimum reviews before merge"
+        },
+        {
+          "name": "enforcesAdmins",
+          "type": "xsd:boolean",
+          "required": true,
+          "default": false,
+          "description": "Whether admin override is blocked on target"
+        },
+        {
+          "name": "promotedPaths",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Paths promoted (e.g. instance-data/, pfc-core/, supabase/, tools/)"
+        }
+      ]
+    },
+    {
+      "@id": "cicd:Release",
+      "@type": "rdfs:Class",
+      "name": "Release",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "A versioned release event that distributes filtered core content from the hub to one or more PFI spoke dev repos via automated PRs.",
+      "oaa:properties": [
+        {
+          "name": "releaseId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "releaseTag",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Tag name (e.g. pfc-v1.0.0 or manual-YYYYMMDD-HHMMSS)"
+        },
+        {
+          "name": "releaseType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "tag-triggered",
+            "manual-dispatch",
+            "dry-run"
+          ]
+        },
+        {
+          "name": "releaseDate",
+          "type": "xsd:dateTime",
+          "required": true,
+          "schemaOrgMapping": "schema:datePublished"
+        },
+        {
+          "name": "dryRun",
+          "type": "xsd:boolean",
+          "required": true,
+          "default": false
+        },
+        {
+          "name": "sourceRegistry",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Source registry path (e.g. ont-registry-index.json)"
+        },
+        {
+          "name": "targetCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of PFIs targeted"
+        }
+      ]
+    },
+    {
+      "@id": "cicd:ReleaseArtifact",
+      "@type": "rdfs:Class",
+      "name": "ReleaseArtifact",
+      "rdfs:subClassOf": "schema:DigitalDocument",
+      "description": "A file written to a PFI dev repo as part of a release — filtered registry snapshot, version pin, or documentation artifact.",
+      "oaa:properties": [
+        {
+          "name": "artifactId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "artifactName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "targetPath",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Destination path in target repo (e.g. pfc-core/ontology-registry.json)"
+        },
+        {
+          "name": "sourcePath",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Source path in hub repo"
+        },
+        {
+          "name": "filterBySeries",
+          "type": "xsd:boolean",
+          "required": true,
+          "default": false,
+          "description": "Whether content is filtered by PFI series subscription"
+        }
+      ]
+    },
+    {
+      "@id": "cicd:VersionPin",
+      "@type": "rdfs:Class",
+      "name": "VersionPin",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A version tracking file that records the last deployed version of a component (core content or conventions) in a PFI repo.",
+      "oaa:properties": [
+        {
+          "name": "pinId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "pinType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "pfc-version",
+            "azlan-workflow-version"
+          ]
+        },
+        {
+          "name": "filePath",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Path in repo (e.g. pfc-core/pfc-version)"
+        },
+        {
+          "name": "currentValue",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Current version tag stored in file"
+        },
+        {
+          "name": "checkedBy",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Workflow that reads this pin (e.g. pfc-release.yml)"
+        }
+      ]
+    },
+    {
+      "@id": "cicd:ProtectionLayer",
+      "@type": "rdfs:Class",
+      "name": "ProtectionLayer",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A security or governance mechanism that protects the pfc-core/ directory from unauthorised human modification in PFI repos.",
+      "oaa:properties": [
+        {
+          "name": "layerId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "layerName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "protectionType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "private-repo",
+            "guard-workflow",
+            "codeowners"
+          ]
+        },
+        {
+          "name": "scope",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Protected path pattern (e.g. pfc-core/**)"
+        },
+        {
+          "name": "enforcer",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What enforces this layer (e.g. GitHub visibility, guard-core.yml, CODEOWNERS file)"
+        },
+        {
+          "name": "bypassActors",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Actors allowed to bypass (e.g. github-actions[bot], dependabot[bot])"
+        }
+      ]
+    },
+    {
+      "@id": "cicd:SeriesFilter",
+      "@type": "rdfs:Class",
+      "name": "SeriesFilter",
+      "rdfs:subClassOf": "schema:Thing",
+      "description": "A jq-based filter that selects ontology entries from the hub registry based on a PFI's subscribed series, producing a filtered snapshot.",
+      "oaa:properties": [
+        {
+          "name": "filterId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "seriesSubscriptions",
+          "type": "xsd:string",
+          "required": true,
+          "description": "JSON array of series names (e.g. [\"VE-Series\",\"PE-Series\",\"Foundation\"])"
+        },
+        {
+          "name": "resultCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of ontologies after filtering"
+        },
+        {
+          "name": "excludeStatuses",
+          "type": "xsd:string",
+          "required": true,
+          "default": "[\"deprecated\"]",
+          "description": "Statuses excluded from filter output"
+        },
+        {
+          "name": "excludePaths",
+          "type": "xsd:string",
+          "required": true,
+          "default": "[\"_orphans\"]",
+          "description": "Path prefixes excluded from filter output"
+        }
+      ]
+    },
+    {
+      "@id": "cicd:PFITarget",
+      "@type": "rdfs:Class",
+      "name": "PFITarget",
+      "rdfs:subClassOf": "schema:Organization",
+      "description": "A PFI instance that receives releases from the hub — defined by its dev repo, version pin policy, series subscription, and licence tier.",
+      "oaa:properties": [
+        {
+          "name": "targetId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "pfiId",
+          "type": "xsd:string",
+          "required": true,
+          "description": "PFI identifier from registry (e.g. PFI-BAIV)"
+        },
+        {
+          "name": "devRepo",
+          "type": "xsd:string",
+          "required": true,
+          "description": "GitHub owner/repo of dev tier (e.g. ajrmooreuk/pfi-baiv-aiv-dev)"
+        },
+        {
+          "name": "pfcPin",
+          "type": "xsd:string",
+          "required": true,
+          "default": "latest",
+          "description": "Version pin — 'latest' or specific tag like 'pfc-v1.0.0'"
+        },
+        {
+          "name": "licenceTier",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "pfc-enterprise",
+            "pfc-community"
+          ]
+        },
+        {
+          "name": "ontologySeries",
+          "type": "xsd:string",
+          "required": true,
+          "description": "JSON array of subscribed series"
+        }
+      ]
+    },
+    {
+      "@id": "cicd:ConventionManifest",
+      "@type": "rdfs:Class",
+      "name": "ConventionManifest",
+      "rdfs:subClassOf": "schema:DigitalDocument",
+      "description": "Manifest of convention files (workflows, configs, templates) synced from the azlan-workflow conventions triad to PFI prod repos.",
+      "oaa:properties": [
+        {
+          "name": "manifestId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "manifestName",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "fileCount",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of convention files (e.g. 18)"
+        },
+        {
+          "name": "syncWorkflow",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Workflow that performs sync (e.g. sync-to-live.yml)"
+        },
+        {
+          "name": "triggerTag",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Tag pattern that triggers sync (e.g. vN.N.N)"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "cicd:hasRepository",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Repository",
+      "description": "A topology contains repositories with defined roles",
+      "domainIncludes": [
+        "cicd:CICDTopology"
+      ],
+      "rangeIncludes": [
+        "cicd:Repository"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "cicd:hasTriad",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Triad",
+      "description": "A topology contains dev/test/prod triads",
+      "domainIncludes": [
+        "cicd:CICDTopology"
+      ],
+      "rangeIncludes": [
+        "cicd:Triad"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "cicd:containsRepo",
+      "@type": "owl:ObjectProperty",
+      "name": "Contains Repo",
+      "description": "A triad contains exactly 3 repositories (dev, test, prod)",
+      "domainIncludes": [
+        "cicd:Triad"
+      ],
+      "rangeIncludes": [
+        "cicd:Repository"
+      ],
+      "oaa:cardinality": "3..3"
+    },
+    {
+      "@id": "cicd:hasPipeline",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Pipeline",
+      "description": "A topology has pipelines for release, sync, and promotion",
+      "domainIncludes": [
+        "cicd:CICDTopology"
+      ],
+      "rangeIncludes": [
+        "cicd:Pipeline"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "cicd:implementedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Implemented By",
+      "description": "A pipeline is implemented by one or more GitHub Actions workflows",
+      "domainIncludes": [
+        "cicd:Pipeline"
+      ],
+      "rangeIncludes": [
+        "cicd:Workflow"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "cicd:hasPromotionStep",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Promotion Step",
+      "description": "A triad defines promotion steps between its tiers",
+      "domainIncludes": [
+        "cicd:Triad"
+      ],
+      "rangeIncludes": [
+        "cicd:PromotionStep"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "cicd:produces",
+      "@type": "owl:ObjectProperty",
+      "name": "Produces",
+      "description": "A pipeline produces releases when triggered",
+      "domainIncludes": [
+        "cicd:Pipeline"
+      ],
+      "rangeIncludes": [
+        "cicd:Release"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "cicd:includesArtifact",
+      "@type": "owl:ObjectProperty",
+      "name": "Includes Artifact",
+      "description": "A release includes artifacts written to target repos",
+      "domainIncludes": [
+        "cicd:Release"
+      ],
+      "rangeIncludes": [
+        "cicd:ReleaseArtifact"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "cicd:hasVersionPin",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Version Pin",
+      "description": "A repository has version pins tracking deployed content",
+      "domainIncludes": [
+        "cicd:Repository"
+      ],
+      "rangeIncludes": [
+        "cicd:VersionPin"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "cicd:protectedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Protected By",
+      "description": "A repository is protected by security/governance layers",
+      "domainIncludes": [
+        "cicd:Repository"
+      ],
+      "rangeIncludes": [
+        "cicd:ProtectionLayer"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "cicd:targetsInstance",
+      "@type": "owl:ObjectProperty",
+      "name": "Targets Instance",
+      "description": "A release targets one or more PFI instances",
+      "domainIncludes": [
+        "cicd:Release"
+      ],
+      "rangeIncludes": [
+        "cicd:PFITarget"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "cicd:orchestratedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Orchestrated By",
+      "description": "Cross-ontology: a workflow is orchestrated by an EMC event chain",
+      "domainIncludes": [
+        "cicd:Workflow"
+      ],
+      "rangeIncludes": [
+        "emc:EventChain"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossReference": true
+    },
+    {
+      "@id": "cicd:governedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Governed By",
+      "description": "Cross-ontology: protection layers are governed by a GRC governance framework",
+      "domainIncludes": [
+        "cicd:ProtectionLayer"
+      ],
+      "rangeIncludes": [
+        "grc:GovernanceFramework"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossReference": true
+    },
+    {
+      "@id": "cicd:ownedByOrganisation",
+      "@type": "owl:ObjectProperty",
+      "name": "Owned By Organisation",
+      "description": "Cross-ontology: a PFI target is owned by an organisation",
+      "domainIncludes": [
+        "cicd:PFITarget"
+      ],
+      "rangeIncludes": [
+        "org:Organisation"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossReference": true
+    },
+    {
+      "@id": "cicd:deliversProcess",
+      "@type": "owl:ObjectProperty",
+      "name": "Delivers Process",
+      "description": "Cross-ontology: a pipeline delivers a PE process definition",
+      "domainIncludes": [
+        "cicd:Pipeline"
+      ],
+      "rangeIncludes": [
+        "pe:Process"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossReference": true
+    },
+    {
+      "@id": "cicd:tracksProject",
+      "@type": "owl:ObjectProperty",
+      "name": "Tracks Project",
+      "description": "Cross-ontology: a release tracks a PPM project",
+      "domainIncludes": [
+        "cicd:Release"
+      ],
+      "rangeIncludes": [
+        "ppm:Project"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossReference": true
+    },
+    {
+      "@id": "cicd:measuredBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Measured By",
+      "description": "Cross-ontology: a release is measured by KPI metrics",
+      "domainIncludes": [
+        "cicd:Release"
+      ],
+      "rangeIncludes": [
+        "kpi:KPI"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossReference": true
+    },
+    {
+      "@id": "cicd:alignsToStrategy",
+      "@type": "owl:ObjectProperty",
+      "name": "Aligns To Strategy",
+      "description": "Cross-ontology: the CI/CD topology aligns to a VSOM strategy",
+      "domainIncludes": [
+        "cicd:CICDTopology"
+      ],
+      "rangeIncludes": [
+        "vsom:Strategy"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossReference": true
+    },
+    {
+      "@id": "cicd:filteredBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Filtered By",
+      "description": "A PFI target has its ontology content filtered by a series filter during release",
+      "domainIncludes": [
+        "cicd:PFITarget"
+      ],
+      "rangeIncludes": [
+        "cicd:SeriesFilter"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "cicd:syncsConventions",
+      "@type": "owl:ObjectProperty",
+      "name": "Syncs Conventions",
+      "description": "A pipeline syncs convention files defined in a convention manifest to target repos",
+      "domainIncludes": [
+        "cicd:Pipeline"
+      ],
+      "rangeIncludes": [
+        "cicd:ConventionManifest"
+      ],
+      "oaa:cardinality": "0..*"
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "cicd:BR-001",
+      "name": "Triad Composition",
+      "description": "PFI instance triads must contain exactly 3 repositories (dev, test, prod)",
+      "condition": "IF Triad.triadType equals 'pfi-instance'",
+      "action": "THEN Triad MUST contain exactly 3 Repositories with roles spoke-dev, spoke-test, and spoke-prod",
+      "severity": "error",
+      "appliesTo": [
+        "cicd:Triad",
+        "cicd:Repository"
+      ]
+    },
+    {
+      "@id": "cicd:BR-002",
+      "name": "Prod Tier Admin Enforcement",
+      "description": "Promotion to prod must enforce admin restrictions",
+      "condition": "IF PromotionStep.targetRole equals 'spoke-prod'",
+      "action": "THEN PromotionStep.enforcesAdmins MUST be true",
+      "severity": "error",
+      "appliesTo": [
+        "cicd:PromotionStep"
+      ]
+    },
+    {
+      "@id": "cicd:BR-003",
+      "name": "Core Protection Completeness",
+      "description": "Repos with pfc-core/ scope must have all 3 protection layers",
+      "condition": "IF Repository has role spoke-dev or spoke-test or spoke-prod",
+      "action": "THEN Repository MUST have 3 ProtectionLayers: private-repo, guard-workflow, and codeowners",
+      "severity": "error",
+      "appliesTo": [
+        "cicd:Repository",
+        "cicd:ProtectionLayer"
+      ]
+    },
+    {
+      "@id": "cicd:BR-004",
+      "name": "Tag Release Targets All Latest",
+      "description": "Tag-triggered releases must target all PFIs pinned to latest",
+      "condition": "IF Release.releaseType equals 'tag-triggered'",
+      "action": "THEN Release MUST target all PFITargets where pfcPin equals 'latest'",
+      "severity": "warning",
+      "appliesTo": [
+        "cicd:Release",
+        "cicd:PFITarget"
+      ]
+    },
+    {
+      "@id": "cicd:BR-005",
+      "name": "Pin Mismatch Skip",
+      "description": "PFIs pinned to a different version must be skipped",
+      "condition": "IF PFITarget.pfcPin is not 'latest' AND PFITarget.pfcPin does not equal Release.releaseTag",
+      "action": "THEN Release MUST skip this PFITarget",
+      "severity": "error",
+      "appliesTo": [
+        "cicd:PFITarget",
+        "cicd:Release"
+      ]
+    },
+    {
+      "@id": "cicd:BR-006",
+      "name": "Dev-to-Test Promotion",
+      "description": "Dev-to-test promotion allows self-merge",
+      "condition": "IF PromotionStep.sourceRole equals 'spoke-dev' AND targetRole equals 'spoke-test'",
+      "action": "THEN PromotionStep.reviewsRequired MAY be 0 (self-merge allowed)",
+      "severity": "info",
+      "appliesTo": [
+        "cicd:PromotionStep"
+      ]
+    },
+    {
+      "@id": "cicd:BR-007",
+      "name": "Test-to-Prod Review Gate",
+      "description": "Test-to-prod promotion requires peer review",
+      "condition": "IF PromotionStep.sourceRole equals 'spoke-test' AND targetRole equals 'spoke-prod'",
+      "action": "THEN PromotionStep.reviewsRequired MUST be >= 1",
+      "severity": "error",
+      "appliesTo": [
+        "cicd:PromotionStep"
+      ]
+    },
+    {
+      "@id": "cicd:BR-008",
+      "name": "Empty Filter Prevention",
+      "description": "Series filter must produce at least one ontology",
+      "condition": "IF SeriesFilter.resultCount equals 0",
+      "action": "THEN pipeline MUST raise a configuration error and abort release for this PFI",
+      "severity": "error",
+      "appliesTo": [
+        "cicd:SeriesFilter"
+      ]
+    },
+    {
+      "@id": "cicd:BR-009",
+      "name": "Concurrency Control",
+      "description": "Pipeline concurrency must match pipeline type behaviour",
+      "condition": "IF Workflow.concurrencyGroup is set",
+      "action": "THEN Workflow.cancelInProgress MUST be false for core-release (no cancellation) and MAY be true for pages-deploy",
+      "severity": "warning",
+      "appliesTo": [
+        "cicd:Workflow",
+        "cicd:Pipeline"
+      ]
+    },
+    {
+      "@id": "cicd:BR-010",
+      "name": "PFI Repo Visibility",
+      "description": "All PFI repos must be private",
+      "condition": "IF Repository.repoRole starts with 'spoke-'",
+      "action": "THEN Repository.visibility MUST be 'private'",
+      "severity": "error",
+      "appliesTo": [
+        "cicd:Repository"
+      ]
+    },
+    {
+      "@id": "cicd:BR-011",
+      "name": "Version Pin Update",
+      "description": "pfc-version must be updated on every release",
+      "condition": "IF Release is created for a PFITarget",
+      "action": "THEN VersionPin with pinType 'pfc-version' MUST be updated to Release.releaseTag",
+      "severity": "error",
+      "appliesTo": [
+        "cicd:VersionPin",
+        "cicd:Release"
+      ]
+    }
+  ],
+  "joinPatterns": [
+    {
+      "@id": "cicd:JP-CICD-PE-001",
+      "name": "Pipeline delivers PE Process",
+      "description": "Links a CI/CD pipeline to the process engineering process it delivers",
+      "sourceEntity": "cicd:Pipeline",
+      "targetEntity": "pe:Process",
+      "relationship": "cicd:deliversProcess",
+      "targetOntology": "PE-ONT"
+    },
+    {
+      "@id": "cicd:JP-CICD-PPM-001",
+      "name": "Release tracks PPM Project",
+      "description": "Links a release to the PPM project it belongs to",
+      "sourceEntity": "cicd:Release",
+      "targetEntity": "ppm:Project",
+      "relationship": "cicd:tracksProject",
+      "targetOntology": "PPM-ONT"
+    },
+    {
+      "@id": "cicd:JP-CICD-EMC-001",
+      "name": "Workflow orchestrated by EMC EventChain",
+      "description": "Links a workflow to its event-driven orchestration chain",
+      "sourceEntity": "cicd:Workflow",
+      "targetEntity": "emc:EventChain",
+      "relationship": "cicd:orchestratedBy",
+      "targetOntology": "EMC-ONT"
+    },
+    {
+      "@id": "cicd:JP-CICD-ORG-001",
+      "name": "PFI owned by Organisation",
+      "description": "Links a PFI target to its owning organisation",
+      "sourceEntity": "cicd:PFITarget",
+      "targetEntity": "org:Organisation",
+      "relationship": "cicd:ownedByOrganisation",
+      "targetOntology": "ORG-ONT"
+    },
+    {
+      "@id": "cicd:JP-CICD-GRC-001",
+      "name": "Protection governed by GRC Framework",
+      "description": "Links protection layers to the governance framework they implement",
+      "sourceEntity": "cicd:ProtectionLayer",
+      "targetEntity": "grc:GovernanceFramework",
+      "relationship": "cicd:governedBy",
+      "targetOntology": "GRC-FW-ONT"
+    },
+    {
+      "@id": "cicd:JP-CICD-KPI-001",
+      "name": "Release measured by KPI",
+      "description": "Links release outcomes to KPI metrics for tracking delivery performance",
+      "sourceEntity": "cicd:Release",
+      "targetEntity": "kpi:KPI",
+      "relationship": "cicd:measuredBy",
+      "targetOntology": "KPI-ONT"
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.1.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-19",
+    "modifiedBy": "Ontology Architect Agent (Claude Code)",
+    "changeNotes": "Compliance fix: G2C resolved by adding cicd:filteredBy (PFITarget→SeriesFilter) and cicd:syncsConventions (Pipeline→ConventionManifest) to connect orphaned entities. G8 resolved by renaming cicd:ownerOrganisation to cicd:ownedByOrganisation (verb-form camelCase). 13 entities, 20 relationships (13 internal + 7 cross-ontology), 11 business rules, 6 join patterns.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-02-19",
+        "notes": "Initial creation. Models the PF-Core hub-and-spoke CI/CD architecture implemented in pfc-v1.0.0. 13 entities, 18 relationships (11 internal + 7 cross-ontology), 11 business rules, 6 join patterns."
+      }
+    ]
+  },
+  "oaa:ontologyId": "CICD-ONT",
+  "oaa:series": "PE-Series",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of CICDTopology within this ontology?",
+      "targetEntities": [
+        "cicd:CICDTopology"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of Repository within this ontology?",
+      "targetEntities": [
+        "cicd:Repository"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of Triad within this ontology?",
+      "targetEntities": [
+        "cicd:Triad"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of Pipeline within this ontology?",
+      "targetEntities": [
+        "cicd:Pipeline"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of Workflow within this ontology?",
+      "targetEntities": [
+        "cicd:Workflow"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of PromotionStep within this ontology?",
+      "targetEntities": [
+        "cicd:PromotionStep"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of Release within this ontology?",
+      "targetEntities": [
+        "cicd:Release"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of ReleaseArtifact within this ontology?",
+      "targetEntities": [
+        "cicd:ReleaseArtifact"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of VersionPin within this ontology?",
+      "targetEntities": [
+        "cicd:VersionPin"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of ProtectionLayer within this ontology?",
+      "targetEntities": [
+        "cicd:ProtectionLayer"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the role and purpose of SeriesFilter within this ontology?",
+      "targetEntities": [
+        "cicd:SeriesFilter"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-012",
+      "question": "What is the role and purpose of PFITarget within this ontology?",
+      "targetEntities": [
+        "cicd:PFITarget"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-013",
+      "question": "What is the role and purpose of ConventionManifest within this ontology?",
+      "targetEntities": [
+        "cicd:ConventionManifest"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

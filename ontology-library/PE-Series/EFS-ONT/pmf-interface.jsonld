@@ -1,0 +1,179 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pmf": "https://platformcore.io/ontology/pmf/",
+    "efs": "https://platformcore.io/ontology/efs/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "pmf:ProductMarketFitOntology",
+  "@type": "DefinedTermSet",
+  "name": "Product-Market Fit Ontology Interface",
+  "description": "Stub interface defining PMF classes that connect to EFS ontology",
+  "version": "0.1.0-interface",
+  "status": "Interface Definition - Not Implemented",
+  
+  "pmf:interfaceClasses": [
+    {
+      "@id": "pmf:ValueProposition",
+      "@type": "Class",
+      "name": "Value Proposition",
+      "description": "Articulated value offered to customer segments",
+      "rdfs:subClassOf": "schema:Offer",
+      "pmf:inboundFromEFS": [
+        {
+          "sourceClass": "efs:Feature",
+          "relationship": "delivers",
+          "cardinality": "many-to-one"
+        },
+        {
+          "sourceClass": "efs:Outcome",
+          "relationship": "validates",
+          "cardinality": "many-to-one"
+        }
+      ],
+      "pmf:expectedProperties": [
+        "pmf:valueElements",
+        "pmf:targetSegments",
+        "pmf:painsSolved",
+        "pmf:gainsCreated",
+        "pmf:uniqueDifferentiators"
+      ]
+    },
+    {
+      "@id": "pmf:CustomerSegment",
+      "@type": "Class",
+      "name": "Customer Segment",
+      "description": "Distinct group of customers with shared characteristics",
+      "rdfs:subClassOf": "schema:Audience",
+      "pmf:inboundFromEFS": [
+        {
+          "sourceClass": "efs:Persona",
+          "relationship": "represents",
+          "cardinality": "many-to-one"
+        },
+        {
+          "sourceClass": "efs:UserStory",
+          "relationship": "targetsSegment",
+          "cardinality": "many-to-one"
+        }
+      ],
+      "pmf:expectedProperties": [
+        "pmf:segmentName",
+        "pmf:demographics",
+        "pmf:behaviors",
+        "pmf:needs",
+        "pmf:segmentSize",
+        "pmf:accessibilityScore"
+      ]
+    },
+    {
+      "@id": "pmf:CustomerNeed",
+      "@type": "Class",
+      "name": "Customer Need",
+      "description": "Specific need or job-to-be-done for a segment",
+      "rdfs:subClassOf": "schema:Demand",
+      "pmf:inboundFromEFS": [
+        {
+          "sourceClass": "efs:UserStory",
+          "relationship": "addresses",
+          "cardinality": "many-to-many"
+        }
+      ],
+      "pmf:expectedProperties": [
+        "pmf:needStatement",
+        "pmf:needType",
+        "pmf:importance",
+        "pmf:currentSatisfaction",
+        "pmf:opportunityScore"
+      ]
+    },
+    {
+      "@id": "pmf:FitValidation",
+      "@type": "Class",
+      "name": "Fit Validation",
+      "description": "Evidence of product-market fit achievement",
+      "rdfs:subClassOf": "schema:Rating",
+      "pmf:inboundFromEFS": [
+        {
+          "sourceClass": "efs:Hypothesis",
+          "relationship": "validatesForPMF",
+          "cardinality": "many-to-one"
+        }
+      ],
+      "pmf:expectedProperties": [
+        "pmf:fitScore",
+        "pmf:validationMethod",
+        "pmf:sampleSize",
+        "pmf:confidenceLevel",
+        "pmf:validationDate",
+        "pmf:evidence"
+      ]
+    },
+    {
+      "@id": "pmf:ValueElement",
+      "@type": "Class",
+      "name": "Value Element",
+      "description": "Component of value proposition",
+      "rdfs:subClassOf": "schema:PropertyValue",
+      "pmf:inboundFromEFS": [
+        {
+          "sourceClass": "efs:Benefit",
+          "relationship": "contributes",
+          "cardinality": "many-to-one"
+        }
+      ],
+      "pmf:expectedProperties": [
+        "pmf:elementType",
+        "pmf:valueStatement",
+        "pmf:quantifiedImpact",
+        "pmf:competitivePosition"
+      ]
+    }
+  ],
+  
+  "pmf:suggestedExpansion": {
+    "description": "Recommended additional classes for full PMF ontology",
+    "classes": [
+      "pmf:CompetitorAnalysis",
+      "pmf:MarketSize",
+      "pmf:PricingModel",
+      "pmf:DistributionChannel",
+      "pmf:CustomerAcquisitionCost",
+      "pmf:LifetimeValue",
+      "pmf:RetentionMetric",
+      "pmf:NPS",
+      "pmf:ChurnIndicator",
+      "pmf:PMFMilestone"
+    ]
+  },
+  
+  "pmf:validationFramework": {
+    "description": "Suggested PMF validation stages",
+    "stages": [
+      {
+        "@id": "pmf:ProblemValidation",
+        "name": "Problem Validation",
+        "efsIntegration": "efs:Hypothesis with type='Problem'",
+        "metrics": ["Customer interview count", "Problem significance score"]
+      },
+      {
+        "@id": "pmf:SolutionValidation", 
+        "name": "Solution Validation",
+        "efsIntegration": "efs:Hypothesis with type='Solution'",
+        "metrics": ["Prototype feedback score", "Willingness to pay"]
+      },
+      {
+        "@id": "pmf:MVPValidation",
+        "name": "MVP Validation",
+        "efsIntegration": "efs:Release with type='MVP'",
+        "metrics": ["Activation rate", "Engagement score"]
+      },
+      {
+        "@id": "pmf:ScaleValidation",
+        "name": "Scale Validation",
+        "efsIntegration": "efs:Release with type='GA'",
+        "metrics": ["Retention rate", "Referral rate", "Revenue growth"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,315 @@
+{
+  "@context": {
+    "sp": "https://pf-ontology.com/strategic-patterns/",
+    "vsom": "https://pf-ontology.com/vsom/",
+    "okr": "https://pf-ontology.com/okr/",
+    "kpi": "https://pf-ontology.com/kpi/",
+    "vp": "https://pf-ontology.com/vp/",
+    "pmf": "https://pf-ontology.com/pmf/",
+    "rrr": "https://pf-ontology.com/rrr/",
+    "ppm": "https://pf-ontology.com/ppm/",
+    "ea": "https://pf-ontology.com/ea/",
+    "efs": "https://pf-ontology.com/efs/",
+    "org": "https://pf-ontology.com/org/",
+    "orgctx": "https://pf-ontology.com/org-context/",
+    "ga": "https://pf-ontology.com/gap-analysis/"
+  },
+  "@id": "sp:StrategicPatterns-E2E-Orchestration",
+  "@type": "owl:Ontology",
+  "rdfs:label": "Strategic Patterns — E2E Orchestration & AI Agent Architecture",
+  "description": "Master orchestration showing how all 5 strategic pattern layers connect with the existing VE/PE/Foundation ontology ecosystem. Defines the AI agent traversal model and Gen AI solution architecture.",
+  "version": "0.1.0-sketch",
+
+  "layerArchitecture": {
+    "description": "Five concentric layers converging on VSOM as the strategic spine",
+    "layers": {
+      "L1_MacroWorld": {
+        "label": "World/Macro Context",
+        "frameworks": ["PESTEL", "ScenarioPlanning", "FuturesFunnel", "Backcasting"],
+        "feedsInto": "vsom:VisionComponent + vsom:StrategicReviewCycle",
+        "timeHorizon": "5-10+ years",
+        "question": "What external forces shape our strategic context?",
+        "existingOntologyLinks": ["orgctx:CompetitiveLandscape.trends", "orgctx:MarketContext"]
+      },
+      "L2_IndustrySector": {
+        "label": "Industry/Sector Context",
+        "frameworks": ["Porter5Forces", "SWOT/TOWS", "AnsoffGrowth", "IndustryValueChain"],
+        "feedsInto": "vsom:StrategyComponent (Corporate + Competitive)",
+        "timeHorizon": "3-5 years",
+        "question": "What industry dynamics determine where and how we compete?",
+        "existingOntologyLinks": ["orgctx:CompetitiveLandscape", "orgctx:Competitor", "orgctx:CompetitiveForce", "orgctx:SectorProfile"]
+      },
+      "L3_Organization": {
+        "label": "Organization Strategy & Alignment",
+        "frameworks": ["BSC", "StrategyMaps", "StakeholderAlignment", "ValueChain", "LifecycleAnalysis"],
+        "feedsInto": "vsom:VSOMFramework ↔ kpi:KPI ↔ rrr:ExecutiveRole",
+        "timeHorizon": "1-3 years",
+        "question": "How do we translate strategy into measurable, accountable objectives?",
+        "existingOntologyLinks": [
+          "vsom:VSOMFramework", "kpi:KPI", "okr:Objective",
+          "rrr:ExecutiveRole.bscPerspective", "rrr:RACIAssignment",
+          "orgctx:OrganizationContext", "orgctx:MaturitySubType (merged from ORG-MAT)",
+          "ea:BusinessCapability", "ea:BusinessProcess"
+        ]
+      },
+      "L4_AnalyticalReasoning": {
+        "label": "Analytical Reasoning (AI Agent Layer)",
+        "frameworks": ["MECE", "LogicTrees", "HypothesisDriven", "AnalysisSynthesis"],
+        "feedsInto": "ALL layers — this is the reasoning scaffolding",
+        "timeHorizon": "Analysis-time (meta-layer)",
+        "question": "How do we structure rigorous strategic thinking?",
+        "existingOntologyLinks": ["ga:Gap", "ga:Recommendation", "kpi:VEAnalysis", "kpi:VEFunction"]
+      },
+      "L5_PortfolioExecution": {
+        "label": "Portfolio Strategy & Execution",
+        "frameworks": ["GrowthShareMatrix", "ThreeHorizons", "InvestmentMaps", "PortfolioLens", "StrategicDirection"],
+        "feedsInto": "ppm:Portfolio → efs:Epic → pe:Process",
+        "timeHorizon": "Quarterly to 3-year",
+        "question": "How do we allocate resources and execute across our portfolio?",
+        "existingOntologyLinks": [
+          "orgctx:Product", "orgctx:Brand", "orgctx:ProductPortfolio",
+          "vp:ValueProposition", "pmf:ProductMarketFit",
+          "ppm:Portfolio", "ppm:Programme", "ppm:Initiative",
+          "efs:Epic", "efs:Feature", "efs:UserStory"
+        ]
+      }
+    }
+  },
+
+  "vsomAsStrategicSpine": {
+    "description": "VSOM is the SPINE that all layers attach to. Each VSOM component receives input from specific layers and produces output to specific layers.",
+    "components": {
+      "VisionComponent": {
+        "inputFrom": ["L1:FuturesFunnel.preferable", "L1:BackcastingPlan.desiredState", "L1:ScenarioSet.robustVision", "L1:PESTEL.strategicImplications"],
+        "outputTo": ["L3:BSC (long-term theme)", "L5:ThreeHorizons.H3", "L5:StrategicDirection.whereWePlay"],
+        "timeHorizon": "3-10 years",
+        "ownerRole": "CEO + Board"
+      },
+      "StrategyComponent": {
+        "inputFrom": ["L2:SWOT/TOWS.strategies", "L2:Porter5F.strategicResponse", "L2:Ansoff.selectedGrowthPath", "L2:ValueChain.positioning", "L3:LifecycleStage.priorities"],
+        "outputTo": ["L3:BSC.perspectives", "L3:StrategyMap", "L5:InvestmentMap.allocations", "L5:ThreeHorizons.H2"],
+        "timeHorizon": "1-3 years",
+        "ownerRole": "CSO + CEO"
+      },
+      "ObjectivesComponent": {
+        "inputFrom": ["L3:BSC.perspectiveObjectives", "L4:AnalysisSynthesis.recommendations", "L4:LogicTree.topLevers", "L1:BackcastingPlan.milestones"],
+        "outputTo": ["okr:Objective", "ppm:Initiative.strategicAlignment", "L5:ThreeHorizons.H1"],
+        "timeHorizon": "Quarterly to Annual",
+        "ownerRole": "C-Suite per BSC perspective"
+      },
+      "MetricsComponent": {
+        "inputFrom": ["L3:BSC.kpis", "L4:LogicTree.sensitivityLevers", "kpi:KPI", "okr:KeyResult"],
+        "outputTo": ["vsom:StrategicReviewCycle (threshold breach triggers)", "L5:PortfolioLens.keyMetrics"],
+        "timeHorizon": "Real-time to Monthly",
+        "ownerRole": "CDO + Domain CxOs"
+      },
+      "StrategicReviewCycle": {
+        "inputFrom": ["MetricsComponent.thresholdBreach", "L1:PESTEL.highImpactFactors", "L2:Porter5F.forceShifts", "L1:Scenario.earlyWarningSignals"],
+        "outputTo": ["StrategyComponent.newIteration", "L4:StrategicQuestion (new analysis cycle)"],
+        "timeHorizon": "Event-driven + Quarterly",
+        "ownerRole": "CEO + CSO"
+      }
+    }
+  },
+
+  "existingOntologyBridges": {
+    "description": "How strategic patterns connect to EXISTING ontologies (no changes needed to existing ONTs)",
+    "bridges": {
+      "VSOM_to_BSC": {
+        "bridge": "BSC operationalizes VSOM",
+        "mechanism": "sp:BalancedScorecard.vsomFrameworkRef → vsom:VSOMFramework",
+        "note": "KPI-ONT already has KPI.category matching BSC perspectives. RRR already has ExecutiveRole.bscPerspective. The bridge formalizes what's implicit."
+      },
+      "PESTEL_to_CompetitiveLandscape": {
+        "bridge": "PESTEL enriches existing trend tracking",
+        "mechanism": "sp:PESTELFactor maps to orgctx:CompetitiveLandscape.trends (type: regulatory/technological/economic/social)",
+        "note": "ORG-CONTEXT already has Trend entity. PESTEL adds structured scoring and time-to-impact."
+      },
+      "Porter_to_CompetitiveForce": {
+        "bridge": "Porter's 5 Forces enriches existing competitive force tracking",
+        "mechanism": "sp:PortersFiveForces maps to orgctx:CompetitiveForce",
+        "note": "ORG-CONTEXT already has CompetitiveForce entity. Porter's adds structured intensity scoring."
+      },
+      "SWOT_to_GapAnalysis": {
+        "bridge": "SWOT Weaknesses = Capability Gaps",
+        "mechanism": "sp:SWOTAnalysis.weaknesses.gapAnalysisRef → ga:Gap",
+        "note": "GA-ONT already models gaps. SWOT adds the strategic framing around those gaps."
+      },
+      "ValueChain_to_EACapability": {
+        "bridge": "Value Chain activities = Business Capabilities",
+        "mechanism": "sp:StrategicValueChain.activities.capabilityRef → ea:BusinessCapability",
+        "note": "EA-CORE already has BusinessCapability with maturity. Value Chain adds margin/value contribution."
+      },
+      "LogicTree_to_KPI": {
+        "bridge": "Logic Tree leaf nodes = KPI metrics",
+        "mechanism": "sp:LogicTree.decomposition.leafNode.kpiRef → kpi:KPI",
+        "note": "KPI-ONT already has Metric → KPI hierarchy. Logic Tree adds mathematical decomposition."
+      },
+      "GrowthShare_to_ProductPortfolio": {
+        "bridge": "BCG classifies existing products/brands",
+        "mechanism": "sp:GrowthShareMatrix.entries.entityRef → orgctx:Product | orgctx:Brand",
+        "note": "ORG-CONTEXT already has Product and Brand. BCG adds growth/share classification."
+      },
+      "InvestmentMap_to_PPM": {
+        "bridge": "Investment allocation flows to PPM portfolios",
+        "mechanism": "sp:StrategicInvestmentMap.allocations.portfolioRef → ppm:Portfolio",
+        "note": "PPM already has Portfolio with budget. Investment Map adds strategic theme alignment."
+      },
+      "Maturity_merged_to_Context": {
+        "bridge": "ORG-MAT dimensions merge into ORG-CONTEXT type tree",
+        "mechanism": "orgctx:MaturitySubType replaces mat:DimensionScore — maturity becomes a property of context, not a separate ontology",
+        "note": "Per user direction: maturity merges with context types tree and subtypes"
+      }
+    }
+  },
+
+  "aiAgentArchitecture": {
+    "description": "How a Gen AI strategic analysis agent traverses the full graph",
+
+    "agentCapabilities": {
+      "strategicAnalyst": {
+        "role": "End-to-end strategic analysis agent",
+        "inputGraph": "orgctx:OrganizationContext (the entry point)",
+        "workflow": [
+          {
+            "step": 1,
+            "action": "CONTEXT_LOAD",
+            "description": "Load organization context with all connected entities (maturity types, products, brands, competitive landscape, market context)",
+            "graphTraversal": "org:Organization → hasContext → orgctx:OrganizationContext → [products, brands, competitiveLandscape, marketContext, maturityTypes]"
+          },
+          {
+            "step": 2,
+            "action": "QUESTION_FORMULATE",
+            "description": "Formulate or receive strategic question. Classify by type and VSOM layer target.",
+            "creates": "sp:StrategicQuestion"
+          },
+          {
+            "step": 3,
+            "action": "MECE_DECOMPOSE",
+            "description": "Decompose question into MECE tree. Assign appropriate framework to each branch.",
+            "creates": "sp:MECETree with framework-tagged branches"
+          },
+          {
+            "step": 4,
+            "action": "PARALLEL_ANALYSIS",
+            "description": "Execute framework analyses in parallel across MECE branches. This is where the agent leverages multiple frameworks simultaneously.",
+            "parallelTasks": [
+              "L1: PESTEL scan → macro signals",
+              "L2: Porter's 5 Forces → industry structure",
+              "L2: SWOT/TOWS → strategic options",
+              "L2: Ansoff → growth direction",
+              "L3: BSC assessment → current scorecard",
+              "L3: Value Chain → margin analysis",
+              "L4: Logic Tree → metric decomposition",
+              "L5: BCG Matrix → portfolio classification"
+            ],
+            "creates": "sp:*Analysis entities with cross-references"
+          },
+          {
+            "step": 5,
+            "action": "HYPOTHESIS_TEST",
+            "description": "Generate and test strategic hypotheses against framework evidence.",
+            "creates": "sp:StrategicHypothesis with evidence chains"
+          },
+          {
+            "step": 6,
+            "action": "SCENARIO_STRESS_TEST",
+            "description": "Stress-test top strategies against scenario set.",
+            "creates": "sp:ScenarioSet with strategy robustness scores"
+          },
+          {
+            "step": 7,
+            "action": "SYNTHESIZE",
+            "description": "Combine all framework findings into coherent synthesis.",
+            "creates": "sp:AnalysisSynthesis with convergent/divergent findings"
+          },
+          {
+            "step": 8,
+            "action": "STRATEGY_UPDATE",
+            "description": "Generate VSOM strategy updates with full evidence chain.",
+            "updates": "vsom:VSOMFramework — new/updated StrategyComponent, ObjectivesComponent, MetricsComponent"
+          },
+          {
+            "step": 9,
+            "action": "OPERATIONALIZE",
+            "description": "Cascade strategy through BSC → OKR → PPM → EFS execution chain.",
+            "creates": [
+              "sp:BalancedScorecard with perspective objectives",
+              "sp:StrategyMap with causal chains",
+              "sp:StrategicInvestmentMap with allocations",
+              "okr:Objective + okr:KeyResult (from BSC objectives)",
+              "ppm:Initiative (from investment map)"
+            ]
+          },
+          {
+            "step": 10,
+            "action": "MONITOR",
+            "description": "Set up metric monitoring. When KPIs breach thresholds, trigger StrategicReviewCycle → loop back to step 2.",
+            "monitors": "kpi:KPI → threshold breach → vsom:StrategicReviewCycle → sp:StrategicQuestion (new cycle)"
+          }
+        ]
+      },
+
+      "portfolioLensAgent": {
+        "role": "Focused strategic analysis for a specific product/brand/BU",
+        "inputGraph": "sp:PortfolioStrategicLens → entityRef → orgctx:Product",
+        "description": "Zooms in on a single portfolio element and pulls all connected strategic context"
+      },
+
+      "scenarioAgent": {
+        "role": "Scenario planning and futures analysis specialist",
+        "inputGraph": "sp:ScenarioSet + sp:FuturesFunnel + sp:PESTELAnalysis",
+        "description": "Explores plausible futures and tests strategy robustness"
+      },
+
+      "executiveAdvisorAgent": {
+        "role": "C-Suite strategic advisor scoped to a specific role",
+        "inputGraph": "rrr:ExecutiveRole → bscPerspective → sp:BSCPerspective → objectives → kpi:KPI",
+        "description": "Provides role-specific strategic intelligence based on BSC perspective ownership"
+      }
+    },
+
+    "graphQueryPatterns": {
+      "description": "Key graph traversal patterns for AI agents",
+      "patterns": {
+        "fullE2E": "orgctx:OrganizationContext → [L1:PESTEL, L2:Porter/SWOT/Ansoff] → sp:AnalysisSynthesis → vsom:VSOMFramework → sp:BSC → kpi:KPI → okr:Objective → ppm:Initiative → efs:Epic",
+        "strategyToMetrics": "vsom:StrategyComponent → sp:BSCPerspective → objectives → kpi:KPI → kpi:Metric",
+        "metricToStrategy": "kpi:KPI (breach) → vsom:MetricsComponent → vsom:StrategicReviewCycle → sp:StrategicQuestion → sp:MECETree (new analysis)",
+        "productLens": "orgctx:Product → [sp:GrowthShareMatrix, sp:AnsoffGrowthMatrix, vp:VP, pmf:PMF, sp:PortfolioLens]",
+        "roleToAccountability": "rrr:ExecutiveRole → bscPerspective → sp:BSCPerspective → objectives → vsom:ObjectivesComponent → measuredBy → kpi:KPI",
+        "macroToExecution": "sp:PESTELFactor → informsVision → vsom:VisionComponent → defines → vsom:StrategyComponent → objectivesComponent → okr:Objective → initiative → ppm:Initiative"
+      }
+    }
+  },
+
+  "registryProposal": {
+    "description": "How this might be organized in the ontology registry",
+    "options": {
+      "option_A_single_ont": {
+        "name": "SP-ONT (Strategic Patterns)",
+        "description": "One large ontology covering all 5 layers",
+        "pros": "Simple, single import, complete graph",
+        "cons": "Large, monolithic"
+      },
+      "option_B_layered": {
+        "name": "SP-Series (one ONT per layer)",
+        "ontologies": [
+          "SP-MACRO-ONT (Layer 1: PESTEL, Scenarios, Futures, Backcasting)",
+          "SP-INDUSTRY-ONT (Layer 2: Porter, SWOT, Ansoff, ValueChain)",
+          "SP-BSC-ONT (Layer 3: BSC, StrategyMaps, Stakeholder, Lifecycle)",
+          "SP-REASON-ONT (Layer 4: MECE, LogicTree, Hypothesis, Synthesis)",
+          "SP-PORTFOLIO-ONT (Layer 5: GrowthShare, ThreeHorizons, InvestmentMaps, Lens)"
+        ],
+        "pros": "Modular, can adopt incrementally, clear separation of concerns",
+        "cons": "More imports to manage"
+      },
+      "option_C_hybrid": {
+        "name": "Two ontologies: SP-ANALYSIS-ONT + SP-EXECUTION-ONT",
+        "description": "Analysis frameworks (L1+L2+L4) separate from execution frameworks (L3+L5)",
+        "pros": "Clean analysis/execution split",
+        "cons": "BSC spans both — it's analysis AND execution"
+      }
+    },
+    "recommendation": "Option B (layered) — aligns with the existing series pattern (VE-Series, PE-Series, Foundation) and allows incremental adoption. Could introduce as 'SP-Series' (Strategic Patterns Series)."
+  }
+}

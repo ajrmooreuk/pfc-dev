@@ -1,0 +1,456 @@
+{
+  "@context": {
+    "pf": "https://oaa-ontology.org/v6/rrr/",
+    "raci": "https://oaa-ontology.org/v6/raci/",
+    "org": "https://oaa-ontology.org/v6/organisation/",
+    "schema": "https://schema.org/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "oaa": "https://oaa-ontology.org/v7/"
+  },
+  "@id": "pf:wwg-rrr-instance",
+  "@type": "oaa:OntologyInstance",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:instanceVersion": "1.0.0",
+  "oaa:brand": "wwg",
+  "oaa:brandFullName": "World Wide Gourmet",
+  "oaa:organizationContextRef": "org:ctx-wwg",
+  "oaa:created": "2026-02-24",
+  "oaa:lastModified": "2026-02-24",
+  "oaa:imports": [
+    { "ontology": "RRR-ONT", "version": ">=4.0.0", "purpose": "Role, RACI, and RBAC schema" },
+    { "ontology": "ORG-ONT", "version": ">=2.1.0", "purpose": "Organization context" }
+  ],
+
+  "entities": [
+    {
+      "@id": "pf:func-wwg-procurement-mgr",
+      "@type": "pf:FunctionalRole",
+      "roleTitle": "Procurement Manager",
+      "function": "Operations",
+      "seniorityLevel": 4,
+      "coreResponsibilities": [
+        "Manage supplier relationships across AU, NZ, IS, IE corridors",
+        "Negotiate purchase contracts and incoterms per corridor",
+        "Monitor inbound shipment pipeline and landed cost tracking",
+        "Coordinate with logistics on vessel bookings and container allocation",
+        "Escalate supply disruptions to management when financial threshold exceeded"
+      ],
+      "keyDecisions": [
+        "Supplier selection and contract terms per corridor",
+        "Purchase order placement timing based on demand forecast",
+        "Alternative corridor sourcing when primary corridor disrupted",
+        "Incoterm selection (FOB vs CIF vs DDP) per supplier"
+      ],
+      "raciAccountable": [
+        "Inbound purchase order accuracy",
+        "Supplier performance monitoring",
+        "Corridor cost benchmarking"
+      ],
+      "raciResponsible": [
+        "Purchase order creation and management",
+        "Supplier communication and relationship management",
+        "Inbound shipment tracking coordination"
+      ],
+      "typicalOrgSize": "scale-up (50-200)"
+    },
+
+    {
+      "@id": "pf:func-wwg-logistics-coord",
+      "@type": "pf:FunctionalRole",
+      "roleTitle": "Logistics Coordinator",
+      "function": "Operations",
+      "seniorityLevel": 5,
+      "coreResponsibilities": [
+        "Coordinate freight forwarding across 4 corridors",
+        "Track shipments from origin to UK cold storage",
+        "Manage compliance documentation for BCP clearance",
+        "Monitor cold chain integrity during transit",
+        "Coordinate with customs brokers at AU/NZ/IS/IE export and UK import"
+      ],
+      "keyDecisions": [
+        "Carrier selection per shipment leg",
+        "Container type and temperature setpoint",
+        "Route optimisation when standard route disrupted",
+        "Document submission timing to meet gate deadlines"
+      ],
+      "raciAccountable": [
+        "Shipment tracking accuracy",
+        "Compliance document submission on time",
+        "Cold chain monitoring during transit"
+      ],
+      "raciResponsible": [
+        "Daily shipment status updates",
+        "IPAFFS pre-notification submission",
+        "Temperature log collection and review",
+        "Carrier performance tracking"
+      ],
+      "typicalOrgSize": "scale-up (50-200)"
+    },
+
+    {
+      "@id": "pf:func-wwg-warehouse-mgr",
+      "@type": "pf:FunctionalRole",
+      "roleTitle": "Warehouse Manager",
+      "function": "Operations",
+      "seniorityLevel": 4,
+      "coreResponsibilities": [
+        "Manage UK cold storage operations (chilled/frozen)",
+        "Oversee goods receipt, quality check, and put-away",
+        "Monitor stock levels, shelf life, and storage costs",
+        "Coordinate dispatch scheduling with sales team",
+        "Manage warehouse capacity planning against inbound arrival schedule"
+      ],
+      "keyDecisions": [
+        "Stock allocation priority when demand exceeds supply",
+        "Shelf life threshold for markdown vs disposal",
+        "Dispatch consolidation across multiple customer orders",
+        "Emergency capacity acquisition when overflow anticipated"
+      ],
+      "raciAccountable": [
+        "Warehouse OTIF dispatch performance",
+        "Cold chain integrity in UK storage",
+        "Storage cost per pallet-day management"
+      ],
+      "raciResponsible": [
+        "Daily stock position reporting",
+        "Goods receipt and quality verification",
+        "Dispatch scheduling and carrier booking",
+        "Temperature monitoring in warehouse zones"
+      ],
+      "typicalOrgSize": "scale-up (50-200)"
+    },
+
+    {
+      "@id": "pf:func-wwg-sales-account-mgr",
+      "@type": "pf:FunctionalRole",
+      "roleTitle": "Sales & Account Manager",
+      "function": "Sales & Commercial",
+      "seniorityLevel": 4,
+      "coreResponsibilities": [
+        "Manage customer relationships across restaurant, wholesale, food service, and online segments",
+        "Create and manage sales orders with committed delivery windows",
+        "Handle customer changes (date, quantity, spec, cancellation)",
+        "Proactively communicate disruptions and alternatives to customers",
+        "Negotiate change-cost recovery terms in customer contracts"
+      ],
+      "keyDecisions": [
+        "Customer order acceptance based on available stock and corridor ETA",
+        "Substitution offers when primary product unavailable",
+        "Customer change approval and cost allocation",
+        "Proactive notification timing and alternative offers"
+      ],
+      "raciAccountable": [
+        "Customer satisfaction and retention",
+        "Sales order accuracy and margin protection",
+        "Customer change cost recovery"
+      ],
+      "raciResponsible": [
+        "Sales order creation and confirmation",
+        "Customer communication on delivery status",
+        "Change request processing and cost calculation",
+        "Quarterly customer review and contract renewal"
+      ],
+      "typicalOrgSize": "scale-up (50-200)"
+    },
+
+    {
+      "@id": "pf:func-wwg-quality-controller",
+      "@type": "pf:FunctionalRole",
+      "roleTitle": "Quality Controller",
+      "function": "Operations",
+      "seniorityLevel": 5,
+      "coreResponsibilities": [
+        "Verify product quality at goods receipt (temperature, packaging, labelling)",
+        "Monitor cold chain integrity across all warehouse zones",
+        "Manage shelf life tracking and expiry alerting",
+        "Handle quality incidents (temperature breaches, contamination, damage)",
+        "Maintain supplier quality scorecards per corridor"
+      ],
+      "keyDecisions": [
+        "Accept/reject goods at receipt based on quality criteria",
+        "Quarantine decisions for suspect product",
+        "Shelf life extension or markdown recommendations",
+        "Supplier quality escalation to procurement"
+      ],
+      "raciAccountable": [
+        "Product quality at customer delivery point",
+        "Temperature compliance in storage",
+        "Quality incident investigation and resolution"
+      ],
+      "raciResponsible": [
+        "Goods receipt quality inspection",
+        "Temperature monitoring and excursion response",
+        "Shelf life database maintenance",
+        "Quality certificate verification per corridor"
+      ],
+      "typicalOrgSize": "scale-up (50-200)"
+    },
+
+    {
+      "@id": "pf:func-wwg-finance-analyst",
+      "@type": "pf:FunctionalRole",
+      "roleTitle": "Finance & Margin Analyst",
+      "function": "Finance",
+      "seniorityLevel": 4,
+      "coreResponsibilities": [
+        "Track margin lifecycle per order from booking to delivery",
+        "Calculate and report margin erosion by source (storage, changes, shelf life, dispatch)",
+        "Monitor corridor profitability and landed cost trends",
+        "Support change-cost pricing with historical cost data",
+        "Produce margin-at-risk (MaR) reporting for management"
+      ],
+      "keyDecisions": [
+        "Margin intervention threshold triggers (amber/red alerts)",
+        "Cost allocation methodology for shared warehouse costs",
+        "Corridor profitability ranking and investment priority",
+        "Change-cost recovery pricing recommendations"
+      ],
+      "raciAccountable": [
+        "Margin reporting accuracy and timeliness",
+        "Landed cost calculation per corridor",
+        "Financial risk exposure quantification"
+      ],
+      "raciResponsible": [
+        "Weekly margin erosion reports",
+        "Monthly corridor P&L analysis",
+        "Quarterly margin-at-risk modelling",
+        "Annual budgeting for corridor investment"
+      ],
+      "typicalOrgSize": "scale-up (50-200)"
+    },
+
+    {
+      "@id": "pf:func-wwg-compliance-officer",
+      "@type": "pf:FunctionalRole",
+      "roleTitle": "Compliance Officer",
+      "function": "Compliance",
+      "seniorityLevel": 4,
+      "coreResponsibilities": [
+        "Maintain compliance with AU, NZ, IS, IE export regulations and UK import regulations",
+        "Monitor regulatory changes (BTOM updates, Windsor Framework, FTA amendments)",
+        "Manage relationship with APHA, DAFF, MPI, MAST, DAFM authorities",
+        "Oversee document pre-flight checking before shipment departure",
+        "Handle compliance gate failures and rework processes"
+      ],
+      "keyDecisions": [
+        "Regulatory interpretation for ambiguous requirements",
+        "Document pre-flight pass/fail criteria per corridor",
+        "Compliance escalation to external legal counsel",
+        "Regulatory change impact assessment and response timeline"
+      ],
+      "raciAccountable": [
+        "Regulatory compliance across all 4 corridors",
+        "BCP gate pass rate optimisation",
+        "Regulatory change readiness"
+      ],
+      "raciResponsible": [
+        "Document pre-flight checks per shipment",
+        "Regulatory monitoring and change alerting",
+        "Compliance training for logistics and procurement teams",
+        "Annual compliance audit coordination"
+      ],
+      "typicalOrgSize": "scale-up (50-200)"
+    },
+
+    {
+      "@id": "pf:raci-wwg-inbound-tracking",
+      "@type": "pf:RACIAssignment",
+      "activity": "Inbound Shipment Tracking & Disruption Detection",
+      "role": "pf:func-wwg-logistics-coord",
+      "raciType": "Responsible",
+      "context": "Track all inbound shipments across 4 corridors, detect disruptions, and alert procurement and sales"
+    },
+    {
+      "@id": "pf:raci-wwg-inbound-tracking-a",
+      "@type": "pf:RACIAssignment",
+      "activity": "Inbound Shipment Tracking & Disruption Detection",
+      "role": "pf:func-wwg-procurement-mgr",
+      "raciType": "Accountable",
+      "context": "Owns inbound pipeline visibility and supplier-side escalation"
+    },
+    {
+      "@id": "pf:raci-wwg-margin-tracking",
+      "@type": "pf:RACIAssignment",
+      "activity": "Order Margin Lifecycle Tracking",
+      "role": "pf:func-wwg-finance-analyst",
+      "raciType": "Responsible",
+      "context": "Track margin from order booking through delivery, flag erosion events"
+    },
+    {
+      "@id": "pf:raci-wwg-margin-tracking-a",
+      "@type": "pf:RACIAssignment",
+      "activity": "Order Margin Lifecycle Tracking",
+      "role": "pf:func-wwg-sales-account-mgr",
+      "raciType": "Accountable",
+      "context": "Owns customer-facing margin commitments and change-cost negotiations"
+    },
+    {
+      "@id": "pf:raci-wwg-customer-comms",
+      "@type": "pf:RACIAssignment",
+      "activity": "Proactive Customer Disruption Communication",
+      "role": "pf:func-wwg-sales-account-mgr",
+      "raciType": "Responsible",
+      "context": "Notify customers of disruptions with alternatives and revised timelines"
+    },
+    {
+      "@id": "pf:raci-wwg-customer-comms-c",
+      "@type": "pf:RACIAssignment",
+      "activity": "Proactive Customer Disruption Communication",
+      "role": "pf:func-wwg-logistics-coord",
+      "raciType": "Consulted",
+      "context": "Provides shipment status and revised ETA for customer communication"
+    },
+    {
+      "@id": "pf:raci-wwg-compliance-doc",
+      "@type": "pf:RACIAssignment",
+      "activity": "Compliance Document Pre-Flight",
+      "role": "pf:func-wwg-compliance-officer",
+      "raciType": "Responsible",
+      "context": "Check all trade documents are valid and complete before shipment departs origin"
+    },
+    {
+      "@id": "pf:raci-wwg-compliance-doc-a",
+      "@type": "pf:RACIAssignment",
+      "activity": "Compliance Document Pre-Flight",
+      "role": "pf:func-wwg-logistics-coord",
+      "raciType": "Accountable",
+      "context": "Ensures documents are submitted to gates on time"
+    },
+    {
+      "@id": "pf:raci-wwg-stock-allocation",
+      "@type": "pf:RACIAssignment",
+      "activity": "Stock Allocation to Customer Orders",
+      "role": "pf:func-wwg-warehouse-mgr",
+      "raciType": "Responsible",
+      "context": "Allocate landed batches to customer order lines based on shelf life, priority, and delivery window"
+    },
+    {
+      "@id": "pf:raci-wwg-stock-allocation-a",
+      "@type": "pf:RACIAssignment",
+      "activity": "Stock Allocation to Customer Orders",
+      "role": "pf:func-wwg-sales-account-mgr",
+      "raciType": "Accountable",
+      "context": "Owns customer commitment and priority when allocation conflicts arise"
+    },
+    {
+      "@id": "pf:raci-wwg-quality-receipt",
+      "@type": "pf:RACIAssignment",
+      "activity": "Goods Receipt Quality Verification",
+      "role": "pf:func-wwg-quality-controller",
+      "raciType": "Responsible",
+      "context": "Inspect goods at receipt for temperature, quality, labelling compliance"
+    },
+    {
+      "@id": "pf:raci-wwg-quality-receipt-a",
+      "@type": "pf:RACIAssignment",
+      "activity": "Goods Receipt Quality Verification",
+      "role": "pf:func-wwg-warehouse-mgr",
+      "raciType": "Accountable",
+      "context": "Owns warehouse intake process and quarantine decisions"
+    },
+    {
+      "@id": "pf:raci-wwg-scenario-planning",
+      "@type": "pf:RACIAssignment",
+      "activity": "Supply Chain Scenario Planning & Risk Modelling",
+      "role": "pf:func-wwg-procurement-mgr",
+      "raciType": "Responsible",
+      "context": "Maintain scenario library for all 4 corridors with probability and financial impact"
+    },
+    {
+      "@id": "pf:raci-wwg-scenario-planning-c",
+      "@type": "pf:RACIAssignment",
+      "activity": "Supply Chain Scenario Planning & Risk Modelling",
+      "role": "pf:func-wwg-finance-analyst",
+      "raciType": "Consulted",
+      "context": "Provide financial modelling for scenario impact assessment"
+    }
+  ],
+
+  "relationships": [
+    { "@type": "pf:reportsTo", "from": "pf:func-wwg-logistics-coord", "to": "pf:func-wwg-procurement-mgr" },
+    { "@type": "pf:reportsTo", "from": "pf:func-wwg-quality-controller", "to": "pf:func-wwg-warehouse-mgr" },
+
+    { "@type": "pf:collaboratesWith", "from": "pf:func-wwg-procurement-mgr", "to": "pf:func-wwg-sales-account-mgr" },
+    { "@type": "pf:collaboratesWith", "from": "pf:func-wwg-warehouse-mgr", "to": "pf:func-wwg-sales-account-mgr" },
+    { "@type": "pf:collaboratesWith", "from": "pf:func-wwg-logistics-coord", "to": "pf:func-wwg-compliance-officer" },
+    { "@type": "pf:collaboratesWith", "from": "pf:func-wwg-finance-analyst", "to": "pf:func-wwg-sales-account-mgr" },
+    { "@type": "pf:collaboratesWith", "from": "pf:func-wwg-procurement-mgr", "to": "pf:func-wwg-finance-analyst" },
+
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-inbound-tracking", "to": "pf:func-wwg-logistics-coord" },
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-inbound-tracking-a", "to": "pf:func-wwg-procurement-mgr" },
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-margin-tracking", "to": "pf:func-wwg-finance-analyst" },
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-margin-tracking-a", "to": "pf:func-wwg-sales-account-mgr" },
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-customer-comms", "to": "pf:func-wwg-sales-account-mgr" },
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-customer-comms-c", "to": "pf:func-wwg-logistics-coord" },
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-compliance-doc", "to": "pf:func-wwg-compliance-officer" },
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-compliance-doc-a", "to": "pf:func-wwg-logistics-coord" },
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-stock-allocation", "to": "pf:func-wwg-warehouse-mgr" },
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-stock-allocation-a", "to": "pf:func-wwg-sales-account-mgr" },
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-quality-receipt", "to": "pf:func-wwg-quality-controller" },
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-quality-receipt-a", "to": "pf:func-wwg-warehouse-mgr" },
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-scenario-planning", "to": "pf:func-wwg-procurement-mgr" },
+    { "@type": "raci:forRole", "from": "pf:raci-wwg-scenario-planning-c", "to": "pf:func-wwg-finance-analyst" }
+  ],
+
+  "vpRrrAlignment": {
+    "convention": "JP-VP-RRR-001",
+    "description": "VP-RRR standing alignment convention — all VP entities map to RRR risk/requirement/result taxonomy",
+    "mappings": [
+      {
+        "vpEntity": "vp:wwg-prob-strategic",
+        "rrrEntity": "rrr:risk-supply-chain-opacity",
+        "alignmentType": "Problem→Risk",
+        "description": "Supply chain opacity is a risk to customer relationship and operational resilience"
+      },
+      {
+        "vpEntity": "vp:wwg-prob-tactical",
+        "rrrEntity": "rrr:risk-margin-erosion",
+        "alignmentType": "Problem→Risk",
+        "description": "Invisible margin erosion is a financial risk requiring real-time tracking"
+      },
+      {
+        "vpEntity": "vp:wwg-prob-operational",
+        "rrrEntity": "rrr:risk-change-cost-unrecovered",
+        "alignmentType": "Problem→Risk",
+        "description": "Unquantified customer change costs are a risk to profitability"
+      },
+      {
+        "vpEntity": "vp:wwg-sol-001",
+        "rrrEntity": "rrr:req-graph-platform",
+        "alignmentType": "Solution→Requirement",
+        "description": "The graph-driven platform is a requirement to deliver on all VP commitments"
+      },
+      {
+        "vpEntity": "vp:wwg-ben-reliability",
+        "rrrEntity": "rrr:result-otif-improvement",
+        "alignmentType": "Benefit→Result",
+        "description": "OTIF improvement from 82% to 95%+ is the measurable result of supply reliability"
+      },
+      {
+        "vpEntity": "vp:wwg-ben-margin",
+        "rrrEntity": "rrr:result-margin-recovery",
+        "alignmentType": "Benefit→Result",
+        "description": "GBP 180K pa margin recovery is the measurable result of erosion tracking"
+      },
+      {
+        "vpEntity": "vp:wwg-ben-shelf-life",
+        "rrrEntity": "rrr:result-zero-rejection",
+        "alignmentType": "Benefit→Result",
+        "description": "Zero short-date rejections is the measurable result of shelf life tracking"
+      },
+      {
+        "vpEntity": "vp:wwg-ben-change-pricing",
+        "rrrEntity": "rrr:result-change-cost-recovery",
+        "alignmentType": "Benefit→Result",
+        "description": "50% change-cost recovery is the measurable result of fair pricing"
+      },
+      {
+        "vpEntity": "vp:wwg-ben-compliance",
+        "rrrEntity": "rrr:result-compliance-readiness",
+        "alignmentType": "Benefit→Result",
+        "description": "100% document pre-flight pass rate is the measurable result of compliance readiness"
+      }
+    ]
+  }
+}

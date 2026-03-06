@@ -1,0 +1,217 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "cra": "https://quantumlane.ai/ontology/cyber-risk/",
+    "nist": "https://csrc.nist.gov/ns/rmf/",
+    "mitre": "https://attack.mitre.org/",
+    "iso27k": "https://www.iso.org/standard/27001/",
+    "cve": "https://cve.mitre.org/",
+    "cpe": "https://cpe.mitre.org/"
+  },
+  "@type": "cra:CyberRiskOntology",
+  "@id": "cra:ontology-v1.0",
+  "name": "Quantum Lane AI — Cyber Risk Assessment Ontology",
+  "version": "1.0.0",
+  "description": "Graph-native ontology for modelling cyber risk across threat actors, attack techniques, vulnerabilities, assets, controls, compliance obligations, and business impact. Designed for Neo4j deployment with Power Platform OneLake integration.",
+
+  "cra:ontologyMetadata": {
+    "schemaGrounding": "https://schema.org/",
+    "domainExtensions": ["NIST CSF 2.0", "ISO 27001:2022", "ISO 27002:2022", "MITRE ATT&CK v14", "PRA SS1/21", "DORA", "NIS2", "SOC2 Type II"],
+    "graphTarget": "Neo4j 5.x / Cosmos DB Gremlin",
+    "analyticsTarget": "Microsoft Fabric OneLake → DirectLake → Power BI",
+    "lastUpdated": "2026-02-08"
+  },
+
+  "cra:classDefinitions": [
+    {
+      "@type": ["Thing", "cra:ThreatActor"],
+      "cra:extends": "schema:Person | schema:Organization",
+      "description": "Entity that poses cyber threats — nation-state, criminal group, insider, hacktivist",
+      "cra:properties": {
+        "cra:actorType": {"@type": "@vocab", "enum": ["NationState", "OrganisedCrime", "Hacktivist", "Insider", "ScriptKiddie", "APT"]},
+        "cra:motivation": {"@type": "@vocab", "enum": ["Financial", "Espionage", "Disruption", "Ideological", "Revenge"]},
+        "cra:sophisticationLevel": {"@type": "@vocab", "enum": ["Low", "Medium", "High", "Advanced"]},
+        "cra:targetsSectors": {"@type": "@id", "range": "cra:IndustrySector"},
+        "cra:employs": {"@type": "@id", "range": "cra:AttackTechnique"},
+        "cra:exploits": {"@type": "@id", "range": "cra:Vulnerability"},
+        "cra:mitreThreatGroupId": {"@type": "xsd:string"},
+        "cra:lastObservedActivity": {"@type": "xsd:date"},
+        "cra:threatLevel": {"@type": "@vocab", "enum": ["Critical", "High", "Medium", "Low"]}
+      }
+    },
+    {
+      "@type": ["Thing", "cra:AttackTechnique"],
+      "cra:extends": "schema:Action",
+      "description": "Method used to compromise systems — mapped to MITRE ATT&CK techniques",
+      "cra:properties": {
+        "cra:mitreId": {"@type": "xsd:string", "description": "MITRE ATT&CK technique ID e.g. T1566.001"},
+        "cra:mitreTactic": {"@type": "@vocab", "enum": ["InitialAccess", "Execution", "Persistence", "PrivilegeEscalation", "DefenseEvasion", "CredentialAccess", "Discovery", "LateralMovement", "Collection", "CommandAndControl", "Exfiltration", "Impact"]},
+        "cra:killChainPhase": {"@type": "@vocab", "enum": ["Reconnaissance", "Weaponisation", "Delivery", "Exploitation", "Installation", "C2", "ActionsOnObjectives"]},
+        "cra:detectionDifficulty": {"@type": "@vocab", "enum": ["Trivial", "Moderate", "Difficult", "VeryDifficult"]},
+        "cra:exploitsVulnerability": {"@type": "@id", "range": "cra:Vulnerability"},
+        "cra:mitigatedBy": {"@type": "@id", "range": "cra:SecurityControl"},
+        "cra:targetsAsset": {"@type": "@id", "range": "cra:InformationAsset"},
+        "cra:prevalence": {"@type": "@vocab", "enum": ["Rare", "Uncommon", "Common", "VeryCommon"]}
+      }
+    },
+    {
+      "@type": ["Thing", "cra:Vulnerability"],
+      "cra:extends": "schema:CreativeWork",
+      "description": "Weakness in system, process, or people that can be exploited",
+      "cra:properties": {
+        "cra:cveId": {"@type": "xsd:string"},
+        "cra:cvssScore": {"@type": "xsd:float", "min": 0, "max": 10},
+        "cra:cvssSeverity": {"@type": "@vocab", "enum": ["None", "Low", "Medium", "High", "Critical"]},
+        "cra:vulnerabilityType": {"@type": "@vocab", "enum": ["Software", "Configuration", "Process", "People", "Physical", "SupplyChain"]},
+        "cra:affectsAsset": {"@type": "@id", "range": "cra:InformationAsset"},
+        "cra:exploitedBy": {"@type": "@id", "range": "cra:AttackTechnique"},
+        "cra:remediatedBy": {"@type": "@id", "range": "cra:SecurityControl"},
+        "cra:exploitAvailable": {"@type": "xsd:boolean"},
+        "cra:patchAvailable": {"@type": "xsd:boolean"},
+        "cra:discoveredDate": {"@type": "xsd:date"},
+        "cra:epssScore": {"@type": "xsd:float", "description": "Exploit Prediction Scoring System probability"}
+      }
+    },
+    {
+      "@type": ["Thing", "cra:InformationAsset"],
+      "cra:extends": "schema:DigitalDocument | schema:SoftwareApplication | schema:WebAPI",
+      "description": "Technology asset, data store, application, or infrastructure component at risk",
+      "cra:properties": {
+        "cra:assetType": {"@type": "@vocab", "enum": ["Application", "Database", "Server", "Network", "Endpoint", "CloudService", "Data", "API", "IoTDevice", "OTSystem"]},
+        "cra:dataClassification": {"@type": "@vocab", "enum": ["Public", "Internal", "Confidential", "Restricted", "TopSecret"]},
+        "cra:businessCriticality": {"@type": "@vocab", "enum": ["Critical", "High", "Medium", "Low"]},
+        "cra:owner": {"@type": "@id", "range": "schema:Person | schema:Organization"},
+        "cra:protectedBy": {"@type": "@id", "range": "cra:SecurityControl"},
+        "cra:hasVulnerability": {"@type": "@id", "range": "cra:Vulnerability"},
+        "cra:dependsOn": {"@type": "@id", "range": "cra:InformationAsset"},
+        "cra:processesPII": {"@type": "xsd:boolean"},
+        "cra:rto": {"@type": "xsd:duration", "description": "Recovery Time Objective"},
+        "cra:rpo": {"@type": "xsd:duration", "description": "Recovery Point Objective"},
+        "cra:deploymentModel": {"@type": "@vocab", "enum": ["OnPremises", "IaaS", "PaaS", "SaaS", "Hybrid"]}
+      }
+    },
+    {
+      "@type": ["Thing", "cra:SecurityControl"],
+      "cra:extends": "schema:Action",
+      "description": "Safeguard or countermeasure implemented to mitigate risk",
+      "cra:properties": {
+        "cra:controlType": {"@type": "@vocab", "enum": ["Preventive", "Detective", "Corrective", "Deterrent", "Compensating"]},
+        "cra:controlCategory": {"@type": "@vocab", "enum": ["Technical", "Administrative", "Physical", "Operational"]},
+        "cra:implementationStatus": {"@type": "@vocab", "enum": ["Planned", "InProgress", "Implemented", "Verified", "NotApplicable"]},
+        "cra:effectiveness": {"@type": "@vocab", "enum": ["None", "Low", "Medium", "High", "VeryHigh"]},
+        "cra:protects": {"@type": "@id", "range": "cra:InformationAsset"},
+        "cra:mitigates": {"@type": "@id", "range": "cra:AttackTechnique"},
+        "cra:remediates": {"@type": "@id", "range": "cra:Vulnerability"},
+        "cra:satisfies": {"@type": "@id", "range": "cra:ComplianceRequirement"},
+        "cra:nistFunction": {"@type": "@vocab", "enum": ["Govern", "Identify", "Protect", "Detect", "Respond", "Recover"]},
+        "cra:iso27002Control": {"@type": "xsd:string", "description": "ISO 27002:2022 control reference e.g. 5.1, 8.24"},
+        "cra:automationLevel": {"@type": "@vocab", "enum": ["Manual", "SemiAutomated", "FullyAutomated"]},
+        "cra:lastAssessedDate": {"@type": "xsd:date"},
+        "cra:assessedBy": {"@type": "@id", "range": "schema:Person"}
+      }
+    },
+    {
+      "@type": ["Thing", "cra:ComplianceRequirement"],
+      "cra:extends": "schema:Legislation",
+      "description": "Regulatory or standard requirement that must be satisfied",
+      "cra:properties": {
+        "cra:framework": {"@type": "@vocab", "enum": ["NIST_CSF_2", "ISO_27001_2022", "SOC2_TypeII", "PRA_SS1_21", "DORA", "NIS2", "GDPR", "PCIDSS_4", "DSPT", "CyberEssentials"]},
+        "cra:requirementId": {"@type": "xsd:string", "description": "Framework-specific requirement identifier"},
+        "cra:requirementText": {"@type": "xsd:string"},
+        "cra:complianceStatus": {"@type": "@vocab", "enum": ["Compliant", "PartiallyCompliant", "NonCompliant", "NotAssessed", "NotApplicable"]},
+        "cra:satisfiedBy": {"@type": "@id", "range": "cra:SecurityControl"},
+        "cra:appliesTo": {"@type": "@id", "range": "cra:InformationAsset"},
+        "cra:mandatory": {"@type": "xsd:boolean"},
+        "cra:effectiveDate": {"@type": "xsd:date"},
+        "cra:nextReviewDate": {"@type": "xsd:date"},
+        "cra:penaltyRisk": {"@type": "xsd:string", "description": "Description of regulatory penalty for non-compliance"},
+        "cra:mapsTo": {"@type": "@id", "range": "cra:ComplianceRequirement", "description": "Cross-framework mapping"}
+      }
+    },
+    {
+      "@type": ["Thing", "cra:RiskScenario"],
+      "cra:extends": "schema:Event",
+      "description": "Modelled risk scenario combining threat, vulnerability, asset, and impact",
+      "cra:properties": {
+        "cra:threatActor": {"@type": "@id", "range": "cra:ThreatActor"},
+        "cra:attackTechnique": {"@type": "@id", "range": "cra:AttackTechnique"},
+        "cra:exploitedVulnerability": {"@type": "@id", "range": "cra:Vulnerability"},
+        "cra:targetAsset": {"@type": "@id", "range": "cra:InformationAsset"},
+        "cra:existingControls": {"@type": "@id", "range": "cra:SecurityControl"},
+        "cra:inherentLikelihood": {"@type": "@vocab", "enum": ["Rare", "Unlikely", "Possible", "Likely", "AlmostCertain"]},
+        "cra:inherentImpact": {"@type": "@vocab", "enum": ["Insignificant", "Minor", "Moderate", "Major", "Catastrophic"]},
+        "cra:inherentRiskScore": {"@type": "xsd:integer", "min": 1, "max": 25},
+        "cra:residualLikelihood": {"@type": "@vocab"},
+        "cra:residualImpact": {"@type": "@vocab"},
+        "cra:residualRiskScore": {"@type": "xsd:integer", "min": 1, "max": 25},
+        "cra:businessImpact": {"@type": "@id", "range": "cra:BusinessImpact"},
+        "cra:riskTreatment": {"@type": "@vocab", "enum": ["Mitigate", "Accept", "Transfer", "Avoid"]},
+        "cra:riskOwner": {"@type": "@id", "range": "schema:Person"}
+      }
+    },
+    {
+      "@type": ["Thing", "cra:BusinessImpact"],
+      "cra:extends": "schema:MonetaryAmount",
+      "description": "Quantified business impact of a risk scenario materialising",
+      "cra:properties": {
+        "cra:impactCategory": {"@type": "@vocab", "enum": ["Financial", "Reputational", "Operational", "Legal", "Regulatory", "Strategic"]},
+        "cra:estimatedLoss": {"@type": "schema:MonetaryAmount"},
+        "cra:annualisedLossExpectancy": {"@type": "schema:MonetaryAmount"},
+        "cra:maxDowntimeHours": {"@type": "xsd:integer"},
+        "cra:affectedCustomers": {"@type": "xsd:integer"},
+        "cra:dataRecordsAtRisk": {"@type": "xsd:integer"},
+        "cra:cascadesTo": {"@type": "@id", "range": "cra:RiskScenario", "description": "Cascading failure chain"}
+      }
+    },
+    {
+      "@type": ["Thing", "cra:IndustrySector"],
+      "cra:extends": "schema:Industry",
+      "description": "Regulated industry vertical with specific threat profiles and compliance requirements",
+      "cra:properties": {
+        "cra:sectorName": {"@type": "xsd:string"},
+        "cra:applicableFrameworks": {"@type": "@id", "range": "cra:ComplianceRequirement"},
+        "cra:sectorThreatProfile": {"@type": "@id", "range": "cra:ThreatActor"},
+        "cra:benchmarkRiskScore": {"@type": "xsd:float", "description": "Anonymised sector average risk score for benchmarking"},
+        "cra:regulatoryBodies": {"@type": "xsd:string"}
+      }
+    },
+    {
+      "@type": ["Thing", "cra:AssessmentEngagement"],
+      "cra:extends": "schema:Service",
+      "description": "Client engagement instance linking to their risk graph",
+      "cra:properties": {
+        "cra:client": {"@type": "@id", "range": "schema:Organization"},
+        "cra:sector": {"@type": "@id", "range": "cra:IndustrySector"},
+        "cra:engagementType": {"@type": "@vocab", "enum": ["InitialAssessment", "ContinuousMonitoring", "ComplianceAudit", "BenchmarkReport", "IncidentResponse"]},
+        "cra:status": {"@type": "@vocab", "enum": ["Prospect", "Active", "Completed", "Renewed", "Churned"]},
+        "cra:riskGraphUri": {"@type": "xsd:anyURI", "description": "Neo4j database URI for client risk graph"},
+        "cra:onelakePath": {"@type": "xsd:string", "description": "OneLake shortcut path for graph-derived analytics"},
+        "cra:dashboardUrl": {"@type": "xsd:anyURI", "description": "Power BI dashboard URL"},
+        "cra:startDate": {"@type": "xsd:date"},
+        "cra:renewalDate": {"@type": "xsd:date"},
+        "cra:contractValue": {"@type": "schema:MonetaryAmount"}
+      }
+    }
+  ],
+
+  "cra:relationshipIndex": {
+    "description": "Graph edge types for Neo4j schema — these become relationship types in the property graph",
+    "edges": [
+      {"type": "EMPLOYS", "from": "ThreatActor", "to": "AttackTechnique", "properties": ["frequency", "lastSeen"]},
+      {"type": "EXPLOITS", "from": "AttackTechnique", "to": "Vulnerability", "properties": ["successRate"]},
+      {"type": "TARGETS", "from": "AttackTechnique", "to": "InformationAsset", "properties": ["killChainPhase"]},
+      {"type": "AFFECTS", "from": "Vulnerability", "to": "InformationAsset", "properties": ["severity"]},
+      {"type": "PROTECTS", "from": "SecurityControl", "to": "InformationAsset", "properties": ["coveragePercent"]},
+      {"type": "MITIGATES", "from": "SecurityControl", "to": "AttackTechnique", "properties": ["effectiveness"]},
+      {"type": "REMEDIATES", "from": "SecurityControl", "to": "Vulnerability", "properties": ["completeness"]},
+      {"type": "SATISFIES", "from": "SecurityControl", "to": "ComplianceRequirement", "properties": ["evidenceType"]},
+      {"type": "DEPENDS_ON", "from": "InformationAsset", "to": "InformationAsset", "properties": ["dependencyType"]},
+      {"type": "CASCADES_TO", "from": "RiskScenario", "to": "RiskScenario", "properties": ["probability"]},
+      {"type": "MAPS_TO", "from": "ComplianceRequirement", "to": "ComplianceRequirement", "properties": ["mappingConfidence"]},
+      {"type": "APPLIES_TO", "from": "ComplianceRequirement", "to": "IndustrySector", "properties": ["mandatory"]},
+      {"type": "HAS_RISK", "from": "InformationAsset", "to": "RiskScenario", "properties": ["residualScore"]},
+      {"type": "OWNED_BY", "from": "InformationAsset", "to": "Person", "properties": ["role"]},
+      {"type": "ASSESSED_IN", "from": "Organization", "to": "AssessmentEngagement", "properties": ["status"]}
+    ]
+  }
+}

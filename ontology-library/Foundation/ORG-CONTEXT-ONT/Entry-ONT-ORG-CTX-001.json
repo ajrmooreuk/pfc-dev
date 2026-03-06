@@ -1,0 +1,235 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-ORG-CTX-001",
+  "name": "ORG-CONTEXT Ontology (Context Hub)",
+  "description": "Rich organizational context hub bridging ORG entities to domain-specific ontologies. Links products, brands, competitive landscape, market segments, maturity assessment, design systems, and authority domains via the context hub pattern. Includes absorbed entities from CL-ONT and CA-ONT.",
+  "version": "3.1.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/org-context/",
+  "prefix": "org-ctx:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-07",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./org-context-ontology-v1.0.1.json",
+    "glossary": "./glossary-v1.0.0.json",
+    "testData": "./test-data-v1.0.0.json",
+    "validationReport": "./validation-report-v1.0.0.md"
+  },
+  "components": {
+    "OrganizationContext": "Central hub entity linking all contextual sub-entities for an organization",
+    "Product": "Product or service offered by the organization to target market segments",
+    "Brand": "Brand owned by the organization carrying its own market identity",
+    "ProductPortfolio": "Structured view of complete product and service offerings",
+    "CompetitiveLandscape": "Competitive environment with competitors, forces, and trends",
+    "Competitor": "Named competitor organization with competitive analysis",
+    "CompetitiveForce": "Porter-style competitive force analysing structural market pressure",
+    "Trend": "Macro trend affecting the market landscape (PESTEL)",
+    "MarketContext": "Market segments, geographic scope, and customer needs",
+    "MarketSegment": "Target market segment defined by industry, geography, and priority",
+    "CustomerNeed": "High-level customer need: jobs-to-be-done, pain points, value drivers",
+    "OrganizationMaturity": "Multi-dimensional maturity assessment across size, value, marketing, tech, AI",
+    "CompetitorProfile": "Detailed competitor intelligence profile with market share, strengths, weaknesses. Absorbed from CL-ONT.",
+    "MarketDynamic": "Market shift, disruption, or emerging pattern affecting competitive landscape. Absorbed from CL-ONT.",
+    "CompetitiveAdvantage": "Sustainable competitive advantage held by the organization or a competitor. Absorbed from CL-ONT.",
+    "StrategicOpportunity": "Identified strategic opportunity arising from market gaps. Absorbed from CL-ONT.",
+    "CompetitiveAnalysis": "Formal competitive analysis record (SWOT, Porter's, benchmarking). Absorbed from CA-ONT.",
+    "CompetitorAssessment": "Assessment of a specific competitor within a competitive analysis. Absorbed from CA-ONT.",
+    "MarketOffering": "Products and services offered in the market by competitors. Absorbed from CA-ONT.",
+    "CompetitivePosition": "Organization's market position relative to competitors. Absorbed from CA-ONT.",
+    "BlueOceanOpportunity": "Uncontested market opportunity with minimal competition. Absorbed from CA-ONT.",
+    "AuthorityDomain": "Domain authority classification linking organizations to their governance, regulatory, or standards domains. Added v3.1.0 for CG-ONT."
+  },
+  "relationships": {
+    "internal": 40,
+    "crossOntology": [
+      {
+        "name": "contextForOrganization",
+        "from": "org:Organization",
+        "to": "org-ctx:OrganizationContext",
+        "cardinality": "1:1",
+        "purpose": "ORG \u2192 ORG-CONTEXT: Organizations receive rich context via bridge pattern"
+      },
+      {
+        "name": "hasValueProposition",
+        "from": "org-ctx:OrganizationContext",
+        "to": "vsom:ValueProposition",
+        "cardinality": "1:n",
+        "purpose": "ORG-CONTEXT \u2192 VSOM: Context references value propositions defined in VSOM"
+      },
+      {
+        "name": "brandValueProposition",
+        "from": "org-ctx:Brand",
+        "to": "vsom:ValueProposition",
+        "cardinality": "n:1",
+        "purpose": "ORG-CONTEXT \u2192 VSOM: Brand-level value proposition reference"
+      },
+      {
+        "name": "productValueProposition",
+        "from": "org-ctx:Product",
+        "to": "vsom:ValueProposition",
+        "cardinality": "n:1",
+        "purpose": "ORG-CONTEXT \u2192 VSOM: Product-level value proposition reference"
+      },
+      {
+        "name": "hasContextAssignments",
+        "from": "org-ctx:OrganizationContext",
+        "to": "ctx:ContextAssignment",
+        "cardinality": "1:n",
+        "purpose": "ORG-CONTEXT \u2192 CTX: Context type assignments for multi-dimensional classification"
+      },
+      {
+        "name": "maturityClassifiedByFunction",
+        "from": "org-ctx:OrganizationMaturity",
+        "to": "ctx:FunctionalMaturity",
+        "cardinality": "n:n",
+        "purpose": "ORG-CONTEXT \u2192 CTX: Per-function maturity assessment (marketing, sales, ops, etc.)"
+      },
+      {
+        "name": "maturityClassifiedByTech",
+        "from": "org-ctx:OrganizationMaturity",
+        "to": "ctx:TechnologyMaturity",
+        "cardinality": "n:1",
+        "purpose": "ORG-CONTEXT \u2192 CTX: Technology maturity (cloud, digital, automation)"
+      },
+      {
+        "name": "maturityClassifiedByAI",
+        "from": "org-ctx:OrganizationMaturity",
+        "to": "ctx:AIReadiness",
+        "cardinality": "n:1",
+        "purpose": "ORG-CONTEXT \u2192 CTX: AI readiness (data, talent, deployment)"
+      },
+      {
+        "name": "sizedByContext",
+        "from": "org-ctx:OrganizationContext",
+        "to": "ctx:OrganisationSize",
+        "cardinality": "1:1",
+        "purpose": "ORG-CONTEXT \u2192 CTX: Multi-dimensional size (headcount, customers, revenue)"
+      },
+      {
+        "name": "marketClassifiedBy",
+        "from": "org-ctx:MarketContext",
+        "to": "ctx:MarketClassification",
+        "cardinality": "1:n",
+        "purpose": "ORG-CONTEXT \u2192 CTX: Industry classification (SIC, NAICS, GICS)"
+      },
+      {
+        "name": "hasCultureContext",
+        "from": "org-ctx:OrganizationContext",
+        "to": "ctx:CultureContext",
+        "cardinality": "1:1",
+        "purpose": "ORG-CONTEXT \u2192 CTX: Culture dimensions (innovation, risk, collaboration)"
+      },
+      {
+        "name": "hasGeoContext",
+        "from": "org-ctx:OrganizationContext",
+        "to": "ctx:GeoContext",
+        "cardinality": "1:1",
+        "purpose": "ORG-CONTEXT \u2192 CTX: Geographic context (HQ, regions, regulatory jurisdictions)"
+      },
+      {
+        "name": "hasMarketPositioning",
+        "from": "org-ctx:OrganizationContext",
+        "to": "ctx:MarketPositioning",
+        "cardinality": "1:n",
+        "purpose": "ORG-CONTEXT \u2192 CTX: Market positioning (share, brand, differentiation)"
+      },
+      {
+        "name": "competitorBridgedByContext",
+        "from": "org-ctx:Competitor",
+        "to": "ctx:CompetitorContext",
+        "cardinality": "1:1",
+        "purpose": "ORG-CONTEXT \u2192 CTX: Competitor threat assessment and recommendations"
+      },
+      {
+        "name": "hasRCSGContext",
+        "from": "org-ctx:OrganizationContext",
+        "to": "rcsg-fw:RCSGContext",
+        "cardinality": "1:1",
+        "purpose": "ORG-CONTEXT \u2192 RCSG-FW: RCSG requirements (regulatory, compliance, governance)"
+      },
+      {
+        "name": "hasLocalizationContext",
+        "from": "org-ctx:OrganizationContext",
+        "to": "ctx:LocalizationContext",
+        "cardinality": "1:n",
+        "purpose": "ORG-CONTEXT \u2192 CTX: Localization (currency, tax, data residency, formatting)"
+      },
+      {
+        "name": "brandHasDesignSystem",
+        "from": "org-ctx:Brand",
+        "to": "ds:DesignSystem",
+        "cardinality": "1:n",
+        "purpose": "ORG-CONTEXT \u2192 DS: Brand-level design system correlation"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-ORG-001",
+    "Entry-ONT-CTX-001",
+    "Entry-ONT-RCSG-FW-001",
+    "Entry-ONT-DS-001"
+  ],
+  "dependents": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-ORG-MAT-001",
+    "Entry-ONT-GA-001",
+    "Entry-ONT-PE-001"
+  ],
+  "layer": "FOUNDATION LAYER",
+  "domain": "Organization Context",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "validationDate": "2026-02-10",
+  "lastModified": "2026-02-16",
+  "versionHistory": [
+    {
+      "version": "1.0.1",
+      "date": "2026-02-02",
+      "changes": "OAA v5 compliance, bridge pattern implementation, value proposition separation to VSOM"
+    },
+    {
+      "version": "2.0.0",
+      "date": "2026-02-07",
+      "changes": "OAA v6.1.0 upgrade: 21 relationships (17 internal + 4 cross-ontology) forming single connected component, 6 business rules with IF-THEN format, crossOntologyReferences with keyBridges for ORG and VSOM bridges, all 12 entities fully connected"
+    },
+    {
+      "version": "2.1.0",
+      "date": "2026-02-10",
+      "changes": "Added 13 cross-ontology bridges to ContextTypes (CTX) for multi-dimensional context classification: market, size, maturity (functional/tech/IT/AI), culture, geo, positioning, competitor, RCSG, and localization. Total relationships now 30 internal + 17 cross-ontology."
+    },
+    {
+      "version": "2.2.0",
+      "date": "2026-02-10",
+      "changes": "Retargeted hasRCSGContext bridge from ctx:RCSGContext to rcsg-fw:RCSGContext following RCSG framework entity extraction to RCSG-FW-ONT. Added Entry-ONT-RCSG-FW-001 to dependencies."
+    },
+    {
+      "version": "2.3.0",
+      "date": "2026-02-10",
+      "changes": "Added brandHasDesignSystem cross-ontology bridge from org-ctx:Brand to ds:DesignSystem for design system to organization correlation. DS-ONT added as dependency. Total relationships: 31 internal + 18 cross-ontology."
+    },
+    {
+      "version": "3.0.0",
+      "date": "2026-02-10",
+      "changes": "Epic 9C: Absorbed CL-ONT and CA-ONT entities into ORG-CONTEXT. 9 new entity types (CompetitorProfile, MarketDynamic, CompetitiveAdvantage, StrategicOpportunity, CompetitiveAnalysis, CompetitorAssessment, MarketOffering, CompetitivePosition, BlueOceanOpportunity) with 8 new internal relationships. Competitive series eliminated. Total: 21 entities, 39 internal + 18 cross-ontology relationships."
+    },
+    {
+      "version": "3.1.0",
+      "date": "2026-02-16",
+      "changes": "Added AuthorityDomain entity for domain authority classification (CyberSecurity, DataProtection, RiskManagement, ITGovernance, etc.) with hasAuthorityDomains relationship from OrganizationContext hub. Supports CG-ONT governance ontology domain authority modelling. Epic 30 F30.7 S30.7.2. Total: 22 entities, 40 internal + 18 cross-ontology relationships."
+    }
+  ],
+  "notes": "Hub ontology implementing the bridge pattern to connect organizations to all domain contexts. Value proposition details live in VSOM. ContextTypes (CTX) provides the extensible typed context dimension taxonomy via 13 cross-ontology bridges. CL-ONT and CA-ONT entities absorbed as subtypes in v3.0.0. AuthorityDomain added v3.1.0 for governance domain authority classification."
+}

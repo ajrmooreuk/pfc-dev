@@ -1,0 +1,284 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v5/",
+    "vsem": "https://oaa-ontology.org/v5/vsem/",
+    "ppm": "https://oaa-ontology.org/v5/ppm/",
+    "advisory": "urn:advisory:"
+  },
+  
+  "@id": "advisory:initiatives/foundation",
+  "name": "Foundation Phase Initiatives",
+  "description": "Foundation phase initiatives (Feb-May 2026) with full strategic alignment to Vision, Pillars, Objectives, and Themes",
+  
+  "@graph": [
+    {
+      "@type": "ppm:Initiative",
+      "@id": "advisory:init/PF-001",
+      "ppm:code": "PF-001",
+      "name": "Azure Landing Zone MVP",
+      "description": "Deploy foundational Azure infrastructure with management groups, subscriptions, hub-spoke network, identity, and security controls per CAF accelerator. This is the critical-path enabler for all AI and data workloads.",
+      
+      "ppm:strategicAlignment": {
+        "vsem:parentPillar": {"@id": "advisory:pillar/platform-foundation"},
+        "vsem:deliversObjective": {"@id": "advisory:objective/PF-O1"},
+        "ppm:themes": [
+          {"@id": "advisory:theme/compliance-by-design"}
+        ],
+        "ppm:valueContribution": "Enables 100% of AI workloads requiring secure infrastructure",
+        "ppm:criticalPath": true
+      },
+      
+      "ppm:phase": {"@id": "ppm:phase/foundation"},
+      "ppm:status": {"@id": "ppm:status/approved"},
+      "ppm:priority": {"@id": "ppm:priority/critical"},
+      
+      "ppm:valueCase": {
+        "ppm:directValue": {"@type": "MonetaryAmount", "value": 0, "currency": "GBP"},
+        "ppm:enabledValue": {"@type": "MonetaryAmount", "value": 15000000, "currency": "GBP"},
+        "ppm:valueType": "enabling",
+        "ppm:rationale": "No direct value - enables all subsequent AI/data initiatives worth £15M+"
+      },
+      
+      "ppm:effortEstimate": 480,
+      "ppm:startDate": "2026-02-01",
+      "ppm:endDate": "2026-04-30",
+      "ppm:percentComplete": 0,
+      
+      "ppm:deliverables": [
+        "Management group hierarchy deployed",
+        "Hub-spoke network operational",
+        "Identity and access management configured",
+        "Security baseline per NIST 800-53",
+        "Azure Policy guardrails active",
+        "Monitoring and logging operational"
+      ],
+      
+      "ppm:successCriteria": [
+        ">95% Microsoft Cloud Security Benchmark compliance",
+        "Zero critical security findings",
+        "AI workload deployment capability confirmed"
+      ],
+      
+      "ppm:milestones": [
+        {"name": "Management Groups Deployed", "ppm:targetDate": "2026-02-15", "ppm:isGate": false},
+        {"name": "Hub Network Operational", "ppm:targetDate": "2026-03-15", "ppm:isGate": false},
+        {"name": "Security Baseline Validated", "ppm:targetDate": "2026-04-15", "ppm:isGate": true},
+        {"name": "ALZ MVP Complete", "ppm:targetDate": "2026-04-30", "ppm:isGate": true}
+      ]
+    },
+    
+    {
+      "@type": "ppm:Initiative",
+      "@id": "advisory:init/KE-001",
+      "ppm:code": "KE-001",
+      "name": "Knowledge Graph Foundation",
+      "description": "Deploy enterprise knowledge graph with core entity model covering experts, methodologies, engagements, clients, and market intelligence. Foundation for all AI-powered knowledge retrieval and synthesis.",
+      
+      "ppm:strategicAlignment": {
+        "vsem:parentPillar": {"@id": "advisory:pillar/knowledge-enablement"},
+        "vsem:deliversObjective": {"@id": "advisory:objective/KE-O1"},
+        "ppm:themes": [
+          {"@id": "advisory:theme/knowledge-capitalisation"},
+          {"@id": "advisory:theme/ai-native-delivery"}
+        ],
+        "ppm:valueContribution": "Foundation for 30% portfolio value (Knowledge Enablement pillar)",
+        "ppm:criticalPath": true
+      },
+      
+      "ppm:phase": {"@id": "ppm:phase/foundation"},
+      "ppm:status": {"@id": "ppm:status/approved"},
+      "ppm:priority": {"@id": "ppm:priority/critical"},
+      
+      "ppm:valueCase": {
+        "ppm:directValue": {"@type": "MonetaryAmount", "value": 200000, "currency": "GBP"},
+        "ppm:enabledValue": {"@type": "MonetaryAmount", "value": 6000000, "currency": "GBP"},
+        "ppm:valueType": "hybrid",
+        "ppm:rationale": "Direct value from expert finder, enables £6M+ in knowledge-powered initiatives"
+      },
+      
+      "ppm:effortEstimate": 240,
+      "ppm:startDate": "2026-03-01",
+      "ppm:endDate": "2026-05-31",
+      "ppm:percentComplete": 0,
+      
+      "ppm:deliverables": [
+        "Knowledge graph ontology (OAA v5.0.0 compliant)",
+        "Core entity types: Expert, Methodology, Engagement, Client, MarketIntelligence",
+        "Relationship model: worked_on, expert_in, relates_to, serves",
+        "Initial data population from HR, CRM, document repository",
+        "Query API for downstream applications"
+      ],
+      
+      "ppm:successCriteria": [
+        "100% consultant profiles indexed",
+        "50+ methodologies structured",
+        "3-year engagement history loaded",
+        "Query response <2 seconds"
+      ],
+      
+      "ppm:milestones": [
+        {"name": "Ontology Approved", "ppm:targetDate": "2026-03-15", "ppm:isGate": true},
+        {"name": "Core Entities Populated", "ppm:targetDate": "2026-04-15", "ppm:isGate": false},
+        {"name": "API Operational", "ppm:targetDate": "2026-05-15", "ppm:isGate": false},
+        {"name": "Knowledge Graph v1.0 Live", "ppm:targetDate": "2026-05-31", "ppm:isGate": true}
+      ]
+    },
+    
+    {
+      "@type": "ppm:Initiative",
+      "@id": "advisory:init/DA-001",
+      "ppm:code": "DA-001",
+      "name": "Report Template Automation",
+      "description": "Automate generation of standard advisory report templates with dynamic content sections, brand compliance, and quality checking. Quick win demonstrating immediate value.",
+      
+      "ppm:strategicAlignment": {
+        "vsem:parentPillar": {"@id": "advisory:pillar/delivery-automation"},
+        "vsem:deliversObjective": {"@id": "advisory:objective/DA-O1"},
+        "ppm:themes": [
+          {"@id": "advisory:theme/consultant-leverage"}
+        ],
+        "ppm:valueContribution": "First demonstration of automation value - essential for stakeholder buy-in",
+        "ppm:criticalPath": false,
+        "ppm:quickWin": true
+      },
+      
+      "ppm:phase": {"@id": "ppm:phase/foundation"},
+      "ppm:status": {"@id": "ppm:status/approved"},
+      "ppm:priority": {"@id": "ppm:priority/critical"},
+      
+      "ppm:practiceArea": {"@id": "advisory:practice/operations"},
+      
+      "ppm:valueCase": {
+        "ppm:directValue": {"@type": "MonetaryAmount", "value": 150000, "currency": "GBP"},
+        "ppm:annualSavings": 150000,
+        "ppm:valueType": "direct",
+        "ppm:calculation": "2 hours saved per report × 500 reports/year × £150/hour = £150K",
+        "ppm:rationale": "Immediate measurable savings demonstrating transformation value"
+      },
+      
+      "ppm:effortEstimate": 90,
+      "ppm:startDate": "2026-02-15",
+      "ppm:endDate": "2026-04-15",
+      "ppm:percentComplete": 0,
+      
+      "ppm:deliverables": [
+        "10 standardised report templates",
+        "Dynamic content section population",
+        "Brand compliance validation",
+        "Table of contents generation",
+        "Chart embedding automation"
+      ],
+      
+      "ppm:successCriteria": [
+        "70% reduction in report setup time",
+        "100% brand compliance",
+        ">90% consultant adoption in pilot practice"
+      ],
+      
+      "ppm:milestones": [
+        {"name": "Template Audit Complete", "ppm:targetDate": "2026-02-28", "ppm:isGate": false},
+        {"name": "First 3 Templates Live", "ppm:targetDate": "2026-03-15", "ppm:isGate": true},
+        {"name": "Full Template Suite Live", "ppm:targetDate": "2026-04-15", "ppm:isGate": true}
+      ]
+    },
+    
+    {
+      "@type": "ppm:Initiative",
+      "@id": "advisory:init/DA-002",
+      "ppm:code": "DA-002",
+      "name": "Data Gathering Bots",
+      "description": "Deploy automation bots for gathering data from public sources, client data rooms, and market feeds. Reduces research drudgery freeing consultants for analysis.",
+      
+      "ppm:strategicAlignment": {
+        "vsem:parentPillar": {"@id": "advisory:pillar/delivery-automation"},
+        "vsem:deliversObjective": {"@id": "advisory:objective/DA-O2"},
+        "ppm:themes": [
+          {"@id": "advisory:theme/consultant-leverage"}
+        ],
+        "ppm:valueContribution": "Addresses highest-volume manual task identified in discovery",
+        "ppm:quickWin": true
+      },
+      
+      "ppm:phase": {"@id": "ppm:phase/foundation"},
+      "ppm:status": {"@id": "ppm:status/approved"},
+      "ppm:priority": {"@id": "ppm:priority/high"},
+      
+      "ppm:practiceArea": {"@id": "advisory:practice/strategy"},
+      
+      "ppm:valueCase": {
+        "ppm:directValue": {"@type": "MonetaryAmount", "value": 120000, "currency": "GBP"},
+        "ppm:annualSavings": 120000,
+        "ppm:valueType": "direct",
+        "ppm:calculation": "4 hours/engagement × 200 engagements × £150/hour = £120K",
+        "ppm:rationale": "Eliminates manual data gathering across strategy engagements"
+      },
+      
+      "ppm:effortEstimate": 75,
+      "ppm:startDate": "2026-03-01",
+      "ppm:endDate": "2026-05-15",
+      "ppm:percentComplete": 0,
+      
+      "ppm:deliverables": [
+        "Company data scraper (Companies House, news)",
+        "Market data aggregator (industry reports, filings)",
+        "Data room scanner and extractor",
+        "Structured output for downstream analysis"
+      ],
+      
+      "ppm:successCriteria": [
+        "60% reduction in data gathering time",
+        "95% data accuracy",
+        "10+ data sources integrated"
+      ]
+    },
+    
+    {
+      "@type": "ppm:Initiative",
+      "@id": "advisory:init/COE-001",
+      "ppm:code": "COE-001",
+      "name": "Advisory Enablement COE",
+      "description": "Establish Centre of Excellence for AI-augmented advisory, providing governance, best practices, training, and support for transformation initiatives.",
+      
+      "ppm:strategicAlignment": {
+        "vsem:parentPillar": {"@id": "advisory:pillar/delivery-automation"},
+        "ppm:themes": [
+          {"@id": "advisory:theme/ai-native-delivery"},
+          {"@id": "advisory:theme/consultant-leverage"}
+        ],
+        "ppm:valueContribution": "Governance body ensuring sustainable transformation",
+        "ppm:criticalPath": false,
+        "ppm:governanceRole": true
+      },
+      
+      "ppm:phase": {"@id": "ppm:phase/foundation"},
+      "ppm:status": {"@id": "ppm:status/approved"},
+      "ppm:priority": {"@id": "ppm:priority/high"},
+      
+      "ppm:valueCase": {
+        "ppm:directValue": {"@type": "MonetaryAmount", "value": 0, "currency": "GBP"},
+        "ppm:valueType": "governance",
+        "ppm:rationale": "Ensures transformation benefits are sustained and scaled"
+      },
+      
+      "ppm:effortEstimate": 60,
+      "ppm:startDate": "2026-03-01",
+      "ppm:endDate": "2026-05-31",
+      "ppm:percentComplete": 0,
+      
+      "ppm:deliverables": [
+        "COE charter and governance model",
+        "AI tool selection criteria",
+        "Training curriculum for consultants",
+        "Best practice library",
+        "Support and escalation process"
+      ],
+      
+      "ppm:successCriteria": [
+        "COE operational by Foundation gate",
+        "Practice leads trained and engaged",
+        "First cohort of 50 consultants trained"
+      ]
+    }
+  ]
+}

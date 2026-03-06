@@ -1,0 +1,105 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-RMF-001",
+  "name": "RMF-IS27005 Risk Management Framework Ontology",
+  "description": "ISO/IEC 27005-aligned risk management framework ontology providing comprehensive risk identification, assessment, treatment, and monitoring capabilities. Bridges to RCSG-Series compliance and security ontologies for full risk-to-RCSG-scope management.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "rmf:",
+  "prefix": "rmf:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "skipped"
+  },
+  "validationDate": "2026-02-10",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "folder": "./",
+    "ontology": "./rmf-is27005-ontology-v1.0.0.json",
+    "glossary": null,
+    "documentation": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "summary": {
+    "entities": [
+      { "id": "ns:RiskContext", "name": "RiskContext", "entityType": "class" },
+      { "id": "ns:Asset", "name": "Asset", "entityType": "class" },
+      { "id": "ns:Threat", "name": "Threat", "entityType": "class" },
+      { "id": "ns:Vulnerability", "name": "Vulnerability", "entityType": "class" },
+      { "id": "ns:Risk", "name": "Risk", "entityType": "class" },
+      { "id": "ns:RiskAssessment", "name": "RiskAssessment", "entityType": "class" },
+      { "id": "ns:RiskTreatment", "name": "RiskTreatment", "entityType": "class" },
+      { "id": "ns:Control", "name": "Control", "entityType": "class" },
+      { "id": "ns:RiskOwner", "name": "RiskOwner", "entityType": "class" },
+      { "id": "ns:RiskCriteria", "name": "RiskCriteria", "entityType": "class" },
+      { "id": "ns:ComplianceMapping", "name": "ComplianceMapping", "entityType": "class" },
+      { "id": "ns:RiskMonitoringPlan", "name": "RiskMonitoringPlan", "entityType": "class" }
+    ],
+    "relationships": [
+      { "name": "assessesContext", "source": "RiskAssessment", "target": "RiskContext" },
+      { "name": "identifiesRisk", "source": "RiskAssessment", "target": "Risk" },
+      { "name": "affectsAsset", "source": "Risk", "target": "Asset" },
+      { "name": "exploitsThreat", "source": "Risk", "target": "Threat" },
+      { "name": "exploitsVulnerability", "source": "Risk", "target": "Vulnerability" },
+      { "name": "ownedByRiskOwner", "source": "Risk", "target": "RiskOwner" },
+      { "name": "evaluatedAgainst", "source": "Risk", "target": "RiskCriteria" },
+      { "name": "treatedBy", "source": "Risk", "target": "RiskTreatment" },
+      { "name": "implementsControl", "source": "RiskTreatment", "target": "Control" },
+      { "name": "mappedToCompliance", "source": "Risk", "target": "ComplianceMapping" },
+      { "name": "hasMonitoringPlan", "source": "RiskAssessment", "target": "RiskMonitoringPlan" },
+      { "name": "monitorsRisk", "source": "RiskMonitoringPlan", "target": "Risk" },
+      { "name": "contextDefinesCriteria", "source": "RiskContext", "target": "RiskCriteria" },
+      { "name": "controlMapsToCompliance", "source": "Control", "target": "ComplianceMapping" }
+    ]
+  },
+  "relationships": {
+    "crossOntology": 3,
+    "keyBridges": [
+      {
+        "to": "grc-fw:",
+        "entity": "GRCContext",
+        "relationship": "riskContextAlignsWith"
+      },
+      {
+        "to": "gdpr:",
+        "entity": "ComplianceObligation",
+        "relationship": "mapsToGDPRObligation"
+      },
+      {
+        "to": "mcsb:",
+        "entity": "SecurityControl",
+        "relationship": "controlAlignsWith"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-GRC-FW-001",
+    "Entry-ONT-GDPR-001",
+    "Entry-ONT-ALZ-001"
+  ],
+  "dependents": [],
+  "layer": "RCSG-SERIES",
+  "domain": "Information Security Risk Management",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-10",
+  "lastModified": "2026-02-10",
+  "sourceDocument": "ISO/IEC 27005:2022 Information Security Risk Management",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-10",
+      "changes": "Initial release: 12 entities, 14 relationships, 10 business rules covering full ISO 27005 risk management lifecycle"
+    }
+  ],
+  "notes": "RMF-IS27005 provides a central risk management capability enabling full risk-to-RCSG-scope management. 12 entities cover the complete ISO 27005 lifecycle: context establishment, asset identification, threat/vulnerability analysis, risk assessment, treatment planning, control implementation, compliance mapping, and ongoing monitoring. Bridges to GRC-FW (governance scope), GDPR (data protection), and MCSB (security controls)."
+}

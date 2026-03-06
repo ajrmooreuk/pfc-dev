@@ -1,0 +1,95 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-KANO-001",
+  "name": "KANO Ontology (Kano Model Feature Classification)",
+  "description": "Classifies product/service features by customer satisfaction response using the Kano Model (Noriaki Kano, 1984). Provides survey instruments, functional/dysfunctional question pairs, statistical feature classification (Must-Be, Performance, Attractive, Indifferent, Reverse), non-linear satisfaction curve modelling, temporal decay tracking, and aggregated feature prioritisation. Operates as a parallel analytical lens enriching the VP-to-PMF bridge. Part of VE-Series VSOM-SA sub-series.",
+  "version": "1.0.0",
+  "oaaVersion": "7.0.0",
+  "namespace": "https://oaa-ontology.org/v7/kano/",
+  "prefix": "kano:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate7": "pass"
+  },
+  "validationDate": "2026-02-28",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./kano-ontology-v1.0.0-oaa-v7.json",
+    "documentation": null,
+    "glossary": "../../../unified-glossary-v2.0.0.json",
+    "testData": "./instance-data/kano-wwg-instance-v1.0.0.json",
+    "validationReport": null
+  },
+  "components": {
+    "KanoSurvey": "Complete Kano survey instrument targeting a customer segment with functional/dysfunctional question pairs",
+    "KanoQuestion": "Functional/dysfunctional question pair for evaluating a single product feature",
+    "KanoClassification": "Feature-to-category assignment with statistical confidence from cross-tabulation analysis",
+    "SatisfactionCurve": "Non-linear satisfaction function model per Kano category (Asymptotic, Linear, Exponential, Flat, Inverse)",
+    "KanoDecay": "Temporal category migration tracking — detects feature commoditisation over time",
+    "FeaturePriority": "Aggregated prioritisation output with investment recommendation derived from Kano evidence"
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "classifiedBy",
+        "from": "vp:Benefit / vp:Solution",
+        "to": "kano:KanoClassification",
+        "purpose": "VP features are classified by Kano analysis for satisfaction attribution"
+      },
+      {
+        "name": "informsValidation",
+        "from": "kano:KanoClassification",
+        "to": "pmf:ValidationSignal",
+        "purpose": "Kano classification evidence feeds PMF validation signals"
+      },
+      {
+        "name": "triggersAssessment",
+        "from": "kano:KanoDecay",
+        "to": "pmf:PivotAssessment",
+        "purpose": "Category decay triggers PMF pivot assessment for strategic response"
+      },
+      {
+        "name": "measuredBy",
+        "from": "kano:SatisfactionCurve",
+        "to": "kpi:KPI",
+        "purpose": "Satisfaction curves are measured by KPIs for continuous monitoring"
+      },
+      {
+        "name": "assignedFramework",
+        "from": "rsn:MECETree",
+        "to": "kano:KanoClassification",
+        "purpose": "MECE decomposition assigns Kano framework for feature analysis"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-VP-001",
+    "Entry-ONT-PMF-001",
+    "Entry-ONT-KPI-001",
+    "Entry-ONT-RSN-001",
+    "Entry-ONT-PE-001"
+  ],
+  "dependents": [],
+  "layer": "STRATEGIC LAYER (VE-Series / VSOM-SA)",
+  "subSeries": "VSOM-SA",
+  "domain": "Customer Satisfaction Analysis, Feature Classification, Product Strategy",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-28",
+  "lastModified": "2026-02-28",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-28",
+      "changes": "Initial release — Kano Model feature classification: surveys, question pairs, cross-tabulation classification, satisfaction curves, decay tracking, feature prioritisation"
+    }
+  ],
+  "notes": "Layer 6 (Parallel Analytical Lens) of VSOM Strategy Analysis. Same pattern as L6S/DMAIC in PE-Series. Enriches VP-to-PMF bridge with feature-level satisfaction attribution. Not a chain link — operates as a side-analysis overlay. 6 entities, 7 business rules, 5 join patterns, 8 competency questions."
+}

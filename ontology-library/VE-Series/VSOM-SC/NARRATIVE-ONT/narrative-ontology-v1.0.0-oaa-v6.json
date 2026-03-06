@@ -1,0 +1,1144 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "nar": "https://oaa-ontology.org/v6/narrative/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/",
+    "bsc": "https://oaa-ontology.org/v6/bsc/",
+    "rsn": "https://oaa-ontology.org/v6/reason/",
+    "pfl": "https://oaa-ontology.org/v6/portfolio/",
+    "mac": "https://oaa-ontology.org/v6/macro/",
+    "ind": "https://oaa-ontology.org/v6/industry/",
+    "rrr": "https://oaa-ontology.org/v6/rrr/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/",
+    "okr": "https://oaa-ontology.org/v6/okr/",
+    "orgctx": "https://oaa-ontology.org/v6/org-context/"
+  },
+  "@id": "https://oaa-ontology.org/v6/narrative/schema",
+  "@type": "owl:Ontology",
+  "name": "Strategic Narrative & Communication Patterns Ontology",
+  "alternateName": "NARRATIVE-ONT — Strategic Storytelling, Communication Patterns & Cadenced Lifecycle",
+  "description": "Formalizes strategic communication as a structured, evidence-backed, audience-aware discipline. Defines the five-section Strategic Narrative Arc (Context → Challenge → Choice → Commitment → Cadence) that transforms VSOM-SA analysis outputs into communicable strategy. Includes seven named Communication Patterns (30-Second Answer, Rented Brain, Ars Rhetorica, Fait Accompli, Dramatic Structure, Deconstruction, Scalable Business Machines) with pattern selection logic driven by communication objective, audience profile, and strategic context. The Communication Lifecycle ensures strategy is sustained through cadenced rhythms tied to VSOM review cycles. Part of VE-Series VSOM-SC (Strategy Communication).",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "Strategy Communication, Strategic Storytelling, Organisational Communication",
+  "oaa:status": "Draft",
+  "dateCreated": "2026-02-13",
+  "dateModified": "2026-02-13",
+  "creator": {
+    "@type": "Organization",
+    "name": "W4M Strategic Patterns Framework"
+  },
+  "oaa:imports": [
+    {
+      "@id": "vsom:schema",
+      "name": "VSOM-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "vsom:VSOMFramework",
+        "vsom:VisionComponent",
+        "vsom:StrategyComponent",
+        "vsom:StrategicReviewCycle"
+      ],
+      "importedRelationships": [
+        "vsom:hasStrategicContext",
+        "vsom:triggeredByMetric"
+      ]
+    },
+    {
+      "@id": "rsn:schema",
+      "name": "REASON-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "rsn:AnalysisSynthesis",
+        "rsn:SynthesisFinding",
+        "rsn:StrategicRecommendation",
+        "rsn:EvidenceItem",
+        "rsn:MECETree"
+      ],
+      "importedRelationships": [
+        "rsn:synthesizes"
+      ]
+    },
+    {
+      "@id": "pfl:schema",
+      "name": "PORTFOLIO-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "pfl:StrategicDirectionSummary",
+        "pfl:StrategicInvestmentMap",
+        "pfl:ThreeHorizonsModel"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "bsc:schema",
+      "name": "BSC-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "bsc:StrategyMap",
+        "bsc:BSCPerspective",
+        "bsc:BSCObjective"
+      ],
+      "importedRelationships": [
+        "bsc:operationalizedBy"
+      ]
+    },
+    {
+      "@id": "mac:schema",
+      "name": "MACRO-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "mac:ScenarioSet",
+        "mac:PESTELFactor"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "rrr:schema",
+      "name": "RRR-ONT",
+      "version": "4.0.0",
+      "importedEntities": [
+        "rrr:ExecutiveRole"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "kpi:schema",
+      "name": "KPI-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "kpi:KPI"
+      ],
+      "importedRelationships": []
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-NAR-001",
+      "name": "SA-to-Narrative Pipeline",
+      "description": "The golden chain from SA analysis through narrative construction: VSOM strategy is analysed by REASON, synthesised into a direction summary by PORTFOLIO, then structured as a five-section narrative arc by NARRATIVE. This is the SA → SC handoff.",
+      "joinPath": "vsom:VSOMFramework → rsn:AnalysisSynthesis → pfl:StrategicDirectionSummary → nar:narrativeSourcedFromDirection → nar:StrategicNarrative → nar:hasSection → nar:NarrativeSection",
+      "useCase": "End-to-end strategy analysis to communication pipeline"
+    },
+    {
+      "patternId": "JP-NAR-002",
+      "name": "Pattern Selection Traversal",
+      "description": "Agent traverses from communication objective through audience profile and strategic context to select the optimal communication pattern. This is the core SC decision logic.",
+      "joinPath": "nar:CommunicationObjective → nar:PatternSelection [WHERE audience + context match] → nar:selectsPattern → nar:CommunicationPattern",
+      "useCase": "AI agent pattern selection for audience-appropriate communication"
+    },
+    {
+      "patternId": "JP-NAR-003",
+      "name": "Evidence Chain Traversal",
+      "description": "Trace from any narrative section back through its evidence chain to the original SA analysis artefacts. Ensures every claim in the narrative is machine-verifiable.",
+      "joinPath": "nar:NarrativeSection → nar:hasEvidenceChain → nar:EvidenceChain → nar:chainReferencesEvidence → rsn:EvidenceItem → rsn:AnalysisSynthesis",
+      "useCase": "Verify narrative claims against SA evidence base"
+    },
+    {
+      "patternId": "JP-NAR-004",
+      "name": "Communication Lifecycle Cadence",
+      "description": "Maps communication rhythm to VSOM review cycle. Each cadence point generates updated narrative from current SA data.",
+      "joinPath": "vsom:StrategicReviewCycle → nar:lifecycleTriggeredByReview → nar:CommunicationLifecycle → nar:lifecycleUpdatesNarrative → nar:NarrativeVersion",
+      "useCase": "Sustained strategy communication tied to review cadence"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "nar:StrategicNarrative",
+      "@type": "rdfs:Class",
+      "name": "StrategicNarrative",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "Container for a complete strategic narrative arc. A StrategicNarrative transforms SA analysis outputs into a structured, evidence-backed story with five sections (Context, Challenge, Choice, Commitment, Cadence). Each narrative is audience-agnostic at this level — audience-specific translations are handled by CASCADE-ONT. The narrative references a VSOM framework and a Portfolio direction summary as its primary inputs.",
+      "oaa:properties": [
+        {
+          "name": "narrativeId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "vsomFrameworkRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vsom:VSOMFramework @id this narrative communicates"
+        },
+        {
+          "name": "directionSummaryRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to pfl:StrategicDirectionSummary @id as primary content source"
+        },
+        {
+          "name": "synthesisRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to rsn:AnalysisSynthesis @id providing the reasoning foundation"
+        },
+        {
+          "name": "strategicContext",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Brief context statement: why this strategy, why now"
+        },
+        {
+          "name": "coreMessage",
+          "type": "xsd:string",
+          "required": true,
+          "description": "The single-sentence strategic message (the '30-second answer')"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Draft",
+            "InReview",
+            "Approved",
+            "Active",
+            "Superseded"
+          ],
+          "description": "Narrative lifecycle status"
+        },
+        {
+          "name": "createdDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "approvedDate",
+          "type": "xsd:date",
+          "required": false
+        },
+        {
+          "name": "approvedBy",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to rrr:ExecutiveRole @id who approved the narrative"
+        },
+        {
+          "name": "currentVersionRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to nar:NarrativeVersion @id for current active version"
+        }
+      ]
+    },
+    {
+      "@id": "nar:NarrativeSection",
+      "@type": "rdfs:Class",
+      "name": "NarrativeSection",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "One of five sections in the Strategic Narrative Arc. Each section serves a distinct communicative purpose and draws from specific SA analysis outputs. The five sections form a sequential story: Context (where we are) → Challenge (why we must change) → Choice (what we will do) → Commitment (how we will execute) → Cadence (how we will sustain). Every section carries an evidence chain linking claims to SA analysis.",
+      "oaa:properties": [
+        {
+          "name": "sectionId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "sectionType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Context",
+            "Challenge",
+            "Choice",
+            "Commitment",
+            "Cadence"
+          ],
+          "description": "Which arc section this represents"
+        },
+        {
+          "name": "headline",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Section headline — the key message for this section"
+        },
+        {
+          "name": "body",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Section body text — the full narrative content"
+        },
+        {
+          "name": "sequenceOrder",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Position in the arc (1=Context, 2=Challenge, 3=Choice, 4=Commitment, 5=Cadence)"
+        },
+        {
+          "name": "saDataSources",
+          "type": "xsd:string",
+          "required": false,
+          "description": "SA ontology entity references providing data for this section",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "keyEvidence",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Summary of the strongest evidence points supporting this section"
+        },
+        {
+          "name": "tradeOffs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Explicit trade-offs or 'what we will NOT do' (primarily for Choice section)"
+        }
+      ],
+      "_sectionSAMapping": {
+        "Context": {
+          "primarySources": [
+            "mac:PESTELFactor",
+            "ind:SWOTAnalysis",
+            "bsc:BSCPerspective"
+          ],
+          "purpose": "Where we are — environmental forces, competitive position, organisational state"
+        },
+        "Challenge": {
+          "primarySources": [
+            "rsn:AnalysisSynthesis",
+            "rsn:StrategicHypothesis",
+            "rsn:EvidenceItem"
+          ],
+          "purpose": "Why we must change — strategic tension, evidence chain, consequences of inaction"
+        },
+        "Choice": {
+          "primarySources": [
+            "pfl:StrategicDirectionSummary",
+            "pfl:GrowthShareMatrix",
+            "pfl:ThreeHorizonsModel"
+          ],
+          "purpose": "What we will do — strategic direction, where we play, how we win, what we won't do"
+        },
+        "Commitment": {
+          "primarySources": [
+            "bsc:BSCObjective",
+            "okr:Objective",
+            "pfl:StrategicInvestmentMap",
+            "rrr:ExecutiveRole"
+          ],
+          "purpose": "How we will execute — BSC objectives, OKR cascade, investment allocation, accountability"
+        },
+        "Cadence": {
+          "primarySources": [
+            "vsom:StrategicReviewCycle",
+            "kpi:KPI"
+          ],
+          "purpose": "How we will sustain — review rhythm, communication schedule, early warning signals"
+        }
+      }
+    },
+    {
+      "@id": "nar:EvidenceChain",
+      "@type": "rdfs:Class",
+      "name": "EvidenceChain",
+      "rdfs:subClassOf": "schema:ItemList",
+      "description": "Ordered sequence of SA analysis references that back a narrative section. Every claim in the strategic narrative must be traceable to evidence. The chain enables AI agents to verify that narrative content accurately reflects the underlying analysis — and flags when narrative and evidence diverge.",
+      "oaa:properties": [
+        {
+          "name": "chainId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "sectionRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to nar:NarrativeSection @id this chain supports"
+        },
+        {
+          "name": "evidenceRefs",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Ordered references to rsn:EvidenceItem @ids or SA entity @ids",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "chainStrength",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Strong",
+            "Moderate",
+            "Weak",
+            "Circumstantial"
+          ],
+          "description": "Overall strength of the evidence chain"
+        },
+        {
+          "name": "gapDescription",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Known gaps in the evidence chain that should be acknowledged in communication"
+        },
+        {
+          "name": "lastVerifiedDate",
+          "type": "xsd:date",
+          "required": false,
+          "description": "Last date the chain was verified against current SA data"
+        }
+      ]
+    },
+    {
+      "@id": "nar:NarrativeVersion",
+      "@type": "rdfs:Class",
+      "name": "NarrativeVersion",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "A versioned snapshot of a StrategicNarrative tied to a specific strategic review cycle. Each review cycle (annual, quarterly) may produce an updated narrative version. Versions enable diff comparison: what changed in the strategy story between review cycles, and why.",
+      "oaa:properties": [
+        {
+          "name": "versionId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "narrativeRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to nar:StrategicNarrative @id"
+        },
+        {
+          "name": "versionNumber",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Semantic version (e.g. 1.0.0, 1.1.0)"
+        },
+        {
+          "name": "reviewCycleRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to vsom:StrategicReviewCycle @id that triggered this version"
+        },
+        {
+          "name": "changesSummary",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Summary of what changed from previous version and why"
+        },
+        {
+          "name": "snapshotDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "approvedBy",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to rrr:ExecutiveRole @id"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Draft",
+            "Approved",
+            "Active",
+            "Superseded"
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "nar:CommunicationPattern",
+      "@type": "rdfs:Class",
+      "name": "CommunicationPattern",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "A named verbal/persuasion pattern for strategic communication delivery. Each pattern defines a structural approach to how strategy is communicated — not what is communicated (that is the narrative) but how it is framed, structured, and delivered. The seven patterns are: 30-Second Answer, Rented Brain, Ars Rhetorica, Fait Accompli, Dramatic Structure, Deconstruction, and Scalable Business Machines. An AI agent selects patterns based on communication objective, audience profile, and strategic context.",
+      "oaa:properties": [
+        {
+          "name": "patternId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "patternCode",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "30SecAnswer",
+            "RentedBrain",
+            "ArsRhetorica",
+            "FaitAccompli",
+            "DramaticStructure",
+            "Deconstruction",
+            "ScalableBusinessMachines"
+          ],
+          "description": "Machine-readable pattern identifier"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "structure",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Structural pattern: how the communication is organized (e.g. 'Position → Because → Therefore' for 30-Sec Answer)"
+        },
+        {
+          "name": "whenToUse",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Guidance on when this pattern is most effective"
+        },
+        {
+          "name": "primaryObjectives",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Communication objectives this pattern best serves",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "bestForAudiences",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Audience levels this pattern works best for",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "saSourceMapping",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Which SA entity types provide data for this pattern"
+        }
+      ],
+      "_patternDefinitions": {
+        "30SecAnswer": {
+          "structure": "Position → Because → Therefore",
+          "objectives": [
+            "Inform",
+            "Sustain"
+          ],
+          "bestAudiences": [
+            "Board",
+            "Teams",
+            "Individuals"
+          ]
+        },
+        "RentedBrain": {
+          "structure": "Empathy framing → Shared constraints → Strategic insight → Co-ownership",
+          "objectives": [
+            "Persuade"
+          ],
+          "bestAudiences": [
+            "CSuite",
+            "Individuals"
+          ]
+        },
+        "ArsRhetorica": {
+          "structure": "Ethos (credibility) → Logos (logic) → Pathos (emotion) → Call to action",
+          "objectives": [
+            "Persuade"
+          ],
+          "bestAudiences": [
+            "Board",
+            "CSuite"
+          ]
+        },
+        "FaitAccompli": {
+          "structure": "Early wins → Current momentum → Evidence of progress → What's next",
+          "objectives": [
+            "Mobilise"
+          ],
+          "bestAudiences": [
+            "Teams",
+            "Leadership"
+          ]
+        },
+        "DramaticStructure": {
+          "structure": "Exposition → Rising Action → Climax → Falling Action → Resolution",
+          "objectives": [
+            "Persuade",
+            "Mobilise"
+          ],
+          "bestAudiences": [
+            "Board",
+            "Leadership"
+          ]
+        },
+        "Deconstruction": {
+          "structure": "Decompose complex → Explain each component → Reconstruct the whole",
+          "objectives": [
+            "Inform"
+          ],
+          "bestAudiences": [
+            "Leadership",
+            "CSuite"
+          ]
+        },
+        "ScalableBusinessMachines": {
+          "structure": "Machine model → Inputs/Processes/Outputs/Metrics per machine → Tuning strategy",
+          "objectives": [
+            "Mobilise",
+            "Inform"
+          ],
+          "bestAudiences": [
+            "CSuite",
+            "Leadership"
+          ]
+        }
+      }
+    },
+    {
+      "@id": "nar:PatternSelection",
+      "@type": "rdfs:Class",
+      "name": "PatternSelection",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "An AI agent's pattern selection decision record. Captures the reasoning behind choosing a specific CommunicationPattern for a given communication task. The selection is driven by three inputs: communication objective, audience profile (from RRR roles and cascade level), and strategic context (from VSOM review cycle trigger). This entity makes the agent's decision transparent and auditable.",
+      "oaa:properties": [
+        {
+          "name": "selectionId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "objectiveRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to nar:CommunicationObjective @id"
+        },
+        {
+          "name": "audienceLevel",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Board",
+            "CSuite",
+            "Leadership",
+            "Teams",
+            "Individuals"
+          ],
+          "description": "Target audience level"
+        },
+        {
+          "name": "audienceRoleRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Specific reference to rrr:ExecutiveRole @id if applicable"
+        },
+        {
+          "name": "contextTrigger",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "NewStrategy",
+            "StrategyRefresh",
+            "CrisisPivot",
+            "SteadyState",
+            "QuarterlyReview",
+            "EventDriven"
+          ],
+          "description": "Strategic context that triggered this communication"
+        },
+        {
+          "name": "selectedPatternRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to nar:CommunicationPattern @id selected"
+        },
+        {
+          "name": "selectionRationale",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Why this pattern was selected for this combination of objective, audience, and context"
+        },
+        {
+          "name": "alternativePatterns",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Other patterns considered and why they were not selected",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "selectionDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "selectedBy",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Agent or human who made the selection"
+        }
+      ]
+    },
+    {
+      "@id": "nar:CommunicationObjective",
+      "@type": "rdfs:Class",
+      "name": "CommunicationObjective",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "The purpose category for a strategic communication. Four objectives define why the communication exists: Inform (share knowledge), Persuade (change minds), Mobilise (drive action), Sustain (maintain alignment over time). Each objective maps to different communication patterns and success metrics.",
+      "oaa:properties": [
+        {
+          "name": "objectiveId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "objectiveType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Inform",
+            "Persuade",
+            "Mobilise",
+            "Sustain"
+          ],
+          "description": "Communication purpose category"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:description"
+        },
+        {
+          "name": "successCriteria",
+          "type": "xsd:string",
+          "required": true,
+          "description": "How to measure whether the communication achieved its objective"
+        },
+        {
+          "name": "recommendedPatterns",
+          "type": "xsd:string",
+          "required": false,
+          "description": "CommunicationPattern codes best suited to this objective",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "typicalCadence",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "OneTime",
+            "Recurring",
+            "EventDriven"
+          ],
+          "description": "Whether this objective typically requires one-time or recurring communication"
+        }
+      ]
+    },
+    {
+      "@id": "nar:CommunicationLifecycle",
+      "@type": "rdfs:Class",
+      "name": "CommunicationLifecycle",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "A cadenced communication rhythm tied to VSOM strategic review cycles. Strategy communication is not a one-time event — it is a sustained rhythm: annual strategy refresh, quarterly strategic review, monthly progress pulse, and event-driven strategic alerts. Each cadence point generates or updates communication artefacts from current SA data. The lifecycle ensures strategy communication evolves alongside the strategy itself.",
+      "oaa:properties": [
+        {
+          "name": "lifecycleId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "vsomFrameworkRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vsom:VSOMFramework @id this lifecycle supports"
+        },
+        {
+          "name": "reviewCycleRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vsom:StrategicReviewCycle @id governing the cadence"
+        },
+        {
+          "name": "cadenceType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Annual",
+            "Quarterly",
+            "Monthly",
+            "EventDriven"
+          ],
+          "description": "Communication rhythm frequency"
+        },
+        {
+          "name": "triggerCondition",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What triggers this cadence point (e.g. 'Quarterly BSC review complete', 'KPI breach detected')"
+        },
+        {
+          "name": "outputArtefacts",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Communication artefacts generated at this cadence point",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "targetAudiences",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Audience levels that receive communication at this cadence",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "narrativeUpdateScope",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "FullRefresh",
+            "SectionUpdate",
+            "MetricsUpdate",
+            "AlertOnly"
+          ],
+          "description": "How much of the narrative is updated at this cadence point"
+        },
+        {
+          "name": "kpiThresholdRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "KPI thresholds that trigger event-driven communication",
+          "cardinality": "0..*"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "nar:narrativeAlignedToVSOM",
+      "@type": "owl:ObjectProperty",
+      "name": "Narrative Aligned To VSOM",
+      "description": "A strategic narrative communicates a specific VSOM framework strategy",
+      "domainIncludes": [
+        "nar:StrategicNarrative"
+      ],
+      "rangeIncludes": [
+        "vsom:VSOMFramework"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "nar:narrativeSourcedFromDirection",
+      "@type": "owl:ObjectProperty",
+      "name": "Narrative Sourced From Direction",
+      "description": "Narrative content is sourced from the SA capstone direction summary — the primary SA → SC handoff",
+      "domainIncludes": [
+        "nar:StrategicNarrative"
+      ],
+      "rangeIncludes": [
+        "pfl:StrategicDirectionSummary"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "PORTFOLIO-ONT"
+    },
+    {
+      "@id": "nar:hasSection",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Section",
+      "description": "Strategic narrative contains five narrative sections (exactly one of each type)",
+      "domainIncludes": [
+        "nar:StrategicNarrative"
+      ],
+      "rangeIncludes": [
+        "nar:NarrativeSection"
+      ],
+      "oaa:cardinality": "5..5"
+    },
+    {
+      "@id": "nar:hasEvidenceChain",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Evidence Chain",
+      "description": "Narrative section has an evidence chain linking claims to SA analysis",
+      "domainIncludes": [
+        "nar:NarrativeSection"
+      ],
+      "rangeIncludes": [
+        "nar:EvidenceChain"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "nar:chainReferencesEvidence",
+      "@type": "owl:ObjectProperty",
+      "name": "Chain References Evidence",
+      "description": "Evidence chain references SA evidence items for traceability",
+      "domainIncludes": [
+        "nar:EvidenceChain"
+      ],
+      "rangeIncludes": [
+        "rsn:EvidenceItem"
+      ],
+      "oaa:cardinality": "1..*",
+      "oaa:crossOntologyRef": "REASON-ONT"
+    },
+    {
+      "@id": "nar:sectionEvidencedBySynthesis",
+      "@type": "owl:ObjectProperty",
+      "name": "Section Evidenced By Synthesis",
+      "description": "Narrative section is evidenced by SA reasoning synthesis",
+      "domainIncludes": [
+        "nar:NarrativeSection"
+      ],
+      "rangeIncludes": [
+        "rsn:AnalysisSynthesis"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "REASON-ONT"
+    },
+    {
+      "@id": "nar:hasVersion",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Version",
+      "description": "Strategic narrative has versioned snapshots tied to review cycles",
+      "domainIncludes": [
+        "nar:StrategicNarrative"
+      ],
+      "rangeIncludes": [
+        "nar:NarrativeVersion"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "nar:versionTriggeredByReview",
+      "@type": "owl:ObjectProperty",
+      "name": "Version Triggered By Review",
+      "description": "Narrative version was triggered by a VSOM strategic review cycle",
+      "domainIncludes": [
+        "nar:NarrativeVersion"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategicReviewCycle"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "nar:selectsPattern",
+      "@type": "owl:ObjectProperty",
+      "name": "Selects Pattern",
+      "description": "Pattern selection decision selects a specific communication pattern",
+      "domainIncludes": [
+        "nar:PatternSelection"
+      ],
+      "rangeIncludes": [
+        "nar:CommunicationPattern"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "nar:patternAchievesObjective",
+      "@type": "owl:ObjectProperty",
+      "name": "Pattern Achieves Objective",
+      "description": "Communication pattern achieves a communication objective",
+      "domainIncludes": [
+        "nar:CommunicationPattern"
+      ],
+      "rangeIncludes": [
+        "nar:CommunicationObjective"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "nar:lifecycleTriggeredByReview",
+      "@type": "owl:ObjectProperty",
+      "name": "Lifecycle Triggered By Review",
+      "description": "Communication lifecycle cadence tied to VSOM review cycle",
+      "domainIncludes": [
+        "nar:CommunicationLifecycle"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategicReviewCycle"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "VSOM-ONT"
+    },
+    {
+      "@id": "nar:lifecycleUpdatesNarrative",
+      "@type": "owl:ObjectProperty",
+      "name": "Lifecycle Updates Narrative",
+      "description": "Each lifecycle cadence point generates an updated narrative version",
+      "domainIncludes": [
+        "nar:CommunicationLifecycle"
+      ],
+      "rangeIncludes": [
+        "nar:NarrativeVersion"
+      ],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "nar:narrativeApprovedByRole",
+      "@type": "owl:ObjectProperty",
+      "name": "Narrative Approved By Role",
+      "description": "Strategic narrative approved by an executive role",
+      "domainIncludes": [
+        "nar:StrategicNarrative"
+      ],
+      "rangeIncludes": [
+        "rrr:ExecutiveRole"
+      ],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-NAR-001",
+      "name": "Narrative Must Have Five Sections",
+      "condition": "IF a StrategicNarrative is created",
+      "action": "THEN it MUST have exactly five NarrativeSection instances: Context, Challenge, Choice, Commitment, Cadence (one of each sectionType)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-NAR-002",
+      "name": "Narrative Must Reference VSOM",
+      "condition": "IF a StrategicNarrative is created",
+      "action": "THEN vsomFrameworkRef MUST reference a valid vsom:VSOMFramework @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-NAR-003",
+      "name": "Narrative Must Have Direction Source",
+      "condition": "IF a StrategicNarrative is created",
+      "action": "THEN directionSummaryRef MUST reference a valid pfl:StrategicDirectionSummary @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-NAR-004",
+      "name": "Evidence Chain Must Have References",
+      "condition": "IF an EvidenceChain is created",
+      "action": "THEN evidenceRefs MUST contain at least one valid SA entity reference",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-NAR-005",
+      "name": "Pattern Selection Must Have Rationale",
+      "condition": "IF a PatternSelection is created",
+      "action": "THEN selectionRationale MUST be non-empty, explaining why the pattern was chosen",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-NAR-006",
+      "name": "Active Narrative Must Have Approved Version",
+      "condition": "IF a StrategicNarrative has status 'Active'",
+      "action": "THEN currentVersionRef MUST reference a NarrativeVersion with status 'Active' or 'Approved'",
+      "severity": "error"
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-13",
+    "modifiedBy": "OAA v6.1.0 Agent",
+    "changeNotes": "Initial release of NARRATIVE-ONT as part of VE-Series VSOM-SC (Strategy Communication). Formalizes the Strategic Narrative Arc, 7 Communication Patterns, Pattern Selection logic, and Communication Lifecycle. Cross-references VSOM-ONT v3.0.0, REASON-ONT v1.0.0, PORTFOLIO-ONT v1.0.0, BSC-ONT v1.0.0, MACRO-ONT v1.0.0, RRR-ONT v4.0.0, KPI-ONT v1.0.0.",
+    "versionHistory": []
+  },
+  "oaa:ontologyId": "NAR-ONT",
+  "oaa:series": "VE-Series / VSOM-SC",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of StrategicNarrative within this ontology?",
+      "targetEntities": [
+        "nar:StrategicNarrative"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of NarrativeSection within this ontology?",
+      "targetEntities": [
+        "nar:NarrativeSection"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of EvidenceChain within this ontology?",
+      "targetEntities": [
+        "nar:EvidenceChain"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of NarrativeVersion within this ontology?",
+      "targetEntities": [
+        "nar:NarrativeVersion"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of CommunicationPattern within this ontology?",
+      "targetEntities": [
+        "nar:CommunicationPattern"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of PatternSelection within this ontology?",
+      "targetEntities": [
+        "nar:PatternSelection"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of CommunicationObjective within this ontology?",
+      "targetEntities": [
+        "nar:CommunicationObjective"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of CommunicationLifecycle within this ontology?",
+      "targetEntities": [
+        "nar:CommunicationLifecycle"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

@@ -1,0 +1,922 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/",
+    "bsc": "https://oaa-ontology.org/v6/bsc/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/",
+    "lsc": "https://oaa-ontology.org/v6/logistics/",
+    "ofm": "https://oaa-ontology.org/v6/order-fulfilment/",
+    "vp": "https://oaa-ontology.org/v5/vp/",
+    "rrr": "https://oaa-ontology.org/v5/rrr/",
+    "org-ctx": "https://platformcore.io/ontology/org-context/",
+    "emc": "https://oaa-ontology.org/v5/emc/"
+  },
+  "@type": "InstanceDataSet",
+  "@id": "kpi:wwg-kpi-bsc-instance-v1.0.0",
+  "metadata": {
+    "title": "W4M-WWG KPI + BSC Unified Metrics — Supply-Demand Performance Measurement",
+    "version": "1.0.0",
+    "created": "2026-02-24",
+    "author": "PF-Core Platform Team",
+    "owningInstance": "PFI-W4M-WWG",
+    "sourceOntologies": ["KPI-ONT v1.0.0", "BSC-ONT v1.0.0"],
+    "oaaVersion": "7.0.0",
+    "parentEpic": "Epic 45 (#634)",
+    "parentFeature": "F45.6 (#640)",
+    "description": "Unified KPI and BSC instance data for W4M-WWG, organized by four Balanced Scorecard perspectives. Covers supply-side (LSC corridor metrics), demand-side (OFM fulfilment metrics — pending Epic 41), and cross-graph bridge metrics. 24 KPIs + 4 BSC perspectives + 1 strategy map + 16 causal links."
+  },
+  "examples": [
+
+    {"_section": "=== BALANCED SCORECARD ==="},
+
+    {
+      "@type": "bsc:BalancedScorecard",
+      "@id": "bsc:wwg-scorecard-fy2026",
+      "scorecardId": "bsc:wwg-scorecard-fy2026",
+      "name": "W4M-WWG Supply-Demand Performance Scorecard FY2026",
+      "description": "Corporate-level balanced scorecard for World Wide Gourmet, measuring unified supply-demand performance across 4 inbound corridors and customer fulfilment operations. Operationalizes the WWG VSOM-LSC and VSOM-SOP strategies.",
+      "vsomFrameworkRef": "vsom:wwg-vsom-lsc",
+      "contextRef": "org-ctx:wwg-context",
+      "scope": "Corporate",
+      "period": "FY2026",
+      "periodStartDate": "2026-04-01",
+      "periodEndDate": "2027-03-31",
+      "overallScore": null,
+      "overallStatus": "NotStarted",
+      "strategyMapRef": "bsc:wwg-strategy-map-fy2026",
+      "lastReviewDate": null,
+      "nextReviewDate": "2026-07-01",
+      "relationships": {
+        "hasPerspective": [
+          "bsc:wwg-perspective-financial",
+          "bsc:wwg-perspective-customer",
+          "bsc:wwg-perspective-internal",
+          "bsc:wwg-perspective-learning"
+        ],
+        "instanceConfigRef": "emc:InstanceConfiguration-W4M-WWG"
+      }
+    },
+
+    {"_section": "=== BSC PERSPECTIVES (4) ==="},
+
+    {
+      "@type": "bsc:BSCPerspective",
+      "@id": "bsc:wwg-perspective-financial",
+      "perspectiveId": "bsc:wwg-perspective-financial",
+      "perspectiveType": "Financial",
+      "name": "Financial — Margin Protection & Cost Control",
+      "description": "Protect and grow margin across the supply-demand bridge. Key theme: the gap between goods landing cost and customer delivery revenue is where WWG makes or loses money. Every supply disruption, storage day, and customer change erodes this margin.",
+      "weight": 0.30,
+      "perspectiveScore": null,
+      "perspectiveStatus": "NotStarted",
+      "relationships": {
+        "belongsToScorecard": "bsc:wwg-scorecard-fy2026",
+        "perspectiveOwnedBy": "rrr:func-wwg-finance-analyst",
+        "hasPerspectiveObjective": [
+          "bsc:wwg-obj-margin-realisation",
+          "bsc:wwg-obj-disruption-cost",
+          "bsc:wwg-obj-storage-efficiency"
+        ]
+      }
+    },
+    {
+      "@type": "bsc:BSCPerspective",
+      "@id": "bsc:wwg-perspective-customer",
+      "perspectiveId": "bsc:wwg-perspective-customer",
+      "perspectiveType": "Customer",
+      "name": "Customer — Reliability & Trust",
+      "description": "Deliver what was promised, when promised, in the condition promised. WWG's customers (restaurants, wholesalers, food service, online) judge on OTIF, shelf life, and communication. Trust is the premium that justifies WWG's margin over commodity importers.",
+      "weight": 0.25,
+      "perspectiveScore": null,
+      "perspectiveStatus": "NotStarted",
+      "relationships": {
+        "belongsToScorecard": "bsc:wwg-scorecard-fy2026",
+        "perspectiveOwnedBy": "rrr:func-wwg-sales-account-mgr",
+        "hasPerspectiveObjective": [
+          "bsc:wwg-obj-otif",
+          "bsc:wwg-obj-shelf-life",
+          "bsc:wwg-obj-proactive-comms"
+        ]
+      }
+    },
+    {
+      "@type": "bsc:BSCPerspective",
+      "@id": "bsc:wwg-perspective-internal",
+      "perspectiveId": "bsc:wwg-perspective-internal",
+      "perspectiveType": "InternalProcess",
+      "name": "Internal Process — Operational Excellence",
+      "description": "Execute supply chain and fulfilment operations with speed, accuracy, and resilience. The internal process perspective bridges supply-side logistics (corridor management, compliance, risk mitigation) with demand-side operations (stock allocation, dispatch, change management).",
+      "weight": 0.25,
+      "perspectiveScore": null,
+      "perspectiveStatus": "NotStarted",
+      "relationships": {
+        "belongsToScorecard": "bsc:wwg-scorecard-fy2026",
+        "perspectiveOwnedBy": "rrr:func-wwg-logistics-coord",
+        "hasPerspectiveObjective": [
+          "bsc:wwg-obj-detection-speed",
+          "bsc:wwg-obj-compliance-rate",
+          "bsc:wwg-obj-allocation-speed"
+        ]
+      }
+    },
+    {
+      "@type": "bsc:BSCPerspective",
+      "@id": "bsc:wwg-perspective-learning",
+      "perspectiveId": "bsc:wwg-perspective-learning",
+      "perspectiveType": "LearningAndGrowth",
+      "name": "Learning & Growth — Intelligence & Capability",
+      "description": "Build organisational intelligence through hypothesis testing, pattern recognition, and post-incident learning. WWG's competitive advantage is not just importing food — it's knowing more about corridor risks, demand signals, and margin dynamics than competitors.",
+      "weight": 0.20,
+      "perspectiveScore": null,
+      "perspectiveStatus": "NotStarted",
+      "relationships": {
+        "belongsToScorecard": "bsc:wwg-scorecard-fy2026",
+        "perspectiveOwnedBy": "rrr:func-wwg-procurement-mgr",
+        "hasPerspectiveObjective": [
+          "bsc:wwg-obj-hypothesis-velocity",
+          "bsc:wwg-obj-pattern-library",
+          "bsc:wwg-obj-forecast-accuracy"
+        ]
+      }
+    },
+
+    {"_section": "=== BSC OBJECTIVES (12) ==="},
+
+    {
+      "@type": "bsc:BSCObjective",
+      "@id": "bsc:wwg-obj-margin-realisation",
+      "objectiveId": "bsc:wwg-obj-margin-realisation",
+      "name": "Maximise Margin Realisation Ratio",
+      "description": "Minimise the gap between booked margin (at order confirmation) and realised margin (at invoice). Target: realise >85% of booked margin across all corridors and customer types.",
+      "perspectiveRef": "bsc:wwg-perspective-financial",
+      "targetValue": ">=85%",
+      "currentValue": null,
+      "status": "NotStarted",
+      "relationships": {
+        "measuredByKPI": ["kpi:wwg-margin-realisation-ratio", "kpi:wwg-change-cost-recovery"]
+      }
+    },
+    {
+      "@type": "bsc:BSCObjective",
+      "@id": "bsc:wwg-obj-disruption-cost",
+      "objectiveId": "bsc:wwg-obj-disruption-cost",
+      "name": "Reduce Annualised Disruption Cost",
+      "description": "Reduce the total annualised cost of supply chain disruptions (delays, rejections, diversions, demurrage, spoilage) across all 4 corridors. Target: <GBP 180,000/year.",
+      "perspectiveRef": "bsc:wwg-perspective-financial",
+      "targetValue": "<GBP 180,000/year",
+      "currentValue": null,
+      "status": "NotStarted",
+      "relationships": {
+        "measuredByKPI": ["kpi:wwg-annualised-disruption-cost", "kpi:wwg-margin-at-risk"]
+      }
+    },
+    {
+      "@type": "bsc:BSCObjective",
+      "@id": "bsc:wwg-obj-storage-efficiency",
+      "objectiveId": "bsc:wwg-obj-storage-efficiency",
+      "name": "Optimise Cold Storage Cost per Unit",
+      "description": "Reduce average cold storage cost per tonne by improving stock turnover speed and reducing unallocated dwell time. Target: <GBP 12/tonne/day.",
+      "perspectiveRef": "bsc:wwg-perspective-financial",
+      "targetValue": "<GBP 12/tonne/day",
+      "currentValue": null,
+      "status": "NotStarted",
+      "relationships": {
+        "measuredByKPI": ["kpi:wwg-storage-cost-per-unit"]
+      }
+    },
+    {
+      "@type": "bsc:BSCObjective",
+      "@id": "bsc:wwg-obj-otif",
+      "objectiveId": "bsc:wwg-obj-otif",
+      "name": "Achieve OTIF Excellence",
+      "description": "On-Time In-Full delivery to customers across all order types. OTIF is the single most important customer-facing metric — it directly drives retention, referral, and willingness to pay premium.",
+      "perspectiveRef": "bsc:wwg-perspective-customer",
+      "targetValue": ">=94%",
+      "currentValue": null,
+      "status": "NotStarted",
+      "relationships": {
+        "measuredByKPI": ["kpi:wwg-otif-rate", "kpi:wwg-first-attempt-delivery"]
+      }
+    },
+    {
+      "@type": "bsc:BSCObjective",
+      "@id": "bsc:wwg-obj-shelf-life",
+      "objectiveId": "bsc:wwg-obj-shelf-life",
+      "name": "Guarantee Shelf Life Compliance",
+      "description": "Deliver product with sufficient remaining shelf life for customers to sell through. Critical for NZ dairy (tight) and IS seafood (tightest). Target: >70% remaining shelf life at delivery.",
+      "perspectiveRef": "bsc:wwg-perspective-customer",
+      "targetValue": ">=70% remaining",
+      "currentValue": null,
+      "status": "NotStarted",
+      "relationships": {
+        "measuredByKPI": ["kpi:wwg-shelf-life-compliance"]
+      }
+    },
+    {
+      "@type": "bsc:BSCObjective",
+      "@id": "bsc:wwg-obj-proactive-comms",
+      "objectiveId": "bsc:wwg-obj-proactive-comms",
+      "name": "Proactive Customer Communication",
+      "description": "Notify customers of disruptions, delays, or changes before they discover them. Proactive notification builds trust and reduces complaint escalation.",
+      "perspectiveRef": "bsc:wwg-perspective-customer",
+      "targetValue": ">=90% proactive",
+      "currentValue": null,
+      "status": "NotStarted",
+      "relationships": {
+        "measuredByKPI": ["kpi:wwg-proactive-notification-rate"]
+      }
+    },
+    {
+      "@type": "bsc:BSCObjective",
+      "@id": "bsc:wwg-obj-detection-speed",
+      "objectiveId": "bsc:wwg-obj-detection-speed",
+      "name": "Accelerate Disruption Detection & Resolution",
+      "description": "Reduce mean time to detect (MTTD) and mean time to resolve (MTTR) for supply chain incidents. Faster detection = smaller cascade = less margin erosion.",
+      "perspectiveRef": "bsc:wwg-perspective-internal",
+      "targetValue": "MTTD <4h, MTTR <48h",
+      "currentValue": null,
+      "status": "NotStarted",
+      "relationships": {
+        "measuredByKPI": ["kpi:wwg-mttd", "kpi:wwg-mttr"]
+      }
+    },
+    {
+      "@type": "bsc:BSCObjective",
+      "@id": "bsc:wwg-obj-compliance-rate",
+      "objectiveId": "bsc:wwg-obj-compliance-rate",
+      "name": "Achieve Document Pre-Flight Excellence",
+      "description": "Ensure all trade documents pass pre-submission cross-checks before shipment departure. Prevents IPAFFS rejections, BCP holds, and demurrage.",
+      "perspectiveRef": "bsc:wwg-perspective-internal",
+      "targetValue": ">=98% pass rate",
+      "currentValue": null,
+      "status": "NotStarted",
+      "relationships": {
+        "measuredByKPI": ["kpi:wwg-doc-preflight-rate"]
+      }
+    },
+    {
+      "@type": "bsc:BSCObjective",
+      "@id": "bsc:wwg-obj-allocation-speed",
+      "objectiveId": "bsc:wwg-obj-allocation-speed",
+      "name": "Minimise Stock Allocation Lead Time",
+      "description": "Reduce time between shipment arrival at UK warehouse and allocation to customer orders. Faster allocation = less storage cost = fresher product = better margin.",
+      "perspectiveRef": "bsc:wwg-perspective-internal",
+      "targetValue": "<24h from arrival",
+      "currentValue": null,
+      "status": "NotStarted",
+      "relationships": {
+        "measuredByKPI": ["kpi:wwg-allocation-lead-time", "kpi:wwg-dispatch-consolidation"]
+      }
+    },
+    {
+      "@type": "bsc:BSCObjective",
+      "@id": "bsc:wwg-obj-hypothesis-velocity",
+      "objectiveId": "bsc:wwg-obj-hypothesis-velocity",
+      "name": "Accelerate Hypothesis Learning Cycles",
+      "description": "Increase the rate of hypothesis testing across corridors. Each hypothesis (transit time, shelf life, carrier reliability) validated or falsified improves predictive accuracy.",
+      "perspectiveRef": "bsc:wwg-perspective-learning",
+      "targetValue": ">=2 hypotheses validated/month",
+      "currentValue": null,
+      "status": "NotStarted",
+      "relationships": {
+        "measuredByKPI": ["kpi:wwg-hypothesis-iteration-rate"]
+      }
+    },
+    {
+      "@type": "bsc:BSCObjective",
+      "@id": "bsc:wwg-obj-pattern-library",
+      "objectiveId": "bsc:wwg-obj-pattern-library",
+      "name": "Grow Predictive Pattern Library",
+      "description": "Expand the library of validated predictive patterns (seasonal, cyclical, event-driven) across all corridors. More patterns = better anticipation = fewer surprises.",
+      "perspectiveRef": "bsc:wwg-perspective-learning",
+      "targetValue": ">=20 validated patterns",
+      "currentValue": "12",
+      "status": "NotStarted",
+      "relationships": {
+        "measuredByKPI": ["kpi:wwg-pattern-library-size", "kpi:wwg-post-incident-learning"]
+      }
+    },
+    {
+      "@type": "bsc:BSCObjective",
+      "@id": "bsc:wwg-obj-forecast-accuracy",
+      "objectiveId": "bsc:wwg-obj-forecast-accuracy",
+      "name": "Improve Demand Forecast Accuracy",
+      "description": "Improve accuracy of demand forecasting across customer types and seasons. Better forecasts drive better purchasing, routing, and stock allocation decisions.",
+      "perspectiveRef": "bsc:wwg-perspective-learning",
+      "targetValue": ">=80% forecast accuracy",
+      "currentValue": null,
+      "status": "NotStarted",
+      "relationships": {
+        "measuredByKPI": ["kpi:wwg-demand-forecast-accuracy"]
+      }
+    },
+
+    {"_section": "=== KPIs — FINANCIAL PERSPECTIVE (6) ==="},
+
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-margin-realisation-ratio",
+      "kpiId": "kpi:wwg-margin-realisation-ratio",
+      "name": "Margin Realisation Ratio",
+      "description": "Percentage of booked margin actually realised after all supply chain costs, disruptions, storage, and customer changes. The single most important financial metric for WWG.",
+      "category": "Financial",
+      "unit": "percentage",
+      "formula": "(realisedMargin / bookedMargin) * 100",
+      "target": 85,
+      "warningThreshold": 80,
+      "criticalThreshold": 70,
+      "frequency": "Monthly",
+      "dataSource": "Finance system — invoice vs. purchase order comparison",
+      "corridorBreakdown": true,
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-margin-realisation",
+        "vpBenefitRef": "vp:wwg-benefit-margin-transparency",
+        "impactedBy": ["kpi:wwg-annualised-disruption-cost", "kpi:wwg-storage-cost-per-unit", "kpi:wwg-change-cost-recovery"]
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-annualised-disruption-cost",
+      "kpiId": "kpi:wwg-annualised-disruption-cost",
+      "name": "Annualised Disruption Cost",
+      "description": "Total annualised cost of supply chain disruptions across all 4 corridors — delays, rejections, diversions, demurrage, spoilage, insurance claims. Aggregated from LSC ImpactAssessment.annualisedExposure fields.",
+      "category": "Financial",
+      "unit": "GBP",
+      "formula": "SUM(lsc:ImpactAssessment.annualisedExposure) across all corridors",
+      "target": 180000,
+      "warningThreshold": 220000,
+      "criticalThreshold": 300000,
+      "frequency": "Quarterly",
+      "dataSource": "LSC corridor instance data — ImpactAssessment entities",
+      "corridorBreakdown": true,
+      "corridorTargets": {
+        "AU-UK": 85000,
+        "NZ-UK": 50000,
+        "IS-UK": 25000,
+        "IE-UK": 20000
+      },
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-disruption-cost",
+        "lscEntityRef": "lsc:ImpactAssessment"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-storage-cost-per-unit",
+      "kpiId": "kpi:wwg-storage-cost-per-unit",
+      "name": "Cold Storage Cost per Tonne per Day",
+      "description": "Average cold storage cost per tonne per day at Daventry DC and overflow facilities. Driven by dwell time — faster stock allocation = lower cost.",
+      "category": "Financial",
+      "unit": "GBP/tonne/day",
+      "formula": "totalStorageCost / (totalTonnes * avgDwellDays)",
+      "target": 12,
+      "warningThreshold": 15,
+      "criticalThreshold": 20,
+      "frequency": "Monthly",
+      "dataSource": "Warehouse management system — Lineage Logistics / Daventry DC",
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-storage-efficiency",
+        "ofmEntityRef": "ofm:StorageEvent (pending Epic 41)"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-change-cost-recovery",
+      "kpiId": "kpi:wwg-change-cost-recovery",
+      "name": "Change-Cost Recovery Rate",
+      "description": "Percentage of costs caused by customer changes (date push-back, quantity reduction, spec change, cancellation) that are recovered through change fees, restocking charges, or reallocation to other customers.",
+      "category": "Financial",
+      "unit": "percentage",
+      "formula": "(recoveredChangeCost / totalChangeCost) * 100",
+      "target": 60,
+      "warningThreshold": 45,
+      "criticalThreshold": 30,
+      "frequency": "Monthly",
+      "dataSource": "Sales system — change order tracking",
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-margin-realisation",
+        "ofmEntityRef": "ofm:CustomerChange (pending Epic 41)",
+        "vpProblemRef": "vp:wwg-problem-003-change-cost"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-margin-at-risk",
+      "kpiId": "kpi:wwg-margin-at-risk",
+      "name": "Margin-at-Risk (MaR)",
+      "description": "Total margin exposed to identified supply chain risks, weighted by probability. Cross-graph metric bridging LSC RiskAssessments to financial exposure. Analogous to Value-at-Risk in finance.",
+      "category": "Financial",
+      "unit": "GBP",
+      "formula": "SUM(lsc:RiskAssessment.compositeRiskScore * estimatedMarginExposure) across active bottlenecks",
+      "target": 50000,
+      "warningThreshold": 75000,
+      "criticalThreshold": 120000,
+      "frequency": "Monthly",
+      "dataSource": "LSC RiskAssessment + Finance margin data",
+      "crossGraph": true,
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-disruption-cost",
+        "lscEntityRef": "lsc:RiskAssessment",
+        "vpBenefitRef": "vp:wwg-benefit-margin-transparency"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-corridor-cost-variance",
+      "kpiId": "kpi:wwg-corridor-cost-variance",
+      "name": "Corridor Cost Variance",
+      "description": "Variance between budgeted and actual total corridor cost (freight, duties, handling, storage, insurance) per tonne. Tracked per corridor to identify systemic cost drift.",
+      "category": "Financial",
+      "unit": "percentage",
+      "formula": "((actualCostPerTonne - budgetCostPerTonne) / budgetCostPerTonne) * 100",
+      "target": 5,
+      "warningThreshold": 10,
+      "criticalThreshold": 15,
+      "frequency": "Quarterly",
+      "dataSource": "Finance — corridor P&L",
+      "corridorBreakdown": true,
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-margin-realisation"
+      }
+    },
+
+    {"_section": "=== KPIs — CUSTOMER PERSPECTIVE (4) ==="},
+
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-otif-rate",
+      "kpiId": "kpi:wwg-otif-rate",
+      "name": "OTIF Rate (On-Time In-Full)",
+      "description": "Percentage of customer orders delivered on-time and in-full to the committed specification. The most visible customer-facing metric. Directly drives retention and referral.",
+      "category": "Customer",
+      "unit": "percentage",
+      "formula": "(ordersDeliveredOTIF / totalOrders) * 100",
+      "target": 94,
+      "warningThreshold": 90,
+      "criticalThreshold": 85,
+      "frequency": "Weekly",
+      "dataSource": "Dispatch system — delivery confirmation vs. commitment",
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-otif",
+        "ofmEntityRef": "ofm:SalesOrder (pending Epic 41)",
+        "vpBenefitRef": "vp:wwg-benefit-reliability"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-shelf-life-compliance",
+      "kpiId": "kpi:wwg-shelf-life-compliance",
+      "name": "Shelf Life Compliance Rate",
+      "description": "Percentage of deliveries where remaining shelf life at customer delivery exceeds the committed minimum. Critical for IS seafood (10-14 day product life) and NZ dairy.",
+      "category": "Customer",
+      "unit": "percentage",
+      "formula": "(deliveriesWithAdequateShelfLife / totalDeliveries) * 100",
+      "target": 95,
+      "warningThreshold": 90,
+      "criticalThreshold": 80,
+      "frequency": "Weekly",
+      "dataSource": "Quality system — shelf life at delivery point",
+      "corridorBreakdown": true,
+      "corridorTargets": {
+        "AU-UK": 97,
+        "NZ-UK": 93,
+        "IS-UK": 90,
+        "IE-UK": 99
+      },
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-shelf-life",
+        "lscEntityRef": "lsc:Shipment.shelfLifeRemaining",
+        "vpBenefitRef": "vp:wwg-benefit-shelf-life"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-proactive-notification-rate",
+      "kpiId": "kpi:wwg-proactive-notification-rate",
+      "name": "Proactive Notification Rate",
+      "description": "Percentage of disruption events where the customer was notified before they discovered the issue themselves. Measures whether WWG 'gets ahead' of problems or plays catch-up.",
+      "category": "Customer",
+      "unit": "percentage",
+      "formula": "(proactiveNotifications / totalDisruptionEvents) * 100",
+      "target": 90,
+      "warningThreshold": 80,
+      "criticalThreshold": 65,
+      "frequency": "Monthly",
+      "dataSource": "CRM — customer communication logs vs. incident timestamps",
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-proactive-comms",
+        "lscEntityRef": "lsc:Incident",
+        "rrrRoleRef": "rrr:func-wwg-sales-account-mgr"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-first-attempt-delivery",
+      "kpiId": "kpi:wwg-first-attempt-delivery",
+      "name": "First-Attempt Delivery Rate",
+      "description": "Percentage of dispatches successfully delivered on the first attempt without rejection, rescheduling, or partial acceptance. Failed first attempts drive redelivery cost and customer frustration.",
+      "category": "Customer",
+      "unit": "percentage",
+      "formula": "(firstAttemptSuccesses / totalDispatches) * 100",
+      "target": 96,
+      "warningThreshold": 93,
+      "criticalThreshold": 88,
+      "frequency": "Weekly",
+      "dataSource": "Dispatch system — delivery outcome codes",
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-otif",
+        "ofmEntityRef": "ofm:DispatchLeg (pending Epic 41)"
+      }
+    },
+
+    {"_section": "=== KPIs — INTERNAL PROCESS PERSPECTIVE (5) ==="},
+
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-mttd",
+      "kpiId": "kpi:wwg-mttd",
+      "name": "Mean Time to Detect (MTTD)",
+      "description": "Average time from incident occurrence to detection. The AU-UK temp breach example (28 days MTTD!) shows why this matters. Real-time monitoring should drive MTTD below 4 hours.",
+      "category": "InternalProcess",
+      "unit": "hours",
+      "formula": "AVG(lsc:Incident.timeToDetect) across all incidents",
+      "target": 4,
+      "warningThreshold": 12,
+      "criticalThreshold": 48,
+      "frequency": "Monthly",
+      "dataSource": "LSC incident data — detection timestamps",
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-detection-speed",
+        "lscEntityRef": "lsc:Incident.timeToDetect"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-mttr",
+      "kpiId": "kpi:wwg-mttr",
+      "name": "Mean Time to Resolve (MTTR)",
+      "description": "Average time from incident detection to full resolution (container cleared, claim filed, alternative arranged). Drives the duration of margin exposure.",
+      "category": "InternalProcess",
+      "unit": "hours",
+      "formula": "AVG(lsc:Incident.timeToResolve) across all incidents",
+      "target": 48,
+      "warningThreshold": 96,
+      "criticalThreshold": 168,
+      "frequency": "Monthly",
+      "dataSource": "LSC incident data — resolution timestamps",
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-detection-speed",
+        "lscEntityRef": "lsc:Incident.timeToResolve"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-doc-preflight-rate",
+      "kpiId": "kpi:wwg-doc-preflight-rate",
+      "name": "Document Pre-Flight Pass Rate",
+      "description": "Percentage of shipments where all trade documents pass automated pre-submission cross-checks (health cert vs IPAFFS vs commercial invoice vs B/L). Prevents rejection at BCP.",
+      "category": "InternalProcess",
+      "unit": "percentage",
+      "formula": "(shipmentsPassingPreflight / totalShipments) * 100",
+      "target": 98,
+      "warningThreshold": 95,
+      "criticalThreshold": 90,
+      "frequency": "Per-shipment",
+      "dataSource": "Compliance system — pre-flight check results",
+      "corridorBreakdown": true,
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-compliance-rate",
+        "lscEntityRef": "lsc:ComplianceGate",
+        "rrrRoleRef": "rrr:func-wwg-compliance-officer"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-allocation-lead-time",
+      "kpiId": "kpi:wwg-allocation-lead-time",
+      "name": "Stock Allocation Lead Time",
+      "description": "Average time from shipment arrival at UK warehouse to full allocation against customer orders. Every hour of unallocated stock = storage cost + shelf life erosion.",
+      "category": "InternalProcess",
+      "unit": "hours",
+      "formula": "AVG(allocationTimestamp - arrivalTimestamp) across all shipments",
+      "target": 24,
+      "warningThreshold": 48,
+      "criticalThreshold": 72,
+      "frequency": "Weekly",
+      "dataSource": "WMS — arrival vs. allocation timestamps",
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-allocation-speed",
+        "ofmEntityRef": "ofm:StockAllocation (pending Epic 41)",
+        "rrrRoleRef": "rrr:func-wwg-warehouse-mgr"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-dispatch-consolidation",
+      "kpiId": "kpi:wwg-dispatch-consolidation",
+      "name": "Dispatch Consolidation Rate",
+      "description": "Percentage of dispatches that consolidate multiple order lines into a single delivery run. Higher consolidation = lower per-unit delivery cost = better margin.",
+      "category": "InternalProcess",
+      "unit": "percentage",
+      "formula": "(consolidatedDispatches / totalDispatches) * 100",
+      "target": 70,
+      "warningThreshold": 55,
+      "criticalThreshold": 40,
+      "frequency": "Weekly",
+      "dataSource": "Dispatch system — route consolidation metrics",
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-allocation-speed",
+        "ofmEntityRef": "ofm:DispatchLeg (pending Epic 41)"
+      }
+    },
+
+    {"_section": "=== KPIs — LEARNING & GROWTH PERSPECTIVE (4) ==="},
+
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-hypothesis-iteration-rate",
+      "kpiId": "kpi:wwg-hypothesis-iteration-rate",
+      "name": "Hypothesis Iteration Rate",
+      "description": "Number of hypotheses validated or falsified per month across all corridors. Each hypothesis test improves predictive accuracy and reduces surprise. Current library: 15 hypotheses across 4 corridors.",
+      "category": "LearningAndGrowth",
+      "unit": "hypotheses/month",
+      "formula": "COUNT(lsc:Hypothesis WHERE status IN ('Validated', 'Falsified') AND updatedInPeriod)",
+      "target": 2,
+      "warningThreshold": 1,
+      "criticalThreshold": 0,
+      "frequency": "Monthly",
+      "dataSource": "LSC corridor instance data — Hypothesis entities",
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-hypothesis-velocity",
+        "lscEntityRef": "lsc:Hypothesis"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-pattern-library-size",
+      "kpiId": "kpi:wwg-pattern-library-size",
+      "name": "Predictive Pattern Library Size",
+      "description": "Total number of validated predictive patterns across all corridors. Current: 12 patterns (AU 4, NZ 3, IS 3, IE 2). Target: 20+ by end FY2026.",
+      "category": "LearningAndGrowth",
+      "unit": "count",
+      "formula": "COUNT(lsc:PredictivePattern WHERE reliability >= 0.65)",
+      "target": 20,
+      "warningThreshold": 15,
+      "criticalThreshold": 10,
+      "frequency": "Quarterly",
+      "dataSource": "LSC corridor instance data — PredictivePattern entities",
+      "currentValue": 12,
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-pattern-library",
+        "lscEntityRef": "lsc:PredictivePattern"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-post-incident-learning",
+      "kpiId": "kpi:wwg-post-incident-learning",
+      "name": "Post-Incident Learning Capture Rate",
+      "description": "Percentage of incidents that result in a documented lesson learned, SOP update, or new predictive pattern. Measures whether incidents improve the system or just get resolved.",
+      "category": "LearningAndGrowth",
+      "unit": "percentage",
+      "formula": "(incidentsWithDocumentedLearning / totalIncidents) * 100",
+      "target": 90,
+      "warningThreshold": 75,
+      "criticalThreshold": 50,
+      "frequency": "Quarterly",
+      "dataSource": "LSC incident data — lessonLearned field completion",
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-pattern-library",
+        "lscEntityRef": "lsc:Incident.lessonLearned"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-demand-forecast-accuracy",
+      "kpiId": "kpi:wwg-demand-forecast-accuracy",
+      "name": "Demand Forecast Accuracy",
+      "description": "Accuracy of demand forecasts by customer type and season. Better forecasts drive purchasing, routing, and stock pre-allocation decisions. Measured as 1 - MAPE (Mean Absolute Percentage Error).",
+      "category": "LearningAndGrowth",
+      "unit": "percentage",
+      "formula": "(1 - MAPE) * 100",
+      "target": 80,
+      "warningThreshold": 70,
+      "criticalThreshold": 55,
+      "frequency": "Monthly",
+      "dataSource": "Sales system — forecast vs. actual order comparison",
+      "crossGraph": true,
+      "relationships": {
+        "objectiveRef": "bsc:wwg-obj-forecast-accuracy",
+        "ofmEntityRef": "ofm:DemandPattern (pending Epic 41)",
+        "lscEntityRef": "lsc:PredictivePattern"
+      }
+    },
+
+    {"_section": "=== CROSS-GRAPH BRIDGE METRICS (3) ==="},
+
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-supply-customer-impact-ratio",
+      "kpiId": "kpi:wwg-supply-customer-impact-ratio",
+      "name": "Supply Disruption → Customer Impact Ratio",
+      "description": "Ratio of supply-side disruptions that cascade to customer-facing impact (late delivery, quality issue, order change). Measures the effectiveness of the warehouse buffer in absorbing supply shocks. Lower is better — means the buffer works.",
+      "category": "CrossGraph",
+      "unit": "ratio",
+      "formula": "customerImpactedDisruptions / totalSupplyDisruptions",
+      "target": 0.20,
+      "warningThreshold": 0.35,
+      "criticalThreshold": 0.50,
+      "frequency": "Monthly",
+      "dataSource": "LSC incidents linked to OFM fulfilment failures",
+      "crossGraph": true,
+      "relationships": {
+        "lscEntityRef": "lsc:Incident",
+        "ofmEntityRef": "ofm:FulfilmentRisk (pending Epic 41)",
+        "joinPointRef": "JP-WWG-005"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-demand-supply-exposure-ratio",
+      "kpiId": "kpi:wwg-demand-supply-exposure-ratio",
+      "name": "Demand Change → Supply Exposure Ratio",
+      "description": "Ratio of customer changes (cancellation, reduction) that expose unallocated inbound stock to storage or spoilage risk. Measures demand-to-supply cascade vulnerability. Lower is better.",
+      "category": "CrossGraph",
+      "unit": "ratio",
+      "formula": "supplyExposedChanges / totalCustomerChanges",
+      "target": 0.15,
+      "warningThreshold": 0.25,
+      "criticalThreshold": 0.40,
+      "frequency": "Monthly",
+      "dataSource": "OFM customer changes linked to LSC unallocated shipments",
+      "crossGraph": true,
+      "relationships": {
+        "ofmEntityRef": "ofm:CustomerChange (pending Epic 41)",
+        "lscEntityRef": "lsc:Shipment",
+        "joinPointRef": "JP-WWG-008"
+      }
+    },
+    {
+      "@type": "kpi:KPI",
+      "@id": "kpi:wwg-unified-risk-score",
+      "kpiId": "kpi:wwg-unified-risk-score",
+      "name": "Unified Risk Score",
+      "description": "Composite risk score combining supply-side corridor risks (LSC RiskAssessments), warehouse bridge risks (storage, allocation), and demand-side risks (fulfilment, customer change). Weighted by financial exposure. The single number that tells WWG's MD how much risk is in the system right now.",
+      "category": "CrossGraph",
+      "unit": "score (0-100)",
+      "formula": "(0.4 * avgCorridorRisk + 0.3 * warehouseRisk + 0.3 * demandRisk) * normalisationFactor",
+      "target": 25,
+      "warningThreshold": 40,
+      "criticalThreshold": 60,
+      "frequency": "Weekly",
+      "dataSource": "LSC RiskAssessment + OFM FulfilmentRisk + warehouse KPIs",
+      "crossGraph": true,
+      "relationships": {
+        "lscEntityRef": "lsc:RiskAssessment",
+        "ofmEntityRef": "ofm:FulfilmentRisk (pending Epic 41)",
+        "vpProblemRef": "vp:wwg-problem-001-opacity"
+      }
+    },
+
+    {"_section": "=== STRATEGY MAP ==="},
+
+    {
+      "@type": "bsc:StrategyMap",
+      "@id": "bsc:wwg-strategy-map-fy2026",
+      "strategyMapId": "bsc:wwg-strategy-map-fy2026",
+      "name": "W4M-WWG FY2026 Strategy Map — Supply-Demand Margin Protection",
+      "description": "Causal chain strategy map: invest in learning (hypothesis testing, pattern recognition, forecast accuracy) → improve internal processes (detection speed, compliance, allocation) → delight customers (OTIF, shelf life, proactive comms) → protect margin (realisation ratio, disruption cost, storage efficiency). 16 causal links across 12 objectives.",
+      "scorecardRef": "bsc:wwg-scorecard-fy2026",
+      "causalLinks": [
+        {
+          "linkId": "CL-001",
+          "from": "bsc:wwg-obj-hypothesis-velocity",
+          "to": "bsc:wwg-obj-detection-speed",
+          "hypothesis": "Faster hypothesis validation improves pattern recognition, which reduces detection time for known incident types",
+          "strength": "Strong",
+          "evidence": "AU-UK temp breach (28-day MTTD) would have been detected in <4h with real-time monitoring hypothesis validated"
+        },
+        {
+          "linkId": "CL-002",
+          "from": "bsc:wwg-obj-pattern-library",
+          "to": "bsc:wwg-obj-detection-speed",
+          "hypothesis": "More predictive patterns provide early warning signals, enabling proactive detection before incidents materialise",
+          "strength": "Strong",
+          "evidence": "Seasonal reefer pattern (AU) allows pre-booking 8 weeks ahead, avoiding shortage detection lag"
+        },
+        {
+          "linkId": "CL-003",
+          "from": "bsc:wwg-obj-forecast-accuracy",
+          "to": "bsc:wwg-obj-allocation-speed",
+          "hypothesis": "Better demand forecasts enable pre-allocation of inbound stock before arrival, reducing warehouse dwell time",
+          "strength": "Moderate",
+          "evidence": "Pre-allocation pilot showed 40% reduction in allocation lead time for predictable seasonal orders"
+        },
+        {
+          "linkId": "CL-004",
+          "from": "bsc:wwg-obj-detection-speed",
+          "to": "bsc:wwg-obj-otif",
+          "hypothesis": "Faster disruption detection enables earlier mitigation (diversion, alternative sourcing), preserving delivery commitments",
+          "strength": "Strong",
+          "evidence": "Felixstowe congestion: containers diverted to Tilbury within 12h, maintaining OTIF vs. 5-day wait"
+        },
+        {
+          "linkId": "CL-005",
+          "from": "bsc:wwg-obj-compliance-rate",
+          "to": "bsc:wwg-obj-otif",
+          "hypothesis": "Higher document pre-flight pass rates eliminate BCP holds and IPAFFS rejections, preventing 2-5 day delivery delays",
+          "strength": "Strong",
+          "evidence": "IPAFFS rejection incident: 2-day hold, GBP 240 demurrage — preventable with automated cross-check"
+        },
+        {
+          "linkId": "CL-006",
+          "from": "bsc:wwg-obj-allocation-speed",
+          "to": "bsc:wwg-obj-shelf-life",
+          "hypothesis": "Faster stock allocation reduces warehouse dwell time, preserving more shelf life for customer delivery",
+          "strength": "Strong",
+          "evidence": "Every 24h of unallocated dwell = 1 day of shelf life lost. IS seafood (10-14 day life) is most sensitive"
+        },
+        {
+          "linkId": "CL-007",
+          "from": "bsc:wwg-obj-detection-speed",
+          "to": "bsc:wwg-obj-proactive-comms",
+          "hypothesis": "Earlier detection provides more lead time for proactive customer notification, converting reactive complaints into managed expectations",
+          "strength": "Strong",
+          "evidence": "4h MTTD gives Sales team 24-48h to notify customers with alternatives; 28-day MTTD gives zero warning"
+        },
+        {
+          "linkId": "CL-008",
+          "from": "bsc:wwg-obj-allocation-speed",
+          "to": "bsc:wwg-obj-otif",
+          "hypothesis": "Faster stock allocation enables faster dispatch scheduling, improving on-time delivery",
+          "strength": "Moderate",
+          "evidence": "Pre-allocated orders dispatched same-day vs. 2-3 day average for post-arrival allocation"
+        },
+        {
+          "linkId": "CL-009",
+          "from": "bsc:wwg-obj-otif",
+          "to": "bsc:wwg-obj-margin-realisation",
+          "hypothesis": "Higher OTIF rates reduce penalty clauses, returns, redelivery costs, and customer churn — all of which erode realised margin",
+          "strength": "Strong",
+          "evidence": "Each 1% OTIF improvement estimated to save GBP 8,000-12,000/year in penalties and redelivery"
+        },
+        {
+          "linkId": "CL-010",
+          "from": "bsc:wwg-obj-shelf-life",
+          "to": "bsc:wwg-obj-margin-realisation",
+          "hypothesis": "Better shelf life compliance eliminates markdowns, rejections, and spoilage write-offs that directly erode margin",
+          "strength": "Strong",
+          "evidence": "Shelf life failure forces 10-40% markdown; total rejection destroys 100% of margin on that consignment"
+        },
+        {
+          "linkId": "CL-011",
+          "from": "bsc:wwg-obj-proactive-comms",
+          "to": "bsc:wwg-obj-margin-realisation",
+          "hypothesis": "Proactive communication allows negotiated change management (fee recovery, reallocation) vs. reactive crisis responses that absorb cost",
+          "strength": "Moderate",
+          "evidence": "Proactive notification of delay allows customer to adjust receiving, avoiding failed delivery cost (GBP 200-500/attempt)"
+        },
+        {
+          "linkId": "CL-012",
+          "from": "bsc:wwg-obj-detection-speed",
+          "to": "bsc:wwg-obj-disruption-cost",
+          "hypothesis": "Faster detection enables earlier intervention, reducing cascade severity and total disruption cost",
+          "strength": "Strong",
+          "evidence": "Temp breach detected at BCP (28 days) → AUD 148,000 total loss. If detected at Singapore (day 10) → possible diversion or accelerated transfer, saving ~AUD 100,000"
+        },
+        {
+          "linkId": "CL-013",
+          "from": "bsc:wwg-obj-compliance-rate",
+          "to": "bsc:wwg-obj-disruption-cost",
+          "hypothesis": "Eliminating document failures eliminates demurrage, BCP holds, and emergency amendment costs",
+          "strength": "Strong",
+          "evidence": "Document pre-flight automation estimated to save GBP 15,000-25,000/year across 4 corridors"
+        },
+        {
+          "linkId": "CL-014",
+          "from": "bsc:wwg-obj-allocation-speed",
+          "to": "bsc:wwg-obj-storage-efficiency",
+          "hypothesis": "Faster allocation directly reduces average dwell time, which is the primary driver of storage cost per tonne",
+          "strength": "Strong",
+          "evidence": "Each 24h dwell reduction saves ~GBP 2-3/tonne/day across ~28,200 tonnes/year = GBP 56,000-84,000/year"
+        },
+        {
+          "linkId": "CL-015",
+          "from": "bsc:wwg-obj-forecast-accuracy",
+          "to": "bsc:wwg-obj-margin-realisation",
+          "hypothesis": "Better demand forecasts reduce over-purchasing (spoilage risk) and under-purchasing (spot premium), both of which erode margin",
+          "strength": "Moderate",
+          "evidence": "NZ dairy over-purchase during spring flush led to 3-week storage overflow — GBP 8,000 excess storage + 5% markdown"
+        },
+        {
+          "linkId": "CL-016",
+          "from": "bsc:wwg-obj-pattern-library",
+          "to": "bsc:wwg-obj-compliance-rate",
+          "hypothesis": "Predictive patterns for regulatory changes (Windsor Framework, BTOM) enable proactive compliance SOP updates before enforcement",
+          "strength": "Moderate",
+          "evidence": "IE-UK Windsor Framework pattern allows 6-month preparation for regulatory changes vs. reactive scramble"
+        }
+      ]
+    }
+  ]
+}

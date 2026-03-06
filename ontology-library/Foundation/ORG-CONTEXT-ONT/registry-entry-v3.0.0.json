@@ -1,0 +1,176 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform.framework/ontology/",
+    "baiv": "https://baiv.co.uk/ontology/"
+  },
+  "@type": "RegistryEntry",
+  "@id": "baiv:registry:entry:org-context-ontology-v1",
+  
+  "entryId": "ONT-ORG-CTX-001",
+  "name": "Organization Context Ontology",
+  "version": "1.0.1",
+  "status": "draft",
+  "confidenceScore": 0.88,
+  
+  "registryMetadata": {
+    "dateCreated": "2026-01-20",
+    "dateModified": "2026-01-20",
+    "creator": "BAIV Platform Team",
+    "approvedBy": null,
+    "approvalDate": null,
+    "registryVersion": "3.0.0",
+    "changeControlId": "CC-ORG-CTX-001"
+  },
+  
+  "ontologyMetadata": {
+    "domain": "Organization Context",
+    "purpose": "Provide rich context for agents to understand organization's market position, competitive landscape, and capabilities",
+    "scope": "Platform Framework (Domain-Agnostic)",
+    "tenantApplicability": ["PFI", "Agency", "Client"],
+    "dependencies": [
+      "pf:ontology:organization-v1",
+      "pf:ontology:value-proposition-v1"
+    ],
+    "dependents": ["pf:ontology:discovery-audit-v1", "pf:ontology:gap-analysis-v1"],
+    "schemaOrgAlignment": 75,
+    "reusesFromPFCore": ["pf:Organization"]
+  },
+  
+  "qualityMetrics": {
+    "completenessScore": 100,
+    "validationPassRate": 100,
+    "competencyScore": 95,
+    "testDataCoverage": 100,
+    "documentationCoverage": 100
+  },
+  
+  "completenessGates": {
+    "gate1_entityDescriptions": {
+      "required": 12,
+      "present": 12,
+      "missing": [],
+      "percentage": 100,
+      "status": "pass"
+    },
+    "gate2_relationshipCardinality": {
+      "required": 6,
+      "present": 6,
+      "missing": [],
+      "percentage": 100,
+      "status": "pass"
+    },
+    "gate3_businessRulesFormat": {
+      "required": 4,
+      "present": 4,
+      "invalidFormat": [],
+      "percentage": 100,
+      "status": "pass"
+    },
+    "gate4_propertyMappings": {
+      "required": 45,
+      "mappedToSchemaOrg": 12,
+      "withRationale": 33,
+      "missingRationale": [],
+      "percentage": 100,
+      "status": "pass"
+    },
+    "gate5_testDataCoverage": {
+      "required": 12,
+      "present": 12,
+      "instancesPerEntity": 5,
+      "percentage": 100,
+      "status": "pass"
+    },
+    "overallStatus": "pass",
+    "gatesPassed": 5,
+    "gatesFailed": 0
+  },
+  
+  "competencyValidation": {
+    "domainPattern": "organization-context",
+    "requiredEntities": ["OrganizationContext", "Product", "Brand", "CompetitiveLandscape", "MarketContext", "OrganizationMaturity"],
+    "presentEntities": ["OrganizationContext", "Product", "Brand", "ProductPortfolio", "CompetitiveLandscape", "Competitor", "CompetitiveForce", "Trend", "MarketContext", "MarketSegment", "CustomerNeed", "OrganizationMaturity"],
+    "competencyScore": 100,
+    "threshold": 90,
+    "result": "PASS"
+  },
+  
+  "artifacts": {
+    "ontologyDefinition": "org-context-ontology-v1.0.1.json",
+    "registryEntry": "registry-entry-v3.0.0.json",
+    "glossary": {
+      "json": "glossary-v1.0.0.json",
+      "markdown": "glossary-v1.0.0.md"
+    },
+    "testData": "test-data-v1.0.0.json",
+    "validationReport": "validation-report-v1.0.0.md",
+    "documentation": "README.md",
+    "changelog": "CHANGELOG.md"
+  },
+  
+  "entitySummary": {
+    "totalEntities": 12,
+    "entities": [
+      {"name": "OrganizationContext", "schemaOrgBase": null, "propertyCount": 9},
+      {"name": "Product", "schemaOrgBase": "schema:Product", "propertyCount": 7},
+      {"name": "Brand", "schemaOrgBase": "schema:Brand", "propertyCount": 5},
+      {"name": "ProductPortfolio", "schemaOrgBase": null, "propertyCount": 3},
+      {"name": "CompetitiveLandscape", "schemaOrgBase": null, "propertyCount": 3},
+      {"name": "Competitor", "schemaOrgBase": null, "propertyCount": 9},
+      {"name": "CompetitiveForce", "schemaOrgBase": null, "propertyCount": 4},
+      {"name": "Trend", "schemaOrgBase": null, "propertyCount": 5},
+      {"name": "MarketContext", "schemaOrgBase": null, "propertyCount": 4},
+      {"name": "MarketSegment", "schemaOrgBase": null, "propertyCount": 6},
+      {"name": "CustomerNeed", "schemaOrgBase": null, "propertyCount": 5},
+      {"name": "OrganizationMaturity", "schemaOrgBase": null, "propertyCount": 6}
+    ]
+  },
+  
+  "relationshipSummary": {
+    "totalRelationships": 6,
+    "relationships": [
+      {"name": "hasContext", "cardinality": "0..1"},
+      {"name": "hasValueProposition", "cardinality": "0..*"},
+      {"name": "MarketSegment.hasNeed", "cardinality": "0..*"},
+      {"name": "MarketSegment.shapedBy", "cardinality": "0..*"},
+      {"name": "Competitor.targets", "cardinality": "0..*"},
+      {"name": "Trend.impacts", "cardinality": "0..*"}
+    ]
+  },
+  
+  "businessRulesSummary": {
+    "totalRules": 4,
+    "rules": [
+      "BR-CTX-001: Context Links to Organization",
+      "BR-CTX-002: Competitor Limit (max 10)",
+      "BR-CTX-003: Maturity Scores Range (1-5)",
+      "BR-CTX-004: Value Proposition Reference Only"
+    ]
+  },
+  
+  "changeControl": {
+    "changeControlId": "CC-ORG-CTX-001",
+    "changeType": "new",
+    "changeReason": "Initial creation of Organization Context Ontology for rich organizational context",
+    "impactAssessment": "Enables agents to understand market position, competitors, and capabilities",
+    "approvalStatus": "pending",
+    "approver": null,
+    "approvalDate": null
+  },
+  
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-01-20",
+      "changes": "Initial release",
+      "author": "BAIV Platform Team"
+    },
+    {
+      "version": "1.0.1",
+      "date": "2026-01-20",
+      "changes": "Moved value proposition details to VSOM ontology - now references only",
+      "author": "BAIV Platform Team"
+    }
+  ]
+}

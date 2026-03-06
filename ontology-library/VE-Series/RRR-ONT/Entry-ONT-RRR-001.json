@@ -1,0 +1,175 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-RRR-001",
+  "name": "RRR Ontology (Roles/RACI/RBAC)",
+  "description": "Comprehensive roles ontology with L0-L4 hierarchy (Enterprise Governance, C-Suite, Architecture, Platform, Application), RACI accountability matrix, and Role-Based Access Control patterns. Supports PFC/PFI/Product/ORG filtering.",
+  "version": "4.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/rrr/",
+  "prefix": "rrr:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "./pf-RRR-ONT-v4.0.0.jsonld",
+    "dataFile": "./RRR-DATA-csuite-roles-v2.0.0.jsonld",
+    "documentation": "./README-ROLES-RACI-RBAC-v3.0.0.md",
+    "visualGuide": "./RRR_RACI_RBAC_Ontology_Visual_Guide.md",
+    "glossary": "./pf-roles-raci-rbac-glossary-v3.1.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "entities": {
+    "count": 48,
+    "roleTaxonomy": {
+      "L0EnterpriseGovernance": [
+        "BoardOfDirectors",
+        "Chairman",
+        "Shareholders"
+      ],
+      "L1CoreCSuite": [
+        "CEO",
+        "COO",
+        "CFO",
+        "CTO",
+        "CMO",
+        "CHRO"
+      ],
+      "L1ExtendedCSuite": [
+        "CDO",
+        "CAIO",
+        "CPO",
+        "CIO",
+        "CSO-SEC",
+        "CSO-STR",
+        "CRO",
+        "CCO",
+        "CLO",
+        "CISO"
+      ],
+      "L2ArchitectureTrack": [
+        "EnterpriseArchitect",
+        "BusinessArchitect",
+        "DataArchitect",
+        "SecurityArchitect",
+        "SolutionsArchitect",
+        "TechnicalArchitect",
+        "IntegrationArchitect"
+      ],
+      "L2L3AzureMicrosoftPlatform": [
+        "AzureSolutionsArchitect",
+        "AzureInfrastructureArchitect",
+        "PowerPlatformArchitect",
+        "M365Architect",
+        "Dynamics365Architect",
+        "AzureDataArchitect",
+        "AzureSecurityArchitect",
+        "AzureDevOpsArchitect",
+        "FabricArchitect"
+      ],
+      "L4ApplicationTemplate": [
+        "ProductOwner",
+        "TechnicalLead",
+        "UXLead",
+        "DataEngineer",
+        "AIDeveloper",
+        "QALead"
+      ]
+    }
+  },
+  "components": {
+    "roles": "L0-L4 functional business roles hierarchy with 48+ roles",
+    "raci": "Responsible, Accountable, Consulted, Informed accountability matrix",
+    "rbac": "Role-Based Access Control permission model",
+    "vsomAccountability": "VSOM component accountability mapping per C-Suite role",
+    "roleApplicabilityFiltering": {
+      "contextLevel": "PFC (generic) or PFI (instance-specific)",
+      "instanceId": "PFI instance identifier (e.g., BAIV)",
+      "productContext": "Product filter (e.g., AIV)",
+      "orgRolesGovernance": "Client ROG governance rules",
+      "orgContext": "Client organization identifier"
+    }
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "accountableFor",
+        "from": "rrr:Role",
+        "to": "vsom:VSOMComponent",
+        "purpose": "VSOM accountability mapping"
+      },
+      {
+        "name": "hasRoleContext",
+        "from": "org-ctx:OrganizationContext",
+        "to": "rrr:RoleTaxonomy",
+        "purpose": "ORG-CONTEXT bridge pattern"
+      }
+    ]
+  },
+  "joinPatterns": [
+    {
+      "id": "JP-RRR-001",
+      "name": "Context-to-Roles",
+      "path": "org-ctx:OrganizationContext \u2192 rrr:hasRoleContext \u2192 rrr:RoleTaxonomy"
+    },
+    {
+      "id": "JP-RRR-002",
+      "name": "VSOM-to-RRR Accountability",
+      "path": "vsom:VSOMComponent \u2192 rrr:accountableRole \u2192 rrr:Role"
+    }
+  ],
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-ORG-CTX-001"
+  ],
+  "dependents": [
+    "Entry-ONT-VP-001",
+    "Entry-ONT-EFS-001"
+  ],
+  "pfiInstances": [
+    {
+      "instanceId": "BAIV",
+      "productContext": "AIV",
+      "dataFile": "../pfi-BAIV-AIV-ONT/RRR-DATA-BAIV-AIV-roles-v1.0.0.jsonld",
+      "roles": 11,
+      "roleCategories": [
+        "Platform",
+        "Agency",
+        "Client",
+        "Limited"
+      ]
+    }
+  ],
+  "layer": "STRATEGIC LAYER (VE-Series)",
+  "domain": "Organizational Governance",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "lastModified": "2026-02-08",
+  "versionHistory": [
+    {
+      "version": "4.0.0",
+      "date": "2026-02-08",
+      "changes": "OAA v6.1.0 compliance upgrade: fixed relationship key format, added 5 new relationships for full graph connectivity, converted 8 business rules to IF-THEN format"
+    },
+    {
+      "version": "3.1.0",
+      "date": "2026-02-02",
+      "changes": "Added L0-L4 role hierarchy, CSO disambiguation (SEC/STR), Azure/Microsoft platform roles, L4 application role templates, PFC/PFI/Product/ORG filtering, RRR-DATA-csuite-roles-v2.0.0 data file"
+    },
+    {
+      "version": "3.0.0",
+      "date": "2026-01-28",
+      "changes": "Initial OAA v5.0.0 compliance, VSOM accountability mapping"
+    }
+  ],
+  "notes": "Most comprehensive role ontology with 48+ roles across L0-L4 hierarchy. Supersedes pf-ve-rrrr-extended-23-roles-ontology-v1.1.0 and RRR-DATA-architectural-roles-v1.0.0. CSO split into CSO-SEC (Security) and CSO-STR (Strategy). Full PFC/PFI filtering support."
+}

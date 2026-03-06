@@ -1,0 +1,3269 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "grc-fw": "https://platformcore.io/ontology/grc-fw/",
+    "ctx": "https://baiv.co.uk/ontology/",
+    "gdpr": "https://platformcore.io/ontology/gdpr/",
+    "mcsb": "https://platformcore.io/ontology/mcsb/",
+    "pii": "https://platformcore.io/ontology/pii-governance/",
+    "ncsc-caf": "https://platformcore.io/ontology/ncsc-caf/",
+    "org": "https://platformcore.io/ontology/org/",
+    "oaa": "https://platformcore.io/ontology/oaa/",
+    "pf": "https://platform.framework/ontology/",
+    "erm": "https://platformcore.io/ontology/erm/",
+    "comp-fw": "https://platformcore.io/ontology/comp-fw/",
+    "sec-fw": "https://platformcore.io/ontology/sec-fw/",
+    "ai-gov": "https://platformcore.io/ontology/ai-gov/",
+    "res": "https://platformcore.io/ontology/res/",
+    "vsom": "https://platformcore.io/ontology/vsom/",
+    "okr": "https://platformcore.io/ontology/okr/",
+    "rrr": "https://platformcore.io/ontology/rrr/"
+  },
+  "@type": "Ontology",
+  "@id": "grc-fw:ontology:grc-framework-v3.0",
+  "metadata": {
+    "name": "GRC Framework Ontology (Governance, Risk & Compliance)",
+    "version": "3.0.0",
+    "description": "Governance-centric hub ontology for the GRC series. Governance is the superordinate domain — risk, compliance, security, AI governance, and resource economics operate as governed domains within it. Aligned to COBIT 2019 (EDM01-05), ISO 38500:2024, NIST CSF 2.0, IIA Three Lines Model 2020, and the NCSC Cyber Governance Code 2025. Provides 15 owned entities covering governance frameworks, bodies, decision rights, policies, assurance activities, findings, governance codes, principles, board-level actions, glossary terms, cross-framework mappings, regulatory requirements, and compliance frameworks. 4-level governance model (Platform/Instance/Product/Client). Cross-domain edges to ERM, COMP-FW, SEC-FW, AI-GOV, RES and VSEM bridges to VE-Series.",
+    "domain": "Governance, Risk & Compliance",
+    "purpose": "Provide the definitive governance hub for the GRC series, modelling how governance structures direct and monitor risk, compliance, security, AI governance, and resource management domains through the Evaluate-Direct-Monitor cycle, COBIT governance objectives, IIA Three Lines accountability, and cross-framework alignment",
+    "oaaVersion": "6.1.0",
+    "series": "RCSG-Series",
+    "subSeries": "GRC-01-GOV",
+    "dateCreated": "2026-02-10",
+    "dateModified": "2026-02-17",
+    "creator": "Azlan EA-AAA",
+    "previousName": "RCSG Framework Ontology",
+    "previousNamespace": "https://platformcore.io/ontology/rcsg-fw/"
+  },
+  "oaa:sourceFrameworks": [
+    {
+      "name": "Cyber Governance Code of Practice",
+      "version": "1.0",
+      "publisher": "UK National Cyber Security Centre (NCSC) / Department for Science, Innovation and Technology (DSIT)",
+      "publishDate": "2025",
+      "uri": "https://www.ncsc.gov.uk/collection/cyber-governance",
+      "applicability": [
+        "UK board directors and senior leaders",
+        "Organisations subject to NIS Regulations 2018",
+        "Public sector bodies and critical national infrastructure operators"
+      ]
+    },
+    {
+      "name": "ISO/IEC 38500:2024 — Governance of information technology",
+      "version": "2024",
+      "publisher": "ISO/IEC JTC 1/SC 40",
+      "applicability": [
+        "All organisations using IT",
+        "Board-level governance of IT"
+      ]
+    },
+    {
+      "name": "COBIT 2019 — Governance System for Enterprise IT",
+      "version": "2019",
+      "publisher": "ISACA",
+      "applicability": [
+        "IT governance and management",
+        "EDM01-05 governance objectives"
+      ]
+    },
+    {
+      "name": "IIA Three Lines Model",
+      "version": "2020",
+      "publisher": "Institute of Internal Auditors (IIA)",
+      "applicability": [
+        "Governance accountability patterns",
+        "Assurance and oversight structures"
+      ]
+    },
+    {
+      "name": "NIST Cybersecurity Framework (CSF) 2.0",
+      "version": "2.0",
+      "publisher": "National Institute of Standards and Technology (NIST)",
+      "applicability": [
+        "Cybersecurity governance",
+        "GOVERN function alignment"
+      ]
+    }
+  ],
+  "oaa:imports": [
+    {
+      "@id": "ctx:schema",
+      "name": "CTX-ONT",
+      "version": "1.0.0",
+      "description": "Context ontology providing GeoContext, FunctionalMaturity, ITMaturity, and MarketClassification dimensions for jurisdiction, maturity, and market linkage",
+      "importedEntities": [
+        "ctx:GeoContext",
+        "ctx:FunctionalMaturity",
+        "ctx:ITMaturity",
+        "ctx:MarketClassification"
+      ]
+    },
+    {
+      "@id": "ncsc-caf:schema",
+      "name": "NCSC-CAF-ONT",
+      "version": "1.0.0",
+      "description": "NCSC Cyber Assessment Framework ontology providing CAFPrinciple and ContributingOutcome entities for governance-to-assessment alignment",
+      "importedEntities": [
+        "ncsc-caf:CAFPrinciple",
+        "ncsc-caf:ContributingOutcome"
+      ]
+    },
+    {
+      "@id": "org:schema",
+      "name": "ORG-ONT",
+      "version": "3.1.0",
+      "description": "Organization ontology providing Organization entity for domain authority publisher references",
+      "importedEntities": [
+        "org:Organization"
+      ]
+    },
+    {
+      "@id": "vsom:schema",
+      "name": "VSOM-ONT",
+      "version": "2.0.0",
+      "description": "Vision & Strategic Objectives Model — VE-Series hub providing VisionStatement and StrategicObjective for governance-to-strategy alignment (VSEM bridge)",
+      "importedEntities": [
+        "vsom:VisionStatement",
+        "vsom:StrategicObjective"
+      ],
+      "oaa:forwardReference": true
+    },
+    {
+      "@id": "erm:schema",
+      "name": "ERM-ONT",
+      "version": "1.0.0",
+      "description": "Enterprise Risk Management ontology — GRC Tier 1 domain providing RiskRegister and Risk for governance-to-risk bridges",
+      "importedEntities": [
+        "erm:RiskRegister",
+        "erm:Risk"
+      ],
+      "oaa:forwardReference": true
+    },
+    {
+      "@id": "sec-fw:schema",
+      "name": "SEC-FW-ONT",
+      "version": "1.0.0",
+      "description": "Security Framework ontology — GRC Tier 1 domain providing SecurityPosture and SecurityDomain for governance-to-security bridges",
+      "importedEntities": [
+        "sec-fw:SecurityPosture",
+        "sec-fw:SecurityDomain"
+      ],
+      "oaa:forwardReference": true
+    },
+    {
+      "@id": "comp-fw:schema",
+      "name": "COMP-FW-ONT",
+      "version": "1.0.0",
+      "description": "Compliance Framework ontology — GRC Tier 1 domain providing ComplianceAssessment for governance-to-compliance bridges",
+      "importedEntities": [
+        "comp-fw:ComplianceAssessment"
+      ],
+      "oaa:forwardReference": true
+    },
+    {
+      "@id": "ai-gov:schema",
+      "name": "AI-GOV-ONT",
+      "version": "1.0.0",
+      "description": "AI Governance ontology — GRC Tier 1 domain providing AISystem for governance-to-AI bridges",
+      "importedEntities": [
+        "ai-gov:AISystem"
+      ],
+      "oaa:forwardReference": true
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-GRC-001",
+      "name": "GRC Framework to CTX Jurisdiction Bridge",
+      "description": "Links regulatory requirements to geographic context for jurisdiction-specific compliance",
+      "joinPath": "grc-fw:RegulatoryRequirement → ns:regulatoryShapedByGeo → ctx:GeoContext",
+      "useCase": "Determine which regulations apply based on organisational operating regions"
+    },
+    {
+      "patternId": "JP-GRC-002",
+      "name": "Governance Framework to Body to Code Hierarchy",
+      "description": "Navigates from governance framework through body ownership to published codes, principles and board actions",
+      "joinPath": "grc-fw:GovernanceFramework → ns:hasGovernanceBody → ns:GovernanceBody → ns:bodyOwnsCode → ns:GovernanceCode → ns:hasPrinciple → ns:GovernancePrinciple → ns:hasAction → ns:GovernanceAction",
+      "useCase": "Trace governance accountability from framework through body to specific board actions"
+    },
+    {
+      "patternId": "JP-GRC-003",
+      "name": "Governance Action to CAF Alignment Bridge",
+      "description": "Links governance actions to NCSC CAF principles for cross-framework compliance alignment",
+      "joinPath": "grc-fw:GovernanceAction → ns:governanceAlignedToCAF → ncsc-caf:CAFPrinciple",
+      "useCase": "Map governance board actions to operational CAF assessment outcomes"
+    },
+    {
+      "patternId": "JP-GRC-004",
+      "name": "Governance Code to Authority Bridge",
+      "description": "Links governance codes to their publishing domain authority organization",
+      "joinPath": "grc-fw:GovernanceCode → ns:publishedByAuthority → org:Organization",
+      "useCase": "Identify which domain authorities publish governance codes and their jurisdictional scope"
+    },
+    {
+      "patternId": "JP-GRC-005",
+      "name": "Governance Assurance to Finding Remediation",
+      "description": "Navigates from assurance activity through findings to affected policies for remediation tracking",
+      "joinPath": "grc-fw:GovernanceAssurance → ns:hasFinding → ns:AssuranceFinding → ns:findingAffectsPolicy → ns:GovernancePolicy",
+      "useCase": "Track assurance findings through to policy remediation lifecycle"
+    },
+    {
+      "patternId": "JP-GRC-006",
+      "name": "Governance to Security Posture Bridge",
+      "description": "Links governance context through to security posture for security-specific governance oversight",
+      "joinPath": "grc-fw:GRCContext → ns:governsSecurity → sec-fw:SecurityPosture",
+      "useCase": "Governance oversight of security posture and maturity across security domains"
+    },
+    {
+      "patternId": "JP-GRC-007",
+      "name": "Governance to Risk Register Bridge",
+      "description": "Links governance context to enterprise risk registers for risk-informed governance decisions",
+      "joinPath": "grc-fw:GRCContext → ns:governsRisk → erm:RiskRegister",
+      "useCase": "Board-level visibility of enterprise risk registers and appetite alignment"
+    },
+    {
+      "patternId": "JP-GRC-008",
+      "name": "VSEM Strategy Alignment Bridge",
+      "description": "Links governance framework to VE-Series strategic objectives for strategy-governance alignment",
+      "joinPath": "grc-fw:GovernanceFramework → ns:alignsToVision → vsom:VisionStatement",
+      "useCase": "Ensure governance framework is aligned to organisational vision and strategic direction"
+    },
+    {
+      "patternId": "JP-GRC-009",
+      "name": "VSEM Body Achievement Bridge",
+      "description": "Links governance body to strategic objectives it is accountable for achieving",
+      "joinPath": "grc-fw:GovernanceBody → ns:achievesObjective → vsom:StrategicObjective",
+      "useCase": "Map governance body accountability to strategic objective delivery"
+    },
+    {
+      "patternId": "JP-GRC-010",
+      "name": "VSEM Decision Alignment Bridge",
+      "description": "Links decision rights to strategic objectives requiring governance alignment",
+      "joinPath": "grc-fw:DecisionRight → ns:requiresAlignment → vsom:StrategicObjective",
+      "useCase": "Ensure governance decisions are grounded in strategic objectives"
+    },
+    {
+      "patternId": "JP-GRC-011",
+      "name": "VSEM Finding Impact Bridge",
+      "description": "Links assurance findings to the strategic objectives they impact",
+      "joinPath": "grc-fw:AssuranceFinding → ns:measuresImpact → vsom:StrategicObjective",
+      "useCase": "Quantify strategic impact of assurance findings for board-level reporting"
+    }
+  ],
+  "entities": [
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:GRCContext",
+      "name": "GRCContext",
+      "description": "Top-level Governance, Risk & Compliance context defining which GRC requirements apply to an organisation. Evolved from RCSGContext — now serves as the root governance context bridging to all GRC Tier 1 domains (ERM, COMP-FW, SEC-FW, AI-GOV, RES) and downstream implementation ontologies. Supports 4-level governance scoping.",
+      "properties": [
+        {
+          "name": "grcProfileId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this GRC context profile"
+        },
+        {
+          "name": "governanceLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Governance scoping level: Platform, Instance, Product, or Client — determines which governance policies and controls apply"
+        },
+        {
+          "name": "compliancePosture",
+          "type": "Text",
+          "required": true,
+          "description": "Overall compliance posture: Non-Compliant, Partial, Substantially-Compliant, Fully-Compliant, Certified"
+        },
+        {
+          "name": "primaryRegulator",
+          "type": "Text",
+          "required": false,
+          "description": "Primary regulatory body overseeing the organisation (e.g., FCA, ICO, OFCOM, CQC)"
+        },
+        {
+          "name": "dataClassification",
+          "type": "Text",
+          "required": false,
+          "description": "Highest data classification handled: Public, Internal, Confidential, Restricted, Top-Secret"
+        },
+        {
+          "name": "auditFrequency",
+          "type": "Text",
+          "required": false,
+          "description": "Required audit frequency: Annual, Semi-Annual, Quarterly, Continuous"
+        },
+        {
+          "name": "sectorClassification",
+          "type": "Text",
+          "required": false,
+          "description": "Sector for regulatory scoping: CNI, Financial-Services, Healthcare, Public-Sector, Defence, General"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:GovernanceFramework",
+      "name": "GovernanceFramework",
+      "description": "An adopted governance framework defining how the organisation evaluates, directs, and monitors IT and cyber governance. Aligned to ISO 38500:2024 Evaluate-Direct-Monitor cycle, COBIT 2019 EDM objectives, and NIST CSF 2.0 GOVERN function. References framework standards — full process models reside in PE-Series.",
+      "properties": [
+        {
+          "name": "frameworkId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this governance framework adoption"
+        },
+        {
+          "name": "frameworkName",
+          "type": "Text",
+          "required": true,
+          "description": "Name of the governance framework (e.g., COBIT 2019, ISO 38500, NIST CSF 2.0, Custom)"
+        },
+        {
+          "name": "frameworkType",
+          "type": "Text",
+          "required": true,
+          "description": "Framework classification: IT-Governance, Cyber-Governance, AI-Governance, Data-Governance, Integrated"
+        },
+        {
+          "name": "governanceLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Governance scoping level: Platform, Instance, Product, or Client"
+        },
+        {
+          "name": "maturityModel",
+          "type": "Text",
+          "required": false,
+          "description": "Maturity model used: COBIT-CMMI, ISO-38500-Principles, NIST-CSF-Tiers, Custom"
+        },
+        {
+          "name": "maturityScore",
+          "type": "Number",
+          "required": false,
+          "description": "Current governance maturity score (0-5 CMMI scale or framework-specific)"
+        },
+        {
+          "name": "adoptedStandards",
+          "type": "Text",
+          "required": false,
+          "description": "Comma-separated standard references adopted under this framework (e.g., ISO-38500, COBIT-EDM01, NIST-GV)"
+        },
+        {
+          "name": "scope",
+          "type": "Text",
+          "required": false,
+          "description": "Scope of framework applicability: Enterprise, Division, Business-Unit, Programme, Project"
+        },
+        {
+          "name": "edmCycle",
+          "type": "Text",
+          "required": false,
+          "description": "ISO 38500 Evaluate-Direct-Monitor cycle status: Evaluate, Direct, Monitor, or All-Active"
+        },
+        {
+          "name": "cobitObjectives",
+          "type": "Text",
+          "required": false,
+          "description": "COBIT 2019 governance objectives adopted: comma-separated from EDM01-EDM05"
+        },
+        {
+          "name": "nistGovCategories",
+          "type": "Text",
+          "required": false,
+          "description": "NIST CSF 2.0 GOVERN categories adopted: GV.OC, GV.RM, GV.RR, GV.PO, GV.OV, GV.SC"
+        },
+        {
+          "name": "reviewDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Next scheduled framework review date"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:GovernanceBody",
+      "name": "GovernanceBody",
+      "description": "A governance body responsible for oversight, direction, or assurance within the governance framework. Aligned to IIA Three Lines Model 2020 — each body has an explicit Three Lines role (Line 1: management/ownership, Line 2: oversight/expertise, Line 3: independent assurance). Maps to COBIT 2019 EDM01 governance structures and NCSC Cyber Governance Code E1 (Establish governance structure).",
+      "properties": [
+        {
+          "name": "bodyId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this governance body"
+        },
+        {
+          "name": "bodyName",
+          "type": "Text",
+          "required": true,
+          "description": "Name of the governance body (e.g., Main Board, Risk Committee, Architecture Review Board)"
+        },
+        {
+          "name": "bodyType",
+          "type": "Text",
+          "required": true,
+          "description": "Body type classification: Board, SteeringCommittee, RiskCommittee, AuditCommittee, TechnologyCommittee, ARB, AIEthicsBoard, DataGovernanceBoard, SecurityForum"
+        },
+        {
+          "name": "governanceLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Governance scoping level: Platform, Instance, Product, or Client"
+        },
+        {
+          "name": "threeLineRole",
+          "type": "Text",
+          "required": true,
+          "description": "IIA Three Lines role: Line1-Management, Line2-Oversight, Line3-Assurance, or Governing-Body"
+        },
+        {
+          "name": "decisionRights",
+          "type": "Text",
+          "required": false,
+          "description": "Comma-separated decision domains this body has authority over"
+        },
+        {
+          "name": "meetingCadence",
+          "type": "Text",
+          "required": false,
+          "description": "Meeting frequency: Weekly, Fortnightly, Monthly, Quarterly, Annual, Ad-Hoc"
+        },
+        {
+          "name": "charter",
+          "type": "Text",
+          "required": false,
+          "description": "Reference to the body's terms of reference or charter document"
+        },
+        {
+          "name": "escalationPath",
+          "type": "Text",
+          "required": false,
+          "description": "Body to escalate unresolved issues to (bodyId reference)"
+        },
+        {
+          "name": "reportsTo",
+          "type": "Text",
+          "required": false,
+          "description": "Parent body this body reports to (bodyId reference)"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:DecisionRight",
+      "name": "DecisionRight",
+      "description": "A formalised decision authority assigned to a governance body, defining what decisions can be made, by whom, within what thresholds, and using what RACI pattern. Aligned to COBIT 2019 EDM01 (Ensured Governance Framework Setting) and ISO 38500 Direct principle.",
+      "properties": [
+        {
+          "name": "decisionId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this decision right"
+        },
+        {
+          "name": "decisionDomain",
+          "type": "Text",
+          "required": true,
+          "description": "Domain of decision authority: Investment, Architecture, Security, Risk-Acceptance, Data-Classification, Vendor-Selection, Policy-Approval, Technology-Adoption, AI-Deployment, Regulatory-Response, Benefit-Realisation"
+        },
+        {
+          "name": "governanceLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Governance scoping level: Platform, Instance, Product, or Client"
+        },
+        {
+          "name": "raciRole",
+          "type": "Text",
+          "required": true,
+          "description": "RACI accountability for this body: Responsible, Accountable, Consulted, Informed"
+        },
+        {
+          "name": "thresholdValue",
+          "type": "Text",
+          "required": false,
+          "description": "Threshold above which this decision right applies (e.g., >£50k, >High-Risk, >Tier-2-AI)"
+        },
+        {
+          "name": "delegationRules",
+          "type": "Text",
+          "required": false,
+          "description": "Conditions under which this decision right can be delegated to a lower governance level"
+        },
+        {
+          "name": "approvalQuorum",
+          "type": "Text",
+          "required": false,
+          "description": "Required quorum or approval pattern: Unanimous, Majority, Chair-Approval, Delegated"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:GovernancePolicy",
+      "name": "GovernancePolicy",
+      "description": "A governance policy, standard, guideline, procedure, baseline, or exception within the policy hierarchy. Aligned to COBIT 2019 APO01 (Managed I&T Management Framework) policy cascade and NCSC Cyber Governance Code B3 (Ensure appropriate policies and processes). Policy hierarchy: Policy → Standard → Guideline → Procedure → Baseline → Exception.",
+      "properties": [
+        {
+          "name": "policyId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this policy document"
+        },
+        {
+          "name": "policyName",
+          "type": "Text",
+          "required": true,
+          "description": "Name of the policy document"
+        },
+        {
+          "name": "policyType",
+          "type": "Text",
+          "required": true,
+          "description": "Position in policy hierarchy: Policy, Standard, Guideline, Procedure, Baseline, Exception"
+        },
+        {
+          "name": "governanceLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Governance scoping level: Platform, Instance, Product, or Client"
+        },
+        {
+          "name": "enforcementLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Enforcement: Mandatory, Advisory, Voluntary, Conditional"
+        },
+        {
+          "name": "appliesToDomain",
+          "type": "Text",
+          "required": true,
+          "description": "GRC domain this policy applies to: Governance, Risk, Compliance, Security, AI, Resources, Cross-Domain"
+        },
+        {
+          "name": "reviewCycle",
+          "type": "Text",
+          "required": false,
+          "description": "Review frequency: Annual, Semi-Annual, Quarterly, Event-Driven"
+        },
+        {
+          "name": "lastReviewDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Date of last policy review"
+        },
+        {
+          "name": "owner",
+          "type": "Text",
+          "required": false,
+          "description": "Policy owner role or individual reference"
+        },
+        {
+          "name": "parentPolicy",
+          "type": "Text",
+          "required": false,
+          "description": "Parent policy this derives from in the hierarchy (policyId reference)"
+        },
+        {
+          "name": "regulatoryDriver",
+          "type": "Text",
+          "required": false,
+          "description": "Regulation or standard that mandates this policy (e.g., UK-GDPR-Art25, NIS2-Art21, AI-Act-Art9)"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:GovernanceAssurance",
+      "name": "GovernanceAssurance",
+      "description": "An assurance activity providing evidence of governance effectiveness. Aligned to COBIT 2019 MEA (Monitor, Evaluate, Assess) domain, IIA Three Lines Model Line 3, and NCSC Cyber Governance Code Principle E (Assurance & Oversight). Covers internal audit, external audit, penetration testing, red team exercises, certification audits, regulatory inspections, vendor assessments, and AI model audits.",
+      "properties": [
+        {
+          "name": "assuranceId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this assurance activity"
+        },
+        {
+          "name": "assuranceName",
+          "type": "Text",
+          "required": true,
+          "description": "Name or title of the assurance activity"
+        },
+        {
+          "name": "assuranceType",
+          "type": "Text",
+          "required": true,
+          "description": "Type: InternalAudit, ExternalAudit, PenTest, RedTeam, CertificationAudit, RegulatoryInspection, VendorAssessment, AI-Model-Audit"
+        },
+        {
+          "name": "assuranceLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Level of assurance provided: Limited, Reasonable, Absolute"
+        },
+        {
+          "name": "governanceLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Governance scoping level: Platform, Instance, Product, or Client"
+        },
+        {
+          "name": "targetDomain",
+          "type": "Text",
+          "required": true,
+          "description": "GRC domain being assured: Governance, Risk, Compliance, Security, AI, Resources, Cross-Domain"
+        },
+        {
+          "name": "maturityScore",
+          "type": "Number",
+          "required": false,
+          "description": "Maturity score resulting from assurance (0-5 CMMI scale)"
+        },
+        {
+          "name": "conductedBy",
+          "type": "Text",
+          "required": false,
+          "description": "Assurance provider: Internal, External-Big4, External-Specialist, Regulator, Peer-Review"
+        },
+        {
+          "name": "conductedDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Date the assurance activity was conducted"
+        },
+        {
+          "name": "nextScheduledDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Next scheduled assurance activity date"
+        },
+        {
+          "name": "findingCount",
+          "type": "Number",
+          "required": false,
+          "description": "Number of findings raised"
+        },
+        {
+          "name": "overallRating",
+          "type": "Text",
+          "required": false,
+          "description": "Overall assurance rating: Satisfactory, Needs-Improvement, Unsatisfactory, Critical"
+        },
+        {
+          "name": "frameworkRef",
+          "type": "Text",
+          "required": false,
+          "description": "Framework or standard the assurance is conducted against (e.g., ISO-27001, NIST-CSF-2.0, NCSC-CAF-v4)"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:AssuranceFinding",
+      "name": "AssuranceFinding",
+      "description": "A finding raised during a governance assurance activity, tracking severity, status, remediation deadline, and the affected GRC domain. Supports the COBIT MEA finding lifecycle and IIA Three Lines assurance reporting.",
+      "properties": [
+        {
+          "name": "findingId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this finding"
+        },
+        {
+          "name": "findingTitle",
+          "type": "Text",
+          "required": true,
+          "description": "Short title describing the finding"
+        },
+        {
+          "name": "findingDescription",
+          "type": "Text",
+          "required": true,
+          "description": "Detailed description of the finding, including context and evidence"
+        },
+        {
+          "name": "severity",
+          "type": "Text",
+          "required": true,
+          "description": "Finding severity: Critical, High, Medium, Low, Informational"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "description": "Finding status: Open, In-Remediation, Risk-Accepted, Closed, Overdue"
+        },
+        {
+          "name": "affectedDomain",
+          "type": "Text",
+          "required": true,
+          "description": "GRC domain affected: Governance, Risk, Compliance, Security, AI, Resources"
+        },
+        {
+          "name": "remediationDeadline",
+          "type": "DateTime",
+          "required": false,
+          "description": "Target date for remediation completion"
+        },
+        {
+          "name": "remediationOwner",
+          "type": "Text",
+          "required": false,
+          "description": "Individual or role responsible for remediation"
+        },
+        {
+          "name": "riskAcceptedBy",
+          "type": "Text",
+          "required": false,
+          "description": "If status is Risk-Accepted, the governance body or individual who accepted the risk"
+        },
+        {
+          "name": "regulatoryImplication",
+          "type": "Text",
+          "required": false,
+          "description": "Regulatory consequence if not remediated: None, Reportable, Penalty-Risk, Licence-Risk"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:RegulatoryRequirement",
+      "name": "RegulatoryRequirement",
+      "description": "Specific regulatory requirement applicable to the organisation, including the regulation name, enforcement body, jurisdiction mapping, penalty risk level, and compliance deadline. Preserved from RCSG-FW v2.0.0 — will be enhanced when COMP-FW-ONT is implemented.",
+      "properties": [
+        {
+          "name": "regulationId",
+          "type": "Text",
+          "required": true,
+          "description": "Standard regulation identifier (e.g., UK-GDPR, NIS2, DORA, AI-Act, SOX, PCI-DSS)"
+        },
+        {
+          "name": "regulationName",
+          "type": "Text",
+          "required": true,
+          "description": "Full name of the regulation or regulatory requirement"
+        },
+        {
+          "name": "enforcementBody",
+          "type": "Text",
+          "required": true,
+          "description": "Regulatory body enforcing this requirement (e.g., ICO, FCA, OFCOM, CQC, EU-AI-Office)"
+        },
+        {
+          "name": "jurisdictions",
+          "type": "Text",
+          "required": true,
+          "description": "Jurisdictions where this regulation applies — links to GeoContext operating regions"
+        },
+        {
+          "name": "penaltyRisk",
+          "type": "Text",
+          "required": false,
+          "description": "Non-compliance penalty risk: Low, Moderate, High, Severe, Existential"
+        },
+        {
+          "name": "complianceStatus",
+          "type": "Text",
+          "required": false,
+          "description": "Current status: Not-Started, In-Progress, Partially-Compliant, Compliant, Exempt"
+        },
+        {
+          "name": "nextReviewDate",
+          "type": "DateTime",
+          "required": false,
+          "description": "Next scheduled compliance review or renewal date"
+        },
+        {
+          "name": "aiRelevance",
+          "type": "Text",
+          "required": false,
+          "description": "AI-specific relevance: None, Indirect, Direct, AI-Specific-Regulation"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:ComplianceFramework",
+      "name": "ComplianceFramework",
+      "description": "Compliance or security framework applied to the organisation, covering certification status, scope, and audit cycle. Preserved from RCSG-FW v2.0.0 — will be enhanced when COMP-FW-ONT is implemented.",
+      "properties": [
+        {
+          "name": "frameworkId",
+          "type": "Text",
+          "required": true,
+          "description": "Framework identifier (e.g., ISO27001, SOC2-TypeII, PCI-DSS-v4, MCSB-v1, CE-Plus, NIST-CSF)"
+        },
+        {
+          "name": "frameworkName",
+          "type": "Text",
+          "required": true,
+          "description": "Full name of the compliance or security framework"
+        },
+        {
+          "name": "certificationStatus",
+          "type": "Text",
+          "required": true,
+          "description": "Certification state: Not-Pursued, In-Progress, Certified, Lapsed, Exempt"
+        },
+        {
+          "name": "scope",
+          "type": "Text",
+          "required": false,
+          "description": "Scope of certification: Full-Organisation, Division, Product, Service, Infrastructure"
+        },
+        {
+          "name": "certificationExpiry",
+          "type": "DateTime",
+          "required": false,
+          "description": "Expiry date for current certification — triggers renewal workflow"
+        },
+        {
+          "name": "controlCoverage",
+          "type": "Number",
+          "required": false,
+          "description": "Percentage of framework controls implemented (0-100)"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:GovernanceModel",
+      "name": "GovernanceModel",
+      "description": "Corporate governance structure defining board composition, committee structures, policy frameworks, and decision-making authority levels. Preserved from v2.0.0 — now linked to GovernanceFramework as the parent structure.",
+      "properties": [
+        {
+          "name": "governanceType",
+          "type": "Text",
+          "required": true,
+          "description": "Governance model: Owner-Managed, Board-Led, Committee-Based, Distributed, Federated, Regulated-Entity"
+        },
+        {
+          "name": "boardComposition",
+          "type": "Text",
+          "required": false,
+          "description": "Board structure: None, Advisory, Non-Executive, Executive, Mixed, Independent-Majority"
+        },
+        {
+          "name": "committeesActive",
+          "type": "Text",
+          "required": false,
+          "description": "Active governance committees (comma-separated): Audit, Risk, Remuneration, Nominations, ESG, Technology, Data"
+        },
+        {
+          "name": "policyFramework",
+          "type": "Text",
+          "required": false,
+          "description": "Policy management approach: Ad-Hoc, Documented, Centralised, Automated, Continuously-Reviewed"
+        },
+        {
+          "name": "riskAppetiteStatement",
+          "type": "Boolean",
+          "required": false,
+          "description": "Whether a formal risk appetite statement exists and is reviewed periodically"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:GovernanceCode",
+      "name": "GovernanceCode",
+      "description": "A published governance code, standard, or guide authored by a domain authority providing principles and actions for board-level cyber governance oversight. Preserved from CG-ONT merge (v2.0.0).",
+      "properties": [
+        {
+          "name": "codeId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the governance code"
+        },
+        {
+          "name": "codeName",
+          "type": "Text",
+          "required": true,
+          "description": "Full name of the governance code or standard"
+        },
+        {
+          "name": "publisher",
+          "type": "Text",
+          "required": true,
+          "description": "Name of the publishing authority or organisation"
+        },
+        {
+          "name": "publisherRef",
+          "type": "Text",
+          "required": false,
+          "description": "Reference to the publisher Organization instance in ORG-ONT"
+        },
+        {
+          "name": "version",
+          "type": "Text",
+          "required": true,
+          "description": "Version of the code or standard"
+        },
+        {
+          "name": "publicationDate",
+          "type": "Text",
+          "required": true,
+          "description": "Year or date of publication"
+        },
+        {
+          "name": "jurisdiction",
+          "type": "Text",
+          "required": true,
+          "description": "Geographic or regulatory jurisdiction scope"
+        },
+        {
+          "name": "codeType",
+          "type": "Text",
+          "required": true,
+          "description": "Type classification: CodeOfPractice, Certification, Standard, Guide, or Regulation"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "description": "Current status: Active, Superseded, or Draft"
+        },
+        {
+          "name": "url",
+          "type": "URL",
+          "required": false,
+          "description": "Official publication URL for the governance code"
+        },
+        {
+          "name": "supportModel",
+          "type": "Text",
+          "required": false,
+          "description": "Description of how the code supports governance implementation"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:GovernancePrinciple",
+      "name": "GovernancePrinciple",
+      "description": "A high-level governance principle within a code defining a strategic area of board-level governance responsibility. Preserved from CG-ONT merge (v2.0.0).",
+      "properties": [
+        {
+          "name": "principleCode",
+          "type": "Text",
+          "required": true,
+          "description": "Single-letter principle identifier (e.g. A, B, C, D, E)"
+        },
+        {
+          "name": "principleName",
+          "type": "Text",
+          "required": true,
+          "description": "Full name of the governance principle"
+        },
+        {
+          "name": "principleDescription",
+          "type": "Text",
+          "required": true,
+          "description": "Detailed description of the principle scope and purpose"
+        },
+        {
+          "name": "actionCount",
+          "type": "Number",
+          "required": true,
+          "description": "Number of governance actions under this principle"
+        },
+        {
+          "name": "principleCategory",
+          "type": "Text",
+          "required": true,
+          "description": "Category: Strategic, Operational, or Assurance"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:GovernanceAction",
+      "name": "GovernanceAction",
+      "description": "A specific board-level governance action under a principle defining what directors and senior leaders must do to govern cyber security effectively. Preserved from CG-ONT merge (v2.0.0).",
+      "properties": [
+        {
+          "name": "actionCode",
+          "type": "Text",
+          "required": true,
+          "description": "Action identifier code (e.g. A1, B2, E4)"
+        },
+        {
+          "name": "actionName",
+          "type": "Text",
+          "required": true,
+          "description": "Short name summarising the action"
+        },
+        {
+          "name": "actionDescription",
+          "type": "Text",
+          "required": true,
+          "description": "Full description of the governance action and board responsibilities"
+        },
+        {
+          "name": "boardRelevance",
+          "type": "Text",
+          "required": true,
+          "description": "How the action relates to board-level oversight and accountability"
+        },
+        {
+          "name": "dependsOn",
+          "type": "Text",
+          "required": false,
+          "description": "Comma-separated list of action codes this action depends on"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:GovernanceGlossaryTerm",
+      "name": "GovernanceGlossaryTerm",
+      "description": "A defined term from a governance code glossary providing precise definitions for key governance concepts. Preserved from CG-ONT merge (v2.0.0).",
+      "properties": [
+        {
+          "name": "termId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the glossary term"
+        },
+        {
+          "name": "term",
+          "type": "Text",
+          "required": true,
+          "description": "The glossary term word or phrase"
+        },
+        {
+          "name": "definition",
+          "type": "Text",
+          "required": true,
+          "description": "Full definition of the term as published in the code glossary"
+        },
+        {
+          "name": "relatedActionCodes",
+          "type": "Text",
+          "required": false,
+          "description": "Comma-separated action codes where this term is referenced"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "grc-fw:GovernanceActionMapping",
+      "name": "GovernanceActionMapping",
+      "description": "A cross-framework mapping entry linking a governance action to an equivalent or related control in an external international standard. Preserved from CG-ONT merge (v2.0.0). 150 mapping instances across 9 standards in separate instance file.",
+      "properties": [
+        {
+          "name": "mappingId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique mapping identifier (e.g. MAP-A1-CAF-001)"
+        },
+        {
+          "name": "targetFramework",
+          "type": "Text",
+          "required": true,
+          "description": "Name of the target framework being mapped to"
+        },
+        {
+          "name": "targetFrameworkVersion",
+          "type": "Text",
+          "required": true,
+          "description": "Version of the target framework"
+        },
+        {
+          "name": "targetControlId",
+          "type": "Text",
+          "required": true,
+          "description": "Control or section identifier in the target framework"
+        },
+        {
+          "name": "targetControlName",
+          "type": "Text",
+          "required": false,
+          "description": "Human-readable name of the target control or section"
+        },
+        {
+          "name": "mappingStrength",
+          "type": "Text",
+          "required": true,
+          "description": "Mapping strength: Full, Partial, or Related"
+        },
+        {
+          "name": "mappingNotes",
+          "type": "Text",
+          "required": false,
+          "description": "Additional notes on the mapping alignment context"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ncsc-caf:CAFPrinciple",
+      "name": "CAFPrinciple",
+      "description": "External NCSC-CAF entity representing a principle within the Cyber Assessment Framework",
+      "oaa:externalOntology": "ncsc-caf:NCSCCAFOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ncsc-caf:ContributingOutcome",
+      "name": "ContributingOutcome",
+      "description": "External NCSC-CAF entity representing a contributing outcome under a CAF principle",
+      "oaa:externalOntology": "ncsc-caf:NCSCCAFOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "org:Organization",
+      "name": "Organization",
+      "description": "External ORG-ONT entity representing a domain authority organisation that publishes governance codes and standards",
+      "oaa:externalOntology": "org:OrganizationOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ctx:GeoContext",
+      "name": "GeoContext",
+      "description": "External CTX entity providing geographic and jurisdictional context for regulatory applicability",
+      "oaa:externalOntology": "ctx:ContextOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ctx:FunctionalMaturity",
+      "name": "FunctionalMaturity",
+      "description": "External CTX entity providing per-function maturity scores driven by GRC requirements",
+      "oaa:externalOntology": "ctx:ContextOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ctx:MarketClassification",
+      "name": "MarketClassification",
+      "description": "External CTX entity linking regulations to specific market verticals",
+      "oaa:externalOntology": "ctx:ContextOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ctx:ITMaturity",
+      "name": "ITMaturity",
+      "description": "External CTX entity providing IT infrastructure maturity required by compliance certifications",
+      "oaa:externalOntology": "ctx:ContextOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "erm:RiskRegister",
+      "name": "RiskRegister",
+      "description": "Forward reference — ERM-ONT entity providing enterprise risk registers for governance oversight",
+      "oaa:externalOntology": "erm:ERMOntology",
+      "oaa:stubEntity": true,
+      "oaa:forwardReference": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "erm:Risk",
+      "name": "Risk",
+      "description": "Forward reference — ERM-ONT entity providing individual risk entries informing governance decisions",
+      "oaa:externalOntology": "erm:ERMOntology",
+      "oaa:stubEntity": true,
+      "oaa:forwardReference": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "sec-fw:SecurityPosture",
+      "name": "SecurityPosture",
+      "description": "Forward reference — SEC-FW-ONT entity providing security posture assessment for governance-to-security oversight",
+      "oaa:externalOntology": "sec-fw:SecurityFrameworkOntology",
+      "oaa:stubEntity": true,
+      "oaa:forwardReference": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "sec-fw:SecurityDomain",
+      "name": "SecurityDomain",
+      "description": "Forward reference — SEC-FW-ONT entity providing security domain classifications (Network, Identity, Data, Application, AI-Model, AI-Pipeline, Supply-Chain, etc.)",
+      "oaa:externalOntology": "sec-fw:SecurityFrameworkOntology",
+      "oaa:stubEntity": true,
+      "oaa:forwardReference": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "comp-fw:ComplianceAssessment",
+      "name": "ComplianceAssessment",
+      "description": "Forward reference — COMP-FW-ONT entity providing compliance assessment results for governance oversight",
+      "oaa:externalOntology": "comp-fw:ComplianceFrameworkOntology",
+      "oaa:stubEntity": true,
+      "oaa:forwardReference": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ai-gov:AISystem",
+      "name": "AISystem",
+      "description": "Forward reference — AI-GOV-ONT entity providing AI system inventory for governance-to-AI oversight",
+      "oaa:externalOntology": "ai-gov:AIGovernanceOntology",
+      "oaa:stubEntity": true,
+      "oaa:forwardReference": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "vsom:VisionStatement",
+      "name": "VisionStatement",
+      "description": "External VSOM-ONT entity — VSEM bridge target for governance-to-vision alignment",
+      "oaa:externalOntology": "vsom:VSOMOntology",
+      "oaa:stubEntity": true
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "vsom:StrategicObjective",
+      "name": "StrategicObjective",
+      "description": "External VSOM-ONT entity — VSEM bridge target for governance-to-strategy alignment",
+      "oaa:externalOntology": "vsom:VSOMOntology",
+      "oaa:stubEntity": true
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasGRCContext",
+      "name": "Has GRC Context",
+      "description": "Links a GovernanceFramework to its GRC organisational context",
+      "domainIncludes": [
+        "grc-fw:GovernanceFramework"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GRCContext"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasGovernanceFramework",
+      "name": "Has Governance Framework",
+      "description": "Links a GRCContext to one or more adopted governance frameworks",
+      "domainIncludes": [
+        "grc-fw:GRCContext"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernanceFramework"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasGovernanceBody",
+      "name": "Has Governance Body",
+      "description": "Links a GovernanceFramework to its governance bodies (boards, committees, forums)",
+      "domainIncludes": [
+        "grc-fw:GovernanceFramework"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernanceBody"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasDecisionRight",
+      "name": "Has Decision Right",
+      "description": "Links a GovernanceBody to its formalised decision rights",
+      "domainIncludes": [
+        "grc-fw:GovernanceBody"
+      ],
+      "rangeIncludes": [
+        "grc-fw:DecisionRight"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasGovernancePolicy",
+      "name": "Has Governance Policy",
+      "description": "Links a GovernanceFramework to its policies, standards, guidelines, and procedures",
+      "domainIncludes": [
+        "grc-fw:GovernanceFramework"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernancePolicy"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:policyDerivedFrom",
+      "name": "Policy Derived From",
+      "description": "Links a policy to its parent in the policy hierarchy (Policy → Standard → Guideline → Procedure → Baseline → Exception)",
+      "domainIncludes": [
+        "grc-fw:GovernancePolicy"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernancePolicy"
+      ],
+      "cardinality": "0..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasAssurance",
+      "name": "Has Assurance",
+      "description": "Links a GovernanceFramework to its assurance activities",
+      "domainIncludes": [
+        "grc-fw:GovernanceFramework"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernanceAssurance"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasFinding",
+      "name": "Has Finding",
+      "description": "Links a GovernanceAssurance activity to its raised findings",
+      "domainIncludes": [
+        "grc-fw:GovernanceAssurance"
+      ],
+      "rangeIncludes": [
+        "grc-fw:AssuranceFinding"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:findingAffectsPolicy",
+      "name": "Finding Affects Policy",
+      "description": "Links an AssuranceFinding to the GovernancePolicy it identifies a gap or non-compliance in",
+      "domainIncludes": [
+        "grc-fw:AssuranceFinding"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernancePolicy"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:bodyOwnsCode",
+      "name": "Body Owns Code",
+      "description": "Links a GovernanceBody to governance codes it owns or is responsible for implementing",
+      "domainIncludes": [
+        "grc-fw:GovernanceBody"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernanceCode"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasRegulatoryRequirements",
+      "name": "Has Regulatory Requirements",
+      "description": "Links a GRCContext to its applicable RegulatoryRequirements",
+      "domainIncludes": [
+        "grc-fw:GRCContext"
+      ],
+      "rangeIncludes": [
+        "grc-fw:RegulatoryRequirement"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasComplianceFrameworks",
+      "name": "Has Compliance Frameworks",
+      "description": "Links a GRCContext to its applied ComplianceFrameworks",
+      "domainIncludes": [
+        "grc-fw:GRCContext"
+      ],
+      "rangeIncludes": [
+        "grc-fw:ComplianceFramework"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasGovernanceModel",
+      "name": "Has Governance Model",
+      "description": "Links a GRCContext to the organisation's GovernanceModel",
+      "domainIncludes": [
+        "grc-fw:GRCContext"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernanceModel"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasGovernanceCode",
+      "name": "Has Governance Code",
+      "description": "Links a GovernanceModel to published governance codes for board-level oversight",
+      "domainIncludes": [
+        "grc-fw:GovernanceModel"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernanceCode"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasPrinciple",
+      "name": "Has Principle",
+      "description": "A GovernanceCode contains one or more GovernancePrinciples",
+      "domainIncludes": [
+        "grc-fw:GovernanceCode"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernancePrinciple"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:belongsToCode",
+      "name": "Belongs To Code",
+      "description": "A GovernancePrinciple belongs to exactly one parent GovernanceCode",
+      "domainIncludes": [
+        "grc-fw:GovernancePrinciple"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernanceCode"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasAction",
+      "name": "Has Action",
+      "description": "A GovernancePrinciple contains one or more GovernanceActions",
+      "domainIncludes": [
+        "grc-fw:GovernancePrinciple"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernanceAction"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:belongsToPrinciple",
+      "name": "Belongs To Principle",
+      "description": "A GovernanceAction belongs to exactly one parent GovernancePrinciple",
+      "domainIncludes": [
+        "grc-fw:GovernanceAction"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernancePrinciple"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:dependsOnAction",
+      "name": "Depends On Action",
+      "description": "A GovernanceAction may depend on one or more other actions",
+      "domainIncludes": [
+        "grc-fw:GovernanceAction"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernanceAction"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:usesGlossaryTerm",
+      "name": "Uses Glossary Term",
+      "description": "A GovernanceAction references defined glossary terms",
+      "domainIncludes": [
+        "grc-fw:GovernanceAction"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernanceGlossaryTerm"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:hasActionMapping",
+      "name": "Has Action Mapping",
+      "description": "A GovernanceAction has cross-framework mappings to external standards",
+      "domainIncludes": [
+        "grc-fw:GovernanceAction"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernanceActionMapping"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:belongsToAction",
+      "name": "Belongs To Action",
+      "description": "A GovernanceActionMapping belongs to exactly one parent GovernanceAction",
+      "domainIncludes": [
+        "grc-fw:GovernanceActionMapping"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GovernanceAction"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:governanceInContext",
+      "name": "Governance In Context",
+      "description": "A GovernanceCode is applied within a GRC organisational context",
+      "domainIncludes": [
+        "grc-fw:GovernanceCode"
+      ],
+      "rangeIncludes": [
+        "grc-fw:GRCContext"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:governanceRequiresCompliance",
+      "name": "Governance Requires Compliance",
+      "description": "A GovernanceCode requires compliance with one or more compliance frameworks",
+      "domainIncludes": [
+        "grc-fw:GovernanceCode"
+      ],
+      "rangeIncludes": [
+        "grc-fw:ComplianceFramework"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:regulatoryShapedByGeo",
+      "name": "Regulatory Shaped By Geo",
+      "description": "Links a RegulatoryRequirement to GeoContext for jurisdiction-specific compliance",
+      "domainIncludes": [
+        "grc-fw:RegulatoryRequirement"
+      ],
+      "rangeIncludes": [
+        "ctx:GeoContext"
+      ],
+      "cardinality": "1..*",
+      "oaa:crossOntologyRef": "CTX"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:grcDrivesFunctionalMaturity",
+      "name": "GRC Drives Functional Maturity",
+      "description": "Links GRCContext to FunctionalMaturity, reflecting how GRC requirements drive maturity needs",
+      "domainIncludes": [
+        "grc-fw:GRCContext"
+      ],
+      "rangeIncludes": [
+        "ctx:FunctionalMaturity"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "CTX"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:regulatoryInMarket",
+      "name": "Regulatory In Market",
+      "description": "Links a RegulatoryRequirement to MarketClassification for sector-specific regulation",
+      "domainIncludes": [
+        "grc-fw:RegulatoryRequirement"
+      ],
+      "rangeIncludes": [
+        "ctx:MarketClassification"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "CTX"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:complianceRequiresITMaturity",
+      "name": "Compliance Requires IT Maturity",
+      "description": "Links a ComplianceFramework to ITMaturity for minimum capability requirements",
+      "domainIncludes": [
+        "grc-fw:ComplianceFramework"
+      ],
+      "rangeIncludes": [
+        "ctx:ITMaturity"
+      ],
+      "cardinality": "0..1",
+      "oaa:crossOntologyRef": "CTX"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:regulatoryImplementedByGDPR",
+      "name": "Regulatory Implemented By GDPR",
+      "description": "Links a RegulatoryRequirement to GDPR DataProtectionPrinciples",
+      "domainIncludes": [
+        "grc-fw:RegulatoryRequirement"
+      ],
+      "rangeIncludes": [
+        "gdpr:DataProtectionPrinciple"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "GDPR"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:frameworkImplementedByMCSB",
+      "name": "Framework Implemented By MCSB",
+      "description": "Links a ComplianceFramework to MCSB SecurityControls for cloud security benchmark alignment",
+      "domainIncludes": [
+        "grc-fw:ComplianceFramework"
+      ],
+      "rangeIncludes": [
+        "mcsb:SecurityControl"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "MCSB"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:frameworkImplementedByPII",
+      "name": "Framework Implemented By PII",
+      "description": "Links a ComplianceFramework to PII Governance for data protection alignment",
+      "domainIncludes": [
+        "grc-fw:ComplianceFramework"
+      ],
+      "rangeIncludes": [
+        "pii:ComplianceFramework"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "PII"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:governanceAlignedToCAF",
+      "name": "Governance Aligned To CAF",
+      "description": "A GovernanceAction aligns to NCSC CAF principles for operational compliance bridge",
+      "domainIncludes": [
+        "grc-fw:GovernanceAction"
+      ],
+      "rangeIncludes": [
+        "ncsc-caf:CAFPrinciple"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "NCSC-CAF"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:governanceAlignedToCAFOutcome",
+      "name": "Governance Aligned To CAF Outcome",
+      "description": "A GovernanceAction aligns to NCSC CAF contributing outcomes for detailed assessment mapping",
+      "domainIncludes": [
+        "grc-fw:GovernanceAction"
+      ],
+      "rangeIncludes": [
+        "ncsc-caf:ContributingOutcome"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "NCSC-CAF"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:publishedByAuthority",
+      "name": "Published By Authority",
+      "description": "A GovernanceCode is published by exactly one domain authority organization",
+      "domainIncludes": [
+        "grc-fw:GovernanceCode"
+      ],
+      "rangeIncludes": [
+        "org:Organization"
+      ],
+      "cardinality": "1..1",
+      "oaa:crossOntologyRef": "ORG"
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:governsRisk",
+      "name": "Governs Risk",
+      "description": "Links GRCContext to enterprise risk registers — governance oversight of risk domain. Maps to COBIT EDM03 (Ensured Risk Optimisation) and NCSC Cyber Governance Code Principle A (Risk Management).",
+      "domainIncludes": [
+        "grc-fw:GRCContext"
+      ],
+      "rangeIncludes": [
+        "erm:RiskRegister"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "ERM",
+      "oaa:forwardReference": true
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:governsSecurity",
+      "name": "Governs Security",
+      "description": "Links GRCContext to security posture assessment — governance oversight of security domain. Maps to NIST CSF 2.0 GOVERN function and NCSC Cyber Governance Code Principle B (Cyber Strategy).",
+      "domainIncludes": [
+        "grc-fw:GRCContext"
+      ],
+      "rangeIncludes": [
+        "sec-fw:SecurityPosture"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "SEC-FW",
+      "oaa:forwardReference": true
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:governsCompliance",
+      "name": "Governs Compliance",
+      "description": "Links GRCContext to compliance assessments — governance oversight of compliance domain. Maps to COBIT MEA03 (Managed Compliance).",
+      "domainIncludes": [
+        "grc-fw:GRCContext"
+      ],
+      "rangeIncludes": [
+        "comp-fw:ComplianceAssessment"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "COMP-FW",
+      "oaa:forwardReference": true
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:governsAI",
+      "name": "Governs AI",
+      "description": "Links GRCContext to AI system inventory — governance oversight of AI domain. Maps to ISO 42001 AIMS and NIST AI RMF GOVERN function.",
+      "domainIncludes": [
+        "grc-fw:GRCContext"
+      ],
+      "rangeIncludes": [
+        "ai-gov:AISystem"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "AI-GOV",
+      "oaa:forwardReference": true
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:policyAppliesToSecurityDomain",
+      "name": "Policy Applies To Security Domain",
+      "description": "Links a GovernancePolicy to specific security domains it governs — enables security-specific policy tracking",
+      "domainIncludes": [
+        "grc-fw:GovernancePolicy"
+      ],
+      "rangeIncludes": [
+        "sec-fw:SecurityDomain"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "SEC-FW",
+      "oaa:forwardReference": true
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:assuranceAssessesSecurityPosture",
+      "name": "Assurance Assesses Security Posture",
+      "description": "Links a GovernanceAssurance activity to the security posture it assesses — enables security assurance tracking (PenTest, RedTeam, certification)",
+      "domainIncludes": [
+        "grc-fw:GovernanceAssurance"
+      ],
+      "rangeIncludes": [
+        "sec-fw:SecurityPosture"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "SEC-FW",
+      "oaa:forwardReference": true
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:assuranceAssessesRisk",
+      "name": "Assurance Assesses Risk",
+      "description": "Links a GovernanceAssurance activity to risks it evaluates — enables risk-based assurance",
+      "domainIncludes": [
+        "grc-fw:GovernanceAssurance"
+      ],
+      "rangeIncludes": [
+        "erm:Risk"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "ERM",
+      "oaa:forwardReference": true
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:alignsToVision",
+      "name": "Aligns To Vision",
+      "description": "VSEM bridge — Links GovernanceFramework to VisionStatement ensuring governance is aligned to organisational vision. Answers: Is governance supporting our strategic direction?",
+      "domainIncludes": [
+        "grc-fw:GovernanceFramework"
+      ],
+      "rangeIncludes": [
+        "vsom:VisionStatement"
+      ],
+      "cardinality": "0..1",
+      "oaa:crossOntologyRef": "VSOM",
+      "oaa:vsemBridge": true
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:supportsStrategy",
+      "name": "Supports Strategy",
+      "description": "VSEM bridge — Links GovernancePolicy to StrategicObjective ensuring policies support strategic execution",
+      "domainIncludes": [
+        "grc-fw:GovernancePolicy"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategicObjective"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM",
+      "oaa:vsemBridge": true
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:constrainsExecution",
+      "name": "Constrains Execution",
+      "description": "VSEM bridge — GovernancePolicy constrains how execution is performed, linking governance guardrails to operational objectives",
+      "domainIncludes": [
+        "grc-fw:GovernancePolicy"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategicObjective"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM",
+      "oaa:vsemBridge": true
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:validatesAlignment",
+      "name": "Validates Alignment",
+      "description": "VSEM bridge — GovernanceAssurance validates that governance remains aligned to strategic objectives",
+      "domainIncludes": [
+        "grc-fw:GovernanceAssurance"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategicObjective"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM",
+      "oaa:vsemBridge": true
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:achievesObjective",
+      "name": "Achieves Objective",
+      "description": "VSEM bridge — GovernanceBody achieves strategic objectives through governance activities, decision-making, and oversight responsibilities",
+      "domainIncludes": [
+        "grc-fw:GovernanceBody"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategicObjective"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM",
+      "oaa:vsemBridge": true
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:requiresAlignment",
+      "name": "Requires Alignment",
+      "description": "VSEM bridge — DecisionRight requires alignment to a strategic objective, ensuring governance decisions are strategically grounded",
+      "domainIncludes": [
+        "grc-fw:DecisionRight"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategicObjective"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM",
+      "oaa:vsemBridge": true
+    },
+    {
+      "@type": "Property",
+      "@id": "grc-fw:measuresImpact",
+      "name": "Measures Impact",
+      "description": "VSEM bridge — AssuranceFinding measures impact on strategic objectives, linking assurance outcomes to strategic performance",
+      "domainIncludes": [
+        "grc-fw:AssuranceFinding"
+      ],
+      "rangeIncludes": [
+        "vsom:StrategicObjective"
+      ],
+      "cardinality": "0..*",
+      "oaa:crossOntologyRef": "VSOM",
+      "oaa:vsemBridge": true
+    }
+  ],
+  "oaa:enumerations": [
+    {
+      "@id": "grc-fw:GovernanceLevel",
+      "@type": "DefinedTermSet",
+      "name": "GovernanceLevel",
+      "description": "4-level governance scoping model — determines which governance policies, controls, and bodies apply at each organisational tier",
+      "hasDefinedTerm": [
+        {
+          "@id": "grc-fw:govlevel/platform",
+          "name": "Platform",
+          "description": "Platform-wide governance applying to the entire technology estate and all instances — board-level, enterprise-wide policies"
+        },
+        {
+          "@id": "grc-fw:govlevel/instance",
+          "name": "Instance",
+          "description": "Instance-level governance applying to a specific PF-Instance deployment (e.g., PFI-AIRL, PFI-W4M) — instance-specific policies and controls"
+        },
+        {
+          "@id": "grc-fw:govlevel/product",
+          "name": "Product",
+          "description": "Product-level governance applying to a specific product or service offering — product-specific compliance and security requirements"
+        },
+        {
+          "@id": "grc-fw:govlevel/client",
+          "name": "Client",
+          "description": "Client-level governance applying to a specific client engagement — client-specific regulatory requirements and contractual obligations"
+        }
+      ]
+    },
+    {
+      "@id": "grc-fw:BodyType",
+      "@type": "DefinedTermSet",
+      "name": "BodyType",
+      "description": "Classification of governance bodies by function and authority",
+      "hasDefinedTerm": [
+        {
+          "@id": "grc-fw:bodytype/board",
+          "name": "Board",
+          "description": "Main board of directors — ultimate governance authority"
+        },
+        {
+          "@id": "grc-fw:bodytype/steering-committee",
+          "name": "SteeringCommittee",
+          "description": "Programme or portfolio steering committee providing strategic direction"
+        },
+        {
+          "@id": "grc-fw:bodytype/risk-committee",
+          "name": "RiskCommittee",
+          "description": "Dedicated risk oversight committee — typically board sub-committee"
+        },
+        {
+          "@id": "grc-fw:bodytype/audit-committee",
+          "name": "AuditCommittee",
+          "description": "Audit and assurance oversight committee — IIA Three Lines interface"
+        },
+        {
+          "@id": "grc-fw:bodytype/technology-committee",
+          "name": "TechnologyCommittee",
+          "description": "Technology governance committee overseeing IT and digital strategy"
+        },
+        {
+          "@id": "grc-fw:bodytype/arb",
+          "name": "ARB",
+          "description": "Architecture Review Board — technical governance and standards compliance"
+        },
+        {
+          "@id": "grc-fw:bodytype/ai-ethics-board",
+          "name": "AIEthicsBoard",
+          "description": "AI ethics and governance board — EU AI Act / ISO 42001 compliance"
+        },
+        {
+          "@id": "grc-fw:bodytype/data-governance-board",
+          "name": "DataGovernanceBoard",
+          "description": "Data governance board overseeing data quality, privacy, and classification"
+        },
+        {
+          "@id": "grc-fw:bodytype/security-forum",
+          "name": "SecurityForum",
+          "description": "Information security forum or working group — operational security governance"
+        }
+      ]
+    },
+    {
+      "@id": "grc-fw:DecisionDomain",
+      "@type": "DefinedTermSet",
+      "name": "DecisionDomain",
+      "description": "Domains of decision authority aligned to COBIT EDM governance objectives",
+      "hasDefinedTerm": [
+        {
+          "@id": "grc-fw:decdomain/investment",
+          "name": "Investment",
+          "description": "IT/AI investment decisions — COBIT EDM02 (Ensured Benefits Delivery)"
+        },
+        {
+          "@id": "grc-fw:decdomain/architecture",
+          "name": "Architecture",
+          "description": "Enterprise architecture and technology standards decisions"
+        },
+        {
+          "@id": "grc-fw:decdomain/security",
+          "name": "Security",
+          "description": "Security posture, control selection, and security investment decisions"
+        },
+        {
+          "@id": "grc-fw:decdomain/risk-acceptance",
+          "name": "Risk-Acceptance",
+          "description": "Formal risk acceptance decisions — COBIT EDM03"
+        },
+        {
+          "@id": "grc-fw:decdomain/data-classification",
+          "name": "Data-Classification",
+          "description": "Data classification and handling requirement decisions"
+        },
+        {
+          "@id": "grc-fw:decdomain/vendor-selection",
+          "name": "Vendor-Selection",
+          "description": "Vendor selection and third-party risk acceptance decisions"
+        },
+        {
+          "@id": "grc-fw:decdomain/policy-approval",
+          "name": "Policy-Approval",
+          "description": "Policy creation, amendment, and retirement decisions"
+        },
+        {
+          "@id": "grc-fw:decdomain/technology-adoption",
+          "name": "Technology-Adoption",
+          "description": "New technology and platform adoption decisions"
+        },
+        {
+          "@id": "grc-fw:decdomain/ai-deployment",
+          "name": "AI-Deployment",
+          "description": "AI system deployment and risk tier classification decisions — EU AI Act"
+        },
+        {
+          "@id": "grc-fw:decdomain/regulatory-response",
+          "name": "Regulatory-Response",
+          "description": "Regulatory change impact assessment and response decisions"
+        },
+        {
+          "@id": "grc-fw:decdomain/benefit-realisation",
+          "name": "Benefit-Realisation",
+          "description": "Benefits realisation review and investment case decisions — bridges to VE-Series"
+        }
+      ]
+    },
+    {
+      "@id": "grc-fw:PolicyType",
+      "@type": "DefinedTermSet",
+      "name": "PolicyType",
+      "description": "Policy hierarchy classification from strategic policy through to operational procedure",
+      "hasDefinedTerm": [
+        {
+          "@id": "grc-fw:poltype/policy",
+          "name": "Policy",
+          "description": "High-level policy statement defining intent and direction"
+        },
+        {
+          "@id": "grc-fw:poltype/standard",
+          "name": "Standard",
+          "description": "Mandatory standard specifying minimum requirements"
+        },
+        {
+          "@id": "grc-fw:poltype/guideline",
+          "name": "Guideline",
+          "description": "Advisory guideline recommending best practices"
+        },
+        {
+          "@id": "grc-fw:poltype/procedure",
+          "name": "Procedure",
+          "description": "Step-by-step operational procedure for implementation"
+        },
+        {
+          "@id": "grc-fw:poltype/baseline",
+          "name": "Baseline",
+          "description": "Minimum security or compliance baseline configuration"
+        },
+        {
+          "@id": "grc-fw:poltype/exception",
+          "name": "Exception",
+          "description": "Documented exception to a policy or standard with risk acceptance"
+        }
+      ]
+    },
+    {
+      "@id": "grc-fw:AssuranceType",
+      "@type": "DefinedTermSet",
+      "name": "AssuranceType",
+      "description": "Types of governance assurance activities aligned to IIA Three Lines and COBIT MEA",
+      "hasDefinedTerm": [
+        {
+          "@id": "grc-fw:asstype/internal-audit",
+          "name": "InternalAudit",
+          "description": "Internal audit — IIA Three Lines Line 3 independent assurance"
+        },
+        {
+          "@id": "grc-fw:asstype/external-audit",
+          "name": "ExternalAudit",
+          "description": "External audit by independent firm (Big 4 or specialist)"
+        },
+        {
+          "@id": "grc-fw:asstype/pen-test",
+          "name": "PenTest",
+          "description": "Penetration testing — technical security assurance"
+        },
+        {
+          "@id": "grc-fw:asstype/red-team",
+          "name": "RedTeam",
+          "description": "Red team exercise — adversarial security assurance"
+        },
+        {
+          "@id": "grc-fw:asstype/certification-audit",
+          "name": "CertificationAudit",
+          "description": "Certification audit (ISO 27001, SOC2, Cyber Essentials Plus, etc.)"
+        },
+        {
+          "@id": "grc-fw:asstype/regulatory-inspection",
+          "name": "RegulatoryInspection",
+          "description": "Regulatory inspection by enforcement body (FCA, ICO, CQC, etc.)"
+        },
+        {
+          "@id": "grc-fw:asstype/vendor-assessment",
+          "name": "VendorAssessment",
+          "description": "Third-party/vendor security and compliance assessment"
+        },
+        {
+          "@id": "grc-fw:asstype/ai-model-audit",
+          "name": "AI-Model-Audit",
+          "description": "AI model audit — bias testing, fairness assessment, EU AI Act conformity"
+        }
+      ]
+    },
+    {
+      "@id": "grc-fw:ThreeLineRole",
+      "@type": "DefinedTermSet",
+      "name": "ThreeLineRole",
+      "description": "IIA Three Lines Model 2020 roles for governance accountability",
+      "hasDefinedTerm": [
+        {
+          "@id": "grc-fw:threeline/governing-body",
+          "name": "Governing-Body",
+          "description": "Governing body (board) — accountability to stakeholders, sets direction"
+        },
+        {
+          "@id": "grc-fw:threeline/line1",
+          "name": "Line1-Management",
+          "description": "First line: management — owns and manages risk, delivers services"
+        },
+        {
+          "@id": "grc-fw:threeline/line2",
+          "name": "Line2-Oversight",
+          "description": "Second line: oversight functions — expertise, monitoring, challenge"
+        },
+        {
+          "@id": "grc-fw:threeline/line3",
+          "name": "Line3-Assurance",
+          "description": "Third line: internal audit — independent, objective assurance"
+        }
+      ]
+    },
+    {
+      "@id": "grc-fw:COBITDomain",
+      "@type": "DefinedTermSet",
+      "name": "COBITDomain",
+      "description": "COBIT 2019 governance and management domains for cross-reference — full process models in PE-Series",
+      "hasDefinedTerm": [
+        {
+          "@id": "grc-fw:cobit/edm",
+          "name": "EDM",
+          "description": "Evaluate, Direct and Monitor — 5 governance objectives (EDM01-EDM05)"
+        },
+        {
+          "@id": "grc-fw:cobit/apo",
+          "name": "APO",
+          "description": "Align, Plan and Organise — 14 management objectives (APO01-APO14)"
+        },
+        {
+          "@id": "grc-fw:cobit/bai",
+          "name": "BAI",
+          "description": "Build, Acquire and Implement — 11 management objectives (BAI01-BAI11)"
+        },
+        {
+          "@id": "grc-fw:cobit/dss",
+          "name": "DSS",
+          "description": "Deliver, Service and Support — 6 management objectives (DSS01-DSS06)"
+        },
+        {
+          "@id": "grc-fw:cobit/mea",
+          "name": "MEA",
+          "description": "Monitor, Evaluate and Assess — 4 management objectives (MEA01-MEA04)"
+        }
+      ]
+    },
+    {
+      "@id": "grc-fw:EnforcementLevel",
+      "@type": "DefinedTermSet",
+      "name": "EnforcementLevel",
+      "description": "Policy enforcement level classification",
+      "hasDefinedTerm": [
+        {
+          "@id": "grc-fw:enforce/mandatory",
+          "name": "Mandatory",
+          "description": "Legally or contractually required — non-compliance triggers formal action"
+        },
+        {
+          "@id": "grc-fw:enforce/advisory",
+          "name": "Advisory",
+          "description": "Strongly recommended — exceptions require formal risk acceptance"
+        },
+        {
+          "@id": "grc-fw:enforce/voluntary",
+          "name": "Voluntary",
+          "description": "Best practice guidance — adoption encouraged but not mandated"
+        },
+        {
+          "@id": "grc-fw:enforce/conditional",
+          "name": "Conditional",
+          "description": "Required only when specific conditions are met (e.g., data classification, sector, jurisdiction)"
+        }
+      ]
+    },
+    {
+      "@id": "grc-fw:CodeType",
+      "@type": "DefinedTermSet",
+      "name": "CodeType",
+      "description": "Classification of governance code publication types",
+      "hasDefinedTerm": [
+        {
+          "@id": "grc-fw:codetype/code-of-practice",
+          "name": "CodeOfPractice",
+          "description": "Voluntary code of practice with recommended governance actions"
+        },
+        {
+          "@id": "grc-fw:codetype/certification",
+          "name": "Certification",
+          "description": "Certification scheme with auditable governance requirements"
+        },
+        {
+          "@id": "grc-fw:codetype/standard",
+          "name": "Standard",
+          "description": "Formal standard published by a recognised standards body"
+        },
+        {
+          "@id": "grc-fw:codetype/guide",
+          "name": "Guide",
+          "description": "Best practice guide or handbook for governance practitioners"
+        },
+        {
+          "@id": "grc-fw:codetype/regulation",
+          "name": "Regulation",
+          "description": "Legally binding regulation with mandatory compliance requirements"
+        }
+      ]
+    },
+    {
+      "@id": "grc-fw:CodeStatus",
+      "@type": "DefinedTermSet",
+      "name": "CodeStatus",
+      "description": "Lifecycle status of a governance code or standard",
+      "hasDefinedTerm": [
+        {
+          "@id": "grc-fw:codestatus/active",
+          "name": "Active",
+          "description": "Currently active and in force"
+        },
+        {
+          "@id": "grc-fw:codestatus/superseded",
+          "name": "Superseded",
+          "description": "Replaced by a newer version"
+        },
+        {
+          "@id": "grc-fw:codestatus/draft",
+          "name": "Draft",
+          "description": "Under development and not yet published"
+        }
+      ]
+    },
+    {
+      "@id": "grc-fw:PrincipleCategory",
+      "@type": "DefinedTermSet",
+      "name": "PrincipleCategory",
+      "description": "Strategic categorisation of governance principles",
+      "hasDefinedTerm": [
+        {
+          "@id": "grc-fw:princat/strategic",
+          "name": "Strategic",
+          "description": "Principles focused on strategic direction and risk appetite"
+        },
+        {
+          "@id": "grc-fw:princat/operational",
+          "name": "Operational",
+          "description": "Principles focused on operational security practices and people"
+        },
+        {
+          "@id": "grc-fw:princat/assurance",
+          "name": "Assurance",
+          "description": "Principles focused on assurance, review, and continuous improvement"
+        }
+      ]
+    },
+    {
+      "@id": "grc-fw:MappingStrength",
+      "@type": "DefinedTermSet",
+      "name": "MappingStrength",
+      "description": "Degree of alignment between a governance action and target framework control",
+      "hasDefinedTerm": [
+        {
+          "@id": "grc-fw:mapstr/full",
+          "name": "Full",
+          "description": "Direct and complete mapping"
+        },
+        {
+          "@id": "grc-fw:mapstr/partial",
+          "name": "Partial",
+          "description": "Partial overlap — covers some aspects"
+        },
+        {
+          "@id": "grc-fw:mapstr/related",
+          "name": "Related",
+          "description": "Thematic relationship without direct control mapping"
+        }
+      ]
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-GRC-001",
+      "name": "GRC Context Requires Coverage",
+      "condition": "IF a GRCContext is created",
+      "action": "THEN it MUST have at least one RegulatoryRequirement or ComplianceFramework linked to define minimum GRC scope",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-GRC-002",
+      "name": "Regulatory Requirement Requires Jurisdiction",
+      "condition": "IF a RegulatoryRequirement is created",
+      "action": "THEN jurisdictions MUST be specified and SHOULD map to an existing GeoContext operatingRegions value",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-GRC-003",
+      "name": "Certified Framework Requires Expiry",
+      "condition": "IF a ComplianceFramework has certificationStatus of Certified",
+      "action": "THEN certificationExpiry MUST be specified to enable renewal tracking",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-GRC-004",
+      "name": "Governance Model Requires Type",
+      "condition": "IF a GovernanceModel is created",
+      "action": "THEN governanceType MUST be specified from the standard governance model types",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-GRC-005",
+      "name": "Principle Requires Code Parent",
+      "condition": "IF a GovernancePrinciple exists",
+      "action": "THEN it MUST have exactly one belongsToCode relationship to a GovernanceCode",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-GRC-006",
+      "name": "Action Requires Principle Parent",
+      "condition": "IF a GovernanceAction exists",
+      "action": "THEN it MUST have exactly one belongsToPrinciple relationship to a GovernancePrinciple",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-GRC-007",
+      "name": "Mapping Requires Action Parent",
+      "condition": "IF a GovernanceActionMapping exists",
+      "action": "THEN it MUST have exactly one belongsToAction relationship to a GovernanceAction",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-GRC-008",
+      "name": "Code Must Have Publisher",
+      "condition": "IF a GovernanceCode exists",
+      "action": "THEN it MUST have exactly one publishedByAuthority relationship to an org:Organization",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-GRC-009",
+      "name": "Mapping Strength Validation",
+      "condition": "IF a GovernanceActionMapping has a mappingStrength property",
+      "action": "THEN mappingStrength MUST be one of Full, Partial, or Related",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-GRC-010",
+      "name": "Code Type Validation",
+      "condition": "IF a GovernanceCode has a codeType property",
+      "action": "THEN codeType MUST be one of CodeOfPractice, Certification, Standard, Guide, or Regulation",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-GRC-011",
+      "name": "Governance Level Required",
+      "condition": "IF a GRCContext, GovernanceFramework, GovernanceBody, DecisionRight, GovernancePolicy, or GovernanceAssurance is created",
+      "action": "THEN governanceLevel MUST be specified as Platform, Instance, Product, or Client",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-GRC-012",
+      "name": "Governance Body Requires Three Lines Role",
+      "condition": "IF a GovernanceBody is created",
+      "action": "THEN threeLineRole MUST be specified as Governing-Body, Line1-Management, Line2-Oversight, or Line3-Assurance",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-GRC-013",
+      "name": "Framework Must Have At Least One Body",
+      "condition": "IF a GovernanceFramework is created",
+      "action": "THEN it MUST have at least one hasGovernanceBody relationship",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-GRC-014",
+      "name": "Finding Requires Assurance Parent",
+      "condition": "IF an AssuranceFinding exists",
+      "action": "THEN it MUST belong to exactly one GovernanceAssurance via the hasFinding relationship",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-GRC-015",
+      "name": "Policy Hierarchy Validation",
+      "condition": "IF a GovernancePolicy has a parentPolicy reference",
+      "action": "THEN the parent MUST be at a higher level in the hierarchy (Policy > Standard > Guideline > Procedure > Baseline > Exception)",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-GRC-016",
+      "name": "Governance Level Cascade",
+      "condition": "IF a GovernancePolicy has governanceLevel of Platform",
+      "action": "THEN it applies to all Instance, Product, and Client levels unless explicitly overridden by a more specific policy",
+      "severity": "info"
+    },
+    {
+      "ruleId": "BR-GRC-017",
+      "name": "Security Assurance Must Reference Security Posture",
+      "condition": "IF a GovernanceAssurance has targetDomain of Security and assuranceType of PenTest or RedTeam",
+      "action": "THEN it SHOULD have an assuranceAssessesSecurityPosture relationship to a sec-fw:SecurityPosture",
+      "severity": "warning"
+    }
+  ],
+  "examples": [
+    {
+      "@id": "grc-fw:code-ncsc-cgcop",
+      "@type": "grc-fw:GovernanceCode",
+      "codeId": "NCSC-CGCOP-2025",
+      "codeName": "Cyber Governance Code of Practice",
+      "publisher": "NCSC / DSIT",
+      "publisherRef": "org:NCSC",
+      "version": "1.0",
+      "publicationDate": "2025",
+      "jurisdiction": "United Kingdom",
+      "codeType": "CodeOfPractice",
+      "status": "Active",
+      "url": "https://www.ncsc.gov.uk/collection/cyber-governance",
+      "supportModel": "Voluntary governance code supported by 22 board-level actions across 5 principles with companion cross-framework mapping to 9 international standards"
+    },
+    {
+      "@id": "grc-fw:principle-A",
+      "@type": "grc-fw:GovernancePrinciple",
+      "principleCode": "A",
+      "principleName": "Risk Management",
+      "principleDescription": "The board should ensure that the most significant risks to the organisation, including cyber risks, are identified, assessed and managed. Board members should understand the organisation's risk exposure and its risk appetite, and be able to demonstrate this through a strategic approach to risk management.",
+      "actionCount": 5,
+      "principleCategory": "Strategic"
+    },
+    {
+      "@id": "grc-fw:principle-B",
+      "@type": "grc-fw:GovernancePrinciple",
+      "principleCode": "B",
+      "principleName": "Cyber Strategy",
+      "principleDescription": "The board should ensure that cyber resilience is embedded across the organisation through a comprehensive strategy that aligns with the organisation's broader goals. This strategy should be regularly reviewed, adapted and communicated.",
+      "actionCount": 5,
+      "principleCategory": "Strategic"
+    },
+    {
+      "@id": "grc-fw:principle-C",
+      "@type": "grc-fw:GovernancePrinciple",
+      "principleCode": "C",
+      "principleName": "People",
+      "principleDescription": "The board should promote a culture of cyber resilience across the organisation, ensuring that people at all levels understand their role in maintaining security. This includes fostering cyber literacy, clear policies, and a positive security culture.",
+      "actionCount": 4,
+      "principleCategory": "Operational"
+    },
+    {
+      "@id": "grc-fw:principle-D",
+      "@type": "grc-fw:GovernancePrinciple",
+      "principleCode": "D",
+      "principleName": "Incident Planning, Response & Recovery",
+      "principleDescription": "The board should ensure that the organisation has appropriate plans, processes and resources to respond to and recover from cyber incidents effectively, minimising disruption and ensuring business continuity.",
+      "actionCount": 4,
+      "principleCategory": "Operational"
+    },
+    {
+      "@id": "grc-fw:principle-E",
+      "@type": "grc-fw:GovernancePrinciple",
+      "principleCode": "E",
+      "principleName": "Assurance & Oversight",
+      "principleDescription": "The board should establish appropriate governance structures to ensure effective oversight and assurance of the organisation's cyber resilience, including regular review of policies, controls, and risk appetite.",
+      "actionCount": 4,
+      "principleCategory": "Assurance"
+    },
+    {
+      "@id": "grc-fw:action-A1",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "A1",
+      "actionName": "Determine cyber risk appetite",
+      "actionDescription": "Boards should define the organisation's cyber risk appetite as part of overall risk management, articulating acceptable levels of cyber risk in the context of the organisation's strategy and objectives.",
+      "boardRelevance": "Board directly sets risk appetite and ensures alignment with organisational strategy",
+      "dependsOn": ""
+    },
+    {
+      "@id": "grc-fw:action-A2",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "A2",
+      "actionName": "Identify key digital processes, assets and services",
+      "actionDescription": "Boards should ensure the organisation has identified and documented its key digital processes, data and digital assets, and services that are critical to business operations.",
+      "boardRelevance": "Board ensures comprehensive asset identification to underpin risk decisions",
+      "dependsOn": ""
+    },
+    {
+      "@id": "grc-fw:action-A3",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "A3",
+      "actionName": "Assess cyber risks to key processes, assets and services",
+      "actionDescription": "Boards should ensure the organisation regularly assesses cyber risks to its identified key digital processes, assets and services, including supply chain and third-party dependencies.",
+      "boardRelevance": "Board reviews risk assessment results and challenges management on risk exposure",
+      "dependsOn": "A2"
+    },
+    {
+      "@id": "grc-fw:action-A4",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "A4",
+      "actionName": "Understand and manage the threat landscape",
+      "actionDescription": "Boards should ensure the organisation has access to relevant and timely cyber threat intelligence and understands how the threat landscape affects organisational risk.",
+      "boardRelevance": "Board receives regular threat landscape briefings and factors threats into risk appetite",
+      "dependsOn": ""
+    },
+    {
+      "@id": "grc-fw:action-A5",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "A5",
+      "actionName": "Manage cyber risk across the supply chain",
+      "actionDescription": "Boards should ensure the organisation identifies, assesses and manages cyber risks arising from its supply chain and third-party relationships.",
+      "boardRelevance": "Board ensures supply chain cyber risk is integrated into overall risk management",
+      "dependsOn": "A3"
+    },
+    {
+      "@id": "grc-fw:action-B1",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "B1",
+      "actionName": "Develop a cyber strategy",
+      "actionDescription": "Boards should ensure the organisation has a documented cyber strategy that aligns with the broader business strategy, covering risk management, technology, people and processes.",
+      "boardRelevance": "Board approves and owns the cyber strategy aligned to business objectives",
+      "dependsOn": ""
+    },
+    {
+      "@id": "grc-fw:action-B2",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "B2",
+      "actionName": "Ensure cyber strategy is resourced",
+      "actionDescription": "Boards should ensure the organisation allocates appropriate resources (financial, human, technical) to implement the cyber strategy effectively.",
+      "boardRelevance": "Board approves budgets and resources for cyber security implementation",
+      "dependsOn": "B1"
+    },
+    {
+      "@id": "grc-fw:action-B3",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "B3",
+      "actionName": "Ensure appropriate policies and processes",
+      "actionDescription": "Boards should ensure the organisation has appropriate and proportionate cyber security policies and processes in place that are regularly reviewed and updated.",
+      "boardRelevance": "Board ensures policy framework exists and receives summary of policy review outcomes",
+      "dependsOn": ""
+    },
+    {
+      "@id": "grc-fw:action-B4",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "B4",
+      "actionName": "Implement effective technical controls",
+      "actionDescription": "Boards should ensure the organisation has implemented effective technical controls appropriate to its size, sector and risk profile to protect against cyber threats.",
+      "boardRelevance": "Board receives assurance that technical controls are proportionate and effective",
+      "dependsOn": "B3"
+    },
+    {
+      "@id": "grc-fw:action-B5",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "B5",
+      "actionName": "Ensure regulatory and legal compliance",
+      "actionDescription": "Boards should ensure the organisation understands and complies with all relevant cyber security and data protection regulations and legal requirements.",
+      "boardRelevance": "Board has oversight of regulatory compliance status and material gaps",
+      "dependsOn": ""
+    },
+    {
+      "@id": "grc-fw:action-C1",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "C1",
+      "actionName": "Promote a positive cyber security culture",
+      "actionDescription": "Boards should promote and foster a positive cyber security culture where all employees understand their role in keeping the organisation secure.",
+      "boardRelevance": "Board sets the tone from the top for security culture and leads by example",
+      "dependsOn": ""
+    },
+    {
+      "@id": "grc-fw:action-C2",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "C2",
+      "actionName": "Develop cyber skills and awareness",
+      "actionDescription": "Boards should ensure the organisation provides appropriate cyber security training and awareness programmes for all staff and that there are sufficient specialist skills available.",
+      "boardRelevance": "Board ensures investment in training and receives reports on workforce cyber literacy",
+      "dependsOn": ""
+    },
+    {
+      "@id": "grc-fw:action-C3",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "C3",
+      "actionName": "Embed cyber security in roles and responsibilities",
+      "actionDescription": "Boards should ensure that cyber security roles and responsibilities are clearly defined, documented and understood across the organisation, including a named accountable board member.",
+      "boardRelevance": "Board designates a lead member for cyber governance and reviews role clarity",
+      "dependsOn": ""
+    },
+    {
+      "@id": "grc-fw:action-C4",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "C4",
+      "actionName": "Ensure board-level cyber literacy",
+      "actionDescription": "Board members should develop and maintain sufficient cyber literacy to understand cyber risks, challenge management effectively and make informed governance decisions.",
+      "boardRelevance": "Board members undertake appropriate development to maintain cyber literacy",
+      "dependsOn": ""
+    },
+    {
+      "@id": "grc-fw:action-D1",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "D1",
+      "actionName": "Develop incident response plan",
+      "actionDescription": "Boards should ensure the organisation has a documented and tested cyber incident response plan that covers detection, containment, eradication, recovery and communication.",
+      "boardRelevance": "Board approves incident response plan and understands escalation triggers",
+      "dependsOn": ""
+    },
+    {
+      "@id": "grc-fw:action-D2",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "D2",
+      "actionName": "Test and exercise incident plans",
+      "actionDescription": "Boards should ensure the organisation regularly tests and exercises its incident response and business continuity plans through tabletop exercises, simulations and live drills.",
+      "boardRelevance": "Board participates in exercises and reviews outcomes to improve readiness",
+      "dependsOn": "D1"
+    },
+    {
+      "@id": "grc-fw:action-D3",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "D3",
+      "actionName": "Establish communication protocols",
+      "actionDescription": "Boards should ensure clear communication protocols are established for cyber incidents, including internal escalation, external stakeholder notification and regulatory reporting obligations.",
+      "boardRelevance": "Board understands communication responsibilities and media/regulatory obligations",
+      "dependsOn": "D1"
+    },
+    {
+      "@id": "grc-fw:action-D4",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "D4",
+      "actionName": "Learn from incidents and near-misses",
+      "actionDescription": "Boards should ensure the organisation has processes to learn from cyber incidents and near-misses, conducting post-incident reviews and implementing improvements to reduce future risk.",
+      "boardRelevance": "Board receives post-incident reports and ensures lessons are embedded in strategy",
+      "dependsOn": "D1"
+    },
+    {
+      "@id": "grc-fw:action-E1",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "E1",
+      "actionName": "Establish governance structure",
+      "actionDescription": "Boards should establish appropriate governance structures for cyber security oversight, including clear reporting lines, committee structures and escalation paths.",
+      "boardRelevance": "Board designs and owns the governance structure for cyber oversight",
+      "dependsOn": ""
+    },
+    {
+      "@id": "grc-fw:action-E2",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "E2",
+      "actionName": "Gain assurance on cyber resilience",
+      "actionDescription": "Boards should gain appropriate assurance that the organisation's cyber security measures are effective, through internal and external audit, penetration testing and certification schemes.",
+      "boardRelevance": "Board commissions and reviews assurance activities and acts on findings",
+      "dependsOn": ""
+    },
+    {
+      "@id": "grc-fw:action-E3",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "E3",
+      "actionName": "Review and adapt approach",
+      "actionDescription": "Boards should ensure the organisation regularly reviews and adapts its cyber governance approach in response to changes in the threat landscape, business environment and lessons learned.",
+      "boardRelevance": "Board reviews cyber governance effectiveness at least annually and drives adaptation",
+      "dependsOn": "E2"
+    },
+    {
+      "@id": "grc-fw:action-E4",
+      "@type": "grc-fw:GovernanceAction",
+      "actionCode": "E4",
+      "actionName": "Report on cyber governance",
+      "actionDescription": "Boards should ensure appropriate reporting on cyber governance effectiveness to relevant internal and external stakeholders, including regulators where required.",
+      "boardRelevance": "Board approves reporting content and ensures transparency with stakeholders",
+      "dependsOn": "E1"
+    },
+    {
+      "@id": "grc-fw:glossary-ciso",
+      "@type": "grc-fw:GovernanceGlossaryTerm",
+      "termId": "GT-GRC-001",
+      "term": "CISO",
+      "definition": "Chief Information Security Officer — the senior executive responsible for the organisation's information and cyber security strategy, policy and operations",
+      "relatedActionCodes": "C3,E1"
+    },
+    {
+      "@id": "grc-fw:glossary-cyber-literacy",
+      "@type": "grc-fw:GovernanceGlossaryTerm",
+      "termId": "GT-GRC-002",
+      "term": "Cyber literacy",
+      "definition": "The ability of individuals, particularly board members, to understand cyber security concepts, risks and governance responsibilities sufficiently to make informed decisions",
+      "relatedActionCodes": "C4"
+    },
+    {
+      "@id": "grc-fw:glossary-cyber-resilience",
+      "@type": "grc-fw:GovernanceGlossaryTerm",
+      "termId": "GT-GRC-003",
+      "term": "Cyber resilience",
+      "definition": "An organisation's ability to prepare for, respond to and recover from cyber attacks while continuing to operate and deliver its objectives",
+      "relatedActionCodes": "B1,E2,E3"
+    },
+    {
+      "@id": "grc-fw:glossary-cyber-security",
+      "@type": "grc-fw:GovernanceGlossaryTerm",
+      "termId": "GT-GRC-004",
+      "term": "Cyber security",
+      "definition": "The protection of internet-connected systems including hardware, software and data from cyber threats through technologies, processes and governance controls",
+      "relatedActionCodes": "A1,B1,B4"
+    },
+    {
+      "@id": "grc-fw:glossary-cyber-culture",
+      "@type": "grc-fw:GovernanceGlossaryTerm",
+      "termId": "GT-GRC-005",
+      "term": "Cyber security culture",
+      "definition": "The collective values, beliefs, knowledge and behaviours across an organisation that shape how people approach and prioritise cyber security in daily operations",
+      "relatedActionCodes": "C1,C2"
+    },
+    {
+      "@id": "grc-fw:glossary-cyber-strategy",
+      "@type": "grc-fw:GovernanceGlossaryTerm",
+      "termId": "GT-GRC-006",
+      "term": "Cyber strategy",
+      "definition": "A documented plan that sets out the organisation's approach to managing cyber risk, aligned with business strategy and covering people, process and technology dimensions",
+      "relatedActionCodes": "B1,B2"
+    },
+    {
+      "@id": "grc-fw:glossary-data-digital-assets",
+      "@type": "grc-fw:GovernanceGlossaryTerm",
+      "termId": "GT-GRC-007",
+      "term": "Data and digital assets",
+      "definition": "All digital information, systems, applications and technology infrastructure that support business processes and create value for the organisation",
+      "relatedActionCodes": "A2,A3"
+    },
+    {
+      "@id": "grc-fw:glossary-gain-assurance",
+      "@type": "grc-fw:GovernanceGlossaryTerm",
+      "termId": "GT-GRC-008",
+      "term": "Gain assurance",
+      "definition": "The process of obtaining evidence and confidence that cyber security measures are effective, through audit, testing, certification and other verification activities",
+      "relatedActionCodes": "E2"
+    },
+    {
+      "@id": "grc-fw:glossary-internal-controls",
+      "@type": "grc-fw:GovernanceGlossaryTerm",
+      "termId": "GT-GRC-009",
+      "term": "Internal controls",
+      "definition": "The policies, procedures and technical measures implemented within an organisation to manage cyber risks and protect information assets",
+      "relatedActionCodes": "B3,B4"
+    },
+    {
+      "@id": "grc-fw:glossary-risk-appetite",
+      "@type": "grc-fw:GovernanceGlossaryTerm",
+      "termId": "GT-GRC-010",
+      "term": "Risk appetite",
+      "definition": "The level and type of cyber risk that an organisation is prepared to accept in pursuit of its strategic objectives, as determined by the board",
+      "relatedActionCodes": "A1"
+    },
+    {
+      "@id": "grc-fw:glossary-risk-owner",
+      "@type": "grc-fw:GovernanceGlossaryTerm",
+      "termId": "GT-GRC-011",
+      "term": "Risk owner",
+      "definition": "An individual or role within the organisation who has accountability for the management and treatment of a specific cyber risk or set of risks",
+      "relatedActionCodes": "A3,C3"
+    },
+    {
+      "@id": "grc-fw:glossary-threat-landscape",
+      "@type": "grc-fw:GovernanceGlossaryTerm",
+      "termId": "GT-GRC-012",
+      "term": "Threat landscape",
+      "definition": "The evolving set of cyber threats, threat actors, attack techniques and vulnerabilities that could affect an organisation's security posture",
+      "relatedActionCodes": "A4"
+    }
+  ],
+  "crossOntologyReferences": {
+    "ctxDimensions": [
+      "ctx:"
+    ],
+    "grcImplementations": [
+      "gdpr:",
+      "mcsb:",
+      "pii:"
+    ],
+    "ncscCAF": [
+      "ncsc-caf:"
+    ],
+    "foundation": [
+      "org:"
+    ],
+    "grcTier1Domains": [
+      "erm:",
+      "comp-fw:",
+      "sec-fw:",
+      "ai-gov:",
+      "res:"
+    ],
+    "veSeries": [
+      "vsom:",
+      "okr:",
+      "rrr:"
+    ],
+    "description": "GRC-FW v3.0.0 is the governance-centric hub for the GRC series. Governance is superordinate — risk, compliance, security, AI governance, and resource economics are governed domains. The hub bridges to: CTX (jurisdiction, maturity, market), NCSC-CAF (assessment alignment), ORG (domain authorities), and forward references to Tier 1 domains (ERM, COMP-FW, SEC-FW, AI-GOV, RES). VSEM bridges connect to VE-Series (VSOM, OKR, RRR) for strategy-governance alignment. Security-specific edges: governsSecurity→SecurityPosture, policyAppliesToSecurityDomain→SecurityDomain, assuranceAssessesSecurityPosture→SecurityPosture.",
+    "securityMapping": {
+      "governsSecurity": "GRCContext → sec-fw:SecurityPosture — governance oversight of security posture",
+      "policyAppliesToSecurityDomain": "GovernancePolicy → sec-fw:SecurityDomain — security-specific policy tracking",
+      "assuranceAssessesSecurityPosture": "GovernanceAssurance → sec-fw:SecurityPosture — PenTest/RedTeam/certification assurance",
+      "frameworkImplementedByMCSB": "ComplianceFramework → mcsb:SecurityControl — cloud security benchmark",
+      "governanceAlignedToCAF": "GovernanceAction → ncsc-caf:CAFPrinciple — NCSC assessment alignment",
+      "nistCSF2Alignment": "GovernanceFramework.nistGovCategories — NIST CSF 2.0 GOVERN function categories"
+    },
+    "lineageAlignment": {
+      "ctx:GeoContext": "CTX GeoContext provides jurisdiction and geographic scope for regulatory applicability",
+      "ctx:FunctionalMaturity": "CTX FunctionalMaturity provides per-function maturity scores driven by GRC requirements",
+      "ctx:MarketClassification": "CTX MarketClassification links regulations to specific market verticals",
+      "ctx:ITMaturity": "CTX ITMaturity provides IT infrastructure maturity required by compliance certifications",
+      "gdpr:DataProtectionPrinciple": "GDPR-ONT defines Article 5 data protection principles that RegulatoryRequirements implement",
+      "mcsb:SecurityControl": "MCSB-ONT defines cloud security benchmark controls that ComplianceFrameworks map to",
+      "pii:ComplianceFramework": "PII-ONT implements data protection governance that ComplianceFrameworks reference",
+      "ncsc-caf:CAFPrinciple": "NCSC-CAF CAFPrinciple receives governance action alignment for operational compliance bridging",
+      "ncsc-caf:ContributingOutcome": "NCSC-CAF ContributingOutcome provides detailed assessment outcome targets",
+      "org:Organization": "ORG Organization provides domain authority publisher identity for governance codes",
+      "erm:RiskRegister": "ERM-ONT provides enterprise risk registers for governance-to-risk oversight (forward reference)",
+      "sec-fw:SecurityPosture": "SEC-FW-ONT provides security posture for governance-to-security oversight (forward reference)",
+      "sec-fw:SecurityDomain": "SEC-FW-ONT provides security domain classification for policy targeting (forward reference)",
+      "comp-fw:ComplianceAssessment": "COMP-FW-ONT provides compliance assessments for governance oversight (forward reference)",
+      "ai-gov:AISystem": "AI-GOV-ONT provides AI system inventory for governance-to-AI oversight (forward reference)",
+      "vsom:VisionStatement": "VSOM-ONT provides vision alignment for VSEM governance-strategy bridge",
+      "vsom:StrategicObjective": "VSOM-ONT provides strategic objectives for VSEM policy-strategy bridge"
+    },
+    "keyBridges": [
+      {
+        "from": "grc-fw:RegulatoryRequirement",
+        "to": "ctx:GeoContext",
+        "relationship": "regulatoryShapedByGeo"
+      },
+      {
+        "from": "grc-fw:GRCContext",
+        "to": "ctx:FunctionalMaturity",
+        "relationship": "grcDrivesFunctionalMaturity"
+      },
+      {
+        "from": "grc-fw:RegulatoryRequirement",
+        "to": "ctx:MarketClassification",
+        "relationship": "regulatoryInMarket"
+      },
+      {
+        "from": "grc-fw:ComplianceFramework",
+        "to": "ctx:ITMaturity",
+        "relationship": "complianceRequiresITMaturity"
+      },
+      {
+        "from": "grc-fw:RegulatoryRequirement",
+        "to": "gdpr:DataProtectionPrinciple",
+        "relationship": "regulatoryImplementedByGDPR"
+      },
+      {
+        "from": "grc-fw:ComplianceFramework",
+        "to": "mcsb:SecurityControl",
+        "relationship": "frameworkImplementedByMCSB"
+      },
+      {
+        "from": "grc-fw:ComplianceFramework",
+        "to": "pii:ComplianceFramework",
+        "relationship": "frameworkImplementedByPII"
+      },
+      {
+        "from": "grc-fw:GovernanceAction",
+        "to": "ncsc-caf:CAFPrinciple",
+        "relationship": "governanceAlignedToCAF"
+      },
+      {
+        "from": "grc-fw:GovernanceAction",
+        "to": "ncsc-caf:ContributingOutcome",
+        "relationship": "governanceAlignedToCAFOutcome"
+      },
+      {
+        "from": "grc-fw:GovernanceCode",
+        "to": "org:Organization",
+        "relationship": "publishedByAuthority"
+      },
+      {
+        "from": "grc-fw:GRCContext",
+        "to": "erm:RiskRegister",
+        "relationship": "governsRisk"
+      },
+      {
+        "from": "grc-fw:GRCContext",
+        "to": "sec-fw:SecurityPosture",
+        "relationship": "governsSecurity"
+      },
+      {
+        "from": "grc-fw:GRCContext",
+        "to": "comp-fw:ComplianceAssessment",
+        "relationship": "governsCompliance"
+      },
+      {
+        "from": "grc-fw:GRCContext",
+        "to": "ai-gov:AISystem",
+        "relationship": "governsAI"
+      },
+      {
+        "from": "grc-fw:GovernancePolicy",
+        "to": "sec-fw:SecurityDomain",
+        "relationship": "policyAppliesToSecurityDomain"
+      },
+      {
+        "from": "grc-fw:GovernanceAssurance",
+        "to": "sec-fw:SecurityPosture",
+        "relationship": "assuranceAssessesSecurityPosture"
+      },
+      {
+        "from": "grc-fw:GovernanceAssurance",
+        "to": "erm:Risk",
+        "relationship": "assuranceAssessesRisk"
+      },
+      {
+        "from": "grc-fw:GovernanceFramework",
+        "to": "vsom:VisionStatement",
+        "relationship": "alignsToVision"
+      },
+      {
+        "from": "grc-fw:GovernancePolicy",
+        "to": "vsom:StrategicObjective",
+        "relationship": "supportsStrategy"
+      },
+      {
+        "from": "grc-fw:GovernancePolicy",
+        "to": "vsom:StrategicObjective",
+        "relationship": "constrainsExecution"
+      },
+      {
+        "from": "grc-fw:GovernanceAssurance",
+        "to": "vsom:StrategicObjective",
+        "relationship": "validatesAlignment"
+      },
+      {
+        "from": "grc-fw:GovernanceBody",
+        "to": "vsom:StrategicObjective",
+        "relationship": "achievesObjective"
+      },
+      {
+        "from": "grc-fw:DecisionRight",
+        "to": "vsom:StrategicObjective",
+        "relationship": "requiresAlignment"
+      },
+      {
+        "from": "grc-fw:AssuranceFinding",
+        "to": "vsom:StrategicObjective",
+        "relationship": "measuresImpact"
+      }
+    ]
+  },
+  "changeControl": {
+    "currentVersion": "3.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-17",
+    "modifiedBy": "Azlan EA-AAA",
+    "changeNotes": "Major version: RCSG-FW v2.0.0 → GRC-FW v3.0.0. Namespace changed from rcsg-fw to grc-fw. RCSGContext renamed to GRCContext. 6 new entities (GovernanceFramework, GovernanceBody, DecisionRight, GovernancePolicy, GovernanceAssurance, AssuranceFinding). 8 new enumerations (GovernanceLevel, BodyType, DecisionDomain, PolicyType, AssuranceType, ThreeLineRole, COBITDomain, EnforcementLevel). 15 owned entities total. 48 relationships (24 internal + 24 cross-ontology including 7 VSEM bridges). 17 business rules. 11 join patterns. Forward references to Tier 1 domains (ERM, COMP-FW, SEC-FW, AI-GOV). 7 VSEM bridges to VE-Series (alignsToVision, supportsStrategy, constrainsExecution, validatesAlignment, achievesObjective, requiresAlignment, measuresImpact). Security-specific edges: governsSecurity, policyAppliesToSecurityDomain, assuranceAssessesSecurityPosture. All CG-ONT entities and 150 cross-framework mapping instances preserved. Epic 30 F30.1.",
+    "versionHistory": [
+      {
+        "version": "3.0.0",
+        "date": "2026-02-17",
+        "notes": "RCSG→GRC morph. Namespace grc-fw. 6 new entities, 8 new enums, 24 new cross-ontology relationships (inc. 7 VSEM bridges), 7 new business rules. Governance-centric hub aligned to COBIT 2019, ISO 38500, NIST CSF 2.0, IIA Three Lines. 4-level governance model. Cross-domain edges to ERM/SEC-FW/COMP-FW/AI-GOV. 7 VSEM bridges to VE-Series. Security mapping: governsSecurity, policyAppliesToSecurityDomain, assuranceAssessesSecurityPosture. Epic 30 F30.1."
+      },
+      {
+        "version": "2.0.0",
+        "date": "2026-02-16",
+        "notes": "Merged CG-ONT into RCSG-FW. Added GovernanceCode, GovernancePrinciple, GovernanceAction, GovernanceGlossaryTerm, GovernanceActionMapping entities. 150 cross-framework mappings to 9 international standards. Epic 30 F30.11."
+      },
+      {
+        "version": "1.0.0",
+        "date": "2026-02-10",
+        "notes": "Initial release: 4 entities, 10 relationships. Extracted from CTX ontology to establish abstract RCSG framework layer."
+      }
+    ]
+  },
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "GRC-FW-ONT",
+  "oaa:series": "RCSG-SERIES",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of GRCContext within this ontology?",
+      "targetEntities": [
+        "grc-fw:GRCContext"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of GovernanceFramework within this ontology?",
+      "targetEntities": [
+        "grc-fw:GovernanceFramework"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of GovernanceBody within this ontology?",
+      "targetEntities": [
+        "grc-fw:GovernanceBody"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of DecisionRight within this ontology?",
+      "targetEntities": [
+        "grc-fw:DecisionRight"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of GovernancePolicy within this ontology?",
+      "targetEntities": [
+        "grc-fw:GovernancePolicy"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of GovernanceAssurance within this ontology?",
+      "targetEntities": [
+        "grc-fw:GovernanceAssurance"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of AssuranceFinding within this ontology?",
+      "targetEntities": [
+        "grc-fw:AssuranceFinding"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of RegulatoryRequirement within this ontology?",
+      "targetEntities": [
+        "grc-fw:RegulatoryRequirement"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of ComplianceFramework within this ontology?",
+      "targetEntities": [
+        "grc-fw:ComplianceFramework"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of GovernanceModel within this ontology?",
+      "targetEntities": [
+        "grc-fw:GovernanceModel"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the role and purpose of GovernanceCode within this ontology?",
+      "targetEntities": [
+        "grc-fw:GovernanceCode"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-012",
+      "question": "What is the role and purpose of GovernancePrinciple within this ontology?",
+      "targetEntities": [
+        "grc-fw:GovernancePrinciple"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-013",
+      "question": "What is the role and purpose of GovernanceAction within this ontology?",
+      "targetEntities": [
+        "grc-fw:GovernanceAction"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-014",
+      "question": "What is the role and purpose of GovernanceGlossaryTerm within this ontology?",
+      "targetEntities": [
+        "grc-fw:GovernanceGlossaryTerm"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-015",
+      "question": "What is the role and purpose of GovernanceActionMapping within this ontology?",
+      "targetEntities": [
+        "grc-fw:GovernanceActionMapping"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-016",
+      "question": "What is the role and purpose of CAFPrinciple within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:CAFPrinciple"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-017",
+      "question": "What is the role and purpose of ContributingOutcome within this ontology?",
+      "targetEntities": [
+        "ncsc-caf:ContributingOutcome"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-018",
+      "question": "What is the role and purpose of Organization within this ontology?",
+      "targetEntities": [
+        "org:Organization"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-019",
+      "question": "What is the role and purpose of GeoContext within this ontology?",
+      "targetEntities": [
+        "ctx:GeoContext"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-020",
+      "question": "What is the role and purpose of FunctionalMaturity within this ontology?",
+      "targetEntities": [
+        "ctx:FunctionalMaturity"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-021",
+      "question": "What is the role and purpose of MarketClassification within this ontology?",
+      "targetEntities": [
+        "ctx:MarketClassification"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-022",
+      "question": "What is the role and purpose of ITMaturity within this ontology?",
+      "targetEntities": [
+        "ctx:ITMaturity"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-023",
+      "question": "What is the role and purpose of RiskRegister within this ontology?",
+      "targetEntities": [
+        "erm:RiskRegister"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-024",
+      "question": "What is the role and purpose of Risk within this ontology?",
+      "targetEntities": [
+        "erm:Risk"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-025",
+      "question": "What is the role and purpose of SecurityPosture within this ontology?",
+      "targetEntities": [
+        "sec-fw:SecurityPosture"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-026",
+      "question": "What is the role and purpose of SecurityDomain within this ontology?",
+      "targetEntities": [
+        "sec-fw:SecurityDomain"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-027",
+      "question": "What is the role and purpose of ComplianceAssessment within this ontology?",
+      "targetEntities": [
+        "comp-fw:ComplianceAssessment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-028",
+      "question": "What is the role and purpose of AISystem within this ontology?",
+      "targetEntities": [
+        "ai-gov:AISystem"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-029",
+      "question": "What is the role and purpose of VisionStatement within this ontology?",
+      "targetEntities": [
+        "vsom:VisionStatement"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-030",
+      "question": "What is the role and purpose of StrategicObjective within this ontology?",
+      "targetEntities": [
+        "vsom:StrategicObjective"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

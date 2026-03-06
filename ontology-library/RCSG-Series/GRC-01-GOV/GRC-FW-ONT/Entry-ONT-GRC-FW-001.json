@@ -1,0 +1,131 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-GRC-FW-001",
+  "name": "GRC Framework Ontology (Governance, Risk & Compliance)",
+  "description": "Governance-centric hub ontology for the GRC series. 15 owned entities covering governance frameworks, bodies, decision rights, policies, assurance, findings, governance codes, principles, board-level actions, glossary terms, cross-framework mappings, regulatory requirements, and compliance frameworks. Aligned to COBIT 2019, ISO 38500:2024, NIST CSF 2.0, IIA Three Lines Model 2020, NCSC Cyber Governance Code 2025. 4-level governance model (Platform/Instance/Product/Client). 48 relationships (24 internal + 24 cross-ontology). 7 VSEM bridges to VE-Series. Cross-domain edges to ERM, COMP-FW, SEC-FW, AI-GOV.",
+  "version": "3.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/grc-fw/",
+  "prefix": "grc-fw:",
+  "previousNamespace": "https://platformcore.io/ontology/rcsg-fw/",
+  "previousPrefix": "rcsg-fw:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-17",
+  "gatesPassed": 8,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./grc-framework-ontology-v3.0.0.json",
+    "instances": "./grc-fw-mapping-instances-v3.0.0.json",
+    "authorityInstances": "./grc-fw-domain-authorities-v3.0.0.json"
+  },
+  "components": {
+    "GRCContext": "Top-level GRC profile with governance level, compliance posture, sector classification",
+    "GovernanceFramework": "Adopted governance framework — ISO 38500 EDM cycle, COBIT EDM objectives, NIST CSF GOVERN",
+    "GovernanceBody": "Governance body — boards, committees, IIA Three Lines role assignment",
+    "DecisionRight": "Formalised decision authority with RACI, thresholds, and 11 decision domains",
+    "GovernancePolicy": "Policy hierarchy (Policy→Standard→Guideline→Procedure→Baseline→Exception)",
+    "GovernanceAssurance": "Assurance activity — 8 types inc. PenTest, RedTeam, AI-Model-Audit",
+    "AssuranceFinding": "Finding from assurance with severity, status, remediation lifecycle",
+    "RegulatoryRequirement": "Regulation with enforcement body, jurisdiction, AI relevance classification",
+    "ComplianceFramework": "Compliance/security framework certification tracking",
+    "GovernanceModel": "Corporate governance structure — board composition, committees, policy approach",
+    "GovernanceCode": "Published governance code with principles and board-level actions",
+    "GovernancePrinciple": "High-level governance principle within a code",
+    "GovernanceAction": "Board-level governance action with dependency chains",
+    "GovernanceGlossaryTerm": "Defined term from a governance code glossary",
+    "GovernanceActionMapping": "Cross-framework mapping to external standard controls"
+  },
+  "relationships": {
+    "internal": 24,
+    "crossOntology": [
+      { "name": "regulatoryShapedByGeo", "from": "grc-fw:RegulatoryRequirement", "to": "ctx:GeoContext", "cardinality": "1..*", "purpose": "GRC-FW → CTX: Jurisdiction-specific regulation" },
+      { "name": "grcDrivesFunctionalMaturity", "from": "grc-fw:GRCContext", "to": "ctx:FunctionalMaturity", "cardinality": "0..*", "purpose": "GRC-FW → CTX: GRC drives maturity" },
+      { "name": "regulatoryInMarket", "from": "grc-fw:RegulatoryRequirement", "to": "ctx:MarketClassification", "cardinality": "0..*", "purpose": "GRC-FW → CTX: Sector-specific regulation" },
+      { "name": "complianceRequiresITMaturity", "from": "grc-fw:ComplianceFramework", "to": "ctx:ITMaturity", "cardinality": "0..1", "purpose": "GRC-FW → CTX: Compliance requires IT maturity" },
+      { "name": "regulatoryImplementedByGDPR", "from": "grc-fw:RegulatoryRequirement", "to": "gdpr:DataProtectionPrinciple", "cardinality": "0..*", "purpose": "GRC-FW → GDPR: Regulatory implementation" },
+      { "name": "frameworkImplementedByMCSB", "from": "grc-fw:ComplianceFramework", "to": "mcsb:SecurityControl", "cardinality": "0..*", "purpose": "GRC-FW → MCSB: Security control mapping" },
+      { "name": "frameworkImplementedByPII", "from": "grc-fw:ComplianceFramework", "to": "pii:ComplianceFramework", "cardinality": "0..*", "purpose": "GRC-FW → PII: Data protection mapping" },
+      { "name": "governanceAlignedToCAF", "from": "grc-fw:GovernanceAction", "to": "ncsc-caf:CAFPrinciple", "cardinality": "0..*", "purpose": "GRC-FW → NCSC-CAF: Governance-to-assessment alignment" },
+      { "name": "governanceAlignedToCAFOutcome", "from": "grc-fw:GovernanceAction", "to": "ncsc-caf:ContributingOutcome", "cardinality": "0..*", "purpose": "GRC-FW → NCSC-CAF: Detailed assessment mapping" },
+      { "name": "publishedByAuthority", "from": "grc-fw:GovernanceCode", "to": "org:Organization", "cardinality": "1..1", "purpose": "GRC-FW → ORG: Domain authority publisher" },
+      { "name": "governsRisk", "from": "grc-fw:GRCContext", "to": "erm:RiskRegister", "cardinality": "0..*", "purpose": "GRC-FW → ERM: Governance-to-risk oversight" },
+      { "name": "governsSecurity", "from": "grc-fw:GRCContext", "to": "sec-fw:SecurityPosture", "cardinality": "0..*", "purpose": "GRC-FW → SEC-FW: Governance-to-security oversight" },
+      { "name": "governsCompliance", "from": "grc-fw:GRCContext", "to": "comp-fw:ComplianceAssessment", "cardinality": "0..*", "purpose": "GRC-FW → COMP-FW: Governance-to-compliance oversight" },
+      { "name": "governsAI", "from": "grc-fw:GRCContext", "to": "ai-gov:AISystem", "cardinality": "0..*", "purpose": "GRC-FW → AI-GOV: Governance-to-AI oversight" },
+      { "name": "policyAppliesToSecurityDomain", "from": "grc-fw:GovernancePolicy", "to": "sec-fw:SecurityDomain", "cardinality": "0..*", "purpose": "GRC-FW → SEC-FW: Security-specific policy targeting" },
+      { "name": "assuranceAssessesSecurityPosture", "from": "grc-fw:GovernanceAssurance", "to": "sec-fw:SecurityPosture", "cardinality": "0..*", "purpose": "GRC-FW → SEC-FW: Security assurance (PenTest, RedTeam)" },
+      { "name": "assuranceAssessesRisk", "from": "grc-fw:GovernanceAssurance", "to": "erm:Risk", "cardinality": "0..*", "purpose": "GRC-FW → ERM: Risk-based assurance" },
+      { "name": "alignsToVision", "from": "grc-fw:GovernanceFramework", "to": "vsom:VisionStatement", "cardinality": "0..1", "purpose": "GRC-FW → VSOM: VSEM governance-vision alignment" },
+      { "name": "supportsStrategy", "from": "grc-fw:GovernancePolicy", "to": "vsom:StrategicObjective", "cardinality": "0..*", "purpose": "GRC-FW → VSOM: VSEM policy-strategy alignment" },
+      { "name": "constrainsExecution", "from": "grc-fw:GovernancePolicy", "to": "vsom:StrategicObjective", "cardinality": "0..*", "purpose": "GRC-FW → VSOM: VSEM governance guardrails on execution" },
+      { "name": "validatesAlignment", "from": "grc-fw:GovernanceAssurance", "to": "vsom:StrategicObjective", "cardinality": "0..*", "purpose": "GRC-FW → VSOM: VSEM assurance validates strategy" },
+      { "name": "achievesObjective", "from": "grc-fw:GovernanceBody", "to": "vsom:StrategicObjective", "cardinality": "0..*", "purpose": "GRC-FW → VSOM: VSEM body achieves strategic objectives" },
+      { "name": "requiresAlignment", "from": "grc-fw:DecisionRight", "to": "vsom:StrategicObjective", "cardinality": "0..*", "purpose": "GRC-FW → VSOM: VSEM decision requires strategic alignment" },
+      { "name": "measuresImpact", "from": "grc-fw:AssuranceFinding", "to": "vsom:StrategicObjective", "cardinality": "0..*", "purpose": "GRC-FW → VSOM: VSEM finding measures strategic impact" }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-CTX-001",
+    "Entry-ONT-NCSC-CAF-001",
+    "Entry-ONT-ORG-001"
+  ],
+  "forwardDependencies": [
+    "Entry-ONT-ERM-001",
+    "Entry-ONT-SEC-FW-001",
+    "Entry-ONT-COMP-FW-001",
+    "Entry-ONT-AI-GOV-001"
+  ],
+  "dependents": [
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-GDPR-001",
+    "Entry-ONT-PII-001",
+    "Entry-ONT-ALZ-001"
+  ],
+  "layer": "RCSG-SERIES",
+  "domain": "Governance, Risk & Compliance Framework",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-10",
+  "lastModified": "2026-02-17",
+  "versionHistory": [
+    {
+      "version": "3.0.0",
+      "date": "2026-02-17",
+      "changes": "RCSG→GRC morph. Namespace grc-fw. 6 new entities (GovernanceFramework, GovernanceBody, DecisionRight, GovernancePolicy, GovernanceAssurance, AssuranceFinding). 8 new enumerations. 24 cross-ontology relationships inc. cross-domain (ERM, SEC-FW, COMP-FW, AI-GOV) and 7 VSEM bridges (VSOM). 7 new business rules. 4-level governance model. Security mapping: governsSecurity, policyAppliesToSecurityDomain, assuranceAssessesSecurityPosture. 15 owned entities, 48 total relationships (24 internal + 24 cross-ontology), 12 enumerations, 17 business rules, 11 join patterns. Epic 30 F30.1."
+    },
+    {
+      "version": "2.0.0",
+      "date": "2026-02-16",
+      "changes": "Merged CG-ONT into RCSG-FW. 9 entities, 24 relationships, 10 business rules, 4 enumerations. 150 cross-framework mappings. Epic 30 F30.11."
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-02-10",
+      "changes": "Initial release: 4 entities, 10 relationships, 4 business rules."
+    }
+  ],
+  "notes": "GRC-FW v3.0.0 is the governance-centric hub for the GRC ontology series. Evolved from RCSG-FW v2.0.0. Governance is superordinate — risk, compliance, security, AI governance operate as governed domains. 48 relationships (24 internal + 24 cross-ontology). 7 VSEM bridges: alignsToVision, supportsStrategy, constrainsExecution, validatesAlignment, achievesObjective, requiresAlignment, measuresImpact. 150 cross-framework mapping instances across 9 international standards preserved from v2.0.0. Security-specific edges: governsSecurity, policyAppliesToSecurityDomain, assuranceAssessesSecurityPosture.",
+  "oaa:joinPatterns": [
+    { "patternId": "JP-GRC-001", "name": "GRC Framework to CTX Jurisdiction Bridge", "joinPath": "grc-fw:RegulatoryRequirement → regulatoryShapedByGeo → ctx:GeoContext" },
+    { "patternId": "JP-GRC-002", "name": "Governance Framework to Body to Code Hierarchy", "joinPath": "grc-fw:GovernanceFramework → hasGovernanceBody → GovernanceBody → bodyOwnsCode → GovernanceCode → hasPrinciple → GovernancePrinciple → hasAction → GovernanceAction" },
+    { "patternId": "JP-GRC-003", "name": "Governance Action to CAF Alignment", "joinPath": "grc-fw:GovernanceAction → governanceAlignedToCAF → ncsc-caf:CAFPrinciple" },
+    { "patternId": "JP-GRC-004", "name": "Governance Code to Authority", "joinPath": "grc-fw:GovernanceCode → publishedByAuthority → org:Organization" },
+    { "patternId": "JP-GRC-005", "name": "Assurance to Finding Remediation", "joinPath": "grc-fw:GovernanceAssurance → hasFinding → AssuranceFinding → findingAffectsPolicy → GovernancePolicy" },
+    { "patternId": "JP-GRC-006", "name": "Governance to Security Posture", "joinPath": "grc-fw:GRCContext → governsSecurity → sec-fw:SecurityPosture" },
+    { "patternId": "JP-GRC-007", "name": "Governance to Risk Register", "joinPath": "grc-fw:GRCContext → governsRisk → erm:RiskRegister" },
+    { "patternId": "JP-GRC-008", "name": "VSEM Strategy Alignment", "joinPath": "grc-fw:GovernanceFramework → alignsToVision → vsom:VisionStatement" },
+    { "patternId": "JP-GRC-009", "name": "VSEM Body Achievement", "joinPath": "grc-fw:GovernanceBody → achievesObjective → vsom:StrategicObjective" },
+    { "patternId": "JP-GRC-010", "name": "VSEM Decision Alignment", "joinPath": "grc-fw:DecisionRight → requiresAlignment → vsom:StrategicObjective" },
+    { "patternId": "JP-GRC-011", "name": "VSEM Finding Impact", "joinPath": "grc-fw:AssuranceFinding → measuresImpact → vsom:StrategicObjective" }
+  ]
+}

@@ -1,0 +1,920 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "baiv": "https://baiv.ai/ontology/",
+    "mcsb": "https://baiv.ai/ontology/mcsb/",
+    "pf": "https://baiv.ai/ontology/pf-core/",
+    "sec": "https://baiv.ai/ontology/security/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@id": "mcsb:ontology:microsoft-cloud-security-benchmark",
+  "@type": "DefinedTermSet",
+  "name": "Microsoft Cloud Security Benchmark (MCSB) Ontology",
+  "description": "A comprehensive ontology representing the Microsoft Cloud Security Benchmark v1 framework, enabling AI agents to reason about cloud security controls, compliance mappings, implementation guidance, and responsibility assignments across Azure, AWS, and multi-cloud environments. This ontology provides semantic understanding for Platform Foundation Core (PF-Core) security governance and enables automated compliance assessment, gap analysis, and remediation planning.",
+  "version": "1.0.0",
+  "dateCreated": "2026-01-23",
+  "dateModified": "2026-01-23",
+  "creator": {
+    "@type": "Organization",
+    "name": "BAIV Platform - Ontology Architect Agent"
+  },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "keywords": ["cloud security", "MCSB", "Azure", "AWS", "compliance", "security controls", "NIST", "CIS", "PCI-DSS"],
+
+  "ontologyMetadata": {
+    "domain": "security-compliance",
+    "tenant": "pf-core",
+    "scope": "system",
+    "schemaOrgAlignment": 85,
+    "competencyScore": 100,
+    "qualityMetrics": {
+      "entityReuse": 82,
+      "validationPassRate": 100,
+      "documentationCompleteness": 100,
+      "namingConventionCompliance": 100
+    }
+  },
+
+  "entities": [
+    {
+      "@id": "mcsb:ControlDomain",
+      "@type": "DefinedTerm",
+      "name": "ControlDomain",
+      "description": "A high-level security control category within the Microsoft Cloud Security Benchmark that groups related security controls addressing a specific area of cloud security governance. Each domain represents a fundamental aspect of enterprise security posture such as Network Security, Identity Management, or Data Protection.",
+      "schemaOrgAlignment": {
+        "baseType": "DefinedTerm",
+        "rationale": "DefinedTerm best represents a defined category within a controlled vocabulary of security domains",
+        "extensions": ["domainCode", "controlCount", "responsibilityModel"],
+        "alternativesConsidered": ["Thing", "Intangible", "CategoryCode"]
+      },
+      "properties": [
+        {
+          "name": "domainCode",
+          "type": "string",
+          "description": "Two-letter identifier for the control domain (e.g., NS, IM, PA)",
+          "required": true,
+          "constraints": {
+            "pattern": "^[A-Z]{2}$",
+            "examples": ["NS", "IM", "PA", "DP", "AM", "LT", "IR", "PV", "ES", "BR", "DS", "GS"]
+          },
+          "propertyRationale": "Custom property needed because schema.org lacks standardized security domain coding"
+        },
+        {
+          "name": "domainName",
+          "type": "string",
+          "schemaOrgMapping": "name",
+          "description": "Full name of the control domain",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "schemaOrgMapping": "description",
+          "description": "Comprehensive description of what the domain covers and its security objectives",
+          "required": true,
+          "constraints": {
+            "minLength": 50
+          }
+        },
+        {
+          "name": "responsibilityModel",
+          "type": "ResponsibilityAssignment",
+          "description": "Default responsibility assignment for the domain (Client, Provider, Joint)",
+          "required": true,
+          "propertyRationale": "Custom property needed for shared responsibility model specific to cloud security"
+        },
+        {
+          "name": "controlCount",
+          "type": "integer",
+          "description": "Number of security controls within this domain",
+          "required": true,
+          "propertyRationale": "Custom property for domain-level metrics tracking"
+        },
+        {
+          "name": "hasControl",
+          "type": "array",
+          "items": "SecurityControl",
+          "description": "Collection of security controls belonging to this domain",
+          "required": true
+        }
+      ],
+      "businessRules": [
+        {
+          "ruleId": "CD-BR-001",
+          "rule": "IF domainCode is defined THEN it MUST be unique across all ControlDomains",
+          "priority": 1,
+          "validationCriteria": "Uniqueness check on domainCode field"
+        },
+        {
+          "ruleId": "CD-BR-002",
+          "rule": "IF controlCount > 0 THEN hasControl array MUST contain exactly controlCount items",
+          "priority": 1,
+          "validationCriteria": "Array length validation"
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:SecurityControl",
+      "@type": "DefinedTerm",
+      "name": "SecurityControl",
+      "description": "A specific security control within the MCSB framework that defines a recommended security practice, its implementation guidance for Azure and AWS environments, compliance mappings to industry standards (NIST, CIS, PCI-DSS), and responsibility assignments. Each control is uniquely identified and provides actionable security guidance.",
+      "schemaOrgAlignment": {
+        "baseType": "DefinedTerm",
+        "rationale": "DefinedTerm represents a specific term within a structured security vocabulary with defined semantics",
+        "extensions": ["controlId", "securityPrinciple", "azureGuidance", "awsGuidance", "complianceMappings"],
+        "alternativesConsidered": ["Action", "HowTo", "CreativeWork"]
+      },
+      "properties": [
+        {
+          "name": "controlId",
+          "type": "string",
+          "description": "Unique identifier for the control in format DOMAIN-NUMBER (e.g., NS-1, IM-3)",
+          "required": true,
+          "constraints": {
+            "pattern": "^[A-Z]{2}-\\d{1,2}$",
+            "examples": ["NS-1", "IM-3", "PA-7", "DP-4"]
+          },
+          "propertyRationale": "Custom property for MCSB-specific control identification scheme"
+        },
+        {
+          "name": "controlName",
+          "type": "string",
+          "schemaOrgMapping": "name",
+          "description": "Human-readable name describing the control's purpose",
+          "required": true
+        },
+        {
+          "name": "recommendation",
+          "type": "string",
+          "description": "Brief statement of what the control recommends",
+          "required": true,
+          "propertyRationale": "Custom property for actionable recommendation statements"
+        },
+        {
+          "name": "securityPrinciple",
+          "type": "string",
+          "description": "Detailed explanation of the security principle underlying this control",
+          "required": true,
+          "constraints": {
+            "minLength": 100
+          },
+          "propertyRationale": "Custom property for comprehensive security rationale"
+        },
+        {
+          "name": "belongsToDomain",
+          "type": "ControlDomain",
+          "description": "The control domain this security control belongs to",
+          "required": true
+        },
+        {
+          "name": "responsibility",
+          "type": "ResponsibilityAssignment",
+          "description": "Who is responsible for implementing this control",
+          "required": true
+        },
+        {
+          "name": "componentScope",
+          "type": "string",
+          "description": "Notes about component scope and environment assumptions",
+          "required": false
+        },
+        {
+          "name": "hasAzureGuidance",
+          "type": "ImplementationGuidance",
+          "description": "Azure-specific implementation guidance",
+          "required": false
+        },
+        {
+          "name": "hasAWSGuidance",
+          "type": "ImplementationGuidance",
+          "description": "AWS-specific implementation guidance",
+          "required": false
+        },
+        {
+          "name": "hasComplianceMapping",
+          "type": "array",
+          "items": "ComplianceMapping",
+          "description": "Mappings to industry compliance frameworks",
+          "required": true
+        },
+        {
+          "name": "hasStakeholders",
+          "type": "array",
+          "items": "SecurityStakeholder",
+          "description": "Customer security stakeholders responsible for this control",
+          "required": false
+        }
+      ],
+      "businessRules": [
+        {
+          "ruleId": "SC-BR-001",
+          "rule": "IF controlId starts with domain code THEN belongsToDomain MUST reference matching ControlDomain",
+          "priority": 1,
+          "validationCriteria": "Cross-reference validation between controlId prefix and domain"
+        },
+        {
+          "ruleId": "SC-BR-002",
+          "rule": "IF responsibility is 'Joint' THEN both hasAzureGuidance AND hasAWSGuidance SHOULD be populated",
+          "priority": 2,
+          "validationCriteria": "Guidance completeness check for joint responsibility"
+        },
+        {
+          "ruleId": "SC-BR-003",
+          "rule": "IF hasComplianceMapping is empty THEN control MUST be flagged for compliance review",
+          "priority": 1,
+          "validationCriteria": "Compliance mapping completeness"
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:ImplementationGuidance",
+      "@type": "HowTo",
+      "name": "ImplementationGuidance",
+      "description": "Cloud platform-specific implementation guidance for a security control, providing detailed instructions, recommended services, configuration steps, and reference links for implementing the control in Azure or AWS environments. This entity enables AI agents to provide actionable implementation advice tailored to specific cloud platforms.",
+      "schemaOrgAlignment": {
+        "baseType": "HowTo",
+        "rationale": "HowTo represents step-by-step guidance for accomplishing a task, ideal for implementation instructions",
+        "extensions": ["cloudPlatform", "implementationContext", "additionalResources"],
+        "alternativesConsidered": ["Guide", "TechArticle", "Action"]
+      },
+      "properties": [
+        {
+          "name": "cloudPlatform",
+          "type": "CloudPlatform",
+          "description": "The cloud platform this guidance applies to",
+          "required": true
+        },
+        {
+          "name": "guidanceText",
+          "type": "string",
+          "schemaOrgMapping": "text",
+          "description": "Detailed implementation guidance and recommendations",
+          "required": true,
+          "constraints": {
+            "minLength": 100
+          }
+        },
+        {
+          "name": "implementationContext",
+          "type": "string",
+          "description": "Additional context, links, and resources for implementation",
+          "required": false
+        },
+        {
+          "name": "additionalResources",
+          "type": "array",
+          "items": "string",
+          "schemaOrgMapping": "citation",
+          "description": "URLs and references to documentation, best practices, and tools",
+          "required": false
+        },
+        {
+          "name": "relatedServices",
+          "type": "array",
+          "items": "CloudService",
+          "description": "Cloud services mentioned in the guidance",
+          "required": false
+        },
+        {
+          "name": "forControl",
+          "type": "SecurityControl",
+          "description": "The security control this guidance applies to",
+          "required": true
+        }
+      ],
+      "businessRules": [
+        {
+          "ruleId": "IG-BR-001",
+          "rule": "IF cloudPlatform is 'Azure' THEN guidanceText MUST reference Azure-specific services or features",
+          "priority": 2,
+          "validationCriteria": "Platform-specific content validation"
+        },
+        {
+          "ruleId": "IG-BR-002",
+          "rule": "IF additionalResources contains URLs THEN URLs MUST be valid and accessible",
+          "priority": 3,
+          "validationCriteria": "URL validation check"
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:ComplianceMapping",
+      "@type": "PropertyValue",
+      "name": "ComplianceMapping",
+      "description": "A mapping between an MCSB security control and corresponding controls in industry compliance frameworks such as NIST SP800-53, CIS Controls, or PCI-DSS. This enables AI agents to understand cross-framework relationships and support multi-framework compliance assessments.",
+      "schemaOrgAlignment": {
+        "baseType": "PropertyValue",
+        "rationale": "PropertyValue represents a key-value relationship, suitable for mapping identifiers between frameworks",
+        "extensions": ["framework", "frameworkVersion", "mappedControlIds"],
+        "alternativesConsidered": ["DefinedTerm", "Thing", "Intangible"]
+      },
+      "properties": [
+        {
+          "name": "framework",
+          "type": "ComplianceFramework",
+          "description": "The compliance framework being mapped to",
+          "required": true
+        },
+        {
+          "name": "frameworkVersion",
+          "type": "string",
+          "schemaOrgMapping": "version",
+          "description": "Version of the compliance framework",
+          "required": false
+        },
+        {
+          "name": "mappedControlIds",
+          "type": "array",
+          "items": "string",
+          "description": "Control IDs from the mapped framework",
+          "required": true,
+          "constraints": {
+            "minItems": 1
+          }
+        },
+        {
+          "name": "mappingType",
+          "type": "MappingType",
+          "description": "Nature of the mapping (full, partial, related)",
+          "required": false,
+          "default": "partial"
+        },
+        {
+          "name": "mappingNotes",
+          "type": "string",
+          "description": "Additional notes about the mapping relationship",
+          "required": false
+        },
+        {
+          "name": "mapsToControl",
+          "type": "SecurityControl",
+          "description": "The MCSB control this mapping applies to",
+          "required": true
+        }
+      ],
+      "businessRules": [
+        {
+          "ruleId": "CM-BR-001",
+          "rule": "IF framework is 'NIST' THEN mappedControlIds MUST follow NIST control naming convention",
+          "priority": 2,
+          "validationCriteria": "NIST control ID format validation"
+        },
+        {
+          "ruleId": "CM-BR-002",
+          "rule": "IF mappedControlIds contains multiple IDs THEN IDs MUST be comma-separated or in array format",
+          "priority": 2,
+          "validationCriteria": "ID list format validation"
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:ResponsibilityAssignment",
+      "@type": "Role",
+      "name": "ResponsibilityAssignment",
+      "description": "Defines who is responsible for implementing and maintaining a security control under the cloud shared responsibility model. Responsibilities can be assigned to Client (customer), Provider (cloud provider), Joint (shared), or Solution Provider (third-party). This entity is critical for RACI matrix generation and accountability tracking.",
+      "schemaOrgAlignment": {
+        "baseType": "Role",
+        "rationale": "Role represents a function or position with associated responsibilities, ideal for accountability assignment",
+        "extensions": ["responsibilityType", "clientActions", "providerActions"],
+        "alternativesConsidered": ["OrganizationRole", "Thing", "Action"]
+      },
+      "properties": [
+        {
+          "name": "responsibilityType",
+          "type": "ResponsibilityType",
+          "description": "Category of responsibility assignment",
+          "required": true
+        },
+        {
+          "name": "responsibilityLabel",
+          "type": "string",
+          "schemaOrgMapping": "name",
+          "description": "Human-readable label for the responsibility",
+          "required": true
+        },
+        {
+          "name": "clientActions",
+          "type": "array",
+          "items": "string",
+          "description": "Actions the customer/client must take",
+          "required": false
+        },
+        {
+          "name": "providerActions",
+          "type": "array",
+          "items": "string",
+          "description": "Actions the cloud provider takes",
+          "required": false
+        },
+        {
+          "name": "sharedActions",
+          "type": "array",
+          "items": "string",
+          "description": "Actions shared between client and provider",
+          "required": false
+        }
+      ],
+      "businessRules": [
+        {
+          "ruleId": "RA-BR-001",
+          "rule": "IF responsibilityType is 'Joint' THEN both clientActions AND providerActions MUST be defined",
+          "priority": 1,
+          "validationCriteria": "Joint responsibility completeness check"
+        },
+        {
+          "ruleId": "RA-BR-002",
+          "rule": "IF responsibilityType is 'Client' THEN providerActions SHOULD be empty or minimal",
+          "priority": 2,
+          "validationCriteria": "Responsibility consistency validation"
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:ComplianceFramework",
+      "@type": "DefinedTermSet",
+      "name": "ComplianceFramework",
+      "description": "An industry-recognized security or compliance framework that defines security controls and requirements. MCSB maps to multiple frameworks including NIST SP800-53, CIS Controls, and PCI-DSS, enabling cross-framework compliance assessment and gap analysis.",
+      "schemaOrgAlignment": {
+        "baseType": "DefinedTermSet",
+        "rationale": "DefinedTermSet represents a collection of defined terms (controls) within a framework vocabulary",
+        "extensions": ["frameworkCode", "governingBody", "currentVersion"],
+        "alternativesConsidered": ["CreativeWork", "Thing", "Organization"]
+      },
+      "properties": [
+        {
+          "name": "frameworkCode",
+          "type": "string",
+          "description": "Short code identifying the framework",
+          "required": true,
+          "constraints": {
+            "enum": ["NIST", "CIS_v7", "CIS_v8", "PCI_DSS"]
+          },
+          "propertyRationale": "Custom property for framework identification in mappings"
+        },
+        {
+          "name": "frameworkName",
+          "type": "string",
+          "schemaOrgMapping": "name",
+          "description": "Full name of the compliance framework",
+          "required": true
+        },
+        {
+          "name": "currentVersion",
+          "type": "string",
+          "schemaOrgMapping": "version",
+          "description": "Current version of the framework",
+          "required": true
+        },
+        {
+          "name": "governingBody",
+          "type": "Organization",
+          "schemaOrgMapping": "maintainer",
+          "description": "Organization responsible for the framework",
+          "required": false
+        },
+        {
+          "name": "frameworkUrl",
+          "type": "string",
+          "schemaOrgMapping": "url",
+          "description": "URL to the framework documentation",
+          "required": false
+        },
+        {
+          "name": "frameworkDescription",
+          "type": "string",
+          "schemaOrgMapping": "description",
+          "description": "Description of the framework's purpose and scope",
+          "required": true
+        }
+      ],
+      "businessRules": [
+        {
+          "ruleId": "CF-BR-001",
+          "rule": "IF frameworkCode is defined THEN it MUST be one of the enumerated values",
+          "priority": 1,
+          "validationCriteria": "Enum value validation"
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:CloudPlatform",
+      "@type": "SoftwareApplication",
+      "name": "CloudPlatform",
+      "description": "A cloud computing platform that hosts workloads and services. MCSB provides guidance for Azure, AWS, and multi-cloud environments. This entity enables AI agents to filter and provide platform-specific guidance and recommendations.",
+      "schemaOrgAlignment": {
+        "baseType": "SoftwareApplication",
+        "rationale": "SoftwareApplication represents a software platform with specific features and capabilities",
+        "extensions": ["platformCode", "regions", "services"],
+        "alternativesConsidered": ["Product", "Service", "Organization"]
+      },
+      "properties": [
+        {
+          "name": "platformCode",
+          "type": "string",
+          "description": "Short code for the platform",
+          "required": true,
+          "constraints": {
+            "enum": ["Azure", "AWS", "GCP", "Multi-Cloud"]
+          },
+          "propertyRationale": "Custom property for platform identification in guidance filtering"
+        },
+        {
+          "name": "platformName",
+          "type": "string",
+          "schemaOrgMapping": "name",
+          "description": "Full name of the cloud platform",
+          "required": true
+        },
+        {
+          "name": "provider",
+          "type": "Organization",
+          "schemaOrgMapping": "provider",
+          "description": "Organization providing the cloud platform",
+          "required": true
+        },
+        {
+          "name": "documentationUrl",
+          "type": "string",
+          "schemaOrgMapping": "url",
+          "description": "URL to platform security documentation",
+          "required": false
+        }
+      ],
+      "businessRules": [
+        {
+          "ruleId": "CP-BR-001",
+          "rule": "IF platformCode is 'Azure' THEN provider MUST be Microsoft",
+          "priority": 1,
+          "validationCriteria": "Platform-provider consistency"
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:CloudService",
+      "@type": "SoftwareApplication",
+      "name": "CloudService",
+      "description": "A specific service offered by a cloud platform that is referenced in implementation guidance. Examples include Azure Firewall, AWS GuardDuty, Microsoft Defender for Cloud. This entity enables AI agents to map controls to specific services for implementation.",
+      "schemaOrgAlignment": {
+        "baseType": "SoftwareApplication",
+        "rationale": "SoftwareApplication represents individual cloud services with specific functionality",
+        "extensions": ["serviceCategory", "securityCapabilities"],
+        "alternativesConsidered": ["Service", "Product", "WebApplication"]
+      },
+      "properties": [
+        {
+          "name": "serviceName",
+          "type": "string",
+          "schemaOrgMapping": "name",
+          "description": "Name of the cloud service",
+          "required": true
+        },
+        {
+          "name": "platform",
+          "type": "CloudPlatform",
+          "description": "Cloud platform offering this service",
+          "required": true
+        },
+        {
+          "name": "serviceCategory",
+          "type": "string",
+          "description": "Category of the service (Security, Networking, Identity, etc.)",
+          "required": true,
+          "propertyRationale": "Custom property for service classification"
+        },
+        {
+          "name": "securityCapabilities",
+          "type": "array",
+          "items": "string",
+          "description": "Security capabilities provided by this service",
+          "required": false
+        },
+        {
+          "name": "documentationUrl",
+          "type": "string",
+          "schemaOrgMapping": "url",
+          "description": "URL to service documentation",
+          "required": false
+        },
+        {
+          "name": "supportsControls",
+          "type": "array",
+          "items": "SecurityControl",
+          "description": "Controls this service helps implement",
+          "required": false
+        }
+      ],
+      "businessRules": [
+        {
+          "ruleId": "CS-BR-001",
+          "rule": "IF serviceName contains 'Azure' THEN platform.platformCode MUST be 'Azure'",
+          "priority": 1,
+          "validationCriteria": "Service-platform consistency validation"
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:SecurityStakeholder",
+      "@type": "OrganizationRole",
+      "name": "SecurityStakeholder",
+      "description": "An organizational role responsible for security decisions, implementation, or oversight within the customer organization. Stakeholders are mapped to controls to define accountability and enable RACI matrix generation for security governance.",
+      "schemaOrgAlignment": {
+        "baseType": "OrganizationRole",
+        "rationale": "OrganizationRole represents a role within an organization with specific responsibilities",
+        "extensions": ["stakeholderFunction", "controlResponsibilities"],
+        "alternativesConsidered": ["Role", "Person", "ContactPoint"]
+      },
+      "properties": [
+        {
+          "name": "stakeholderName",
+          "type": "string",
+          "schemaOrgMapping": "name",
+          "description": "Name of the stakeholder role",
+          "required": true
+        },
+        {
+          "name": "stakeholderFunction",
+          "type": "string",
+          "description": "Security function area (e.g., Security Architecture, Security Operations)",
+          "required": true,
+          "propertyRationale": "Custom property for security function classification"
+        },
+        {
+          "name": "stakeholderUrl",
+          "type": "string",
+          "schemaOrgMapping": "url",
+          "description": "URL to role definition documentation",
+          "required": false
+        },
+        {
+          "name": "controlResponsibilities",
+          "type": "array",
+          "items": "SecurityControl",
+          "description": "Controls this stakeholder is responsible for",
+          "required": false
+        }
+      ],
+      "businessRules": [
+        {
+          "ruleId": "SS-BR-001",
+          "rule": "IF stakeholderFunction is defined THEN it MUST align with Microsoft Cloud Adoption Framework roles",
+          "priority": 2,
+          "validationCriteria": "Role alignment validation"
+        }
+      ]
+    },
+    {
+      "@id": "mcsb:ControlAssessment",
+      "@type": "Assessment",
+      "name": "ControlAssessment",
+      "description": "An evaluation of an organization's implementation status for a specific security control, including assessment findings, gap identification, and remediation recommendations. This entity enables AI agents to track compliance status and generate remediation plans.",
+      "schemaOrgAlignment": {
+        "baseType": "Review",
+        "rationale": "Review (or Assessment subtype) represents an evaluation with findings and recommendations",
+        "extensions": ["assessmentStatus", "implementationGaps", "remediationPriority"],
+        "alternativesConsidered": ["Action", "Report", "Thing"]
+      },
+      "properties": [
+        {
+          "name": "assessmentId",
+          "type": "string",
+          "schemaOrgMapping": "identifier",
+          "description": "Unique identifier for the assessment",
+          "required": true
+        },
+        {
+          "name": "assessedControl",
+          "type": "SecurityControl",
+          "description": "The control being assessed",
+          "required": true
+        },
+        {
+          "name": "assessmentDate",
+          "type": "date",
+          "schemaOrgMapping": "dateCreated",
+          "description": "Date the assessment was performed",
+          "required": true
+        },
+        {
+          "name": "assessmentStatus",
+          "type": "AssessmentStatus",
+          "description": "Current implementation status",
+          "required": true
+        },
+        {
+          "name": "implementationGaps",
+          "type": "array",
+          "items": "string",
+          "description": "Identified gaps in control implementation",
+          "required": false
+        },
+        {
+          "name": "remediationPriority",
+          "type": "PriorityLevel",
+          "description": "Priority for remediation actions",
+          "required": false
+        },
+        {
+          "name": "remediationNotes",
+          "type": "string",
+          "description": "Notes and recommendations for remediation",
+          "required": false
+        },
+        {
+          "name": "evidenceLinks",
+          "type": "array",
+          "items": "string",
+          "description": "Links to supporting evidence",
+          "required": false
+        }
+      ],
+      "businessRules": [
+        {
+          "ruleId": "CA-BR-001",
+          "rule": "IF assessmentStatus is 'NonCompliant' THEN implementationGaps MUST contain at least one gap",
+          "priority": 1,
+          "validationCriteria": "Gap documentation for non-compliance"
+        },
+        {
+          "ruleId": "CA-BR-002",
+          "rule": "IF implementationGaps is not empty THEN remediationPriority MUST be defined",
+          "priority": 1,
+          "validationCriteria": "Priority assignment for gaps"
+        }
+      ]
+    }
+  ],
+
+  "enumerations": [
+    {
+      "@id": "mcsb:ResponsibilityType",
+      "@type": "DefinedTermSet",
+      "name": "ResponsibilityType",
+      "description": "Enumeration of responsibility types in the cloud shared responsibility model",
+      "values": [
+        {"code": "Client", "label": "Client/Customer Responsibility", "description": "Customer is solely responsible for implementation and maintenance"},
+        {"code": "Provider", "label": "Cloud Provider Responsibility", "description": "Cloud provider is responsible for implementation"},
+        {"code": "Joint", "label": "Shared/Joint Responsibility", "description": "Responsibility is shared between customer and provider"},
+        {"code": "SolutionProvider", "label": "Solution Provider Responsibility", "description": "Third-party solution provider is responsible"},
+        {"code": "ClientSolProvider", "label": "Client/Solution Provider", "description": "Responsibility shared between client and solution provider"}
+      ]
+    },
+    {
+      "@id": "mcsb:MappingType",
+      "@type": "DefinedTermSet",
+      "name": "MappingType",
+      "description": "Type of mapping relationship between controls",
+      "values": [
+        {"code": "full", "label": "Full Mapping", "description": "MCSB control fully addresses the mapped framework control"},
+        {"code": "partial", "label": "Partial Mapping", "description": "MCSB control partially addresses the mapped framework control"},
+        {"code": "related", "label": "Related", "description": "Controls are related but not directly mapped"}
+      ]
+    },
+    {
+      "@id": "mcsb:AssessmentStatus",
+      "@type": "DefinedTermSet",
+      "name": "AssessmentStatus",
+      "description": "Status of control implementation assessment",
+      "values": [
+        {"code": "Compliant", "label": "Compliant", "description": "Control is fully implemented and compliant"},
+        {"code": "PartiallyCompliant", "label": "Partially Compliant", "description": "Control is partially implemented"},
+        {"code": "NonCompliant", "label": "Non-Compliant", "description": "Control is not implemented or significantly deficient"},
+        {"code": "NotApplicable", "label": "Not Applicable", "description": "Control does not apply to this environment"},
+        {"code": "NotAssessed", "label": "Not Assessed", "description": "Control has not yet been assessed"}
+      ]
+    },
+    {
+      "@id": "mcsb:PriorityLevel",
+      "@type": "DefinedTermSet",
+      "name": "PriorityLevel",
+      "description": "Priority level for remediation actions",
+      "values": [
+        {"code": "Critical", "label": "Critical", "description": "Immediate attention required - security risk"},
+        {"code": "High", "label": "High", "description": "Address within 30 days"},
+        {"code": "Medium", "label": "Medium", "description": "Address within 90 days"},
+        {"code": "Low", "label": "Low", "description": "Address within 180 days or next cycle"}
+      ]
+    }
+  ],
+
+  "relationships": [
+    {
+      "@id": "mcsb:rel:belongsToDomain",
+      "name": "belongsToDomain",
+      "description": "Links a security control to its parent control domain",
+      "source": "SecurityControl",
+      "target": "ControlDomain",
+      "cardinality": "1..1",
+      "inverseRelationship": "hasControl"
+    },
+    {
+      "@id": "mcsb:rel:hasControl",
+      "name": "hasControl",
+      "description": "Links a control domain to its security controls",
+      "source": "ControlDomain",
+      "target": "SecurityControl",
+      "cardinality": "1..*",
+      "inverseRelationship": "belongsToDomain"
+    },
+    {
+      "@id": "mcsb:rel:hasAzureGuidance",
+      "name": "hasAzureGuidance",
+      "description": "Links a security control to its Azure implementation guidance",
+      "source": "SecurityControl",
+      "target": "ImplementationGuidance",
+      "cardinality": "0..1",
+      "inverseRelationship": "forControl"
+    },
+    {
+      "@id": "mcsb:rel:hasAWSGuidance",
+      "name": "hasAWSGuidance",
+      "description": "Links a security control to its AWS implementation guidance",
+      "source": "SecurityControl",
+      "target": "ImplementationGuidance",
+      "cardinality": "0..1",
+      "inverseRelationship": "forControl"
+    },
+    {
+      "@id": "mcsb:rel:forControl",
+      "name": "forControl",
+      "description": "Links implementation guidance to the control it supports",
+      "source": "ImplementationGuidance",
+      "target": "SecurityControl",
+      "cardinality": "1..1",
+      "inverseRelationship": "hasAzureGuidance"
+    },
+    {
+      "@id": "mcsb:rel:hasComplianceMapping",
+      "name": "hasComplianceMapping",
+      "description": "Links a security control to its compliance framework mappings",
+      "source": "SecurityControl",
+      "target": "ComplianceMapping",
+      "cardinality": "0..*",
+      "inverseRelationship": "mapsToControl"
+    },
+    {
+      "@id": "mcsb:rel:mapsToControl",
+      "name": "mapsToControl",
+      "description": "Links a compliance mapping to the MCSB control",
+      "source": "ComplianceMapping",
+      "target": "SecurityControl",
+      "cardinality": "1..1",
+      "inverseRelationship": "hasComplianceMapping"
+    },
+    {
+      "@id": "mcsb:rel:mapsToFramework",
+      "name": "mapsToFramework",
+      "description": "Links a compliance mapping to the external framework",
+      "source": "ComplianceMapping",
+      "target": "ComplianceFramework",
+      "cardinality": "1..1",
+      "inverseRelationship": "hasMappings"
+    },
+    {
+      "@id": "mcsb:rel:hasResponsibility",
+      "name": "hasResponsibility",
+      "description": "Links a control to its responsibility assignment",
+      "source": "SecurityControl",
+      "target": "ResponsibilityAssignment",
+      "cardinality": "1..1",
+      "inverseRelationship": "responsibleFor"
+    },
+    {
+      "@id": "mcsb:rel:hasStakeholders",
+      "name": "hasStakeholders",
+      "description": "Links a control to responsible security stakeholders",
+      "source": "SecurityControl",
+      "target": "SecurityStakeholder",
+      "cardinality": "0..*",
+      "inverseRelationship": "responsibleForControls"
+    },
+    {
+      "@id": "mcsb:rel:assessedControl",
+      "name": "assessedControl",
+      "description": "Links an assessment to the control being evaluated",
+      "source": "ControlAssessment",
+      "target": "SecurityControl",
+      "cardinality": "1..1",
+      "inverseRelationship": "hasAssessments"
+    },
+    {
+      "@id": "mcsb:rel:supportsControls",
+      "name": "supportsControls",
+      "description": "Links a cloud service to controls it helps implement",
+      "source": "CloudService",
+      "target": "SecurityControl",
+      "cardinality": "0..*",
+      "inverseRelationship": "implementedBy"
+    },
+    {
+      "@id": "mcsb:rel:belongsToPlatform",
+      "name": "belongsToPlatform",
+      "description": "Links a cloud service to its platform",
+      "source": "CloudService",
+      "target": "CloudPlatform",
+      "cardinality": "1..1",
+      "inverseRelationship": "hasServices"
+    }
+  ]
+}

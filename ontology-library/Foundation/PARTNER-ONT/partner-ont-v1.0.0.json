@@ -1,0 +1,323 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "partner": "https://platformcore.io/ontology/partner/",
+    "pf": "https://platformcore.io/ontology/",
+    "oaa": "https://platformcore.io/ontology/oaa/",
+    "org": "https://platformcore.io/ontology/org/",
+    "fs": "https://platformcore.io/ontology/fairslice/",
+    "grc-fw": "https://platformcore.io/ontology/grc-fw/",
+    "emc": "https://platformcore.io/ontology/emc/",
+    "vsom": "https://platformcore.io/ontology/vsom/"
+  },
+  "@type": "Ontology",
+  "@id": "partner:ontology:partner-v1.0",
+  "metadata": {
+    "name": "Partner Network Ontology",
+    "version": "1.0.0",
+    "description": "Foundation ontology for partner, agency, and affiliate relationships within the PF-Core platform ecosystem. 6 owned entities: Partner, Agency, Affiliate, Referral, CommissionRule, PartnerPayout. Supports multi-tier attribution (platform referrals + marketplace referrals), agency management of multiple client pies, affiliate tracking with configurable attribution windows, and automated commission payouts via the FairSlice revenue waterfall. 10 relationships (5 internal + 5 cross-ontology) bridging to ORG (partner identity), FAIRSLICE (revenue integration), GRC-FW (partner governance), EMC (instance management), and VSOM (channel strategy trace).",
+    "domain": "Partner Network & Channel Economics",
+    "purpose": "Provide the definitive model for partner onboarding, referral tracking, multi-tier attribution, agency management, and automated commission governance. Enables the Channel (Outer Loop) of the Triple-Loop engine: SaaS (Inner) to Marketplace (Middle) to Channel (Outer).",
+    "oaaVersion": "7.0.0",
+    "series": "Foundation",
+    "dateCreated": "2026-02-26",
+    "dateModified": "2026-02-26",
+    "creator": "Azlan EA-AAA"
+  },
+  "oaa:sourceFrameworks": [
+    {
+      "name": "SaaS Partner Channel Best Practices",
+      "version": "Industry Standard",
+      "publisher": "Various (PartnerStack, Impact, FirstPromoter patterns)",
+      "applicability": [
+        "Multi-tier affiliate attribution",
+        "Agency management portals",
+        "Automated commission payouts",
+        "Channel velocity metrics"
+      ]
+    },
+    {
+      "name": "PFC Platform Instance Architecture",
+      "version": "Epic 34",
+      "publisher": "PF-Core Architecture",
+      "applicability": [
+        "PFC to PFI to Product to Client cascade for partner access",
+        "Unified Registry governance for partner contracts",
+        "RLS-based tenant isolation for agency access"
+      ]
+    }
+  ],
+  "oaa:imports": [
+    {
+      "@id": "org:schema",
+      "name": "ORG-ONT",
+      "version": "3.0.0",
+      "description": "Organisation identity and structure for partner entity modelling",
+      "importedEntities": ["org:Organization"]
+    },
+    {
+      "@id": "fs:schema",
+      "name": "FAIRSLICE-ONT",
+      "version": "1.0.0",
+      "description": "Platform economics — Pie, WaterfallRule, Distribution for revenue integration",
+      "importedEntities": ["fs:Pie", "fs:WaterfallRule", "fs:Distribution"]
+    },
+    {
+      "@id": "grc-fw:schema",
+      "name": "GRC-FW-ONT",
+      "version": "3.0.0",
+      "description": "Governance framework for partner compliance and audit",
+      "importedEntities": ["grc-fw:GRCContext", "grc-fw:GovernancePolicy"]
+    },
+    {
+      "@id": "emc:schema",
+      "name": "EMC-ONT",
+      "version": "5.0.0",
+      "description": "Enterprise Model Composition for instance-level partner management",
+      "importedEntities": ["emc:InstanceConfiguration"]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-PARTNER-001",
+      "name": "Partner to Organisation Identity Bridge",
+      "description": "Partners are organisations — the partner entity extends the org identity with channel-specific properties",
+      "joinPath": "partner:Partner -> partner:partnerIsOrganization -> org:Organization",
+      "useCase": "Resolve partner identity, legal entity details, jurisdiction, and KYC status from the org graph"
+    },
+    {
+      "patternId": "JP-PARTNER-002",
+      "name": "Referral to Pie Revenue Bridge",
+      "description": "Partner referrals attach to pies and trigger waterfall steps for affiliate payouts and agency retainers",
+      "joinPath": "partner:Referral -> partner:referralLinkedToPie -> fs:Pie -> fs:pieHasWaterfallRule -> fs:WaterfallRule[Affiliate-Payout|Agency-Retainer]",
+      "useCase": "When revenue arrives at a pie with an active partner referral, automatically trigger commission payouts"
+    },
+    {
+      "patternId": "JP-PARTNER-003",
+      "name": "Agency Multi-Pie Management Bridge",
+      "description": "Agencies manage multiple client pies — the agency dashboard aggregates across all managed pies",
+      "joinPath": "partner:Agency -> partner:agencyManagesPie -> fs:Pie -> fs:pieHasMember -> fs:PieMember",
+      "useCase": "Agency super-admin view: toggle between client pies, view aggregate revenue, manage waterfall rules"
+    },
+    {
+      "patternId": "JP-PARTNER-004",
+      "name": "Partner Commission to Waterfall Distribution Bridge",
+      "description": "Commission rules determine how much a partner earns from each revenue event via the waterfall",
+      "joinPath": "partner:CommissionRule -> partner:commissionViaWaterfall -> fs:WaterfallRule -> fs:distributionViaRule -> fs:Distribution",
+      "useCase": "Calculate and distribute partner commissions automatically through the revenue waterfall engine"
+    },
+    {
+      "patternId": "JP-PARTNER-005",
+      "name": "Partner Governance and Compliance Bridge",
+      "description": "Partners are subject to GRC governance — KYC/AML, contract compliance, attribution integrity",
+      "joinPath": "partner:Partner -> partner:partnerGovernedByGRC -> grc-fw:GRCContext -> grc-fw:hasPolicy -> grc-fw:GovernancePolicy",
+      "useCase": "Enforce partner compliance: KYC checks before payout, attribution audit trail, contract governance"
+    }
+  ],
+  "entities": [
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "partner:Partner",
+      "name": "Partner",
+      "description": "A channel partner in the PF-Core ecosystem. Partners earn revenue through referrals (affiliates), client management (agencies), consulting, integration, or reselling. Each partner has a tier (Bronze/Silver/Gold/Platinum) determining commission rates and access levels. Partners are organisations (extends org:Organization) with channel-specific properties.",
+      "properties": [
+        {"name": "partnerId", "type": "Text", "required": true, "description": "Unique identifier for this partner"},
+        {"name": "partnerName", "type": "Text", "required": true, "description": "Legal or trading name of the partner entity"},
+        {"name": "partnerType", "type": "Text", "required": true, "description": "Partner classification: Agency, Affiliate, Reseller, Consultant, Integrator"},
+        {"name": "tier", "type": "Text", "required": true, "description": "Partner tier: Bronze, Silver, Gold, Platinum"},
+        {"name": "status", "type": "Text", "required": true, "description": "Partner status: Applied, Active, Suspended, Terminated"},
+        {"name": "orgRef", "type": "Text", "required": false, "description": "Reference to the org:Organization entity for this partner"},
+        {"name": "primaryContact", "type": "Text", "required": true, "description": "Primary contact person name"},
+        {"name": "contactEmail", "type": "Text", "required": true, "description": "Contact email address"},
+        {"name": "kycStatus", "type": "Text", "required": true, "description": "Know Your Customer status: Pending, Verified, Failed, Expired"},
+        {"name": "kycVerifiedDate", "type": "DateTime", "required": false, "description": "Date KYC verification was completed"},
+        {"name": "joinedDate", "type": "DateTime", "required": true, "description": "Date the partner joined the programme"},
+        {"name": "jurisdiction", "type": "Text", "required": true, "description": "Primary legal jurisdiction (ISO 3166-1 alpha-2)"},
+        {"name": "stripeConnectId", "type": "Text", "required": false, "description": "Stripe Connect account ID for automated payouts"}
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "partner:Agency",
+      "name": "Agency",
+      "description": "Specialisation of Partner. An Agency manages multiple client pies — they set up and run FairSlice instances for clients, earning a programmatic Management Fee (cash or equity) directly from the Revenue Waterfall. Agencies have a super-admin dashboard to toggle between client pies. Target GTM: Fractional CxO Agencies, Dev Shops, and Incubators.",
+      "properties": [
+        {"name": "agencyId", "type": "Text", "required": true, "description": "Unique identifier (extends partnerId)"},
+        {"name": "managementFeeType", "type": "Text", "required": true, "description": "How the agency charges: Percentage, Fixed-Retainer, Equity-Stake, Hybrid"},
+        {"name": "managementFeeRate", "type": "Number", "required": true, "description": "Fee rate (e.g., 5 for 5% of revenue, or 500 for $500/month retainer)"},
+        {"name": "maxClients", "type": "Number", "required": true, "description": "Maximum number of client pies this agency can manage at their current tier"},
+        {"name": "activeClientCount", "type": "Number", "required": false, "description": "Calculated: number of active referrals for this agency"},
+        {"name": "specialisations", "type": "JSONB", "required": false, "description": "Agency domain specialisations: ['MarTech', 'FinTech', 'SaaS', 'AI/ML', 'GRC']"}
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "partner:Affiliate",
+      "name": "Affiliate",
+      "description": "Specialisation of Partner. An Affiliate refers new users or startups to FairSlice, earning a percentage of the Platform Fee for each referred pie. Supports both Platform Referrals (user to user) and Marketplace Referrals (user to smart contract recommendation). Attribution windows are configurable (default 90 days).",
+      "properties": [
+        {"name": "affiliateId", "type": "Text", "required": true, "description": "Unique identifier (extends partnerId)"},
+        {"name": "referralCode", "type": "Text", "required": true, "description": "Unique referral code used for tracking attribution"},
+        {"name": "attributionWindowDays", "type": "Number", "required": true, "description": "Number of days a referral attribution remains active (default: 90)"},
+        {"name": "platformFeeShare", "type": "Number", "required": true, "description": "Percentage of the platform fee earned per referred pie (e.g., 10 for 10%)"},
+        {"name": "marketplaceFeeShare", "type": "Number", "required": false, "description": "Percentage of marketplace license fees earned from recommended smart contracts"},
+        {"name": "totalReferrals", "type": "Number", "required": false, "description": "Calculated: total referrals made by this affiliate"},
+        {"name": "convertedReferrals", "type": "Number", "required": false, "description": "Calculated: referrals that converted to active pies"}
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "partner:Referral",
+      "name": "Referral",
+      "description": "A tracked referral linking a Partner to a specific Pie. Referrals are the core attribution mechanism — they determine which partner earns commission from a pie's revenue. Referral codes are immutable once attached (BR-PARTNER-001). Supports platform referrals (user invites user) and marketplace referrals (user recommends smart contract).",
+      "properties": [
+        {"name": "referralId", "type": "Text", "required": true, "description": "Unique identifier for this referral"},
+        {"name": "partnerRef", "type": "Text", "required": true, "description": "Reference to the Partner (Agency or Affiliate) that made the referral"},
+        {"name": "pieRef", "type": "Text", "required": true, "description": "Reference to the Pie this referral is attached to"},
+        {"name": "referralCode", "type": "Text", "required": true, "description": "The referral code used (must match partner's assigned code)"},
+        {"name": "attributionType", "type": "Text", "required": true, "description": "Type: Platform-Referral, Marketplace-Referral, Direct-Sale, Management-Fee"},
+        {"name": "status", "type": "Text", "required": true, "description": "Referral status: Active, Expired, Converted, Cancelled"},
+        {"name": "createdDate", "type": "DateTime", "required": true, "description": "Date the referral was created"},
+        {"name": "expiresDate", "type": "DateTime", "required": false, "description": "Date the referral attribution expires (based on attribution window)"},
+        {"name": "convertedDate", "type": "DateTime", "required": false, "description": "Date the referral converted (pie became active)"}
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "partner:CommissionRule",
+      "name": "CommissionRule",
+      "description": "A rule defining how a partner earns commission from a pie or platform event. Commission rules map to WaterfallRule entries in FairSlice — they define the rate, trigger, and conditions for partner payouts.",
+      "properties": [
+        {"name": "ruleId", "type": "Text", "required": true, "description": "Unique identifier for this commission rule"},
+        {"name": "partnerRef", "type": "Text", "required": true, "description": "Reference to the Partner this rule applies to"},
+        {"name": "rateType", "type": "Text", "required": true, "description": "Rate calculation: Percentage, Fixed-Amount"},
+        {"name": "rate", "type": "Number", "required": true, "description": "Commission rate (percentage or fixed amount)"},
+        {"name": "triggerEvent", "type": "Text", "required": true, "description": "What triggers this commission: Revenue-Event, Deal-Closed, Subscription-Renewed, License-Purchased, Pie-Created"},
+        {"name": "conditions", "type": "JSONB", "required": false, "description": "Optional conditions: minimum revenue threshold, specific pie types, tier requirements"},
+        {"name": "cappedAt", "type": "Number", "required": false, "description": "Maximum commission amount per event (null for uncapped)"},
+        {"name": "status", "type": "Text", "required": true, "description": "Rule status: Active, Paused, Expired"}
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "partner:PartnerPayout",
+      "name": "PartnerPayout",
+      "description": "A calculated or completed payout to a partner. Aggregates distributions from FairSlice waterfall for a given period. Supports multiple payment methods (Stripe Connect, bank transfer, equity allocation). Subject to KYC verification and governance audit.",
+      "properties": [
+        {"name": "payoutId", "type": "Text", "required": true, "description": "Unique identifier for this payout"},
+        {"name": "partnerRef", "type": "Text", "required": true, "description": "Reference to the Partner receiving the payout"},
+        {"name": "periodStart", "type": "DateTime", "required": true, "description": "Start of the payout period"},
+        {"name": "periodEnd", "type": "DateTime", "required": true, "description": "End of the payout period"},
+        {"name": "totalAmount", "type": "Number", "required": true, "description": "Total payout amount for this period"},
+        {"name": "currency", "type": "Text", "required": true, "description": "Payout currency (ISO 4217)"},
+        {"name": "distributionRefs", "type": "JSONB", "required": true, "description": "Array of FairSlice Distribution IDs that make up this payout"},
+        {"name": "status", "type": "Text", "required": true, "description": "Payout status: Pending, Approved, Paid, Disputed, Reversed"},
+        {"name": "paymentMethod", "type": "Text", "required": false, "description": "Payment method: Stripe-Connect, Bank-Transfer, Equity-Grant"},
+        {"name": "paidDate", "type": "DateTime", "required": false, "description": "Date the payout was actually sent"},
+        {"name": "stripeTransferId", "type": "Text", "required": false, "description": "Stripe transfer ID for tracking"}
+      ]
+    }
+  ],
+  "relationships": [
+    {"@type": "Property", "@id": "partner:partnerHasReferral", "name": "Partner Has Referral", "description": "Links a Partner to their referral records", "domainIncludes": ["partner:Partner"], "rangeIncludes": ["partner:Referral"], "cardinality": "0..*"},
+    {"@type": "Property", "@id": "partner:referralLinkedToPie", "name": "Referral Linked To Pie", "description": "Links a Referral to the FairSlice Pie it is attributed to", "domainIncludes": ["partner:Referral"], "rangeIncludes": ["fs:Pie"], "cardinality": "1..1", "oaa:crossOntologyRef": "FAIRSLICE"},
+    {"@type": "Property", "@id": "partner:partnerHasCommissionRule", "name": "Partner Has Commission Rule", "description": "Links a Partner to their commission rules", "domainIncludes": ["partner:Partner"], "rangeIncludes": ["partner:CommissionRule"], "cardinality": "1..*"},
+    {"@type": "Property", "@id": "partner:payoutForPartner", "name": "Payout For Partner", "description": "Links a PartnerPayout to the Partner receiving it", "domainIncludes": ["partner:PartnerPayout"], "rangeIncludes": ["partner:Partner"], "cardinality": "1..1"},
+    {"@type": "Property", "@id": "partner:payoutFromReferral", "name": "Payout From Referral", "description": "Links a PartnerPayout to the Referral that generated it", "domainIncludes": ["partner:PartnerPayout"], "rangeIncludes": ["partner:Referral"], "cardinality": "0..*"},
+    {"@type": "Property", "@id": "partner:agencyManagesPie", "name": "Agency Manages Pie", "description": "Links an Agency to the client Pies it manages", "domainIncludes": ["partner:Agency"], "rangeIncludes": ["fs:Pie"], "cardinality": "0..*", "oaa:crossOntologyRef": "FAIRSLICE"},
+    {"@type": "Property", "@id": "partner:affiliateRefersUser", "name": "Affiliate Refers User", "description": "Links an Affiliate to their referral chain", "domainIncludes": ["partner:Affiliate"], "rangeIncludes": ["partner:Referral"], "cardinality": "0..*"},
+    {"@type": "Property", "@id": "partner:commissionViaWaterfall", "name": "Commission Via Waterfall", "description": "Links a CommissionRule to the corresponding FairSlice WaterfallRule", "domainIncludes": ["partner:CommissionRule"], "rangeIncludes": ["fs:WaterfallRule"], "cardinality": "0..1", "oaa:crossOntologyRef": "FAIRSLICE"},
+    {"@type": "Property", "@id": "partner:partnerIsOrganization", "name": "Partner Is Organization", "description": "Partners extend org:Organization — legal entity identity, structure, jurisdiction", "domainIncludes": ["partner:Partner"], "rangeIncludes": ["org:Organization"], "cardinality": "1..1", "oaa:crossOntologyRef": "ORG"},
+    {"@type": "Property", "@id": "partner:partnerGovernedByGRC", "name": "Partner Governed By GRC", "description": "Partners are subject to GRC governance — KYC, AML, contract compliance, attribution audit", "domainIncludes": ["partner:Partner"], "rangeIncludes": ["grc-fw:GRCContext"], "cardinality": "0..1", "oaa:crossOntologyRef": "GRC-FW"}
+  ],
+  "businessRules": [
+    {"ruleId": "BR-PARTNER-001", "name": "Immutable Referral Code", "condition": "IF a referral code is attached to a Pie", "action": "THEN the referral code and partner link MUST be immutable — cannot be changed, reassigned, or deleted (prevents commission hijacking, per NFR-08)", "severity": "error"},
+    {"ruleId": "BR-PARTNER-002", "name": "Agency Client Limit", "condition": "IF an Agency attempts to manage a new client Pie", "action": "THEN the activeClientCount MUST NOT exceed maxClients for the Agency's current tier", "severity": "error"},
+    {"ruleId": "BR-PARTNER-003", "name": "Attribution Window Enforcement", "condition": "IF a Referral's createdDate + attributionWindowDays has passed", "action": "THEN the Referral status MUST transition to Expired AND no further commissions are earned from that referral", "severity": "error"},
+    {"ruleId": "BR-PARTNER-004", "name": "Commission Transparency", "condition": "IF a CommissionRule is active for a Partner", "action": "THEN the rule details (rate, trigger, conditions) MUST be visible to all members of pies linked to that partner's referrals", "severity": "warning"},
+    {"ruleId": "BR-PARTNER-005", "name": "Partner KYC Required", "condition": "IF a Partner is to receive a PartnerPayout", "action": "THEN the Partner's kycStatus MUST be Verified — payouts to unverified partners MUST be held in escrow", "severity": "error"},
+    {"ruleId": "BR-PARTNER-006", "name": "Agency RLS Isolation", "condition": "IF an Agency user accesses Pie data", "action": "THEN RLS policies MUST enforce that the Agency can ONLY access pies for which they have an active Referral with attributionType=Management-Fee", "severity": "error"},
+    {"ruleId": "BR-PARTNER-007", "name": "Multi-Tier Attribution Limit", "condition": "IF a referral chain exceeds 2 levels", "action": "THEN only the first 2 levels of attribution are eligible for commission (direct referrer + one override level). Deeper chains are tracked but not compensated.", "severity": "error"}
+  ],
+  "oaa:enumerations": [
+    {
+      "@id": "partner:PartnerType", "@type": "DefinedTermSet", "name": "PartnerType", "description": "Classification of partner entities.",
+      "hasDefinedTerm": [
+        {"@id": "partner:partnertype/agency", "name": "Agency", "description": "Manages multiple client pies — earns management fees. Target: Fractional CxO agencies, dev shops."},
+        {"@id": "partner:partnertype/affiliate", "name": "Affiliate", "description": "Refers new users/startups — earns % of platform fee."},
+        {"@id": "partner:partnertype/reseller", "name": "Reseller", "description": "Resells FairSlice subscriptions — earns margin."},
+        {"@id": "partner:partnertype/consultant", "name": "Consultant", "description": "Provides strategic advisory — earns referral fees and consulting revenue."},
+        {"@id": "partner:partnertype/integrator", "name": "Integrator", "description": "Builds integrations and connectors — earns from implementation services."}
+      ]
+    },
+    {
+      "@id": "partner:PartnerTier", "@type": "DefinedTermSet", "name": "PartnerTier", "description": "Partner programme tiers with escalating benefits.",
+      "hasDefinedTerm": [
+        {"@id": "partner:tier/bronze", "name": "Bronze", "description": "Entry tier — up to 5 client pies, base commission rates", "maxClients": 5},
+        {"@id": "partner:tier/silver", "name": "Silver", "description": "Proven tier — up to 15 client pies, +10% commission bonus", "maxClients": 15},
+        {"@id": "partner:tier/gold", "name": "Gold", "description": "Established tier — up to 50 client pies, +20% commission bonus, priority support", "maxClients": 50},
+        {"@id": "partner:tier/platinum", "name": "Platinum", "description": "Strategic tier — unlimited client pies, +30% commission bonus, co-marketing, early access", "maxClients": null}
+      ]
+    },
+    {
+      "@id": "partner:AttributionType", "@type": "DefinedTermSet", "name": "AttributionType", "description": "Types of referral attribution.",
+      "hasDefinedTerm": [
+        {"@id": "partner:attrtype/platform-referral", "name": "Platform-Referral", "description": "User A invited User B — User A gets % of User B's SaaS fee"},
+        {"@id": "partner:attrtype/marketplace-referral", "name": "Marketplace-Referral", "description": "User A recommended Smart Contract X — User A gets % of the License Fee"},
+        {"@id": "partner:attrtype/direct-sale", "name": "Direct-Sale", "description": "Partner directly sold FairSlice subscription — earns margin"},
+        {"@id": "partner:attrtype/management-fee", "name": "Management-Fee", "description": "Agency managing client pie — earns management fee from waterfall"}
+      ]
+    },
+    {
+      "@id": "partner:PayoutStatus", "@type": "DefinedTermSet", "name": "PayoutStatus", "description": "Lifecycle states for partner payouts.",
+      "hasDefinedTerm": [
+        {"@id": "partner:payoutstatus/pending", "name": "Pending", "description": "Payout calculated, awaiting approval"},
+        {"@id": "partner:payoutstatus/approved", "name": "Approved", "description": "Payout approved, queued for payment"},
+        {"@id": "partner:payoutstatus/paid", "name": "Paid", "description": "Payout successfully sent to partner"},
+        {"@id": "partner:payoutstatus/disputed", "name": "Disputed", "description": "Payout disputed by partner or pie member"},
+        {"@id": "partner:payoutstatus/reversed", "name": "Reversed", "description": "Payout reversed due to fraud, error, or chargeback"}
+      ]
+    },
+    {
+      "@id": "partner:ReferralStatus", "@type": "DefinedTermSet", "name": "ReferralStatus", "description": "Lifecycle states for referral records.",
+      "hasDefinedTerm": [
+        {"@id": "partner:refstatus/active", "name": "Active", "description": "Referral is active and earning commission"},
+        {"@id": "partner:refstatus/expired", "name": "Expired", "description": "Attribution window has passed"},
+        {"@id": "partner:refstatus/converted", "name": "Converted", "description": "Referral converted to active pie"},
+        {"@id": "partner:refstatus/cancelled", "name": "Cancelled", "description": "Referral cancelled by partner or system"}
+      ]
+    }
+  ],
+  "crossOntologyReferences": {
+    "bridges": [
+      {"to": "org:", "entity": "Organization", "relationship": "partnerIsOrganization", "description": "Partners are organisations with legal entity identity"},
+      {"to": "fs:", "entity": "Pie", "relationship": "referralLinkedToPie / agencyManagesPie", "description": "Referrals attach to FairSlice pies for attribution and commission"},
+      {"to": "fs:", "entity": "WaterfallRule", "relationship": "commissionViaWaterfall", "description": "Commission rules execute through the FairSlice revenue waterfall"},
+      {"to": "grc-fw:", "entity": "GRCContext", "relationship": "partnerGovernedByGRC", "description": "Partner governance — KYC/AML, contract compliance, attribution audit"}
+    ],
+    "description": "PARTNER-ONT bridges to ORG (identity), FAIRSLICE (revenue integration), GRC-FW (governance), and EMC (instance management). Completes the Foundation series by adding channel partner entities alongside org, org-context, and org-mat ontologies."
+  },
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "7.0.0",
+    "lastModified": "2026-02-26",
+    "modifiedBy": "Azlan EA-AAA",
+    "changeNotes": "Initial release: 6 owned entities (Partner, Agency, Affiliate, Referral, CommissionRule, PartnerPayout). 10 relationships (5 internal + 5 cross-ontology). 7 business rules. 5 enumerations. 5 join patterns. Multi-tier attribution. Agency multi-pie management. Tier-based access. VP-RRR alignment: Problem=Risk (partner under-compensation), Solution=Requirement (automated attribution), Benefit=Result (channel velocity >1.5 Pies/Agency/Month). Epic 50 F50.2.",
+    "versionHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-02-26",
+        "notes": "Initial release. Partner network for SaaS channel economics. Agency management portal, affiliate tracking, multi-tier attribution, automated commission payouts via FairSlice waterfall. 5 cross-ontology bridges. Triple-Loop Outer Ring. Epic 50 F50.2."
+      }
+    ]
+  },
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "PARTNER-ONT",
+  "oaa:series": "Foundation",
+  "competencyQuestions": [
+    {"@id": "CQ-PARTNER-001", "question": "Which agency partners are actively managing client pies and what are their management fees?", "targetEntities": ["partner:Agency", "partner:Referral"], "targetRelationships": ["partner:agencyManagesPie"], "targetRules": ["BR-PARTNER-002"]},
+    {"@id": "CQ-PARTNER-002", "question": "What is the total commission earned by affiliate X across all referred pies?", "targetEntities": ["partner:Affiliate", "partner:PartnerPayout", "partner:Referral"], "targetRelationships": ["partner:partnerHasReferral", "partner:payoutForPartner"], "targetRules": ["BR-PARTNER-003"]},
+    {"@id": "CQ-PARTNER-003", "question": "Which referrals are approaching attribution window expiry?", "targetEntities": ["partner:Referral"], "targetRelationships": [], "targetRules": ["BR-PARTNER-003"]},
+    {"@id": "CQ-PARTNER-004", "question": "Is partner Y KYC-verified and eligible for payout?", "targetEntities": ["partner:Partner"], "targetRelationships": ["partner:partnerGovernedByGRC"], "targetRules": ["BR-PARTNER-005"]}
+  ]
+}

@@ -1,0 +1,447 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "process": "https://ai-transformation.com/ontology/process/v1/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "DefinedTermSet",
+  "@id": "process:ontology:process-engineering-v1",
+  "name": "Process Engineering Ontology v1.0.0",
+  "description": "Comprehensive ontology for defining, managing, and executing business processes with AI augmentation capabilities",
+  "version": "1.0.0",
+  "dateCreated": "2025-10-04",
+  "creator": {
+    "@type": "Organization",
+    "name": "AI Transformation Consultancy"
+  },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "schemaOrgAlignment": {
+    "baseType": "Action",
+    "rationale": "Processes are fundamentally actions with structured workflows",
+    "extensions": ["ProcessPhase", "ProcessArtifact", "ProcessMetric", "ProcessGate"],
+    "alternativesConsidered": ["Intangible", "CreativeWork", "Event"]
+  },
+  "entities": [
+    {
+      "@type": "DefinedTerm",
+      "@id": "process:Process",
+      "name": "Process",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "Action",
+      "description": "A structured sequence of activities designed to achieve specific business outcomes",
+      "properties": [
+        {
+          "@id": "process:processId",
+          "name": "processId",
+          "description": "Unique identifier for the process",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:processName",
+          "name": "processName", 
+          "description": "Human-readable name of the process",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:processType",
+          "name": "processType",
+          "description": "Classification of process type",
+          "dataType": "process:ProcessTypeEnum",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:businessObjective",
+          "name": "businessObjective",
+          "description": "Primary business goal this process achieves",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..*"
+        },
+        {
+          "@id": "process:maturityLevel",
+          "name": "maturityLevel",
+          "description": "Current maturity level of the process",
+          "dataType": "process:MaturityLevelEnum",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:aiAugmentation",
+          "name": "aiAugmentation",
+          "description": "Level and type of AI augmentation applied",
+          "dataType": "process:AIAugmentationType",
+          "required": false,
+          "cardinality": "0..*"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "process:ProcessPhase",
+      "name": "ProcessPhase",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "Action",
+      "description": "A distinct stage within a process with specific deliverables and gates",
+      "properties": [
+        {
+          "@id": "process:phaseId",
+          "name": "phaseId",
+          "description": "Unique identifier for the phase",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:phaseName",
+          "name": "phaseName",
+          "description": "Descriptive name of the phase",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:sequenceOrder",
+          "name": "sequenceOrder",
+          "description": "Order of execution within the process",
+          "dataType": "xsd:integer",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:parallelExecution",
+          "name": "parallelExecution",
+          "description": "Whether this phase can run in parallel with others",
+          "dataType": "xsd:boolean",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:estimatedDuration",
+          "name": "estimatedDuration",
+          "description": "Expected time to complete this phase",
+          "dataType": "xsd:duration",
+          "required": false,
+          "cardinality": "0..1"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "process:ProcessArtifact",
+      "name": "ProcessArtifact",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "CreativeWork",
+      "description": "Tangible output or deliverable produced by a process or phase",
+      "properties": [
+        {
+          "@id": "process:artifactId",
+          "name": "artifactId",
+          "description": "Unique identifier for the artifact",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:artifactType",
+          "name": "artifactType",
+          "description": "Classification of the artifact",
+          "dataType": "process:ArtifactTypeEnum",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:format",
+          "name": "format",
+          "description": "File format or presentation format",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:qualityCriteria",
+          "name": "qualityCriteria",
+          "description": "Acceptance criteria for the artifact",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..*"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "process:ProcessGate",
+      "name": "ProcessGate",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "Action",
+      "description": "Decision point that controls progression between phases",
+      "properties": [
+        {
+          "@id": "process:gateId",
+          "name": "gateId",
+          "description": "Unique identifier for the gate",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:gateType",
+          "name": "gateType",
+          "description": "Type of gate (approval, validation, decision)",
+          "dataType": "process:GateTypeEnum",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:criteria",
+          "name": "criteria",
+          "description": "Criteria that must be met to pass the gate",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..*"
+        },
+        {
+          "@id": "process:approver",
+          "name": "approver",
+          "description": "Role or person responsible for gate decision",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..*"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "process:ProcessMetric",
+      "name": "ProcessMetric",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "Intangible",
+      "description": "Measurable indicator of process performance and success",
+      "properties": [
+        {
+          "@id": "process:metricId",
+          "name": "metricId",
+          "description": "Unique identifier for the metric",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:metricName",
+          "name": "metricName",
+          "description": "Descriptive name of the metric",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:measurementType",
+          "name": "measurementType",
+          "description": "Type of measurement (KPI, OKR, Quality, Time, Cost)",
+          "dataType": "process:MetricTypeEnum",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:targetValue",
+          "name": "targetValue",
+          "description": "Target value for the metric",
+          "dataType": "xsd:decimal",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:unit",
+          "name": "unit",
+          "description": "Unit of measurement",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..1"
+        }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "process:AIAgent",
+      "name": "AIAgent",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "SoftwareApplication",
+      "description": "AI-powered agent that augments or automates process activities",
+      "properties": [
+        {
+          "@id": "process:agentId",
+          "name": "agentId",
+          "description": "Unique identifier for the AI agent",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:agentType",
+          "name": "agentType",
+          "description": "Classification of AI agent capability",
+          "dataType": "process:AgentTypeEnum",
+          "required": true,
+          "cardinality": "1..1"
+        },
+        {
+          "@id": "process:capabilities",
+          "name": "capabilities",
+          "description": "Specific capabilities the agent provides",
+          "dataType": "xsd:string",
+          "required": true,
+          "cardinality": "1..*"
+        },
+        {
+          "@id": "process:autonomyLevel",
+          "name": "autonomyLevel",
+          "description": "Level of autonomous operation",
+          "dataType": "process:AutonomyLevelEnum",
+          "required": true,
+          "cardinality": "1..1"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "Property",
+      "@id": "process:hasPhase",
+      "name": "hasPhase",
+      "description": "Links a process to its constituent phases",
+      "domainIncludes": "process:Process",
+      "rangeIncludes": "process:ProcessPhase",
+      "cardinality": "1..*",
+      "inverse": "process:partOfProcess"
+    },
+    {
+      "@type": "Property", 
+      "@id": "process:produces",
+      "name": "produces",
+      "description": "Links a phase to artifacts it produces",
+      "domainIncludes": "process:ProcessPhase",
+      "rangeIncludes": "process:ProcessArtifact",
+      "cardinality": "0..*",
+      "inverse": "process:producedBy"
+    },
+    {
+      "@type": "Property",
+      "@id": "process:hasGate",
+      "name": "hasGate",
+      "description": "Links a phase to its quality gates",
+      "domainIncludes": "process:ProcessPhase",
+      "rangeIncludes": "process:ProcessGate",
+      "cardinality": "0..*",
+      "inverse": "process:gatesPhase"
+    },
+    {
+      "@type": "Property",
+      "@id": "process:measures",
+      "name": "measures",
+      "description": "Links a process to its performance metrics",
+      "domainIncludes": "process:Process",
+      "rangeIncludes": "process:ProcessMetric",
+      "cardinality": "1..*",
+      "inverse": "process:measuresProcess"
+    },
+    {
+      "@type": "Property",
+      "@id": "process:augmentedBy",
+      "name": "augmentedBy",
+      "description": "Links a phase to AI agents that augment it",
+      "domainIncludes": "process:ProcessPhase",
+      "rangeIncludes": "process:AIAgent",
+      "cardinality": "0..*",
+      "inverse": "process:augments"
+    },
+    {
+      "@type": "Property",
+      "@id": "process:dependsOn",
+      "name": "dependsOn",
+      "description": "Links a phase to phases it depends on",
+      "domainIncludes": "process:ProcessPhase",
+      "rangeIncludes": "process:ProcessPhase",
+      "cardinality": "0..*",
+      "inverse": "process:prerequisiteFor"
+    }
+  ],
+  "enumerations": [
+    {
+      "@type": "Enumeration",
+      "@id": "process:ProcessTypeEnum",
+      "name": "ProcessTypeEnum",
+      "description": "Valid types of business processes",
+      "enumerationMember": [
+        {"@id": "process:DevelopmentProcess", "name": "Development"},
+        {"@id": "process:BusinessProcess", "name": "Business"},
+        {"@id": "process:OperationalProcess", "name": "Operational"},
+        {"@id": "process:StrategicProcess", "name": "Strategic"},
+        {"@id": "process:InnovationProcess", "name": "Innovation"}
+      ]
+    },
+    {
+      "@type": "Enumeration",
+      "@id": "process:MaturityLevelEnum", 
+      "name": "MaturityLevelEnum",
+      "description": "Process maturity levels based on capability maturity model",
+      "enumerationMember": [
+        {"@id": "process:Initial", "name": "Initial", "description": "Ad-hoc, chaotic"},
+        {"@id": "process:Defined", "name": "Defined", "description": "Documented, standardized"},
+        {"@id": "process:Managed", "name": "Managed", "description": "Measured, controlled"},
+        {"@id": "process:Optimized", "name": "Optimized", "description": "Continuously improving"},
+        {"@id": "process:AIAugmented", "name": "AI-Augmented", "description": "AI-enhanced optimization"}
+      ]
+    },
+    {
+      "@type": "Enumeration",
+      "@id": "process:ArtifactTypeEnum",
+      "name": "ArtifactTypeEnum", 
+      "description": "Types of process artifacts",
+      "enumerationMember": [
+        {"@id": "process:Document", "name": "Document"},
+        {"@id": "process:Code", "name": "Code"},
+        {"@id": "process:Configuration", "name": "Configuration"},
+        {"@id": "process:Model", "name": "Model"},
+        {"@id": "process:Dashboard", "name": "Dashboard"},
+        {"@id": "process:Report", "name": "Report"}
+      ]
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "process:BR001",
+      "name": "Phase Sequence Integrity",
+      "description": "Phases must maintain logical sequence and dependency constraints",
+      "constraint": "∀ phase1, phase2 ∈ ProcessPhase: dependsOn(phase1, phase2) → sequenceOrder(phase2) < sequenceOrder(phase1)"
+    },
+    {
+      "@id": "process:BR002", 
+      "name": "Gate Coverage",
+      "description": "Critical phases must have quality gates",
+      "constraint": "∀ phase ∈ ProcessPhase: isCritical(phase) → ∃ gate ∈ ProcessGate: hasGate(phase, gate)"
+    },
+    {
+      "@id": "process:BR003",
+      "name": "Artifact Traceability", 
+      "description": "All artifacts must be traceable to producing phases",
+      "constraint": "∀ artifact ∈ ProcessArtifact: ∃ phase ∈ ProcessPhase: produces(phase, artifact)"
+    }
+  ],
+  "aiCapabilities": {
+    "reasoning": ["Process optimization", "Dependency analysis", "Performance prediction"],
+    "automation": ["Artifact generation", "Quality checking", "Progress tracking"],
+    "augmentation": ["Decision support", "Risk assessment", "Resource allocation"]
+  },
+  "qualityMetrics": {
+    "entityReuseRate": 0.85,
+    "schemaOrgAlignment": 0.80,
+    "validationPassRate": 0.98,
+    "documentationCompleteness": 0.95,
+    "relationshipDensity": 3.2,
+    "agentQuerySuccess": 0.92
+  }
+}

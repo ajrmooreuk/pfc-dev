@@ -1,0 +1,153 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-GDPR-001",
+  "name": "GDPR Regulatory Framework Ontology",
+  "description": "EU/UK General Data Protection Regulation ontology defining articles, principles, lawful bases, data subject rights, data protection roles, special categories, transfer mechanisms, and compliance obligations. Provides the regulatory foundation that implementation ontologies reference.",
+  "version": "1.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/gdpr/",
+  "prefix": "gdpr:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "skipped"
+  },
+  "artifacts": {
+    "folder": "./",
+    "ontology": "./gdpr-regulatory-framework-v1.0.0.json",
+    "glossary": null,
+    "documentation": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "summary": {
+    "entities": [
+      {
+        "id": "gdpr:DataProtectionPrinciple",
+        "name": "DataProtectionPrinciple",
+        "entityType": "class"
+      },
+      {
+        "id": "gdpr:LawfulBasis",
+        "name": "LawfulBasis",
+        "entityType": "class"
+      },
+      {
+        "id": "gdpr:DataSubjectRight",
+        "name": "DataSubjectRight",
+        "entityType": "class"
+      },
+      {
+        "id": "gdpr:DataProtectionRole",
+        "name": "DataProtectionRole",
+        "entityType": "class"
+      },
+      {
+        "id": "gdpr:SpecialCategoryData",
+        "name": "SpecialCategoryData",
+        "entityType": "class"
+      },
+      {
+        "id": "gdpr:TransferMechanism",
+        "name": "TransferMechanism",
+        "entityType": "class"
+      },
+      {
+        "id": "gdpr:ComplianceObligation",
+        "name": "ComplianceObligation",
+        "entityType": "class"
+      },
+      {
+        "id": "gdpr:GDPRArticle",
+        "name": "GDPRArticle",
+        "entityType": "class"
+      }
+    ],
+    "relationships": [
+      {
+        "name": "requiresBasis",
+        "source": "DataProtectionPrinciple",
+        "target": "LawfulBasis"
+      },
+      {
+        "name": "grantsRight",
+        "source": "GDPRArticle",
+        "target": "DataSubjectRight"
+      },
+      {
+        "name": "imposesObligation",
+        "source": "GDPRArticle",
+        "target": "ComplianceObligation"
+      },
+      {
+        "name": "appliesToRole",
+        "source": "ComplianceObligation",
+        "target": "DataProtectionRole"
+      },
+      {
+        "name": "protectsCategory",
+        "source": "LawfulBasis",
+        "target": "SpecialCategoryData"
+      },
+      {
+        "name": "enablesTransfer",
+        "source": "TransferMechanism",
+        "target": "ComplianceObligation"
+      },
+      {
+        "name": "exercisedAgainst",
+        "source": "DataSubjectRight",
+        "target": "DataProtectionRole"
+      },
+      {
+        "name": "enforcedBy",
+        "source": "DataProtectionPrinciple",
+        "target": "ComplianceObligation"
+      }
+    ]
+  },
+  "relationships": {
+    "crossOntology": 3,
+    "keyBridges": [
+      {
+        "to": "pii:",
+        "entity": "ComplianceFramework",
+        "relationship": "implementedBy"
+      },
+      {
+        "to": "mcsb:",
+        "entity": "SecurityControl",
+        "relationship": "alignsWith"
+      },
+      {
+        "to": "org:",
+        "entity": "DataProtectionRole",
+        "relationship": "references"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-ORG-001"
+  ],
+  "dependents": [
+    "Entry-ONT-PII-001",
+    "Entry-ONT-MCSB2-001",
+    "Entry-ONT-EA-001",
+    "Entry-ONT-OKR-001",
+    "Entry-ONT-EMC-001",
+    "Entry-ONT-RCSG-FW-001"
+  ],
+  "layer": "RCSG-SERIES",
+  "domain": "Data Protection Regulation",
+  "maintainer": "PF-Core Compliance Module",
+  "created": "2026-02-06",
+  "lastModified": "2026-02-06",
+  "notes": "GDPR regulatory framework ontology providing Article 5 principles, Article 6 lawful bases, Chapter III data subject rights, and Chapter V transfer mechanisms. Serves as the regulatory foundation for PII Governance and security ontologies."
+}

@@ -1,0 +1,224 @@
+{
+  "@context": {
+    "ds": "https://platformcore.io/ontology/ds/",
+    "pe": "https://platformcore.io/ontology/process-engineering/"
+  },
+  "@type": "pe:ValidationRuleset",
+  "pe:rulesetId": "DS-VALIDATE-001",
+  "pe:rulesetName": "DS-ONT Business Rule Validation Suite",
+  "pe:version": "1.0.0",
+  "pe:date": "2026-02-13",
+  "pe:description": "Codified validation rules for DS-ONT business rules BR-DS-001 through BR-DS-008. Applied during PE-DS-EXTRACT-001 Phase 3 (GATE-3). Rules 001–006 are defined in the DS-ONT ontology source; 007–008 are process-defined validation constraints.",
+  "pe:referencedBy": "PE-DS-EXTRACT-001 v2.1.0, PHASE-3-VALIDATE",
+  "pe:sourceOntology": "design-system-ontology-v1.1.0.json",
+
+  "validationRules": [
+    {
+      "ruleId": "BR-DS-001",
+      "source": "DS-ONT v1.1.0",
+      "severity": "error",
+      "rule": "IF token.tier = 'Semantic' THEN token MUST reference a known primitive token or raw hex value",
+      "rationale": "Semantic tokens must derive from primitives for consistency",
+      "validation": {
+        "scope": "ds:SemanticToken",
+        "check": "forEachSemanticToken",
+        "condition": "token.lightModeValue or token.darkModeValue must either (a) match a PrimitiveToken.value in the same instance, or (b) be a valid hex colour (#RRGGBB or #RRGGBBAA)",
+        "passWhen": "All semantic token values trace to a primitive or are valid hex",
+        "failMessage": "Semantic token '{tokenName}' value '{value}' does not reference a known primitive"
+      },
+      "exemptions": [
+        "Direct hex values are acceptable when no explicit primitive scale exists (common in Figma-extracted brands)",
+        "Derived values (opacity adjustments, programmatic lightening) are exempt"
+      ]
+    },
+    {
+      "ruleId": "BR-DS-002",
+      "source": "DS-ONT v1.1.0",
+      "severity": "error",
+      "rule": "IF token.tier = 'Component' THEN token MUST reference a semantic token",
+      "rationale": "Component tokens must use semantic tokens for design intent — never reference primitives directly",
+      "validation": {
+        "scope": "ds:ComponentToken",
+        "check": "forEachComponentToken",
+        "condition": "token.ds:referencesToken must resolve to a SemanticToken @id in the same instance",
+        "passWhen": "All component tokens reference a valid semantic token",
+        "failMessage": "Component token '{tokenName}' references '{referencesToken}' which is not a SemanticToken"
+      }
+    },
+    {
+      "ruleId": "BR-DS-003",
+      "source": "DS-ONT v1.1.0",
+      "severity": "error",
+      "rule": "IF component.allowsOverrides = true THEN component MUST have at least one ComponentToken binding",
+      "rationale": "Components that support customization must accept overrides via token bindings",
+      "validation": {
+        "scope": "ds:DesignComponent",
+        "check": "forEachDesignComponent",
+        "condition": "IF ds:allowsOverrides = true THEN count(ComponentTokens where ds:componentName matches) >= 1",
+        "passWhen": "All overridable components have at least one binding",
+        "failMessage": "DesignComponent '{componentName}' allows overrides but has zero ComponentToken bindings"
+      },
+      "note": "Components with allowsOverrides=false or no DesignComponent entities in the instance are exempt"
+    },
+    {
+      "ruleId": "BR-DS-004",
+      "source": "DS-ONT v1.1.0",
+      "severity": "warning",
+      "rule": "IF designSystem.themeModeSupport = true THEN semantic tokens SHOULD have both light and dark mode values",
+      "rationale": "Theme mode support requires mode-specific token values for proper switching",
+      "validation": {
+        "scope": "ds:SemanticToken",
+        "check": "forEachSemanticToken",
+        "precondition": "DesignSystem.ds:themeModeSupport = true",
+        "condition": "token must have both ds:lightModeValue AND ds:darkModeValue",
+        "passWhen": "All semantic tokens have both mode values, OR darkModeStatus is explicitly 'pending'",
+        "failMessage": "Semantic token '{tokenName}' missing {missingMode}ModeValue (theme mode support is enabled)"
+      },
+      "exemptions": [
+        "darkModeStatus = 'defined-in-css-pending-figma-extraction' — dark mode values extracted from CSS fallback, not yet in Figma",
+        "New brands where dark mode design is not yet complete — severity demoted to info"
+      ]
+    },
+    {
+      "ruleId": "BR-DS-005",
+      "source": "DS-ONT v1.1.0",
+      "severity": "warning",
+      "rule": "IF figmaSource.lastSyncedAt is older than 7 days THEN trigger sync warning",
+      "rationale": "Design tokens should be synced regularly to stay current with design",
+      "validation": {
+        "scope": "ds:FigmaSource",
+        "check": "forEachFigmaSource",
+        "condition": "(currentDate - ds:lastSyncedAt) <= 7 days",
+        "passWhen": "FigmaSource was synced within the last 7 days",
+        "failMessage": "FigmaSource '{figmaFileKey}' last synced {daysSince} days ago — consider re-extraction"
+      },
+      "note": "This is an operational freshness check, not a structural integrity check"
+    },
+    {
+      "ruleId": "BR-DS-006",
+      "source": "DS-ONT v1.1.0",
+      "severity": "error",
+      "rule": "IF BrandVariant.tokenOverrides contains a token THEN that token.mutabilityTier MUST equal 'PF-Instance'",
+      "rationale": "Brand variants must only override PF-Instance tokens. PF-Core tokens (spacing, radius, typography scale, component dimensions) are structurally immutable and must remain consistent across all brands to preserve layout integrity.",
+      "validation": {
+        "scope": "ds:BrandVariant",
+        "check": "forEachBrandOverride",
+        "condition": "overridden token's ds:mutabilityTier = 'PF-Instance'",
+        "passWhen": "All brand overrides target PF-Instance tier tokens only",
+        "failMessage": "Brand '{brandName}' overrides token '{tokenName}' which has mutabilityTier '{tier}' (must be PF-Instance)"
+      },
+      "mutabilityTiers": {
+        "PF-Core": "Structurally immutable — spacing scale, radius scale, typography scale, component dimensions. Never overridden by brands.",
+        "PF-Instance": "Brand-customisable — colours, font families, accent values. Overridable per brand variant."
+      }
+    },
+    {
+      "ruleId": "BR-DS-007",
+      "source": "PE-DS-EXTRACT-001 (process-defined)",
+      "severity": "error",
+      "rule": "Each entity type MUST have all required properties populated",
+      "rationale": "Incomplete entities cause parsing failures in ds-loader.js parseDSInstance()",
+      "validation": {
+        "scope": "all entity types",
+        "checks": [
+          {
+            "entityType": "ds:DesignSystem",
+            "required": ["ds:systemId", "ds:name", "ds:version", "ds:namespace", "ds:pfiInstanceName", "ds:hasTokenCategory", "ds:hasVariant"]
+          },
+          {
+            "entityType": "ds:TokenCategory",
+            "required": ["ds:categoryName", "ds:tier"]
+          },
+          {
+            "entityType": "ds:PrimitiveToken",
+            "required": ["ds:tokenName", "ds:value", "ds:valueType"]
+          },
+          {
+            "entityType": "ds:SemanticToken",
+            "required": ["ds:tokenName", "ds:lightModeValue"]
+          },
+          {
+            "entityType": "ds:ComponentToken",
+            "required": ["ds:tokenName", "ds:componentName", "ds:referencesToken"]
+          },
+          {
+            "entityType": "ds:BrandVariant",
+            "required": ["ds:brandName", "ds:brandSlug"]
+          },
+          {
+            "entityType": "ds:FigmaSource",
+            "required": ["ds:figmaFileKey", "ds:lastSyncedAt"]
+          },
+          {
+            "entityType": "ds:ThemeMode",
+            "required": ["ds:modeName"]
+          }
+        ],
+        "passWhen": "All entities have all required properties with non-null values",
+        "failMessage": "Entity '{entityId}' ({entityType}) missing required property '{property}'"
+      }
+    },
+    {
+      "ruleId": "BR-DS-008",
+      "source": "PE-DS-EXTRACT-001 (process-defined)",
+      "severity": "error",
+      "rule": "All 14 CSS-var-required semantic token names MUST be present in the instance",
+      "rationale": "The visualiser's generateCSSVars() function maps these 14 token names to CSS custom properties. Missing tokens cause undefined CSS variables and visual rendering failures.",
+      "validation": {
+        "scope": "ds:SemanticToken collection",
+        "check": "requiredTokenNamePresence",
+        "requiredTokenNames": [
+          "primary.surface.default",
+          "primary.surface.subtle",
+          "primary.surface.darker",
+          "primary.border.default",
+          "neutral.text.title",
+          "neutral.text.body",
+          "neutral.text.caption",
+          "neutral.surface.subtle",
+          "neutral.surface.default",
+          "neutral.border.default",
+          "error.surface.default",
+          "warning.surface.default",
+          "success.surface.default",
+          "information.surface.default"
+        ],
+        "passWhen": "All 14 token names found in SemanticToken collection",
+        "failMessage": "Missing required semantic token '{tokenName}' — generateCSSVars() will produce undefined CSS variable"
+      },
+      "cssVarMapping": {
+        "primary.surface.default": "--viz-accent",
+        "primary.surface.subtle": "--viz-surface-subtle",
+        "primary.surface.darker": "--viz-accent-darker",
+        "primary.border.default": "--viz-border-accent",
+        "neutral.text.title": "--viz-text-primary",
+        "neutral.text.body": "--viz-text-primary (fallback)",
+        "neutral.text.caption": "--viz-text-secondary",
+        "neutral.surface.subtle": "--viz-surface-subtle (neutral)",
+        "neutral.surface.default": "--viz-surface-default (DR-CANVAS-001 guarded)",
+        "neutral.border.default": "--viz-border-default",
+        "error.surface.default": "--viz-error",
+        "warning.surface.default": "--viz-warning",
+        "success.surface.default": "--viz-success",
+        "information.surface.default": "--viz-info"
+      }
+    }
+  ],
+
+  "gateDefinition": {
+    "gateId": "GATE-3-SCHEMA-VALID",
+    "passCriteria": "Zero severity=error violations across BR-DS-001 through BR-DS-008",
+    "warningPolicy": "severity=warning violations are logged but do not block the gate",
+    "reportFormat": {
+      "perRule": {"ruleId": "string", "status": "pass|fail|warning|skip", "details": "string"},
+      "summary": {"passed": "number", "failed": "number", "warnings": "number", "skipped": "number"}
+    }
+  },
+
+  "verifiedAgainst": [
+    {"brand": "BAIV", "result": "pass", "date": "2026-02-10", "notes": "44P + 75S + 15C = 134 tokens, all 14 required names present, BR-DS-004 warning (dark mode pending)"},
+    {"brand": "RCS", "result": "pass", "date": "2026-02-10", "notes": "118P + 75S + 0C = 193 tokens, all 14 required names present"},
+    {"brand": "PAND", "result": "pass", "date": "2026-02-10", "notes": "118P + 75S + 0C = 193 tokens, all 14 required names present"},
+    {"brand": "WWG", "result": "pass", "date": "2026-02-10", "notes": "118P + 75S + 0C = 193 tokens, all 14 required names present"}
+  ]
+}

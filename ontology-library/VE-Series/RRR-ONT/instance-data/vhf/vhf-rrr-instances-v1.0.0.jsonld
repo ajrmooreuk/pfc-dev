@@ -1,0 +1,539 @@
+{
+  "@context": {
+    "pf": "https://oaa-ontology.org/v6/rrr/",
+    "raci": "https://oaa-ontology.org/v6/raci/",
+    "org": "https://oaa-ontology.org/v6/organisation/",
+    "schema": "https://schema.org/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "oaa": "https://oaa-ontology.org/v7/"
+  },
+  "@id": "pf:vhf-rrr-instance",
+  "@type": "oaa:OntologyInstance",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:instanceVersion": "1.0.0",
+  "oaa:brand": "vhf",
+  "oaa:brandFullName": "VHF Nutrition App",
+  "oaa:organizationContextRef": "org:ctx-vhf",
+  "oaa:created": "2026-02-26",
+  "oaa:lastModified": "2026-02-26",
+  "oaa:imports": [
+    { "ontology": "RRR-ONT", "version": ">=4.0.0", "purpose": "Role, RACI, and RBAC schema" },
+    { "ontology": "ORG-ONT", "version": ">=2.1.0", "purpose": "Organization context" }
+  ],
+
+  "entities": [
+
+    {"_section": "=== FUNCTIONAL ROLES ==="},
+
+    {
+      "@id": "pf:func-vhf-coach",
+      "@type": "pf:FunctionalRole",
+      "roleTitle": "Nutrition Coach",
+      "function": "Coaching & Client Management",
+      "seniorityLevel": 3,
+      "coreResponsibilities": [
+        "Onboard new clients with medical profile, dietary restrictions, and goal assessment",
+        "Review and approve AI-generated meal plans before client delivery",
+        "Monitor client progress via weekly weigh-ins and feedback",
+        "Adjust macro targets and coaching protocols based on client response",
+        "Manage client relationships, motivation, and retention",
+        "Escalate clinical edge cases that exceed AI constraint model"
+      ],
+      "keyDecisions": [
+        "Client acceptance based on medical complexity assessment",
+        "Macro target adjustments based on progress data",
+        "Plan approval or override after AI generation",
+        "Coaching protocol selection (aggressive cut, maintenance, reverse diet, re-feed)",
+        "Client escalation to GP when medical indicators warrant it"
+      ],
+      "raciAccountable": [
+        "Client health outcomes and safety",
+        "Plan quality and clinical appropriateness",
+        "Client retention and satisfaction"
+      ],
+      "raciResponsible": [
+        "Client onboarding and goal setting",
+        "Weekly progress review and macro adjustment",
+        "Plan review, approval, and delivery",
+        "Client communication and coaching sessions"
+      ],
+      "typicalOrgSize": "micro (1-10)",
+      "notes": "Coach James Kerby -- founder and lead coach. Methodology encoded as coaching protocols in AI pipeline."
+    },
+
+    {
+      "@id": "pf:func-vhf-ai-agent",
+      "@type": "pf:FunctionalRole",
+      "roleTitle": "AI Meal Plan Agent",
+      "function": "Automated Plan Generation",
+      "seniorityLevel": 6,
+      "coreResponsibilities": [
+        "Generate personalised 30-day meal plans based on client profile and constraints",
+        "Resolve multi-constraint combinations (30 diet types x 14 allergens)",
+        "Calculate per-meal macro targets with portion scaling to <5% variance",
+        "Enforce variety rules (no repeat within 10 days, cuisine diversity)",
+        "Apply coaching protocols (progressive macro adjustment, cheat day placement)",
+        "Flag impossible constraint combinations to coach at onboarding",
+        "Maintain and expand recipe knowledge base"
+      ],
+      "keyDecisions": [
+        "Recipe selection within constraint envelope",
+        "Portion scaling to meet macro targets",
+        "Variety algorithm weighting (cuisine, ingredient, preparation method)",
+        "Constraint conflict detection and resolution strategy",
+        "Theme curation assignment per week"
+      ],
+      "raciAccountable": [
+        "Constraint compliance (100% allergen safety, zero violations)",
+        "Macro accuracy (<5% variance from target)",
+        "Variety score (>60% across all plans)",
+        "Plan generation throughput (<10 minutes per 30-day plan)"
+      ],
+      "raciResponsible": [
+        "Meal plan generation on coach request",
+        "Constraint validation per meal per plan",
+        "Macro calculation and portion adjustment",
+        "Variety scoring and enforcement",
+        "Recipe knowledge base maintenance"
+      ],
+      "typicalOrgSize": "micro (1-10)",
+      "notes": "AI agent operates under coach supervision -- no plan is delivered to client without coach approval. Agent acts as a force multiplier, not a replacement."
+    },
+
+    {
+      "@id": "pf:func-vhf-client",
+      "@type": "pf:FunctionalRole",
+      "roleTitle": "Client",
+      "function": "Plan Consumer & Feedback Provider",
+      "seniorityLevel": 7,
+      "coreResponsibilities": [
+        "Complete onboarding profile (medical conditions, allergens, dietary preferences, goals)",
+        "Follow assigned meal plans and log adherence",
+        "Provide weekly weigh-in data and progress feedback",
+        "Report any adverse reactions or constraint violations",
+        "Communicate dietary preference changes to coach"
+      ],
+      "keyDecisions": [
+        "Subscription tier selection (self-serve AI / coach-assisted / full coaching)",
+        "Goal selection (weight loss, maintenance, muscle gain, medical management)",
+        "Meal plan adherence level (strict, flexible, intuitive)",
+        "Feedback frequency and detail level"
+      ],
+      "raciAccountable": [
+        "Own health data accuracy and completeness",
+        "Meal plan adherence and honest progress reporting"
+      ],
+      "raciResponsible": [
+        "Complete and accurate onboarding profile",
+        "Weekly weigh-in submission",
+        "Adverse reaction reporting within 24 hours",
+        "Dietary preference updates when circumstances change"
+      ],
+      "typicalOrgSize": "micro (1-10)",
+      "notes": "B2C end user. Target segment: UK adults with medical conditions or multiple dietary restrictions seeking personalised nutrition coaching."
+    },
+
+    {"_section": "=== RISKS (from VP Problems via JP-VP-RRR-001) ==="},
+
+    {
+      "@id": "pf:risk-vhf-weight-medical-safety",
+      "@type": "pf:Risk",
+      "riskId": "risk:vhf-weight-medical-safety",
+      "riskName": "Medical Condition Safety Risk",
+      "riskDescription": "Clients with medical conditions (diabetes, PCOS, thyroid, IBS) receive meal plans that do not account for their clinical constraints, leading to unsafe food choices, adverse health events, and liability exposure for the coaching business.",
+      "riskCategory": "Clinical Safety",
+      "riskSeverity": "Critical",
+      "riskLikelihood": "High",
+      "riskOwner": "pf:func-vhf-coach",
+      "mitigatedBy": "pf:req-vhf-macro-targeting",
+      "vpAlignment": {
+        "vpEntity": "vp:vhf-prob-weight-mgmt",
+        "alignmentType": "Problem->Risk",
+        "convention": "JP-VP-RRR-001"
+      }
+    },
+    {
+      "@id": "pf:risk-vhf-allergen-violation",
+      "@type": "pf:Risk",
+      "riskId": "risk:vhf-allergen-violation",
+      "riskName": "Allergen Violation Risk",
+      "riskDescription": "Meal plans contain ingredients that violate client allergen profiles, causing allergic reactions ranging from discomfort to anaphylaxis. Manual checking by coaches has an estimated 2-5% miss rate that is unacceptable at scale.",
+      "riskCategory": "Clinical Safety",
+      "riskSeverity": "Critical",
+      "riskLikelihood": "Medium",
+      "riskOwner": "pf:func-vhf-ai-agent",
+      "mitigatedBy": "pf:req-vhf-constraint-resolution",
+      "vpAlignment": {
+        "vpEntity": "vp:vhf-prob-dietary-compliance",
+        "alignmentType": "Problem->Risk",
+        "convention": "JP-VP-RRR-001"
+      }
+    },
+    {
+      "@id": "pf:risk-vhf-coaching-bottleneck",
+      "@type": "pf:Risk",
+      "riskId": "risk:vhf-coaching-bottleneck",
+      "riskName": "Coaching Capacity Bottleneck Risk",
+      "riskDescription": "Manual meal plan creation (4-6 hours per plan) limits Coach James to approximately 20 active clients, creating a hard ceiling on revenue growth and making the coaching business model unsustainable. Every new client requires proportional coach time with no economies of scale.",
+      "riskCategory": "Business Viability",
+      "riskSeverity": "Major",
+      "riskLikelihood": "Certain",
+      "riskOwner": "pf:func-vhf-coach",
+      "mitigatedBy": "pf:req-vhf-automated-generation",
+      "vpAlignment": {
+        "vpEntity": "vp:vhf-prob-coach-efficiency",
+        "alignmentType": "Problem->Risk",
+        "convention": "JP-VP-RRR-001"
+      }
+    },
+    {
+      "@id": "pf:risk-vhf-recipe-pool-inadequacy",
+      "@type": "pf:Risk",
+      "riskId": "risk:vhf-recipe-pool-inadequacy",
+      "riskName": "Recipe Pool Inadequacy Risk",
+      "riskDescription": "Limited recipe pool (30-50 manually curated recipes) causes monotonous plans with low variety, leading to 60-70% client dropout within 8 weeks. Manual macro calculations produce 15-25% variance, undermining nutritional accuracy and client trust.",
+      "riskCategory": "Product Quality",
+      "riskSeverity": "Major",
+      "riskLikelihood": "High",
+      "riskOwner": "pf:func-vhf-ai-agent",
+      "mitigatedBy": "pf:req-vhf-variety-enforcement",
+      "vpAlignment": {
+        "vpEntity": "vp:vhf-prob-nutritional-quality",
+        "alignmentType": "Problem->Risk",
+        "convention": "JP-VP-RRR-001"
+      }
+    },
+
+    {"_section": "=== REQUIREMENTS (from VP Solutions via JP-VP-RRR-001) ==="},
+
+    {
+      "@id": "pf:req-vhf-macro-targeting",
+      "@type": "pf:Requirement",
+      "requirementId": "req:vhf-macro-targeting",
+      "requirementName": "Macro-First Personalised Plan Generation",
+      "requirementDescription": "AI meal plan generator must take client medical profile, dietary restrictions, and weight goals as inputs and generate 30-day personalised plans with per-meal macro targets (protein, carbs, fat, fibre, calories) adjusted for medical conditions. Coach review and approval required before delivery.",
+      "requirementType": "Functional",
+      "priority": "Must-Have",
+      "acceptanceCriteria": [
+        "Plans generated for all supported medical conditions (diabetes, PCOS, thyroid, IBS, kidney)",
+        "Per-meal macro targets within 5% of prescribed values",
+        "Coach approval workflow with override capability",
+        "Clinical safety audit log for all medical-condition plans"
+      ],
+      "implementedBy": "pf:func-vhf-ai-agent",
+      "approvedBy": "pf:func-vhf-coach",
+      "vpAlignment": {
+        "vpEntity": "vp:vhf-sol-weight-mgmt",
+        "alignmentType": "Solution->Requirement",
+        "convention": "JP-VP-RRR-001"
+      }
+    },
+    {
+      "@id": "pf:req-vhf-constraint-resolution",
+      "@type": "pf:Requirement",
+      "requirementId": "req:vhf-constraint-resolution",
+      "requirementName": "Multi-Constraint Resolution Engine",
+      "requirementDescription": "Constraint-resolution engine must model 30 diet types and 14 allergen categories as graph constraints. Every generated meal must be validated against all active constraints before inclusion. Impossible combinations must be detected at onboarding and flagged to coach.",
+      "requirementType": "Functional",
+      "priority": "Must-Have",
+      "acceptanceCriteria": [
+        "All 30 diet types modelled and enforceable",
+        "All 14 major allergen categories modelled and enforceable",
+        "100% constraint validation pass rate (zero violations in production)",
+        "Impossible combination detection at onboarding with coach notification",
+        "Constraint resolution completes in under 5 seconds per plan"
+      ],
+      "implementedBy": "pf:func-vhf-ai-agent",
+      "approvedBy": "pf:func-vhf-coach",
+      "vpAlignment": {
+        "vpEntity": "vp:vhf-sol-dietary-compliance",
+        "alignmentType": "Solution->Requirement",
+        "convention": "JP-VP-RRR-001"
+      }
+    },
+    {
+      "@id": "pf:req-vhf-automated-generation",
+      "@type": "pf:Requirement",
+      "requirementId": "req:vhf-automated-generation",
+      "requirementName": "Automated 30-Day Plan Generation with Coaching Protocols",
+      "requirementDescription": "AI pipeline must generate complete 30-day meal plans (90 meals + snacks) in under 10 minutes, incorporating all client constraints, macro targets, variety rules, and coaching protocols. Coach James Kerby's methodology must be encoded as configurable rules (progressive macro adjustment, cheat day placement, re-feed strategies).",
+      "requirementType": "Functional",
+      "priority": "Must-Have",
+      "acceptanceCriteria": [
+        "Full 30-day plan generated in under 10 minutes",
+        "All coaching protocols configurable and versioned",
+        "Coach review dashboard with approve/adjust/reject workflow",
+        "Generation supports batch mode (multiple clients in queue)"
+      ],
+      "implementedBy": "pf:func-vhf-ai-agent",
+      "approvedBy": "pf:func-vhf-coach",
+      "vpAlignment": {
+        "vpEntity": "vp:vhf-sol-coach-efficiency",
+        "alignmentType": "Solution->Requirement",
+        "convention": "JP-VP-RRR-001"
+      }
+    },
+    {
+      "@id": "pf:req-vhf-variety-enforcement",
+      "@type": "pf:Requirement",
+      "requirementId": "req:vhf-variety-enforcement",
+      "requirementName": "Variety Rules and Portion Scaling Enforcement",
+      "requirementDescription": "Three-layer quality enforcement: (1) Variety rules prevent recipe repetition within configurable windows, enforce cuisine diversity, and track variety scores. (2) Portion scaling adjusts recipes to hit per-meal macro targets with <5% variance. (3) Theme curation assigns weekly cuisine themes for engagement.",
+      "requirementType": "Functional",
+      "priority": "Should-Have",
+      "acceptanceCriteria": [
+        "No recipe repeat within 10-day window (configurable)",
+        "Variety score >60% across all generated plans",
+        "Macro variance <5% after portion scaling",
+        "Weekly theme assignment from curated theme library",
+        "Variety scoring visible on coach dashboard"
+      ],
+      "implementedBy": "pf:func-vhf-ai-agent",
+      "approvedBy": "pf:func-vhf-coach",
+      "vpAlignment": {
+        "vpEntity": "vp:vhf-sol-nutritional-quality",
+        "alignmentType": "Solution->Requirement",
+        "convention": "JP-VP-RRR-001"
+      }
+    },
+
+    {"_section": "=== RESULTS (from VP Benefits via JP-VP-RRR-001) ==="},
+
+    {
+      "@id": "pf:result-vhf-weight-progress-safety",
+      "@type": "pf:Result",
+      "resultId": "result:vhf-weight-progress-safety",
+      "resultName": "Measurable Weight Progress with Clinical Safety",
+      "resultDescription": "Clients achieve target weight trajectory (within 2% of plan) while zero clinical safety violations are recorded across all medical-condition plans.",
+      "resultType": "Outcome",
+      "targetValue": "Weight trajectory within 2% of plan; zero clinical safety violations",
+      "measurementMethod": "Weekly weigh-in variance vs plan trajectory; clinical safety audit log",
+      "measurementFrequency": "Weekly (weight); continuous (safety)",
+      "vpAlignment": {
+        "vpEntity": "vp:vhf-ben-weight-mgmt",
+        "alignmentType": "Benefit->Result",
+        "convention": "JP-VP-RRR-001"
+      }
+    },
+    {
+      "@id": "pf:result-vhf-allergen-compliance",
+      "@type": "pf:Result",
+      "resultId": "result:vhf-allergen-compliance",
+      "resultName": "100% Allergen Compliance",
+      "resultDescription": "Every meal in every plan passes all active dietary and allergen constraints with zero violations. No manual checking required by coach or client.",
+      "resultType": "Outcome",
+      "targetValue": "100% compliance rate; zero violations",
+      "measurementMethod": "Automated constraint validation pass/fail per plan; violation incident count",
+      "measurementFrequency": "Per plan generation",
+      "vpAlignment": {
+        "vpEntity": "vp:vhf-ben-dietary-compliance",
+        "alignmentType": "Benefit->Result",
+        "convention": "JP-VP-RRR-001"
+      }
+    },
+    {
+      "@id": "pf:result-vhf-coach-throughput",
+      "@type": "pf:Result",
+      "resultId": "result:vhf-coach-throughput",
+      "resultName": "10x Coach Throughput",
+      "resultDescription": "Coach James scales from 20 to 200+ active clients without additional coaching hires. Plan generation time drops from 4-6 hours to under 10 minutes per plan.",
+      "resultType": "Outcome",
+      "targetValue": "200+ active clients per coach; <10 minutes per plan generation",
+      "measurementMethod": "Active subscription count per coach; average plan generation time",
+      "measurementFrequency": "Monthly",
+      "vpAlignment": {
+        "vpEntity": "vp:vhf-ben-coach-efficiency",
+        "alignmentType": "Benefit->Result",
+        "convention": "JP-VP-RRR-001"
+      }
+    },
+    {
+      "@id": "pf:result-vhf-variety-macro-accuracy",
+      "@type": "pf:Result",
+      "resultId": "result:vhf-variety-macro-accuracy",
+      "resultName": "High Variety and Macro Accuracy",
+      "resultDescription": "Greater than 60% variety score and less than 5% macro variance across all generated plans, reducing client dropout from monotony and improving nutritional outcomes.",
+      "resultType": "Outcome",
+      "targetValue": ">60% variety score; <5% macro variance",
+      "measurementMethod": "Variety score (unique recipes / total meals); macro variance (actual vs target per meal)",
+      "measurementFrequency": "Per plan generation",
+      "vpAlignment": {
+        "vpEntity": "vp:vhf-ben-nutritional-quality",
+        "alignmentType": "Benefit->Result",
+        "convention": "JP-VP-RRR-001"
+      }
+    },
+
+    {"_section": "=== RACI ASSIGNMENTS ==="},
+
+    {
+      "@id": "pf:raci-vhf-plan-generation",
+      "@type": "pf:RACIAssignment",
+      "activity": "Meal Plan Generation",
+      "role": "pf:func-vhf-ai-agent",
+      "raciType": "Responsible",
+      "context": "AI agent generates 30-day meal plans incorporating all constraints, macros, variety rules, and coaching protocols"
+    },
+    {
+      "@id": "pf:raci-vhf-plan-generation-a",
+      "@type": "pf:RACIAssignment",
+      "activity": "Meal Plan Generation",
+      "role": "pf:func-vhf-coach",
+      "raciType": "Accountable",
+      "context": "Coach owns plan quality and approves every plan before client delivery"
+    },
+    {
+      "@id": "pf:raci-vhf-constraint-validation",
+      "@type": "pf:RACIAssignment",
+      "activity": "Constraint Validation & Allergen Safety",
+      "role": "pf:func-vhf-ai-agent",
+      "raciType": "Responsible",
+      "context": "AI agent validates every meal against all active constraints (diet types, allergens, medical conditions)"
+    },
+    {
+      "@id": "pf:raci-vhf-constraint-validation-a",
+      "@type": "pf:RACIAssignment",
+      "activity": "Constraint Validation & Allergen Safety",
+      "role": "pf:func-vhf-coach",
+      "raciType": "Accountable",
+      "context": "Coach is ultimately accountable for client safety and reviews flagged edge cases"
+    },
+    {
+      "@id": "pf:raci-vhf-client-onboarding",
+      "@type": "pf:RACIAssignment",
+      "activity": "Client Onboarding & Profile Assessment",
+      "role": "pf:func-vhf-coach",
+      "raciType": "Responsible",
+      "context": "Coach conducts onboarding, assesses medical profile, sets macro targets, and selects coaching protocol"
+    },
+    {
+      "@id": "pf:raci-vhf-client-onboarding-i",
+      "@type": "pf:RACIAssignment",
+      "activity": "Client Onboarding & Profile Assessment",
+      "role": "pf:func-vhf-client",
+      "raciType": "Informed",
+      "context": "Client provides accurate medical, dietary, and goal information during onboarding"
+    },
+    {
+      "@id": "pf:raci-vhf-progress-monitoring",
+      "@type": "pf:RACIAssignment",
+      "activity": "Client Progress Monitoring & Macro Adjustment",
+      "role": "pf:func-vhf-coach",
+      "raciType": "Responsible",
+      "context": "Coach reviews weekly weigh-in data and adjusts macro targets based on client progress"
+    },
+    {
+      "@id": "pf:raci-vhf-progress-monitoring-c",
+      "@type": "pf:RACIAssignment",
+      "activity": "Client Progress Monitoring & Macro Adjustment",
+      "role": "pf:func-vhf-client",
+      "raciType": "Consulted",
+      "context": "Client provides weigh-in data, adherence feedback, and preference updates"
+    }
+  ],
+
+  "relationships": [
+    { "@type": "pf:supervises", "from": "pf:func-vhf-coach", "to": "pf:func-vhf-ai-agent" },
+    { "@type": "pf:servesClient", "from": "pf:func-vhf-coach", "to": "pf:func-vhf-client" },
+    { "@type": "pf:generatesFor", "from": "pf:func-vhf-ai-agent", "to": "pf:func-vhf-client" },
+
+    { "@type": "pf:riskMitigatedBy", "from": "pf:risk-vhf-weight-medical-safety", "to": "pf:req-vhf-macro-targeting" },
+    { "@type": "pf:riskMitigatedBy", "from": "pf:risk-vhf-allergen-violation", "to": "pf:req-vhf-constraint-resolution" },
+    { "@type": "pf:riskMitigatedBy", "from": "pf:risk-vhf-coaching-bottleneck", "to": "pf:req-vhf-automated-generation" },
+    { "@type": "pf:riskMitigatedBy", "from": "pf:risk-vhf-recipe-pool-inadequacy", "to": "pf:req-vhf-variety-enforcement" },
+
+    { "@type": "pf:requirementDeliversResult", "from": "pf:req-vhf-macro-targeting", "to": "pf:result-vhf-weight-progress-safety" },
+    { "@type": "pf:requirementDeliversResult", "from": "pf:req-vhf-constraint-resolution", "to": "pf:result-vhf-allergen-compliance" },
+    { "@type": "pf:requirementDeliversResult", "from": "pf:req-vhf-automated-generation", "to": "pf:result-vhf-coach-throughput" },
+    { "@type": "pf:requirementDeliversResult", "from": "pf:req-vhf-variety-enforcement", "to": "pf:result-vhf-variety-macro-accuracy" },
+
+    { "@type": "raci:forRole", "from": "pf:raci-vhf-plan-generation", "to": "pf:func-vhf-ai-agent" },
+    { "@type": "raci:forRole", "from": "pf:raci-vhf-plan-generation-a", "to": "pf:func-vhf-coach" },
+    { "@type": "raci:forRole", "from": "pf:raci-vhf-constraint-validation", "to": "pf:func-vhf-ai-agent" },
+    { "@type": "raci:forRole", "from": "pf:raci-vhf-constraint-validation-a", "to": "pf:func-vhf-coach" },
+    { "@type": "raci:forRole", "from": "pf:raci-vhf-client-onboarding", "to": "pf:func-vhf-coach" },
+    { "@type": "raci:forRole", "from": "pf:raci-vhf-client-onboarding-i", "to": "pf:func-vhf-client" },
+    { "@type": "raci:forRole", "from": "pf:raci-vhf-progress-monitoring", "to": "pf:func-vhf-coach" },
+    { "@type": "raci:forRole", "from": "pf:raci-vhf-progress-monitoring-c", "to": "pf:func-vhf-client" }
+  ],
+
+  "vpRrrAlignment": {
+    "convention": "JP-VP-RRR-001",
+    "description": "VP-RRR standing alignment convention -- all VP entities map to RRR risk/requirement/result taxonomy",
+    "mappings": [
+      {
+        "vpEntity": "vp:vhf-prob-weight-mgmt",
+        "rrrEntity": "pf:risk-vhf-weight-medical-safety",
+        "alignmentType": "Problem->Risk",
+        "description": "Difficulty managing weight with medical conditions is a clinical safety risk"
+      },
+      {
+        "vpEntity": "vp:vhf-prob-dietary-compliance",
+        "rrrEntity": "pf:risk-vhf-allergen-violation",
+        "alignmentType": "Problem->Risk",
+        "description": "Confusion navigating dietary restrictions and allergens is an allergen violation risk"
+      },
+      {
+        "vpEntity": "vp:vhf-prob-coach-efficiency",
+        "rrrEntity": "pf:risk-vhf-coaching-bottleneck",
+        "alignmentType": "Problem->Risk",
+        "description": "Manual plan creation bottleneck is a business viability risk"
+      },
+      {
+        "vpEntity": "vp:vhf-prob-nutritional-quality",
+        "rrrEntity": "pf:risk-vhf-recipe-pool-inadequacy",
+        "alignmentType": "Problem->Risk",
+        "description": "Inconsistent meal variety and macro adherence is a product quality risk"
+      },
+      {
+        "vpEntity": "vp:vhf-sol-weight-mgmt",
+        "rrrEntity": "pf:req-vhf-macro-targeting",
+        "alignmentType": "Solution->Requirement",
+        "description": "AI-generated personalised meal plans with macro targeting is a functional requirement"
+      },
+      {
+        "vpEntity": "vp:vhf-sol-dietary-compliance",
+        "rrrEntity": "pf:req-vhf-constraint-resolution",
+        "alignmentType": "Solution->Requirement",
+        "description": "Multi-constraint resolution engine is a functional requirement"
+      },
+      {
+        "vpEntity": "vp:vhf-sol-coach-efficiency",
+        "rrrEntity": "pf:req-vhf-automated-generation",
+        "alignmentType": "Solution->Requirement",
+        "description": "Automated 30-day generation with coaching protocols is a functional requirement"
+      },
+      {
+        "vpEntity": "vp:vhf-sol-nutritional-quality",
+        "rrrEntity": "pf:req-vhf-variety-enforcement",
+        "alignmentType": "Solution->Requirement",
+        "description": "Variety rules, portion scaling, and theme curation is a functional requirement"
+      },
+      {
+        "vpEntity": "vp:vhf-ben-weight-mgmt",
+        "rrrEntity": "pf:result-vhf-weight-progress-safety",
+        "alignmentType": "Benefit->Result",
+        "description": "Measurable weight progress with clinical safety is a measurable result"
+      },
+      {
+        "vpEntity": "vp:vhf-ben-dietary-compliance",
+        "rrrEntity": "pf:result-vhf-allergen-compliance",
+        "alignmentType": "Benefit->Result",
+        "description": "100% allergen-safe meal plans with zero violations is a measurable result"
+      },
+      {
+        "vpEntity": "vp:vhf-ben-coach-efficiency",
+        "rrrEntity": "pf:result-vhf-coach-throughput",
+        "alignmentType": "Benefit->Result",
+        "description": "10x coach throughput is a measurable result"
+      },
+      {
+        "vpEntity": "vp:vhf-ben-nutritional-quality",
+        "rrrEntity": "pf:result-vhf-variety-macro-accuracy",
+        "alignmentType": "Benefit->Result",
+        "description": ">60% variety score and <5% macro variance is a measurable result"
+      }
+    ]
+  }
+}

@@ -1,0 +1,374 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ppm": "https://oaa-ontology.org/v5/ppm/",
+    "advisory": "urn:advisory:"
+  },
+  
+  "@id": "advisory:dependencies",
+  "name": "Initiative Dependencies Graph",
+  "description": "Dependency relationships between all 100 initiatives for graph rendering",
+  
+  "@graph": [
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/001",
+      "ppm:fromInitiative": {"@id": "advisory:init/PF-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/PF-002"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": true,
+      "description": "ALZ MVP enables Data Lake Foundation"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/002",
+      "ppm:fromInitiative": {"@id": "advisory:init/PF-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/PF-003"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": true,
+      "description": "ALZ MVP enables AI/ML Platform"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/003",
+      "ppm:fromInitiative": {"@id": "advisory:init/PF-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/KE-001"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": true,
+      "description": "ALZ MVP enables Knowledge Graph Foundation"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/004",
+      "ppm:fromInitiative": {"@id": "advisory:init/PF-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/KE-002"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": true,
+      "description": "ALZ MVP enables RAG Pipeline"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/005",
+      "ppm:fromInitiative": {"@id": "advisory:init/PF-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-003"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "ALZ MVP enables Research Assistant"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/006",
+      "ppm:fromInitiative": {"@id": "advisory:init/KE-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/KE-002"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/finish-to-start"},
+      "ppm:isCriticalPath": true,
+      "description": "Knowledge Graph required for RAG Pipeline"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/007",
+      "ppm:fromInitiative": {"@id": "advisory:init/KE-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/KE-003"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Knowledge Graph enables Expert Finder"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/008",
+      "ppm:fromInitiative": {"@id": "advisory:init/KE-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/KE-004"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Knowledge Graph enables Methodology Library"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/009",
+      "ppm:fromInitiative": {"@id": "advisory:init/KE-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-004"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Knowledge Graph enables Market Intelligence Pipeline"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/010",
+      "ppm:fromInitiative": {"@id": "advisory:init/PF-002"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-010"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Data Lake enables Actuarial Model Automation"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/011",
+      "ppm:fromInitiative": {"@id": "advisory:init/PF-002"},
+      "ppm:toInitiative": {"@id": "advisory:init/KE-005"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Data Lake enables Engagement History Mining"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/012",
+      "ppm:fromInitiative": {"@id": "advisory:init/PF-002"},
+      "ppm:toInitiative": {"@id": "advisory:init/PF-004"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Data Lake enables Power BI Analytics"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/013",
+      "ppm:fromInitiative": {"@id": "advisory:init/PF-003"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-006"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "AI/ML Platform enables Analysis Copilot - Benchmarking"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/014",
+      "ppm:fromInitiative": {"@id": "advisory:init/PF-003"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-007"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "AI/ML Platform enables Analysis Copilot - Gap Analysis"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/015",
+      "ppm:fromInitiative": {"@id": "advisory:init/PF-003"},
+      "ppm:toInitiative": {"@id": "advisory:init/KE-003"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "AI/ML Platform enables Expert Finder AI"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/016",
+      "ppm:fromInitiative": {"@id": "advisory:init/KE-002"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-005"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": true,
+      "description": "RAG Pipeline enables Proposal Automation Engine"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/017",
+      "ppm:fromInitiative": {"@id": "advisory:init/KE-002"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-006"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "RAG Pipeline enables Analysis Copilot - Benchmarking"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/018",
+      "ppm:fromInitiative": {"@id": "advisory:init/KE-002"},
+      "ppm:toInitiative": {"@id": "advisory:init/KE-006"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "RAG Pipeline enables Precedent Search Assistant"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/019",
+      "ppm:fromInitiative": {"@id": "advisory:init/KE-004"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-005"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Methodology Library enables Proposal Automation"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/020",
+      "ppm:fromInitiative": {"@id": "advisory:init/KE-004"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-006"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Methodology Library enables Analysis Copilot"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/021",
+      "ppm:fromInitiative": {"@id": "advisory:init/KE-005"},
+      "ppm:toInitiative": {"@id": "advisory:init/KE-006"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Engagement History Mining enables Precedent Search"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/022",
+      "ppm:fromInitiative": {"@id": "advisory:init/DA-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-005"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Report Template Automation enables Proposal Automation"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/023",
+      "ppm:fromInitiative": {"@id": "advisory:init/DA-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-008"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Report Template Automation enables Deliverable QA AI"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/024",
+      "ppm:fromInitiative": {"@id": "advisory:init/DA-002"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-004"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Data Gathering Bots enable Market Intelligence Pipeline"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/025",
+      "ppm:fromInitiative": {"@id": "advisory:init/DA-003"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-009"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Research Assistant enables Regulatory Change Tracker"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/026",
+      "ppm:fromInitiative": {"@id": "advisory:init/DA-005"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-012"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Proposal Automation enables Scoping Assistant"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/027",
+      "ppm:fromInitiative": {"@id": "advisory:init/DA-006"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-013"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Analysis Copilot Benchmarking enables Financial Modelling Copilot"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/028",
+      "ppm:fromInitiative": {"@id": "advisory:init/CX-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/CX-002"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Client Portal enables Client Collaboration Hub"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/029",
+      "ppm:fromInitiative": {"@id": "advisory:init/DA-016"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-023"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Process Mining Integration enables Operational Benchmarking Database"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/030",
+      "ppm:fromInitiative": {"@id": "advisory:init/DA-013"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-020"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Financial Modelling Copilot enables Deal Model Automation"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/031",
+      "ppm:fromInitiative": {"@id": "advisory:init/KE-007"},
+      "ppm:toInitiative": {"@id": "advisory:init/KE-010"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Temporal Knowledge Graph enables Regulatory Intelligence Graph"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/032",
+      "ppm:fromInitiative": {"@id": "advisory:init/KE-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/KE-015"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Knowledge Graph Foundation enables Enterprise Knowledge Graph v2"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/033",
+      "ppm:fromInitiative": {"@id": "advisory:init/DA-005"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-037"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Proposal Automation enables Multi-Agent Proposal System"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/034",
+      "ppm:fromInitiative": {"@id": "advisory:init/DA-003"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-036"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Research Assistant enables Autonomous Research Agent"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/035",
+      "ppm:fromInitiative": {"@id": "advisory:init/DA-010"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-042"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Actuarial Model Automation enables Actuarial AI Assistant v2"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/036",
+      "ppm:fromInitiative": {"@id": "advisory:init/DA-011"},
+      "ppm:toInitiative": {"@id": "advisory:init/DA-040"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Due Diligence Automation enables Advanced Due Diligence AI"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/037",
+      "ppm:fromInitiative": {"@id": "advisory:init/PF-003"},
+      "ppm:toInitiative": {"@id": "advisory:init/PF-009"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "AI/ML Platform enables AI Platform Scaling"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/038",
+      "ppm:fromInitiative": {"@id": "advisory:init/CX-003"},
+      "ppm:toInitiative": {"@id": "advisory:init/CX-008"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/enables"},
+      "ppm:isCriticalPath": false,
+      "description": "Client Insight Dashboard enables Client Self-Service Analytics"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/039",
+      "ppm:fromInitiative": {"@id": "advisory:init/GOV-002"},
+      "ppm:toInitiative": {"@id": "advisory:init/GOV-005"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/informed-by"},
+      "ppm:isCriticalPath": false,
+      "description": "Benefit Realisation Tracking informs Continuous Improvement Engine"
+    },
+    {
+      "@type": "ppm:Dependency",
+      "@id": "advisory:dep/040",
+      "ppm:fromInitiative": {"@id": "advisory:init/GOV-001"},
+      "ppm:toInitiative": {"@id": "advisory:init/GOV-006"},
+      "ppm:dependencyType": {"@id": "ppm:dep-type/informed-by"},
+      "ppm:isCriticalPath": false,
+      "description": "Consultant Productivity Analytics informs Portfolio Optimisation AI"
+    }
+  ]
+}

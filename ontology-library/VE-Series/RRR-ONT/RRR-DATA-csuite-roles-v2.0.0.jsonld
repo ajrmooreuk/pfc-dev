@@ -1,0 +1,2030 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform-foundation.io/ontology/v1/",
+    "rrr": "https://platform-foundation.io/ontology/v1/rrr/",
+    "ve": "https://pf-core.platform/ontology/value-engineering/",
+    "azure": "https://platform-foundation.io/ontology/v1/azure/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "pf:RoleDataSet",
+  "@id": "pf:RRR-DATA:csuite-roles-v2.0.0",
+  "name": "PF-Core C-Suite & Organizational Roles Data",
+  "version": "2.0.0",
+  "dateCreated": "2026-02-02",
+  "description": "Consolidated organizational roles dataset covering 48 roles across enterprise leadership (L0), C-Suite executives (L1), architecture (L2), platform engineering (L2-L3), and application-level roles (L4). Includes VSOM accountability, RACI matrices, subsumption patterns, and organizational maturity guidance. L4 includes generic application role templates with BAIV AIV product as reference instance. Supersedes pf-ve-rrrr-extended-23-roles-ontology-v1.1.0 and RRR-DATA-architectural-roles-v1.0.0.",
+  "conformsTo": "pf:RRR-ONT-v3.1.0",
+  "supersedes": [
+    "ve:RRRR-Extended-23-Roles-v1.1.0",
+    "pf:RRR-DATA:architectural-roles-v1.0.0"
+  ],
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Platform Foundation"
+  },
+
+  "roleTaxonomy": {
+    "@type": "rrr:RoleClassification",
+    "totalRoles": 48,
+    "categories": [
+      {
+        "@id": "rrr:L0-Enterprise",
+        "name": "Enterprise Leadership",
+        "tier": 0,
+        "description": "Board and CEO - Ultimate enterprise accountability",
+        "roleCount": 2
+      },
+      {
+        "@id": "rrr:L1-CSuite-Core",
+        "name": "Core C-Suite",
+        "tier": 1,
+        "description": "Primary functional executives with direct CEO reporting",
+        "roleCount": 6
+      },
+      {
+        "@id": "rrr:L1-CSuite-Extended",
+        "name": "Extended C-Suite",
+        "tier": 1,
+        "description": "Specialized functional executives including security and strategy leadership",
+        "roleCount": 17
+      },
+      {
+        "@id": "rrr:L2-Architecture",
+        "name": "Architecture Track",
+        "tier": 2,
+        "description": "Enterprise and domain architects reporting to CTO",
+        "roleCount": 5
+      },
+      {
+        "@id": "rrr:L2-L3-Platform",
+        "name": "Azure/Microsoft Platform Track",
+        "tier": "2-3",
+        "description": "Cloud and Microsoft ecosystem architects and engineers",
+        "roleCount": 5
+      },
+      {
+        "@id": "rrr:L4-Application",
+        "name": "Application Roles",
+        "tier": 4,
+        "description": "Product/application-specific roles for PFI instances - multi-tenant RBAC",
+        "roleCount": 13,
+        "note": "Includes 11 generic templates + BAIV AIV instance example"
+      }
+    ]
+  },
+
+  "organizationSizeDefinitions": {
+    "@type": "rrr:OrganizationSizeTaxonomy",
+    "sizes": [
+      {"code": "MICRO", "name": "Micro", "employeeRange": "1-10", "typicalCSuiteCount": "1-2", "description": "Founder/CEO often covers multiple C-Suite functions"},
+      {"code": "SMALL", "name": "Small", "employeeRange": "11-50", "typicalCSuiteCount": "2-4", "description": "Core C-Suite with significant role subsumption"},
+      {"code": "MEDIUM", "name": "Medium", "employeeRange": "51-250", "typicalCSuiteCount": "4-8", "description": "Expanded C-Suite with selective specialization"},
+      {"code": "LARGE", "name": "Large", "employeeRange": "251-1000", "typicalCSuiteCount": "8-12", "description": "Full C-Suite with most functions represented"},
+      {"code": "ENTERPRISE", "name": "Enterprise", "employeeRange": "1000+", "typicalCSuiteCount": "12-20+", "description": "Complete C-Suite with specialized and emerging roles"}
+    ]
+  },
+
+  "raciXModel": {
+    "@type": "rrr:ResponsibilityModel",
+    "modelName": "RACI-X Extended",
+    "modelVersion": "1.1.0",
+    "roles": [
+      {"code": "R", "name": "Responsible", "description": "Does the work to complete the task"},
+      {"code": "A", "name": "Accountable", "description": "Ultimately answerable for the activity - ONE per activity"},
+      {"code": "C", "name": "Consulted", "description": "Provides input and expertise before decision/action"},
+      {"code": "I", "name": "Informed", "description": "Kept up-to-date on progress and outcomes"},
+      {"code": "S", "name": "Supporting", "description": "Provides resources/expertise without ownership"},
+      {"code": "D", "name": "Delegated", "description": "Accountability retained, responsibility delegated with authority"},
+      {"code": "O", "name": "Overlap", "description": "Formal/informal shared responsibility requiring CollaborationProtocol"}
+    ]
+  },
+
+  "L0EnterpriseRoles": [
+    {
+      "@id": "pf:role:board",
+      "@type": "pf:EnterpriseRoleTemplate",
+      "roleCode": "BOARD",
+      "roleTitle": "Board of Directors",
+      "roleCategory": "L0-Enterprise",
+      "tier": 0,
+      "reportsTo": "Shareholders",
+      "vsomAccountability": {
+        "visionRole": "ACCOUNTABLE",
+        "strategyRole": "ACCOUNTABLE",
+        "objectivesRole": "INFORMED",
+        "metricsRole": "INFORMED",
+        "domainQualifier": "Governance"
+      },
+      "functionalScope": "Corporate governance, executive oversight, fiduciary responsibility, shareholder representation, strategic direction approval",
+      "directReports": ["pf:role:ceo"]
+    },
+    {
+      "@id": "pf:role:ceo",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CEO",
+      "roleTitle": "Chief Executive Officer",
+      "roleCategory": "L0-Enterprise",
+      "tier": 0,
+      "reportsTo": "pf:role:board",
+      "vsomAccountability": {
+        "visionRole": "ACCOUNTABLE",
+        "strategyRole": "ACCOUNTABLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "INFORMED",
+        "domainQualifier": "Enterprise"
+      },
+      "functionalScope": "Enterprise strategy, stakeholder relations, organizational direction, executive team leadership, board relations",
+      "okrCascadeLevel": 0,
+      "directReports": ["pf:role:cfo", "pf:role:coo", "pf:role:cto", "pf:role:cmo", "pf:role:cpo", "pf:role:chro", "pf:role:cio", "pf:role:cso-sec", "pf:role:cso-str", "pf:role:cro-revenue", "pf:role:clo"],
+      "commonSubsumptions": [
+        {"pattern": "CEO subsumes CMO", "applicableOrgSize": ["MICRO", "SMALL"], "subsumptionType": "FULL"},
+        {"pattern": "CEO subsumes COO", "applicableOrgSize": ["MICRO"], "subsumptionType": "FULL"},
+        {"pattern": "CEO subsumes CFO", "applicableOrgSize": ["MICRO"], "subsumptionType": "FULL"}
+      ]
+    }
+  ],
+
+  "L1CoreCSuiteRoles": [
+    {
+      "@id": "pf:role:cfo",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CFO",
+      "roleTitle": "Chief Financial Officer",
+      "roleCategory": "L1-CSuite-Core",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "primaryContext": "Financial, Investment, Treasury, Compliance",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "CONSULTED",
+        "objectivesRole": "RESPONSIBLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Financial"
+      },
+      "functionalScope": "Financial strategy, capital allocation, investment governance, financial reporting, treasury, audit, tax, investor relations",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Finance", "Controller", "Treasurer", "FP&A Director"],
+      "commonSubsumptions": [
+        {"pattern": "CFO subsumes CAO", "applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "subsumptionType": "FULL"},
+        {"pattern": "CFO subsumes CRO (Risk)", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"},
+        {"pattern": "CFO subsumed by CEO", "applicableOrgSize": ["MICRO"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:coo",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "COO",
+      "roleTitle": "Chief Operating Officer",
+      "roleCategory": "L1-CSuite-Core",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "primaryContext": "Operational, Process, Efficiency, Scalability",
+      "vsomAccountability": {
+        "visionRole": "INFORMED",
+        "strategyRole": "CONSULTED",
+        "objectivesRole": "RESPONSIBLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Operational"
+      },
+      "functionalScope": "Operational excellence, process automation, supply chain, capacity planning, facilities, operational efficiency",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Operations", "Supply Chain Director", "Facilities Director", "Process Excellence Lead"],
+      "commonSubsumptions": [
+        {"pattern": "COO subsumes CTO (Tech Ops)", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "PARTIAL", "scopeTransferred": ["IT Operations", "Infrastructure"]},
+        {"pattern": "COO subsumes CHRO", "applicableOrgSize": ["SMALL"], "subsumptionType": "FULL"},
+        {"pattern": "COO subsumes CPrO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"},
+        {"pattern": "COO subsumed by CEO", "applicableOrgSize": ["MICRO", "SMALL"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cto",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CTO",
+      "roleTitle": "Chief Technology Officer",
+      "roleCategory": "L1-CSuite-Core",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "primaryContext": "Technology, Architecture, Innovation, Platform",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "RESPONSIBLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "RESPONSIBLE",
+        "domainQualifier": "Technology"
+      },
+      "functionalScope": "Technology roadmap, platform architecture, AI/ML strategy, security governance, engineering excellence, technical innovation",
+      "okrCascadeLevel": 1,
+      "directReports": [
+        "VP Engineering",
+        "VP Platform",
+        "pf:role:enterprise-architect",
+        "azure:role:cloud-infrastructure-architect",
+        "azure:role:power-platform-architect",
+        "azure:role:m365-architect"
+      ],
+      "commonSubsumptions": [
+        {"pattern": "CTO subsumes CISO", "applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "subsumptionType": "FULL"},
+        {"pattern": "CTO subsumes CIO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"},
+        {"pattern": "CTO subsumes CDO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"},
+        {"pattern": "CTO subsumes CAIO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"}
+      ],
+      "architectureTrack": {
+        "description": "Architecture roles reporting through CTO",
+        "roles": ["pf:role:enterprise-architect", "pf:role:solution-architect", "pf:role:security-architect", "pf:role:data-architect", "pf:role:integration-architect"]
+      },
+      "platformTrack": {
+        "description": "Azure/Microsoft platform roles reporting through CTO",
+        "roles": ["azure:role:cloud-infrastructure-architect", "azure:role:azure-solutions-architect", "azure:role:power-platform-architect", "azure:role:m365-architect", "azure:role:azure-platform-engineer"]
+      }
+    },
+    {
+      "@id": "pf:role:cmo",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CMO",
+      "roleTitle": "Chief Marketing Officer",
+      "roleCategory": "L1-CSuite-Core",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "primaryContext": "Market, Brand, Customer, Growth, Demand",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "RESPONSIBLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Marketing"
+      },
+      "functionalScope": "Market positioning, brand strategy, demand generation, customer experience, marketing operations, content strategy",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Marketing", "Brand Director", "Demand Gen Director", "Marketing Ops Director"],
+      "commonSubsumptions": [
+        {"pattern": "CMO subsumes CCO (Comms)", "applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "subsumptionType": "FULL"},
+        {"pattern": "CMO subsumes CBO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"},
+        {"pattern": "CMO subsumed by CEO", "applicableOrgSize": ["MICRO", "SMALL"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cpo",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CPO",
+      "roleTitle": "Chief Product Officer",
+      "roleCategory": "L1-CSuite-Core",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "primaryContext": "Product, Customer, Market, Innovation",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "RESPONSIBLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "RESPONSIBLE",
+        "domainQualifier": "Product"
+      },
+      "functionalScope": "Product strategy, product roadmap, product-market fit, customer insights, product operations, design leadership",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Product", "Product Directors", "Head of Design", "UX Research Director"],
+      "commonSubsumptions": [
+        {"pattern": "CPO subsumes CXO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"},
+        {"pattern": "CPO absorbs Design Lead", "applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "subsumptionType": "FULL"},
+        {"pattern": "CPO subsumed by CEO", "applicableOrgSize": ["MICRO", "SMALL"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:chro",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CHRO",
+      "roleTitle": "Chief Human Resources Officer",
+      "roleCategory": "L1-CSuite-Core",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "primaryContext": "People, Culture, Talent, Organization",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "CONSULTED",
+        "objectivesRole": "RESPONSIBLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "People"
+      },
+      "functionalScope": "Talent acquisition, talent development, culture & engagement, compensation & benefits, HR operations, organizational design, DEI",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP HR", "Talent Acquisition Director", "L&D Director", "HRBP Directors", "Compensation Director"],
+      "commonSubsumptions": [
+        {"pattern": "CHRO subsumes CKO", "applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "subsumptionType": "FULL"},
+        {"pattern": "CHRO subsumed by COO", "applicableOrgSize": ["SMALL"], "subsumptionType": "FULL"},
+        {"pattern": "CHRO subsumed by CEO", "applicableOrgSize": ["MICRO"], "subsumptionType": "FULL"}
+      ]
+    }
+  ],
+
+  "L1ExtendedCSuiteRoles": [
+    {
+      "@id": "pf:role:cio",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CIO",
+      "roleTitle": "Chief Information Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "alternativeReportsTo": ["pf:role:coo", "pf:role:cfo"],
+      "primaryContext": "Information Systems, IT Operations, Enterprise Applications",
+      "vsomAccountability": {
+        "visionRole": "INFORMED",
+        "strategyRole": "CONSULTED",
+        "objectivesRole": "RESPONSIBLE",
+        "metricsRole": "RESPONSIBLE",
+        "domainQualifier": "Information Technology"
+      },
+      "functionalScope": "IT infrastructure, enterprise applications, IT service management, IT governance, digital workplace, vendor management",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP IT", "Enterprise Apps Director", "IT Ops Director", "Service Desk Manager"],
+      "commonSubsumptions": [
+        {"pattern": "CIO subsumes IT Director", "applicableOrgSize": ["ALL"], "subsumptionType": "FULL"},
+        {"pattern": "CIO subsumed by CTO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"},
+        {"pattern": "CIO subsumed by COO", "applicableOrgSize": ["SMALL"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cso-sec",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CSO-SEC",
+      "roleTitle": "Chief Security Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "isOptional": true,
+      "minimumOrgSize": "LARGE",
+      "primaryContext": "Security, Risk, Compliance, Resilience",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "RESPONSIBLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Security"
+      },
+      "functionalScope": "Enterprise security strategy and vision, security risk management and governance, physical and cyber security integration, security compliance and regulatory affairs, crisis management and incident response leadership",
+      "okrCascadeLevel": 1,
+      "directReports": ["pf:role:ciso", "Director of Physical Security", "Director of Compliance"],
+      "coreResponsibilities": [
+        "Enterprise security strategy and vision",
+        "Security risk management and governance",
+        "Physical and cyber security integration",
+        "Security compliance and regulatory affairs",
+        "Crisis management and incident response leadership",
+        "Security culture and awareness programs",
+        "Third-party and supply chain security",
+        "Business continuity and disaster recovery strategy",
+        "Security budget and resource allocation",
+        "Executive security briefings and Board reporting"
+      ],
+      "raciAccountable": [
+        "Enterprise security strategy",
+        "Security risk posture",
+        "Security compliance (SOC2, ISO 27001, GDPR)",
+        "Crisis and incident response effectiveness",
+        "Physical and logical security integration",
+        "Business continuity and disaster recovery"
+      ],
+      "raciResponsible": [
+        "Security strategy execution",
+        "Risk assessment and mitigation planning",
+        "Security policy development and enforcement",
+        "Compliance audit coordination",
+        "Crisis management leadership"
+      ],
+      "keyCollaborations": [
+        {"with": "CEO", "focus": "Security strategy, Board reporting, crisis management", "frequency": "Weekly"},
+        {"with": "CTO", "focus": "Technology security, architecture security", "frequency": "Weekly"},
+        {"with": "pf:role:ciso", "focus": "Cybersecurity strategy, technical implementation", "frequency": "Daily"}
+      ],
+      "fallbackRole": "CEO (strategic only; may delegate to CISO or CTO)"
+    },
+    {
+      "@id": "pf:role:ciso",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CISO",
+      "roleTitle": "Chief Information Security Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:cso-sec",
+      "alternativeReportsTo": ["pf:role:cto", "pf:role:ceo"],
+      "isOptional": true,
+      "minimumOrgSize": "MEDIUM",
+      "primaryContext": "Cybersecurity, Compliance, Risk, Privacy",
+      "vsomAccountability": {
+        "visionRole": "INFORMED",
+        "strategyRole": "CONSULTED",
+        "objectivesRole": "RESPONSIBLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Cybersecurity"
+      },
+      "functionalScope": "Cybersecurity strategy, security operations, incident response, security architecture, compliance, risk management, privacy",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Security", "Security Ops Director", "pf:role:security-architect", "Compliance Manager"],
+      "regulatoryRelevance": ["NIST 800-53", "ISO 27001", "SOC 2", "GDPR", "PCI-DSS"],
+      "coreResponsibilities": [
+        "Information security strategy and program",
+        "Cybersecurity architecture and operations",
+        "Threat intelligence and vulnerability management",
+        "Security operations center (SOC) management",
+        "Identity and access management (IAM)",
+        "Data protection and encryption",
+        "Application security and DevSecOps",
+        "Cloud security architecture",
+        "Security incident detection and response",
+        "AI/ML security and governance"
+      ],
+      "raciAccountable": [
+        "Cybersecurity program effectiveness",
+        "Security architecture and design",
+        "Threat detection and response capability",
+        "Vulnerability management program",
+        "IAM program and access controls",
+        "Technical compliance controls"
+      ],
+      "raciResponsible": [
+        "Security architecture execution",
+        "Threat hunting and intelligence analysis",
+        "Vulnerability assessment and patching",
+        "Security monitoring and alerting",
+        "Incident investigation and forensics"
+      ],
+      "keyCollaborations": [
+        {"with": "pf:role:cso-sec", "focus": "Cybersecurity strategy, risk reporting", "frequency": "Daily"},
+        {"with": "pf:role:cto", "focus": "Technology security, architecture", "frequency": "Daily"},
+        {"with": "pf:role:enterprise-architect", "focus": "Security architecture patterns", "frequency": "Weekly"},
+        {"with": "pf:role:security-architect", "focus": "Security design, patterns, standards", "frequency": "Daily"}
+      ],
+      "commonSubsumptions": [
+        {"pattern": "CISO subsumed by CTO", "applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "subsumptionType": "FULL"},
+        {"pattern": "CISO subsumed by CRO (Risk)", "applicableOrgSize": ["LARGE", "ENTERPRISE"], "subsumptionType": "PARTIAL"}
+      ],
+      "fallbackRole": "CSO-SEC (strategic only; may delegate to CTO)"
+    },
+    {
+      "@id": "pf:role:cdo",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CDO",
+      "roleTitle": "Chief Data Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "alternativeReportsTo": ["pf:role:cto", "pf:role:coo"],
+      "primaryContext": "Data, Analytics, AI/ML, Data Governance",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "RESPONSIBLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Data"
+      },
+      "functionalScope": "Data strategy, data governance, data architecture, analytics & BI, data quality, master data management, data monetization",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Data", "Data Engineering Director", "Analytics Director", "pf:role:data-architect"],
+      "commonSubsumptions": [
+        {"pattern": "CDO subsumed by CTO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"},
+        {"pattern": "CDO subsumes CAIO (Data scope)", "applicableOrgSize": ["MEDIUM", "LARGE"], "subsumptionType": "PARTIAL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cro-revenue",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CRO",
+      "roleTitle": "Chief Revenue Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "roleVariant": "Revenue",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "primaryContext": "Revenue, Sales, Growth, Customer Success",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "RESPONSIBLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Revenue"
+      },
+      "functionalScope": "Revenue strategy, sales operations, customer success, revenue enablement, revenue operations, GTM execution",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Sales", "VP Customer Success", "RevOps Director", "Sales Enablement Director"],
+      "commonSubsumptions": [
+        {"pattern": "CRO subsumes CMO (GTM)", "applicableOrgSize": ["MEDIUM", "LARGE"], "subsumptionType": "PARTIAL", "scopeTransferred": ["Demand Gen", "GTM Strategy"]},
+        {"pattern": "CRO subsumes CSO (Sales)", "applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cro-risk",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CRO-RISK",
+      "roleTitle": "Chief Risk Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "roleVariant": "Risk",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "alternativeReportsTo": ["pf:role:cfo", "Board Risk Committee"],
+      "primaryContext": "Risk, Compliance, Governance, Resilience",
+      "vsomAccountability": {
+        "visionRole": "INFORMED",
+        "strategyRole": "CONSULTED",
+        "objectivesRole": "RESPONSIBLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Risk"
+      },
+      "functionalScope": "Enterprise risk management, compliance oversight, audit coordination, business continuity, operational risk, financial risk",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Risk", "Compliance Director", "Internal Audit Director", "BCP Manager"],
+      "commonSubsumptions": [
+        {"pattern": "CRO-Risk subsumes CISO", "applicableOrgSize": ["LARGE", "ENTERPRISE"], "subsumptionType": "PARTIAL", "scopeTransferred": ["Cyber Risk", "Security Compliance"]},
+        {"pattern": "CRO-Risk subsumed by CFO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cco-customer",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CCO",
+      "roleTitle": "Chief Customer Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "roleVariant": "Customer",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "alternativeReportsTo": ["pf:role:cro-revenue"],
+      "primaryContext": "Customer, Experience, Retention, Advocacy",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "RESPONSIBLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Customer"
+      },
+      "functionalScope": "Customer experience, customer success, customer advocacy, voice of customer, customer journey, NPS/CSAT",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Customer Success", "CX Director", "Customer Advocacy Manager", "Support Director"],
+      "commonSubsumptions": [
+        {"pattern": "CCO subsumed by CRO (Revenue)", "applicableOrgSize": ["MEDIUM", "LARGE"], "subsumptionType": "PARTIAL"},
+        {"pattern": "CCO subsumed by CMO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cco-comms",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CCO-COMMS",
+      "roleTitle": "Chief Communications Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "roleVariant": "Communications",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "primaryContext": "Communications, PR, Corporate Affairs, Stakeholder Relations",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "RESPONSIBLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "RESPONSIBLE",
+        "domainQualifier": "Communications"
+      },
+      "functionalScope": "Corporate communications, PR, media relations, internal communications, executive communications, crisis communications",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Communications", "PR Director", "Internal Comms Director", "Social Media Director"],
+      "commonSubsumptions": [
+        {"pattern": "CCO-Comms subsumed by CMO", "applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:clo",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CLO",
+      "roleTitle": "Chief Legal Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "alternativeReportsTo": ["pf:role:board"],
+      "primaryContext": "Legal, Compliance, Governance, Contracts",
+      "vsomAccountability": {
+        "visionRole": "INFORMED",
+        "strategyRole": "CONSULTED",
+        "objectivesRole": "CONSULTED",
+        "metricsRole": "RESPONSIBLE",
+        "domainQualifier": "Legal"
+      },
+      "functionalScope": "Legal strategy, contract management, litigation, IP protection, regulatory compliance, corporate governance, M&A legal",
+      "okrCascadeLevel": 1,
+      "directReports": ["General Counsel", "VP Legal", "Contracts Director", "IP Counsel", "Compliance Director"],
+      "commonSubsumptions": [
+        {"pattern": "CLO subsumes General Counsel", "applicableOrgSize": ["ALL"], "subsumptionType": "FULL"},
+        {"pattern": "CLO subsumed by CFO", "applicableOrgSize": ["MICRO", "SMALL"], "subsumptionType": "PARTIAL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cao",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CAO",
+      "roleTitle": "Chief Administrative Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "alternativeReportsTo": ["pf:role:coo", "pf:role:cfo"],
+      "primaryContext": "Administration, Operations, Corporate Services",
+      "vsomAccountability": {
+        "visionRole": "INFORMED",
+        "strategyRole": "CONSULTED",
+        "objectivesRole": "RESPONSIBLE",
+        "metricsRole": "RESPONSIBLE",
+        "domainQualifier": "Administration"
+      },
+      "functionalScope": "Corporate administration, facilities, corporate services, administrative operations, office management, procurement",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Admin", "Facilities Director", "Procurement Director", "Office Manager"],
+      "commonSubsumptions": [
+        {"pattern": "CAO subsumed by COO", "applicableOrgSize": ["ALL"], "subsumptionType": "FULL"},
+        {"pattern": "CAO subsumed by CFO", "applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cso-str",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CSO-STR",
+      "roleTitle": "Chief Strategy Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "primaryContext": "Strategy, Planning, Corporate Development, M&A",
+      "vsomAccountability": {
+        "visionRole": "RESPONSIBLE",
+        "strategyRole": "ACCOUNTABLE",
+        "objectivesRole": "RESPONSIBLE",
+        "metricsRole": "CONSULTED",
+        "domainQualifier": "Strategy"
+      },
+      "functionalScope": "Corporate strategy, strategic planning, M&A strategy, competitive intelligence, strategic partnerships, portfolio management",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Strategy", "Corp Dev Director", "Strategic Planning Director", "Competitive Intel Manager"],
+      "commonSubsumptions": [
+        {"pattern": "CSO-STR subsumed by CEO", "applicableOrgSize": ["MICRO", "SMALL", "MEDIUM"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cgo",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CGO",
+      "roleTitle": "Chief Growth Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "primaryContext": "Growth, Expansion, Market Development",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "RESPONSIBLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Growth"
+      },
+      "functionalScope": "Growth strategy, market expansion, new market entry, growth experiments, product-led growth, growth operations",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Growth", "Growth Marketing Director", "Market Expansion Director"],
+      "commonSubsumptions": [
+        {"pattern": "CGO subsumed by CRO", "applicableOrgSize": ["MEDIUM", "LARGE"], "subsumptionType": "PARTIAL"},
+        {"pattern": "CGO subsumed by CMO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cxo",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CXO",
+      "roleTitle": "Chief Experience Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "alternativeReportsTo": ["pf:role:cpo", "pf:role:cmo"],
+      "primaryContext": "Experience, Design, UX, Journey",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "RESPONSIBLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Experience"
+      },
+      "functionalScope": "Customer experience design, employee experience, service design, journey mapping, experience metrics, design systems",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Experience", "UX Director", "Service Design Director", "CX Research Director"],
+      "commonSubsumptions": [
+        {"pattern": "CXO subsumed by CPO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"},
+        {"pattern": "CXO subsumed by CCO (Customer)", "applicableOrgSize": ["MEDIUM", "LARGE"], "subsumptionType": "PARTIAL"}
+      ]
+    },
+    {
+      "@id": "pf:role:caio",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CAIO",
+      "roleTitle": "Chief AI Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "alternativeReportsTo": ["pf:role:cto", "pf:role:cdo"],
+      "primaryContext": "AI, ML, Automation, Intelligence",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "RESPONSIBLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "AI"
+      },
+      "functionalScope": "AI strategy, ML operations, AI governance, AI ethics, AI product development, AI platform, AI security",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP AI/ML", "AI Engineering Director", "MLOps Director", "AI Ethics Manager"],
+      "emergingRole": true,
+      "regulatoryRelevance": ["EU AI Act", "NIST AI RMF"],
+      "commonSubsumptions": [
+        {"pattern": "CAIO subsumed by CTO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"},
+        {"pattern": "CAIO subsumed by CDO", "applicableOrgSize": ["MEDIUM", "LARGE"], "subsumptionType": "PARTIAL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cko",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CKO",
+      "roleTitle": "Chief Knowledge Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "alternativeReportsTo": ["pf:role:chro", "pf:role:cto"],
+      "primaryContext": "Knowledge, Learning, Content, Enablement",
+      "vsomAccountability": {
+        "visionRole": "INFORMED",
+        "strategyRole": "CONSULTED",
+        "objectivesRole": "RESPONSIBLE",
+        "metricsRole": "RESPONSIBLE",
+        "domainQualifier": "Knowledge"
+      },
+      "functionalScope": "Knowledge management, organizational learning, content strategy, documentation, training enablement, knowledge systems",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Knowledge", "L&D Director", "Content Director", "Knowledge Systems Manager"],
+      "commonSubsumptions": [
+        {"pattern": "CKO subsumed by CHRO", "applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "subsumptionType": "FULL"},
+        {"pattern": "CKO subsumed by CDO", "applicableOrgSize": ["MEDIUM", "LARGE"], "subsumptionType": "PARTIAL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cbo",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CBO",
+      "roleTitle": "Chief Brand Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "alternativeReportsTo": ["pf:role:cmo"],
+      "primaryContext": "Brand, Identity, Reputation, Perception",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "RESPONSIBLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Brand"
+      },
+      "functionalScope": "Brand strategy, brand identity, brand architecture, brand governance, brand perception, brand valuation",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Brand", "Brand Strategy Director", "Creative Director", "Brand Research Manager"],
+      "commonSubsumptions": [
+        {"pattern": "CBO subsumed by CMO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cpro",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CPrO",
+      "roleTitle": "Chief Procurement Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:coo",
+      "alternativeReportsTo": ["pf:role:cfo"],
+      "primaryContext": "Procurement, Supply Chain, Vendor, Sourcing",
+      "vsomAccountability": {
+        "visionRole": "INFORMED",
+        "strategyRole": "CONSULTED",
+        "objectivesRole": "RESPONSIBLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Procurement"
+      },
+      "functionalScope": "Procurement strategy, vendor management, sourcing, contract negotiation, supplier relationships, procurement operations",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Procurement", "Sourcing Director", "Vendor Management Director", "Category Managers"],
+      "commonSubsumptions": [
+        {"pattern": "CPrO subsumed by COO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"},
+        {"pattern": "CPrO subsumed by CFO", "applicableOrgSize": ["SMALL"], "subsumptionType": "FULL"}
+      ]
+    },
+    {
+      "@id": "pf:role:cetho",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CEthO",
+      "roleTitle": "Chief Ethics Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "alternativeReportsTo": ["pf:role:clo", "pf:role:board"],
+      "primaryContext": "Ethics, Integrity, Conduct, Values",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "CONSULTED",
+        "objectivesRole": "RESPONSIBLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Ethics"
+      },
+      "functionalScope": "Ethics policy, code of conduct, ethics training, ethics investigations, AI ethics, privacy ethics, whistleblower management",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Ethics & Compliance", "Ethics Director", "Investigation Manager"],
+      "emergingRole": true,
+      "commonSubsumptions": [
+        {"pattern": "CEthO subsumed by CLO", "applicableOrgSize": ["ALL"], "subsumptionType": "FULL"},
+        {"pattern": "CEthO subsumed by CHRO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "PARTIAL"}
+      ]
+    },
+    {
+      "@id": "pf:role:csusto",
+      "@type": "pf:ExecutiveRoleTemplate",
+      "roleCode": "CSustO",
+      "roleTitle": "Chief Sustainability Officer",
+      "roleCategory": "L1-CSuite-Extended",
+      "tier": 1,
+      "reportsTo": "pf:role:ceo",
+      "alternativeReportsTo": ["pf:role:coo", "Board ESG Committee"],
+      "primaryContext": "Sustainability, ESG, Environment, Social Responsibility",
+      "vsomAccountability": {
+        "visionRole": "CONSULTED",
+        "strategyRole": "RESPONSIBLE",
+        "objectivesRole": "ACCOUNTABLE",
+        "metricsRole": "ACCOUNTABLE",
+        "domainQualifier": "Sustainability"
+      },
+      "functionalScope": "Sustainability strategy, ESG reporting, environmental impact, carbon footprint, social responsibility, sustainable operations",
+      "okrCascadeLevel": 1,
+      "directReports": ["VP Sustainability", "ESG Director", "Environmental Director", "CSR Manager"],
+      "emergingRole": true,
+      "regulatoryRelevance": ["CSRD", "SEC Climate Rules", "GRI", "SASB"],
+      "commonSubsumptions": [
+        {"pattern": "CSustO subsumed by COO", "applicableOrgSize": ["SMALL", "MEDIUM"], "subsumptionType": "FULL"}
+      ]
+    }
+  ],
+
+  "L2ArchitectureTrackRoles": {
+    "description": "Architecture roles reporting through CTO → Enterprise Architect hierarchy",
+    "parentRole": "pf:role:cto",
+    "roles": [
+      {
+        "@id": "pf:role:enterprise-architect",
+        "@type": "pf:FunctionalRoleTemplate",
+        "roleCode": "EA",
+        "roleTitle": "Enterprise Architect",
+        "roleCategory": "L2-Architecture",
+        "tier": 2,
+        "reportsTo": "pf:role:cto",
+        "minimumOrgSize": "SMALL",
+        "primaryContext": "Enterprise Architecture, Technical Strategy",
+        "functionalScope": "Enterprise architecture vision and strategy, technology roadmap and standards governance, architecture review board leadership, cross-functional architecture alignment",
+        "directReports": ["pf:role:solution-architect", "pf:role:security-architect", "pf:role:data-architect", "pf:role:integration-architect"],
+        "coreResponsibilities": [
+          "Enterprise architecture vision and strategy",
+          "Technology roadmap and standards governance",
+          "Architecture review board leadership",
+          "Cross-functional architecture alignment",
+          "Technology portfolio management",
+          "Architecture patterns and principles",
+          "Technical debt strategic management"
+        ],
+        "raciAccountable": [
+          "Enterprise architecture strategy",
+          "Architecture standards and governance",
+          "Technology roadmap alignment",
+          "Architecture review board effectiveness",
+          "Cross-functional architecture consistency"
+        ],
+        "raciResponsible": [
+          "Architecture strategy execution",
+          "Architecture review facilitation",
+          "Standards definition and communication",
+          "Technology evaluation coordination"
+        ],
+        "keyCollaborations": [
+          {"with": "pf:role:cto", "focus": "Technology strategy, architecture vision", "frequency": "Weekly"},
+          {"with": "pf:role:solution-architect", "focus": "Solution design, architecture patterns", "frequency": "Daily"},
+          {"with": "pf:role:security-architect", "focus": "Security architecture, secure design patterns", "frequency": "Weekly"},
+          {"with": "pf:role:data-architect", "focus": "Data architecture, data governance", "frequency": "Weekly"}
+        ],
+        "fallbackRole": "pf:role:cto"
+      },
+      {
+        "@id": "pf:role:solution-architect",
+        "@type": "pf:FunctionalRoleTemplate",
+        "roleCode": "SA",
+        "roleTitle": "Solution Architect",
+        "roleCategory": "L2-Architecture",
+        "tier": 2,
+        "reportsTo": "pf:role:enterprise-architect",
+        "minimumOrgSize": "SMALL",
+        "primaryContext": "Solution Design, Implementation Architecture",
+        "functionalScope": "Solution architecture design (HLD/LLD), technical requirements analysis, component and integration design, architecture documentation",
+        "coreResponsibilities": [
+          "Solution architecture design (HLD/LLD)",
+          "Technical requirements analysis",
+          "Component and integration design",
+          "Architecture documentation",
+          "Technical feasibility assessment",
+          "Agent orchestration architecture",
+          "Ontology compliance validation"
+        ],
+        "raciAccountable": [
+          "Solution architecture quality",
+          "HLD and LLD delivery",
+          "Technical requirements accuracy",
+          "Solution documentation completeness"
+        ],
+        "raciResponsible": [
+          "Solution design execution",
+          "HLD/LLD document creation",
+          "Technical specifications writing",
+          "POC and prototype development"
+        ],
+        "keyCollaborations": [
+          {"with": "pf:role:enterprise-architect", "focus": "Architecture alignment, standards compliance", "frequency": "Daily"},
+          {"with": "pf:role:security-architect", "focus": "Security design, threat modeling", "frequency": "Weekly"},
+          {"with": "pf:role:data-architect", "focus": "Data modeling, schema design", "frequency": "Weekly"}
+        ],
+        "fallbackRole": "pf:role:enterprise-architect"
+      },
+      {
+        "@id": "pf:role:security-architect",
+        "@type": "pf:FunctionalRoleTemplate",
+        "roleCode": "SEC-ARCH",
+        "roleTitle": "Security Architect",
+        "roleCategory": "L2-Architecture",
+        "tier": 2,
+        "reportsTo": "pf:role:enterprise-architect",
+        "dottedLine": "pf:role:ciso",
+        "minimumOrgSize": "MEDIUM",
+        "primaryContext": "Security Architecture, Secure Design",
+        "functionalScope": "Security architecture design and patterns, threat modeling and risk assessment, security requirements definition, secure design review and guidance",
+        "coreResponsibilities": [
+          "Security architecture design and patterns",
+          "Threat modeling and risk assessment",
+          "Security requirements definition",
+          "Secure design review and guidance",
+          "Authentication and authorization architecture",
+          "Encryption and data protection design",
+          "Zero trust architecture implementation"
+        ],
+        "raciAccountable": [
+          "Security architecture quality",
+          "Threat model accuracy",
+          "Security requirements completeness",
+          "Secure design pattern library"
+        ],
+        "raciResponsible": [
+          "Security architecture design",
+          "Threat modeling execution",
+          "Security requirements documentation",
+          "Secure design reviews"
+        ],
+        "keyCollaborations": [
+          {"with": "pf:role:enterprise-architect", "focus": "Security integration with enterprise architecture", "frequency": "Weekly"},
+          {"with": "pf:role:ciso", "focus": "Security strategy alignment, standards", "frequency": "Weekly"},
+          {"with": "pf:role:solution-architect", "focus": "Security requirements for solutions", "frequency": "Daily"}
+        ],
+        "fallbackRole": "pf:role:enterprise-architect or pf:role:ciso"
+      },
+      {
+        "@id": "pf:role:data-architect",
+        "@type": "pf:FunctionalRoleTemplate",
+        "roleCode": "DATA-ARCH",
+        "roleTitle": "Data Architect",
+        "roleCategory": "L2-Architecture",
+        "tier": 2,
+        "reportsTo": "pf:role:enterprise-architect",
+        "minimumOrgSize": "MEDIUM",
+        "primaryContext": "Data Architecture, Governance",
+        "functionalScope": "Data architecture strategy and design, data modeling and schema design, data governance framework implementation, data quality architecture",
+        "coreResponsibilities": [
+          "Data architecture strategy and design",
+          "Data modeling and schema design",
+          "Data governance framework implementation",
+          "Data quality architecture",
+          "Data integration and ETL architecture",
+          "Ontology-to-database mapping",
+          "Vector database architecture for AI"
+        ],
+        "raciAccountable": [
+          "Data architecture quality",
+          "Data model accuracy and completeness",
+          "Data governance implementation",
+          "Data quality standards"
+        ],
+        "raciResponsible": [
+          "Data model design execution",
+          "Schema documentation",
+          "Data governance implementation",
+          "ETL/ELT architecture design"
+        ],
+        "keyCollaborations": [
+          {"with": "pf:role:enterprise-architect", "focus": "Data architecture alignment", "frequency": "Weekly"},
+          {"with": "pf:role:solution-architect", "focus": "Data requirements for solutions", "frequency": "Daily"},
+          {"with": "pf:role:cdo", "focus": "Data strategy, governance, quality", "frequency": "Weekly"}
+        ],
+        "fallbackRole": "pf:role:enterprise-architect"
+      },
+      {
+        "@id": "pf:role:integration-architect",
+        "@type": "pf:FunctionalRoleTemplate",
+        "roleCode": "INT-ARCH",
+        "roleTitle": "Integration Architect",
+        "roleCategory": "L2-Architecture",
+        "tier": 2,
+        "reportsTo": "pf:role:enterprise-architect",
+        "isOptional": true,
+        "minimumOrgSize": "LARGE",
+        "primaryContext": "Integration Architecture, API Strategy",
+        "functionalScope": "Integration architecture strategy, API architecture and design, event-driven architecture design, MCP (Model Context Protocol) architecture",
+        "coreResponsibilities": [
+          "Integration architecture strategy",
+          "API architecture and design",
+          "Event-driven architecture design",
+          "Third-party integration design",
+          "MCP (Model Context Protocol) architecture",
+          "API gateway architecture",
+          "Integration security and authentication"
+        ],
+        "raciAccountable": [
+          "Integration architecture quality",
+          "API architecture standards",
+          "Integration pattern library",
+          "Event architecture design"
+        ],
+        "raciResponsible": [
+          "Integration design execution",
+          "API specification development",
+          "Event schema design",
+          "MCP implementation"
+        ],
+        "keyCollaborations": [
+          {"with": "pf:role:enterprise-architect", "focus": "Integration standards, patterns", "frequency": "Weekly"},
+          {"with": "pf:role:solution-architect", "focus": "Solution integration requirements", "frequency": "Daily"},
+          {"with": "pf:role:security-architect", "focus": "API security, authentication", "frequency": "Weekly"}
+        ],
+        "fallbackRole": "pf:role:enterprise-architect or pf:role:solution-architect"
+      }
+    ]
+  },
+
+  "L2L3AzureMicrosoftPlatformRoles": {
+    "description": "Azure and Microsoft platform roles reporting through CTO hierarchy",
+    "parentRole": "pf:role:cto",
+    "roles": [
+      {
+        "@id": "azure:role:cloud-infrastructure-architect",
+        "@type": "pf:FunctionalRoleTemplate",
+        "roleCode": "CLOUD-INFRA-ARCH",
+        "roleTitle": "Cloud Infrastructure Architect",
+        "roleCategory": "L2-L3-Platform",
+        "tier": 2,
+        "reportsTo": "pf:role:cto",
+        "alternateReportsTo": "pf:role:enterprise-architect",
+        "minimumOrgSize": "SMALL",
+        "primaryContext": "Cloud Infrastructure Strategy, Architecture",
+        "functionalScope": "Cloud infrastructure strategy and architecture, multi-cloud and hybrid cloud design, Infrastructure as Code (IaC) architecture, cloud networking and connectivity design",
+        "directReports": ["azure:role:azure-solutions-architect"],
+        "coreResponsibilities": [
+          "Cloud infrastructure strategy and architecture",
+          "Multi-cloud and hybrid cloud design",
+          "Infrastructure as Code (IaC) architecture",
+          "Cloud networking and connectivity design",
+          "Cloud cost optimization architecture",
+          "Disaster recovery and business continuity design",
+          "Landing zone and subscription architecture"
+        ],
+        "raciAccountable": [
+          "Cloud infrastructure architecture quality",
+          "Infrastructure reliability and availability",
+          "Cloud cost efficiency",
+          "IaC standards and adoption"
+        ],
+        "raciResponsible": [
+          "Cloud architecture design execution",
+          "IaC template development oversight",
+          "Landing zone implementation guidance",
+          "Cloud networking design"
+        ],
+        "keyCollaborations": [
+          {"with": "pf:role:cto", "focus": "Cloud strategy alignment", "frequency": "Weekly"},
+          {"with": "pf:role:enterprise-architect", "focus": "Enterprise architecture alignment", "frequency": "Weekly"},
+          {"with": "azure:role:azure-solutions-architect", "focus": "Azure-specific architecture", "frequency": "Daily"},
+          {"with": "pf:role:security-architect", "focus": "Cloud security", "frequency": "Weekly"}
+        ],
+        "fallbackRole": "pf:role:enterprise-architect"
+      },
+      {
+        "@id": "azure:role:azure-solutions-architect",
+        "@type": "pf:FunctionalRoleTemplate",
+        "roleCode": "AZURE-SA",
+        "roleTitle": "Azure Solutions Architect",
+        "roleCategory": "L2-L3-Platform",
+        "tier": 2,
+        "reportsTo": "azure:role:cloud-infrastructure-architect",
+        "alternateReportsTo": "pf:role:enterprise-architect",
+        "minimumOrgSize": "SMALL",
+        "primaryContext": "Azure Platform Architecture, Solutions",
+        "functionalScope": "Azure solution architecture and design, Azure resource topology and organization, Azure networking, identity, compute, storage, database architecture",
+        "directReports": ["azure:role:azure-platform-engineer"],
+        "certificationRequirement": ["AZ-305: Designing Microsoft Azure Infrastructure Solutions", "AZ-104: Microsoft Azure Administrator"],
+        "coreResponsibilities": [
+          "Azure solution architecture and design",
+          "Azure resource topology and organization",
+          "Azure networking (VNets, Private Endpoints, ExpressRoute)",
+          "Azure identity and access (Entra ID integration)",
+          "Azure PaaS service selection and design",
+          "Azure compute architecture (VMs, AKS, App Services, Functions)",
+          "Azure DevOps and GitHub integration architecture"
+        ],
+        "raciAccountable": [
+          "Azure architecture quality",
+          "Azure solution reliability",
+          "Azure cost efficiency",
+          "Azure governance compliance"
+        ],
+        "raciResponsible": [
+          "Azure architecture design",
+          "Azure resource deployment guidance",
+          "Azure networking implementation",
+          "Azure Bicep/ARM development oversight"
+        ],
+        "keyCollaborations": [
+          {"with": "azure:role:cloud-infrastructure-architect", "focus": "Cloud strategy, multi-cloud alignment", "frequency": "Daily"},
+          {"with": "azure:role:power-platform-architect", "focus": "Azure-Power Platform integration", "frequency": "Weekly"},
+          {"with": "azure:role:m365-architect", "focus": "Azure-M365 integration, identity", "frequency": "Weekly"}
+        ],
+        "fallbackRole": "azure:role:cloud-infrastructure-architect or pf:role:solution-architect"
+      },
+      {
+        "@id": "azure:role:azure-platform-engineer",
+        "@type": "pf:FunctionalRoleTemplate",
+        "roleCode": "AZURE-PE",
+        "roleTitle": "Azure Platform Engineer",
+        "roleCategory": "L2-L3-Platform",
+        "tier": 3,
+        "reportsTo": "azure:role:azure-solutions-architect",
+        "alternateReportsTo": "azure:role:cloud-infrastructure-architect",
+        "minimumOrgSize": "LARGE",
+        "primaryContext": "Azure Platform Operations, Automation",
+        "functionalScope": "Azure infrastructure provisioning and management, Azure DevOps/GitHub pipeline implementation, Infrastructure as Code development",
+        "certificationRequirement": ["AZ-104: Microsoft Azure Administrator", "AZ-400: Designing and Implementing Microsoft DevOps Solutions"],
+        "coreResponsibilities": [
+          "Azure infrastructure provisioning and management",
+          "Azure DevOps/GitHub pipeline implementation",
+          "Infrastructure as Code development (Bicep, Terraform)",
+          "Azure networking implementation",
+          "Azure monitoring and alerting implementation",
+          "Azure cost monitoring and optimization",
+          "Container platform operations (AKS)"
+        ],
+        "raciAccountable": [
+          "Azure infrastructure reliability",
+          "IaC implementation quality",
+          "Pipeline effectiveness",
+          "Platform documentation"
+        ],
+        "raciResponsible": [
+          "Azure resource deployment",
+          "IaC development",
+          "Pipeline implementation",
+          "Monitoring setup"
+        ],
+        "keyCollaborations": [
+          {"with": "azure:role:azure-solutions-architect", "focus": "Architecture implementation", "frequency": "Daily"},
+          {"with": "Development Teams", "focus": "Platform services, CI/CD support", "frequency": "Daily"}
+        ],
+        "fallbackRole": "azure:role:azure-solutions-architect"
+      },
+      {
+        "@id": "azure:role:power-platform-architect",
+        "@type": "pf:FunctionalRoleTemplate",
+        "roleCode": "PP-ARCH",
+        "roleTitle": "Power Platform Architect",
+        "roleCategory": "L2-L3-Platform",
+        "tier": 2,
+        "reportsTo": "pf:role:cto",
+        "alternateReportsTo": "pf:role:enterprise-architect",
+        "minimumOrgSize": "SMALL",
+        "primaryContext": "Power Platform Architecture, Governance",
+        "functionalScope": "Power Platform strategy and architecture, Power Apps, Power Automate, Power BI, Power Virtual Agents, Dataverse architecture",
+        "certificationRequirement": ["PL-600: Microsoft Power Platform Solution Architect", "PL-400: Microsoft Power Platform Developer"],
+        "coreResponsibilities": [
+          "Power Platform strategy and architecture",
+          "Power Apps architecture (Canvas, Model-Driven, Portals)",
+          "Power Automate architecture (Cloud Flows, Desktop Flows)",
+          "Power BI architecture and data modeling",
+          "Dataverse architecture and data modeling",
+          "Power Platform governance and ALM",
+          "Citizen developer enablement architecture"
+        ],
+        "raciAccountable": [
+          "Power Platform architecture quality",
+          "Power Platform governance",
+          "Dataverse data architecture",
+          "Citizen developer enablement"
+        ],
+        "raciResponsible": [
+          "Power Platform architecture design",
+          "Environment provisioning strategy",
+          "DLP policy implementation",
+          "CoE toolkit deployment"
+        ],
+        "citizenDeveloperGovernance": {
+          "tiers": [
+            {"tier": "Personal Productivity", "scope": "Individual apps and flows", "oversight": "Minimal"},
+            {"tier": "Team Solutions", "scope": "Shared within teams", "oversight": "Moderate"},
+            {"tier": "Department Solutions", "scope": "Department-wide >20 users", "oversight": "Full"},
+            {"tier": "Enterprise Solutions", "scope": "Organization-wide", "oversight": "Full + EA"}
+          ]
+        },
+        "keyCollaborations": [
+          {"with": "pf:role:cto", "focus": "Platform strategy", "frequency": "Weekly"},
+          {"with": "pf:role:enterprise-architect", "focus": "Enterprise integration", "frequency": "Weekly"},
+          {"with": "azure:role:azure-solutions-architect", "focus": "Azure-Power Platform integration", "frequency": "Weekly"},
+          {"with": "pf:role:data-architect", "focus": "Dataverse design, Power BI models", "frequency": "Weekly"},
+          {"with": "azure:role:m365-architect", "focus": "SharePoint, Teams integration", "frequency": "Weekly"}
+        ],
+        "fallbackRole": "pf:role:solution-architect or pf:role:enterprise-architect"
+      },
+      {
+        "@id": "azure:role:m365-architect",
+        "@type": "pf:FunctionalRoleTemplate",
+        "roleCode": "M365-ARCH",
+        "roleTitle": "Microsoft 365 Architect",
+        "roleCategory": "L2-L3-Platform",
+        "tier": 2,
+        "reportsTo": "pf:role:cto",
+        "alternateReportsTo": "pf:role:enterprise-architect",
+        "minimumOrgSize": "SMALL",
+        "primaryContext": "M365 Architecture, Modern Workplace",
+        "functionalScope": "Microsoft 365 strategy and architecture, Teams, SharePoint, Exchange, OneDrive, Entra ID, M365 security and compliance, Viva, Copilot",
+        "certificationRequirement": ["MS-700: Managing Microsoft Teams", "MS-102: Microsoft 365 Administrator"],
+        "coreResponsibilities": [
+          "Microsoft 365 strategy and architecture",
+          "Microsoft Teams architecture and governance",
+          "SharePoint Online architecture and information architecture",
+          "Exchange Online architecture and mail flow",
+          "Microsoft Entra ID (Azure AD) identity architecture",
+          "Microsoft 365 security architecture (Defender, Purview)",
+          "Microsoft 365 Copilot architecture and governance",
+          "Viva suite architecture"
+        ],
+        "raciAccountable": [
+          "M365 architecture quality",
+          "M365 governance effectiveness",
+          "Teams adoption and governance",
+          "M365 Copilot governance"
+        ],
+        "raciResponsible": [
+          "M365 architecture design",
+          "Teams configuration and governance",
+          "SharePoint site architecture",
+          "Entra ID configuration"
+        ],
+        "copilotGovernance": {
+          "considerations": [
+            "Data classification and sensitivity labeling prerequisites",
+            "Oversharing risk assessment and remediation",
+            "Copilot-ready information architecture",
+            "User enablement and training",
+            "Usage monitoring and adoption tracking"
+          ]
+        },
+        "keyCollaborations": [
+          {"with": "pf:role:cto", "focus": "M365 strategy alignment", "frequency": "Weekly"},
+          {"with": "pf:role:enterprise-architect", "focus": "Enterprise integration", "frequency": "Weekly"},
+          {"with": "pf:role:security-architect", "focus": "M365 security, Defender", "frequency": "Weekly"},
+          {"with": "azure:role:power-platform-architect", "focus": "SharePoint-Power Platform integration", "frequency": "Weekly"},
+          {"with": "azure:role:azure-solutions-architect", "focus": "Azure-M365 integration", "frequency": "Weekly"}
+        ],
+        "fallbackRole": "pf:role:enterprise-architect"
+      }
+    ]
+  },
+
+  "L4ApplicationRoleTemplates": {
+    "description": "Generic application-level role templates for PFI product instances. These templates define multi-tenant RBAC patterns applicable to any PFC-PFI product.",
+    "applicability": "Required for SaaS/multi-tenant products built on PF-Core",
+    "tenantScopeTypes": ["cross-tenant", "agency-clients", "own-tenant", "assigned-clients", "referral-data-only", "api-scoped"],
+    "roleCategories": [
+      {
+        "@id": "pf:app-role-category:platform",
+        "name": "Platform",
+        "description": "Platform-level roles with cross-tenant access for PFI operators",
+        "templateRoles": ["pf:app-role:pfi-owner", "pf:app-role:admin"]
+      },
+      {
+        "@id": "pf:app-role-category:agency",
+        "name": "Agency",
+        "description": "Agency roles managing multiple client tenants (B2B2C model)",
+        "templateRoles": ["pf:app-role:agency-admin", "pf:app-role:agency-manager", "pf:app-role:agency-analyst"]
+      },
+      {
+        "@id": "pf:app-role-category:client",
+        "name": "Direct Client",
+        "description": "Enterprise client organization roles within single tenant",
+        "templateRoles": ["pf:app-role:client-admin", "pf:app-role:client-manager", "pf:app-role:client-analyst", "pf:app-role:client-viewer"]
+      },
+      {
+        "@id": "pf:app-role-category:limited",
+        "name": "Limited Access",
+        "description": "Restricted access roles for partners and system integrations",
+        "templateRoles": ["pf:app-role:affiliate", "pf:app-role:api-only"]
+      }
+    ],
+    "templates": [
+      {
+        "@id": "pf:app-role:pfi-owner",
+        "@type": "pf:ApplicationRoleTemplate",
+        "roleCode": "PFI-OWNER",
+        "roleTitle": "PFI Owner",
+        "roleCategory": "Platform",
+        "tier": 4,
+        "seniorityLevel": 1,
+        "tenantScope": "cross-tenant",
+        "description": "Platform owner with full control over PFI product instance",
+        "coreResponsibilities": [
+          "Platform vision and strategic direction",
+          "Cross-tenant platform governance",
+          "Platform security and compliance oversight",
+          "Platform pricing and commercial strategy",
+          "Platform feature roadmap ownership"
+        ],
+        "permissionPattern": {
+          "accessLevel": "Full",
+          "securityAccess": ["view-all-tenant-data", "delete-tenant", "archive-tenant", "access-billing"],
+          "note": "Complete platform access including destructive operations"
+        },
+        "fallbackRole": "Board of Directors",
+        "csuiteMappings": ["pf:role:ceo", "pf:role:cpo"]
+      },
+      {
+        "@id": "pf:app-role:admin",
+        "@type": "pf:ApplicationRoleTemplate",
+        "roleCode": "ADMIN",
+        "roleTitle": "Admin",
+        "roleCategory": "Platform",
+        "tier": 4,
+        "seniorityLevel": 2,
+        "reportsTo": "pf:app-role:pfi-owner",
+        "tenantScope": "cross-tenant",
+        "description": "Super user with cross-tenant access for platform team members",
+        "coreResponsibilities": [
+          "Day-to-day platform operations",
+          "Tenant support and onboarding",
+          "Cross-tenant issue resolution",
+          "User management across tenants",
+          "Platform monitoring and health checks"
+        ],
+        "permissionPattern": {
+          "accessLevel": "Full",
+          "securityAccess": ["view-all-tenant-data", "create-edit-data", "execute-agents", "view-team", "invite-users", "change-roles", "remove-users", "archive-tenant", "access-billing"],
+          "note": "Full access except tenant deletion (PFI Owner only)"
+        },
+        "fallbackRole": "pf:app-role:pfi-owner",
+        "csuiteMappings": ["pf:role:coo", "pf:role:cto"]
+      },
+      {
+        "@id": "pf:app-role:agency-admin",
+        "@type": "pf:ApplicationRoleTemplate",
+        "roleCode": "AGENCY-ADMIN",
+        "roleTitle": "Agency Admin",
+        "roleCategory": "Agency",
+        "tier": 4,
+        "seniorityLevel": 2,
+        "reportsTo": "pf:app-role:admin",
+        "tenantScope": "agency-clients",
+        "description": "Agency owner managing multiple client tenants",
+        "coreResponsibilities": [
+          "Agency client portfolio management",
+          "Client tenant creation and setup",
+          "Agency team management",
+          "White-label reporting configuration",
+          "Bulk operations across clients"
+        ],
+        "permissionPattern": {
+          "accessLevel": "Full within agency scope",
+          "securityAccess": ["view-own-tenant-data", "create-edit-data", "execute-agents", "view-team", "invite-users", "change-roles", "remove-users"],
+          "agencySpecific": ["create-client-tenants", "view-all-agency-clients", "switch-client-views", "white-label-reports", "bulk-operations"]
+        },
+        "fallbackRole": "pf:app-role:admin",
+        "csuiteMappings": ["pf:role:cro-revenue"]
+      },
+      {
+        "@id": "pf:app-role:agency-manager",
+        "@type": "pf:ApplicationRoleTemplate",
+        "roleCode": "AGENCY-MGR",
+        "roleTitle": "Agency Manager",
+        "roleCategory": "Agency",
+        "tier": 4,
+        "seniorityLevel": 3,
+        "reportsTo": "pf:app-role:agency-admin",
+        "tenantScope": "assigned-clients",
+        "description": "Agency team member with client access",
+        "coreResponsibilities": [
+          "Client account management",
+          "Client onboarding support",
+          "Analysis execution for clients",
+          "Content creation for clients",
+          "Client reporting"
+        ],
+        "permissionPattern": {
+          "accessLevel": "Full within assigned clients",
+          "securityAccess": ["view-own-tenant-data", "create-edit-data", "execute-agents", "view-team"],
+          "agencySpecific": ["view-all-agency-clients", "switch-client-views"]
+        },
+        "fallbackRole": "pf:app-role:agency-admin",
+        "csuiteMappings": ["pf:role:cco-customer"]
+      },
+      {
+        "@id": "pf:app-role:agency-analyst",
+        "@type": "pf:ApplicationRoleTemplate",
+        "roleCode": "AGENCY-ANALYST",
+        "roleTitle": "Agency Analyst",
+        "roleCategory": "Agency",
+        "tier": 4,
+        "seniorityLevel": 4,
+        "reportsTo": "pf:app-role:agency-manager",
+        "tenantScope": "assigned-clients",
+        "description": "Agency read-only team member",
+        "coreResponsibilities": [
+          "View and analyze results",
+          "Generate reports",
+          "Support content drafting",
+          "Research and discovery"
+        ],
+        "permissionPattern": {
+          "accessLevel": "Partial/Limited",
+          "securityAccess": ["view-own-tenant-data"],
+          "limitations": ["View results only", "Draft only", "Suggest only"]
+        },
+        "fallbackRole": "pf:app-role:agency-manager"
+      },
+      {
+        "@id": "pf:app-role:client-admin",
+        "@type": "pf:ApplicationRoleTemplate",
+        "roleCode": "CLIENT-ADMIN",
+        "roleTitle": "Client Admin",
+        "roleCategory": "Direct Client",
+        "tier": 4,
+        "seniorityLevel": 2,
+        "reportsTo": "pf:app-role:admin",
+        "tenantScope": "own-tenant",
+        "description": "Client organization administrator",
+        "coreResponsibilities": [
+          "Organization strategy for product",
+          "Team management within tenant",
+          "Budget and resource allocation",
+          "Integration configuration",
+          "Billing management"
+        ],
+        "permissionPattern": {
+          "accessLevel": "Full within tenant",
+          "securityAccess": ["view-own-tenant-data", "create-edit-data", "execute-agents", "view-team", "invite-users", "change-roles", "remove-users", "access-billing"],
+          "integrations": ["connect-integrations", "manage-api-keys"]
+        },
+        "fallbackRole": "pf:app-role:admin",
+        "csuiteMappings": ["pf:role:cmo", "pf:role:cpo"]
+      },
+      {
+        "@id": "pf:app-role:client-manager",
+        "@type": "pf:ApplicationRoleTemplate",
+        "roleCode": "CLIENT-MGR",
+        "roleTitle": "Client Manager",
+        "roleCategory": "Direct Client",
+        "tier": 4,
+        "seniorityLevel": 3,
+        "reportsTo": "pf:app-role:client-admin",
+        "tenantScope": "own-tenant",
+        "description": "Client team member with edit rights",
+        "coreResponsibilities": [
+          "Day-to-day execution",
+          "Content creation and management",
+          "Analysis execution",
+          "Scheduling and planning",
+          "Team coordination"
+        ],
+        "permissionPattern": {
+          "accessLevel": "Full execution, limited admin",
+          "securityAccess": ["view-own-tenant-data", "create-edit-data", "execute-agents", "view-team"],
+          "inviteConstraint": "Can invite same or lower role only"
+        },
+        "fallbackRole": "pf:app-role:client-admin"
+      },
+      {
+        "@id": "pf:app-role:client-analyst",
+        "@type": "pf:ApplicationRoleTemplate",
+        "roleCode": "CLIENT-ANALYST",
+        "roleTitle": "Client Analyst",
+        "roleCategory": "Direct Client",
+        "tier": 4,
+        "seniorityLevel": 4,
+        "reportsTo": "pf:app-role:client-manager",
+        "tenantScope": "own-tenant",
+        "description": "Client specialist with limited edit capabilities",
+        "coreResponsibilities": [
+          "View and analyze data",
+          "Support content creation",
+          "Monitor channels",
+          "Technical implementation support"
+        ],
+        "permissionPattern": {
+          "accessLevel": "Partial/Limited",
+          "securityAccess": ["view-own-tenant-data"],
+          "limitations": ["Limited scope create-edit", "View only", "Draft only"]
+        },
+        "fallbackRole": "pf:app-role:client-manager"
+      },
+      {
+        "@id": "pf:app-role:client-viewer",
+        "@type": "pf:ApplicationRoleTemplate",
+        "roleCode": "CLIENT-VIEWER",
+        "roleTitle": "Client Viewer",
+        "roleCategory": "Direct Client",
+        "tier": 4,
+        "seniorityLevel": 5,
+        "reportsTo": "pf:app-role:client-admin",
+        "tenantScope": "own-tenant",
+        "description": "Executive read-only access",
+        "coreResponsibilities": [
+          "Review executive dashboards",
+          "Monitor progress",
+          "Stay informed on outcomes"
+        ],
+        "permissionPattern": {
+          "accessLevel": "Read-only",
+          "securityAccess": ["view-own-tenant-data"],
+          "dashboards": "Summary only"
+        },
+        "fallbackRole": "pf:app-role:client-admin",
+        "csuiteMappings": ["pf:role:ceo", "pf:role:cfo"]
+      },
+      {
+        "@id": "pf:app-role:affiliate",
+        "@type": "pf:ApplicationRoleTemplate",
+        "roleCode": "AFFILIATE",
+        "roleTitle": "Affiliate",
+        "roleCategory": "Limited Access",
+        "tier": 4,
+        "seniorityLevel": 3,
+        "reportsTo": "pf:app-role:admin",
+        "tenantScope": "referral-data-only",
+        "description": "Referral partner with limited access",
+        "coreResponsibilities": [
+          "Track referral performance",
+          "View referral dashboard",
+          "Monitor affiliate earnings"
+        ],
+        "permissionPattern": {
+          "accessLevel": "Very Limited",
+          "securityAccess": ["view-referral-data-only"],
+          "dashboards": "Referral dashboard only"
+        },
+        "fallbackRole": "pf:app-role:admin"
+      },
+      {
+        "@id": "pf:app-role:api-only",
+        "@type": "pf:ApplicationRoleTemplate",
+        "roleCode": "API-ONLY",
+        "roleTitle": "API Only",
+        "roleCategory": "Limited Access",
+        "tier": 4,
+        "seniorityLevel": 5,
+        "reportsTo": "pf:app-role:admin",
+        "tenantScope": "api-scoped",
+        "description": "System integration account",
+        "coreResponsibilities": [
+          "Automated data integration",
+          "System-to-system communication",
+          "Webhook event handling"
+        ],
+        "permissionPattern": {
+          "accessLevel": "API-scoped only",
+          "securityAccess": ["access-rest-api", "access-websocket-feeds"],
+          "humanInteraction": "None - machine account"
+        },
+        "fallbackRole": "pf:app-role:admin"
+      }
+    ],
+    "applicationRoleHierarchy": {
+      "description": "Generic application role hierarchy template",
+      "structure": [
+        {"role": "pf:app-role:pfi-owner", "level": 1, "directReports": ["pf:app-role:admin"]},
+        {"role": "pf:app-role:admin", "level": 2, "directReports": ["pf:app-role:agency-admin", "pf:app-role:client-admin", "pf:app-role:affiliate", "pf:app-role:api-only"]},
+        {"role": "pf:app-role:agency-admin", "level": 2, "directReports": ["pf:app-role:agency-manager"]},
+        {"role": "pf:app-role:agency-manager", "level": 3, "directReports": ["pf:app-role:agency-analyst"]},
+        {"role": "pf:app-role:agency-analyst", "level": 4},
+        {"role": "pf:app-role:client-admin", "level": 2, "directReports": ["pf:app-role:client-manager", "pf:app-role:client-viewer"]},
+        {"role": "pf:app-role:client-manager", "level": 3, "directReports": ["pf:app-role:client-analyst"]},
+        {"role": "pf:app-role:client-analyst", "level": 4},
+        {"role": "pf:app-role:client-viewer", "level": 5}
+      ]
+    }
+  },
+
+  "L4ApplicationRoleInstance_BAIV_AIV": {
+    "@type": "pf:ApplicationRoleInstance",
+    "instanceOf": "L4ApplicationRoleTemplates",
+    "product": {
+      "@id": "baiv:product:ai-visibility",
+      "name": "BAIV AI Visibility Platform",
+      "description": "AI Visibility and Brand Authority platform for B2B marketing leaders",
+      "productCategory": "MarTech/AI Visibility",
+      "organization": "Be AI Visible (BAIV)"
+    },
+    "conformsTo": "pf:RRR-ONT-v3.1.0",
+    "sourceReference": "baiv:RRR-DATA:aiv-roles-v1.0.0",
+    "description": "BAIV AI Visibility product instance implementing L4 Application Role Templates with 11 roles across Platform, Agency, Client, and Limited Access categories",
+
+    "instanceRoles": [
+      {
+        "@id": "baiv:role:pfi-owner",
+        "instanceOf": "pf:app-role:pfi-owner",
+        "roleTitle": "PFI Owner",
+        "exampleUsers": "Milana (BAIV founder)",
+        "productSpecificResponsibilities": [
+          "Platform vision and strategic direction for AI Visibility",
+          "Multi-venture coordination across BAIV products"
+        ],
+        "businessRoleMappings": [{"businessRole": "Founder/CEO", "focus": "Strategic vision, platform direction"}]
+      },
+      {
+        "@id": "baiv:role:admin",
+        "instanceOf": "pf:app-role:admin",
+        "roleTitle": "Admin",
+        "exampleUsers": "BAIV team members",
+        "productSpecificResponsibilities": [
+          "AI Visibility platform operations",
+          "Client onboarding for AI visibility assessments"
+        ]
+      },
+      {
+        "@id": "baiv:role:agency-admin",
+        "instanceOf": "pf:app-role:agency-admin",
+        "roleTitle": "Agency Admin",
+        "exampleUsers": "Marketing agency owner",
+        "productSpecificResponsibilities": [
+          "Agency AI visibility client portfolio",
+          "White-label AI visibility reporting"
+        ]
+      },
+      {
+        "@id": "baiv:role:agency-manager",
+        "instanceOf": "pf:app-role:agency-manager",
+        "roleTitle": "Agency Manager",
+        "exampleUsers": "Account manager at agency",
+        "productSpecificResponsibilities": [
+          "Client AI visibility execution",
+          "Gap analysis and content recommendations"
+        ]
+      },
+      {
+        "@id": "baiv:role:agency-analyst",
+        "instanceOf": "pf:app-role:agency-analyst",
+        "roleTitle": "Agency Analyst",
+        "exampleUsers": "Junior analyst at agency"
+      },
+      {
+        "@id": "baiv:role:client-admin",
+        "instanceOf": "pf:app-role:client-admin",
+        "roleTitle": "Client Admin (Enterprise)",
+        "exampleUsers": "CMO, VP Marketing, Director",
+        "businessRoleMappings": [
+          {"businessRole": "CMO/VP Marketing", "focus": "Strategic AI visibility oversight, ROI"},
+          {"businessRole": "Director E-commerce", "focus": "Implementation + oversight"}
+        ],
+        "productSpecificResponsibilities": [
+          "Organization AI visibility strategy",
+          "Integration with LinkedIn, Google Drive, WordPress"
+        ]
+      },
+      {
+        "@id": "baiv:role:client-manager",
+        "instanceOf": "pf:app-role:client-manager",
+        "roleTitle": "Client Manager",
+        "exampleUsers": "Marketing Manager, SEO Manager",
+        "businessRoleMappings": [
+          {"businessRole": "Marketing Manager", "focus": "Day-to-day AI visibility execution"},
+          {"businessRole": "SEO Manager", "focus": "Technical + analysis"},
+          {"businessRole": "Content Manager", "focus": "Content workflow"},
+          {"businessRole": "Paid Media Manager", "focus": "Attribution focus"}
+        ],
+        "productSpecificResponsibilities": [
+          "Run AI visibility gap analyses",
+          "Generate AI-optimized content",
+          "Manage content calendar"
+        ]
+      },
+      {
+        "@id": "baiv:role:client-analyst",
+        "instanceOf": "pf:app-role:client-analyst",
+        "roleTitle": "Client Analyst",
+        "exampleUsers": "SEO Specialist, Content Writer",
+        "businessRoleMappings": [
+          {"businessRole": "Social Media Manager", "focus": "Monitoring + engagement"},
+          {"businessRole": "SEO Specialist", "focus": "Technical implementation"}
+        ],
+        "productSpecificResponsibilities": [
+          "View AI visibility results",
+          "Draft content recommendations"
+        ]
+      },
+      {
+        "@id": "baiv:role:client-viewer",
+        "instanceOf": "pf:app-role:client-viewer",
+        "roleTitle": "Client Viewer",
+        "exampleUsers": "CEO wanting visibility",
+        "productSpecificResponsibilities": [
+          "Review AI visibility dashboards",
+          "Monitor brand authority metrics"
+        ]
+      },
+      {
+        "@id": "baiv:role:affiliate",
+        "instanceOf": "pf:app-role:affiliate",
+        "roleTitle": "Affiliate",
+        "exampleUsers": "Partner tracking referrals",
+        "productSpecificResponsibilities": [
+          "Track AI Visibility platform referrals"
+        ]
+      },
+      {
+        "@id": "baiv:role:api-only",
+        "instanceOf": "pf:app-role:api-only",
+        "roleTitle": "API Only",
+        "exampleUsers": "Automated systems, webhooks",
+        "productSpecificResponsibilities": [
+          "AI visibility data integration",
+          "Webhook event handling for analysis completion"
+        ]
+      }
+    ],
+
+    "productSpecificFeatures": {
+      "aiVisibilityCapabilities": [
+        "Brand Discovery & Gap Analysis",
+        "AI-Optimized Content Generation",
+        "Content Calendar Management",
+        "LinkedIn/Google Drive/WordPress Integration",
+        "Lead Generation Tracking"
+      ],
+      "permissionCategories": [
+        "Security & Access (10 permissions)",
+        "Onboarding & Discovery (5 permissions)",
+        "Dashboards & Reporting (5 permissions)",
+        "Analysis Tools (5 permissions)",
+        "Content Creation (5 permissions)",
+        "Content Planning & Schedule (5 permissions)",
+        "Lead Generation (4 permissions)",
+        "Integrations (6 permissions)",
+        "Platform APIs (4 permissions)",
+        "Agency-Specific (5 permissions)"
+      ]
+    },
+
+    "validation": {
+      "totalRoles": 11,
+      "rolesPerCategory": {
+        "Platform": 2,
+        "Agency": 3,
+        "Client": 4,
+        "Limited": 2
+      },
+      "templateConformance": "All 11 roles conform to L4ApplicationRoleTemplates"
+    }
+  },
+
+  "roleHierarchySummary": {
+    "description": "Complete role hierarchy showing reporting relationships across L0-L4",
+    "hierarchy": {
+      "L0": {
+        "Board": {
+          "directReports": ["CEO"]
+        },
+        "CEO": {
+          "directReports": ["CFO", "COO", "CTO", "CMO", "CPO", "CHRO", "CIO", "CSO-SEC", "CSO-STR", "CRO", "CLO", "CDO", "CCO", "CGO", "CXO", "CAIO", "CEthO", "CSustO"]
+        }
+      },
+      "L1-CTO-Subtree": {
+        "CTO": {
+          "directReports": ["EA", "Cloud-Infra-Arch", "PP-Arch", "M365-Arch"],
+          "architectureTrack": {
+            "EA": {
+              "directReports": ["SA", "SEC-ARCH", "DATA-ARCH", "INT-ARCH"]
+            }
+          },
+          "platformTrack": {
+            "Cloud-Infra-Arch": {
+              "directReports": ["Azure-SA"]
+            },
+            "Azure-SA": {
+              "directReports": ["Azure-PE"]
+            }
+          }
+        }
+      },
+      "L1-CSO-SEC-Subtree": {
+        "CSO-SEC": {
+          "directReports": ["CISO"],
+          "dottedLine": ["SEC-ARCH"]
+        }
+      },
+      "L4-Application-PFI": {
+        "description": "Application-level roles for PFI product instances (multi-tenant RBAC)",
+        "PFI-Owner": {
+          "directReports": ["Admin"],
+          "csuiteMappings": ["CEO", "CPO"]
+        },
+        "Admin": {
+          "directReports": ["Agency-Admin", "Client-Admin", "Affiliate", "API-Only"],
+          "csuiteMappings": ["COO", "CTO"]
+        },
+        "Agency-Admin": {
+          "directReports": ["Agency-Manager"],
+          "csuiteMappings": ["CRO"]
+        },
+        "Agency-Manager": {
+          "directReports": ["Agency-Analyst"],
+          "csuiteMappings": ["CCO-Customer"]
+        },
+        "Client-Admin": {
+          "directReports": ["Client-Manager", "Client-Viewer"],
+          "csuiteMappings": ["CMO", "CPO"]
+        },
+        "Client-Manager": {
+          "directReports": ["Client-Analyst"]
+        },
+        "Client-Viewer": {
+          "csuiteMappings": ["CEO", "CFO"]
+        }
+      }
+    }
+  },
+
+  "subsumptionConfiguration": {
+    "@type": "rrr:SubsumptionModel",
+    "subsumptionTypes": [
+      {"code": "FULL", "name": "Full Subsumption", "description": "Complete role absorption - all responsibilities transferred"},
+      {"code": "PARTIAL", "name": "Partial Subsumption", "description": "Specific scope transferred, remainder retained or eliminated"},
+      {"code": "TEMPORARY", "name": "Temporary Subsumption", "description": "Time-bounded coverage (e.g., interim, parental leave)"},
+      {"code": "DELEGATION", "name": "Delegation", "description": "Cascaded authority chain with accountability retained at source"}
+    ]
+  },
+
+  "maturityGuidance": {
+    "description": "Role adoption guidance by organizational maturity",
+    "levels": [
+      {
+        "level": 1,
+        "name": "Initial/Ad-hoc",
+        "orgSize": "MICRO",
+        "recommendedRoles": ["CEO"],
+        "roleApproach": "CEO covers all C-Suite functions; consider external consulting for architecture"
+      },
+      {
+        "level": 2,
+        "name": "Managed",
+        "orgSize": "SMALL",
+        "recommendedRoles": ["CEO", "CFO", "CTO", "EA", "SA"],
+        "roleApproach": "Core C-Suite with first dedicated architects; significant subsumption"
+      },
+      {
+        "level": 3,
+        "name": "Optimized",
+        "orgSize": "MEDIUM",
+        "recommendedRoles": ["All L0", "All L1-Core", "CIO", "CISO", "CDO", "CRO", "All L2-Architecture", "Cloud-Infra-Arch", "PP-Arch", "M365-Arch"],
+        "roleApproach": "Expanded C-Suite with specialized architects; platform roles for Microsoft ecosystem"
+      },
+      {
+        "level": 4,
+        "name": "Transforming",
+        "orgSize": "LARGE",
+        "recommendedRoles": "All defined roles",
+        "roleApproach": "Full C-Suite with platform engineering; multiple instances per domain; all Azure roles"
+      },
+      {
+        "level": 5,
+        "name": "Enterprise",
+        "orgSize": "ENTERPRISE",
+        "recommendedRoles": "All defined roles with team structures",
+        "roleApproach": "Complete C-Suite with emerging roles (CAIO, CEthO, CSustO); regional/divisional architecture teams"
+      }
+    ]
+  },
+
+  "roleApplicabilityFiltering": {
+    "@type": "pf:RoleFilteringModel",
+    "description": "Unified schema with contextual filtering for role applicability based on PFC-PFI-Instance, Product, Client perspective, ROG, and ORG Context",
+    "filterDimensions": [
+      {
+        "dimension": "contextLevel",
+        "description": "PFC (Platform Foundation Core) vs PFI (Platform Foundation Instance)",
+        "values": ["PFC", "PFI"],
+        "roleMapping": {
+          "PFC": ["L0-Enterprise", "L1-CSuite-Core", "L1-CSuite-Extended", "L2-Architecture", "L2-L3-Platform"],
+          "PFI": ["L4-Application"]
+        }
+      },
+      {
+        "dimension": "productContext",
+        "description": "Specific product or application within PFI",
+        "examples": ["BAIV-AIV", "Other-Product"],
+        "filterLogic": "L4 roles filtered by product instance (e.g., baiv:role:* for BAIV AIV)"
+      },
+      {
+        "dimension": "clientPerspective",
+        "description": "Client's relationship to the platform",
+        "values": ["PlatformOperator", "AgencyPartner", "DirectClient", "LimitedAccess"],
+        "roleMapping": {
+          "PlatformOperator": ["pf:app-role:pfi-owner", "pf:app-role:admin"],
+          "AgencyPartner": ["pf:app-role:agency-admin", "pf:app-role:agency-manager", "pf:app-role:agency-analyst"],
+          "DirectClient": ["pf:app-role:client-admin", "pf:app-role:client-manager", "pf:app-role:client-analyst", "pf:app-role:client-viewer"],
+          "LimitedAccess": ["pf:app-role:affiliate", "pf:app-role:api-only"]
+        }
+      },
+      {
+        "dimension": "orgRolesGovernance",
+        "description": "ORG (Organization-Roles-Governance) - defines governance model for how roles are structured and governed",
+        "values": ["Startup", "ScaleUp", "MidMarket", "Enterprise", "PublicCompany"],
+        "filterLogic": "Apply organizationSizeDefinitions and maturityGuidance to determine applicable roles"
+      },
+      {
+        "dimension": "orgContext",
+        "description": "Organization-specific context including maturity level, size, and regulatory environment",
+        "attributes": ["orgSize", "orgMaturityLevel", "industryVertical", "regulatoryRequirements", "governanceModel"],
+        "filterLogic": "Use maturityGuidance.levels to determine recommended roles based on orgSize and maturityLevel"
+      }
+    ],
+    "filteringQueries": {
+      "description": "Example queries for filtering applicable roles",
+      "examples": [
+        {
+          "query": "Get roles for MEDIUM-sized PFC organization",
+          "filter": "contextLevel=PFC AND orgSize=MEDIUM",
+          "result": "L0 + L1-Core + selected L1-Extended + L2-Architecture + selected L2-L3-Platform"
+        },
+        {
+          "query": "Get roles for BAIV AIV Agency Partner",
+          "filter": "contextLevel=PFI AND productContext=BAIV-AIV AND clientPerspective=AgencyPartner",
+          "result": "baiv:role:agency-admin, baiv:role:agency-manager, baiv:role:agency-analyst"
+        },
+        {
+          "query": "Get roles for Enterprise client using BAIV platform",
+          "filter": "contextLevel=PFI AND productContext=BAIV-AIV AND clientPerspective=DirectClient",
+          "result": "baiv:role:client-admin, baiv:role:client-manager, baiv:role:client-analyst, baiv:role:client-viewer"
+        },
+        {
+          "query": "Get all CTO-reportable roles",
+          "filter": "reportsTo CONTAINS 'cto'",
+          "result": "EA, Cloud-Infra-Arch, PP-Arch, M365-Arch (and their subtrees)"
+        }
+      ]
+    },
+    "ontologyReferences": {
+      "description": "Related ontologies for context determination",
+      "orgOntology": "pf:ORG-ONT (Organization-Roles-Governance)",
+      "orgContextOntology": "pf:OAA-ONT (Ontology-Aware Architecture)",
+      "rrrOntology": "pf:RRR-ONT-v3.1.0"
+    }
+  },
+
+  "validation": {
+    "conformsTo": "pf:RRR-ONT-v3.1.0",
+    "totalRoles": 48,
+    "roleBreakdown": {
+      "L0-Enterprise": 2,
+      "L1-CSuite-Core": 6,
+      "L1-CSuite-Extended": 17,
+      "L2-Architecture": 5,
+      "L2-L3-Platform": 5,
+      "L4-Application-Templates": 11,
+      "L4-Application-Instance-BAIV": 11
+    },
+    "uniqueRoleTemplates": 46,
+    "note": "L4 templates (11) + BAIV instance (11) share same structure; 46 unique role definitions when deduplicated",
+    "businessRulesValidated": [
+      "BR-RRR-002: All roles have unique roleCode",
+      "BR-RRR-003: No circular reporting - hierarchy validated",
+      "BR-RRR-004: Active assignments - all roles have reportsTo (except Board)",
+      "BR-RRR-006: L1 seniorityLevel verified for C-Suite",
+      "BR-RRR-007: Delegation chains documented",
+      "BR-RRR-008: L4 roles support multi-tenant RBAC filtering"
+    ],
+    "oaaGates": {
+      "G1-EntityDescriptions": "PASS - All roles have descriptions and coreResponsibilities",
+      "G2-Cardinality": "PASS - Required fields defined",
+      "G3-Connectivity": "PASS - Role relationships defined",
+      "G4-BusinessRules": "PASS - RACI rules documented",
+      "G5-SchemaOrg": "PASS - Mappings compatible",
+      "G6-Registry": "PENDING - Registration required"
+    },
+    "filteringSupport": {
+      "contextLevelFiltering": "PASS - PFC/PFI distinction supported",
+      "productFiltering": "PASS - Product-specific instances supported",
+      "clientPerspectiveFiltering": "PASS - Platform/Agency/Client/Limited supported",
+      "orgContextFiltering": "PASS - Maturity and size guidance provided"
+    }
+  }
+}

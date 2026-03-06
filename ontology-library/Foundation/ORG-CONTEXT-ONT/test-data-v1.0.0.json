@@ -1,0 +1,306 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform.framework/ontology/"
+  },
+  "@type": "Dataset",
+  "@id": "pf:testdata:org-context-ontology-v1",
+  
+  "name": "Organization Context Ontology Test Data",
+  "version": "1.0.0",
+  "dateCreated": "2026-01-20",
+  "description": "Comprehensive test data for Organization Context Ontology validation",
+  
+  "distribution": {
+    "typical": {"percentage": 60, "description": "Standard, expected use cases"},
+    "edge": {"percentage": 20, "description": "Valid but unusual combinations"},
+    "boundary": {"percentage": 10, "description": "At the limits of valid values"},
+    "invalid": {"percentage": 10, "description": "Should fail validation"}
+  },
+  
+  "testData": {
+    "OrganizationContext": {
+      "typical": [
+        {
+          "testId": "CTX-TYP-001",
+          "description": "Complete context for SME client - Healthcare",
+          "@type": "pf:OrganizationContext",
+          "@id": "ctx:foot-scientific",
+          "contextId": "ctx:foot-scientific",
+          "organizationRef": "org:foot-scientific",
+          "products": [
+            {"productId": "prod-custom-orthotics", "name": "Custom Orthotics", "category": "Medical Devices", "segment": "Custom Solutions", "status": "active"},
+            {"productId": "prod-insoles", "name": "OTC Insoles", "category": "Consumer Products", "segment": "Retail", "status": "active"}
+          ],
+          "brands": [
+            {"brandId": "brand-footsci", "name": "Foot Scientific", "isPrimaryBrand": true, "valuePropositionRef": "vp:foot-scientific-brand"}
+          ],
+          "valuePropositionRefs": ["vp:foot-scientific-brand"],
+          "productPortfolio": {"portfolioType": "multi_product", "productCount": 15, "segments": ["Custom Solutions", "Retail", "Professional"]},
+          "maturity": {
+            "sizeMaturity": {"level": 2, "headcount": 75, "revenue": 8000000, "revenueCurrency": "USD"},
+            "valueMaturity": 4,
+            "marketingMaturity": {"level": 2, "hasMarketingDirector": false, "marketingTeamSize": 2, "functionalRoles": ["Content", "Social"]},
+            "technologyMaturity": 3,
+            "complexityMaturity": 2,
+            "aiMaturity": {"maturityLevel": "exploring", "aiToolsInUse": ["ChatGPT"], "aiVisibilityAwareness": "medium"}
+          }
+        },
+        {
+          "testId": "CTX-TYP-002",
+          "description": "Enterprise e-commerce context",
+          "@type": "pf:OrganizationContext",
+          "@id": "ctx:shoe-carnival",
+          "contextId": "ctx:shoe-carnival",
+          "organizationRef": "org:shoe-carnival",
+          "brands": [{"brandId": "brand-shoe-carnival", "name": "Shoe Carnival", "isPrimaryBrand": true}],
+          "valuePropositionRefs": ["vp:shoe-carnival-brand", "vp:shoe-carnival-work-shoes"],
+          "productPortfolio": {"portfolioType": "ecommerce", "productCount": 500, "segments": ["Work Shoes", "Athletic", "Casual", "Kids", "Dress"]},
+          "maturity": {
+            "sizeMaturity": {"level": 5, "headcount": 800, "revenue": 100000000, "revenueCurrency": "USD"},
+            "marketingMaturity": {"level": 4, "hasMarketingDirector": true, "marketingTeamSize": 25}
+          }
+        },
+        {
+          "testId": "CTX-TYP-003",
+          "description": "Financial services SME context",
+          "@type": "pf:OrganizationContext",
+          "@id": "ctx:premier-credit",
+          "contextId": "ctx:premier-credit",
+          "organizationRef": "org:premier-credit-partners",
+          "brands": [{"brandId": "brand-pcp", "name": "Premier Credit Partners", "isPrimaryBrand": true}],
+          "productPortfolio": {"portfolioType": "service", "productCount": 5, "segments": ["Mortgage Lending", "Refinancing", "Home Equity"]},
+          "marketContext": {
+            "marketSegments": [{"segmentId": "seg-homebuyers", "name": "First-time Homebuyers", "priority": "primary"}],
+            "geographicScope": ["US", "Florida"],
+            "localization": {"baseCurrency": "USD", "baseGeography": "Florida", "languages": ["en-US", "es-US"]}
+          }
+        }
+      ],
+      "edge": [
+        {
+          "testId": "CTX-EDG-001",
+          "description": "Context with maximum competitors (10)",
+          "@type": "pf:OrganizationContext",
+          "@id": "ctx:highly-competitive",
+          "contextId": "ctx:highly-competitive",
+          "organizationRef": "org:competitive-client",
+          "competitiveLandscape": {
+            "competitors": [
+              {"organizationRef": "org:comp-1", "competitorType": "direct", "priority": 1, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:comp-2", "competitorType": "direct", "priority": 2, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:comp-3", "competitorType": "direct", "priority": 3, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:comp-4", "competitorType": "indirect", "priority": 4, "trackCitations": true, "trackRankings": false},
+              {"organizationRef": "org:comp-5", "competitorType": "indirect", "priority": 5, "trackCitations": true, "trackRankings": false},
+              {"organizationRef": "org:comp-6", "competitorType": "substitute", "priority": 3, "trackCitations": true, "trackRankings": false},
+              {"organizationRef": "org:comp-7", "competitorType": "substitute", "priority": 4, "trackCitations": false, "trackRankings": false},
+              {"organizationRef": "org:comp-8", "competitorType": "aspirational", "priority": 5, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:comp-9", "competitorType": "aspirational", "priority": 5, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:comp-10", "competitorType": "direct", "priority": 2, "trackCitations": true, "trackRankings": true}
+            ]
+          }
+        },
+        {
+          "testId": "CTX-EDG-002",
+          "description": "Multi-brand organization with separate value propositions",
+          "@type": "pf:OrganizationContext",
+          "@id": "ctx:multi-brand",
+          "contextId": "ctx:multi-brand",
+          "organizationRef": "org:sure-guard",
+          "brands": [
+            {"brandId": "brand-sg-safety", "name": "SureGuard Safety", "isPrimaryBrand": true, "valuePropositionRef": "vp:sureguard-safety"},
+            {"brandId": "brand-sg-comfort", "name": "SureGuard Comfort", "isPrimaryBrand": false, "valuePropositionRef": "vp:sureguard-comfort"}
+          ],
+          "valuePropositionRefs": ["vp:sureguard-safety", "vp:sureguard-comfort"]
+        }
+      ],
+      "boundary": [
+        {
+          "testId": "CTX-BND-001",
+          "description": "Minimal valid context - only required fields",
+          "@type": "pf:OrganizationContext",
+          "@id": "ctx:minimal",
+          "contextId": "ctx:minimal",
+          "organizationRef": "org:minimal-org"
+        }
+      ],
+      "invalid": [
+        {
+          "testId": "CTX-INV-001",
+          "description": "INVALID: Context with 11 competitors (exceeds limit of 10)",
+          "@type": "pf:OrganizationContext",
+          "@id": "ctx:too-many-competitors",
+          "contextId": "ctx:too-many-competitors",
+          "organizationRef": "org:over-competitive",
+          "competitiveLandscape": {
+            "competitors": [
+              {"organizationRef": "org:c1", "competitorType": "direct", "priority": 1, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:c2", "competitorType": "direct", "priority": 1, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:c3", "competitorType": "direct", "priority": 1, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:c4", "competitorType": "direct", "priority": 1, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:c5", "competitorType": "direct", "priority": 1, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:c6", "competitorType": "direct", "priority": 1, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:c7", "competitorType": "direct", "priority": 1, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:c8", "competitorType": "direct", "priority": 1, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:c9", "competitorType": "direct", "priority": 1, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:c10", "competitorType": "direct", "priority": 1, "trackCitations": true, "trackRankings": true},
+              {"organizationRef": "org:c11", "competitorType": "direct", "priority": 1, "trackCitations": true, "trackRankings": true}
+            ]
+          },
+          "expectedValidationErrors": [
+            {"rule": "BR-CTX-002", "field": "competitiveLandscape.competitors", "message": "Maximum 10 competitors allowed"}
+          ]
+        }
+      ]
+    },
+    
+    "Competitor": {
+      "typical": [
+        {
+          "testId": "COMP-TYP-001",
+          "description": "Direct competitor with full analysis",
+          "@type": "ext:Competitor",
+          "organizationRef": "org:superfeet",
+          "competitorType": "direct",
+          "priority": 1,
+          "strengths": ["Brand recognition", "Retail distribution", "Podiatrist relationships"],
+          "weaknesses": ["Higher price point", "Less customization"],
+          "strategicPosture": "stable",
+          "trackCitations": true,
+          "trackRankings": true
+        },
+        {
+          "testId": "COMP-TYP-002",
+          "description": "Indirect competitor",
+          "@type": "ext:Competitor",
+          "organizationRef": "org:dr-scholls",
+          "competitorType": "indirect",
+          "priority": 3,
+          "strengths": ["Mass market reach", "Brand awareness"],
+          "weaknesses": ["Generic products", "No professional channel"],
+          "trackCitations": true,
+          "trackRankings": false
+        }
+      ],
+      "edge": [
+        {
+          "testId": "COMP-EDG-001",
+          "description": "Aspirational competitor (company to emulate)",
+          "@type": "ext:Competitor",
+          "organizationRef": "org:nike",
+          "competitorType": "aspirational",
+          "priority": 5,
+          "strengths": ["Global brand", "Innovation culture", "Marketing excellence"],
+          "strategicPosture": "aggressive",
+          "trackCitations": true,
+          "trackRankings": true
+        }
+      ],
+      "boundary": [
+        {
+          "testId": "COMP-BND-001",
+          "description": "Minimal competitor - required fields only",
+          "@type": "ext:Competitor",
+          "organizationRef": "org:minimal-comp",
+          "competitorType": "direct",
+          "priority": 5,
+          "trackCitations": true,
+          "trackRankings": true
+        }
+      ],
+      "invalid": [
+        {
+          "testId": "COMP-INV-001",
+          "description": "INVALID: Priority out of range",
+          "@type": "ext:Competitor",
+          "organizationRef": "org:invalid-comp",
+          "competitorType": "direct",
+          "priority": 6,
+          "trackCitations": true,
+          "trackRankings": true,
+          "expectedValidationErrors": [
+            {"field": "priority", "message": "Priority must be 1-5"}
+          ]
+        }
+      ]
+    },
+    
+    "OrganizationMaturity": {
+      "typical": [
+        {
+          "testId": "MAT-TYP-001",
+          "description": "SME maturity profile",
+          "@type": "pf:OrganizationMaturity",
+          "sizeMaturity": {"level": 2, "headcount": 75, "revenue": 8000000, "revenueCurrency": "USD"},
+          "valueMaturity": 4,
+          "marketingMaturity": {"level": 2, "hasMarketingDirector": false, "marketingTeamSize": 2, "functionalRoles": ["Content", "Social"]},
+          "technologyMaturity": 3,
+          "complexityMaturity": 2,
+          "aiMaturity": {"maturityLevel": "exploring", "aiToolsInUse": ["ChatGPT"], "aiVisibilityAwareness": "medium"}
+        },
+        {
+          "testId": "MAT-TYP-002",
+          "description": "Enterprise maturity profile",
+          "@type": "pf:OrganizationMaturity",
+          "sizeMaturity": {"level": 5, "headcount": 800, "revenue": 100000000, "revenueCurrency": "USD"},
+          "valueMaturity": 4,
+          "marketingMaturity": {"level": 4, "hasMarketingDirector": true, "marketingTeamSize": 25, "functionalRoles": ["SEO", "Content", "Paid", "Social", "Email", "Analytics", "Brand"]},
+          "technologyMaturity": 4,
+          "complexityMaturity": 4,
+          "aiMaturity": {"maturityLevel": "implementing", "aiToolsInUse": ["ChatGPT", "Claude", "Jasper", "Custom ML"], "aiVisibilityAwareness": "high"}
+        }
+      ],
+      "edge": [
+        {
+          "testId": "MAT-EDG-001",
+          "description": "Startup with high AI maturity",
+          "@type": "pf:OrganizationMaturity",
+          "sizeMaturity": {"level": 1, "headcount": 10, "revenue": 500000, "revenueCurrency": "USD"},
+          "aiMaturity": {"maturityLevel": "optimizing", "aiToolsInUse": ["Claude", "GPT-4", "Perplexity", "Custom Agents"], "aiVisibilityAwareness": "high"}
+        }
+      ],
+      "boundary": [
+        {
+          "testId": "MAT-BND-001",
+          "description": "All maturity at minimum (1)",
+          "@type": "pf:OrganizationMaturity",
+          "sizeMaturity": {"level": 1},
+          "valueMaturity": 1,
+          "marketingMaturity": {"level": 1},
+          "technologyMaturity": 1,
+          "complexityMaturity": 1
+        },
+        {
+          "testId": "MAT-BND-002",
+          "description": "All maturity at maximum (5)",
+          "@type": "pf:OrganizationMaturity",
+          "sizeMaturity": {"level": 5},
+          "valueMaturity": 5,
+          "marketingMaturity": {"level": 5},
+          "technologyMaturity": 5,
+          "complexityMaturity": 5
+        }
+      ],
+      "invalid": [
+        {
+          "testId": "MAT-INV-001",
+          "description": "INVALID: Maturity level out of range",
+          "@type": "pf:OrganizationMaturity",
+          "sizeMaturity": {"level": 7},
+          "expectedValidationErrors": [
+            {"rule": "BR-CTX-003", "field": "sizeMaturity.level", "message": "Maturity level must be 1-5"}
+          ]
+        }
+      ]
+    }
+  },
+  
+  "validationSummary": {
+    "totalTestCases": 20,
+    "expectedPass": 17,
+    "expectedFail": 3,
+    "coveragePercentage": 100,
+    "distributionValid": true,
+    "entitiesCovered": ["OrganizationContext", "Competitor", "OrganizationMaturity"]
+  }
+}

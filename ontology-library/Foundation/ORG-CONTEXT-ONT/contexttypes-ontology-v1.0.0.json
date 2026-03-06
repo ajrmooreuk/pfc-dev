@@ -1,0 +1,1180 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ns": "https://baiv.co.uk/ontology/",
+    "rcsg-fw": "https://platformcore.io/ontology/rcsg-fw/"
+  },
+  "@type": "Ontology",
+  "@id": "ns:ontology:contexttypes-v1.0",
+  "metadata": {
+    "name": "ContextTypes Ontology",
+    "version": "1.1.0",
+    "description": "Extensible taxonomy of organisational context dimensions covering market classification, size metrics, functional and technology maturity, culture, geography, market positioning, competitor bridging, and localization — enabling multi-dimensional context assignment to organisations via ORG-CONTEXT",
+    "domain": "Organisational Context Classification",
+    "purpose": "Provide a structured, extensible taxonomy of context types assignable to organisations via ORG-CONTEXT, spanning market, size, maturity (functional, technology, IT, AI), culture, geography, positioning, competitor, and localization dimensions with user-defined extension support",
+    "oaaVersion": "6.1.0",
+    "series": "Foundation",
+    "dateCreated": "2026-02-10",
+    "creator": "OAA Generator v6.1.0"
+  },
+  "entities": [
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:ContextType",
+      "name": "ContextType",
+      "description": "Abstract base type representing any classifiable dimension of organisational context — all concrete context types extend this base, and custom extensions are supported via the ContextExtension mechanism",
+      "properties": [
+        {
+          "name": "contextTypeId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this context type"
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true,
+          "description": "Display name of the context type"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true,
+          "description": "Detailed description of what this context type classifies"
+        },
+        {
+          "name": "category",
+          "type": "Text",
+          "required": true,
+          "description": "Context category: Market, Size, Maturity, Technology, Culture, Geography, Positioning, Competitor, RCSG, Localization, Custom"
+        },
+        {
+          "name": "isExtensible",
+          "type": "Boolean",
+          "required": false,
+          "description": "Whether this context type supports user-defined sub-type extension via ContextExtension"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:MarketClassification",
+      "name": "MarketClassification",
+      "description": "Classifies an organisation by market and industry vertical using standard classification schemes, with hierarchical sub-sector support for granular segmentation across technology, healthcare, financial services, manufacturing, and other verticals",
+      "properties": [
+        {
+          "name": "marketCode",
+          "type": "Text",
+          "required": true,
+          "description": "Standard classification code from the selected scheme (e.g., SIC 7372, NAICS 511210, GICS 45103010)"
+        },
+        {
+          "name": "marketName",
+          "type": "Text",
+          "required": true,
+          "description": "Human-readable name of the market or industry vertical"
+        },
+        {
+          "name": "classificationScheme",
+          "type": "Text",
+          "required": true,
+          "description": "Classification standard: SIC, NAICS, GICS, ICB, ISIC, NACE, Custom"
+        },
+        {
+          "name": "parentMarket",
+          "type": "Text",
+          "required": false,
+          "description": "Parent market for hierarchical classification (e.g., Technology > Software > SaaS)"
+        },
+        {
+          "name": "subSectorDepth",
+          "type": "Number",
+          "required": false,
+          "description": "Depth level in the classification hierarchy (0 = sector, 1 = sub-sector, 2 = segment)"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:MarketSegment",
+      "name": "MarketSegment",
+      "description": "Defines a target market segment or sub-sector within a market classification, including geographic, demographic, behavioural, and firmographic segmentation criteria with addressable market sizing",
+      "properties": [
+        {
+          "name": "segmentId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this market segment"
+        },
+        {
+          "name": "segmentName",
+          "type": "Text",
+          "required": true,
+          "description": "Name of the market segment, sub-sector, or niche"
+        },
+        {
+          "name": "segmentationType",
+          "type": "Text",
+          "required": true,
+          "description": "Segmentation basis: geographic, demographic, behavioural, firmographic, psychographic, technographic"
+        },
+        {
+          "name": "segmentLevel",
+          "type": "Text",
+          "required": false,
+          "description": "Granularity level: sector, sub-sector, segment, niche, micro-niche"
+        },
+        {
+          "name": "marketSize",
+          "type": "Text",
+          "required": false,
+          "description": "Estimated total addressable market size (TAM) for this segment"
+        },
+        {
+          "name": "growthRate",
+          "type": "Number",
+          "required": false,
+          "description": "Annual growth rate percentage for this market segment"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:OrganisationSize",
+      "name": "OrganisationSize",
+      "description": "Multi-dimensional size classification using headcount, customer count, revenue, and extensible KPI-linked metrics — enabling size context independent of maturity for organisations of any scale",
+      "properties": [
+        {
+          "name": "sizeCategory",
+          "type": "Text",
+          "required": true,
+          "description": "Size band: Micro (<10), Small (10-49), Medium (50-249), Large (250-999), Enterprise (1000+), Global (10000+)"
+        },
+        {
+          "name": "headcount",
+          "type": "Number",
+          "required": false,
+          "description": "Approximate number of employees (FTE equivalent)"
+        },
+        {
+          "name": "customerCount",
+          "type": "Number",
+          "required": false,
+          "description": "Number of active customers or clients served"
+        },
+        {
+          "name": "annualRevenue",
+          "type": "Text",
+          "required": false,
+          "description": "Annual revenue range bracket (e.g., <1M, 1M-10M, 10M-50M, 50M-250M, 250M-1B, 1B+)"
+        },
+        {
+          "name": "revenueMetric",
+          "type": "Text",
+          "required": false,
+          "description": "Revenue metric type: ARR, MRR, GMV, Turnover, Billings — aligns with KPI-ONT revenue KPIs"
+        },
+        {
+          "name": "customSizeMetrics",
+          "type": "Text",
+          "required": false,
+          "description": "Extensible JSON-encoded additional size metrics (e.g., locations, products, transactions) linked to KPI definitions"
+        },
+        {
+          "name": "yearsOperating",
+          "type": "Number",
+          "required": false,
+          "description": "Number of years the organisation has been in operation"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:FunctionalMaturity",
+      "name": "FunctionalMaturity",
+      "description": "Per-function maturity assessment enabling independent scoring of business functions including marketing, sales, operations, HR, finance, legal, procurement, and customer success — each function is assessed on a 1-5 scale",
+      "properties": [
+        {
+          "name": "functionName",
+          "type": "Text",
+          "required": true,
+          "description": "Business function assessed: Marketing, Sales, Operations, HR, Finance, Legal, Regulatory, Compliance, Governance, Procurement, CustomerSuccess, ProductManagement, Engineering, DataManagement, Security, Custom"
+        },
+        {
+          "name": "maturityLevel",
+          "type": "Number",
+          "required": true,
+          "description": "Maturity score 1-5: 1=Initial, 2=Developing, 3=Defined, 4=Managed, 5=Optimising"
+        },
+        {
+          "name": "maturityDescription",
+          "type": "Text",
+          "required": true,
+          "description": "Narrative assessment of the function's current maturity state and key gaps"
+        },
+        {
+          "name": "processFormality",
+          "type": "Text",
+          "required": false,
+          "description": "Process sophistication: Ad-Hoc, Informal, Documented, Standardised, Continuously-Improved"
+        },
+        {
+          "name": "teamStructure",
+          "type": "Text",
+          "required": false,
+          "description": "Team structure: None, Individual, Small-Team, Department, Cross-Functional, Centre-of-Excellence"
+        },
+        {
+          "name": "toolingLevel",
+          "type": "Text",
+          "required": false,
+          "description": "Tool adoption: Manual, Spreadsheets, Point-Solutions, Integrated-Platform, AI-Augmented"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:TechnologyMaturity",
+      "name": "TechnologyMaturity",
+      "description": "General technology maturity assessment covering cloud adoption, digital transformation progress, automation level, and systems integration — serves as parent for IT-specific and AI-specific sub-maturity assessments",
+      "properties": [
+        {
+          "name": "techMaturityLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Technology maturity tier: Initial, Developing, Defined, Managed, Optimising"
+        },
+        {
+          "name": "cloudAdoptionStage",
+          "type": "Text",
+          "required": true,
+          "description": "Cloud maturity: None, IaaS, PaaS, SaaS-First, Cloud-Native, Multi-Cloud, Hybrid"
+        },
+        {
+          "name": "digitalTransformationIndex",
+          "type": "Number",
+          "required": false,
+          "description": "Score from 0-100 measuring overall digital transformation progress"
+        },
+        {
+          "name": "automationLevel",
+          "type": "Text",
+          "required": false,
+          "description": "Degree of process automation: Manual, Partial, Significant, Extensive, Fully-Automated"
+        },
+        {
+          "name": "integrationPattern",
+          "type": "Text",
+          "required": false,
+          "description": "Systems integration approach: Point-to-Point, ESB, API-First, Event-Driven, Mesh"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:ITMaturity",
+      "name": "ITMaturity",
+      "description": "IT infrastructure sub-maturity focusing on DevOps practices, security posture, governance frameworks, and operational reliability — a specialisation of TechnologyMaturity for infrastructure and operations teams",
+      "properties": [
+        {
+          "name": "itMaturityLevel",
+          "type": "Text",
+          "required": true,
+          "description": "IT-specific maturity: Reactive, Proactive, Service-Oriented, Business-Aligned, Innovative"
+        },
+        {
+          "name": "devOpsPractice",
+          "type": "Text",
+          "required": true,
+          "description": "DevOps maturity: None, CI, CI-CD, GitOps, Platform-Engineering"
+        },
+        {
+          "name": "securityPosture",
+          "type": "Text",
+          "required": false,
+          "description": "Security maturity: Ad-Hoc, Repeatable, Defined, Managed, Adaptive"
+        },
+        {
+          "name": "itGovernanceFramework",
+          "type": "Text",
+          "required": false,
+          "description": "Primary governance framework: ITIL, COBIT, ISO27001, NIST, Custom"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:AIReadiness",
+      "name": "AIReadiness",
+      "description": "AI-specific sub-maturity assessing data infrastructure readiness, AI talent pipeline, model deployment stage, ethics governance, and strategic AI integration — a specialisation of TechnologyMaturity for AI and ML teams",
+      "properties": [
+        {
+          "name": "aiReadinessLevel",
+          "type": "Text",
+          "required": true,
+          "description": "AI readiness tier: Aware, Exploring, Experimenting, Operationalising, Transforming"
+        },
+        {
+          "name": "dataReadiness",
+          "type": "Text",
+          "required": true,
+          "description": "Data maturity for AI: Siloed, Consolidated, Governed, AI-Ready, Data-Driven"
+        },
+        {
+          "name": "aiTalentScore",
+          "type": "Number",
+          "required": false,
+          "description": "Score from 0-100 measuring AI skill availability and talent pipeline"
+        },
+        {
+          "name": "modelDeploymentStage",
+          "type": "Text",
+          "required": false,
+          "description": "AI deployment maturity: None, PoC, Pilot, Production-Single, Production-Multiple, Enterprise-Wide"
+        },
+        {
+          "name": "aiEthicsGovernance",
+          "type": "Boolean",
+          "required": false,
+          "description": "Whether formal AI ethics and governance framework is established"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:CultureContext",
+      "name": "CultureContext",
+      "description": "Organisational culture dimensions capturing innovation orientation, risk tolerance, collaboration style, learning culture, and decision-making patterns that shape how context types are adopted and acted upon",
+      "properties": [
+        {
+          "name": "innovationOrientation",
+          "type": "Text",
+          "required": true,
+          "description": "Innovation stance: Conservative, Cautious, Balanced, Progressive, Disruptive"
+        },
+        {
+          "name": "riskTolerance",
+          "type": "Text",
+          "required": true,
+          "description": "Risk appetite: Risk-Averse, Low, Moderate, High, Risk-Seeking"
+        },
+        {
+          "name": "collaborationStyle",
+          "type": "Text",
+          "required": false,
+          "description": "Working style: Siloed, Team-Based, Cross-Functional, Open-Innovation, Ecosystem"
+        },
+        {
+          "name": "learningCulture",
+          "type": "Text",
+          "required": false,
+          "description": "Learning orientation: Compliance-Only, Training-Led, Development-Focused, Learning-Organisation, Knowledge-Creating"
+        },
+        {
+          "name": "decisionMaking",
+          "type": "Text",
+          "required": false,
+          "description": "Decision-making pattern: Top-Down, Consultative, Consensus, Delegated, Data-Driven"
+        },
+        {
+          "name": "changeReadiness",
+          "type": "Text",
+          "required": false,
+          "description": "Readiness for change: Resistant, Reluctant, Accepting, Embracing, Change-Driven"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:GeoContext",
+      "name": "GeoContext",
+      "description": "Geographic context capturing headquarters location, operating regions, market reach zones, timezone coverage, and regulatory jurisdictions that constrain or enable organisational strategy and market access",
+      "properties": [
+        {
+          "name": "headquartersLocation",
+          "type": "Text",
+          "required": true,
+          "description": "Primary headquarters city and country (e.g., London, UK)"
+        },
+        {
+          "name": "operatingRegions",
+          "type": "Text",
+          "required": true,
+          "description": "Regions with physical or legal presence: UK, EU, NA, APAC, MEA, LATAM, Global"
+        },
+        {
+          "name": "marketReach",
+          "type": "Text",
+          "required": false,
+          "description": "Geographic market reach: Local, Regional, National, Multi-National, Continental, Global"
+        },
+        {
+          "name": "timezoneCoverage",
+          "type": "Text",
+          "required": false,
+          "description": "Timezone bands covered for operations and support (e.g., GMT, GMT+EST, 24x7)"
+        },
+        {
+          "name": "regulatoryJurisdictions",
+          "type": "Text",
+          "required": false,
+          "description": "Key regulatory jurisdictions affecting operations: UK-FCA, EU-GDPR, US-SEC, AU-APRA, etc."
+        },
+        {
+          "name": "languagesSupported",
+          "type": "Text",
+          "required": false,
+          "description": "Languages supported for products, services, and operations"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:MarketPositioning",
+      "name": "MarketPositioning",
+      "description": "Competitive market positioning capturing market share, brand strength, differentiation strategy, pricing position, and value proposition alignment — extensible with custom positioning criteria for specific markets",
+      "properties": [
+        {
+          "name": "positioningStrategy",
+          "type": "Text",
+          "required": true,
+          "description": "Core positioning: Cost-Leader, Differentiator, Niche-Focus, Best-Value, Disruptor, Premium"
+        },
+        {
+          "name": "marketShareEstimate",
+          "type": "Text",
+          "required": false,
+          "description": "Estimated market share: Dominant (>40%), Leader (20-40%), Challenger (10-20%), Follower (5-10%), Niche (<5%)"
+        },
+        {
+          "name": "brandStrength",
+          "type": "Text",
+          "required": false,
+          "description": "Brand recognition: Unknown, Emerging, Established, Strong, Dominant"
+        },
+        {
+          "name": "pricePosition",
+          "type": "Text",
+          "required": false,
+          "description": "Price positioning: Economy, Value, Mid-Market, Premium, Luxury"
+        },
+        {
+          "name": "differentiators",
+          "type": "Text",
+          "required": false,
+          "description": "Key competitive differentiators as comma-separated list (e.g., technology, service, price, innovation)"
+        },
+        {
+          "name": "customPositioningCriteria",
+          "type": "Text",
+          "required": false,
+          "description": "Extensible JSON-encoded custom positioning criteria specific to the market (e.g., ESG score, NPS, analyst ranking)"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:CompetitorContext",
+      "name": "CompetitorContext",
+      "description": "Bridge entity connecting organisational context to competitor analysis, enabling context-aware competitor tracking with threat assessment, recommended responses, and strategic watch-list management",
+      "properties": [
+        {
+          "name": "competitorRef",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to competitor entity in ORG-CONTEXT Competitor or CA-ONT (cross-ontology bridge)"
+        },
+        {
+          "name": "threatLevel",
+          "type": "Text",
+          "required": true,
+          "description": "Current threat level: Low, Moderate, High, Critical, Watch"
+        },
+        {
+          "name": "competitiveOverlap",
+          "type": "Text",
+          "required": false,
+          "description": "Degree of market overlap: Minimal, Partial, Significant, Direct, Head-to-Head"
+        },
+        {
+          "name": "recommendedResponse",
+          "type": "Text",
+          "required": false,
+          "description": "Strategic recommendation: Monitor, Differentiate, Compete, Partner, Acquire, Avoid"
+        },
+        {
+          "name": "contextRelevance",
+          "type": "Text",
+          "required": false,
+          "description": "Which context dimensions this competitor is relevant to (e.g., Market, Technology, Geography)"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:LocalizationContext",
+      "name": "LocalizationContext",
+      "description": "Localization variables extending geographic context with currency, tax, data residency, content, date/number formatting, and accessibility requirements — each operating region may have distinct localization needs that affect product, compliance, and market strategy",
+      "properties": [
+        {
+          "name": "baseCurrency",
+          "type": "Text",
+          "required": true,
+          "description": "Primary operating currency ISO code (e.g., GBP, USD, EUR, AUD)"
+        },
+        {
+          "name": "supportedCurrencies",
+          "type": "Text",
+          "required": false,
+          "description": "Additional supported currencies for transactions and reporting (comma-separated ISO codes)"
+        },
+        {
+          "name": "taxJurisdictions",
+          "type": "Text",
+          "required": false,
+          "description": "Tax jurisdictions and regimes: UK-VAT, US-SalesTax, EU-VAT-OSS, AU-GST, etc."
+        },
+        {
+          "name": "dataResidency",
+          "type": "Text",
+          "required": false,
+          "description": "Data residency requirements by region: UK-Only, EU-EEA, US-CONUS, Multi-Region, No-Restriction"
+        },
+        {
+          "name": "dateFormat",
+          "type": "Text",
+          "required": false,
+          "description": "Primary date format: DD/MM/YYYY (UK/EU), MM/DD/YYYY (US), YYYY-MM-DD (ISO)"
+        },
+        {
+          "name": "numberFormat",
+          "type": "Text",
+          "required": false,
+          "description": "Number formatting: comma-decimal (EU), period-decimal (UK/US), space-separator (FR)"
+        },
+        {
+          "name": "contentLocalization",
+          "type": "Text",
+          "required": false,
+          "description": "Content localization level: None, Translation-Only, Cultural-Adaptation, Full-Localization, Transcreation"
+        },
+        {
+          "name": "accessibilityStandard",
+          "type": "Text",
+          "required": false,
+          "description": "Accessibility compliance target: None, WCAG-2.1-A, WCAG-2.1-AA, WCAG-2.1-AAA, Section-508, EN-301-549"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:ContextExtension",
+      "name": "ContextExtension",
+      "description": "Extensibility mechanism allowing users to define custom context type dimensions beyond the built-in types — each extension specifies a schema, validation rules, and integration points for user-defined classification criteria",
+      "properties": [
+        {
+          "name": "extensionId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this custom context extension"
+        },
+        {
+          "name": "extensionName",
+          "type": "Text",
+          "required": true,
+          "description": "Display name for the custom context dimension"
+        },
+        {
+          "name": "extensionSchema",
+          "type": "Text",
+          "required": true,
+          "description": "JSON Schema definition for the custom context type's properties and validation rules"
+        },
+        {
+          "name": "extensionCategory",
+          "type": "Text",
+          "required": false,
+          "description": "Category hint for grouping: Regulatory, Environmental, Social, Governance, Industry-Specific, Custom"
+        },
+        {
+          "name": "integrationPoints",
+          "type": "Text",
+          "required": false,
+          "description": "Which built-in context types this extension relates to (comma-separated entity names)"
+        }
+      ]
+    },
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ns:ContextAssignment",
+      "name": "ContextAssignment",
+      "description": "Junction entity linking a specific context type instance to an organisation, recording when and why the classification was assigned, its validity period, confidence score, and provenance for audit trail",
+      "properties": [
+        {
+          "name": "assignmentId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this context-to-organisation assignment"
+        },
+        {
+          "name": "assignedDate",
+          "type": "DateTime",
+          "required": true,
+          "description": "Date when this context type was assigned to the organisation"
+        },
+        {
+          "name": "validUntil",
+          "type": "DateTime",
+          "required": false,
+          "description": "Expiry date after which the assignment should be reviewed or renewed"
+        },
+        {
+          "name": "confidence",
+          "type": "Number",
+          "required": false,
+          "description": "Confidence score 0-100 for this classification assignment"
+        },
+        {
+          "name": "assignedBy",
+          "type": "Text",
+          "required": true,
+          "description": "User or system that made this context assignment"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@type": "Property",
+      "@id": "ns:marketExtendsContextType",
+      "name": "Market Extends Context Type",
+      "description": "Links MarketClassification to the abstract ContextType base as an industry and market classification dimension",
+      "domainIncludes": [
+        "ns:MarketClassification"
+      ],
+      "rangeIncludes": [
+        "ns:ContextType"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:sizeExtendsContextType",
+      "name": "Size Extends Context Type",
+      "description": "Links OrganisationSize to the abstract ContextType base as a multi-dimensional size classification dimension",
+      "domainIncludes": [
+        "ns:OrganisationSize"
+      ],
+      "rangeIncludes": [
+        "ns:ContextType"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:functionalMaturityExtendsContextType",
+      "name": "Functional Maturity Extends Context Type",
+      "description": "Links FunctionalMaturity to the abstract ContextType base as a per-function maturity assessment dimension",
+      "domainIncludes": [
+        "ns:FunctionalMaturity"
+      ],
+      "rangeIncludes": [
+        "ns:ContextType"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:techExtendsContextType",
+      "name": "Tech Extends Context Type",
+      "description": "Links TechnologyMaturity to the abstract ContextType base as a technology readiness dimension",
+      "domainIncludes": [
+        "ns:TechnologyMaturity"
+      ],
+      "rangeIncludes": [
+        "ns:ContextType"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:cultureExtendsContextType",
+      "name": "Culture Extends Context Type",
+      "description": "Links CultureContext to the abstract ContextType base as an organisational culture classification dimension",
+      "domainIncludes": [
+        "ns:CultureContext"
+      ],
+      "rangeIncludes": [
+        "ns:ContextType"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:geoExtendsContextType",
+      "name": "Geo Extends Context Type",
+      "description": "Links GeoContext to the abstract ContextType base as a geographic location and market reach dimension",
+      "domainIncludes": [
+        "ns:GeoContext"
+      ],
+      "rangeIncludes": [
+        "ns:ContextType"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:positioningExtendsContextType",
+      "name": "Positioning Extends Context Type",
+      "description": "Links MarketPositioning to the abstract ContextType base as a competitive positioning dimension",
+      "domainIncludes": [
+        "ns:MarketPositioning"
+      ],
+      "rangeIncludes": [
+        "ns:ContextType"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:competitorExtendsContextType",
+      "name": "Competitor Extends Context Type",
+      "description": "Links CompetitorContext to the abstract ContextType base as a competitor bridge dimension",
+      "domainIncludes": [
+        "ns:CompetitorContext"
+      ],
+      "rangeIncludes": [
+        "ns:ContextType"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:extensionExtendsContextType",
+      "name": "Extension Extends Context Type",
+      "description": "Links a user-defined ContextExtension to the abstract ContextType base, enabling custom classification dimensions",
+      "domainIncludes": [
+        "ns:ContextExtension"
+      ],
+      "rangeIncludes": [
+        "ns:ContextType"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:hasSubSegments",
+      "name": "Has Sub Segments",
+      "description": "Links a MarketClassification to its constituent MarketSegments, enabling hierarchical sector-to-subsector-to-niche drill-down",
+      "domainIncludes": [
+        "ns:MarketClassification"
+      ],
+      "rangeIncludes": [
+        "ns:MarketSegment"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:hasITSubMaturity",
+      "name": "Has IT Sub Maturity",
+      "description": "Links general TechnologyMaturity to its ITMaturity sub-classification for infrastructure, DevOps, and security assessment",
+      "domainIncludes": [
+        "ns:TechnologyMaturity"
+      ],
+      "rangeIncludes": [
+        "ns:ITMaturity"
+      ],
+      "cardinality": "0..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:hasAIReadiness",
+      "name": "Has AI Readiness",
+      "description": "Links TechnologyMaturity to the AIReadiness sub-assessment covering data readiness, AI talent, and model deployment",
+      "domainIncludes": [
+        "ns:TechnologyMaturity"
+      ],
+      "rangeIncludes": [
+        "ns:AIReadiness"
+      ],
+      "cardinality": "0..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:assignsContext",
+      "name": "Assigns Context",
+      "description": "Links a ContextAssignment junction record to the ContextType being assigned to an organisation",
+      "domainIncludes": [
+        "ns:ContextAssignment"
+      ],
+      "rangeIncludes": [
+        "ns:ContextType"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:sizeInfluencesFunctionalMaturity",
+      "name": "Size Influences Functional Maturity",
+      "description": "Links OrganisationSize to FunctionalMaturity, reflecting how headcount, revenue, and customer base affect the sophistication of business functions",
+      "domainIncludes": [
+        "ns:OrganisationSize"
+      ],
+      "rangeIncludes": [
+        "ns:FunctionalMaturity"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:cultureShapesFunctionalMaturity",
+      "name": "Culture Shapes Functional Maturity",
+      "description": "Links CultureContext to FunctionalMaturity, reflecting how innovation orientation, risk tolerance, and learning culture constrain or accelerate function-level maturity",
+      "domainIncludes": [
+        "ns:CultureContext"
+      ],
+      "rangeIncludes": [
+        "ns:FunctionalMaturity"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:geoShapesMarket",
+      "name": "Geo Shapes Market",
+      "description": "Links GeoContext to MarketClassification, reflecting how geographic presence and regulatory jurisdictions constrain or enable market access",
+      "domainIncludes": [
+        "ns:GeoContext"
+      ],
+      "rangeIncludes": [
+        "ns:MarketClassification"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:positioningInMarket",
+      "name": "Positioning In Market",
+      "description": "Links MarketPositioning to a MarketClassification, capturing the organisation's competitive position within a specific market vertical",
+      "domainIncludes": [
+        "ns:MarketPositioning"
+      ],
+      "rangeIncludes": [
+        "ns:MarketClassification"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:competitorInMarket",
+      "name": "Competitor In Market",
+      "description": "Links CompetitorContext to MarketClassification, identifying which market verticals a tracked competitor operates in",
+      "domainIncludes": [
+        "ns:CompetitorContext"
+      ],
+      "rangeIncludes": [
+        "ns:MarketClassification"
+      ],
+      "cardinality": "1..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:aiRequiresITFoundation",
+      "name": "AI Requires IT Foundation",
+      "description": "Links AIReadiness back to ITMaturity, reflecting that AI readiness depends on underlying IT infrastructure, DevOps, and data platform maturity",
+      "domainIncludes": [
+        "ns:AIReadiness"
+      ],
+      "rangeIncludes": [
+        "ns:ITMaturity"
+      ],
+      "cardinality": "0..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:sizeDeterminesPositioning",
+      "name": "Size Determines Positioning",
+      "description": "Links OrganisationSize to MarketPositioning, reflecting how headcount and revenue capacity constrain positioning strategy options",
+      "domainIncludes": [
+        "ns:OrganisationSize"
+      ],
+      "rangeIncludes": [
+        "ns:MarketPositioning"
+      ],
+      "cardinality": "0..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:segmentShapedByGeo",
+      "name": "Segment Shaped By Geo",
+      "description": "Links a MarketSegment back to GeoContext, reflecting that geographic reach and regulatory jurisdictions shape which segments are addressable",
+      "domainIncludes": [
+        "ns:MarketSegment"
+      ],
+      "rangeIncludes": [
+        "ns:GeoContext"
+      ],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:rcsgExtendsContextType",
+      "name": "RCSG Extends Context Type",
+      "description": "Links RCSGContext to the abstract ContextType base as a regulatory, compliance, security, and governance classification dimension",
+      "domainIncludes": [
+        "rcsg-fw:RCSGContext"
+      ],
+      "rangeIncludes": [
+        "ns:ContextType"
+      ],
+      "oaa:crossOntologyRef": "RCSG-FW",
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:localizationExtendsContextType",
+      "name": "Localization Extends Context Type",
+      "description": "Links LocalizationContext to the abstract ContextType base as a currency, tax, data residency, and content localization dimension",
+      "domainIncludes": [
+        "ns:LocalizationContext"
+      ],
+      "rangeIncludes": [
+        "ns:ContextType"
+      ],
+      "cardinality": "1..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ns:localizationOfGeo",
+      "name": "Localization Of Geo",
+      "description": "Links LocalizationContext to GeoContext as a detailed localization extension of geographic presence — each operating region may require distinct currency, tax, and content localization",
+      "domainIncludes": [
+        "ns:LocalizationContext"
+      ],
+      "rangeIncludes": [
+        "ns:GeoContext"
+      ],
+      "cardinality": "1..*"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-CTX-001",
+      "name": "Market Classification Requires Scheme",
+      "condition": "IF a MarketClassification is created",
+      "action": "THEN it MUST specify a classificationScheme (SIC, NAICS, GICS, ICB, ISIC, NACE, or Custom)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CTX-002",
+      "name": "Market Segment Requires Segmentation Type",
+      "condition": "IF a MarketSegment is created",
+      "action": "THEN segmentationType MUST be one of: geographic, demographic, behavioural, firmographic, psychographic, technographic",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CTX-003",
+      "name": "AI Readiness Requires Data Readiness",
+      "condition": "IF an AIReadiness assessment has aiReadinessLevel above Exploring",
+      "action": "THEN dataReadiness MUST be at least Consolidated to support meaningful AI initiatives",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-CTX-004",
+      "name": "Context Assignment Must Be Current",
+      "condition": "IF a ContextAssignment has a validUntil date that has passed",
+      "action": "THEN the assignment MUST be reviewed and either renewed or archived",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-CTX-005",
+      "name": "Technology Maturity Requires Cloud Stage",
+      "condition": "IF a TechnologyMaturity assessment is created",
+      "action": "THEN cloudAdoptionStage MUST be specified to classify current cloud posture",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CTX-006",
+      "name": "Organisation Size Alignment",
+      "condition": "IF OrganisationSize has sizeCategory of Micro or Small",
+      "action": "THEN linked FunctionalMaturity levels SHOULD NOT exceed 4 without explicit justification",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-CTX-007",
+      "name": "Functional Maturity Requires Function Name",
+      "condition": "IF a FunctionalMaturity assessment is created",
+      "action": "THEN functionName MUST be specified from the standard list or marked as Custom",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CTX-008",
+      "name": "GeoContext Requires HQ Location",
+      "condition": "IF a GeoContext is created",
+      "action": "THEN headquartersLocation MUST be specified as the primary operating base",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CTX-009",
+      "name": "Competitor Context Should Have Recommendation",
+      "condition": "IF a CompetitorContext has threatLevel of High or Critical",
+      "action": "THEN recommendedResponse SHOULD be specified to guide strategic action",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-CTX-010",
+      "name": "Context Extension Requires Schema",
+      "condition": "IF a ContextExtension is created",
+      "action": "THEN extensionSchema MUST contain a valid JSON Schema definition for validation",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CTX-014",
+      "name": "Localization Requires Base Currency",
+      "condition": "IF a LocalizationContext is created",
+      "action": "THEN baseCurrency MUST be a valid ISO 4217 currency code for the primary operating jurisdiction",
+      "severity": "error"
+    }
+  ],
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:ontologyId": "CTX-ONT",
+  "oaa:series": "FOUNDATION LAYER",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of ContextType within this ontology?",
+      "targetEntities": [
+        "ns:ContextType"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of MarketClassification within this ontology?",
+      "targetEntities": [
+        "ns:MarketClassification"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of MarketSegment within this ontology?",
+      "targetEntities": [
+        "ns:MarketSegment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of OrganisationSize within this ontology?",
+      "targetEntities": [
+        "ns:OrganisationSize"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of FunctionalMaturity within this ontology?",
+      "targetEntities": [
+        "ns:FunctionalMaturity"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of TechnologyMaturity within this ontology?",
+      "targetEntities": [
+        "ns:TechnologyMaturity"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of ITMaturity within this ontology?",
+      "targetEntities": [
+        "ns:ITMaturity"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-008",
+      "question": "What is the role and purpose of AIReadiness within this ontology?",
+      "targetEntities": [
+        "ns:AIReadiness"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-009",
+      "question": "What is the role and purpose of CultureContext within this ontology?",
+      "targetEntities": [
+        "ns:CultureContext"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-010",
+      "question": "What is the role and purpose of GeoContext within this ontology?",
+      "targetEntities": [
+        "ns:GeoContext"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-011",
+      "question": "What is the role and purpose of MarketPositioning within this ontology?",
+      "targetEntities": [
+        "ns:MarketPositioning"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-012",
+      "question": "What is the role and purpose of CompetitorContext within this ontology?",
+      "targetEntities": [
+        "ns:CompetitorContext"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-013",
+      "question": "What is the role and purpose of LocalizationContext within this ontology?",
+      "targetEntities": [
+        "ns:LocalizationContext"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-014",
+      "question": "What is the role and purpose of ContextExtension within this ontology?",
+      "targetEntities": [
+        "ns:ContextExtension"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-015",
+      "question": "What is the role and purpose of ContextAssignment within this ontology?",
+      "targetEntities": [
+        "ns:ContextAssignment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

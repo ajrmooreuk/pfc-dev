@@ -1,0 +1,1041 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v5/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ppm": "https://oaa-ontology.org/v5/ppm/"
+  },
+  "@id": "https://oaa-ontology.org/v5/ppm/schema",
+  "@type": "owl:Ontology",
+  "rdfs:label": "Portfolio, Program & Project Management Module - OAA v5.0.0",
+  "rdfs:comment": "Core PPM module for managing portfolios, programs, and projects with Product Breakdown Structure (PBS) and Work Breakdown Structure (WBS). Localization handled via bridge relationships to Localization Module.",
+  "oaa:schemaVersion": "5.0.0",
+  "oaa:domain": "Project Management",
+  "oaa:lastUpdated": "2026-02-01",
+  "oaa:complianceLevel": "OAA-v5.0.0-G4",
+  "oaa:moduleVersion": "3.0.0",
+  "oaa:previousVersion": "2.2.1",
+  "entities": [
+    {
+      "@id": "ppm:Organisation",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": {"@id": "schema:Organization"},
+      "rdfs:label": "Organisation",
+      "rdfs:comment": "A legal entity or business unit that participates in the platform ecosystem.",
+      "oaa:description": "The root entity representing a legal entity or business unit that participates in the platform ecosystem. Supports four organization types: platform_owner, client, agency, affiliate. Every PPM entity must belong to an organisation. Localization settings applied via ppm_localization_bridge (not embedded). Organizations establish strategic objectives and allocate resources across their portfolio of investments.",
+      "schemaOrgBase": "schema:Organization",
+      "oaa:properties": [
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for the organisation (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "org_name",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:name",
+          "description": "Official name of the organisation"
+        },
+        {
+          "name": "legal_name",
+          "type": "string",
+          "schemaOrgMapping": "schema:legalName",
+          "description": "Full legal name including entity type (Ltd, Corp, etc.)"
+        },
+        {
+          "name": "org_type",
+          "type": "enum",
+          "required": true,
+          "enumValues": ["platform_owner", "client", "agency", "affiliate"],
+          "description": "Organization's role in the platform ecosystem"
+        },
+        {
+          "name": "parent_org_id",
+          "type": "string",
+          "schemaOrgMapping": "schema:parentOrganization",
+          "description": "Parent organisation for hierarchical structures (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "industry_sector",
+          "type": "string",
+          "schemaOrgMapping": "schema:industry",
+          "description": "Primary industry or sector"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "schemaOrgMapping": "schema:description",
+          "description": "Brief description of organization and its purpose"
+        },
+        {
+          "name": "url",
+          "type": "uri",
+          "schemaOrgMapping": "schema:url",
+          "description": "Primary website URL"
+        },
+        {
+          "name": "address",
+          "type": "object",
+          "schemaOrgMapping": "schema:address",
+          "description": "Physical address (format determined by localization_bridge)"
+        },
+        {
+          "name": "employee_count",
+          "type": "integer",
+          "schemaOrgMapping": "schema:numberOfEmployees",
+          "description": "Number of employees",
+          "constraints": {"minimum": 0}
+        },
+        {
+          "name": "annual_revenue_usd",
+          "type": "number",
+          "description": "Annual revenue stored in USD base currency. Display currency via localization_bridge.",
+          "constraints": {"minimum": 0}
+        },
+        {
+          "name": "ppm_maturity_level",
+          "type": "integer",
+          "description": "PMI/APM maturity assessment level (1-5 scale)",
+          "constraints": {"minimum": 1, "maximum": 5}
+        },
+        {
+          "name": "governance_framework",
+          "type": "string",
+          "description": "Governance framework used (e.g., APM, PMBOK, PRINCE2)"
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "required": true,
+          "enumValues": ["active", "inactive", "pending", "dissolved"],
+          "description": "Current operational status of the organisation"
+        },
+        {
+          "name": "localization_bridge_refs",
+          "type": "array",
+          "description": "References to localization configurations via bridge relationships"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:Portfolio",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": {"@id": "schema:Thing"},
+      "rdfs:label": "Portfolio",
+      "rdfs:comment": "A collection of programmes, projects, and operational activities grouped together to facilitate effective management.",
+      "oaa:description": "A collection of programmes, projects, and operational activities grouped together to facilitate effective management and achieve strategic business objectives. Portfolios align organizational strategy with execution and optimize resource allocation across initiatives. Portfolios inherit localization from parent organisation unless explicitly overridden via bridge relationship.",
+      "schemaOrgBase": "schema:Thing",
+      "oaa:properties": [
+        {
+          "name": "portfolio_id",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for the portfolio (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "portfolio_name",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:name",
+          "description": "Name of the portfolio"
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": true,
+          "description": "Reference to owning organisation (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "schemaOrgMapping": "schema:description",
+          "description": "Detailed description of the portfolio and its strategic purpose"
+        },
+        {
+          "name": "strategic_objectives",
+          "type": "array",
+          "description": "Strategic objectives this portfolio addresses"
+        },
+        {
+          "name": "budget_usd",
+          "type": "number",
+          "description": "Total portfolio budget in USD base currency",
+          "constraints": {"minimum": 0}
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "required": true,
+          "enumValues": ["planning", "active", "on_hold", "closed"],
+          "description": "Current lifecycle status of the portfolio"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:Programme",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": {"@id": "schema:Thing"},
+      "rdfs:label": "Programme",
+      "rdfs:comment": "A group of related projects managed in a coordinated manner to obtain benefits.",
+      "oaa:description": "A group of related projects, subsidiary programmes, and programme activities managed in a coordinated manner to obtain benefits not available from managing them individually. Programmes deliver transformational change and realize strategic benefits through coordinated project delivery. Programmes bridge strategic intent (portfolio) with tactical execution (projects). Localization cascades from portfolio unless overridden.",
+      "schemaOrgBase": "schema:Thing",
+      "oaa:properties": [
+        {
+          "name": "programme_id",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for the programme (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "programme_name",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:name",
+          "description": "Name of the programme"
+        },
+        {
+          "name": "portfolio_id",
+          "type": "string",
+          "required": true,
+          "description": "Reference to parent portfolio (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "schemaOrgMapping": "schema:description",
+          "description": "Detailed description of the programme and its benefits"
+        },
+        {
+          "name": "expected_benefits",
+          "type": "array",
+          "description": "List of expected benefits from the programme"
+        },
+        {
+          "name": "budget_usd",
+          "type": "number",
+          "description": "Total programme budget in USD base currency",
+          "constraints": {"minimum": 0}
+        },
+        {
+          "name": "start_date",
+          "type": "datetime",
+          "schemaOrgMapping": "schema:startDate",
+          "description": "Programme start date (ISO 8601 format)"
+        },
+        {
+          "name": "end_date",
+          "type": "datetime",
+          "schemaOrgMapping": "schema:endDate",
+          "description": "Programme end date (ISO 8601 format)"
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "required": true,
+          "enumValues": ["initiating", "planning", "executing", "closing", "closed"],
+          "description": "Current lifecycle status of the programme"
+        }
+      ]
+    },
+    {
+      "@id": "ppm:Project",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": {"@id": "schema:Project"},
+      "rdfs:label": "Project",
+      "rdfs:comment": "A temporary endeavour undertaken to create a unique product, service, or result.",
+      "oaa:description": "A temporary endeavour undertaken to create a unique product, service, or result with defined beginning and end dates, specific objectives, and constrained resources. Projects are the primary execution vehicle for delivering specific outputs within time, cost, and quality constraints. Projects are the lowest level in the PPM hierarchy where actual work is performed. Can have independent PBS and WBS. Localization can be overridden at project level for multi-regional delivery.",
+      "schemaOrgBase": "schema:Project",
+      "oaa:properties": [
+        {
+          "name": "project_id",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for the project (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "project_name",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:name",
+          "description": "Name of the project"
+        },
+        {
+          "name": "programme_id",
+          "type": "string",
+          "description": "Reference to parent programme (UUID format, optional for standalone projects)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": true,
+          "description": "Reference to owning organisation (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "schemaOrgMapping": "schema:description",
+          "description": "Detailed description of the project objectives and scope"
+        },
+        {
+          "name": "budget_usd",
+          "type": "number",
+          "description": "Total project budget in USD base currency",
+          "constraints": {"minimum": 0}
+        },
+        {
+          "name": "start_date",
+          "type": "datetime",
+          "schemaOrgMapping": "schema:startDate",
+          "description": "Project start date (ISO 8601 format)"
+        },
+        {
+          "name": "end_date",
+          "type": "datetime",
+          "schemaOrgMapping": "schema:endDate",
+          "description": "Project end date (ISO 8601 format)"
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "required": true,
+          "enumValues": ["initiating", "planning", "executing", "monitoring", "closing", "closed"],
+          "description": "Current lifecycle status of the project"
+        },
+        {
+          "name": "project_manager_id",
+          "type": "string",
+          "description": "Reference to project manager stakeholder (UUID format)",
+          "constraints": {"format": "uuid"}
+        }
+      ]
+    },
+    {
+      "@id": "ppm:ProductBreakdownStructure",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": {"@id": "schema:Product"},
+      "rdfs:label": "Product Breakdown Structure",
+      "rdfs:comment": "A hierarchical decomposition defining WHAT will be delivered.",
+      "oaa:description": "Product Breakdown Structure - A hierarchical decomposition defining WHAT will be delivered. Can represent: (1) Products marketed by Platform Owner, (2) Products/services marketed by Client organization, OR (3) Deliverables from PPM projects. Independent of HOW work is organized (see WBS). PBS defines product structure, deliverables hierarchy, and output organization. Supports product discovery, marketing, and project deliverable definition across platform owner and client contexts.",
+      "schemaOrgBase": "schema:Product",
+      "oaa:properties": [
+        {
+          "name": "pbs_id",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for PBS node (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "pbs_name",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:name",
+          "description": "Name of product/deliverable component"
+        },
+        {
+          "name": "pbs_code",
+          "type": "string",
+          "description": "Hierarchical code (e.g., 1.2.3 for Product > Module > Component)"
+        },
+        {
+          "name": "parent_pbs_id",
+          "type": "string",
+          "description": "Parent PBS node for hierarchical structure (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": true,
+          "description": "Organization that owns this PBS (platform_owner or client)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "pbs_type",
+          "type": "enum",
+          "required": true,
+          "enumValues": ["platform_product", "client_product", "project_deliverable", "component", "feature"],
+          "description": "Type of PBS node"
+        },
+        {
+          "name": "platform_product_id",
+          "type": "string",
+          "description": "Link to platform product (if PBS represents platform offering)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "client_product_id",
+          "type": "string",
+          "description": "Link to client's marketed product (if PBS represents client offering)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "project_id",
+          "type": "string",
+          "description": "Link to PPM project (if PBS represents project deliverable)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:description",
+          "description": "Detailed description of product/deliverable"
+        },
+        {
+          "name": "acceptance_criteria",
+          "type": "array",
+          "description": "Criteria for accepting this deliverable"
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "required": true,
+          "enumValues": ["planned", "in_development", "testing", "released", "deprecated"],
+          "description": "Current status of the PBS component"
+        },
+        {
+          "name": "version",
+          "type": "string",
+          "schemaOrgMapping": "schema:version",
+          "description": "Version of this PBS component (semantic versioning)"
+        },
+        {
+          "name": "estimated_value_usd",
+          "type": "number",
+          "description": "Estimated value in USD base currency",
+          "constraints": {"minimum": 0}
+        }
+      ]
+    },
+    {
+      "@id": "ppm:WorkBreakdownStructure",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": {"@id": "schema:Action"},
+      "rdfs:label": "Work Breakdown Structure",
+      "rdfs:comment": "A hierarchical decomposition defining HOW work will be organized and executed.",
+      "oaa:description": "Work Breakdown Structure - A hierarchical decomposition defining HOW work will be organized and executed by the organization. Specific to the organization performing the work (platform_owner, client, agency, or affiliate). Defines work organization, not deliverables (see PBS for deliverables). WBS enables effort estimation, supports scheduling and resource allocation. Each organization maintains their own WBS for work they perform. Supports distributed and multi-organizational project delivery.",
+      "schemaOrgBase": "schema:Action",
+      "oaa:properties": [
+        {
+          "name": "wbs_id",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for WBS node (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "wbs_name",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:name",
+          "description": "Name of work package or activity (action-oriented)"
+        },
+        {
+          "name": "wbs_code",
+          "type": "string",
+          "description": "Hierarchical code (e.g., 1.2.3 for Phase > Activity > Task)"
+        },
+        {
+          "name": "parent_wbs_id",
+          "type": "string",
+          "description": "Parent WBS node for hierarchical work decomposition (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": true,
+          "description": "Organization performing this work (owner of WBS)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "project_id",
+          "type": "string",
+          "description": "Link to PPM project (if WBS is project-specific)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "wbs_type",
+          "type": "enum",
+          "required": true,
+          "enumValues": ["phase", "activity", "work_package", "milestone"],
+          "description": "Type of WBS node"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:description",
+          "description": "Detailed description of work to be performed"
+        },
+        {
+          "name": "deliverable_pbs_id",
+          "type": "string",
+          "description": "Link to PBS deliverable this work produces",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "assigned_to",
+          "type": "string",
+          "description": "Stakeholder assigned to this work package",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "estimated_effort_hours",
+          "type": "number",
+          "description": "Estimated effort in hours",
+          "constraints": {"minimum": 0}
+        },
+        {
+          "name": "actual_effort_hours",
+          "type": "number",
+          "description": "Actual effort spent in hours",
+          "constraints": {"minimum": 0}
+        },
+        {
+          "name": "estimated_duration_days",
+          "type": "number",
+          "description": "Estimated duration in working days",
+          "constraints": {"minimum": 0}
+        },
+        {
+          "name": "planned_start_date",
+          "type": "datetime",
+          "schemaOrgMapping": "schema:startDate",
+          "description": "Planned start date (ISO 8601 format)"
+        },
+        {
+          "name": "planned_end_date",
+          "type": "datetime",
+          "schemaOrgMapping": "schema:endDate",
+          "description": "Planned end date (ISO 8601 format)"
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "required": true,
+          "enumValues": ["not_started", "in_progress", "on_hold", "completed", "cancelled"],
+          "description": "Current status of the work package"
+        },
+        {
+          "name": "completion_percentage",
+          "type": "number",
+          "description": "Work completion percentage (0-100)",
+          "constraints": {"minimum": 0, "maximum": 100}
+        },
+        {
+          "name": "estimated_cost_usd",
+          "type": "number",
+          "description": "Estimated cost in USD base currency",
+          "constraints": {"minimum": 0}
+        },
+        {
+          "name": "actual_cost_usd",
+          "type": "number",
+          "description": "Actual cost in USD base currency",
+          "constraints": {"minimum": 0}
+        }
+      ]
+    },
+    {
+      "@id": "ppm:Stakeholder",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": {"@id": "schema:Person"},
+      "rdfs:label": "Stakeholder",
+      "rdfs:comment": "An individual, group, or organisation that may affect or be affected by PPM activities.",
+      "oaa:description": "An individual, group, or organisation that may affect, be affected by, or perceive itself to be affected by a decision, activity, or outcome of a portfolio, programme, or project. Stakeholders have varying levels of authority, interest, and influence in PPM activities and outcomes. Stakeholders are linked to PPM entities through roles and RACI assignments. Can have personal localization preferences that override organizational defaults.",
+      "schemaOrgBase": "schema:Person",
+      "oaa:properties": [
+        {
+          "name": "stakeholder_id",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for the stakeholder (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "schemaOrgMapping": "schema:name",
+          "description": "Full name of the stakeholder"
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "schemaOrgMapping": "schema:email",
+          "description": "Email address",
+          "constraints": {"format": "email"}
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": true,
+          "description": "Reference to stakeholder's organisation (UUID format)",
+          "constraints": {"format": "uuid"}
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "schemaOrgMapping": "schema:jobTitle",
+          "description": "Role or job title within the organisation"
+        },
+        {
+          "name": "influence_level",
+          "type": "enum",
+          "enumValues": ["high", "medium", "low"],
+          "description": "Level of influence on PPM outcomes"
+        },
+        {
+          "name": "interest_level",
+          "type": "enum",
+          "enumValues": ["high", "medium", "low"],
+          "description": "Level of interest in PPM activities"
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "required": true,
+          "enumValues": ["active", "inactive"],
+          "description": "Current status of the stakeholder"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "ppm:belongsTo",
+      "@type": "rdf:Property",
+      "rdfs:label": "belongs to",
+      "rdfs:comment": "A Portfolio belongs to an Organisation",
+      "oaa:domainIncludes": ["ppm:Portfolio"],
+      "oaa:rangeIncludes": ["ppm:Organisation"],
+      "oaa:cardinality": "1..1",
+      "oaa:inverseOf": "ppm:hasPortfolio"
+    },
+    {
+      "@id": "ppm:hasPortfolio",
+      "@type": "rdf:Property",
+      "rdfs:label": "has portfolio",
+      "rdfs:comment": "An Organisation has one or more Portfolios",
+      "oaa:domainIncludes": ["ppm:Organisation"],
+      "oaa:rangeIncludes": ["ppm:Portfolio"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:belongsTo"
+    },
+    {
+      "@id": "ppm:containsProgramme",
+      "@type": "rdf:Property",
+      "rdfs:label": "contains programme",
+      "rdfs:comment": "A Portfolio contains one or more Programmes",
+      "oaa:domainIncludes": ["ppm:Portfolio"],
+      "oaa:rangeIncludes": ["ppm:Programme"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:partOfPortfolio"
+    },
+    {
+      "@id": "ppm:partOfPortfolio",
+      "@type": "rdf:Property",
+      "rdfs:label": "part of portfolio",
+      "rdfs:comment": "A Programme is part of a Portfolio",
+      "oaa:domainIncludes": ["ppm:Programme"],
+      "oaa:rangeIncludes": ["ppm:Portfolio"],
+      "oaa:cardinality": "1..1",
+      "oaa:inverseOf": "ppm:containsProgramme"
+    },
+    {
+      "@id": "ppm:containsProject",
+      "@type": "rdf:Property",
+      "rdfs:label": "contains project",
+      "rdfs:comment": "A Programme contains one or more Projects",
+      "oaa:domainIncludes": ["ppm:Programme"],
+      "oaa:rangeIncludes": ["ppm:Project"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:partOfProgramme"
+    },
+    {
+      "@id": "ppm:partOfProgramme",
+      "@type": "rdf:Property",
+      "rdfs:label": "part of programme",
+      "rdfs:comment": "A Project is part of a Programme",
+      "oaa:domainIncludes": ["ppm:Project"],
+      "oaa:rangeIncludes": ["ppm:Programme"],
+      "oaa:cardinality": "0..1",
+      "oaa:inverseOf": "ppm:containsProject"
+    },
+    {
+      "@id": "ppm:ownedBy",
+      "@type": "rdf:Property",
+      "rdfs:label": "owned by",
+      "rdfs:comment": "A Project is owned by an Organisation",
+      "oaa:domainIncludes": ["ppm:Project"],
+      "oaa:rangeIncludes": ["ppm:Organisation"],
+      "oaa:cardinality": "1..1",
+      "oaa:inverseOf": "ppm:ownsProject"
+    },
+    {
+      "@id": "ppm:ownsProject",
+      "@type": "rdf:Property",
+      "rdfs:label": "owns project",
+      "rdfs:comment": "An Organisation owns Projects",
+      "oaa:domainIncludes": ["ppm:Organisation"],
+      "oaa:rangeIncludes": ["ppm:Project"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:ownedBy"
+    },
+    {
+      "@id": "ppm:hasPBS",
+      "@type": "rdf:Property",
+      "rdfs:label": "has PBS",
+      "rdfs:comment": "A Project has one or more Product Breakdown Structures",
+      "oaa:domainIncludes": ["ppm:Project"],
+      "oaa:rangeIncludes": ["ppm:ProductBreakdownStructure"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:deliversFor"
+    },
+    {
+      "@id": "ppm:deliversFor",
+      "@type": "rdf:Property",
+      "rdfs:label": "delivers for",
+      "rdfs:comment": "A PBS delivers for a Project",
+      "oaa:domainIncludes": ["ppm:ProductBreakdownStructure"],
+      "oaa:rangeIncludes": ["ppm:Project"],
+      "oaa:cardinality": "0..1",
+      "oaa:inverseOf": "ppm:hasPBS"
+    },
+    {
+      "@id": "ppm:hasWBS",
+      "@type": "rdf:Property",
+      "rdfs:label": "has WBS",
+      "rdfs:comment": "A Project has one or more Work Breakdown Structures",
+      "oaa:domainIncludes": ["ppm:Project"],
+      "oaa:rangeIncludes": ["ppm:WorkBreakdownStructure"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:worksOn"
+    },
+    {
+      "@id": "ppm:worksOn",
+      "@type": "rdf:Property",
+      "rdfs:label": "works on",
+      "rdfs:comment": "A WBS works on a Project",
+      "oaa:domainIncludes": ["ppm:WorkBreakdownStructure"],
+      "oaa:rangeIncludes": ["ppm:Project"],
+      "oaa:cardinality": "0..1",
+      "oaa:inverseOf": "ppm:hasWBS"
+    },
+    {
+      "@id": "ppm:producesDeliverable",
+      "@type": "rdf:Property",
+      "rdfs:label": "produces deliverable",
+      "rdfs:comment": "A WBS work package produces a PBS deliverable",
+      "oaa:domainIncludes": ["ppm:WorkBreakdownStructure"],
+      "oaa:rangeIncludes": ["ppm:ProductBreakdownStructure"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:producedBy"
+    },
+    {
+      "@id": "ppm:producedBy",
+      "@type": "rdf:Property",
+      "rdfs:label": "produced by",
+      "rdfs:comment": "A PBS deliverable is produced by WBS work packages",
+      "oaa:domainIncludes": ["ppm:ProductBreakdownStructure"],
+      "oaa:rangeIncludes": ["ppm:WorkBreakdownStructure"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:producesDeliverable"
+    },
+    {
+      "@id": "ppm:assignedTo",
+      "@type": "rdf:Property",
+      "rdfs:label": "assigned to",
+      "rdfs:comment": "A WBS work package is assigned to a Stakeholder",
+      "oaa:domainIncludes": ["ppm:WorkBreakdownStructure"],
+      "oaa:rangeIncludes": ["ppm:Stakeholder"],
+      "oaa:cardinality": "0..1",
+      "oaa:inverseOf": "ppm:hasAssignment"
+    },
+    {
+      "@id": "ppm:hasAssignment",
+      "@type": "rdf:Property",
+      "rdfs:label": "has assignment",
+      "rdfs:comment": "A Stakeholder has WBS work assignments",
+      "oaa:domainIncludes": ["ppm:Stakeholder"],
+      "oaa:rangeIncludes": ["ppm:WorkBreakdownStructure"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:assignedTo"
+    },
+    {
+      "@id": "ppm:employs",
+      "@type": "rdf:Property",
+      "rdfs:label": "employs",
+      "rdfs:comment": "An Organisation employs Stakeholders",
+      "oaa:domainIncludes": ["ppm:Organisation"],
+      "oaa:rangeIncludes": ["ppm:Stakeholder"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:employedBy"
+    },
+    {
+      "@id": "ppm:employedBy",
+      "@type": "rdf:Property",
+      "rdfs:label": "employed by",
+      "rdfs:comment": "A Stakeholder is employed by an Organisation",
+      "oaa:domainIncludes": ["ppm:Stakeholder"],
+      "oaa:rangeIncludes": ["ppm:Organisation"],
+      "oaa:cardinality": "1..1",
+      "oaa:inverseOf": "ppm:employs"
+    },
+    {
+      "@id": "ppm:ownsPBS",
+      "@type": "rdf:Property",
+      "rdfs:label": "owns PBS",
+      "rdfs:comment": "An Organisation owns PBS components",
+      "oaa:domainIncludes": ["ppm:Organisation"],
+      "oaa:rangeIncludes": ["ppm:ProductBreakdownStructure"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:pbsOwnedBy"
+    },
+    {
+      "@id": "ppm:pbsOwnedBy",
+      "@type": "rdf:Property",
+      "rdfs:label": "PBS owned by",
+      "rdfs:comment": "A PBS is owned by an Organisation",
+      "oaa:domainIncludes": ["ppm:ProductBreakdownStructure"],
+      "oaa:rangeIncludes": ["ppm:Organisation"],
+      "oaa:cardinality": "1..1",
+      "oaa:inverseOf": "ppm:ownsPBS"
+    },
+    {
+      "@id": "ppm:performsWBS",
+      "@type": "rdf:Property",
+      "rdfs:label": "performs WBS",
+      "rdfs:comment": "An Organisation performs WBS work",
+      "oaa:domainIncludes": ["ppm:Organisation"],
+      "oaa:rangeIncludes": ["ppm:WorkBreakdownStructure"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:performedBy"
+    },
+    {
+      "@id": "ppm:performedBy",
+      "@type": "rdf:Property",
+      "rdfs:label": "performed by",
+      "rdfs:comment": "A WBS is performed by an Organisation",
+      "oaa:domainIncludes": ["ppm:WorkBreakdownStructure"],
+      "oaa:rangeIncludes": ["ppm:Organisation"],
+      "oaa:cardinality": "1..1",
+      "oaa:inverseOf": "ppm:performsWBS"
+    },
+    {
+      "@id": "ppm:hasParentOrg",
+      "@type": "rdf:Property",
+      "rdfs:label": "has parent org",
+      "rdfs:comment": "An Organisation has a parent Organisation (hierarchical)",
+      "oaa:domainIncludes": ["ppm:Organisation"],
+      "oaa:rangeIncludes": ["ppm:Organisation"],
+      "oaa:cardinality": "0..1",
+      "oaa:inverseOf": "ppm:hasChildOrg"
+    },
+    {
+      "@id": "ppm:hasChildOrg",
+      "@type": "rdf:Property",
+      "rdfs:label": "has child org",
+      "rdfs:comment": "An Organisation has child Organisations (hierarchical)",
+      "oaa:domainIncludes": ["ppm:Organisation"],
+      "oaa:rangeIncludes": ["ppm:Organisation"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:hasParentOrg"
+    },
+    {
+      "@id": "ppm:hasParentPBS",
+      "@type": "rdf:Property",
+      "rdfs:label": "has parent PBS",
+      "rdfs:comment": "A PBS has a parent PBS (hierarchical decomposition)",
+      "oaa:domainIncludes": ["ppm:ProductBreakdownStructure"],
+      "oaa:rangeIncludes": ["ppm:ProductBreakdownStructure"],
+      "oaa:cardinality": "0..1",
+      "oaa:inverseOf": "ppm:hasChildPBS"
+    },
+    {
+      "@id": "ppm:hasChildPBS",
+      "@type": "rdf:Property",
+      "rdfs:label": "has child PBS",
+      "rdfs:comment": "A PBS has child PBS components (hierarchical decomposition)",
+      "oaa:domainIncludes": ["ppm:ProductBreakdownStructure"],
+      "oaa:rangeIncludes": ["ppm:ProductBreakdownStructure"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:hasParentPBS"
+    },
+    {
+      "@id": "ppm:hasParentWBS",
+      "@type": "rdf:Property",
+      "rdfs:label": "has parent WBS",
+      "rdfs:comment": "A WBS has a parent WBS (hierarchical work decomposition)",
+      "oaa:domainIncludes": ["ppm:WorkBreakdownStructure"],
+      "oaa:rangeIncludes": ["ppm:WorkBreakdownStructure"],
+      "oaa:cardinality": "0..1",
+      "oaa:inverseOf": "ppm:hasChildWBS"
+    },
+    {
+      "@id": "ppm:hasChildWBS",
+      "@type": "rdf:Property",
+      "rdfs:label": "has child WBS",
+      "rdfs:comment": "A WBS has child WBS work packages (hierarchical work decomposition)",
+      "oaa:domainIncludes": ["ppm:WorkBreakdownStructure"],
+      "oaa:rangeIncludes": ["ppm:WorkBreakdownStructure"],
+      "oaa:cardinality": "0..*",
+      "oaa:inverseOf": "ppm:hasParentWBS"
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "ppm:rule-001",
+      "@type": "oaa:BusinessRule",
+      "name": "Organisation Required for All Entities",
+      "condition": "IF Entity is Portfolio, Programme, Project, PBS, WBS, or Stakeholder",
+      "action": "THEN Entity.org_id MUST reference a valid Organisation",
+      "severity": "error",
+      "message": "Every PPM entity must belong to an organisation"
+    },
+    {
+      "@id": "ppm:rule-002",
+      "@type": "oaa:BusinessRule",
+      "name": "Valid Org Type",
+      "condition": "IF Organisation.org_type is set",
+      "action": "THEN Organisation.org_type MUST be one of: platform_owner, client, agency, affiliate",
+      "severity": "error",
+      "message": "Organisation type must be a valid enum value"
+    },
+    {
+      "@id": "ppm:rule-003",
+      "@type": "oaa:BusinessRule",
+      "name": "Programme Requires Portfolio",
+      "condition": "IF Programme exists",
+      "action": "THEN Programme.portfolio_id MUST reference a valid Portfolio",
+      "severity": "error",
+      "message": "Every programme must belong to a portfolio"
+    },
+    {
+      "@id": "ppm:rule-004",
+      "@type": "oaa:BusinessRule",
+      "name": "PBS Type Consistency",
+      "condition": "IF PBS.pbs_type = 'platform_product'",
+      "action": "THEN PBS.platform_product_id SHOULD be set",
+      "severity": "warning",
+      "message": "Platform product PBS should link to platform product catalog"
+    },
+    {
+      "@id": "ppm:rule-005",
+      "@type": "oaa:BusinessRule",
+      "name": "WBS Effort Estimate Range",
+      "condition": "IF WBS.wbs_type = 'work_package'",
+      "action": "THEN WBS.estimated_effort_hours SHOULD be between 8 and 80",
+      "severity": "warning",
+      "message": "Work packages should be decomposed to 8-80 hour range for effective management"
+    },
+    {
+      "@id": "ppm:rule-006",
+      "@type": "oaa:BusinessRule",
+      "name": "Financial Values in USD",
+      "condition": "IF financial field (budget, cost, revenue) is set",
+      "action": "THEN field name MUST end with _usd suffix and value MUST be in USD base currency",
+      "severity": "error",
+      "message": "All financial values must be stored in USD base currency"
+    },
+    {
+      "@id": "ppm:rule-007",
+      "@type": "oaa:BusinessRule",
+      "name": "Dates in ISO 8601",
+      "condition": "IF date/datetime field is set",
+      "action": "THEN value MUST be in ISO 8601 format with timezone",
+      "severity": "error",
+      "message": "All dates must be stored in ISO 8601 format"
+    },
+    {
+      "@id": "ppm:rule-008",
+      "@type": "oaa:BusinessRule",
+      "name": "No Circular PBS Hierarchy",
+      "condition": "IF PBS.parent_pbs_id is set",
+      "action": "THEN PBS hierarchy MUST NOT contain circular references",
+      "severity": "error",
+      "message": "PBS hierarchy cannot have circular dependencies"
+    },
+    {
+      "@id": "ppm:rule-009",
+      "@type": "oaa:BusinessRule",
+      "name": "No Circular WBS Hierarchy",
+      "condition": "IF WBS.parent_wbs_id is set",
+      "action": "THEN WBS hierarchy MUST NOT contain circular references",
+      "severity": "error",
+      "message": "WBS hierarchy cannot have circular dependencies"
+    },
+    {
+      "@id": "ppm:rule-010",
+      "@type": "oaa:BusinessRule",
+      "name": "Localization Via Bridge",
+      "condition": "IF entity requires localization settings",
+      "action": "THEN localization MUST be applied via localization_bridge_refs, NOT embedded fields",
+      "severity": "error",
+      "message": "Localization must be handled via bridge relationships to Localization Module"
+    }
+  ],
+  "qualityMetrics": {
+    "completeness": 100,
+    "schemaOrgAlignment": 85,
+    "competencyScore": 95,
+    "completenessGates": {
+      "entityDescriptions": "100% (7/7)",
+      "relationshipCardinality": "100% (26/26)",
+      "businessRules": "100% (10/10)",
+      "propertyMappings": "100% (all mapped or with rationale)",
+      "testDataCoverage": "pending"
+    }
+  },
+  "changeControl": {
+    "version": "3.0.0",
+    "previousVersion": "2.2.1",
+    "date": "2026-02-01",
+    "changeType": "major",
+    "changedBy": "OAA v6.1.0",
+    "changes": [
+      "BREAKING: Converted from legacy PPM module format to OAA v5.0.0 JSON-LD structure",
+      "Added @context with schema.org, oaa, rdfs, xsd namespaces",
+      "Converted nested entities object to entities array",
+      "Added oaa:properties arrays to all entities",
+      "Created explicit relationships array with cardinality",
+      "Converted business rules to IF-THEN format",
+      "Added schemaOrgMapping to all applicable properties"
+    ],
+    "rationale": "Alignment with OAA v6.1.0 compliance requirements and UniRegistry v1.2.0 schema",
+    "breakingChanges": true,
+    "migrationRequired": true,
+    "archivedPreviousVersion": "archive/ppm-module-v2.2.1-legacy.json"
+  },
+  "versionHistory": [
+    {
+      "version": "2.2.1",
+      "archivedAt": "2026-02-01T12:12:00Z",
+      "archivedBy": "OAA v6.1.0",
+      "artifactPath": "archive/ppm-module-v2.2.1-legacy.json",
+      "changeReason": "Upgraded to OAA v5.0.0 JSON-LD format for OAA v6.1.0 compliance",
+      "format": "legacy-ppm-module"
+    }
+  ]
+}

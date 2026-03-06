@@ -1,0 +1,187 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "org": "https://platformcore.io/ontology/org/",
+    "org-ctx": "https://platformcore.io/ontology/org-context/",
+    "rcsg-fw": "https://platformcore.io/ontology/rcsg-fw/"
+  },
+  "@type": "DataSet",
+  "@id": "rcsg-fw:domain-authorities-v2.0.0",
+  "metadata": {
+    "name": "RCSG-FW Domain Authority Reference Instances",
+    "version": "2.0.0",
+    "description": "Reference instance data for 9 domain authorities and their authority domains, seeded from the NCSC/DSIT Cyber Governance Code of Practice mapping companion document — part of the merged RCSG-FW v2.0.0 ontology",
+    "oaaVersion": "6.1.0",
+    "dateCreated": "2026-02-16",
+    "dateModified": "2026-02-16",
+    "creator": "Azlan EA-AAA"
+  },
+  "instances": {
+    "organizations": [
+      {
+        "@id": "org:NCSC",
+        "@type": "org:Organization",
+        "name": "National Cyber Security Centre",
+        "abbreviation": "NCSC",
+        "type": "GovernmentAgency",
+        "country": "United Kingdom",
+        "description": "UK government agency providing cyber security guidance, incident management, and the Cyber Assessment Framework for critical national infrastructure"
+      },
+      {
+        "@id": "org:DSIT",
+        "@type": "org:Organization",
+        "name": "Department for Science, Innovation and Technology",
+        "abbreviation": "DSIT",
+        "type": "GovernmentAgency",
+        "country": "United Kingdom",
+        "description": "UK government department responsible for digital, technology, and innovation policy including cyber governance codes"
+      },
+      {
+        "@id": "org:ISACA",
+        "@type": "org:Organization",
+        "name": "Information Systems Audit and Control Association",
+        "abbreviation": "ISACA",
+        "type": "StandardsBody",
+        "country": "Global",
+        "description": "Global professional association for IT governance, risk, audit, and cyber security providing COBIT and CMMI frameworks"
+      },
+      {
+        "@id": "org:NIST",
+        "@type": "org:Organization",
+        "name": "National Institute of Standards and Technology",
+        "abbreviation": "NIST",
+        "type": "GovernmentAgency",
+        "country": "United States",
+        "description": "US federal agency developing technology standards including the Cybersecurity Framework and risk management guidelines"
+      },
+      {
+        "@id": "org:IASME",
+        "@type": "org:Organization",
+        "name": "IASME Consortium",
+        "abbreviation": "IASME",
+        "type": "StandardsBody",
+        "country": "United Kingdom",
+        "description": "UK-based SME cyber assurance certification body operating Cyber Essentials and IASME Cyber Assurance standards"
+      },
+      {
+        "@id": "org:ISA",
+        "@type": "org:Organization",
+        "name": "Internet Security Alliance",
+        "abbreviation": "ISA",
+        "type": "StandardsBody",
+        "country": "Global",
+        "description": "Global organisation focused on board-level cyber risk oversight publishing the ISA Cyber-Risk Oversight Handbook for directors"
+      },
+      {
+        "@id": "org:ANSSI",
+        "@type": "org:Organization",
+        "name": "Agence nationale de la sécurité des systèmes d'information",
+        "abbreviation": "ANSSI",
+        "type": "GovernmentAgency",
+        "country": "France",
+        "description": "French national cyber security agency providing the ANSSI 14-Step Approach to cyber governance and resilience"
+      },
+      {
+        "@id": "org:ISO-IEC",
+        "@type": "org:Organization",
+        "name": "International Organization for Standardization / International Electrotechnical Commission",
+        "abbreviation": "ISO/IEC",
+        "type": "StandardsBody",
+        "country": "Global",
+        "description": "Joint international standards body publishing ISO/IEC 27001 information security management system and related standards"
+      },
+      {
+        "@id": "org:WEF",
+        "@type": "org:Organization",
+        "name": "World Economic Forum",
+        "abbreviation": "WEF",
+        "type": "InternationalOrg",
+        "country": "Global",
+        "description": "International organisation for public-private cooperation publishing cyber governance frameworks and global risk reports"
+      }
+    ],
+    "authorityDomains": [
+      {
+        "@id": "org-ctx:authority-domain-cybersec-uk",
+        "@type": "org-ctx:AuthorityDomain",
+        "domainName": "UK National Cyber Security",
+        "domainDescription": "National cyber security guidance, incident response, and critical infrastructure protection for the United Kingdom",
+        "jurisdictionScope": "United Kingdom",
+        "authorityType": "NationalCyberSecurityAuthority",
+        "authorityOrganizationRef": "org:NCSC"
+      },
+      {
+        "@id": "org-ctx:authority-domain-digpolicy-uk",
+        "@type": "org-ctx:AuthorityDomain",
+        "domainName": "UK Digital and Technology Policy",
+        "domainDescription": "Government policy for digital infrastructure, technology innovation, and cyber governance regulation",
+        "jurisdictionScope": "United Kingdom",
+        "authorityType": "GovernmentPolicyBody",
+        "authorityOrganizationRef": "org:DSIT"
+      },
+      {
+        "@id": "org-ctx:authority-domain-itgov-global",
+        "@type": "org-ctx:AuthorityDomain",
+        "domainName": "IT Governance and Audit",
+        "domainDescription": "Global IT governance, risk management, audit frameworks including COBIT and CMMI maturity models",
+        "jurisdictionScope": "Global",
+        "authorityType": "ProfessionalStandardsBody",
+        "authorityOrganizationRef": "org:ISACA"
+      },
+      {
+        "@id": "org-ctx:authority-domain-techstd-us",
+        "@type": "org-ctx:AuthorityDomain",
+        "domainName": "US Technology Standards",
+        "domainDescription": "Federal technology standards development including cybersecurity frameworks and risk management guidelines",
+        "jurisdictionScope": "United States",
+        "authorityType": "NationalStandardsBody",
+        "authorityOrganizationRef": "org:NIST"
+      },
+      {
+        "@id": "org-ctx:authority-domain-smeassurance-uk",
+        "@type": "org-ctx:AuthorityDomain",
+        "domainName": "UK SME Cyber Assurance",
+        "domainDescription": "Cyber assurance certification for small and medium enterprises including Cyber Essentials scheme",
+        "jurisdictionScope": "United Kingdom",
+        "authorityType": "CertificationBody",
+        "authorityOrganizationRef": "org:IASME"
+      },
+      {
+        "@id": "org-ctx:authority-domain-boardrisk-global",
+        "@type": "org-ctx:AuthorityDomain",
+        "domainName": "Board-Level Cyber Risk",
+        "domainDescription": "Director and board-level cyber risk oversight guidance and governance handbooks",
+        "jurisdictionScope": "Global",
+        "authorityType": "IndustryAdvisoryBody",
+        "authorityOrganizationRef": "org:ISA"
+      },
+      {
+        "@id": "org-ctx:authority-domain-cybersec-fr",
+        "@type": "org-ctx:AuthorityDomain",
+        "domainName": "French National Cyber Security",
+        "domainDescription": "National cyber security governance and resilience approach for France including the 14-Step Method",
+        "jurisdictionScope": "France",
+        "authorityType": "NationalCyberSecurityAuthority",
+        "authorityOrganizationRef": "org:ANSSI"
+      },
+      {
+        "@id": "org-ctx:authority-domain-infosec-global",
+        "@type": "org-ctx:AuthorityDomain",
+        "domainName": "International Information Security Standards",
+        "domainDescription": "International standards for information security management systems and related controls",
+        "jurisdictionScope": "Global",
+        "authorityType": "InternationalStandardsBody",
+        "authorityOrganizationRef": "org:ISO-IEC"
+      },
+      {
+        "@id": "org-ctx:authority-domain-globalrisk",
+        "@type": "org-ctx:AuthorityDomain",
+        "domainName": "Global Cyber Risk and Resilience",
+        "domainDescription": "International public-private cyber governance cooperation and global risk landscape analysis",
+        "jurisdictionScope": "Global",
+        "authorityType": "InternationalGovernanceBody",
+        "authorityOrganizationRef": "org:WEF"
+      }
+    ]
+  }
+}

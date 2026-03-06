@@ -1,0 +1,97 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-EA-MSFT-001",
+  "name": "EA-MSFT Ontology (Microsoft Cloud Platform)",
+  "description": "Microsoft Cloud platform ontology covering Azure resources and subscriptions, landing zones, Power Platform, Microsoft 365, Well-Architected Framework pillars and assessment criteria, and Azure AI service bindings. AI/ML entities extracted to EA-AI-ONT v1.0.0.",
+  "version": "1.1.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://oaa-ontology.org/v6/ea-msft/",
+  "prefix": "ea-msft:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-09",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./ea-msft-v1.0.0-oaa-v6.json",
+    "documentation": null,
+    "instanceData": [],
+    "glossary": "../../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "CloudPlatform": "Cloud provider platform abstraction (Azure, future AWS/GCP)",
+    "AzureResource": "Base class for Azure cloud resources",
+    "AzureSubscription": "Azure billing and access control boundary",
+    "AzureResourceGroup": "Logical container for Azure resources",
+    "AzureLandingZone": "Pre-configured Cloud Adoption Framework environment",
+    "PowerPlatform": "Microsoft low-code application platform",
+    "Microsoft365": "Microsoft productivity and collaboration suite",
+    "WAFPillar": "Azure Well-Architected Framework assessment pillar",
+    "DesignPrinciple": "WAF guiding principle for architecture decisions",
+    "AssessmentCriterion": "Measurable architecture quality metric",
+    "AzureAIService": "Azure AI service resource for AI workload deployment"
+  },
+  "relationships": {
+    "internal": 6,
+    "crossOntology": [
+      {
+        "name": "hostedOnPlatform",
+        "from": "ea-core:Application",
+        "to": "ea-msft:CloudPlatform",
+        "cardinality": "n:1",
+        "purpose": "EA-CORE -> EA-MSFT: Application hosting on cloud platform"
+      },
+      {
+        "name": "assessedByPillar",
+        "from": "ea-core:Application",
+        "to": "ea-msft:WAFPillar",
+        "cardinality": "n:m",
+        "purpose": "EA-CORE -> EA-MSFT: Application WAF assessment coverage"
+      },
+      {
+        "name": "deployedOnAzureAI",
+        "from": "ea-ai:AIWorkload",
+        "to": "ea-msft:AzureAIService",
+        "cardinality": "n:m",
+        "purpose": "EA-AI -> EA-MSFT: AI workload deployment on Azure AI services"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-EA-CORE-001",
+    "Entry-ONT-EA-AI-001"
+  ],
+  "dependents": [
+    "Entry-ONT-ALZ-001"
+  ],
+  "layer": "EXECUTION LAYER (PE-Series)",
+  "domain": "Enterprise Architecture",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-09",
+  "lastModified": "2026-03-04",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-09",
+      "changes": "Initial Microsoft Cloud platform ontology consolidated from V3 ea-azure, azure-waf, and azure-ai source material. 15 entities, 12 relationships, 8 business rules, 4 enumerations. OAA v6.1.0 compliant."
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-03-04",
+      "changes": "AI entity extraction to EA-AI-ONT. Removed 5 AI entities, 4 AI relationships, 2 AI enumerations, 3 AI rules. Added EA-AI import, AzureAIService entity, deployedOnAzureAI relationship, AzureAIServiceType enum. 11 entities, 9 relationships, 6 business rules, 3 enumerations."
+    }
+  ],
+  "notes": "EA-MSFT provides Microsoft-specific cloud platform modelling extending EA-CORE and importing EA-AI for AI/ML capabilities. Covers Azure IaaS/PaaS resources, Power Platform, M365, Well-Architected Framework assessments, and Azure AI service bindings. AI entities are vendor-neutral in EA-AI-ONT; EA-MSFT binds them to Azure services via deployedOnAzureAI."
+}

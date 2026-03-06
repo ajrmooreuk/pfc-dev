@@ -1,0 +1,617 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform-foundation.ai/ontology/"
+  },
+  "testDataSet": {
+    "name": "Process Engineering Ontology Test Data Set",
+    "version": "1.0.0",
+    "date": "2026-01-18",
+    "ontology": "pf:ontology:process-engineering",
+    "distribution": {
+      "typical": 60,
+      "edge": 20,
+      "boundary": 10,
+      "invalid": 10
+    },
+    "totalInstances": 50,
+    "entitiesWithTestData": 10
+  },
+  
+  "Process": {
+    "typical": [
+      {
+        "@type": "Process",
+        "@id": "pf:process:app-scaffold",
+        "processId": "PROC-APP-SCAFFOLD-001",
+        "processName": "Application Scaffold Process",
+        "processType": "development",
+        "description": "Systematic process for generating production-ready application scaffolds with AI augmentation, covering domain definition through deployment with quality gates and automation targets",
+        "businessObjective": "Reduce time-to-MVP from 90 days to 14 days through AI-augmented development while maintaining 95%+ code quality",
+        "scope": "Covers domain definition, code generation, database setup, service layer, UI components, integration, testing, optimization, and deployment. Excludes ongoing maintenance and feature enhancement.",
+        "owner": "pf:person:tech-lead-001",
+        "stakeholders": ["Product Manager", "Engineering Team", "QA Team", "DevOps"],
+        "status": "active",
+        "version": "2.1.0",
+        "estimatedDuration": "P14D",
+        "automationLevel": 80,
+        "testCategory": "typical",
+        "testRationale": "Standard development process with typical automation level and duration"
+      },
+      {
+        "@type": "Process",
+        "@id": "pf:process:ai-visibility-audit",
+        "processId": "PROC-AI-VIS-AUDIT-001",
+        "processName": "AI Visibility Discovery Audit",
+        "processType": "discovery",
+        "description": "Comprehensive audit process to assess organization's current AI visibility status across search, social, and AI platforms, identifying gaps and opportunities for improvement",
+        "businessObjective": "Identify and quantify AI visibility gaps to prioritize improvement initiatives with measurable ROI potential",
+        "scope": "Covers search presence analysis, AI platform assessment, competitive benchmarking, and gap analysis. Excludes implementation of improvements.",
+        "owner": "pf:person:discovery-lead",
+        "stakeholders": ["Marketing Team", "SEO Team", "Content Team", "Executive Sponsors"],
+        "status": "active",
+        "version": "1.5.0",
+        "estimatedDuration": "P7D",
+        "automationLevel": 70,
+        "testCategory": "typical",
+        "testRationale": "Standard discovery process with moderate automation"
+      },
+      {
+        "@type": "Process",
+        "@id": "pf:process:okr-planning",
+        "processId": "PROC-OKR-PLAN-001",
+        "processName": "Quarterly OKR Planning",
+        "processType": "governance",
+        "description": "Systematic process for defining quarterly objectives and key results aligned with strategic vision, involving stakeholder workshops, metric definition, and commitment ceremonies",
+        "businessObjective": "Reduce OKR planning cycle time from 6 weeks to 2 weeks while improving strategic alignment and team engagement",
+        "scope": "Covers vision review, objective brainstorming, key result definition, alignment workshops, and commitment ceremonies. Excludes ongoing OKR tracking.",
+        "owner": "pf:person:strategy-lead",
+        "stakeholders": ["Executive Team", "Department Heads", "Team Leads"],
+        "status": "active",
+        "version": "3.0.0",
+        "estimatedDuration": "P14D",
+        "automationLevel": 40,
+        "testCategory": "typical",
+        "testRationale": "Human-centric process with lower automation, standard quarterly cycle"
+      }
+    ],
+    "edge": [
+      {
+        "@type": "Process",
+        "@id": "pf:process:emergency-hotfix",
+        "processId": "PROC-EMERGENCY-HF-001",
+        "processName": "Emergency Production Hotfix",
+        "processType": "deployment",
+        "description": "Expedited process for critical production issues requiring immediate resolution, with abbreviated quality gates and escalation protocols",
+        "businessObjective": "Resolve critical production issues within 4 hours while maintaining security and compliance standards",
+        "scope": "Covers issue triage, root cause analysis, fix development, accelerated testing, and emergency deployment. Includes post-mortem.",
+        "owner": "pf:person:oncall-lead",
+        "stakeholders": ["Engineering Team", "DevOps", "Security Team", "Customer Support"],
+        "status": "active",
+        "version": "1.2.0",
+        "estimatedDuration": "PT4H",
+        "automationLevel": 90,
+        "testCategory": "edge",
+        "testRationale": "Extremely short duration (4 hours vs typical 14 days), high automation for speed"
+      }
+    ],
+    "boundary": [
+      {
+        "@type": "Process",
+        "@id": "pf:process:platform-migration",
+        "processId": "PROC-PLAT-MIG-001",
+        "processName": "Enterprise Platform Migration",
+        "processType": "deployment",
+        "description": "Large-scale process for migrating enterprise platform to new infrastructure, involving multiple teams, extended timelines, and comprehensive risk management",
+        "businessObjective": "Successfully migrate 1000+ tenants to new platform infrastructure with zero data loss and <1% service disruption",
+        "scope": "Covers migration planning, risk assessment, phased execution across multiple environments, data validation, rollback procedures, and post-migration optimization. Includes 24/7 monitoring.",
+        "owner": "pf:person:platform-director",
+        "stakeholders": ["Engineering", "DevOps", "Customer Success", "Executive Team", "Security", "Compliance"],
+        "status": "active",
+        "version": "1.0.0",
+        "estimatedDuration": "P180D",
+        "automationLevel": 95,
+        "testCategory": "boundary",
+        "testRationale": "Maximum duration (180 days), maximum automation (95%), maximum complexity"
+      }
+    ],
+    "invalid": [
+      {
+        "@type": "Process",
+        "@id": "pf:process:invalid-example",
+        "processId": "INVALID",
+        "processName": "",
+        "processType": "unknown_type",
+        "description": "Too short",
+        "businessObjective": "",
+        "scope": "",
+        "status": "invalid_status",
+        "version": "abc",
+        "estimatedDuration": "invalid",
+        "automationLevel": 150,
+        "testCategory": "invalid",
+        "testRationale": "Multiple violations: empty name, invalid processType, description too short, invalid status, bad version format, invalid duration format, automation level >100",
+        "expectedErrors": [
+          "processName is required and cannot be empty",
+          "processType must be one of [development, discovery, analysis, deployment, optimization, governance, custom]",
+          "description must be ≥50 characters",
+          "businessObjective is required",
+          "scope is required",
+          "status must be one of [draft, active, deprecated, archived]",
+          "version must follow semantic versioning (MAJOR.MINOR.PATCH)",
+          "estimatedDuration must be valid ISO 8601 duration",
+          "automationLevel must be 0-100"
+        ]
+      }
+    ]
+  },
+  
+  "ProcessPhase": {
+    "typical": [
+      {
+        "@type": "ProcessPhase",
+        "@id": "pf:phase:domain-definition",
+        "phaseId": "PHASE-001-DOMAIN-DEF",
+        "phaseName": "Domain Definition & Requirements",
+        "phaseNumber": 1,
+        "description": "Gather and structure requirements, map concepts to schema.org vocabulary, and create domain configuration",
+        "entryConditions": ["Project initiated", "Stakeholder identified", "Resources allocated"],
+        "exitConditions": ["Requirements documented", "Schema.org mappings validated", "Domain config produced", "Stakeholder approval obtained"],
+        "activities": ["Requirements gathering", "Schema.org mapping", "Domain model creation", "Configuration generation"],
+        "estimatedDuration": "P2D",
+        "parallelExecution": false,
+        "testCategory": "typical",
+        "testRationale": "Standard first phase with typical sequential execution"
+      },
+      {
+        "@type": "ProcessPhase",
+        "@id": "pf:phase:code-generation",
+        "phaseId": "PHASE-002-CODE-GEN",
+        "phaseName": "Code Generation",
+        "phaseNumber": 2,
+        "description": "Generate TypeScript types, JSON schemas, and validation logic from domain definitions",
+        "entryConditions": ["Phase 1 completed", "Domain config available", "Code Generator agent ready"],
+        "exitConditions": ["Types generated", "Schemas created", "Validation logic implemented", "Code quality gate passed"],
+        "activities": ["Type generation", "Schema creation", "Validation logic", "Code review"],
+        "estimatedDuration": "P1D",
+        "parallelExecution": false,
+        "testCategory": "typical",
+        "testRationale": "Standard mid-process phase with typical automation"
+      },
+      {
+        "@type": "ProcessPhase",
+        "@id": "pf:phase:testing",
+        "phaseId": "PHASE-006-TESTING",
+        "phaseName": "Testing & Quality Assurance",
+        "phaseNumber": 6,
+        "description": "Execute comprehensive test suite including unit, integration, E2E, and performance tests",
+        "entryConditions": ["Integration phase completed", "Test suite generated", "Test environments ready"],
+        "exitConditions": ["All tests passing ≥95%", "Coverage ≥80%", "Performance benchmarks met", "Security scan passed"],
+        "activities": ["Unit testing", "Integration testing", "E2E testing", "Performance testing", "Security testing"],
+        "estimatedDuration": "P2D",
+        "parallelExecution": false,
+        "testCategory": "typical",
+        "testRationale": "Standard testing phase with comprehensive coverage"
+      }
+    ],
+    "edge": [
+      {
+        "@type": "ProcessPhase",
+        "@id": "pf:phase:ui-components-parallel",
+        "phaseId": "PHASE-004B-UI-COMP",
+        "phaseName": "UI Components (Parallel)",
+        "phaseNumber": 4,
+        "description": "Generate UI components including forms, viewers, and visualizations in parallel with service layer",
+        "entryConditions": ["Phase 3 database setup completed", "UI Generator agent ready", "Design system available"],
+        "exitConditions": ["Forms generated", "Viewers created", "Visualizations implemented", "UI quality gate passed"],
+        "activities": ["Form generation", "Viewer creation", "Visualization setup", "Component testing"],
+        "estimatedDuration": "P3D",
+        "parallelExecution": true,
+        "parallelWith": ["PHASE-004A-SERVICE-LAYER"],
+        "testCategory": "edge",
+        "testRationale": "Unusual parallel execution capability reducing critical path"
+      }
+    ],
+    "boundary": [
+      {
+        "@type": "ProcessPhase",
+        "@id": "pf:phase:minimal-phase",
+        "phaseId": "PHASE-MIN-001",
+        "phaseName": "Minimal Viable Phase",
+        "phaseNumber": 1,
+        "description": "Absolute minimum phase definition with minimal properties",
+        "entryConditions": ["Ready to start"],
+        "exitConditions": ["Work completed"],
+        "activities": ["Do the work"],
+        "estimatedDuration": "PT1H",
+        "parallelExecution": false,
+        "testCategory": "boundary",
+        "testRationale": "Minimum valid phase: shortest duration (1 hour), minimal descriptions at constraint boundaries (30 chars)"
+      }
+    ],
+    "invalid": [
+      {
+        "@type": "ProcessPhase",
+        "phaseId": "INVALID-PHASE",
+        "phaseName": "",
+        "phaseNumber": 0,
+        "description": "Too short",
+        "entryConditions": [],
+        "exitConditions": [],
+        "activities": [],
+        "parallelExecution": "not_boolean",
+        "testCategory": "invalid",
+        "testRationale": "Multiple violations: empty name, phaseNumber <1, description <30 chars, empty conditions/activities, invalid boolean",
+        "expectedErrors": [
+          "phaseName cannot be empty",
+          "phaseNumber must be ≥1",
+          "description must be ≥30 characters",
+          "entryConditions must have ≥1 item",
+          "exitConditions must have ≥1 item",
+          "activities must have ≥1 item",
+          "parallelExecution must be boolean"
+        ]
+      }
+    ]
+  },
+  
+  "ProcessGate": {
+    "typical": [
+      {
+        "@type": "ProcessGate",
+        "@id": "pf:gate:domain-approval",
+        "gateId": "GATE-001-DOMAIN-APPROVAL",
+        "gateName": "Domain Approval Gate",
+        "gateType": "approval",
+        "description": "Validates requirements completeness and schema.org mapping quality before code generation",
+        "criteria": ["Requirements document complete", "Schema.org mappings validated", "Domain config reviewed", "Stakeholder sign-off obtained"],
+        "threshold": 100,
+        "automated": false,
+        "approver": "pf:person:tech-lead",
+        "escalationPath": "After 2 failures, escalate to Architecture Board",
+        "blockingFactor": "blocking",
+        "testCategory": "typical",
+        "testRationale": "Standard approval gate with human reviewer"
+      },
+      {
+        "@type": "ProcessGate",
+        "@id": "pf:gate:code-quality",
+        "gateId": "GATE-002-CODE-QUALITY",
+        "gateName": "Code Quality Gate",
+        "gateType": "quality",
+        "description": "Validates generated code meets quality standards including compilation, testing, and coverage",
+        "criteria": ["Code compiles successfully", "All tests pass", "Coverage ≥80%", "No critical linting errors"],
+        "threshold": 95,
+        "automated": true,
+        "escalationPath": "After 2 failures, notify tech lead for manual review",
+        "blockingFactor": "blocking",
+        "testCategory": "typical",
+        "testRationale": "Standard automated quality gate with quantitative threshold"
+      },
+      {
+        "@type": "ProcessGate",
+        "@id": "pf:gate:completeness-check",
+        "gateId": "GATE-003-COMPLETENESS",
+        "gateName": "Completeness Check Gate",
+        "gateType": "completeness",
+        "description": "Validates all required artifacts produced and documented before phase completion",
+        "criteria": ["All mandatory artifacts present", "Documentation complete", "Artifact quality validated", "Traceability maintained"],
+        "threshold": 100,
+        "automated": true,
+        "escalationPath": "Automatic retry after artifact generation",
+        "blockingFactor": "blocking",
+        "testCategory": "typical",
+        "testRationale": "Standard completeness gate ensuring no missing deliverables"
+      }
+    ],
+    "edge": [
+      {
+        "@type": "ProcessGate",
+        "@id": "pf:gate:informational-only",
+        "gateId": "GATE-INFO-001",
+        "gateName": "Performance Information Gate",
+        "gateType": "quality",
+        "description": "Collects performance metrics for informational purposes without blocking progression",
+        "criteria": ["Response time measured", "Resource usage tracked", "Scalability tested"],
+        "threshold": 75,
+        "automated": true,
+        "blockingFactor": "informational",
+        "testCategory": "edge",
+        "testRationale": "Unusual non-blocking gate that collects data without enforcing standards"
+      }
+    ],
+    "boundary": [
+      {
+        "@type": "ProcessGate",
+        "@id": "pf:gate:perfect-gate",
+        "gateId": "GATE-PERFECT-001",
+        "gateName": "Perfect Quality Gate",
+        "gateType": "quality",
+        "description": "Requires 100% perfect quality with zero defects, maximum strictness",
+        "criteria": ["Zero defects", "100% test coverage", "100% documentation", "100% compliance"],
+        "threshold": 100,
+        "automated": true,
+        "escalationPath": "Any failure immediately escalates to executive team",
+        "blockingFactor": "blocking",
+        "testCategory": "boundary",
+        "testRationale": "Maximum threshold (100%), maximum criteria strictness, immediate escalation"
+      }
+    ],
+    "invalid": [
+      {
+        "@type": "ProcessGate",
+        "gateId": "INVALID-GATE",
+        "gateName": "",
+        "gateType": "invalid_type",
+        "description": "Too short desc",
+        "criteria": [],
+        "threshold": 150,
+        "automated": "not_boolean",
+        "blockingFactor": "invalid_factor",
+        "testCategory": "invalid",
+        "testRationale": "Multiple violations: empty name, invalid type, description <30 chars, empty criteria, threshold >100, invalid boolean, invalid blockingFactor",
+        "expectedErrors": [
+          "gateName cannot be empty",
+          "gateType must be one of [quality, approval, completeness, compliance, risk-assessment, go-no-go]",
+          "description must be ≥30 characters",
+          "criteria must have ≥1 item",
+          "threshold must be 0-100",
+          "automated must be boolean",
+          "blockingFactor must be one of [blocking, warning, informational]"
+        ]
+      }
+    ]
+  },
+  
+  "ProcessMetric": {
+    "typical": [
+      {
+        "@type": "ProcessMetric",
+        "@id": "pf:metric:time-to-mvp",
+        "metricId": "METRIC-TIME-TO-MVP",
+        "metricName": "Time to MVP",
+        "metricType": "duration",
+        "description": "Measures elapsed time from project initiation to MVP deployment, tracking process efficiency",
+        "formula": "(deploymentDate - startDate) in days",
+        "unit": "days",
+        "target": 14,
+        "threshold": {
+          "excellent": "≤10",
+          "good": "≤14",
+          "acceptable": "≤21",
+          "poor": ">21"
+        },
+        "collectionMethod": "automated",
+        "frequency": "per process execution",
+        "okrAlignment": "pf:okr:kr-reduce-cycle-time",
+        "testCategory": "typical",
+        "testRationale": "Standard duration metric with typical targets and thresholds"
+      },
+      {
+        "@type": "ProcessMetric",
+        "@id": "pf:metric:automation-percentage",
+        "metricId": "METRIC-AI-AUTOMATION",
+        "metricName": "AI Automation Percentage",
+        "metricType": "efficiency",
+        "description": "Measures percentage of process activities augmented or automated by AI agents",
+        "formula": "(automatedActivities / totalActivities) * 100",
+        "unit": "percentage",
+        "target": 80,
+        "threshold": {
+          "excellent": "≥90",
+          "good": "≥80",
+          "acceptable": "≥70",
+          "poor": "<70"
+        },
+        "collectionMethod": "automated",
+        "frequency": "per process execution",
+        "okrAlignment": "pf:okr:kr-increase-automation",
+        "testCategory": "typical",
+        "testRationale": "Standard efficiency metric tracking AI contribution"
+      },
+      {
+        "@type": "ProcessMetric",
+        "@id": "pf:metric:code-quality-score",
+        "metricId": "METRIC-CODE-QUALITY",
+        "metricName": "Code Quality Score",
+        "metricType": "quality",
+        "description": "Composite score measuring code quality across compilation, testing, coverage, and linting dimensions",
+        "formula": "weightedAverage(compilation:0.3, tests:0.3, coverage:0.2, linting:0.2)",
+        "unit": "score",
+        "target": 95,
+        "threshold": {
+          "excellent": "≥98",
+          "good": "≥95",
+          "acceptable": "≥90",
+          "poor": "<90"
+        },
+        "collectionMethod": "automated",
+        "frequency": "per phase completion",
+        "okrAlignment": "pf:okr:kr-improve-quality",
+        "testCategory": "typical",
+        "testRationale": "Standard quality metric with composite calculation"
+      }
+    ],
+    "edge": [
+      {
+        "@type": "ProcessMetric",
+        "@id": "pf:metric:hypothesis-confidence",
+        "metricId": "METRIC-HYP-CONFIDENCE",
+        "metricName": "Hypothesis Validation Confidence",
+        "metricType": "leading-indicator",
+        "metricType": "outcome",
+        "description": "Statistical confidence level in hypothesis validation based on evidence collection across multiple process instances",
+        "formula": "statisticalConfidence(evidenceSet, n, variance)",
+        "unit": "percentage",
+        "target": 95,
+        "threshold": {
+          "conclusive": "≥95",
+          "strong": "≥85",
+          "moderate": "≥70",
+          "weak": "<70"
+        },
+        "collectionMethod": "automated",
+        "frequency": "after each process execution",
+        "testCategory": "edge",
+        "testRationale": "Unusual leading indicator metric predicting future outcomes"
+      }
+    ],
+    "boundary": [
+      {
+        "@type": "ProcessMetric",
+        "@id": "pf:metric:perfect-score",
+        "metricId": "METRIC-PERFECT",
+        "metricName": "Perfect Execution Score",
+        "metricType": "quality",
+        "description": "Binary metric requiring 100% perfection across all quality dimensions with zero tolerance for deviations",
+        "formula": "allDimensions() == 100 ? 100 : 0",
+        "unit": "binary",
+        "target": 100,
+        "threshold": {
+          "pass": "100",
+          "fail": "<100"
+        },
+        "collectionMethod": "automated",
+        "frequency": "continuous",
+        "testCategory": "boundary",
+        "testRationale": "Maximum strictness - only 100% is acceptable, binary pass/fail"
+      }
+    ],
+    "invalid": [
+      {
+        "@type": "ProcessMetric",
+        "metricId": "INVALID-METRIC",
+        "metricName": "",
+        "metricType": "invalid_type",
+        "description": "Too short description",
+        "unit": "",
+        "target": "not_a_number",
+        "collectionMethod": "invalid_method",
+        "frequency": "",
+        "testCategory": "invalid",
+        "testRationale": "Multiple violations: empty name, invalid type, description <30 chars, empty unit, non-numeric target, invalid collection method, empty frequency",
+        "expectedErrors": [
+          "metricName cannot be empty",
+          "metricType must be one of [duration, quality, efficiency, cost, satisfaction, outcome, leading-indicator, lagging-indicator]",
+          "description must be ≥30 characters",
+          "unit cannot be empty",
+          "target must be a number",
+          "collectionMethod must be one of [automated, manual, hybrid]",
+          "frequency cannot be empty"
+        ]
+      }
+    ]
+  },
+  
+  "AIAgent": {
+    "typical": [
+      {
+        "@type": "AIAgent",
+        "@id": "pf:agent:code-generator",
+        "agentId": "AGENT-CODE-GEN-001",
+        "agentName": "Code Generator Agent",
+        "agentType": "generation",
+        "description": "Generates production-quality code including TypeScript types, JSON schemas, and validation logic from domain definitions",
+        "capabilities": ["type-generation", "schema-creation", "validation-logic", "code-optimization"],
+        "autonomyLevel": "highly-autonomous",
+        "model": "claude-sonnet-4-5-20250929",
+        "coordinationProtocol": "supervised-output-validation",
+        "inputRequirements": ["Domain configuration", "Schema.org mappings", "Validation rules"],
+        "outputFormats": ["TypeScript", "JSON Schema", "Validation functions"],
+        "qualityThreshold": 95,
+        "testCategory": "typical",
+        "testRationale": "Standard highly-autonomous agent with typical capabilities"
+      },
+      {
+        "@type": "AIAgent",
+        "@id": "pf:agent:requirements-analyzer",
+        "agentId": "AGENT-REQ-ANALYZE-001",
+        "agentName": "Requirements Analyzer Agent",
+        "agentType": "analysis",
+        "description": "Analyzes stakeholder requirements, extracts entities and relationships, maps to schema.org vocabulary",
+        "capabilities": ["requirements-extraction", "entity-identification", "schema-mapping", "gap-analysis"],
+        "autonomyLevel": "supervised",
+        "model": "claude-sonnet-4-5-20250929",
+        "coordinationProtocol": "human-in-the-loop",
+        "inputRequirements": ["Stakeholder interviews", "Requirement documents", "Domain context"],
+        "outputFormats": ["Requirements document", "Entity model", "Schema.org mappings"],
+        "qualityThreshold": 85,
+        "testCategory": "typical",
+        "testRationale": "Standard supervised agent requiring human oversight"
+      },
+      {
+        "@type": "AIAgent",
+        "@id": "pf:agent:test-generator",
+        "agentId": "AGENT-TEST-GEN-001",
+        "agentName": "Test Generator Agent",
+        "agentType": "generation",
+        "description": "Generates comprehensive test suites including unit, integration, and E2E tests with high coverage",
+        "capabilities": ["unit-test-generation", "integration-test-generation", "e2e-test-generation", "coverage-optimization"],
+        "autonomyLevel": "highly-autonomous",
+        "model": "claude-sonnet-4-5-20250929",
+        "coordinationProtocol": "autonomous-with-metrics",
+        "inputRequirements": ["Code artifacts", "API specifications", "Business rules"],
+        "outputFormats": ["Jest tests", "Playwright E2E", "Coverage reports"],
+        "qualityThreshold": 90,
+        "testCategory": "typical",
+        "testRationale": "Standard autonomous agent for test generation"
+      }
+    ],
+    "edge": [
+      {
+        "@type": "AIAgent",
+        "@id": "pf:agent:emergency-orchestrator",
+        "agentId": "AGENT-EMERGENCY-ORC-001",
+        "agentName": "Emergency Orchestrator Agent",
+        "agentType": "orchestration",
+        "description": "Coordinates rapid response for critical production issues with abbreviated workflows and escalation protocols",
+        "capabilities": ["incident-triage", "rapid-orchestration", "emergency-escalation", "post-mortem-generation"],
+        "autonomyLevel": "hybrid",
+        "model": "claude-sonnet-4-5-20250929",
+        "coordinationProtocol": "dynamic-escalation",
+        "inputRequirements": ["Incident alert", "System metrics", "On-call roster"],
+        "outputFormats": ["Incident report", "Action plan", "Post-mortem"],
+        "qualityThreshold": 99,
+        "testCategory": "edge",
+        "testRationale": "Unusual hybrid autonomy for high-stakes scenarios requiring both speed and judgment"
+      }
+    ],
+    "boundary": [
+      {
+        "@type": "AIAgent",
+        "@id": "pf:agent:minimal-agent",
+        "agentId": "AGENT-MIN-001",
+        "agentName": "Minimal Agent Definition",
+        "agentType": "custom",
+        "description": "Absolute minimum agent definition with minimal required properties only",
+        "capabilities": ["basic-task"],
+        "autonomyLevel": "manual",
+        "qualityThreshold": 50,
+        "testCategory": "boundary",
+        "testRationale": "Minimum valid agent: manual autonomy (requires human for everything), lowest quality threshold (50), minimal capabilities"
+      }
+    ],
+    "invalid": [
+      {
+        "@type": "AIAgent",
+        "agentId": "INVALID-AGENT",
+        "agentName": "",
+        "agentType": "invalid_type",
+        "description": "Too short description",
+        "capabilities": [],
+        "autonomyLevel": "invalid_level",
+        "qualityThreshold": 150,
+        "testCategory": "invalid",
+        "testRationale": "Multiple violations: empty name, invalid type, description <30 chars, empty capabilities, invalid autonomy level, quality threshold >100",
+        "expectedErrors": [
+          "agentName cannot be empty",
+          "agentType must be one of [analysis, generation, optimization, orchestration, validation, monitoring, custom]",
+          "description must be ≥30 characters",
+          "capabilities must have ≥1 item",
+          "autonomyLevel must be one of [highly-autonomous, supervised, manual, hybrid]",
+          "qualityThreshold must be 0-100"
+        ]
+      }
+    ]
+  }
+}

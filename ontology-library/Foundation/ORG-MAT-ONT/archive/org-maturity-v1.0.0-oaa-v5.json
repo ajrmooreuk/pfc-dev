@@ -1,0 +1,635 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v5/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "mat": "https://oaa-ontology.org/v5/org-maturity/",
+    "org": "https://oaa-ontology.org/v5/organization/"
+  },
+  "@id": "https://oaa-ontology.org/v5/mat/schema",
+  "@type": "owl:Ontology",
+  "name": "Organization Maturity Ontology",
+  "description": "Comprehensive ontology for assessing organizational maturity across multiple dimensions including size, sector, technology, marketing, digital transformation, data, process, talent, innovation, governance, security, sustainability, and ecosystem maturity. Connects to ORG-ONT via OrganizationContext bridge pattern.",
+  "oaa:schemaVersion": "5.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "Organizational Assessment & Maturity",
+  "oaa:status": "Production",
+  "dateCreated": "2026-02-01",
+  "dateModified": "2026-02-01",
+  "creator": {
+    "@type": "Organization",
+    "name": "Platform Framework Architecture Team"
+  },
+
+  "oaa:imports": [
+    {
+      "@id": "org:schema",
+      "name": "ORG-ONT",
+      "version": "2.1.0",
+      "description": "Organization entities - provides OrganizationContext for bridge connection"
+    }
+  ],
+
+  "oaa:joinPatterns": [
+    {
+      "@id": "mat:JP-MAT-001",
+      "name": "Context to Maturity Profile",
+      "path": "org:OrganizationContext → hasMaturityProfile → mat:MaturityProfile",
+      "description": "Connect organization context to maturity assessment"
+    },
+    {
+      "@id": "mat:JP-MAT-002",
+      "name": "Profile to Dimensions",
+      "path": "mat:MaturityProfile → hasDimensionScore → mat:DimensionScore",
+      "description": "Access all dimension scores from profile"
+    }
+  ],
+
+  "entities": [
+    {
+      "@id": "mat:MaturityProfile",
+      "@type": "rdfs:Class",
+      "name": "MaturityProfile",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Complete maturity profile for an organization, aggregating scores across all dimensions. Connected to OrganizationContext.",
+      "oaa:properties": [
+        {"name": "profileId", "type": "xsd:string", "required": true, "description": "Unique profile identifier"},
+        {"name": "profileName", "type": "xsd:string", "required": true, "description": "Profile name"},
+        {"name": "assessmentDate", "type": "xsd:date", "required": true, "description": "Date of assessment"},
+        {"name": "assessor", "type": "xsd:string", "required": false, "description": "Person or system conducting assessment"},
+        {"name": "overallMaturityScore", "type": "xsd:decimal", "required": false, "description": "Weighted composite score (1.0-5.0)"},
+        {"name": "overallMaturityLevel", "type": "xsd:string", "required": false, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall maturity level"},
+        {"name": "validUntil", "type": "xsd:date", "required": false, "description": "Assessment validity period"}
+      ]
+    },
+    {
+      "@id": "mat:DimensionScore",
+      "@type": "rdfs:Class",
+      "name": "DimensionScore",
+      "rdfs:subClassOf": "schema:PropertyValue",
+      "description": "Score for a specific maturity dimension with level, numeric score, and evidence.",
+      "oaa:properties": [
+        {"name": "scoreId", "type": "xsd:string", "required": true, "description": "Score identifier"},
+        {"name": "dimensionType", "type": "xsd:string", "required": true, "enum": ["Size", "Value", "Sector", "Geography", "MarketingMaturity", "TechAIMaturity", "OrgComplexity", "OrgStructure", "DigitalMaturity", "DataMaturity", "ProcessMaturity", "CustomerExperienceMaturity", "TalentMaturity", "InnovationMaturity", "GovernanceMaturity", "SecurityRiskMaturity", "SustainabilityESG", "PartnershipEcosystem", "ChangeReadiness"], "description": "Type of maturity dimension"},
+        {"name": "maturityLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Maturity level (1-5)"},
+        {"name": "numericScore", "type": "xsd:decimal", "required": true, "description": "Numeric score (1.0-5.0)"},
+        {"name": "weight", "type": "xsd:decimal", "required": false, "description": "Weight for composite scoring (0.0-1.0)"},
+        {"name": "evidence", "type": "xsd:string", "required": false, "description": "Evidence supporting the score"},
+        {"name": "recommendations", "type": "xsd:string", "required": false, "description": "Improvement recommendations"}
+      ]
+    },
+    {
+      "@id": "mat:SizeProfile",
+      "@type": "rdfs:Class",
+      "name": "SizeProfile",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Organization size classification by employees, revenue, and scale.",
+      "oaa:properties": [
+        {"name": "sizeCategory", "type": "xsd:string", "required": true, "enum": ["Micro", "Small", "Medium", "Large", "Enterprise", "Global"], "description": "Size classification"},
+        {"name": "employeeCount", "type": "xsd:integer", "required": false, "description": "Number of employees"},
+        {"name": "employeeBand", "type": "xsd:string", "required": false, "enum": ["1-10", "11-50", "51-200", "201-1000", "1001-5000", "5000+"], "description": "Employee count band"},
+        {"name": "annualRevenue", "type": "xsd:decimal", "required": false, "description": "Annual revenue"},
+        {"name": "revenueBand", "type": "xsd:string", "required": false, "enum": ["<1M", "1M-10M", "10M-50M", "50M-250M", "250M-1B", "1B+"], "description": "Revenue band"},
+        {"name": "currency", "type": "xsd:string", "required": false, "description": "Currency for revenue (ISO 4217)"}
+      ]
+    },
+    {
+      "@id": "mat:ValueProfile",
+      "@type": "rdfs:Class",
+      "name": "ValueProfile",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Organization value and valuation metrics.",
+      "oaa:properties": [
+        {"name": "valuationType", "type": "xsd:string", "required": true, "enum": ["MarketCap", "EnterpriseValue", "BookValue", "FundingValuation", "AssetValue"], "description": "Type of valuation"},
+        {"name": "valuationAmount", "type": "xsd:decimal", "required": false, "description": "Valuation amount"},
+        {"name": "valuationBand", "type": "xsd:string", "required": false, "enum": ["<1M", "1M-10M", "10M-100M", "100M-500M", "500M-1B", "1B-10B", "10B+"], "description": "Valuation band"},
+        {"name": "currency", "type": "xsd:string", "required": false, "description": "Currency (ISO 4217)"},
+        {"name": "fundingStage", "type": "xsd:string", "required": false, "enum": ["Pre-Seed", "Seed", "SeriesA", "SeriesB", "SeriesC+", "PreIPO", "Public", "Private"], "description": "Funding stage"},
+        {"name": "valuationDate", "type": "xsd:date", "required": false, "description": "Date of valuation"}
+      ]
+    },
+    {
+      "@id": "mat:SectorProfile",
+      "@type": "rdfs:Class",
+      "name": "SectorProfile",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Industry sector and vertical classification.",
+      "oaa:properties": [
+        {"name": "primarySector", "type": "xsd:string", "required": true, "description": "Primary industry sector"},
+        {"name": "secondarySectors", "type": "xsd:string", "required": false, "description": "Secondary sectors (comma-separated)"},
+        {"name": "sectorCode", "type": "xsd:string", "required": false, "description": "Industry code (NAICS, SIC, GICS)"},
+        {"name": "codeSystem", "type": "xsd:string", "required": false, "enum": ["NAICS", "SIC", "GICS", "ICB", "Custom"], "description": "Classification system"},
+        {"name": "verticalType", "type": "xsd:string", "required": false, "enum": ["B2B", "B2C", "B2B2C", "B2G", "C2C", "D2C"], "description": "Business vertical"},
+        {"name": "regulatoryEnvironment", "type": "xsd:string", "required": false, "enum": ["Highly Regulated", "Moderately Regulated", "Lightly Regulated", "Unregulated"], "description": "Regulatory intensity"}
+      ]
+    },
+    {
+      "@id": "mat:GeographyProfile",
+      "@type": "rdfs:Class",
+      "name": "GeographyProfile",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Geographic presence and market coverage.",
+      "oaa:properties": [
+        {"name": "headquartersCountry", "type": "xsd:string", "required": true, "description": "HQ country (ISO 3166)"},
+        {"name": "headquartersRegion", "type": "xsd:string", "required": false, "description": "HQ region/state"},
+        {"name": "geographicScope", "type": "xsd:string", "required": true, "enum": ["Local", "Regional", "National", "Continental", "Global"], "description": "Geographic scope of operations"},
+        {"name": "operatingCountries", "type": "xsd:string", "required": false, "description": "Countries of operation (comma-separated ISO codes)"},
+        {"name": "operatingRegions", "type": "xsd:string", "required": false, "enum": ["NorthAmerica", "LatinAmerica", "WesternEurope", "EasternEurope", "MiddleEast", "Africa", "SouthAsia", "EastAsia", "SoutheastAsia", "Oceania"], "description": "Operating regions"},
+        {"name": "marketReach", "type": "xsd:string", "required": false, "enum": ["Single Market", "Multi-Market", "Pan-Regional", "Global"], "description": "Market reach"}
+      ]
+    },
+    {
+      "@id": "mat:OrgStructureProfile",
+      "@type": "rdfs:Class",
+      "name": "OrgStructureProfile",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Organizational structure and complexity.",
+      "oaa:properties": [
+        {"name": "structureType", "type": "xsd:string", "required": true, "enum": ["Flat", "Hierarchical", "Matrix", "Network", "Divisional", "Functional", "Hybrid"], "description": "Organization structure type"},
+        {"name": "managementLayers", "type": "xsd:integer", "required": false, "description": "Number of management layers"},
+        {"name": "complexityLevel", "type": "xsd:string", "required": true, "enum": ["Simple", "Moderate", "Complex", "Highly Complex"], "description": "Organizational complexity"},
+        {"name": "subsidiaryCount", "type": "xsd:integer", "required": false, "description": "Number of subsidiaries"},
+        {"name": "businessUnitCount", "type": "xsd:integer", "required": false, "description": "Number of business units"},
+        {"name": "decisionMakingStyle", "type": "xsd:string", "required": false, "enum": ["Centralized", "Decentralized", "Federated", "Hybrid"], "description": "Decision-making approach"}
+      ]
+    },
+    {
+      "@id": "mat:MarketingMaturity",
+      "@type": "rdfs:Class",
+      "name": "MarketingMaturity",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Marketing capability and maturity assessment.",
+      "oaa:properties": [
+        {"name": "overallLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall marketing maturity"},
+        {"name": "digitalMarketingCapability", "type": "xsd:string", "required": false, "enum": ["None", "Basic", "Intermediate", "Advanced", "Expert"], "description": "Digital marketing capability"},
+        {"name": "brandMaturity", "type": "xsd:string", "required": false, "enum": ["Emerging", "Established", "Strong", "Leading"], "description": "Brand maturity"},
+        {"name": "contentMarketingLevel", "type": "xsd:string", "required": false, "enum": ["None", "Basic", "Intermediate", "Advanced", "Expert"], "description": "Content marketing capability"},
+        {"name": "marketingAutomation", "type": "xsd:boolean", "required": false, "description": "Marketing automation in use"},
+        {"name": "marketingAnalytics", "type": "xsd:string", "required": false, "enum": ["None", "Basic", "Intermediate", "Advanced", "Predictive"], "description": "Marketing analytics capability"}
+      ]
+    },
+    {
+      "@id": "mat:TechAIMaturity",
+      "@type": "rdfs:Class",
+      "name": "TechAIMaturity",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Technology and AI adoption maturity.",
+      "oaa:properties": [
+        {"name": "overallLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall tech/AI maturity"},
+        {"name": "cloudAdoption", "type": "xsd:string", "required": false, "enum": ["None", "Exploring", "Partial", "Majority", "Cloud-First", "Cloud-Native"], "description": "Cloud adoption level"},
+        {"name": "aiAdoption", "type": "xsd:string", "required": false, "enum": ["None", "Exploring", "Pilot", "Scaling", "Embedded", "AI-First"], "description": "AI adoption level"},
+        {"name": "automationLevel", "type": "xsd:string", "required": false, "enum": ["Manual", "Basic Automation", "Process Automation", "Intelligent Automation", "Autonomous"], "description": "Automation level"},
+        {"name": "techStackModernity", "type": "xsd:string", "required": false, "enum": ["Legacy", "Mixed", "Modern", "Cutting-Edge"], "description": "Technology stack modernity"},
+        {"name": "aiUseCases", "type": "xsd:string", "required": false, "description": "Active AI use cases (comma-separated)"},
+        {"name": "mlOpsMaturity", "type": "xsd:string", "required": false, "enum": ["None", "Ad-hoc", "Developing", "Defined", "Managed", "Optimized"], "description": "MLOps maturity"}
+      ]
+    },
+    {
+      "@id": "mat:DigitalMaturity",
+      "@type": "rdfs:Class",
+      "name": "DigitalMaturity",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Digital transformation maturity assessment.",
+      "oaa:properties": [
+        {"name": "overallLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall digital maturity"},
+        {"name": "digitalStrategy", "type": "xsd:boolean", "required": false, "description": "Has formal digital strategy"},
+        {"name": "digitalChannels", "type": "xsd:string", "required": false, "enum": ["None", "Basic Web", "Multi-Channel", "Omni-Channel", "Digital-First"], "description": "Digital channel maturity"},
+        {"name": "customerDigitalExperience", "type": "xsd:string", "required": false, "enum": ["None", "Basic", "Good", "Excellent", "Exceptional"], "description": "Digital customer experience"},
+        {"name": "employeeDigitalExperience", "type": "xsd:string", "required": false, "enum": ["None", "Basic", "Good", "Excellent", "Exceptional"], "description": "Digital employee experience"},
+        {"name": "digitalRevenue", "type": "xsd:decimal", "required": false, "description": "Percentage of revenue from digital channels"}
+      ]
+    },
+    {
+      "@id": "mat:DataMaturity",
+      "@type": "rdfs:Class",
+      "name": "DataMaturity",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Data management and analytics maturity.",
+      "oaa:properties": [
+        {"name": "overallLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall data maturity"},
+        {"name": "dataGovernance", "type": "xsd:string", "required": false, "enum": ["None", "Ad-hoc", "Basic", "Formal", "Advanced"], "description": "Data governance maturity"},
+        {"name": "dataQuality", "type": "xsd:string", "required": false, "enum": ["Poor", "Fair", "Good", "High", "Excellent"], "description": "Data quality level"},
+        {"name": "analyticsCapability", "type": "xsd:string", "required": false, "enum": ["None", "Descriptive", "Diagnostic", "Predictive", "Prescriptive"], "description": "Analytics capability level"},
+        {"name": "dataIntegration", "type": "xsd:string", "required": false, "enum": ["Siloed", "Partial", "Integrated", "Unified", "Real-time"], "description": "Data integration level"},
+        {"name": "dataLiteracy", "type": "xsd:string", "required": false, "enum": ["Low", "Basic", "Moderate", "High", "Pervasive"], "description": "Organizational data literacy"}
+      ]
+    },
+    {
+      "@id": "mat:ProcessMaturity",
+      "@type": "rdfs:Class",
+      "name": "ProcessMaturity",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Business process maturity (aligns with PE-ONT).",
+      "oaa:properties": [
+        {"name": "overallLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall process maturity (CMMI-aligned)"},
+        {"name": "processDocumentation", "type": "xsd:string", "required": false, "enum": ["None", "Partial", "Complete", "Standardized"], "description": "Process documentation level"},
+        {"name": "processAutomation", "type": "xsd:string", "required": false, "enum": ["Manual", "Partial", "Significant", "Extensive", "Intelligent"], "description": "Process automation level"},
+        {"name": "processMetrics", "type": "xsd:boolean", "required": false, "description": "Process metrics in place"},
+        {"name": "continuousImprovement", "type": "xsd:boolean", "required": false, "description": "Continuous improvement practices"},
+        {"name": "bpmTooling", "type": "xsd:string", "required": false, "enum": ["None", "Basic", "Intermediate", "Advanced"], "description": "BPM tooling level"}
+      ]
+    },
+    {
+      "@id": "mat:CustomerExperienceMaturity",
+      "@type": "rdfs:Class",
+      "name": "CustomerExperienceMaturity",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Customer experience capability maturity (aligns with CE-ONT).",
+      "oaa:properties": [
+        {"name": "overallLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall CX maturity"},
+        {"name": "voiceOfCustomer", "type": "xsd:string", "required": false, "enum": ["None", "Ad-hoc", "Systematic", "Integrated", "Predictive"], "description": "VoC capability"},
+        {"name": "journeyMapping", "type": "xsd:boolean", "required": false, "description": "Customer journey mapping in place"},
+        {"name": "personalization", "type": "xsd:string", "required": false, "enum": ["None", "Segment-based", "Behavioral", "Predictive", "Real-time"], "description": "Personalization capability"},
+        {"name": "customerServiceLevel", "type": "xsd:string", "required": false, "enum": ["Reactive", "Responsive", "Proactive", "Predictive"], "description": "Customer service level"},
+        {"name": "npsScore", "type": "xsd:integer", "required": false, "description": "Net Promoter Score (-100 to 100)"}
+      ]
+    },
+    {
+      "@id": "mat:TalentMaturity",
+      "@type": "rdfs:Class",
+      "name": "TalentMaturity",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Talent and workforce capability maturity.",
+      "oaa:properties": [
+        {"name": "overallLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall talent maturity"},
+        {"name": "skillsGapAnalysis", "type": "xsd:boolean", "required": false, "description": "Skills gap analysis performed"},
+        {"name": "learningCulture", "type": "xsd:string", "required": false, "enum": ["None", "Limited", "Growing", "Strong", "Pervasive"], "description": "Learning culture strength"},
+        {"name": "digitalSkillsLevel", "type": "xsd:string", "required": false, "enum": ["Low", "Basic", "Moderate", "High", "Advanced"], "description": "Digital skills level"},
+        {"name": "leadershipCapability", "type": "xsd:string", "required": false, "enum": ["Developing", "Capable", "Strong", "Exceptional"], "description": "Leadership capability"},
+        {"name": "employeeEngagement", "type": "xsd:string", "required": false, "enum": ["Low", "Moderate", "High", "Very High"], "description": "Employee engagement level"},
+        {"name": "talentRetention", "type": "xsd:string", "required": false, "enum": ["Poor", "Fair", "Good", "Excellent"], "description": "Talent retention"}
+      ]
+    },
+    {
+      "@id": "mat:InnovationMaturity",
+      "@type": "rdfs:Class",
+      "name": "InnovationMaturity",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Innovation capability and culture maturity.",
+      "oaa:properties": [
+        {"name": "overallLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall innovation maturity"},
+        {"name": "rdInvestment", "type": "xsd:string", "required": false, "enum": ["None", "Minimal", "Moderate", "Significant", "Major"], "description": "R&D investment level"},
+        {"name": "innovationCulture", "type": "xsd:string", "required": false, "enum": ["Risk-Averse", "Cautious", "Balanced", "Innovative", "Pioneering"], "description": "Innovation culture"},
+        {"name": "ideationProcess", "type": "xsd:boolean", "required": false, "description": "Formal ideation process exists"},
+        {"name": "patentActivity", "type": "xsd:string", "required": false, "enum": ["None", "Low", "Moderate", "High", "Industry-Leading"], "description": "Patent activity level"},
+        {"name": "partnerInnovation", "type": "xsd:boolean", "required": false, "description": "Open innovation with partners"},
+        {"name": "timeToMarket", "type": "xsd:string", "required": false, "enum": ["Slow", "Average", "Fast", "Very Fast"], "description": "Time to market capability"}
+      ]
+    },
+    {
+      "@id": "mat:GovernanceMaturity",
+      "@type": "rdfs:Class",
+      "name": "GovernanceMaturity",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Corporate governance and compliance maturity.",
+      "oaa:properties": [
+        {"name": "overallLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall governance maturity"},
+        {"name": "boardEffectiveness", "type": "xsd:string", "required": false, "enum": ["Basic", "Functional", "Effective", "High-Performing"], "description": "Board effectiveness"},
+        {"name": "complianceMaturity", "type": "xsd:string", "required": false, "enum": ["Reactive", "Managed", "Proactive", "Optimized"], "description": "Compliance maturity"},
+        {"name": "riskManagement", "type": "xsd:string", "required": false, "enum": ["Ad-hoc", "Basic", "Integrated", "Advanced", "Enterprise-wide"], "description": "Risk management maturity"},
+        {"name": "auditCapability", "type": "xsd:string", "required": false, "enum": ["External Only", "Basic Internal", "Comprehensive", "Continuous"], "description": "Audit capability"},
+        {"name": "transparencyLevel", "type": "xsd:string", "required": false, "enum": ["Minimal", "Moderate", "High", "Full"], "description": "Transparency level"}
+      ]
+    },
+    {
+      "@id": "mat:SecurityRiskMaturity",
+      "@type": "rdfs:Class",
+      "name": "SecurityRiskMaturity",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Cybersecurity and risk management maturity.",
+      "oaa:properties": [
+        {"name": "overallLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall security maturity"},
+        {"name": "securityFramework", "type": "xsd:string", "required": false, "enum": ["None", "Custom", "NIST", "ISO27001", "SOC2", "Multiple"], "description": "Security framework adopted"},
+        {"name": "incidentResponse", "type": "xsd:string", "required": false, "enum": ["None", "Basic", "Documented", "Tested", "Automated"], "description": "Incident response capability"},
+        {"name": "securityAwareness", "type": "xsd:string", "required": false, "enum": ["None", "Annual", "Regular", "Continuous", "Culture"], "description": "Security awareness program"},
+        {"name": "vulnerabilityManagement", "type": "xsd:string", "required": false, "enum": ["Ad-hoc", "Periodic", "Regular", "Continuous"], "description": "Vulnerability management"},
+        {"name": "certifications", "type": "xsd:string", "required": false, "description": "Security certifications held (comma-separated)"}
+      ]
+    },
+    {
+      "@id": "mat:SustainabilityESG",
+      "@type": "rdfs:Class",
+      "name": "SustainabilityESG",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Environmental, Social, and Governance (ESG) maturity.",
+      "oaa:properties": [
+        {"name": "overallLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall ESG maturity"},
+        {"name": "environmentalScore", "type": "xsd:string", "required": false, "enum": ["Poor", "Fair", "Good", "Excellent", "Leader"], "description": "Environmental performance"},
+        {"name": "socialScore", "type": "xsd:string", "required": false, "enum": ["Poor", "Fair", "Good", "Excellent", "Leader"], "description": "Social responsibility"},
+        {"name": "governanceScore", "type": "xsd:string", "required": false, "enum": ["Poor", "Fair", "Good", "Excellent", "Leader"], "description": "Governance quality"},
+        {"name": "carbonCommitment", "type": "xsd:string", "required": false, "enum": ["None", "Measuring", "Reducing", "NetZero Target", "Carbon Negative"], "description": "Carbon commitment level"},
+        {"name": "esgReporting", "type": "xsd:boolean", "required": false, "description": "ESG reporting in place"},
+        {"name": "esgRating", "type": "xsd:string", "required": false, "description": "External ESG rating if available"}
+      ]
+    },
+    {
+      "@id": "mat:PartnershipEcosystem",
+      "@type": "rdfs:Class",
+      "name": "PartnershipEcosystem",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Partnership and ecosystem engagement maturity.",
+      "oaa:properties": [
+        {"name": "overallLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall ecosystem maturity"},
+        {"name": "partnerNetworkSize", "type": "xsd:string", "required": false, "enum": ["None", "Limited", "Moderate", "Extensive", "Industry-Leading"], "description": "Partner network size"},
+        {"name": "ecosystemRole", "type": "xsd:string", "required": false, "enum": ["Participant", "Contributor", "Influencer", "Leader", "Orchestrator"], "description": "Role in ecosystem"},
+        {"name": "partnerIntegration", "type": "xsd:string", "required": false, "enum": ["Transactional", "Collaborative", "Integrated", "Strategic"], "description": "Partner integration level"},
+        {"name": "apiEcosystem", "type": "xsd:boolean", "required": false, "description": "API ecosystem available"},
+        {"name": "coInnovation", "type": "xsd:boolean", "required": false, "description": "Co-innovation with partners"}
+      ]
+    },
+    {
+      "@id": "mat:ChangeReadiness",
+      "@type": "rdfs:Class",
+      "name": "ChangeReadiness",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Organizational agility and change readiness.",
+      "oaa:properties": [
+        {"name": "overallLevel", "type": "xsd:string", "required": true, "enum": ["Initial", "Developing", "Defined", "Managed", "Optimized"], "description": "Overall change readiness"},
+        {"name": "changeCapability", "type": "xsd:string", "required": false, "enum": ["Resistant", "Reactive", "Adaptive", "Proactive", "Anticipatory"], "description": "Change capability"},
+        {"name": "agileAdoption", "type": "xsd:string", "required": false, "enum": ["None", "Teams", "Departments", "Organization-wide", "Business Agility"], "description": "Agile adoption level"},
+        {"name": "transformationHistory", "type": "xsd:string", "required": false, "enum": ["None", "Failed", "Mixed", "Successful", "Multiple Successes"], "description": "Transformation track record"},
+        {"name": "changeManagement", "type": "xsd:boolean", "required": false, "description": "Formal change management practice"},
+        {"name": "adaptationSpeed", "type": "xsd:string", "required": false, "enum": ["Slow", "Moderate", "Fast", "Very Fast"], "description": "Speed of adaptation"}
+      ]
+    }
+  ],
+
+  "relationships": [
+    {
+      "@id": "mat:hasMaturityProfile",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Maturity Profile",
+      "description": "Cross-ontology: OrganizationContext connects to maturity profile",
+      "domainIncludes": ["org:OrganizationContext"],
+      "rangeIncludes": ["mat:MaturityProfile"],
+      "oaa:crossOntology": true,
+      "oaa:cardinality": {"min": 0, "max": "*"}
+    },
+    {
+      "@id": "mat:hasDimensionScore",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Dimension Score",
+      "description": "Profile contains dimension scores",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:DimensionScore"],
+      "oaa:cardinality": {"min": 1, "max": "*"}
+    },
+    {
+      "@id": "mat:hasSizeProfile",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Size Profile",
+      "description": "Profile includes size classification",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:SizeProfile"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasValueProfile",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Value Profile",
+      "description": "Profile includes value/valuation data",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:ValueProfile"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasSectorProfile",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Sector Profile",
+      "description": "Profile includes sector classification",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:SectorProfile"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasGeographyProfile",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Geography Profile",
+      "description": "Profile includes geographic information",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:GeographyProfile"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasOrgStructureProfile",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Org Structure Profile",
+      "description": "Profile includes organizational structure",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:OrgStructureProfile"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasMarketingMaturity",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Marketing Maturity",
+      "description": "Profile includes marketing maturity assessment",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:MarketingMaturity"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasTechAIMaturity",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Tech/AI Maturity",
+      "description": "Profile includes technology and AI maturity",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:TechAIMaturity"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasDigitalMaturity",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Digital Maturity",
+      "description": "Profile includes digital transformation maturity",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:DigitalMaturity"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasDataMaturity",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Data Maturity",
+      "description": "Profile includes data management maturity",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:DataMaturity"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasProcessMaturity",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Process Maturity",
+      "description": "Profile includes process maturity (connects to PE-ONT concepts)",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:ProcessMaturity"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasCustomerExperienceMaturity",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Customer Experience Maturity",
+      "description": "Profile includes CX maturity (connects to CE-ONT concepts)",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:CustomerExperienceMaturity"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasTalentMaturity",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Talent Maturity",
+      "description": "Profile includes talent and workforce maturity",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:TalentMaturity"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasInnovationMaturity",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Innovation Maturity",
+      "description": "Profile includes innovation capability maturity",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:InnovationMaturity"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasGovernanceMaturity",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Governance Maturity",
+      "description": "Profile includes governance and compliance maturity",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:GovernanceMaturity"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasSecurityRiskMaturity",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Security/Risk Maturity",
+      "description": "Profile includes security and risk management maturity",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:SecurityRiskMaturity"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasSustainabilityESG",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Sustainability/ESG",
+      "description": "Profile includes ESG maturity",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:SustainabilityESG"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasPartnershipEcosystem",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Partnership/Ecosystem",
+      "description": "Profile includes ecosystem maturity",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:PartnershipEcosystem"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:hasChangeReadiness",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Change Readiness",
+      "description": "Profile includes change readiness assessment",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:ChangeReadiness"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    },
+    {
+      "@id": "mat:previousProfile",
+      "@type": "owl:ObjectProperty",
+      "name": "Previous Profile",
+      "description": "Links to previous maturity profile for trend analysis",
+      "domainIncludes": ["mat:MaturityProfile"],
+      "rangeIncludes": ["mat:MaturityProfile"],
+      "oaa:cardinality": {"min": 0, "max": 1}
+    }
+  ],
+
+  "businessRules": [
+    {
+      "@id": "mat:BR-MAT-001",
+      "name": "Profile Requires Dimension Scores",
+      "description": "Every maturity profile must have at least one dimension score",
+      "condition": "IF a MaturityProfile is created",
+      "action": "THEN it MUST have at least one hasDimensionScore relationship",
+      "severity": "error",
+      "appliesTo": ["mat:MaturityProfile"]
+    },
+    {
+      "@id": "mat:BR-MAT-002",
+      "name": "Dimension Score Range",
+      "description": "Numeric scores must be within valid range",
+      "condition": "IF a DimensionScore has numericScore",
+      "action": "THEN numericScore MUST be between 1.0 and 5.0 inclusive",
+      "severity": "error",
+      "appliesTo": ["mat:DimensionScore"]
+    },
+    {
+      "@id": "mat:BR-MAT-003",
+      "name": "Weight Range",
+      "description": "Dimension weights must be valid percentages",
+      "condition": "IF a DimensionScore has weight",
+      "action": "THEN weight MUST be between 0.0 and 1.0 inclusive",
+      "severity": "error",
+      "appliesTo": ["mat:DimensionScore"]
+    },
+    {
+      "@id": "mat:BR-MAT-004",
+      "name": "Assessment Date Required",
+      "description": "All profiles must have assessment date",
+      "condition": "IF a MaturityProfile is created",
+      "action": "THEN assessmentDate MUST be specified",
+      "severity": "error",
+      "appliesTo": ["mat:MaturityProfile"]
+    },
+    {
+      "@id": "mat:BR-MAT-005",
+      "name": "Level Score Consistency",
+      "description": "Maturity level should align with numeric score",
+      "condition": "IF a DimensionScore has both maturityLevel and numericScore",
+      "action": "THEN maturityLevel SHOULD correspond to score range (Initial: 1.0-1.9, Developing: 2.0-2.9, Defined: 3.0-3.9, Managed: 4.0-4.9, Optimized: 5.0)",
+      "severity": "warning",
+      "appliesTo": ["mat:DimensionScore"]
+    },
+    {
+      "@id": "mat:BR-MAT-006",
+      "name": "Core Dimensions Recommended",
+      "description": "Profiles should include core dimensional assessments",
+      "condition": "IF a MaturityProfile is created for comprehensive assessment",
+      "action": "THEN it SHOULD include at minimum: SizeProfile, SectorProfile, GeographyProfile, and at least 3 maturity dimensions",
+      "severity": "info",
+      "appliesTo": ["mat:MaturityProfile"]
+    },
+    {
+      "@id": "mat:BR-MAT-007",
+      "name": "Evidence for High Scores",
+      "description": "High maturity claims should have supporting evidence",
+      "condition": "IF a DimensionScore has numericScore >= 4.0",
+      "action": "THEN evidence SHOULD be provided",
+      "severity": "warning",
+      "appliesTo": ["mat:DimensionScore"]
+    },
+    {
+      "@id": "mat:BR-MAT-008",
+      "name": "NPS Score Range",
+      "description": "NPS scores must be within valid range",
+      "condition": "IF CustomerExperienceMaturity has npsScore",
+      "action": "THEN npsScore MUST be between -100 and 100 inclusive",
+      "severity": "error",
+      "appliesTo": ["mat:CustomerExperienceMaturity"]
+    }
+  ],
+
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "5.0.0",
+    "lastModified": "2026-02-01",
+    "modifiedBy": "OAA Ontology Workbench",
+    "changeNotes": "Initial creation of Organization Maturity ontology with 19 dimension entities, OrganizationContext bridge pattern, and comprehensive assessment framework.",
+    "versionHistory": []
+  }
+}

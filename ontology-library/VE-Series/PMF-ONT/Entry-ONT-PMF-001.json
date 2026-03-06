@@ -1,0 +1,84 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-PMF-001",
+  "name": "PMF Ontology (Product-Market Fit)",
+  "description": "Product-Market Fit ontology for customer validation, market positioning, and launch planning. Part of VE lineage chain: VSOM \u2192 OKR \u2192 VP \u2192 PMF \u2192 EFS",
+  "version": "2.0.0",
+  "oaaVersion": "6.1.0",
+  "namespace": "https://platformcore.io/ontology/pmf/",
+  "prefix": "pmf:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-02",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./pmf-ontology-v2.0.0-oaa-v6.json",
+    "documentation": "./PMF-GTM-README.md",
+    "architecture": "./PMF-GTM-System-Architecture.md",
+    "visualGuide": "./PF-CORE_VE_ProdDev-PMF-GTM_Visual_Guide.md",
+    "glossary": "../../unified-glossary-v2.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "ProductMarketFit": "Alignment between product offering and market demand",
+    "MarketValidation": "Evidence of market acceptance and demand",
+    "CustomerSegmentFit": "Alignment with target customer segment needs",
+    "CompetitivePositioning": "Product position relative to competitors"
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "validatesMarket",
+        "from": "vp:ValueProposition",
+        "to": "pmf:ProductMarketFit",
+        "purpose": "VP \u2192 PMF lineage"
+      },
+      {
+        "name": "enablesExecution",
+        "from": "pmf:ProductMarketFit",
+        "to": "efs:Epic",
+        "purpose": "PMF \u2192 EFS lineage"
+      },
+      {
+        "name": "executedVia",
+        "from": "pmf:ProductMarketFit",
+        "to": "ppm:Project",
+        "purpose": "PMF to PPM execution"
+      }
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-OKR-001",
+    "Entry-ONT-VP-001",
+    "Entry-ONT-ORG-CTX-001"
+  ],
+  "dependents": [
+    "Entry-ONT-EFS-001",
+    "Entry-ONT-PPM-001"
+  ],
+  "layer": "STRATEGIC LAYER (VE-Series)",
+  "domain": "Market Validation",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "lastModified": "2026-02-09",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-02",
+      "changes": "Full OAA v5 compliance, VE lineage chain integration, PE-Series connection"
+    }
+  ],
+  "notes": "Part of VE lineage chain between VP and EFS. Validates market fit before execution. Connects to PE-Series for project execution."
+}

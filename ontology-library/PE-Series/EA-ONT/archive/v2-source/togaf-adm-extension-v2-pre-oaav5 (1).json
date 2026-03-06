@@ -1,0 +1,1491 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ea": "https://ontology.enterprise-architecture.io/azure/",
+    "togaf": "https://ontology.enterprise-architecture.io/togaf/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "togaf:precedes": {"@type": "@id"},
+    "togaf:follows": {"@type": "@id"},
+    "togaf:informs": {"@type": "@id"},
+    "togaf:informedBy": {"@type": "@id"},
+    "togaf:produces": {"@type": "@id"},
+    "togaf:producedBy": {"@type": "@id"},
+    "togaf:consumes": {"@type": "@id"},
+    "togaf:consumedBy": {"@type": "@id"},
+    "togaf:governs": {"@type": "@id"},
+    "togaf:governedBy": {"@type": "@id"},
+    "togaf:validates": {"@type": "@id"},
+    "togaf:validatedBy": {"@type": "@id"},
+    "togaf:transforms": {"@type": "@id"},
+    "togaf:transformedBy": {"@type": "@id"},
+    "togaf:decomposes": {"@type": "@id"},
+    "togaf:decomposedFrom": {"@type": "@id"},
+    "togaf:traces": {"@type": "@id"},
+    "togaf:tracedFrom": {"@type": "@id"},
+    "togaf:realizes": {"@type": "@id"},
+    "togaf:realizedBy": {"@type": "@id"},
+    "togaf:constrains": {"@type": "@id"},
+    "togaf:constrainedBy": {"@type": "@id"},
+    "togaf:refines": {"@type": "@id"},
+    "togaf:refinedBy": {"@type": "@id"},
+    "togaf:contains": {"@type": "@id"},
+    "togaf:containedIn": {"@type": "@id"},
+    "togaf:uses": {"@type": "@id"},
+    "togaf:usedBy": {"@type": "@id"},
+    "togaf:addresses": {"@type": "@id"},
+    "togaf:addressedBy": {"@type": "@id"},
+    "togaf:maps": {"@type": "@id"},
+    "togaf:mappedBy": {"@type": "@id"},
+    "togaf:implements": {"@type": "@id"},
+    "togaf:implementedBy": {"@type": "@id"},
+    "togaf:derives": {"@type": "@id"},
+    "togaf:derivedFrom": {"@type": "@id"},
+    "togaf:impacts": {"@type": "@id"},
+    "togaf:impactedBy": {"@type": "@id"},
+    "togaf:mitigates": {"@type": "@id"},
+    "togaf:mitigatedBy": {"@type": "@id"},
+    "togaf:satisfies": {"@type": "@id"},
+    "togaf:satisfiedBy": {"@type": "@id"},
+    "togaf:allocatedTo": {"@type": "@id"},
+    "togaf:allocatedFrom": {"@type": "@id"},
+    "togaf:dependsOn": {"@type": "@id"},
+    "togaf:dependencyOf": {"@type": "@id"},
+    "togaf:associatedWith": {"@type": "@id"},
+    "togaf:triggeredBy": {"@type": "@id"},
+    "togaf:triggers": {"@type": "@id"},
+    "togaf:visualizes": {"@type": "@id"},
+    "togaf:visualizedBy": {"@type": "@id"},
+    "togaf:supports": {"@type": "@id"},
+    "togaf:supportedBy": {"@type": "@id"},
+    "togaf:hostedOn": {"@type": "@id"}
+  },
+  "@graph": [
+    {
+      "@id": "togaf:TOGAFOntology",
+      "@type": "DefinedTermSet",
+      "name": "TOGAF Architecture Development Method Ontology",
+      "description": "Comprehensive connected ontology for TOGAF ADM with full relationship semantics covering phases, artifacts, building blocks, requirements, and governance",
+      "version": "2.0.0-pre-oaav5",
+      "dateCreated": "2026-01-26"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:ADMPhase",
+      "rdfs:subClassOf": {"@id": "schema:Action"},
+      "rdfs:label": "ADM Phase",
+      "rdfs:comment": "A phase in the TOGAF Architecture Development Method cycle"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:ArchitectureDomain",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTerm"},
+      "rdfs:label": "Architecture Domain",
+      "rdfs:comment": "One of the four TOGAF architecture domains"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:ArchitectureArtifact",
+      "rdfs:subClassOf": {"@id": "schema:CreativeWork"},
+      "rdfs:label": "Architecture Artifact",
+      "rdfs:comment": "A work product produced during architecture development"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:Catalog",
+      "rdfs:subClassOf": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:label": "Catalog",
+      "rdfs:comment": "A list of building blocks of a specific type"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:Matrix",
+      "rdfs:subClassOf": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:label": "Matrix",
+      "rdfs:comment": "A grid showing relationships between building blocks"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:Diagram",
+      "rdfs:subClassOf": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:label": "Diagram",
+      "rdfs:comment": "A visual representation of building blocks and relationships"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:Deliverable",
+      "rdfs:subClassOf": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:label": "Deliverable",
+      "rdfs:comment": "A contractually specified work product"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:BuildingBlock",
+      "rdfs:subClassOf": {"@id": "schema:Thing"},
+      "rdfs:label": "Building Block",
+      "rdfs:comment": "A potentially reusable component of enterprise capability"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:ArchitectureBuildingBlock",
+      "rdfs:subClassOf": {"@id": "togaf:BuildingBlock"},
+      "rdfs:label": "Architecture Building Block (ABB)",
+      "rdfs:comment": "A component of the architecture model describing required capability"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:SolutionBuildingBlock",
+      "rdfs:subClassOf": {"@id": "togaf:BuildingBlock"},
+      "rdfs:label": "Solution Building Block (SBB)",
+      "rdfs:comment": "A component that implements an Architecture Building Block"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:Requirement",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTerm"},
+      "rdfs:label": "Architecture Requirement",
+      "rdfs:comment": "A statement of need that must be met by the architecture"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:Principle",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTerm"},
+      "rdfs:label": "Architecture Principle",
+      "rdfs:comment": "A general rule and guideline intended to be enduring"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:Constraint",
+      "rdfs:subClassOf": {"@id": "togaf:Requirement"},
+      "rdfs:label": "Architecture Constraint",
+      "rdfs:comment": "An external factor that limits solution options"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:Gap",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTerm"},
+      "rdfs:label": "Architecture Gap",
+      "rdfs:comment": "Difference between baseline and target architecture"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:Risk",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTerm"},
+      "rdfs:label": "Architecture Risk",
+      "rdfs:comment": "A potential issue that may impact architecture success"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:Stakeholder",
+      "rdfs:subClassOf": {"@id": "schema:Person"},
+      "rdfs:label": "Stakeholder",
+      "rdfs:comment": "An individual, team or organization with interests in the architecture"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:Concern",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTerm"},
+      "rdfs:label": "Stakeholder Concern",
+      "rdfs:comment": "An interest or requirement of a stakeholder"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:Viewpoint",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTerm"},
+      "rdfs:label": "Architecture Viewpoint",
+      "rdfs:comment": "A specification of conventions for constructing and using a view"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:View",
+      "rdfs:subClassOf": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:label": "Architecture View",
+      "rdfs:comment": "A representation of a system from a specific viewpoint"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:TransitionArchitecture",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTerm"},
+      "rdfs:label": "Transition Architecture",
+      "rdfs:comment": "An intermediate architecture state between baseline and target"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:WorkPackage",
+      "rdfs:subClassOf": {"@id": "schema:Action"},
+      "rdfs:label": "Work Package",
+      "rdfs:comment": "A set of activities and deliverables for implementation"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:ArchitectureContract",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTerm"},
+      "rdfs:label": "Architecture Contract",
+      "rdfs:comment": "A joint agreement on deliverables, quality and fitness-for-purpose"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:ComplianceAssessment",
+      "rdfs:subClassOf": {"@id": "schema:DefinedTerm"},
+      "rdfs:label": "Compliance Assessment",
+      "rdfs:comment": "Assessment of implementation conformance to architecture"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:Capability",
+      "rdfs:subClassOf": {"@id": "schema:Action"},
+      "rdfs:label": "Capability",
+      "rdfs:comment": "An ability that an organization possesses"
+    },
+    {
+      "@type": "rdfs:Class",
+      "@id": "togaf:CapabilityIncrement",
+      "rdfs:subClassOf": {"@id": "togaf:Capability"},
+      "rdfs:label": "Capability Increment",
+      "rdfs:comment": "A discrete portion of capability delivered through projects"
+    },
+    {
+      "@type": "togaf:ArchitectureDomain",
+      "@id": "togaf:BusinessDomain",
+      "name": "Business Architecture",
+      "description": "The business strategy, governance, organization, and key business processes",
+      "togaf:contains": [
+        {"@id": "togaf:BusinessCapabilityCatalog"},
+        {"@id": "togaf:ValueStreamCatalog"},
+        {"@id": "togaf:OrganizationActorCatalog"},
+        {"@id": "togaf:BusinessServiceCatalog"},
+        {"@id": "togaf:ProcessCatalog"},
+        {"@id": "togaf:BusinessCapabilityMap"},
+        {"@id": "togaf:ValueStreamMap"},
+        {"@id": "togaf:OrganizationDecompositionDiagram"},
+        {"@id": "togaf:BusinessInteractionMatrix"},
+        {"@id": "togaf:ActorRoleMatrix"}
+      ],
+      "togaf:informs": [
+        {"@id": "togaf:DataDomain"},
+        {"@id": "togaf:ApplicationDomain"},
+        {"@id": "togaf:TechnologyDomain"}
+      ]
+    },
+    {
+      "@type": "togaf:ArchitectureDomain",
+      "@id": "togaf:DataDomain",
+      "name": "Data Architecture",
+      "description": "The structure of logical and physical data assets and data management resources",
+      "togaf:contains": [
+        {"@id": "togaf:DataEntityCatalog"},
+        {"@id": "togaf:ConceptualDataDiagram"},
+        {"@id": "togaf:LogicalDataDiagram"},
+        {"@id": "togaf:DataDisseminationDiagram"},
+        {"@id": "togaf:DataLifecycleDiagram"},
+        {"@id": "togaf:DataEntityBusinessFunctionMatrix"},
+        {"@id": "togaf:ApplicationDataMatrix"}
+      ],
+      "togaf:informedBy": {"@id": "togaf:BusinessDomain"},
+      "togaf:informs": {"@id": "togaf:ApplicationDomain"}
+    },
+    {
+      "@type": "togaf:ArchitectureDomain",
+      "@id": "togaf:ApplicationDomain",
+      "name": "Application Architecture",
+      "description": "A blueprint for individual applications, their interactions, and relationships to business processes",
+      "togaf:contains": [
+        {"@id": "togaf:ApplicationPortfolioCatalog"},
+        {"@id": "togaf:InterfaceCatalog"},
+        {"@id": "togaf:ApplicationCommunicationDiagram"},
+        {"@id": "togaf:ApplicationUseCaseDiagram"},
+        {"@id": "togaf:ProcessApplicationRealizationDiagram"},
+        {"@id": "togaf:ApplicationInteractionMatrix"},
+        {"@id": "togaf:ApplicationFunctionMatrix"},
+        {"@id": "togaf:RoleApplicationMatrix"}
+      ],
+      "togaf:informedBy": [
+        {"@id": "togaf:BusinessDomain"},
+        {"@id": "togaf:DataDomain"}
+      ],
+      "togaf:informs": {"@id": "togaf:TechnologyDomain"}
+    },
+    {
+      "@type": "togaf:ArchitectureDomain",
+      "@id": "togaf:TechnologyDomain",
+      "name": "Technology Architecture",
+      "description": "The logical software and hardware capabilities required to support business, data and application services",
+      "togaf:contains": [
+        {"@id": "togaf:TechnologyStandardsCatalog"},
+        {"@id": "togaf:TechnologyPortfolioCatalog"},
+        {"@id": "togaf:EnvironmentsLocationsDiagram"},
+        {"@id": "togaf:PlatformDecompositionDiagram"},
+        {"@id": "togaf:NetworkComputingHardwareDiagram"},
+        {"@id": "togaf:ApplicationTechnologyMatrix"}
+      ],
+      "togaf:informedBy": [
+        {"@id": "togaf:BusinessDomain"},
+        {"@id": "togaf:DataDomain"},
+        {"@id": "togaf:ApplicationDomain"}
+      ],
+      "togaf:realizes": [
+        {"@id": "togaf:ApplicationDomain"},
+        {"@id": "togaf:DataDomain"}
+      ]
+    },
+    {
+      "@type": "togaf:ADMPhase",
+      "@id": "togaf:PreliminaryPhase",
+      "name": "Preliminary Phase",
+      "description": "Prepare the organization for successful TOGAF architecture projects",
+      "togaf:phaseCode": "Preliminary",
+      "togaf:objective": "Determine the Architecture Capability desired by the organization",
+      "togaf:precedes": {"@id": "togaf:PhaseA"},
+      "togaf:produces": [
+        {"@id": "togaf:OrganizationalModelForEA"},
+        {"@id": "togaf:TailoredArchitectureFramework"},
+        {"@id": "togaf:InitialArchitectureRepository"},
+        {"@id": "togaf:PrinciplesCatalog"},
+        {"@id": "togaf:RequestForArchitectureWork"}
+      ],
+      "togaf:addresses": [
+        {"@id": "togaf:ScopeOfOrganizations"},
+        {"@id": "togaf:GovernanceFramework"}
+      ]
+    },
+    {
+      "@type": "togaf:ADMPhase",
+      "@id": "togaf:PhaseA",
+      "name": "Phase A: Architecture Vision",
+      "description": "Develop a high-level aspirational vision of the capabilities and business value",
+      "togaf:phaseCode": "A",
+      "togaf:objective": "Obtain approval for a Statement of Architecture Work",
+      "togaf:follows": {"@id": "togaf:PreliminaryPhase"},
+      "togaf:precedes": {"@id": "togaf:PhaseB"},
+      "togaf:consumes": [
+        {"@id": "togaf:RequestForArchitectureWork"},
+        {"@id": "togaf:PrinciplesCatalog"}
+      ],
+      "togaf:produces": [
+        {"@id": "togaf:ArchitectureVisionDocument"},
+        {"@id": "togaf:StatementOfArchitectureWork"},
+        {"@id": "togaf:StakeholderMapMatrix"},
+        {"@id": "togaf:ValueChainDiagram"},
+        {"@id": "togaf:SolutionConceptDiagram"},
+        {"@id": "togaf:BusinessScenarios"}
+      ],
+      "togaf:validates": {"@id": "togaf:BusinessDomain"},
+      "togaf:governs": [
+        {"@id": "togaf:PhaseB"},
+        {"@id": "togaf:PhaseC"},
+        {"@id": "togaf:PhaseD"}
+      ],
+      "togaf:addresses": [
+        {"@id": "togaf:StakeholderConcerns"},
+        {"@id": "togaf:BusinessGoals"}
+      ],
+      "togaf:triggeredBy": {"@id": "togaf:RequestForArchitectureWork"}
+    },
+    {
+      "@type": "togaf:ADMPhase",
+      "@id": "togaf:PhaseB",
+      "name": "Phase B: Business Architecture",
+      "description": "Develop the Business Architecture to support the agreed Architecture Vision",
+      "togaf:phaseCode": "B",
+      "togaf:objective": "Develop the Target Business Architecture describing product and service strategy",
+      "togaf:follows": {"@id": "togaf:PhaseA"},
+      "togaf:precedes": {"@id": "togaf:PhaseC"},
+      "togaf:governedBy": {"@id": "togaf:PhaseA"},
+      "togaf:consumes": [
+        {"@id": "togaf:ArchitectureVisionDocument"},
+        {"@id": "togaf:StatementOfArchitectureWork"},
+        {"@id": "togaf:PrinciplesCatalog"}
+      ],
+      "togaf:produces": [
+        {"@id": "togaf:BaselineBusinessArchitecture"},
+        {"@id": "togaf:TargetBusinessArchitecture"},
+        {"@id": "togaf:BusinessArchitectureGapAnalysis"},
+        {"@id": "togaf:BusinessCapabilityCatalog"},
+        {"@id": "togaf:ValueStreamCatalog"},
+        {"@id": "togaf:OrganizationActorCatalog"},
+        {"@id": "togaf:BusinessCapabilityMap"},
+        {"@id": "togaf:ValueStreamMap"},
+        {"@id": "togaf:BusinessInteractionMatrix"}
+      ],
+      "togaf:refines": {"@id": "togaf:BusinessDomain"},
+      "togaf:informs": [
+        {"@id": "togaf:PhaseC"},
+        {"@id": "togaf:PhaseD"},
+        {"@id": "togaf:PhaseE"}
+      ],
+      "togaf:traces": {"@id": "togaf:RequirementsManagement"}
+    },
+    {
+      "@type": "togaf:ADMPhase",
+      "@id": "togaf:PhaseC",
+      "name": "Phase C: Information Systems Architectures",
+      "description": "Develop the Data and Application Architectures",
+      "togaf:phaseCode": "C",
+      "togaf:objective": "Develop Target Data and Application Architectures enabling the Business Architecture",
+      "togaf:follows": {"@id": "togaf:PhaseB"},
+      "togaf:precedes": {"@id": "togaf:PhaseD"},
+      "togaf:governedBy": {"@id": "togaf:PhaseA"},
+      "togaf:consumes": [
+        {"@id": "togaf:ArchitectureVisionDocument"},
+        {"@id": "togaf:TargetBusinessArchitecture"},
+        {"@id": "togaf:BusinessArchitectureGapAnalysis"}
+      ],
+      "togaf:produces": [
+        {"@id": "togaf:BaselineDataArchitecture"},
+        {"@id": "togaf:TargetDataArchitecture"},
+        {"@id": "togaf:DataArchitectureGapAnalysis"},
+        {"@id": "togaf:BaselineApplicationArchitecture"},
+        {"@id": "togaf:TargetApplicationArchitecture"},
+        {"@id": "togaf:ApplicationArchitectureGapAnalysis"},
+        {"@id": "togaf:DataEntityCatalog"},
+        {"@id": "togaf:ApplicationPortfolioCatalog"},
+        {"@id": "togaf:InterfaceCatalog"},
+        {"@id": "togaf:ConceptualDataDiagram"},
+        {"@id": "togaf:ApplicationCommunicationDiagram"},
+        {"@id": "togaf:ApplicationDataMatrix"}
+      ],
+      "togaf:refines": [
+        {"@id": "togaf:DataDomain"},
+        {"@id": "togaf:ApplicationDomain"}
+      ],
+      "togaf:informedBy": {"@id": "togaf:PhaseB"},
+      "togaf:informs": [
+        {"@id": "togaf:PhaseD"},
+        {"@id": "togaf:PhaseE"}
+      ],
+      "togaf:traces": {"@id": "togaf:RequirementsManagement"}
+    },
+    {
+      "@type": "togaf:ADMPhase",
+      "@id": "togaf:PhaseD",
+      "name": "Phase D: Technology Architecture",
+      "description": "Develop the Technology Architecture to enable logical and physical application and data components",
+      "togaf:phaseCode": "D",
+      "togaf:objective": "Develop Target Technology Architecture enabling Application and Data Architectures",
+      "togaf:follows": {"@id": "togaf:PhaseC"},
+      "togaf:precedes": {"@id": "togaf:PhaseE"},
+      "togaf:governedBy": {"@id": "togaf:PhaseA"},
+      "togaf:consumes": [
+        {"@id": "togaf:ArchitectureVisionDocument"},
+        {"@id": "togaf:TargetBusinessArchitecture"},
+        {"@id": "togaf:TargetDataArchitecture"},
+        {"@id": "togaf:TargetApplicationArchitecture"}
+      ],
+      "togaf:produces": [
+        {"@id": "togaf:BaselineTechnologyArchitecture"},
+        {"@id": "togaf:TargetTechnologyArchitecture"},
+        {"@id": "togaf:TechnologyArchitectureGapAnalysis"},
+        {"@id": "togaf:ArchitectureDefinitionDocument"},
+        {"@id": "togaf:ArchitectureRequirementsSpecification"},
+        {"@id": "togaf:TechnologyStandardsCatalog"},
+        {"@id": "togaf:TechnologyPortfolioCatalog"},
+        {"@id": "togaf:PlatformDecompositionDiagram"},
+        {"@id": "togaf:EnvironmentsLocationsDiagram"},
+        {"@id": "togaf:ApplicationTechnologyMatrix"}
+      ],
+      "togaf:refines": {"@id": "togaf:TechnologyDomain"},
+      "togaf:informedBy": [
+        {"@id": "togaf:PhaseB"},
+        {"@id": "togaf:PhaseC"}
+      ],
+      "togaf:informs": {"@id": "togaf:PhaseE"},
+      "togaf:traces": {"@id": "togaf:RequirementsManagement"},
+      "togaf:realizes": [
+        {"@id": "togaf:TargetApplicationArchitecture"},
+        {"@id": "togaf:TargetDataArchitecture"}
+      ]
+    },
+    {
+      "@type": "togaf:ADMPhase",
+      "@id": "togaf:PhaseE",
+      "name": "Phase E: Opportunities and Solutions",
+      "description": "Generate the initial complete version of the Architecture Roadmap",
+      "togaf:phaseCode": "E",
+      "togaf:objective": "Generate the Implementation and Migration Strategy",
+      "togaf:follows": {"@id": "togaf:PhaseD"},
+      "togaf:precedes": {"@id": "togaf:PhaseF"},
+      "togaf:consumes": [
+        {"@id": "togaf:ArchitectureDefinitionDocument"},
+        {"@id": "togaf:ArchitectureRequirementsSpecification"},
+        {"@id": "togaf:BusinessArchitectureGapAnalysis"},
+        {"@id": "togaf:DataArchitectureGapAnalysis"},
+        {"@id": "togaf:ApplicationArchitectureGapAnalysis"},
+        {"@id": "togaf:TechnologyArchitectureGapAnalysis"}
+      ],
+      "togaf:produces": [
+        {"@id": "togaf:ArchitectureRoadmap"},
+        {"@id": "togaf:CapabilityAssessment"},
+        {"@id": "togaf:TransitionArchitectures"},
+        {"@id": "togaf:ImplementationMigrationStrategy"},
+        {"@id": "togaf:WorkPackages"},
+        {"@id": "togaf:ConsolidatedGapsAnalysis"}
+      ],
+      "togaf:informedBy": [
+        {"@id": "togaf:PhaseB"},
+        {"@id": "togaf:PhaseC"},
+        {"@id": "togaf:PhaseD"}
+      ],
+      "togaf:informs": {"@id": "togaf:PhaseF"},
+      "togaf:transforms": [
+        {"@id": "togaf:BaselineBusinessArchitecture"},
+        {"@id": "togaf:BaselineDataArchitecture"},
+        {"@id": "togaf:BaselineApplicationArchitecture"},
+        {"@id": "togaf:BaselineTechnologyArchitecture"}
+      ]
+    },
+    {
+      "@type": "togaf:ADMPhase",
+      "@id": "togaf:PhaseF",
+      "name": "Phase F: Migration Planning",
+      "description": "Finalize the Architecture Roadmap and Implementation and Migration Plan",
+      "togaf:phaseCode": "F",
+      "togaf:objective": "Finalize detailed Implementation and Migration Plan",
+      "togaf:follows": {"@id": "togaf:PhaseE"},
+      "togaf:precedes": {"@id": "togaf:PhaseG"},
+      "togaf:consumes": [
+        {"@id": "togaf:ArchitectureRoadmap"},
+        {"@id": "togaf:TransitionArchitectures"},
+        {"@id": "togaf:ImplementationMigrationStrategy"},
+        {"@id": "togaf:WorkPackages"}
+      ],
+      "togaf:produces": [
+        {"@id": "togaf:ImplementationMigrationPlan"},
+        {"@id": "togaf:FinalizedArchitectureRoadmap"},
+        {"@id": "togaf:FinalizedTransitionArchitectures"},
+        {"@id": "togaf:ReusableABBs"},
+        {"@id": "togaf:ArchitectureContractDocument"},
+        {"@id": "togaf:ImplementationGovernanceModel"}
+      ],
+      "togaf:informedBy": {"@id": "togaf:PhaseE"},
+      "togaf:informs": {"@id": "togaf:PhaseG"},
+      "togaf:refines": {"@id": "togaf:ArchitectureRoadmap"}
+    },
+    {
+      "@type": "togaf:ADMPhase",
+      "@id": "togaf:PhaseG",
+      "name": "Phase G: Implementation Governance",
+      "description": "Ensure conformance with the Target Architecture by implementation projects",
+      "togaf:phaseCode": "G",
+      "togaf:objective": "Ensure architecture conformance of implementation",
+      "togaf:follows": {"@id": "togaf:PhaseF"},
+      "togaf:precedes": {"@id": "togaf:PhaseH"},
+      "togaf:consumes": [
+        {"@id": "togaf:ImplementationMigrationPlan"},
+        {"@id": "togaf:ArchitectureContractDocument"},
+        {"@id": "togaf:ImplementationGovernanceModel"}
+      ],
+      "togaf:produces": [
+        {"@id": "togaf:ArchitectureComplianceAssessment"},
+        {"@id": "togaf:ArchitectureChangeRequests"},
+        {"@id": "togaf:ArchitectureCompliantSolutions"},
+        {"@id": "togaf:PopulatedArchitectureRepository"}
+      ],
+      "togaf:governs": [
+        {"@id": "togaf:WorkPackages"},
+        {"@id": "togaf:TransitionArchitectures"}
+      ],
+      "togaf:validates": [
+        {"@id": "togaf:ArchitectureContractDocument"},
+        {"@id": "togaf:TargetTechnologyArchitecture"}
+      ],
+      "togaf:informedBy": {"@id": "togaf:PhaseF"},
+      "togaf:informs": {"@id": "togaf:PhaseH"},
+      "togaf:triggers": {"@id": "togaf:RequirementsManagement"}
+    },
+    {
+      "@type": "togaf:ADMPhase",
+      "@id": "togaf:PhaseH",
+      "name": "Phase H: Architecture Change Management",
+      "description": "Establish and support implemented architecture and manage change",
+      "togaf:phaseCode": "H",
+      "togaf:objective": "Ensure architecture lifecycle is maintained and change is managed",
+      "togaf:follows": {"@id": "togaf:PhaseG"},
+      "togaf:precedes": {"@id": "togaf:PhaseA"},
+      "togaf:consumes": [
+        {"@id": "togaf:ArchitectureComplianceAssessment"},
+        {"@id": "togaf:ArchitectureChangeRequests"},
+        {"@id": "togaf:PopulatedArchitectureRepository"}
+      ],
+      "togaf:produces": [
+        {"@id": "togaf:ArchitectureUpdates"},
+        {"@id": "togaf:ChangesToArchitectureFramework"},
+        {"@id": "togaf:NewRequestForArchitectureWork"}
+      ],
+      "togaf:governs": {"@id": "togaf:ArchitectureRoadmap"},
+      "togaf:triggers": [
+        {"@id": "togaf:PhaseA"},
+        {"@id": "togaf:RequirementsManagement"}
+      ],
+      "togaf:informedBy": {"@id": "togaf:PhaseG"}
+    },
+    {
+      "@type": "togaf:ADMPhase",
+      "@id": "togaf:RequirementsManagement",
+      "name": "Requirements Management",
+      "description": "Manage architecture requirements throughout the ADM cycle",
+      "togaf:phaseCode": "RM",
+      "togaf:objective": "Ensure requirements are available for each phase of ADM",
+      "togaf:associatedWith": [
+        {"@id": "togaf:PreliminaryPhase"},
+        {"@id": "togaf:PhaseA"},
+        {"@id": "togaf:PhaseB"},
+        {"@id": "togaf:PhaseC"},
+        {"@id": "togaf:PhaseD"},
+        {"@id": "togaf:PhaseE"},
+        {"@id": "togaf:PhaseF"},
+        {"@id": "togaf:PhaseG"},
+        {"@id": "togaf:PhaseH"}
+      ],
+      "togaf:produces": [
+        {"@id": "togaf:RequirementsRepository"},
+        {"@id": "togaf:RequirementsImpactAssessment"},
+        {"@id": "togaf:RequirementsTraceability"}
+      ],
+      "togaf:consumes": {"@id": "togaf:ArchitectureChangeRequests"},
+      "togaf:triggeredBy": [
+        {"@id": "togaf:PhaseG"},
+        {"@id": "togaf:PhaseH"}
+      ]
+    },
+    {
+      "@type": "togaf:Catalog",
+      "@id": "togaf:PrinciplesCatalog",
+      "name": "Principles Catalog",
+      "togaf:producedBy": {"@id": "togaf:PreliminaryPhase"},
+      "togaf:consumedBy": [{"@id": "togaf:PhaseA"}, {"@id": "togaf:PhaseB"}, {"@id": "togaf:PhaseC"}, {"@id": "togaf:PhaseD"}],
+      "togaf:governs": [{"@id": "togaf:BusinessDomain"}, {"@id": "togaf:DataDomain"}, {"@id": "togaf:ApplicationDomain"}, {"@id": "togaf:TechnologyDomain"}],
+      "togaf:containedIn": {"@id": "togaf:PreliminaryPhase"}
+    },
+    {
+      "@type": "togaf:Catalog",
+      "@id": "togaf:BusinessCapabilityCatalog",
+      "name": "Business Capability Catalog",
+      "togaf:producedBy": {"@id": "togaf:PhaseB"},
+      "togaf:containedIn": {"@id": "togaf:BusinessDomain"},
+      "togaf:maps": {"@id": "togaf:ValueStreamCatalog"},
+      "togaf:traces": {"@id": "togaf:RequirementsRepository"},
+      "togaf:visualizedBy": {"@id": "togaf:BusinessCapabilityMap"}
+    },
+    {
+      "@type": "togaf:Catalog",
+      "@id": "togaf:ValueStreamCatalog",
+      "name": "Value Stream Catalog",
+      "togaf:producedBy": {"@id": "togaf:PhaseB"},
+      "togaf:containedIn": {"@id": "togaf:BusinessDomain"},
+      "togaf:mappedBy": {"@id": "togaf:BusinessCapabilityCatalog"},
+      "togaf:decomposes": {"@id": "togaf:BusinessCapabilityCatalog"},
+      "togaf:visualizedBy": {"@id": "togaf:ValueStreamMap"}
+    },
+    {
+      "@type": "togaf:Catalog",
+      "@id": "togaf:OrganizationActorCatalog",
+      "name": "Organization/Actor Catalog",
+      "togaf:producedBy": {"@id": "togaf:PhaseB"},
+      "togaf:containedIn": {"@id": "togaf:BusinessDomain"},
+      "togaf:maps": {"@id": "togaf:ActorRoleMatrix"},
+      "togaf:visualizedBy": {"@id": "togaf:OrganizationDecompositionDiagram"}
+    },
+    {
+      "@type": "togaf:Catalog",
+      "@id": "togaf:BusinessServiceCatalog",
+      "name": "Business Service/Function Catalog",
+      "togaf:producedBy": {"@id": "togaf:PhaseB"},
+      "togaf:containedIn": {"@id": "togaf:BusinessDomain"},
+      "togaf:realizedBy": {"@id": "togaf:ApplicationPortfolioCatalog"}
+    },
+    {
+      "@type": "togaf:Catalog",
+      "@id": "togaf:ProcessCatalog",
+      "name": "Process Catalog",
+      "togaf:producedBy": {"@id": "togaf:PhaseB"},
+      "togaf:containedIn": {"@id": "togaf:BusinessDomain"},
+      "togaf:uses": {"@id": "togaf:BusinessCapabilityCatalog"},
+      "togaf:maps": {"@id": "togaf:ProcessApplicationRealizationDiagram"}
+    },
+    {
+      "@type": "togaf:Catalog",
+      "@id": "togaf:DataEntityCatalog",
+      "name": "Data Entity/Data Component Catalog",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:DataDomain"},
+      "togaf:mappedBy": {"@id": "togaf:ApplicationDataMatrix"},
+      "togaf:informedBy": {"@id": "togaf:BusinessCapabilityCatalog"},
+      "togaf:visualizedBy": {"@id": "togaf:ConceptualDataDiagram"}
+    },
+    {
+      "@type": "togaf:Catalog",
+      "@id": "togaf:ApplicationPortfolioCatalog",
+      "name": "Application Portfolio Catalog",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:ApplicationDomain"},
+      "togaf:realizes": {"@id": "togaf:BusinessServiceCatalog"},
+      "togaf:uses": {"@id": "togaf:DataEntityCatalog"},
+      "togaf:supportedBy": {"@id": "togaf:TechnologyPortfolioCatalog"},
+      "togaf:visualizedBy": {"@id": "togaf:ApplicationCommunicationDiagram"}
+    },
+    {
+      "@type": "togaf:Catalog",
+      "@id": "togaf:InterfaceCatalog",
+      "name": "Interface Catalog",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:ApplicationDomain"},
+      "togaf:maps": {"@id": "togaf:ApplicationInteractionMatrix"}
+    },
+    {
+      "@type": "togaf:Catalog",
+      "@id": "togaf:TechnologyStandardsCatalog",
+      "name": "Technology Standards Catalog",
+      "togaf:producedBy": {"@id": "togaf:PhaseD"},
+      "togaf:containedIn": {"@id": "togaf:TechnologyDomain"},
+      "togaf:constrains": {"@id": "togaf:TechnologyPortfolioCatalog"}
+    },
+    {
+      "@type": "togaf:Catalog",
+      "@id": "togaf:TechnologyPortfolioCatalog",
+      "name": "Technology Portfolio Catalog",
+      "togaf:producedBy": {"@id": "togaf:PhaseD"},
+      "togaf:containedIn": {"@id": "togaf:TechnologyDomain"},
+      "togaf:constrainedBy": {"@id": "togaf:TechnologyStandardsCatalog"},
+      "togaf:supports": {"@id": "togaf:ApplicationPortfolioCatalog"},
+      "togaf:visualizedBy": {"@id": "togaf:PlatformDecompositionDiagram"}
+    },
+    {
+      "@type": "togaf:Matrix",
+      "@id": "togaf:StakeholderMapMatrix",
+      "name": "Stakeholder Map Matrix",
+      "togaf:producedBy": {"@id": "togaf:PhaseA"},
+      "togaf:maps": [{"@id": "togaf:Stakeholder"}, {"@id": "togaf:Concern"}]
+    },
+    {
+      "@type": "togaf:Matrix",
+      "@id": "togaf:BusinessInteractionMatrix",
+      "name": "Business Interaction Matrix",
+      "togaf:producedBy": {"@id": "togaf:PhaseB"},
+      "togaf:containedIn": {"@id": "togaf:BusinessDomain"},
+      "togaf:maps": [{"@id": "togaf:OrganizationActorCatalog"}, {"@id": "togaf:BusinessServiceCatalog"}]
+    },
+    {
+      "@type": "togaf:Matrix",
+      "@id": "togaf:ActorRoleMatrix",
+      "name": "Actor/Role Matrix",
+      "togaf:producedBy": {"@id": "togaf:PhaseB"},
+      "togaf:containedIn": {"@id": "togaf:BusinessDomain"},
+      "togaf:mappedBy": {"@id": "togaf:OrganizationActorCatalog"}
+    },
+    {
+      "@type": "togaf:Matrix",
+      "@id": "togaf:DataEntityBusinessFunctionMatrix",
+      "name": "Data Entity/Business Function Matrix",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:DataDomain"},
+      "togaf:maps": [{"@id": "togaf:DataEntityCatalog"}, {"@id": "togaf:BusinessServiceCatalog"}]
+    },
+    {
+      "@type": "togaf:Matrix",
+      "@id": "togaf:ApplicationDataMatrix",
+      "name": "Application/Data Matrix",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:DataDomain"},
+      "togaf:maps": [{"@id": "togaf:ApplicationPortfolioCatalog"}, {"@id": "togaf:DataEntityCatalog"}]
+    },
+    {
+      "@type": "togaf:Matrix",
+      "@id": "togaf:ApplicationInteractionMatrix",
+      "name": "Application Interaction Matrix",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:ApplicationDomain"},
+      "togaf:mappedBy": {"@id": "togaf:InterfaceCatalog"}
+    },
+    {
+      "@type": "togaf:Matrix",
+      "@id": "togaf:ApplicationFunctionMatrix",
+      "name": "Application/Function Matrix",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:ApplicationDomain"},
+      "togaf:maps": [{"@id": "togaf:ApplicationPortfolioCatalog"}, {"@id": "togaf:BusinessServiceCatalog"}]
+    },
+    {
+      "@type": "togaf:Matrix",
+      "@id": "togaf:RoleApplicationMatrix",
+      "name": "Role/Application Matrix",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:ApplicationDomain"},
+      "togaf:maps": [{"@id": "togaf:OrganizationActorCatalog"}, {"@id": "togaf:ApplicationPortfolioCatalog"}]
+    },
+    {
+      "@type": "togaf:Matrix",
+      "@id": "togaf:ApplicationTechnologyMatrix",
+      "name": "Application/Technology Matrix",
+      "togaf:producedBy": {"@id": "togaf:PhaseD"},
+      "togaf:containedIn": {"@id": "togaf:TechnologyDomain"},
+      "togaf:maps": [{"@id": "togaf:ApplicationPortfolioCatalog"}, {"@id": "togaf:TechnologyPortfolioCatalog"}]
+    },
+    {
+      "@type": "togaf:Matrix",
+      "@id": "togaf:RequirementsTraceability",
+      "name": "Requirements Traceability Matrix",
+      "togaf:producedBy": {"@id": "togaf:RequirementsManagement"},
+      "togaf:maps": [{"@id": "togaf:RequirementsRepository"}, {"@id": "togaf:ArchitectureDefinitionDocument"}]
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:ValueChainDiagram",
+      "name": "Value Chain Diagram",
+      "togaf:producedBy": {"@id": "togaf:PhaseA"},
+      "togaf:visualizes": {"@id": "togaf:ValueStreamCatalog"}
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:SolutionConceptDiagram",
+      "name": "Solution Concept Diagram",
+      "togaf:producedBy": {"@id": "togaf:PhaseA"},
+      "togaf:visualizes": {"@id": "togaf:ArchitectureVisionDocument"}
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:BusinessCapabilityMap",
+      "name": "Business Capability Map",
+      "togaf:producedBy": {"@id": "togaf:PhaseB"},
+      "togaf:containedIn": {"@id": "togaf:BusinessDomain"},
+      "togaf:visualizes": {"@id": "togaf:BusinessCapabilityCatalog"}
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:ValueStreamMap",
+      "name": "Value Stream Map",
+      "togaf:producedBy": {"@id": "togaf:PhaseB"},
+      "togaf:containedIn": {"@id": "togaf:BusinessDomain"},
+      "togaf:visualizes": {"@id": "togaf:ValueStreamCatalog"}
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:OrganizationDecompositionDiagram",
+      "name": "Organization Decomposition Diagram",
+      "togaf:producedBy": {"@id": "togaf:PhaseB"},
+      "togaf:containedIn": {"@id": "togaf:BusinessDomain"},
+      "togaf:visualizes": {"@id": "togaf:OrganizationActorCatalog"}
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:ConceptualDataDiagram",
+      "name": "Conceptual Data Diagram",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:DataDomain"},
+      "togaf:visualizes": {"@id": "togaf:DataEntityCatalog"},
+      "togaf:refinedBy": {"@id": "togaf:LogicalDataDiagram"}
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:LogicalDataDiagram",
+      "name": "Logical Data Diagram",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:DataDomain"},
+      "togaf:refines": {"@id": "togaf:ConceptualDataDiagram"}
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:DataDisseminationDiagram",
+      "name": "Data Dissemination Diagram",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:DataDomain"}
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:DataLifecycleDiagram",
+      "name": "Data Lifecycle Diagram",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:DataDomain"}
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:ApplicationCommunicationDiagram",
+      "name": "Application Communication Diagram",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:ApplicationDomain"},
+      "togaf:visualizes": {"@id": "togaf:InterfaceCatalog"}
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:ApplicationUseCaseDiagram",
+      "name": "Application Use-Case Diagram",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:ApplicationDomain"}
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:ProcessApplicationRealizationDiagram",
+      "name": "Process/Application Realization Diagram",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:containedIn": {"@id": "togaf:ApplicationDomain"},
+      "togaf:maps": [{"@id": "togaf:ProcessCatalog"}, {"@id": "togaf:ApplicationPortfolioCatalog"}]
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:EnvironmentsLocationsDiagram",
+      "name": "Environments and Locations Diagram",
+      "togaf:producedBy": {"@id": "togaf:PhaseD"},
+      "togaf:containedIn": {"@id": "togaf:TechnologyDomain"}
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:PlatformDecompositionDiagram",
+      "name": "Platform Decomposition Diagram",
+      "togaf:producedBy": {"@id": "togaf:PhaseD"},
+      "togaf:containedIn": {"@id": "togaf:TechnologyDomain"},
+      "togaf:visualizes": {"@id": "togaf:TechnologyPortfolioCatalog"}
+    },
+    {
+      "@type": "togaf:Diagram",
+      "@id": "togaf:NetworkComputingHardwareDiagram",
+      "name": "Networked Computing/Hardware Diagram",
+      "togaf:producedBy": {"@id": "togaf:PhaseD"},
+      "togaf:containedIn": {"@id": "togaf:TechnologyDomain"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:OrganizationalModelForEA",
+      "name": "Organizational Model for Enterprise Architecture",
+      "togaf:producedBy": {"@id": "togaf:PreliminaryPhase"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:TailoredArchitectureFramework",
+      "name": "Tailored Architecture Framework",
+      "togaf:producedBy": {"@id": "togaf:PreliminaryPhase"},
+      "togaf:governs": [{"@id": "togaf:PhaseA"}, {"@id": "togaf:PhaseB"}, {"@id": "togaf:PhaseC"}, {"@id": "togaf:PhaseD"}, {"@id": "togaf:PhaseE"}, {"@id": "togaf:PhaseF"}, {"@id": "togaf:PhaseG"}, {"@id": "togaf:PhaseH"}],
+      "togaf:impactedBy": {"@id": "togaf:ChangesToArchitectureFramework"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:InitialArchitectureRepository",
+      "name": "Initial Architecture Repository",
+      "togaf:producedBy": {"@id": "togaf:PreliminaryPhase"},
+      "togaf:refinedBy": {"@id": "togaf:PopulatedArchitectureRepository"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:RequestForArchitectureWork",
+      "name": "Request for Architecture Work",
+      "togaf:producedBy": {"@id": "togaf:PreliminaryPhase"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseA"},
+      "togaf:triggers": {"@id": "togaf:PhaseA"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ArchitectureVisionDocument",
+      "name": "Architecture Vision",
+      "togaf:producedBy": {"@id": "togaf:PhaseA"},
+      "togaf:consumedBy": [{"@id": "togaf:PhaseB"}, {"@id": "togaf:PhaseC"}, {"@id": "togaf:PhaseD"}],
+      "togaf:governs": [{"@id": "togaf:TargetBusinessArchitecture"}, {"@id": "togaf:TargetDataArchitecture"}, {"@id": "togaf:TargetApplicationArchitecture"}, {"@id": "togaf:TargetTechnologyArchitecture"}],
+      "togaf:visualizedBy": {"@id": "togaf:SolutionConceptDiagram"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:StatementOfArchitectureWork",
+      "name": "Statement of Architecture Work",
+      "togaf:producedBy": {"@id": "togaf:PhaseA"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseB"},
+      "togaf:governs": [{"@id": "togaf:PhaseB"}, {"@id": "togaf:PhaseC"}, {"@id": "togaf:PhaseD"}]
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:BusinessScenarios",
+      "name": "Business Scenarios",
+      "togaf:producedBy": {"@id": "togaf:PhaseA"},
+      "togaf:informedBy": {"@id": "togaf:StakeholderConcerns"},
+      "togaf:informs": {"@id": "togaf:PhaseB"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:BaselineBusinessArchitecture",
+      "name": "Baseline Business Architecture",
+      "togaf:producedBy": {"@id": "togaf:PhaseB"},
+      "togaf:transformedBy": {"@id": "togaf:PhaseE"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:TargetBusinessArchitecture",
+      "name": "Target Business Architecture",
+      "togaf:producedBy": {"@id": "togaf:PhaseB"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseC"},
+      "togaf:governedBy": {"@id": "togaf:ArchitectureVisionDocument"},
+      "togaf:informs": {"@id": "togaf:TargetDataArchitecture"},
+      "togaf:realizedBy": {"@id": "togaf:ArchitectureCompliantSolutions"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:BusinessArchitectureGapAnalysis",
+      "name": "Business Architecture Gap Analysis",
+      "togaf:producedBy": {"@id": "togaf:PhaseB"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseE"},
+      "togaf:derives": [{"@id": "togaf:BaselineBusinessArchitecture"}, {"@id": "togaf:TargetBusinessArchitecture"}]
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:BaselineDataArchitecture",
+      "name": "Baseline Data Architecture",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:transformedBy": {"@id": "togaf:PhaseE"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:TargetDataArchitecture",
+      "name": "Target Data Architecture",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseD"},
+      "togaf:governedBy": {"@id": "togaf:ArchitectureVisionDocument"},
+      "togaf:informedBy": {"@id": "togaf:TargetBusinessArchitecture"},
+      "togaf:realizedBy": [{"@id": "togaf:TargetTechnologyArchitecture"}, {"@id": "togaf:ArchitectureCompliantSolutions"}]
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:DataArchitectureGapAnalysis",
+      "name": "Data Architecture Gap Analysis",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseE"},
+      "togaf:derives": [{"@id": "togaf:BaselineDataArchitecture"}, {"@id": "togaf:TargetDataArchitecture"}]
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:BaselineApplicationArchitecture",
+      "name": "Baseline Application Architecture",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:transformedBy": {"@id": "togaf:PhaseE"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:TargetApplicationArchitecture",
+      "name": "Target Application Architecture",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseD"},
+      "togaf:governedBy": {"@id": "togaf:ArchitectureVisionDocument"},
+      "togaf:realizedBy": [{"@id": "togaf:TargetTechnologyArchitecture"}, {"@id": "togaf:ArchitectureCompliantSolutions"}]
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ApplicationArchitectureGapAnalysis",
+      "name": "Application Architecture Gap Analysis",
+      "togaf:producedBy": {"@id": "togaf:PhaseC"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseE"},
+      "togaf:derives": [{"@id": "togaf:BaselineApplicationArchitecture"}, {"@id": "togaf:TargetApplicationArchitecture"}]
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:BaselineTechnologyArchitecture",
+      "name": "Baseline Technology Architecture",
+      "togaf:producedBy": {"@id": "togaf:PhaseD"},
+      "togaf:transformedBy": {"@id": "togaf:PhaseE"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:TargetTechnologyArchitecture",
+      "name": "Target Technology Architecture",
+      "togaf:producedBy": {"@id": "togaf:PhaseD"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseE"},
+      "togaf:governedBy": {"@id": "togaf:ArchitectureVisionDocument"},
+      "togaf:realizes": [{"@id": "togaf:TargetApplicationArchitecture"}, {"@id": "togaf:TargetDataArchitecture"}],
+      "togaf:validatedBy": {"@id": "togaf:PhaseG"},
+      "togaf:realizedBy": {"@id": "togaf:ArchitectureCompliantSolutions"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:TechnologyArchitectureGapAnalysis",
+      "name": "Technology Architecture Gap Analysis",
+      "togaf:producedBy": {"@id": "togaf:PhaseD"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseE"},
+      "togaf:derives": [{"@id": "togaf:BaselineTechnologyArchitecture"}, {"@id": "togaf:TargetTechnologyArchitecture"}]
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ArchitectureDefinitionDocument",
+      "name": "Architecture Definition Document",
+      "togaf:producedBy": {"@id": "togaf:PhaseD"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseE"},
+      "togaf:contains": [{"@id": "togaf:TargetBusinessArchitecture"}, {"@id": "togaf:TargetDataArchitecture"}, {"@id": "togaf:TargetApplicationArchitecture"}, {"@id": "togaf:TargetTechnologyArchitecture"}],
+      "togaf:mappedBy": {"@id": "togaf:RequirementsTraceability"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ArchitectureRequirementsSpecification",
+      "name": "Architecture Requirements Specification",
+      "togaf:producedBy": {"@id": "togaf:PhaseD"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseE"},
+      "togaf:traces": {"@id": "togaf:RequirementsRepository"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ArchitectureRoadmap",
+      "name": "Architecture Roadmap",
+      "togaf:producedBy": {"@id": "togaf:PhaseE"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseF"},
+      "togaf:refinedBy": {"@id": "togaf:FinalizedArchitectureRoadmap"},
+      "togaf:governedBy": {"@id": "togaf:PhaseH"},
+      "togaf:contains": {"@id": "togaf:WorkPackages"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:CapabilityAssessment",
+      "name": "Capability Assessment",
+      "togaf:producedBy": {"@id": "togaf:PhaseE"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:TransitionArchitectures",
+      "name": "Transition Architectures",
+      "togaf:producedBy": {"@id": "togaf:PhaseE"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseF"},
+      "togaf:refinedBy": {"@id": "togaf:FinalizedTransitionArchitectures"},
+      "togaf:governedBy": {"@id": "togaf:PhaseG"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ImplementationMigrationStrategy",
+      "name": "Implementation and Migration Strategy",
+      "togaf:producedBy": {"@id": "togaf:PhaseE"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseF"},
+      "togaf:refinedBy": {"@id": "togaf:ImplementationMigrationPlan"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:WorkPackages",
+      "name": "Work Packages",
+      "togaf:producedBy": {"@id": "togaf:PhaseE"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseF"},
+      "togaf:governedBy": {"@id": "togaf:PhaseG"},
+      "togaf:containedIn": {"@id": "togaf:ArchitectureRoadmap"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ConsolidatedGapsAnalysis",
+      "name": "Consolidated Gaps, Solutions, and Dependencies Matrix",
+      "togaf:producedBy": {"@id": "togaf:PhaseE"},
+      "togaf:derives": [{"@id": "togaf:BusinessArchitectureGapAnalysis"}, {"@id": "togaf:DataArchitectureGapAnalysis"}, {"@id": "togaf:ApplicationArchitectureGapAnalysis"}, {"@id": "togaf:TechnologyArchitectureGapAnalysis"}]
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ImplementationMigrationPlan",
+      "name": "Implementation and Migration Plan",
+      "togaf:producedBy": {"@id": "togaf:PhaseF"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseG"},
+      "togaf:refines": {"@id": "togaf:ImplementationMigrationStrategy"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:FinalizedArchitectureRoadmap",
+      "name": "Finalized Architecture Roadmap",
+      "togaf:producedBy": {"@id": "togaf:PhaseF"},
+      "togaf:refines": {"@id": "togaf:ArchitectureRoadmap"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:FinalizedTransitionArchitectures",
+      "name": "Finalized Transition Architectures",
+      "togaf:producedBy": {"@id": "togaf:PhaseF"},
+      "togaf:refines": {"@id": "togaf:TransitionArchitectures"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ReusableABBs",
+      "name": "Reusable Architecture Building Blocks",
+      "togaf:producedBy": {"@id": "togaf:PhaseF"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ArchitectureContractDocument",
+      "name": "Architecture Contract",
+      "togaf:producedBy": {"@id": "togaf:PhaseF"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseG"},
+      "togaf:validatedBy": [{"@id": "togaf:PhaseG"}, {"@id": "togaf:ArchitectureComplianceAssessment"}]
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ImplementationGovernanceModel",
+      "name": "Implementation Governance Model",
+      "togaf:producedBy": {"@id": "togaf:PhaseF"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseG"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ArchitectureComplianceAssessment",
+      "name": "Architecture Compliance Assessment",
+      "togaf:producedBy": {"@id": "togaf:PhaseG"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseH"},
+      "togaf:validates": {"@id": "togaf:ArchitectureContractDocument"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ArchitectureChangeRequests",
+      "name": "Architecture Change Requests",
+      "togaf:producedBy": {"@id": "togaf:PhaseG"},
+      "togaf:consumedBy": [{"@id": "togaf:PhaseH"}, {"@id": "togaf:RequirementsManagement"}]
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ArchitectureCompliantSolutions",
+      "name": "Architecture-Compliant Implemented Solutions",
+      "togaf:producedBy": {"@id": "togaf:PhaseG"},
+      "togaf:realizes": [{"@id": "togaf:TargetBusinessArchitecture"}, {"@id": "togaf:TargetDataArchitecture"}, {"@id": "togaf:TargetApplicationArchitecture"}, {"@id": "togaf:TargetTechnologyArchitecture"}]
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:PopulatedArchitectureRepository",
+      "name": "Populated Architecture Repository",
+      "togaf:producedBy": {"@id": "togaf:PhaseG"},
+      "togaf:consumedBy": {"@id": "togaf:PhaseH"},
+      "togaf:refines": {"@id": "togaf:InitialArchitectureRepository"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ArchitectureUpdates",
+      "name": "Architecture Updates",
+      "togaf:producedBy": {"@id": "togaf:PhaseH"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:ChangesToArchitectureFramework",
+      "name": "Changes to Architecture Framework",
+      "togaf:producedBy": {"@id": "togaf:PhaseH"},
+      "togaf:impacts": {"@id": "togaf:TailoredArchitectureFramework"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:NewRequestForArchitectureWork",
+      "name": "New Request for Architecture Work",
+      "togaf:producedBy": {"@id": "togaf:PhaseH"},
+      "togaf:triggers": {"@id": "togaf:PhaseA"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:RequirementsRepository",
+      "name": "Requirements Repository",
+      "togaf:producedBy": {"@id": "togaf:RequirementsManagement"},
+      "togaf:tracedFrom": {"@id": "togaf:BusinessCapabilityCatalog"},
+      "togaf:traces": {"@id": "togaf:ArchitectureRequirementsSpecification"},
+      "togaf:mappedBy": {"@id": "togaf:RequirementsTraceability"}
+    },
+    {
+      "@type": "togaf:Deliverable",
+      "@id": "togaf:RequirementsImpactAssessment",
+      "name": "Requirements Impact Assessment",
+      "togaf:producedBy": {"@id": "togaf:RequirementsManagement"}
+    },
+    {
+      "@type": "togaf:Concern",
+      "@id": "togaf:StakeholderConcerns",
+      "name": "Stakeholder Concerns",
+      "togaf:addressedBy": {"@id": "togaf:PhaseA"},
+      "togaf:informs": {"@id": "togaf:BusinessScenarios"}
+    },
+    {
+      "@type": "togaf:Concern",
+      "@id": "togaf:BusinessGoals",
+      "name": "Business Goals",
+      "togaf:addressedBy": {"@id": "togaf:PhaseA"}
+    },
+    {
+      "@type": "togaf:Concern",
+      "@id": "togaf:ScopeOfOrganizations",
+      "name": "Scope of Organizations Impacted",
+      "togaf:addressedBy": {"@id": "togaf:PreliminaryPhase"}
+    },
+    {
+      "@type": "togaf:Concern",
+      "@id": "togaf:GovernanceFramework",
+      "name": "Governance and Support Framework",
+      "togaf:addressedBy": {"@id": "togaf:PreliminaryPhase"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:precedes",
+      "rdfs:label": "precedes",
+      "rdfs:comment": "Phase A precedes Phase B in the ADM cycle",
+      "rdfs:domain": {"@id": "togaf:ADMPhase"},
+      "rdfs:range": {"@id": "togaf:ADMPhase"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:follows",
+      "rdfs:label": "follows",
+      "rdfs:comment": "Inverse of precedes - Phase B follows Phase A",
+      "rdfs:domain": {"@id": "togaf:ADMPhase"},
+      "rdfs:range": {"@id": "togaf:ADMPhase"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:produces",
+      "rdfs:label": "produces",
+      "rdfs:comment": "Phase produces deliverable/artifact as output",
+      "rdfs:domain": {"@id": "togaf:ADMPhase"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:consumes",
+      "rdfs:label": "consumes",
+      "rdfs:comment": "Phase consumes deliverable/artifact as input",
+      "rdfs:domain": {"@id": "togaf:ADMPhase"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:governs",
+      "rdfs:label": "governs",
+      "rdfs:comment": "Entity provides governance over another",
+      "rdfs:domain": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:validates",
+      "rdfs:label": "validates",
+      "rdfs:comment": "Entity validates or confirms another",
+      "rdfs:domain": {"@id": "togaf:ADMPhase"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:informs",
+      "rdfs:label": "informs",
+      "rdfs:comment": "Entity provides information to another",
+      "rdfs:domain": {"@id": "togaf:ArchitectureDomain"},
+      "rdfs:range": {"@id": "togaf:ArchitectureDomain"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:refines",
+      "rdfs:label": "refines",
+      "rdfs:comment": "Entity provides more detail to another",
+      "rdfs:domain": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:transforms",
+      "rdfs:label": "transforms",
+      "rdfs:comment": "Entity transforms baseline to target state",
+      "rdfs:domain": {"@id": "togaf:ADMPhase"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:derives",
+      "rdfs:label": "derives",
+      "rdfs:comment": "Entity is derived from source entities",
+      "rdfs:domain": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:traces",
+      "rdfs:label": "traces",
+      "rdfs:comment": "Entity traces to requirements or other artifacts",
+      "rdfs:domain": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:realizes",
+      "rdfs:label": "realizes",
+      "rdfs:comment": "Entity realizes or implements another",
+      "rdfs:domain": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:maps",
+      "rdfs:label": "maps",
+      "rdfs:comment": "Matrix or artifact maps relationships between catalogs",
+      "rdfs:domain": {"@id": "togaf:Matrix"},
+      "rdfs:range": {"@id": "togaf:Catalog"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:visualizes",
+      "rdfs:label": "visualizes",
+      "rdfs:comment": "Diagram visualizes content from catalog or deliverable",
+      "rdfs:domain": {"@id": "togaf:Diagram"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:contains",
+      "rdfs:label": "contains",
+      "rdfs:comment": "Entity contains other entities",
+      "rdfs:domain": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:constrains",
+      "rdfs:label": "constrains",
+      "rdfs:comment": "Entity constrains options for another",
+      "rdfs:domain": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:decomposes",
+      "rdfs:label": "decomposes",
+      "rdfs:comment": "Entity decomposes another into finer granularity",
+      "rdfs:domain": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:triggers",
+      "rdfs:label": "triggers",
+      "rdfs:comment": "Entity triggers initiation of another",
+      "rdfs:domain": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:range": {"@id": "togaf:ADMPhase"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:impacts",
+      "rdfs:label": "impacts",
+      "rdfs:comment": "Entity has impact on another",
+      "rdfs:domain": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:addresses",
+      "rdfs:label": "addresses",
+      "rdfs:comment": "Phase or artifact addresses a concern",
+      "rdfs:domain": {"@id": "togaf:ADMPhase"},
+      "rdfs:range": {"@id": "togaf:Concern"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:supports",
+      "rdfs:label": "supports",
+      "rdfs:comment": "Entity supports another",
+      "rdfs:domain": {"@id": "togaf:ArchitectureArtifact"},
+      "rdfs:range": {"@id": "togaf:ArchitectureArtifact"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:associatedWith",
+      "rdfs:label": "associated with",
+      "rdfs:comment": "Entity is associated with another (non-directional)",
+      "rdfs:domain": {"@id": "togaf:ADMPhase"},
+      "rdfs:range": {"@id": "togaf:ADMPhase"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:phaseCode",
+      "rdfs:label": "phase code",
+      "rdfs:comment": "Standard TOGAF phase identifier (Preliminary, A-H, RM)",
+      "rdfs:domain": {"@id": "togaf:ADMPhase"},
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+    {
+      "@type": "rdf:Property",
+      "@id": "togaf:objective",
+      "rdfs:label": "objective",
+      "rdfs:comment": "Primary objective of the ADM phase",
+      "rdfs:domain": {"@id": "togaf:ADMPhase"},
+      "rdfs:range": {"@id": "xsd:string"}
+    }
+  ]
+}

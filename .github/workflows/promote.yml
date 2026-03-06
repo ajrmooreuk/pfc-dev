@@ -1,0 +1,186 @@
+name: Promote Instance Files
+
+# Instance promotion pipeline — promotes PFI instance data across the
+# dev/test/prod triad. Configured per-instance via promotion/promotion.env.
+#
+# Triggers: manual workflow_dispatch only
+# Requires: PROMOTION_PAT secret with repo + workflow scopes
+#
+# Architecture reference: docs/architecture/arch-cicd/02-promotion-pipeline-detail.md
+
+on:
+  workflow_dispatch:
+    inputs:
+      direction:
+        description: 'Promotion direction'
+        required: true
+        type: choice
+        options:
+          - dev-to-test
+          - test-to-prod
+      bump:
+        description: 'Version bump type (test-to-prod only)'
+        required: false
+        type: choice
+        options:
+          - minor
+          - patch
+          - major
+        default: minor
+
+permissions:
+  contents: read
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v4
+        with:
+          path: source
+
+      - name: Load promotion config
+        id: config
+        run: |
+          if [[ -f "source/promotion/promotion.env" ]]; then
+            source source/promotion/promotion.env
+          else
+            echo "::error::promotion/promotion.env not found"
+            exit 1
+          fi
+
+          if [[ "${{ inputs.direction }}" == "dev-to-test" ]]; then
+            echo "target_repo=${PFI_TEST_REPO:-${PROMOTION_ORG}/${TEST_REPO}}" >> "$GITHUB_OUTPUT"
+          else
+            echo "target_repo=${PFI_PROD_REPO:-${PROMOTION_ORG}/${PROD_REPO}}" >> "$GITHUB_OUTPUT"
+          fi
+          echo "pfi_name=${PFI_NAME:-unknown}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.config.outputs.target_repo }}
+          token: ${{ secrets.PROMOTION_PAT }}
+          path: target
+
+      - name: Copy instance files
+        run: |
+          copied=0
+
+          # Copy instance-data directory
+          if [[ -d "source/instance-data" ]]; then
+            cp -r source/instance-data target/
+            echo "Copied instance-data/"
+            copied=$((copied + 1))
+          fi
+
+          # Copy pfc-core directory
+          if [[ -d "source/pfc-core" ]]; then
+            mkdir -p target/pfc-core
+            cp -r source/pfc-core/* target/pfc-core/
+            echo "Copied pfc-core/"
+            copied=$((copied + 1))
+          fi
+
+          # Copy supabase directory
+          if [[ -d "source/supabase" ]]; then
+            cp -r source/supabase target/
+            echo "Copied supabase/"
+            copied=$((copied + 1))
+          fi
+
+          # Copy tools directory
+          if [[ -d "source/tools" ]]; then
+            cp -r source/tools target/
+            echo "Copied tools/"
+            copied=$((copied + 1))
+          fi
+
+          # Copy promotion config
+          if [[ -d "source/promotion" ]]; then
+            mkdir -p target/promotion
+            cp source/promotion/* target/promotion/
+            echo "Copied promotion/"
+            copied=$((copied + 1))
+          fi
+
+          echo "Total directories copied: $copied"
+
+      - name: Check for changes
+        id: diff
+        working-directory: target
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No changes to promote."
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            echo "## Changed files" >> "$GITHUB_STEP_SUMMARY"
+            git diff --cached --name-only >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Create promotion branch and PR
+        if: steps.diff.outputs.has_changes == 'true'
+        working-directory: target
+        env:
+          GH_TOKEN: ${{ secrets.PROMOTION_PAT }}
+        run: |
+          PFI="${{ steps.config.outputs.pfi_name }}"
+          BRANCH="promote/${{ inputs.direction }}/$(date -u +%Y%m%d-%H%M%S)"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git commit -m "promote(${PFI}): ${{ inputs.direction }} $(date -u +%Y-%m-%d)"
+          git push origin "$BRANCH"
+
+          LABELS=""
+          if [[ "${{ inputs.direction }}" == "test-to-prod" ]]; then
+            LABELS="--label needs-sme-approval"
+          fi
+
+          if [[ "${{ inputs.direction }}" == "test-to-prod" ]]; then
+            REQUIREMENTS="### Merge requirements
+          - [ ] SME approval
+          - [ ] Version bump: ${{ inputs.bump }}"
+          else
+            REQUIREMENTS="### Merge requirements
+          - [ ] CI passes
+          - [ ] Instance data validated"
+          fi
+
+          gh pr create \
+            --title "Promote(${PFI}): ${{ inputs.direction }} $(date -u +%Y-%m-%d)" \
+            --body "$(cat <<EOF
+          ## Instance Promotion: ${{ inputs.direction }}
+
+          **PFI:** \`${PFI}\`
+          **Source:** \`${{ github.repository }}\` @ \`$(git rev-parse --short HEAD~1 2>/dev/null || echo "initial")\`
+          **Direction:** \`${{ inputs.direction }}\`
+          **Bump:** \`${{ inputs.bump }}\`
+          **Triggered by:** @${{ github.actor }}
+
+          ### Changed files
+          $(git diff --name-only HEAD~1 2>/dev/null || echo "See commits tab")
+
+          ${REQUIREMENTS}
+
+          ---
+          > Architecture ref: [ARCH-CICD-002](https://github.com/ajrmooreuk/AZLAN-CI-CD/blob/main/docs/architecture/arch-cicd/02-promotion-pipeline-detail.md)
+          > Generated by \`promote.yml\` — [Hub-and-Spoke CI/CD](https://github.com/ajrmooreuk/AZLAN-CI-CD)
+          EOF
+          )" $LABELS
+
+          echo "## PR created for ${PFI} ${{ inputs.direction }}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Promotion Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Field | Value |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|-------|-------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| PFI | ${{ steps.config.outputs.pfi_name }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Direction | ${{ inputs.direction }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Target | ${{ steps.config.outputs.target_repo }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Changes | ${{ steps.diff.outputs.has_changes }} |" >> "$GITHUB_STEP_SUMMARY"

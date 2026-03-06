@@ -1,0 +1,73 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-PARTNER-001",
+  "name": "Partner Network Ontology",
+  "description": "Foundation ontology for partner, agency, and affiliate relationships within the PF-Core platform ecosystem. 6 owned entities: Partner, Agency, Affiliate, Referral, CommissionRule, PartnerPayout. Multi-tier attribution (platform + marketplace referrals), agency management of multiple client pies, tiered partner programme (Bronze/Silver/Gold/Platinum), automated commission payouts via FairSlice revenue waterfall. 5 cross-ontology bridges to ORG, FAIRSLICE, GRC-FW, EMC, VSOM. Triple-Loop Outer Ring. Epic 50 F50.2.",
+  "version": "1.0.0",
+  "oaaVersion": "7.0.0",
+  "namespace": "https://platformcore.io/ontology/partner/",
+  "prefix": "partner:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-26",
+  "gatesPassed": 8,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "./partner-ont-v1.0.0.json"
+  },
+  "components": {
+    "Partner": "Channel partner entity — Agency, Affiliate, Reseller, Consultant, Integrator. Tiered programme with KYC governance.",
+    "Agency": "Specialisation of Partner — manages multiple client pies, earns management fee from revenue waterfall",
+    "Affiliate": "Specialisation of Partner — refers new users/startups, earns % of platform fee with attribution window",
+    "Referral": "Tracked attribution linking partner to pie — immutable referral codes prevent commission hijacking",
+    "CommissionRule": "Defines how partner earns commission — rate, trigger event, conditions, cap",
+    "PartnerPayout": "Aggregated payout to partner — period-based, KYC-gated, multi-payment-method"
+  },
+  "relationships": {
+    "internal": 5,
+    "crossOntology": [
+      {"name": "partnerIsOrganization", "from": "partner:Partner", "to": "org:Organization", "cardinality": "1..1", "purpose": "Partners are organisations with legal entity identity"},
+      {"name": "referralLinkedToPie", "from": "partner:Referral", "to": "fs:Pie", "cardinality": "1..1", "purpose": "Referrals attach to FairSlice pies for attribution"},
+      {"name": "agencyManagesPie", "from": "partner:Agency", "to": "fs:Pie", "cardinality": "0..*", "purpose": "Agencies manage multiple client pies"},
+      {"name": "commissionViaWaterfall", "from": "partner:CommissionRule", "to": "fs:WaterfallRule", "cardinality": "0..1", "purpose": "Commission rules execute through FairSlice waterfall"},
+      {"name": "partnerGovernedByGRC", "from": "partner:Partner", "to": "grc-fw:GRCContext", "cardinality": "0..1", "purpose": "Partner governance — KYC, AML, contract compliance"}
+    ]
+  },
+  "dependencies": [
+    "Entry-ONT-ORG-001",
+    "Entry-ONT-FAIRSLICE-001",
+    "Entry-ONT-GRC-FW-001"
+  ],
+  "forwardDependencies": [],
+  "dependents": [],
+  "layer": "Foundation",
+  "domain": "Partner Network & Channel Economics",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-26",
+  "lastModified": "2026-02-26",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-26",
+      "changes": "Initial release: 6 entities, 10 relationships (5 internal + 5 cross-ontology), 7 business rules, 5 enumerations, 5 join patterns. Multi-tier attribution. Agency management portal. Tiered partner programme. Automated commission payouts. VP-RRR alignment: Problem=Risk (partner under-compensation), Solution=Requirement (automated attribution), Benefit=Result (channel velocity). Epic 50 F50.2."
+    }
+  ],
+  "notes": "PARTNER-ONT completes the Foundation series by adding channel partner entities alongside ORG, ORG-CONTEXT, ORG-MAT, CTX, and GA ontologies. Closes the PARTNER-ONT gap identified in Epic 34 Graph Series Ontology Mapping (PFC-G-Foundation). Partners are organisations (extends org:Organization) with channel-specific properties. Commissions flow through the FairSlice revenue waterfall.",
+  "oaa:joinPatterns": [
+    {"patternId": "JP-PARTNER-001", "name": "Partner to Organisation Identity Bridge", "joinPath": "partner:Partner -> partner:partnerIsOrganization -> org:Organization"},
+    {"patternId": "JP-PARTNER-002", "name": "Referral to Pie Revenue Bridge", "joinPath": "partner:Referral -> partner:referralLinkedToPie -> fs:Pie -> fs:pieHasWaterfallRule"},
+    {"patternId": "JP-PARTNER-003", "name": "Agency Multi-Pie Management Bridge", "joinPath": "partner:Agency -> partner:agencyManagesPie -> fs:Pie"},
+    {"patternId": "JP-PARTNER-004", "name": "Partner Commission to Waterfall Distribution Bridge", "joinPath": "partner:CommissionRule -> partner:commissionViaWaterfall -> fs:WaterfallRule"},
+    {"patternId": "JP-PARTNER-005", "name": "Partner Governance and Compliance Bridge", "joinPath": "partner:Partner -> partner:partnerGovernedByGRC -> grc-fw:GRCContext"}
+  ]
+}

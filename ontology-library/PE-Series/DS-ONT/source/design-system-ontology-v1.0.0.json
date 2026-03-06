@@ -1,0 +1,261 @@
+{
+  "@context": "https://baiv.co.uk/context/registry/v3",
+  "@type": "RegistryEntry",
+  "@id": "pf-core:ontology:design-system:v1.0.0",
+  "registryMetadata": {
+    "entryId": "pf-core-ontology-design-system-v1.0.0",
+    "entryType": "ontology",
+    "version": "1.0.0",
+    "status": "active",
+    "tier": "PF-Core",
+    "domain": "design-system",
+    "createdAt": "2026-01-22T13:26:39Z",
+    "createdBy": "pf-core-ontology-architect-agent",
+    "lastModifiedAt": "2026-01-22T13:26:39Z",
+    "lastModifiedBy": "pf-core-ontology-architect-agent"
+  },
+  "ontologyDefinition": {
+    "@context": {
+      "@vocab": "https://schema.org/",
+      "pf": "https://baiv.co.uk/ontology/pf-core#",
+      "ds": "https://baiv.co.uk/ontology/design-system#"
+    },
+    "@graph": [
+      {
+        "@id": "ds:DesignSystem",
+        "@type": "DefinedTerm",
+        "name": "DesignSystem",
+        "description": "A comprehensive design system that bridges Figma design variables to code components with token-based theming",
+        "subClassOf": "CreativeWork",
+        "properties": {
+          "name": "Text",
+          "version": "Text",
+          "namespace": "Text",
+          "tokenTaxonomy": "ds:TokenTaxonomy",
+          "components": "ItemList",
+          "brandVariants": "ItemList"
+        }
+      },
+      {
+        "@id": "ds:TokenTaxonomy",
+        "@type": "DefinedTerm",
+        "name": "TokenTaxonomy",
+        "description": "Three-tier token system: Primitives, Semantic, and Component tokens",
+        "properties": {
+          "primitives": "ds:PrimitiveTokenSet",
+          "semantic": "ds:SemanticTokenSet",
+          "components": "ds:ComponentTokenSet"
+        }
+      },
+      {
+        "@id": "ds:PrimitiveTokenSet",
+        "@type": "DefinedTerm",
+        "name": "PrimitiveTokenSet",
+        "description": "Raw design values (colors, spacing, radius, typography)",
+        "subClassOf": "DefinedTermSet",
+        "properties": {
+          "colors": "ItemList",
+          "spacing": "ItemList",
+          "radius": "ItemList",
+          "typography": "ItemList"
+        }
+      },
+      {
+        "@id": "ds:PrimitiveToken",
+        "@type": "DefinedTerm",
+        "name": "PrimitiveToken",
+        "description": "A single primitive design value",
+        "properties": {
+          "name": "Text",
+          "category": "Text",
+          "value": "Text",
+          "type": "Text",
+          "description": "Text"
+        }
+      },
+      {
+        "@id": "ds:SemanticTokenSet",
+        "@type": "DefinedTerm",
+        "name": "SemanticTokenSet",
+        "description": "Intent-based tokens that reference primitives (surface, text, border, accent, feedback)",
+        "subClassOf": "DefinedTermSet",
+        "properties": {
+          "surface": "ItemList",
+          "text": "ItemList",
+          "border": "ItemList",
+          "accent": "ItemList",
+          "feedback": "ItemList"
+        }
+      },
+      {
+        "@id": "ds:SemanticToken",
+        "@type": "DefinedTerm",
+        "name": "SemanticToken",
+        "description": "A semantic design token that conveys design intent",
+        "properties": {
+          "name": "Text",
+          "category": "Text",
+          "value": "Text",
+          "references": "ds:PrimitiveToken",
+          "lightModeValue": "Text",
+          "darkModeValue": "Text",
+          "description": "Text"
+        }
+      },
+      {
+        "@id": "ds:ComponentTokenSet",
+        "@type": "DefinedTerm",
+        "name": "ComponentTokenSet",
+        "description": "Component-specific tokens that enable contextual customization",
+        "subClassOf": "DefinedTermSet",
+        "properties": {
+          "componentName": "Text",
+          "tokens": "ItemList"
+        }
+      },
+      {
+        "@id": "ds:ComponentToken",
+        "@type": "DefinedTerm",
+        "name": "ComponentToken",
+        "description": "A token specific to a UI component part or state",
+        "properties": {
+          "name": "Text",
+          "componentName": "Text",
+          "partOrState": "Text",
+          "value": "Text",
+          "references": "ds:SemanticToken",
+          "description": "Text"
+        }
+      },
+      {
+        "@id": "ds:BrandedComponent",
+        "@type": "DefinedTerm",
+        "name": "BrandedComponent",
+        "description": "A UI component wrapper that applies design tokens",
+        "subClassOf": "SoftwareSourceCode",
+        "properties": {
+          "name": "Text",
+          "category": "Text",
+          "baseComponent": "Text",
+          "consumedTokens": "ItemList",
+          "allowsOverrides": "Boolean",
+          "themeModeSupport": "Boolean"
+        }
+      },
+      {
+        "@id": "ds:FigmaSource",
+        "@type": "DefinedTerm",
+        "name": "FigmaSource",
+        "description": "Figma file source for design tokens",
+        "subClassOf": "DigitalDocument",
+        "properties": {
+          "fileKey": "Text",
+          "fileName": "Text",
+          "lastSyncedAt": "DateTime",
+          "variableCollections": "ItemList"
+        }
+      },
+      {
+        "@id": "ds:BrandVariant",
+        "@type": "DefinedTerm",
+        "name": "BrandVariant",
+        "description": "A brand-specific token configuration",
+        "properties": {
+          "brandName": "Text",
+          "namespace": "Text",
+          "tokenOverrides": "ItemList",
+          "figmaSource": "ds:FigmaSource"
+        }
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "relationshipType": "references",
+      "source": "ds:SemanticToken",
+      "target": "ds:PrimitiveToken",
+      "cardinality": "many-to-one",
+      "description": "Semantic tokens reference primitive tokens for their values"
+    },
+    {
+      "relationshipType": "references",
+      "source": "ds:ComponentToken",
+      "target": "ds:SemanticToken",
+      "cardinality": "many-to-one",
+      "description": "Component tokens reference semantic tokens for consistency"
+    },
+    {
+      "relationshipType": "consumes",
+      "source": "ds:BrandedComponent",
+      "target": "ds:ComponentToken",
+      "cardinality": "many-to-many",
+      "description": "Branded components consume component tokens"
+    },
+    {
+      "relationshipType": "syncsFrom",
+      "source": "ds:DesignSystem",
+      "target": "ds:FigmaSource",
+      "cardinality": "one-to-one",
+      "description": "Design system syncs tokens from Figma"
+    },
+    {
+      "relationshipType": "hasVariant",
+      "source": "ds:DesignSystem",
+      "target": "ds:BrandVariant",
+      "cardinality": "one-to-many",
+      "description": "Design system supports multiple brand variants"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-DS-001",
+      "rule": "IF token.tier = 'semantic' THEN token.value MUST reference a primitive token",
+      "rationale": "Semantic tokens must derive from primitives for consistency"
+    },
+    {
+      "ruleId": "BR-DS-002",
+      "rule": "IF token.tier = 'component' THEN token.value MUST reference a semantic token",
+      "rationale": "Component tokens must use semantic tokens for design intent"
+    },
+    {
+      "ruleId": "BR-DS-003",
+      "rule": "IF component.allowsOverrides = true THEN component MUST accept tokenOverrides prop",
+      "rationale": "Components that support customization must accept overrides"
+    },
+    {
+      "ruleId": "BR-DS-004",
+      "rule": "IF designSystem.themeModeSupport = true THEN all tokens MUST have light and dark mode values",
+      "rationale": "Theme mode support requires mode-specific token values"
+    },
+    {
+      "ruleId": "BR-DS-005",
+      "rule": "IF figmaSource.lastSyncedAt is older than 7 days THEN trigger sync warning",
+      "rationale": "Design tokens should be synced regularly to stay current with design"
+    }
+  ],
+  "qualityMetrics": {
+    "completeness": {
+      "entitiesDefined": 11,
+      "relationshipsDefined": 5,
+      "businessRulesDefined": 5,
+      "glossaryTerms": 11,
+      "score": 95
+    },
+    "consistency": {
+      "namingConventions": true,
+      "schemaOrgAlignment": true,
+      "score": 100
+    }
+  },
+  "changeControl": {
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-01-22T13:26:39Z",
+        "author": "pf-core-ontology-architect-agent",
+        "changes": "Initial design system ontology definition",
+        "approvedBy": "Amanda Moore"
+      }
+    ]
+  }
+}

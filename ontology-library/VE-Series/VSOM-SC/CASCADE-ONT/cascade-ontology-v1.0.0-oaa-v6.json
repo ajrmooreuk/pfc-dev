@@ -1,0 +1,952 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "csc": "https://oaa-ontology.org/v6/cascade/",
+    "nar": "https://oaa-ontology.org/v6/narrative/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/",
+    "bsc": "https://oaa-ontology.org/v6/bsc/",
+    "rrr": "https://oaa-ontology.org/v6/rrr/",
+    "okr": "https://oaa-ontology.org/v6/okr/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/"
+  },
+  "@id": "https://oaa-ontology.org/v6/cascade/schema",
+  "@type": "owl:Ontology",
+  "name": "Strategy Cascade & Audience Translation Ontology",
+  "alternateName": "CASCADE-ONT — Audience Cascade, Translation Fidelity & Channel Mapping",
+  "description": "Formalizes the audience cascade model for strategy communication. Strategy must be translated — not diluted — for each organisational audience. Defines five cascade levels (Board → C-Suite → Leadership → Teams → Individuals) with translation rules governing detail depth, language register, and metric granularity at each level. Fidelity assessments detect drift between intended and perceived strategy. Channel mappings connect the right medium to the right audience at the right cadence. Part of VE-Series VSOM-SC (Strategy Communication).",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "Strategy Communication, Audience Management, Organisational Alignment",
+  "oaa:status": "Draft",
+  "dateCreated": "2026-02-13",
+  "dateModified": "2026-02-13",
+  "creator": {
+    "@type": "Organization",
+    "name": "W4M Strategic Patterns Framework"
+  },
+  "oaa:imports": [
+    {
+      "@id": "nar:schema",
+      "name": "NARRATIVE-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "nar:StrategicNarrative",
+        "nar:NarrativeSection",
+        "nar:CommunicationPattern",
+        "nar:CommunicationObjective",
+        "nar:CommunicationLifecycle"
+      ],
+      "importedRelationships": [
+        "nar:hasSection"
+      ]
+    },
+    {
+      "@id": "vsom:schema",
+      "name": "VSOM-ONT",
+      "version": "3.0.0",
+      "importedEntities": [
+        "vsom:VSOMFramework"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "rrr:schema",
+      "name": "RRR-ONT",
+      "version": "4.0.0",
+      "importedEntities": [
+        "rrr:ExecutiveRole",
+        "rrr:FunctionalRole"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "okr:schema",
+      "name": "OKR-ONT",
+      "version": "2.0.0",
+      "importedEntities": [
+        "okr:Objective",
+        "okr:KeyResult"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "bsc:schema",
+      "name": "BSC-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "bsc:BSCPerspective",
+        "bsc:BSCObjective"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "kpi:schema",
+      "name": "KPI-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "kpi:KPI"
+      ],
+      "importedRelationships": []
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-CSC-001",
+      "name": "Narrative-to-Audience Cascade",
+      "description": "Core SC cascade: a strategic narrative is translated for each audience level, with fidelity tracked between adjacent levels. An AI agent traverses from narrative through translations to each audience level, checking fidelity at each step.",
+      "joinPath": "nar:StrategicNarrative → csc:translationOfNarrative → csc:CascadeTranslation → csc:translationForLevel → csc:CascadeLevel [Board → CSuite → Leadership → Teams → Individuals]",
+      "useCase": "Cascade strategy communication through organisational tiers with fidelity tracking"
+    },
+    {
+      "patternId": "JP-CSC-002",
+      "name": "Fidelity Drift Detection",
+      "description": "Compare fidelity scores between adjacent cascade levels to detect where strategy translation degrades. Enables targeted intervention at the level where drift occurs.",
+      "joinPath": "csc:FidelityAssessment [Board↔CSuite] → csc:FidelityAssessment [CSuite↔Leadership] → csc:FidelityAssessment [Leadership↔Teams] → csc:FidelityAssessment [Teams↔Individuals]",
+      "useCase": "Identify and correct cascade levels where strategic intent is being lost"
+    },
+    {
+      "patternId": "JP-CSC-003",
+      "name": "Cascade-to-OKR Connection",
+      "description": "Team and individual cascade levels connect directly to OKR objectives, making strategy personally relevant. Each person can trace their objectives back through the cascade to the board-level direction.",
+      "joinPath": "csc:CascadeLevel [Teams] → csc:cascadeConnectsToOKR → okr:Objective → okr:hasKeyResult → okr:KeyResult",
+      "useCase": "Personal strategy connection — every individual's work traces to strategic direction"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "csc:AudienceCascade",
+      "@type": "rdfs:Class",
+      "name": "AudienceCascade",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Container for a complete audience cascade model. Links a strategic narrative to a set of cascade levels, each with audience-appropriate translations, fidelity tracking, and channel mappings. An AudienceCascade is created for each StrategicNarrative and governs how that narrative flows through the organisation.",
+      "oaa:properties": [
+        {
+          "name": "cascadeId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name"
+        },
+        {
+          "name": "narrativeRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to nar:StrategicNarrative @id being cascaded"
+        },
+        {
+          "name": "vsomFrameworkRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vsom:VSOMFramework @id"
+        },
+        {
+          "name": "overallFidelityScore",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Aggregate fidelity score across all cascade levels (0-100)"
+        },
+        {
+          "name": "cascadeStatus",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Draft",
+            "InProgress",
+            "Active",
+            "NeedsRefresh"
+          ],
+          "description": "Current state of the cascade deployment"
+        },
+        {
+          "name": "lastAssessmentDate",
+          "type": "xsd:date",
+          "required": false
+        },
+        {
+          "name": "levelCount",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of active cascade levels (typically 5)"
+        }
+      ]
+    },
+    {
+      "@id": "csc:CascadeLevel",
+      "@type": "rdfs:Class",
+      "name": "CascadeLevel",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "One of five organisational audience tiers in the strategy cascade. Each level represents a distinct audience with specific communication needs, language expectations, and metric granularity requirements. Levels map to RRR executive roles. The cascade flows Board → C-Suite → Leadership → Teams → Individuals, with each level receiving an audience-appropriate translation of the strategic narrative.",
+      "oaa:properties": [
+        {
+          "name": "levelId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "levelType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Board",
+            "CSuite",
+            "Leadership",
+            "Teams",
+            "Individuals"
+          ],
+          "description": "Audience tier in the cascade"
+        },
+        {
+          "name": "levelOrder",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Position in cascade (1=Board, 2=CSuite, 3=Leadership, 4=Teams, 5=Individuals)"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What this audience tier needs from strategy communication"
+        },
+        {
+          "name": "languageRegister",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Expected language style (e.g. 'financial, governance, shareholder value' for Board)"
+        },
+        {
+          "name": "detailDepth",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Strategic",
+            "Tactical",
+            "Operational",
+            "Personal"
+          ],
+          "description": "Level of detail appropriate for this audience"
+        },
+        {
+          "name": "metricGranularity",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "PortfolioLevel",
+            "BSCPerspective",
+            "OKRObjective",
+            "TeamKPI",
+            "IndividualTarget"
+          ],
+          "description": "Metric resolution appropriate for this audience"
+        },
+        {
+          "name": "roleRefs",
+          "type": "xsd:string",
+          "required": false,
+          "description": "References to rrr:ExecutiveRole @ids typical for this level",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "typicalSize",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Typical audience size range (e.g. '5-12' for Board, '50-200' for Leadership)"
+        }
+      ],
+      "_levelDefinitions": {
+        "Board": {
+          "languageRegister": "Financial, governance, shareholder value",
+          "detailDepth": "Strategic",
+          "metricGranularity": "PortfolioLevel",
+          "typicalRoles": [
+            "BoardChair",
+            "NEDs",
+            "CEO",
+            "CFO"
+          ]
+        },
+        "CSuite": {
+          "languageRegister": "Cross-functional, capability-based, KPI-driven",
+          "detailDepth": "Strategic",
+          "metricGranularity": "BSCPerspective",
+          "typicalRoles": [
+            "CEO",
+            "CFO",
+            "CTO",
+            "COO",
+            "CMO",
+            "CHRO",
+            "CISO"
+          ]
+        },
+        "Leadership": {
+          "languageRegister": "Domain-specific, outcome-based, quarterly",
+          "detailDepth": "Tactical",
+          "metricGranularity": "OKRObjective",
+          "typicalRoles": [
+            "VPs",
+            "Directors",
+            "Heads"
+          ]
+        },
+        "Teams": {
+          "languageRegister": "Task-oriented, user-story framed, measurable",
+          "detailDepth": "Operational",
+          "metricGranularity": "TeamKPI",
+          "typicalRoles": [
+            "TeamLeads",
+            "ScrumMasters",
+            "ProductOwners"
+          ]
+        },
+        "Individuals": {
+          "languageRegister": "Personal, motivational, career-connected",
+          "detailDepth": "Personal",
+          "metricGranularity": "IndividualTarget",
+          "typicalRoles": [
+            "AllStaff"
+          ]
+        }
+      }
+    },
+    {
+      "@id": "csc:CascadeTranslation",
+      "@type": "rdfs:Class",
+      "name": "CascadeTranslation",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "An audience-appropriate translation of a strategic narrative for a specific cascade level. Each translation preserves the strategic intent while adapting language, detail depth, and metric granularity for its target audience. AI agents generate draft translations; humans review and refine. The translation references specific narrative sections and adapts them per the level's TranslationRule.",
+      "oaa:properties": [
+        {
+          "name": "translationId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "narrativeRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to nar:StrategicNarrative @id being translated"
+        },
+        {
+          "name": "levelRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to csc:CascadeLevel @id this translation targets"
+        },
+        {
+          "name": "translatedContent",
+          "type": "xsd:string",
+          "required": true,
+          "description": "The audience-appropriate version of the narrative"
+        },
+        {
+          "name": "translationRuleRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to csc:TranslationRule @id governing this translation"
+        },
+        {
+          "name": "keyMessages",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Top 3-5 key messages for this audience",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "metricHighlights",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Metrics relevant to this audience level",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "callToAction",
+          "type": "xsd:string",
+          "required": true,
+          "description": "What this audience should do differently as a result"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Draft",
+            "InReview",
+            "Approved",
+            "Delivered"
+          ]
+        },
+        {
+          "name": "generatedBy",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Agent",
+            "Human",
+            "AgentReviewedByHuman"
+          ],
+          "description": "Who generated this translation"
+        },
+        {
+          "name": "deliveryDate",
+          "type": "xsd:date",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "csc:FidelityAssessment",
+      "@type": "rdfs:Class",
+      "name": "FidelityAssessment",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Fidelity score measuring how accurately strategy was translated between two adjacent cascade levels. A high fidelity score (>80) means the translation preserved strategic intent. A low score (<60) indicates drift — the audience at the lower level is receiving a materially different message than what was intended at the upper level. AI agents compute fidelity scores; humans validate and investigate root causes of drift.",
+      "oaa:properties": [
+        {
+          "name": "assessmentId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "cascadeRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to csc:AudienceCascade @id"
+        },
+        {
+          "name": "upperLevelRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to csc:CascadeLevel @id (sender)"
+        },
+        {
+          "name": "lowerLevelRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to csc:CascadeLevel @id (receiver)"
+        },
+        {
+          "name": "fidelityScore",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Fidelity score (0-100). >80 = high, 60-80 = moderate, <60 = drift detected"
+        },
+        {
+          "name": "assessmentDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "driftAreas",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Specific areas where translation drift was detected",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "rootCause",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Root cause of fidelity gap if score < 80"
+        },
+        {
+          "name": "remediationAction",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Recommended action to correct drift"
+        },
+        {
+          "name": "assessedBy",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Agent",
+            "Human",
+            "Combined"
+          ],
+          "description": "Who performed the assessment"
+        }
+      ]
+    },
+    {
+      "@id": "csc:TranslationRule",
+      "@type": "rdfs:Class",
+      "name": "TranslationRule",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Defines the translation parameters for converting a strategic narrative to a specific audience level. Rules govern detail depth, language register, metric granularity, and what to include/exclude at each level. AI agents use translation rules to generate draft translations; the rules make the translation process systematic and auditable.",
+      "oaa:properties": [
+        {
+          "name": "ruleId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "levelRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to csc:CascadeLevel @id this rule applies to"
+        },
+        {
+          "name": "detailDepth",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Strategic",
+            "Tactical",
+            "Operational",
+            "Personal"
+          ]
+        },
+        {
+          "name": "languageRegister",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Expected tone and vocabulary (e.g. 'financial governance' vs 'task-oriented')"
+        },
+        {
+          "name": "metricGranularity",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Level of metric detail to include"
+        },
+        {
+          "name": "includeElements",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Narrative elements to include for this audience",
+          "cardinality": "1..*"
+        },
+        {
+          "name": "excludeElements",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Narrative elements to exclude for this audience",
+          "cardinality": "0..*"
+        },
+        {
+          "name": "maxLength",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Recommended maximum length (e.g. '1 page', '5 minutes', '30 seconds')"
+        },
+        {
+          "name": "formatGuidance",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Preferred format (e.g. 'slide deck', 'email', 'town hall script', '1-on-1 talking points')"
+        }
+      ]
+    },
+    {
+      "@id": "csc:ChannelMapping",
+      "@type": "rdfs:Class",
+      "name": "ChannelMapping",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Maps the communication medium to a specific audience level at a specific cadence point. Different channels have different reach, depth, and engagement characteristics. Board members receive formal papers; teams receive sprint-context briefings; individuals receive 1-on-1 talking points. The mapping connects audience, cadence, and medium into a delivery plan.",
+      "oaa:properties": [
+        {
+          "name": "mappingId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "levelRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to csc:CascadeLevel @id"
+        },
+        {
+          "name": "cadenceType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Annual",
+            "Quarterly",
+            "Monthly",
+            "EventDriven"
+          ]
+        },
+        {
+          "name": "channel",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "BoardPaper",
+            "ExecutiveBrief",
+            "TownHall",
+            "TeamStandup",
+            "Email",
+            "IntranetPost",
+            "SlidePresentation",
+            "VideoMessage",
+            "OneOnOne",
+            "WorkshopSession",
+            "DigitalDashboard"
+          ],
+          "description": "Communication medium"
+        },
+        {
+          "name": "format",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Specific format within the channel (e.g. 'strategy-on-a-page PDF' for BoardPaper)"
+        },
+        {
+          "name": "owner",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Role responsible for delivering communication via this channel"
+        },
+        {
+          "name": "reachEstimate",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Expected reach as percentage of target audience"
+        },
+        {
+          "name": "engagementType",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Broadcast",
+            "Interactive",
+            "Collaborative",
+            "SelfService"
+          ],
+          "description": "Nature of engagement this channel supports"
+        }
+      ]
+    },
+    {
+      "@id": "csc:CascadeMetric",
+      "@type": "rdfs:Class",
+      "name": "CascadeMetric",
+      "rdfs:subClassOf": "schema:PropertyValue",
+      "description": "Measures the effectiveness of strategy cascade at a specific level. Three dimensions: reach (did the message get to the audience?), comprehension (did they understand it?), and alignment (are they acting on it?). These are lagging indicators — measured after communication delivery. Combined with fidelity scores (leading indicator), they give a complete picture of cascade health.",
+      "oaa:properties": [
+        {
+          "name": "metricId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier"
+        },
+        {
+          "name": "levelRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to csc:CascadeLevel @id being measured"
+        },
+        {
+          "name": "cascadeRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to csc:AudienceCascade @id"
+        },
+        {
+          "name": "metricType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": [
+            "Reach",
+            "Comprehension",
+            "Alignment"
+          ],
+          "description": "Which cascade effectiveness dimension"
+        },
+        {
+          "name": "score",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Score (0-100)"
+        },
+        {
+          "name": "measurementMethod",
+          "type": "xsd:string",
+          "required": false,
+          "description": "How this was measured (e.g. 'survey', 'OKR alignment check', 'attendance tracking')"
+        },
+        {
+          "name": "measurementDate",
+          "type": "xsd:date",
+          "required": true
+        },
+        {
+          "name": "benchmark",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Previous score for trend comparison"
+        },
+        {
+          "name": "trend",
+          "type": "xsd:string",
+          "required": false,
+          "enum": [
+            "Improving",
+            "Stable",
+            "Declining"
+          ]
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "csc:cascadeForNarrative",
+      "@type": "owl:ObjectProperty",
+      "name": "Cascade For Narrative",
+      "description": "Audience cascade is created for a specific strategic narrative",
+      "domainIncludes": [
+        "csc:AudienceCascade"
+      ],
+      "rangeIncludes": [
+        "nar:StrategicNarrative"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "NARRATIVE-ONT"
+    },
+    {
+      "@id": "csc:hasLevel",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Level",
+      "description": "Audience cascade contains cascade levels (typically all 5)",
+      "domainIncludes": [
+        "csc:AudienceCascade"
+      ],
+      "rangeIncludes": [
+        "csc:CascadeLevel"
+      ],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "csc:cascadesToLevel",
+      "@type": "owl:ObjectProperty",
+      "name": "Cascades To Level",
+      "description": "One cascade level flows to the next lower level",
+      "domainIncludes": [
+        "csc:CascadeLevel"
+      ],
+      "rangeIncludes": [
+        "csc:CascadeLevel"
+      ],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "csc:translationOfNarrative",
+      "@type": "owl:ObjectProperty",
+      "name": "Translation Of Narrative",
+      "description": "Cascade translation is an audience-specific version of a narrative",
+      "domainIncludes": [
+        "csc:CascadeTranslation"
+      ],
+      "rangeIncludes": [
+        "nar:StrategicNarrative"
+      ],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "NARRATIVE-ONT"
+    },
+    {
+      "@id": "csc:translationForLevel",
+      "@type": "owl:ObjectProperty",
+      "name": "Translation For Level",
+      "description": "Cascade translation targets a specific audience level",
+      "domainIncludes": [
+        "csc:CascadeTranslation"
+      ],
+      "rangeIncludes": [
+        "csc:CascadeLevel"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "csc:cascadeLevelMapsToRole",
+      "@type": "owl:ObjectProperty",
+      "name": "Cascade Level Maps To Role",
+      "description": "Cascade level maps to RRR executive/functional roles at that organisational tier",
+      "domainIncludes": [
+        "csc:CascadeLevel"
+      ],
+      "rangeIncludes": [
+        "rrr:ExecutiveRole"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "RRR-ONT"
+    },
+    {
+      "@id": "csc:fidelityBetweenLevels",
+      "@type": "owl:ObjectProperty",
+      "name": "Fidelity Between Levels",
+      "description": "Fidelity assessment measures translation accuracy between two adjacent cascade levels",
+      "domainIncludes": [
+        "csc:FidelityAssessment"
+      ],
+      "rangeIncludes": [
+        "csc:CascadeLevel"
+      ],
+      "oaa:cardinality": "2..2"
+    },
+    {
+      "@id": "csc:cascadeConnectsToOKR",
+      "@type": "owl:ObjectProperty",
+      "name": "Cascade Connects To OKR",
+      "description": "Team and individual cascade levels connect to OKR objectives for personal strategy relevance",
+      "domainIncludes": [
+        "csc:CascadeLevel"
+      ],
+      "rangeIncludes": [
+        "okr:Objective"
+      ],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "OKR-ONT"
+    },
+    {
+      "@id": "csc:channelForLevel",
+      "@type": "owl:ObjectProperty",
+      "name": "Channel For Level",
+      "description": "Channel mapping defines communication medium for a cascade level",
+      "domainIncludes": [
+        "csc:ChannelMapping"
+      ],
+      "rangeIncludes": [
+        "csc:CascadeLevel"
+      ],
+      "oaa:cardinality": "1..1"
+    },
+    {
+      "@id": "csc:metricForLevel",
+      "@type": "owl:ObjectProperty",
+      "name": "Metric For Level",
+      "description": "Cascade metric measures effectiveness at a specific level",
+      "domainIncludes": [
+        "csc:CascadeMetric"
+      ],
+      "rangeIncludes": [
+        "csc:CascadeLevel"
+      ],
+      "oaa:cardinality": "1..1"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-CSC-001",
+      "name": "Cascade Must Reference Narrative",
+      "condition": "IF an AudienceCascade is created",
+      "action": "THEN narrativeRef MUST reference a valid nar:StrategicNarrative @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CSC-002",
+      "name": "Translation Must Have Call To Action",
+      "condition": "IF a CascadeTranslation is created",
+      "action": "THEN callToAction MUST be non-empty — every audience must know what to do differently",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CSC-003",
+      "name": "Fidelity Must Be Between Adjacent Levels",
+      "condition": "IF a FidelityAssessment is created",
+      "action": "THEN upperLevelRef.levelOrder MUST be exactly one less than lowerLevelRef.levelOrder (adjacent levels only)",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-CSC-004",
+      "name": "Low Fidelity Requires Root Cause",
+      "condition": "IF a FidelityAssessment has fidelityScore < 60",
+      "action": "THEN rootCause and remediationAction MUST be specified",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-CSC-005",
+      "name": "Every Level Must Have Translation",
+      "condition": "IF an AudienceCascade has status 'Active'",
+      "action": "THEN each CascadeLevel in the cascade MUST have at least one CascadeTranslation with status 'Approved' or 'Delivered'",
+      "severity": "error"
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "6.1.0",
+    "lastModified": "2026-02-13",
+    "modifiedBy": "OAA v6.1.0 Agent",
+    "changeNotes": "Initial release of CASCADE-ONT as part of VE-Series VSOM-SC (Strategy Communication). Formalizes audience cascade model with five levels, translation rules, fidelity scoring, channel mapping, and effectiveness metrics. Cross-references NARRATIVE-ONT v1.0.0, VSOM-ONT v3.0.0, RRR-ONT v4.0.0, OKR-ONT v2.0.0, BSC-ONT v1.0.0, KPI-ONT v1.0.0.",
+    "versionHistory": []
+  },
+  "oaa:ontologyId": "CSC-ONT",
+  "oaa:series": "VE-Series / VSOM-SC",
+  "competencyQuestions": [
+    {
+      "@id": "CQ-001",
+      "question": "What is the role and purpose of AudienceCascade within this ontology?",
+      "targetEntities": [
+        "csc:AudienceCascade"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-002",
+      "question": "What is the role and purpose of CascadeLevel within this ontology?",
+      "targetEntities": [
+        "csc:CascadeLevel"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-003",
+      "question": "What is the role and purpose of CascadeTranslation within this ontology?",
+      "targetEntities": [
+        "csc:CascadeTranslation"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-004",
+      "question": "What is the role and purpose of FidelityAssessment within this ontology?",
+      "targetEntities": [
+        "csc:FidelityAssessment"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-005",
+      "question": "What is the role and purpose of TranslationRule within this ontology?",
+      "targetEntities": [
+        "csc:TranslationRule"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-006",
+      "question": "What is the role and purpose of ChannelMapping within this ontology?",
+      "targetEntities": [
+        "csc:ChannelMapping"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-007",
+      "question": "What is the role and purpose of CascadeMetric within this ontology?",
+      "targetEntities": [
+        "csc:CascadeMetric"
+      ],
+      "targetRelationships": [],
+      "targetRules": []
+    }
+  ]
+}

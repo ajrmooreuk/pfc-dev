@@ -1,0 +1,911 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v7/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "kano": "https://oaa-ontology.org/v7/kano/",
+    "vp": "https://oaa-ontology.org/v6/value-proposition/",
+    "pmf": "https://oaa-ontology.org/v6/pmf/",
+    "kpi": "https://oaa-ontology.org/v6/kpi/",
+    "rsn": "https://oaa-ontology.org/v6/reason/",
+    "pe": "https://oaa-ontology.org/v6/pe/",
+    "vsom": "https://oaa-ontology.org/v6/vsom/",
+    "bsc": "https://oaa-ontology.org/v6/bsc/",
+    "org": "https://oaa-ontology.org/v6/organization/",
+    "orgctx": "https://oaa-ontology.org/v6/org-context/"
+  },
+  "@id": "https://oaa-ontology.org/v7/kano/schema",
+  "@type": "owl:Ontology",
+  "name": "Kano Model Feature Classification Ontology",
+  "alternateName": "KANO-ONT — Kano Survey, Classification, Satisfaction Curves, Decay Tracking & Feature Prioritisation",
+  "description": "Classifies product/service features by customer satisfaction response using the Kano Model (Noriaki Kano, 1984). Provides structured survey instruments, statistical classification of features into Kano categories (Must-Be, Performance, Attractive, Indifferent, Reverse), non-linear satisfaction curve modelling, temporal decay tracking (category migration over time), and aggregated feature prioritisation output. Operates as a PARALLEL ANALYTICAL LENS enriching the VP-to-PMF bridge with feature-level satisfaction attribution. Part of VE-Series VSOM-SA (Strategy Analysis).",
+  "oaa:schemaVersion": "7.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:ontologyId": "KANO-ONT",
+  "oaa:series": "VE-Series / VSOM-SA",
+  "oaa:domain": "Customer Satisfaction Analysis, Feature Classification, Product Strategy",
+  "oaa:status": "Draft",
+  "dateCreated": "2026-02-28",
+  "dateModified": "2026-02-28",
+  "creator": {
+    "@type": "Organization",
+    "name": "Azlan EA-AAA"
+  },
+  "oaa:imports": [
+    {
+      "@id": "vp:schema",
+      "name": "VP-ONT",
+      "version": "1.2.3",
+      "importedEntities": [
+        "vp:ValueProposition",
+        "vp:Benefit",
+        "vp:Solution",
+        "vp:IdealCustomerProfile",
+        "vp:Gain",
+        "vp:CompetitiveAlternative"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "pmf:schema",
+      "name": "PMF-ONT",
+      "version": "2.0.0",
+      "importedEntities": [
+        "pmf:ProductMarketFit",
+        "pmf:ValidationSignal",
+        "pmf:CustomerSegmentFit",
+        "pmf:PivotAssessment",
+        "pmf:WillingnessToPayAssessment"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "kpi:schema",
+      "name": "KPI-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "kpi:KPI"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "rsn:schema",
+      "name": "REASON-ONT",
+      "version": "1.0.0",
+      "importedEntities": [
+        "rsn:MECETree"
+      ],
+      "importedRelationships": []
+    },
+    {
+      "@id": "pe:schema",
+      "name": "PE-ONT",
+      "version": "4.0.0",
+      "importedEntities": [
+        "pe:Skill"
+      ],
+      "importedRelationships": []
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "patternId": "JP-KANO-VP-001",
+      "name": "VP Benefit Kano Classification",
+      "description": "Value proposition benefits are classified by Kano analysis to determine their satisfaction impact category, enabling feature-level investment decisions.",
+      "joinPath": "vp:Benefit → kano:classifiedBy → kano:KanoClassification",
+      "joinType": "enrichment",
+      "cardinality": "1..*",
+      "useCase": "Classify each VP benefit as Must-Be/Performance/Attractive to guide product roadmap priorities"
+    },
+    {
+      "patternId": "JP-KANO-PMF-001",
+      "name": "Kano Classification Informs PMF Validation",
+      "description": "Kano classification results inform PMF validation signals, providing satisfaction-attribution evidence for product-market fit assessment.",
+      "joinPath": "kano:KanoClassification → kano:informsValidation → pmf:ValidationSignal",
+      "joinType": "enrichment",
+      "cardinality": "1..1",
+      "useCase": "Kano survey evidence feeds PMF validation to distinguish real fit from feature addiction"
+    },
+    {
+      "patternId": "JP-KANO-KPI-001",
+      "name": "Satisfaction Curve KPI Measurement",
+      "description": "Kano satisfaction curves are measured by KPIs to track implementation-level vs satisfaction-level correlation over time.",
+      "joinPath": "kano:SatisfactionCurve → kano:measuredBy → kpi:KPI",
+      "joinType": "measurement",
+      "cardinality": "1..*",
+      "useCase": "Map non-linear satisfaction functions to measurable KPIs for continuous monitoring"
+    },
+    {
+      "patternId": "JP-KANO-PMF-002",
+      "name": "Kano Decay Triggers Pivot Assessment",
+      "description": "Category decay (e.g. Attractive degrades to Must-Be) triggers a PMF pivot assessment, signalling that the competitive landscape has shifted.",
+      "joinPath": "kano:KanoDecay → kano:triggersAssessment → pmf:PivotAssessment",
+      "joinType": "lineage",
+      "cardinality": "1..1",
+      "useCase": "Detect feature commoditisation early and trigger strategic pivot evaluation"
+    },
+    {
+      "patternId": "JP-KANO-REASON-001",
+      "name": "MECE Tree Assigns Kano Framework",
+      "description": "REASON-ONT MECE decomposition trees can assign the Kano framework as an analytical lens for feature-level problem structuring.",
+      "joinPath": "rsn:MECETree → kano:assignedFramework → kano:KanoCategory (enum)",
+      "joinType": "execution",
+      "cardinality": "0..*",
+      "useCase": "Use MECE decomposition to systematically assign Kano categories to feature sets"
+    }
+  ],
+  "oaa:enums": [
+    {
+      "@id": "kano:KanoCategory",
+      "name": "KanoCategory",
+      "description": "The five Kano Model feature classification categories (Noriaki Kano, 1984)",
+      "values": [
+        {
+          "value": "MustBe",
+          "description": "Basic expectations — absence causes extreme dissatisfaction, presence does not increase satisfaction (asymptotic negative curve)"
+        },
+        {
+          "value": "Performance",
+          "description": "Linear satisfiers — satisfaction scales proportionally with implementation level (linear curve)"
+        },
+        {
+          "value": "Attractive",
+          "description": "Delighters — absence does not cause dissatisfaction, but presence creates disproportionate satisfaction (exponential curve)"
+        },
+        {
+          "value": "Indifferent",
+          "description": "Features that do not significantly affect satisfaction regardless of implementation (flat curve)"
+        },
+        {
+          "value": "Reverse",
+          "description": "Features where implementation actively decreases satisfaction for some segments (inverse curve)"
+        }
+      ]
+    },
+    {
+      "@id": "kano:SurveyStatus",
+      "name": "SurveyStatus",
+      "description": "Lifecycle status of a Kano survey instrument",
+      "values": [
+        { "value": "Planned", "description": "Survey designed but not yet deployed" },
+        { "value": "Active", "description": "Survey currently collecting responses" },
+        { "value": "Completed", "description": "Survey data collection finished, results available" }
+      ]
+    },
+    {
+      "@id": "kano:CurveFunction",
+      "name": "CurveFunction",
+      "description": "Mathematical function type for satisfaction curve modelling",
+      "values": [
+        { "value": "Asymptotic", "description": "Must-Be: approaches zero satisfaction rapidly when absent, flat when present" },
+        { "value": "Linear", "description": "Performance: proportional satisfaction-implementation relationship" },
+        { "value": "Exponential", "description": "Attractive: exponential satisfaction growth above baseline" },
+        { "value": "Flat", "description": "Indifferent: minimal satisfaction variance regardless of implementation" },
+        { "value": "Inverse", "description": "Reverse: negative satisfaction correlation with implementation" }
+      ]
+    },
+    {
+      "@id": "kano:EvidenceStrength",
+      "name": "EvidenceStrength",
+      "description": "Statistical strength of the Kano classification evidence",
+      "values": [
+        { "value": "Strong", "description": "High sample size, high confidence, clear category dominance" },
+        { "value": "Moderate", "description": "Adequate sample, moderate confidence, category leads but not dominant" },
+        { "value": "Weak", "description": "Low sample or ambiguous results, classification provisional" }
+      ]
+    },
+    {
+      "@id": "kano:CompetitivePressure",
+      "name": "CompetitivePressure",
+      "description": "Level of competitive pressure driving category decay",
+      "values": [
+        { "value": "High", "description": "Multiple competitors have commoditised this feature" },
+        { "value": "Medium", "description": "Some competitors offer equivalent — decay in progress" },
+        { "value": "Low", "description": "Feature still relatively differentiated" }
+      ]
+    },
+    {
+      "@id": "kano:DecayAction",
+      "name": "DecayAction",
+      "description": "Recommended strategic action in response to category decay",
+      "values": [
+        { "value": "Innovate", "description": "Create next-generation Attractive replacement" },
+        { "value": "Accelerate", "description": "Speed up delivery before further commoditisation" },
+        { "value": "Accept", "description": "Accept category migration, maintain as hygiene factor" },
+        { "value": "Monitor", "description": "Track decay trajectory, no immediate action required" }
+      ]
+    },
+    {
+      "@id": "kano:InvestmentRecommendation",
+      "name": "InvestmentRecommendation",
+      "description": "Investment recommendation based on Kano analysis output",
+      "values": [
+        { "value": "Invest", "description": "Attractive or high-impact Performance — increase investment" },
+        { "value": "Maintain", "description": "Must-Be or stable Performance — maintain current investment" },
+        { "value": "Deprioritise", "description": "Indifferent — reduce investment, reallocate to higher-impact features" },
+        { "value": "Eliminate", "description": "Reverse — remove or redesign, feature actively harms satisfaction" }
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "@id": "kano:KanoSurvey",
+      "@type": "rdfs:Class",
+      "name": "KanoSurvey",
+      "rdfs:subClassOf": "schema:Survey",
+      "description": "Complete Kano survey instrument targeting a specific customer segment. Contains functional/dysfunctional question pairs for each feature under evaluation. Links to vp:IdealCustomerProfile and optionally pmf:CustomerSegmentFit for segment-specific analysis.",
+      "schemaOrgGrounding": "schema:Survey",
+      "oaa:properties": [
+        {
+          "name": "surveyId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for this Kano survey"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:name",
+          "description": "Descriptive name for this survey"
+        },
+        {
+          "name": "targetICPRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vp:IdealCustomerProfile @id — the target customer segment"
+        },
+        {
+          "name": "surveyDate",
+          "type": "xsd:date",
+          "required": true,
+          "schemaOrgMapping": "schema:dateCreated",
+          "description": "Date when the survey was conducted or started"
+        },
+        {
+          "name": "sampleSize",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of respondents in this survey"
+        },
+        {
+          "name": "confidenceLevel",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Statistical confidence level (0.0-1.0, e.g. 0.95 for 95%)"
+        },
+        {
+          "name": "segmentRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to pmf:CustomerSegmentFit @id for segment-specific analysis"
+        },
+        {
+          "name": "status",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["Planned", "Active", "Completed"],
+          "description": "Current lifecycle status of this survey"
+        },
+        {
+          "name": "description",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:description",
+          "description": "Narrative description of survey scope and objectives"
+        }
+      ]
+    },
+    {
+      "@id": "kano:KanoQuestion",
+      "@type": "rdfs:Class",
+      "name": "KanoQuestion",
+      "rdfs:subClassOf": "schema:Question",
+      "description": "Functional/dysfunctional question pair for a single feature under Kano evaluation. The functional question asks about satisfaction when the feature IS present; the dysfunctional question asks about satisfaction when the feature is NOT present. Responses are cross-tabulated to determine the Kano category.",
+      "schemaOrgGrounding": "schema:Question",
+      "oaa:properties": [
+        {
+          "name": "questionId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for this question pair"
+        },
+        {
+          "name": "featureRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vp:Benefit or vp:Solution @id — the feature being evaluated"
+        },
+        {
+          "name": "functionalQuestion",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:text",
+          "description": "The functional form: How would you feel IF this feature is present?"
+        },
+        {
+          "name": "dysfunctionalQuestion",
+          "type": "xsd:string",
+          "required": true,
+          "description": "The dysfunctional form: How would you feel IF this feature is NOT present?"
+        },
+        {
+          "name": "surveyRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to kano:KanoSurvey @id this question belongs to"
+        },
+        {
+          "name": "responseScale",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["FivePointKano"],
+          "description": "Response scale type — standard five-point Kano scale (Like, Expect, Neutral, Live-With, Dislike)"
+        },
+        {
+          "name": "featureDescription",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Plain-language description of the feature for respondents"
+        }
+      ]
+    },
+    {
+      "@id": "kano:KanoClassification",
+      "@type": "rdfs:Class",
+      "name": "KanoClassification",
+      "rdfs:subClassOf": "schema:Rating",
+      "description": "Feature-to-category assignment resulting from Kano survey cross-tabulation. Each classification assigns a Kano category (Must-Be, Performance, Attractive, Indifferent, Reverse) with statistical confidence. The same feature CAN have different categories across different customer segments (BR-KANO-007).",
+      "schemaOrgGrounding": "schema:Rating",
+      "oaa:properties": [
+        {
+          "name": "classificationId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for this classification result"
+        },
+        {
+          "name": "featureRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vp:Benefit or vp:Solution @id being classified"
+        },
+        {
+          "name": "category",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["MustBe", "Performance", "Attractive", "Indifferent", "Reverse"],
+          "description": "Assigned Kano category from cross-tabulation analysis"
+        },
+        {
+          "name": "confidence",
+          "type": "xsd:decimal",
+          "required": true,
+          "description": "Statistical confidence of this classification (0.0-1.0). MUST be >=0.6 for production use (BR-KANO-003)"
+        },
+        {
+          "name": "sampleSize",
+          "type": "xsd:integer",
+          "required": false,
+          "description": "Number of respondents contributing to this classification"
+        },
+        {
+          "name": "classificationDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date when classification was computed"
+        },
+        {
+          "name": "surveyRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to kano:KanoSurvey @id providing the source data"
+        },
+        {
+          "name": "segmentRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to pmf:CustomerSegmentFit @id — enables segment-level classification"
+        },
+        {
+          "name": "evidenceStrength",
+          "type": "xsd:string",
+          "required": false,
+          "enum": ["Strong", "Moderate", "Weak"],
+          "description": "Qualitative assessment of evidence strength"
+        },
+        {
+          "name": "categoryDistribution",
+          "type": "xsd:string",
+          "required": false,
+          "description": "JSON-encoded distribution across all five categories (e.g. {MustBe:0.45, Performance:0.30, ...})"
+        }
+      ]
+    },
+    {
+      "@id": "kano:SatisfactionCurve",
+      "@type": "rdfs:Class",
+      "name": "SatisfactionCurve",
+      "rdfs:subClassOf": "schema:QuantitativeValue",
+      "description": "Non-linear satisfaction function model per Kano category. Each category has a characteristic curve shape: Must-Be (asymptotic), Performance (linear), Attractive (exponential), Indifferent (flat), Reverse (inverse). Used for investment modelling — predicts satisfaction return on implementation investment.",
+      "schemaOrgGrounding": "schema:QuantitativeValue",
+      "oaa:properties": [
+        {
+          "name": "curveId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for this satisfaction curve"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:name",
+          "description": "Descriptive name for this curve model"
+        },
+        {
+          "name": "categoryType",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["MustBe", "Performance", "Attractive", "Indifferent", "Reverse"],
+          "description": "Kano category this curve models"
+        },
+        {
+          "name": "curveFunction",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["Asymptotic", "Linear", "Exponential", "Flat", "Inverse"],
+          "description": "Mathematical function type of the satisfaction curve"
+        },
+        {
+          "name": "inflectionPoints",
+          "type": "xsd:string",
+          "required": false,
+          "cardinality": "0..*",
+          "description": "Implementation levels where satisfaction response changes character"
+        },
+        {
+          "name": "customerSegment",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Customer segment this curve applies to (may vary by segment)"
+        },
+        {
+          "name": "implementationLevel",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Current implementation level (0-100 scale)"
+        },
+        {
+          "name": "satisfactionLevel",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Current satisfaction level (0-100 scale)"
+        },
+        {
+          "name": "kpiRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to kpi:KPI @id measuring this satisfaction dimension"
+        }
+      ]
+    },
+    {
+      "@id": "kano:KanoDecay",
+      "@type": "rdfs:Class",
+      "name": "KanoDecay",
+      "rdfs:subClassOf": "schema:Observation",
+      "description": "Tracks temporal category migration (decay) of features over time. The classic Kano decay pattern is Attractive -> Performance -> Must-Be as competitors commoditise features. Decay detection triggers strategic responses (Innovate, Accelerate, Accept, Monitor) and can trigger PMF pivot assessments.",
+      "schemaOrgGrounding": "schema:Observation",
+      "oaa:properties": [
+        {
+          "name": "decayId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for this decay observation"
+        },
+        {
+          "name": "featureRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vp:Benefit or vp:Solution @id experiencing decay"
+        },
+        {
+          "name": "fromCategory",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["MustBe", "Performance", "Attractive", "Indifferent", "Reverse"],
+          "description": "Original Kano category before decay"
+        },
+        {
+          "name": "toCategory",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["MustBe", "Performance", "Attractive", "Indifferent", "Reverse"],
+          "description": "New Kano category after decay. MUST NOT equal fromCategory (BR-KANO-004)"
+        },
+        {
+          "name": "decayPeriodMonths",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Number of months over which decay was observed"
+        },
+        {
+          "name": "detectionDate",
+          "type": "xsd:date",
+          "required": true,
+          "description": "Date when the category migration was detected"
+        },
+        {
+          "name": "evidence",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Evidence supporting the decay detection (e.g. repeat survey results, competitor analysis)"
+        },
+        {
+          "name": "competitivePressure",
+          "type": "xsd:string",
+          "required": false,
+          "enum": ["High", "Medium", "Low"],
+          "description": "Level of competitive pressure driving the decay"
+        },
+        {
+          "name": "recommendedAction",
+          "type": "xsd:string",
+          "required": false,
+          "enum": ["Innovate", "Accelerate", "Accept", "Monitor"],
+          "description": "Recommended strategic action in response to the decay"
+        },
+        {
+          "name": "pivotAssessmentRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to pmf:PivotAssessment @id if decay triggers pivot evaluation"
+        }
+      ]
+    },
+    {
+      "@id": "kano:FeaturePriority",
+      "@type": "rdfs:Class",
+      "name": "FeaturePriority",
+      "rdfs:subClassOf": "schema:Recommendation",
+      "description": "Aggregated feature prioritisation output derived from Kano classification analysis. Combines category assignment, confidence, segment variation, and willingness-to-pay elasticity into an actionable investment recommendation. Serves as the primary decision-support output of the Kano analytical lens.",
+      "schemaOrgGrounding": "schema:Recommendation",
+      "oaa:properties": [
+        {
+          "name": "priorityId",
+          "type": "xsd:string",
+          "required": true,
+          "schemaOrgMapping": "schema:identifier",
+          "description": "Unique identifier for this priority assessment"
+        },
+        {
+          "name": "name",
+          "type": "xsd:string",
+          "required": false,
+          "schemaOrgMapping": "schema:name",
+          "description": "Feature name or descriptive label"
+        },
+        {
+          "name": "featureRef",
+          "type": "xsd:string",
+          "required": true,
+          "description": "Reference to vp:Benefit or vp:Solution @id being prioritised"
+        },
+        {
+          "name": "priorityRank",
+          "type": "xsd:integer",
+          "required": true,
+          "description": "Ordinal priority rank (1 = highest priority)"
+        },
+        {
+          "name": "investmentRecommendation",
+          "type": "xsd:string",
+          "required": true,
+          "enum": ["Invest", "Maintain", "Deprioritise", "Eliminate"],
+          "description": "Strategic investment recommendation based on Kano evidence"
+        },
+        {
+          "name": "kanoEvidenceRefs",
+          "type": "xsd:string",
+          "required": false,
+          "cardinality": "0..*",
+          "description": "References to kano:KanoClassification @ids providing evidence for this priority"
+        },
+        {
+          "name": "wtpElasticity",
+          "type": "xsd:decimal",
+          "required": false,
+          "description": "Willingness-to-pay elasticity (0.0-2.0): how much customers will pay more for this feature. >1.0 = elastic, <1.0 = inelastic"
+        },
+        {
+          "name": "hasSegmentVariation",
+          "type": "xsd:boolean",
+          "required": false,
+          "description": "Whether this feature has different Kano categories across customer segments"
+        },
+        {
+          "name": "strategicAction",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Narrative strategic action recommendation"
+        },
+        {
+          "name": "pmfWTPRef",
+          "type": "xsd:string",
+          "required": false,
+          "description": "Reference to pmf:WillingnessToPayAssessment @id for pricing linkage"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "kano:hasSurveyQuestion",
+      "@type": "owl:ObjectProperty",
+      "name": "Has Survey Question",
+      "description": "A Kano survey contains functional/dysfunctional question pairs",
+      "domainIncludes": ["kano:KanoSurvey"],
+      "rangeIncludes": ["kano:KanoQuestion"],
+      "oaa:cardinality": "1..*"
+    },
+    {
+      "@id": "kano:producesClassification",
+      "@type": "owl:ObjectProperty",
+      "name": "Produces Classification",
+      "description": "A Kano survey produces feature classifications through cross-tabulation analysis",
+      "domainIncludes": ["kano:KanoSurvey"],
+      "rangeIncludes": ["kano:KanoClassification"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "kano:questionClassifiesAs",
+      "@type": "owl:ObjectProperty",
+      "name": "Question Classifies As",
+      "description": "A Kano question pair produces a classification result for its target feature",
+      "domainIncludes": ["kano:KanoQuestion"],
+      "rangeIncludes": ["kano:KanoClassification"],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "kano:classificationModelsCurve",
+      "@type": "owl:ObjectProperty",
+      "name": "Classification Models Curve",
+      "description": "A Kano classification implies a satisfaction curve model for the feature",
+      "domainIncludes": ["kano:KanoClassification"],
+      "rangeIncludes": ["kano:SatisfactionCurve"],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "kano:classificationDecaysTo",
+      "@type": "owl:ObjectProperty",
+      "name": "Classification Decays To",
+      "description": "A Kano classification may decay to a different category over time",
+      "domainIncludes": ["kano:KanoClassification"],
+      "rangeIncludes": ["kano:KanoDecay"],
+      "oaa:cardinality": "0..*"
+    },
+    {
+      "@id": "kano:classificationInformsPriority",
+      "@type": "owl:ObjectProperty",
+      "name": "Classification Informs Priority",
+      "description": "One or more Kano classifications inform a feature priority recommendation",
+      "domainIncludes": ["kano:KanoClassification"],
+      "rangeIncludes": ["kano:FeaturePriority"],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "kano:decayInformsPriority",
+      "@type": "owl:ObjectProperty",
+      "name": "Decay Informs Priority",
+      "description": "Decay observations may adjust feature priority recommendations",
+      "domainIncludes": ["kano:KanoDecay"],
+      "rangeIncludes": ["kano:FeaturePriority"],
+      "oaa:cardinality": "0..1"
+    },
+    {
+      "@id": "kano:classifiedBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Classified By Kano",
+      "description": "A VP benefit or solution is classified by a Kano analysis result",
+      "domainIncludes": ["vp:Benefit", "vp:Solution"],
+      "rangeIncludes": ["kano:KanoClassification"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "VP-ONT"
+    },
+    {
+      "@id": "kano:surveyTargetsICP",
+      "@type": "owl:ObjectProperty",
+      "name": "Survey Targets ICP",
+      "description": "A Kano survey targets a specific ideal customer profile for segment-focused analysis",
+      "domainIncludes": ["kano:KanoSurvey"],
+      "rangeIncludes": ["vp:IdealCustomerProfile"],
+      "oaa:cardinality": "1..1",
+      "oaa:crossOntologyRef": "VP-ONT"
+    },
+    {
+      "@id": "kano:surveySegmentFit",
+      "@type": "owl:ObjectProperty",
+      "name": "Survey Segment Fit",
+      "description": "A Kano survey optionally links to a PMF customer segment fit for deeper segmentation",
+      "domainIncludes": ["kano:KanoSurvey"],
+      "rangeIncludes": ["pmf:CustomerSegmentFit"],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "PMF-ONT"
+    },
+    {
+      "@id": "kano:informsValidation",
+      "@type": "owl:ObjectProperty",
+      "name": "Informs Validation",
+      "description": "A Kano classification informs a PMF validation signal with satisfaction-attribution evidence",
+      "domainIncludes": ["kano:KanoClassification"],
+      "rangeIncludes": ["pmf:ValidationSignal"],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "PMF-ONT"
+    },
+    {
+      "@id": "kano:triggersAssessment",
+      "@type": "owl:ObjectProperty",
+      "name": "Triggers Assessment",
+      "description": "A Kano decay observation triggers a PMF pivot assessment when feature commoditisation is detected",
+      "domainIncludes": ["kano:KanoDecay"],
+      "rangeIncludes": ["pmf:PivotAssessment"],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "PMF-ONT"
+    },
+    {
+      "@id": "kano:measuredBy",
+      "@type": "owl:ObjectProperty",
+      "name": "Measured By KPI",
+      "description": "A satisfaction curve is measured by one or more KPIs for continuous monitoring",
+      "domainIncludes": ["kano:SatisfactionCurve"],
+      "rangeIncludes": ["kpi:KPI"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "KPI-ONT"
+    },
+    {
+      "@id": "kano:assignedFramework",
+      "@type": "owl:ObjectProperty",
+      "name": "Assigned Framework",
+      "description": "A MECE decomposition tree assigns the Kano framework for feature-level analysis",
+      "domainIncludes": ["rsn:MECETree"],
+      "rangeIncludes": ["kano:KanoClassification"],
+      "oaa:cardinality": "0..*",
+      "oaa:crossOntologyRef": "REASON-ONT"
+    },
+    {
+      "@id": "kano:priorityLinksWTP",
+      "@type": "owl:ObjectProperty",
+      "name": "Priority Links WTP",
+      "description": "A feature priority links to a PMF willingness-to-pay assessment for pricing decision support",
+      "domainIncludes": ["kano:FeaturePriority"],
+      "rangeIncludes": ["pmf:WillingnessToPayAssessment"],
+      "oaa:cardinality": "0..1",
+      "oaa:crossOntologyRef": "PMF-ONT"
+    }
+  ],
+  "businessRules": [
+    {
+      "ruleId": "BR-KANO-001",
+      "name": "Classification Must Reference Valid Feature",
+      "condition": "IF a KanoClassification is created",
+      "action": "THEN featureRef MUST reference a valid vp:Benefit or vp:Solution @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-KANO-002",
+      "name": "Survey Must Target ICP",
+      "condition": "IF a KanoSurvey is created",
+      "action": "THEN targetICPRef MUST reference a valid vp:IdealCustomerProfile @id",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-KANO-003",
+      "name": "Production Classification Confidence Threshold",
+      "condition": "IF a KanoClassification is used for production investment decisions",
+      "action": "THEN confidence MUST be >= 0.6",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-KANO-004",
+      "name": "Decay Categories Must Differ",
+      "condition": "IF a KanoDecay is recorded",
+      "action": "THEN fromCategory MUST NOT equal toCategory",
+      "severity": "error"
+    },
+    {
+      "ruleId": "BR-KANO-005",
+      "name": "Investment Recommendation Category Alignment",
+      "condition": "IF a FeaturePriority.investmentRecommendation is set",
+      "action": "THEN it SHOULD align with KanoCategory conventions: MustBe/Performance -> Invest/Maintain, Attractive -> Invest, Indifferent -> Deprioritise, Reverse -> Eliminate",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-KANO-006",
+      "name": "Survey Sample Size Minimum",
+      "condition": "IF a KanoSurvey is conducted",
+      "action": "THEN sampleSize SHOULD be >= 30 per segment for statistical validity",
+      "severity": "warning"
+    },
+    {
+      "ruleId": "BR-KANO-007",
+      "name": "Cross-Segment Category Variation Permitted",
+      "condition": "IF the same feature has KanoClassification instances across different segments",
+      "action": "THEN different categories CAN be assigned — segment variation is expected and valid. Set FeaturePriority.hasSegmentVariation = true.",
+      "severity": "info"
+    }
+  ],
+  "competencyQuestions": [
+    {
+      "@id": "CQ-KANO-001",
+      "question": "What is the Kano category classification for a given product feature, and with what statistical confidence was it assigned?",
+      "targetEntities": ["kano:KanoClassification"],
+      "targetRelationships": ["kano:classifiedBy"],
+      "targetRules": ["BR-KANO-003"]
+    },
+    {
+      "@id": "CQ-KANO-002",
+      "question": "Which customer segment was surveyed, how many respondents participated, and what was the survey completion status?",
+      "targetEntities": ["kano:KanoSurvey"],
+      "targetRelationships": ["kano:surveyTargetsICP", "kano:surveySegmentFit"],
+      "targetRules": ["BR-KANO-002", "BR-KANO-006"]
+    },
+    {
+      "@id": "CQ-KANO-003",
+      "question": "What functional and dysfunctional question pair was used to evaluate a specific feature in the Kano survey?",
+      "targetEntities": ["kano:KanoQuestion"],
+      "targetRelationships": ["kano:hasSurveyQuestion", "kano:questionClassifiesAs"],
+      "targetRules": ["BR-KANO-001"]
+    },
+    {
+      "@id": "CQ-KANO-004",
+      "question": "What is the non-linear satisfaction function shape for a given Kano category, and what are its inflection points?",
+      "targetEntities": ["kano:SatisfactionCurve"],
+      "targetRelationships": ["kano:classificationModelsCurve", "kano:measuredBy"],
+      "targetRules": []
+    },
+    {
+      "@id": "CQ-KANO-005",
+      "question": "Has a feature experienced Kano category decay (e.g. Attractive -> Performance -> Must-Be), and what competitive pressure drove the migration?",
+      "targetEntities": ["kano:KanoDecay"],
+      "targetRelationships": ["kano:classificationDecaysTo", "kano:triggersAssessment"],
+      "targetRules": ["BR-KANO-004"]
+    },
+    {
+      "@id": "CQ-KANO-006",
+      "question": "What is the investment recommendation for a feature based on its Kano classification evidence, and does it vary across customer segments?",
+      "targetEntities": ["kano:FeaturePriority"],
+      "targetRelationships": ["kano:classificationInformsPriority", "kano:priorityLinksWTP"],
+      "targetRules": ["BR-KANO-005", "BR-KANO-007"]
+    },
+    {
+      "@id": "CQ-KANO-007",
+      "question": "Which features have different Kano categories across customer segments, and what does this imply for segment-specific product strategy?",
+      "targetEntities": ["kano:KanoClassification", "kano:FeaturePriority"],
+      "targetRelationships": ["kano:classifiedBy"],
+      "targetRules": ["BR-KANO-007"]
+    },
+    {
+      "@id": "CQ-KANO-008",
+      "question": "How does Kano decay evidence flow through to PMF pivot assessment, and when should a strategic pivot be triggered?",
+      "targetEntities": ["kano:KanoDecay"],
+      "targetRelationships": ["kano:triggersAssessment"],
+      "targetRules": ["BR-KANO-004"]
+    }
+  ],
+  "changeControl": {
+    "currentVersion": "1.0.0",
+    "oaaSchemaVersion": "7.0.0",
+    "lastModified": "2026-02-28",
+    "modifiedBy": "OAA v7.0.0 Agent",
+    "changeNotes": "Initial release of KANO-ONT as part of VE-Series VSOM-SA (Strategy Analysis). Provides Kano Model feature classification: survey instruments, functional/dysfunctional question pairs, statistical cross-tabulation classification, non-linear satisfaction curve modelling, temporal decay tracking, and aggregated feature prioritisation. Cross-references VP-ONT v1.2.3, PMF-ONT v2.0.0, KPI-ONT v1.0.0, REASON-ONT v1.0.0, PE-ONT v4.0.0.",
+    "versionHistory": []
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "@context": {
+    "orgctx": "https://platformcore.io/ontology/org-context/",
+    "org": "https://platformcore.io/ontology/org/",
+    "pfc": "https://platformcore.io/ontology/"
+  },
+  "@type": "orgctx:OrganizationContext",
+  "@id": "org:ctx-wwg",
+  "orgctx:instanceRef": "pfi:W4M-WWG",
+  "orgctx:orgProfile": {
+    "orgctx:orgName": "World Wide Gourmet Ltd",
+    "orgctx:orgIndustry": "Food Import / International Trade — Cold Chain Specialist",
+    "orgctx:orgSize": "51-200",
+    "orgctx:orgGeography": {
+      "headquarters": "United Kingdom",
+      "operatingRegions": ["UK", "AU", "NZ", "IS", "IE"],
+      "sourcingCorridors": [
+        {
+          "code": "AU-UK",
+          "description": "Australia to United Kingdom via Suez/Cape route",
+          "commodities": ["Beef (frozen)", "Lamb (frozen/chilled)"],
+          "transitDays": "28-35",
+          "authorities": ["DAFF", "AQIS"]
+        },
+        {
+          "code": "NZ-UK",
+          "description": "New Zealand to United Kingdom via Suez/Panama route",
+          "commodities": ["Lamb (frozen/chilled)", "Dairy"],
+          "transitDays": "30-40",
+          "authorities": ["MPI"]
+        },
+        {
+          "code": "IS-UK",
+          "description": "Iceland to United Kingdom via North Atlantic",
+          "commodities": ["Seafood (cod/haddock)", "Seafood (salmon)"],
+          "transitDays": "3-5",
+          "authorities": ["MAST"]
+        },
+        {
+          "code": "IE-UK",
+          "description": "Ireland to United Kingdom via Irish Sea ferry",
+          "commodities": ["Dairy", "Beef (secondary)", "Seafood (farmed salmon)"],
+          "transitDays": "1-2",
+          "authorities": ["DAFM"],
+          "regulatoryNote": "Windsor Framework applies to NI-destined goods"
+        }
+      ]
+    },
+    "orgctx:orgType": "B2B",
+    "orgctx:orgStage": "Scale-up",
+    "orgctx:orgDescription": "UK specialist food importer sourcing premium proteins, dairy, and seafood from Australia, New Zealand, Iceland, and Ireland. Serves UK restaurants, wholesalers, food service operators, online specialists, and distributors through temperature-controlled cold chain logistics with a central UK cold warehouse (Daventry)."
+  },
+  "orgctx:products": [
+    {
+      "productId": "prod-wwg-001",
+      "productName": "Premium Frozen Meat (AU/NZ)",
+      "productCategory": "Physical",
+      "productSegment": "UK Hospitality & Wholesale — premium protein",
+      "deliveryMethod": "Direct",
+      "pricingModel": "Per-unit",
+      "productStatus": "active",
+      "commodityClasses": ["Beef (frozen)", "Lamb (frozen)", "Lamb (chilled)"],
+      "sourceCorridors": ["AU-UK", "NZ-UK"],
+      "storageType": "frozen",
+      "temperatureRange": "-25°C",
+      "shelfLife": "6-12 months"
+    },
+    {
+      "productId": "prod-wwg-002",
+      "productName": "Icelandic Seafood",
+      "productCategory": "Physical",
+      "productSegment": "UK Hospitality — premium seafood",
+      "deliveryMethod": "Direct",
+      "pricingModel": "Per-unit",
+      "productStatus": "active",
+      "commodityClasses": ["Cod (frozen)", "Haddock (frozen)", "Salmon (chilled)"],
+      "sourceCorridors": ["IS-UK"],
+      "storageType": "mixed",
+      "temperatureRange": "-25°C (frozen) / +2°C (chilled)",
+      "shelfLife": "6-12 months (frozen) / 14-28 days (chilled)"
+    },
+    {
+      "productId": "prod-wwg-003",
+      "productName": "Irish Dairy & Protein",
+      "productCategory": "Physical",
+      "productSegment": "UK Retail & Food Service — dairy and protein",
+      "deliveryMethod": "Direct",
+      "pricingModel": "Per-unit",
+      "productStatus": "active",
+      "commodityClasses": ["Dairy", "Beef (secondary)", "Farmed salmon"],
+      "sourceCorridors": ["IE-UK"],
+      "storageType": "chilled",
+      "temperatureRange": "+2°C",
+      "shelfLife": "14-28 days"
+    }
+  ],
+  "orgctx:marketContext": {
+    "targetMarkets": [
+      {
+        "geography": "United Kingdom",
+        "focus": "England & Wales (primary), Scotland (secondary)"
+      }
+    ],
+    "marketSegments": [
+      {
+        "segmentName": "Restaurant Chains",
+        "exampleCustomer": "Belgravia Dining",
+        "profile": "Weekly orders, tight delivery windows (±1 day), high margin sensitivity, low change frequency",
+        "estimatedSize": "Medium",
+        "primaryNeed": "Reliable, premium-quality protein and seafood with guaranteed delivery windows"
+      },
+      {
+        "segmentName": "Wholesalers",
+        "exampleCustomer": "Northern Wholesale",
+        "profile": "Monthly bulk orders, flexible dates (±5 days), occasional pushback, moderate margin",
+        "estimatedSize": "Large",
+        "primaryNeed": "Competitive landed cost with consistent availability across product lines"
+      },
+      {
+        "segmentName": "Food Service Operators",
+        "exampleCustomer": "Fresh&Wild",
+        "profile": "Regular orders, moderate flexibility, quality-focused, growing demand",
+        "estimatedSize": "Medium",
+        "primaryNeed": "Traceability, cold chain integrity, and shelf life guarantees"
+      },
+      {
+        "segmentName": "Online Specialists",
+        "exampleCustomer": "GourmetBox",
+        "profile": "Unpredictable orders, small quantities, premium pricing, very high margin but volatile",
+        "estimatedSize": "Small but growing",
+        "primaryNeed": "Premium sourcing story, provenance documentation, short lead time"
+      },
+      {
+        "segmentName": "Distributors",
+        "exampleCustomer": "Celtic Foods",
+        "profile": "Large quarterly orders, hard negotiators, highest change frequency, lowest margin",
+        "estimatedSize": "Large",
+        "primaryNeed": "Volume reliability and competitive pricing with flexible change terms"
+      }
+    ],
+    "growthStage": "Growing",
+    "regulatoryEnvironment": [
+      "UK BTOM (Border Target Operating Model) — BCP documentary and identity checks",
+      "Windsor Framework — different rules for NI vs GB-destined goods",
+      "DAFF (AU) health certificates + AQIS export permits",
+      "MPI (NZ) certification",
+      "MAST (IS) — operates under EEA/EFTA rules",
+      "DAFM (IE) — EU SPS requirements with Windsor Framework overlay",
+      "APHA (UK) — import notification via IPAFFS"
+    ]
+  },
+  "orgctx:competitiveLandscape": {
+    "alternatives": [
+      {
+        "competitorName": "Status Quo / Do Nothing",
+        "competitorType": "DoNothing",
+        "strengths": ["No change management required", "Existing supplier relationships maintained", "No technology investment"],
+        "weaknesses": ["Margin blind spot persists (booked vs realised gap)", "Reactive disruption management (18hr MTTD)", "No cross-corridor visibility or substitution capability"],
+        "differentiator": "Zero investment but continued margin erosion estimated at GBP 480K/yr"
+      },
+      {
+        "competitorName": "National Food Distributors (e.g., Brakes, Bidfood, Sysco UK)",
+        "competitorType": "Direct",
+        "marketShare": "Dominant in UK food distribution (60%+ of hospitality supply)",
+        "strengths": ["Scale economics and warehouse network", "Broad product range (thousands of SKUs)", "Established customer relationships and logistics infrastructure"],
+        "weaknesses": ["Generic product quality (not specialist)", "No provenance story or corridor-specific sourcing", "Commodity pricing pressure"],
+        "differentiator": "Volume and convenience but cannot match specialist sourcing quality or corridor expertise"
+      },
+      {
+        "competitorName": "Direct Sourcing by Customers",
+        "competitorType": "Substitute",
+        "strengths": ["Eliminates intermediary margin", "Direct supplier relationship and quality control", "Custom specifications possible"],
+        "weaknesses": ["Requires import expertise and compliance capability", "No cold chain infrastructure or consolidated logistics", "High minimum order quantities from overseas suppliers"],
+        "differentiator": "Only viable for very large customers (>GBP 500K annual import value)"
+      },
+      {
+        "competitorName": "Specialist Import Competitors (e.g., JBS UK, Silver Fern Farms UK agents)",
+        "competitorType": "Direct",
+        "strengths": ["Established corridor relationships", "Some have vertically integrated supply chains", "Known brands in specific commodity classes"],
+        "weaknesses": ["Single-corridor specialists (AU or NZ, not both)", "No cross-corridor substitution capability", "Limited demand-side visibility"],
+        "differentiator": "Deep in one corridor but lack WWG's multi-corridor breadth and graph-driven intelligence"
+      }
+    ]
+  },
+  "orgctx:maturityAssessment": {
+    "dimensions": [
+      { "dimension": "Process Maturity", "score": 2, "rationale": "Procurement and logistics processes exist but are manual; warehouse operations partially documented; no standardised disruption response playbook" },
+      { "dimension": "Technology Maturity", "score": 2, "rationale": "Basic ERP and spreadsheet-driven; no real-time shipment tracking integration; cold chain monitoring exists but not connected to decision-making" },
+      { "dimension": "Data Maturity", "score": 1, "rationale": "Data siloed between procurement, warehouse, and sales systems; no unified margin tracking; KPIs measured retrospectively from P&L, not in real time" },
+      { "dimension": "People Maturity", "score": 3, "rationale": "Experienced domain specialists in each function (7 functional roles defined); strong tacit knowledge of corridors; but knowledge trapped in individuals, not systems" },
+      { "dimension": "Strategy Maturity", "score": 2, "rationale": "Clear vision and 6 strategies defined in VSOM; BSC with 20 objectives and 24 KPIs designed; but execution infrastructure not yet operational" }
+    ],
+    "overallScore": 2.0,
+    "maturityLevel": 2,
+    "maturityLabel": "Level 2 (Developing) — some structure, inconsistent"
+  },
+  "pfc:version": "1.0.0",
+  "pfc:status": "draft",
+  "pfc:createdDate": "2026-03-01",
+  "pfc:generatedBy": "pfc-org-context (manual execution)",
+  "pfc:sourceDocuments": [
+    "PBS/PFI-WWG/STRATEGY/VSOM-E2E-Supply-Demand-Graph.md",
+    "PBS/PFI-WWG/STRATEGY/VSOM-LSC-UK-Importer-Adoption.md",
+    "PBS/PFI-WWG/STRATEGY/VSOM-SOP-Customer-Fulfillment-Risk.md",
+    "ontology-library/ont-registry-index.json (PFI-W4M-WWG entry)",
+    "VE-Series/RRR-ONT/instance-data/rrr-wwg-instance-v1.0.0.jsonld"
+  ]
+}

@@ -1,0 +1,243 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pe": "https://platformcore.io/ontology/process-engineering/",
+    "ds": "https://platformcore.io/ontology/ds/",
+    "oaa": "https://oaa-ontology.org/v6/"
+  },
+  "@type": "pe:Process",
+  "pe:processId": "PE-DS-EXTRACT-002",
+  "pe:processName": "Application Skeleton Authoring Pipeline",
+  "pe:processType": "development",
+  "pe:description": "Four-phase manual pipeline: hand-author JSONLD app skeleton defining spatial zones, navigation layers, nav items, and zone components; validate against DS-ONT business rules BR-DS-013/014/015; test with runtime loader (app-skeleton-loader.js); commit and verify deployment. Skeletons are structural — they define WHERE UI elements live, not HOW they look.",
+  "pe:businessObjective": "Produce machine-readable app skeleton JSONLD that the runtime loader can parse into state.zoneRegistry and state.navLayerRegistry, enabling data-driven UI construction via the 4-tier EMC cascade (PFC → PFI → Product → App).",
+  "pe:scope": "One skeleton JSONLD file per cascade tier per application. PFC base skeleton is authored once; PFI/Product/App overrides extend it. Output is committed to DS-ONT instance-data/ and deployed via GitHub Pages.",
+  "pe:owner": "Azlan EA-AAA / Design-Director Agent",
+  "pe:status": "active",
+  "pe:version": "1.0.0",
+  "pe:estimatedDuration": "PT30M",
+  "pe:automationLevel": 5,
+
+  "pe:inputs": [
+    {
+      "@type": "pe:ProcessInput",
+      "pe:inputId": "INPUT-SKELETON-TIER",
+      "pe:name": "Cascade Tier",
+      "pe:description": "Which cascade tier this skeleton belongs to: PFC (base), PFI (instance override), Product, or App",
+      "pe:required": true,
+      "pe:example": "PFC"
+    },
+    {
+      "@type": "pe:ProcessInput",
+      "pe:inputId": "INPUT-APP-ID",
+      "pe:name": "Application ID",
+      "pe:description": "Unique application identifier for the skeleton (e.g. pfc-visualiser, baiv-dashboard)",
+      "pe:required": true,
+      "pe:example": "pfc-visualiser"
+    },
+    {
+      "@type": "pe:ProcessInput",
+      "pe:inputId": "INPUT-BASE-SKELETON",
+      "pe:name": "Base Skeleton File",
+      "pe:description": "Path to the PFC base skeleton that a PFI/Product/App override extends. Required for non-PFC tiers.",
+      "pe:required": false,
+      "pe:example": "instance-data/pfc-app-skeleton-v1.0.0.jsonld"
+    }
+  ],
+
+  "pe:hasPhase": [
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-1-AUTHOR",
+      "pe:phaseName": "Author JSONLD",
+      "pe:phaseNumber": 1,
+      "pe:description": "Hand-author the app skeleton JSONLD file with Application, AppZone, NavLayer, NavItem, and ZoneComponent entities following DS-ONT v2.0.0 schema.",
+      "pe:entryConditions": "DS-ONT v2.0.0 schema available; PE-DS-EXTRACT-002-guide.md entity reference consulted; zone/nav design finalised",
+      "pe:exitConditions": "Valid JSONLD file with @context, @graph containing typed entities; all required properties populated; enum values valid",
+      "pe:activities": [
+        "1. Create JSONLD file with @context: { ds: 'https://platformcore.io/ontology/ds/' }.",
+        "2. Add ds:Application root entity with appId, appName, version, appType, cascadeTier.",
+        "3. Add ds:AppZone entries for each spatial zone with zoneId, zoneName, zoneType, defaultVisible, cascadeTier.",
+        "4. Add ds:NavLayer entries (L1-L4) with layerId, layerName, layerLevel, renderOrder, cascadeTier.",
+        "5. Add ds:NavItem entries for each nav action with itemId, label, itemType, action, renderOrder, cascadeTier, ds:belongsToLayer reference.",
+        "6. Add ds:ZoneComponent entries binding DesignComponents to zones with placementId, renderOrder, cascadeTier, ds:placedInZone and ds:placesComponent references.",
+        "7. For PFI overrides: only add new entities or entities that extend/hide PFC items — do not duplicate the full PFC base."
+      ],
+      "pe:estimatedDuration": "PT20M",
+      "pe:parallelExecution": false
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-2-VALIDATE",
+      "pe:phaseName": "Validate Business Rules",
+      "pe:phaseNumber": 2,
+      "pe:description": "Validate the authored skeleton against DS-ONT business rules BR-DS-013 (CascadeTierImmutability), BR-DS-014 (ZonesMustHaveType), and BR-DS-015 (NavItemMustHaveAction).",
+      "pe:entryConditions": "JSONLD file authored in Phase 1; DS-ONT schema loaded for reference",
+      "pe:exitConditions": "Zero severity=error violations; all AppZones have zoneType+defaultVisible; all non-Separator NavItems have action",
+      "pe:activities": [
+        "1. BR-DS-013: Verify PFI/Product/App overrides do not modify structural properties (zoneType, position, layerLevel, action) of PFC-tier entities.",
+        "2. BR-DS-014: Verify every AppZone has zoneType and defaultVisible set.",
+        "3. BR-DS-015: Verify every NavItem (except Separator) has a non-empty action string.",
+        "4. Check all @id values are unique within the file and across base+override when merging.",
+        "5. Verify all ds:placedInZone references resolve to valid zone @id values.",
+        "6. Verify all ds:belongsToLayer references resolve to valid NavLayer @id values."
+      ],
+      "pe:estimatedDuration": "PT3M",
+      "pe:parallelExecution": false
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-3-TEST",
+      "pe:phaseName": "Test with Runtime Loader",
+      "pe:phaseNumber": 3,
+      "pe:description": "Verify the runtime loader (app-skeleton-loader.js) parses the skeleton correctly and populates state.zoneRegistry and state.navLayerRegistry.",
+      "pe:entryConditions": "GATE-2 passed; app-skeleton-loader.js available; vitest configured",
+      "pe:exitConditions": "All existing tests pass; loader parses skeleton without errors; registries populated with correct counts",
+      "pe:activities": [
+        "1. Run existing loader tests: npx vitest run tests/app-skeleton-loader.test.js.",
+        "2. Run design-token-tree tests: npx vitest run tests/design-token-tree.test.js.",
+        "3. If adding new zones/items, add corresponding test cases to verify parsing.",
+        "4. Manual browser test: open visualiser, verify admin panel shows skeleton data with cascade tier badges.",
+        "5. For PFI overrides: test mergeSkeletonCascade(base, override) produces correct merged output."
+      ],
+      "pe:estimatedDuration": "PT5M",
+      "pe:parallelExecution": false,
+      "pe:toolsRequired": ["vitest"]
+    },
+    {
+      "@type": "pe:ProcessPhase",
+      "pe:phaseId": "PHASE-4-COMMIT",
+      "pe:phaseName": "Commit and Verify",
+      "pe:phaseNumber": 4,
+      "pe:description": "Stage the skeleton JSONLD, commit with standard message format, push, and verify GitHub Pages deployment.",
+      "pe:entryConditions": "GATE-3 passed; all tests green; skeleton file on disk",
+      "pe:exitConditions": "git push succeeds; GitHub Actions Pages workflow completed; JSONLD accessible on GitHub Pages",
+      "pe:activities": [
+        "1. Run full test suite: npx vitest run from visualiser dir.",
+        "2. Stage skeleton file: git add instance-data/{name}-app-skeleton-*.jsonld.",
+        "3. Commit: feat(ds): add {NAME} app skeleton via PE-DS-EXTRACT-002.",
+        "4. Pull and rebase: git pull --rebase.",
+        "5. Push: git push.",
+        "6. Verify: gh run list --limit 1; confirm workflow completed.",
+        "7. Verify JSONLD accessible on GitHub Pages URL."
+      ],
+      "pe:estimatedDuration": "PT2M",
+      "pe:parallelExecution": false,
+      "pe:errorRecovery": {
+        "rebaseFailed": "Stash local changes (git stash), pull --rebase, pop stash, resolve conflicts if any, then re-commit and push.",
+        "pushRejected": "Pull --rebase first, then push again. Never force-push to main.",
+        "testsFailed": "Abort commit. Investigate and fix the failing test before retrying."
+      }
+    }
+  ],
+
+  "pe:hasGate": [
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-1-SCHEMA-VALID",
+      "pe:gateName": "Schema Validity Gate",
+      "pe:gateType": "compliance",
+      "pe:afterPhase": "PHASE-1-AUTHOR",
+      "pe:description": "JSONLD file is valid JSON with correct @context, all required properties present, enum values valid, @id values unique",
+      "pe:criteria": "Valid JSON; all required properties per entity type present; all enum values from DS-ONT controlled vocabulary; no duplicate @id",
+      "pe:threshold": 100,
+      "pe:automated": false,
+      "pe:blockingFactor": "blocking"
+    },
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-2-RULES-PASS",
+      "pe:gateName": "Business Rules Gate",
+      "pe:gateType": "compliance",
+      "pe:afterPhase": "PHASE-2-VALIDATE",
+      "pe:description": "Zero blocking errors from BR-DS-013 (CascadeTierImmutability), BR-DS-014 (ZonesMustHaveType), BR-DS-015 (NavItemMustHaveAction)",
+      "pe:criteria": "Zero severity=error rule violations; all reference @id values resolve",
+      "pe:threshold": 100,
+      "pe:automated": false,
+      "pe:blockingFactor": "blocking"
+    },
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-3-LOADER-OK",
+      "pe:gateName": "Runtime Loader Gate",
+      "pe:gateType": "quality",
+      "pe:afterPhase": "PHASE-3-TEST",
+      "pe:description": "All vitest tests pass; app-skeleton-loader.js parses skeleton without errors; state.zoneRegistry and state.navLayerRegistry populated with correct counts",
+      "pe:criteria": "vitest exit code 0; state.zoneRegistry.size matches expected zone count; state.navLayerRegistry.size matches expected layer count",
+      "pe:threshold": 100,
+      "pe:automated": true,
+      "pe:blockingFactor": "blocking"
+    },
+    {
+      "@type": "pe:ProcessGate",
+      "pe:gateId": "GATE-4-DEPLOYED",
+      "pe:gateName": "Deployment Verification Gate",
+      "pe:gateType": "acceptance",
+      "pe:afterPhase": "PHASE-4-COMMIT",
+      "pe:description": "Push succeeded; GitHub Pages workflow completed; JSONLD accessible at deployed URL",
+      "pe:criteria": "git push exit code 0; gh run list shows status=completed/success; HTTP 200 from GitHub Pages URL with valid JSON response",
+      "pe:threshold": 100,
+      "pe:automated": true,
+      "pe:blockingFactor": "blocking"
+    }
+  ],
+
+  "pe:augmentedBy": [
+    {
+      "@type": "pe:AIAgent",
+      "pe:agentId": "AGENT-SKELETON-AUTHOR",
+      "pe:agentName": "Skeleton Authoring Agent",
+      "pe:agentType": "generation",
+      "pe:description": "Claude Code agent assisting with skeleton JSONLD authoring, validation against DS-ONT business rules, and commit/deploy workflow",
+      "pe:capabilities": "JSONLD generation; DS-ONT schema validation (BR-DS-013/014/015); vitest execution; git operations; GitHub Pages verification",
+      "pe:autonomyLevel": "supervised",
+      "pe:model": "claude-opus-4-6",
+      "pe:qualityThreshold": 90
+    }
+  ],
+
+  "pe:measures": [
+    {
+      "@type": "pe:ProcessMetric",
+      "pe:metricId": "METRIC-ENTITY-COUNT",
+      "pe:metricName": "Skeleton Entity Count",
+      "pe:metricType": "output",
+      "pe:formula": "zones + navLayers + navItems + zoneComponents + 1 (Application)",
+      "pe:unit": "entities",
+      "pe:target": 20,
+      "pe:collectionMethod": "automated",
+      "pe:frequency": "per-execution"
+    },
+    {
+      "@type": "pe:ProcessMetric",
+      "pe:metricId": "METRIC-RULE-COMPLIANCE",
+      "pe:metricName": "Business Rule Compliance",
+      "pe:metricType": "quality",
+      "pe:formula": "(rules_passed / total_rules) * 100",
+      "pe:unit": "percent",
+      "pe:target": 100,
+      "pe:collectionMethod": "automated",
+      "pe:frequency": "per-execution"
+    }
+  ],
+
+  "pe:relatedProcesses": [
+    {
+      "@type": "pe:ProcessReference",
+      "pe:processId": "PE-DS-EXTRACT-001",
+      "pe:processName": "Design System Token Extraction Pipeline",
+      "pe:relationship": "complementary",
+      "pe:description": "Automated pipeline extracting design tokens from Figma into DS-ONT instance data. Separate concern — tokens are visual (colours, spacing), skeletons are structural (zones, navigation).",
+      "pe:guideRef": "PE-DS-EXTRACT-001-guide.md",
+      "pe:processDefRef": "ds-token-extraction-process-v2.2.0.json"
+    }
+  ],
+
+  "pe:versionHistory": [
+    {
+      "pe:version": "1.0.0",
+      "pe:date": "2026-02-21",
+      "pe:changes": "Initial 4-phase pipeline: Author JSONLD, Validate Rules, Test with Loader, Commit & Verify. 4 gates, 1 agent, 2 metrics. Covers all 5 skeleton entity types (Application, AppZone, NavLayer, NavItem, ZoneComponent) and 3 business rules (BR-DS-013/014/015). Cross-references PE-DS-EXTRACT-001 as complementary process."
+    }
+  ]
+}

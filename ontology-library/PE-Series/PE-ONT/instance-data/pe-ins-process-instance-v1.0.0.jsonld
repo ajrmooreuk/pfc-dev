@@ -1,0 +1,306 @@
+{
+  "@context": {
+    "pe": "https://oaa-ontology.org/v6/process-engineering/",
+    "ppm": "https://oaa-ontology.org/v6/ppm/",
+    "org": "https://pbs.azlan.me/ontology/org#",
+    "schema": "https://schema.org/",
+    "oaa": "https://pbs.azlan.me/oaa#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "pe:ins-ea-assessment-instance-001",
+  "@type": "oaa:OntologyInstance",
+  "oaa:instanceOf": "pe:ins-ea-assessment-process-template",
+  "oaa:schemaVersion": "3.0.0",
+  "oaa:instanceVersion": "1.0.0",
+  "oaa:vertical": "insurance",
+  "oaa:clientRef": "org:ctx-ins-exemplar",
+  "oaa:created": "2026-02-12",
+  "oaa:description": "Exemplar PE-ONT process instance — fully executed Insurance EA Assessment with realistic phase progress, gate results, metric values, and AI agent activity logs.",
+
+  "entities": [
+    {
+      "@id": "pe:ins-instance-001",
+      "@type": "pe:ProcessInstance",
+      "instanceId": "pe:ins-exec-001",
+      "instanceName": "INS-EA-001 Execution — Exemplar Insurer Assessment",
+      "status": "completed",
+      "currentPhase": "pe:ins-ph-governance",
+      "startDate": "2026-03-01T09:00:00Z",
+      "endDate": "2026-05-23T17:00:00Z",
+      "progress": 100
+    },
+
+    {
+      "@id": "pe:ins-exec-discovery",
+      "@type": "pe:ProcessInstance",
+      "instanceId": "pe:ins-exec-ph1",
+      "instanceName": "Phase 1: Discovery Execution",
+      "status": "completed",
+      "currentPhase": "pe:ins-ph-discovery",
+      "startDate": "2026-03-01T09:00:00Z",
+      "endDate": "2026-03-21T17:00:00Z",
+      "progress": 100,
+      "executionNotes": {
+        "stakeholderInterviews": 18,
+        "documentsReviewed": 42,
+        "applicationsDiscovered": 67,
+        "dataSourcesCatalogued": 23,
+        "regulatoryRequirementsMapped": 145,
+        "aiAgentUsage": "Compliance scanner identified 12 previously unknown regulatory requirements from Solvency II delegated acts"
+      }
+    },
+    {
+      "@id": "pe:ins-exec-analysis",
+      "@type": "pe:ProcessInstance",
+      "instanceId": "pe:ins-exec-ph2",
+      "instanceName": "Phase 2: Analysis Execution",
+      "status": "completed",
+      "currentPhase": "pe:ins-ph-analysis",
+      "startDate": "2026-03-24T09:00:00Z",
+      "endDate": "2026-04-11T17:00:00Z",
+      "progress": 100,
+      "executionNotes": {
+        "architecturePatterns": 8,
+        "techDebtItems": 34,
+        "dataQualityIssues": 12,
+        "applicationDependencies": 89,
+        "regulatoryGaps": 23,
+        "criticalRisks": 7,
+        "maturityScore": 2.3,
+        "aiAgentUsage": "Risk assessor flagged 3 critical operational risks in claims processing architecture; compliance scanner identified 23 regulatory gaps across Solvency II, IDD, DORA"
+      }
+    },
+    {
+      "@id": "pe:ins-exec-design",
+      "@type": "pe:ProcessInstance",
+      "instanceId": "pe:ins-exec-ph3",
+      "instanceName": "Phase 3: Design Execution",
+      "status": "completed",
+      "currentPhase": "pe:ins-ph-design",
+      "startDate": "2026-04-14T09:00:00Z",
+      "endDate": "2026-05-02T17:00:00Z",
+      "progress": 100,
+      "executionNotes": {
+        "designWorkshops": 6,
+        "architectureDecisionRecords": 14,
+        "azurePatterns": 5,
+        "complianceOverlays": 4,
+        "clientApproval": "Steering committee approved target state on 2026-05-02",
+        "aiAgentUsage": "Compliance scanner validated target state against all 145 regulatory requirements; 92% coverage achieved at design stage"
+      }
+    },
+    {
+      "@id": "pe:ins-exec-roadmap",
+      "@type": "pe:ProcessInstance",
+      "instanceId": "pe:ins-exec-ph4",
+      "instanceName": "Phase 4: Roadmap Execution",
+      "status": "completed",
+      "currentPhase": "pe:ins-ph-roadmap",
+      "startDate": "2026-05-05T09:00:00Z",
+      "endDate": "2026-05-16T17:00:00Z",
+      "progress": 100,
+      "executionNotes": {
+        "gapsIdentified": 47,
+        "criticalGaps": 12,
+        "highGaps": 18,
+        "mediumGaps": 11,
+        "lowGaps": 6,
+        "roadmapPhases": 4,
+        "estimatedBudget": 1200000,
+        "criticalPath": "EA foundations -> compliance remediation -> platform migration",
+        "aiAgentUsage": "Gap analyser generated comprehensive gap report in 4 hours (vs. estimated 40 hours manual effort); risk-driven prioritisation produced objective roadmap ranking"
+      }
+    },
+    {
+      "@id": "pe:ins-exec-governance",
+      "@type": "pe:ProcessInstance",
+      "instanceId": "pe:ins-exec-ph5",
+      "instanceName": "Phase 5: Governance & Handover Execution",
+      "status": "completed",
+      "currentPhase": "pe:ins-ph-governance",
+      "startDate": "2026-05-19T09:00:00Z",
+      "endDate": "2026-05-23T17:00:00Z",
+      "progress": 100,
+      "executionNotes": {
+        "governanceBoardEstablished": true,
+        "knowledgeTransferSessions": 4,
+        "documentationPages": 156,
+        "monitoringDashboardsConfigured": 3,
+        "handoverSignedOff": "2026-05-23"
+      }
+    },
+
+    {
+      "@id": "pe:ins-gate-result-g1",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:ins-gr-g1",
+      "gateName": "G1: Discovery Completeness — PASSED",
+      "gateType": "completeness",
+      "criteria": "All 5 domains documented; 18/20 interviews complete (90%); regulatory landscape mapped; data sources catalogued",
+      "threshold": 80,
+      "automated": false,
+      "blockingFactor": "blocking",
+      "result": "PASS",
+      "score": 90,
+      "reviewDate": "2026-03-21",
+      "reviewNotes": "2 stakeholders unavailable; rescheduled to analysis phase. All other criteria exceeded threshold."
+    },
+    {
+      "@id": "pe:ins-gate-result-g2",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:ins-gr-g2",
+      "gateName": "G2: Analysis Quality — PASSED",
+      "gateType": "quality",
+      "criteria": "Blueprint peer-reviewed; maturity scores validated; risk register reviewed; regulatory gaps categorised",
+      "threshold": 85,
+      "automated": false,
+      "blockingFactor": "blocking",
+      "result": "PASS",
+      "score": 88,
+      "reviewDate": "2026-04-11",
+      "reviewNotes": "Compliance team flagged 3 additional DORA requirements not in initial scope. Added to gap analysis."
+    },
+    {
+      "@id": "pe:ins-gate-result-g3",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:ins-gr-g3",
+      "gateName": "G3: Design Approval — PASSED",
+      "gateType": "approval",
+      "criteria": "Target state approved by CTO; ADRs reviewed; compliance alignment confirmed; Azure architecture validated",
+      "threshold": 90,
+      "automated": false,
+      "blockingFactor": "blocking",
+      "result": "PASS",
+      "score": 92,
+      "reviewDate": "2026-05-02",
+      "reviewNotes": "Steering committee approved with 2 minor conditions: data residency ADR update and cost model refinement."
+    },
+    {
+      "@id": "pe:ins-gate-result-g4",
+      "@type": "pe:ProcessGate",
+      "gateId": "pe:ins-gr-g4",
+      "gateName": "G4: Insurance Compliance — PASSED",
+      "gateType": "compliance",
+      "criteria": "Solvency II mapped; IDD addressed; DORA covered; GDPR aligned; MCSB baseline met",
+      "threshold": 85,
+      "automated": true,
+      "blockingFactor": "blocking",
+      "result": "PASS",
+      "score": 87,
+      "reviewDate": "2026-05-02",
+      "reviewNotes": "AI compliance scanner automated assessment. 127/145 requirements fully addressed; 18 partially addressed with remediation plan in roadmap."
+    },
+
+    {
+      "@id": "pe:ins-metric-result-coverage",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:ins-mr-coverage",
+      "metricName": "Architecture Domain Coverage — Actual",
+      "metricType": "quality",
+      "unit": "percentage",
+      "target": 100,
+      "actual": 100,
+      "collectionMethod": "manual",
+      "collectionDate": "2026-04-11"
+    },
+    {
+      "@id": "pe:ins-metric-result-regulatory",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:ins-mr-regulatory",
+      "metricName": "Regulatory Coverage Score — Actual",
+      "metricType": "quality",
+      "unit": "percentage",
+      "target": 85,
+      "actual": 87,
+      "collectionMethod": "automated",
+      "collectionDate": "2026-05-02"
+    },
+    {
+      "@id": "pe:ins-metric-result-maturity",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:ins-mr-maturity",
+      "metricName": "Architecture Maturity Level — Actual",
+      "metricType": "outcome",
+      "unit": "level",
+      "target": 3,
+      "actual": 2.3,
+      "collectionMethod": "manual",
+      "collectionDate": "2026-04-11",
+      "notes": "Current state maturity 2.3; target state design targets level 3.5 post-transformation"
+    },
+    {
+      "@id": "pe:ins-metric-result-risk",
+      "@type": "pe:ProcessMetric",
+      "metricId": "pe:ins-mr-risk",
+      "metricName": "Architecture Risk Score — Actual",
+      "metricType": "leading-indicator",
+      "unit": "count",
+      "target": 5,
+      "actual": 12,
+      "collectionMethod": "hybrid",
+      "collectionDate": "2026-05-16",
+      "notes": "12 critical/high gaps identified; roadmap prioritises top 7 for immediate remediation"
+    },
+
+    {
+      "@id": "pe:ins-hypothesis-compliance-first",
+      "@type": "pe:Hypothesis",
+      "hypothesisId": "pe:ins-hyp-001",
+      "statement": "Front-loading regulatory compliance analysis in the Discovery phase will reduce compliance-driven architecture rework by 40% compared to traditional compliance-as-afterthought approaches",
+      "description": "Testing the compliance-first pattern: integrating RCSG compliance baseline in Discovery and making compliance gate blocking before Design should prevent late-stage surprises",
+      "measurementMethod": "Compare count and severity of compliance-driven design changes in Phase 3 (Design) vs. industry benchmark for late-stage compliance changes",
+      "target": "40% reduction in compliance-driven rework",
+      "status": "validated",
+      "confidence": 85,
+      "validationNotes": "Zero compliance-driven design rework in Phase 3. All 23 regulatory gaps identified in Phase 2 (Analysis), addressed in Design phase proactively. Industry benchmark: 35% of design changes are compliance-driven."
+    },
+    {
+      "@id": "pe:ins-hypothesis-ai-efficiency",
+      "@type": "pe:Hypothesis",
+      "hypothesisId": "pe:ins-hyp-002",
+      "statement": "AI agents (compliance scanner, risk assessor, gap analyser) will reduce assessment effort by 35% compared to fully manual assessment approach",
+      "description": "Testing the AI augmentation value: supervised AI agents handling compliance scanning, risk assessment, and gap analysis generation should significantly reduce human effort",
+      "measurementMethod": "Track hours spent on compliance analysis, risk assessment, and gap analysis with AI augmentation vs. estimated hours for manual approach",
+      "target": "35% effort reduction",
+      "status": "validated",
+      "confidence": 80,
+      "validationNotes": "AI agents reduced total assessment effort from estimated 480 hours to 310 hours (35.4% reduction). Gap analysis generation: 4 hours AI-augmented vs. 40 hours manual estimate. Compliance scanning: continuous vs. 60 hours manual per cycle."
+    }
+  ],
+
+  "relationships": [
+    { "@type": "pe:instanceOf", "from": "pe:ins-instance-001", "to": "pe:ins-process-ea-assess" },
+    { "@type": "pe:executesPhase", "from": "pe:ins-instance-001", "to": "pe:ins-exec-discovery" },
+    { "@type": "pe:executesPhase", "from": "pe:ins-instance-001", "to": "pe:ins-exec-analysis" },
+    { "@type": "pe:executesPhase", "from": "pe:ins-instance-001", "to": "pe:ins-exec-design" },
+    { "@type": "pe:executesPhase", "from": "pe:ins-instance-001", "to": "pe:ins-exec-roadmap" },
+    { "@type": "pe:executesPhase", "from": "pe:ins-instance-001", "to": "pe:ins-exec-governance" },
+
+    { "@type": "pe:gateResult", "from": "pe:ins-exec-discovery", "to": "pe:ins-gate-result-g1" },
+    { "@type": "pe:gateResult", "from": "pe:ins-exec-analysis", "to": "pe:ins-gate-result-g2" },
+    { "@type": "pe:gateResult", "from": "pe:ins-exec-design", "to": "pe:ins-gate-result-g3" },
+    { "@type": "pe:gateResult", "from": "pe:ins-exec-design", "to": "pe:ins-gate-result-g4" },
+
+    { "@type": "pe:linkedToProject", "from": "pe:ins-instance-001", "to": "ppm:ins-proj-ea-001" },
+    { "@type": "pe:validatesHypothesis", "from": "pe:ins-instance-001", "to": "pe:ins-hypothesis-compliance-first" },
+    { "@type": "pe:validatesHypothesis", "from": "pe:ins-instance-001", "to": "pe:ins-hypothesis-ai-efficiency" }
+  ],
+
+  "oaa:executionSummary": {
+    "totalDuration": "12 weeks (on schedule)",
+    "totalEffort": "310 person-hours (35% below estimate)",
+    "gatesPassRate": "4/4 (100%)",
+    "aiAugmentationSavings": "170 hours saved by AI agents",
+    "complianceCoverage": "87% (above 85% target)",
+    "gapsIdentified": 47,
+    "criticalGaps": 12,
+    "clientSatisfaction": "4.5/5.0",
+    "keyLessonsLearned": [
+      "Compliance-first pattern validated: zero late-stage compliance surprises",
+      "AI compliance scanner essential for insurance regulatory landscape breadth",
+      "Risk-driven prioritisation produced more defensible roadmap than traditional approach",
+      "DORA requirements expanding faster than anticipated — build automatic regulatory update scanning",
+      "Stakeholder availability is critical path constraint — schedule all interviews in first 2 weeks"
+    ]
+  }
+}

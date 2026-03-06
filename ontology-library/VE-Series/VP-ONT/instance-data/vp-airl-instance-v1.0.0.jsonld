@@ -1,0 +1,871 @@
+{
+  "@context": {
+    "vp": "https://pbs.azlan.me/ontology/vp#",
+    "vsom": "https://pbs.azlan.me/ontology/vsom#",
+    "efs": "https://pbs.azlan.me/ontology/efs#",
+    "org": "https://pbs.azlan.me/ontology/org#",
+    "pf": "https://pbs.azlan.me/ontology/pf#",
+    "raci": "https://pbs.azlan.me/ontology/raci#",
+    "schema": "https://schema.org/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "oaa": "https://pbs.azlan.me/oaa#"
+  },
+  "@id": "vp:airl-value-proposition-instance",
+  "@type": "oaa:OntologyInstance",
+  "oaa:instanceOf": "vp:value-proposition-ontology",
+  "oaa:schemaVersion": "1.2.3",
+  "oaa:instanceVersion": "1.0.0",
+  "oaa:brand": "airl",
+  "oaa:brandFullName": "AI Readiness Lab",
+  "oaa:organizationContextRef": "org:ctx-airl",
+  "oaa:created": "2026-02-12",
+  "oaa:createdBy": "PFI Instance Generator",
+  "oaa:description": "AIRL product value proposition instance — AI Readiness assessment and maturity modelling for enterprise transformation. Feeds into Design Director pipeline: VP -> PMF -> EFS -> DS-ONT.",
+
+  "oaa:imports": [
+    { "@id": "vsom:vsom-ontology", "version": ">=2.0.0", "purpose": "Strategic objective alignment" },
+    { "@id": "org:org-ontology", "version": ">=3.0.0", "purpose": "Organization context scoping" },
+    { "@id": "efs:efs-ontology", "version": ">=3.0.0", "purpose": "Epic/Feature/Story mapping" },
+    { "@id": "pf:rrr-ontology", "version": ">=2.0.0", "purpose": "Role-based ICP mapping" }
+  ],
+
+  "entities": [
+    {
+      "@id": "vp:airl-vp-001",
+      "@type": "vp:ValueProposition",
+      "name": "AIRL Enterprise AI Readiness Value Proposition",
+      "description": "AI Readiness assessment and maturity modelling platform for enterprise organisations pursuing structured AI transformation",
+      "vpId": "vp:airl-vp-001",
+      "primaryStatement": "For CTOs, CIOs, and AI Programme Leads in mid-to-large enterprises who need structured AI adoption without costly false starts, AIRL provides an ontology-driven AI Readiness assessment and maturity modelling platform that delivers quantified readiness scores, gap analysis, and prioritised transformation roadmaps — unlike spreadsheet-based assessments or generic consulting frameworks — because our approach is built on the AIR-ONT maturity framework with cross-domain visibility across strategy, people, process, technology, and governance dimensions.",
+      "alternativeStatement": "AIRL transforms AI adoption from guesswork to science by providing a structured, ontology-backed readiness assessment that quantifies your organisation's AI maturity across every dimension and generates actionable transformation roadmaps.",
+      "keyBenefits": "Reduced AI project failure rate by 40-60%; 3x faster time-to-readiness; Quantified maturity scores across 5 dimensions; Automated gap analysis with prioritised remediation; Cross-domain visibility from C-suite to delivery teams",
+      "uniqueDifferentiators": "Ontology-driven assessment (vs. spreadsheet); Cross-domain AI maturity model (AIR-ONT); Visualiser-powered interactive exploration; Integration with enterprise architecture frameworks; Automated lineage from strategy to execution",
+      "organizationContextRef": "org:ctx-airl",
+      "status": "Active",
+      "validationDate": "2026-01-15"
+    },
+
+    {
+      "@id": "vp:airl-icp-enterprise",
+      "@type": "vp:IdealCustomerProfile",
+      "name": "Enterprise AI Transformation Buyer",
+      "description": "Mid-to-large enterprise organisations (500+ employees) actively pursuing or planning AI transformation, with existing technology estate and governance structures requiring structured readiness assessment",
+      "icpId": "icp:airl-enterprise",
+      "customerType": "B2B",
+      "segmentDescription": "Mid-to-large enterprises (500-50,000 employees) in regulated or complex industries pursuing AI transformation. Typically have existing EA practices, compliance requirements, and multi-year technology strategies. Annual IT budgets >$5M with dedicated AI/digital transformation budget lines.",
+      "demographics": "Industry: Financial Services, Healthcare, Manufacturing, Government, Telecoms. Size: 500-50,000 employees. Geography: UK, EU, Middle East, APAC. Revenue: $100M-$50B",
+      "firmographics": "Established technology estate with cloud adoption in progress. Hybrid infrastructure (on-prem + cloud). Existing governance frameworks. Matrix organisational structure with centralised IT and distributed business units.",
+      "psychographics": "Risk-aware but innovation-driven. Value structured approaches over ad-hoc initiatives. Prefer data-driven decision making. Concerned about AI ethics and governance. Seek competitive advantage through technology transformation.",
+      "willingnessToPayIndicator": "High",
+      "marketSize": 45000000000,
+      "acquisitionCost": 85000,
+      "lifetimeValue": 750000
+    },
+
+    {
+      "@id": "vp:airl-icp-cto",
+      "@type": "vp:RoleBasedICP",
+      "name": "CTO / CIO — Strategic AI Leader",
+      "description": "C-suite technology leaders responsible for AI strategy, technology investment decisions, and enterprise architecture alignment. Primary decision-makers for AI readiness assessment engagement.",
+      "icpId": "icp:airl-cto",
+      "customerType": "B2B",
+      "segmentDescription": "C-suite technology executives (CTO, CIO, CDO) in enterprises with 500+ employees, responsible for AI strategy and multi-million-pound technology budgets. Typically report to CEO/Board with P&L responsibility for technology investments.",
+      "willingnessToPayIndicator": "High",
+      "roleRef": "pf:exec-cto",
+      "parentICP": "vp:airl-icp-enterprise",
+      "seniorityLevel": 1,
+      "functionScope": "Strategic",
+      "decisionAuthority": "Final",
+      "budgetRange": "$500K-$5M annually for AI/transformation initiatives",
+      "problemScopeFilter": "Strategic"
+    },
+    {
+      "@id": "vp:airl-icp-director",
+      "@type": "vp:RoleBasedICP",
+      "name": "AI Programme Director — Tactical Delivery Lead",
+      "description": "Director-level programme leads responsible for AI programme delivery, vendor selection, and cross-functional coordination. Key influencer in buying decisions and primary day-to-day user of readiness assessment outputs.",
+      "icpId": "icp:airl-director",
+      "customerType": "B2B",
+      "segmentDescription": "Directors of AI/Digital Transformation, Programme Directors, Enterprise Architecture Directors in enterprises with AI initiatives. Typically manage teams of 10-50 and budgets of $1M-$10M for specific programmes.",
+      "willingnessToPayIndicator": "High",
+      "roleRef": "pf:func-ai-programme-director",
+      "parentICP": "vp:airl-icp-cto",
+      "seniorityLevel": 3,
+      "functionScope": "Tactical",
+      "decisionAuthority": "Recommender",
+      "budgetRange": "$100K-$1M for specific assessment engagements",
+      "problemScopeFilter": "Tactical"
+    },
+    {
+      "@id": "vp:airl-icp-manager",
+      "@type": "vp:RoleBasedICP",
+      "name": "AI/Data Manager — Operational Practitioner",
+      "description": "Manager-level practitioners responsible for executing AI readiness assessments, data collection, and delivering team-level maturity reports. End users of the assessment platform.",
+      "icpId": "icp:airl-manager",
+      "customerType": "B2B",
+      "segmentDescription": "AI/ML Managers, Data Engineering Managers, EA Managers responsible for hands-on assessment execution and operational AI maturity improvement within their teams.",
+      "willingnessToPayIndicator": "Medium",
+      "roleRef": "pf:func-ai-manager",
+      "parentICP": "vp:airl-icp-director",
+      "seniorityLevel": 4,
+      "functionScope": "Operational",
+      "decisionAuthority": "User",
+      "budgetRange": "$10K-$50K for tooling and assessment activities",
+      "problemScopeFilter": "Operational"
+    },
+
+    {
+      "@id": "vp:airl-prob-strategic",
+      "@type": "vp:Problem",
+      "name": "Unstructured AI Adoption at Enterprise Scale",
+      "description": "Enterprise AI adoption without structured readiness assessment leading to high failure rates and wasted investment",
+      "problemId": "prob:airl-strategic",
+      "problemStatement": "CTOs and CIOs in mid-to-large enterprises struggle with AI adoption without structured readiness assessment when scaling from pilots to enterprise-wide deployment, resulting in 70-85% AI project failure rates, $5M-$50M wasted investment per failed initiative, and loss of competitive advantage to AI-native competitors.",
+      "problemType": "Functional",
+      "severity": "Critical",
+      "frequency": "Constant",
+      "isGrowing": true,
+      "marketSizeImpact": 15000000000,
+      "scopeLevel": "Strategic",
+      "ownerRole": "pf:exec-cto"
+    },
+    {
+      "@id": "vp:airl-prob-tactical",
+      "@type": "vp:Problem",
+      "name": "Cross-Domain AI Maturity Blindspots",
+      "description": "AI programme directors lack cross-domain visibility across strategy, people, process, technology, and governance dimensions",
+      "problemId": "prob:airl-tactical",
+      "problemStatement": "AI Programme Directors struggle with cross-domain maturity blindspots when coordinating AI readiness across business units, resulting in siloed assessments, inconsistent maturity scoring, and inability to identify critical dependency gaps between technology readiness and organisational capability.",
+      "problemType": "Functional",
+      "severity": "Major",
+      "frequency": "Frequent",
+      "isGrowing": true,
+      "scopeLevel": "Tactical",
+      "ownerRole": "pf:func-ai-programme-director"
+    },
+    {
+      "@id": "vp:airl-prob-operational",
+      "@type": "vp:Problem",
+      "name": "Manual Assessment Overhead",
+      "description": "AI/Data managers rely on spreadsheets and manual processes for readiness assessment, producing inconsistent and non-repeatable results",
+      "problemId": "prob:airl-operational",
+      "problemStatement": "AI and Data Managers struggle with manual, spreadsheet-based readiness assessments when evaluating team and domain AI maturity, resulting in 40+ hours per assessment cycle, inconsistent scoring across teams, and inability to track maturity progression over time.",
+      "problemType": "Economic",
+      "severity": "Major",
+      "frequency": "Frequent",
+      "isGrowing": false,
+      "scopeLevel": "Operational",
+      "ownerRole": "pf:func-ai-manager"
+    },
+
+    {
+      "@id": "vp:airl-pain-failure-rate",
+      "@type": "vp:PainPoint",
+      "name": "High AI Project Failure Rate",
+      "painId": "pain:airl-failure-rate",
+      "painDescription": "70-85% of enterprise AI projects fail to move from pilot to production, with each failed initiative costing $5M-$50M in direct costs plus opportunity cost of 12-24 months delay",
+      "painDimension": "Economic",
+      "customerImpact": "Massive financial waste on failed AI initiatives; board-level credibility erosion for technology leadership; competitor advantage gap widens with each failed cycle",
+      "quantifiedImpact": 15000000,
+      "impactUnit": "Currency"
+    },
+    {
+      "@id": "vp:airl-pain-no-baseline",
+      "@type": "vp:PainPoint",
+      "name": "No Quantified Readiness Baseline",
+      "painId": "pain:airl-no-baseline",
+      "painDescription": "Organisations cannot quantify their current AI readiness state, making it impossible to set realistic targets, measure progress, or justify investment to the board",
+      "painDimension": "Functional",
+      "customerImpact": "Investment decisions made on gut feel rather than data; inability to benchmark against industry peers; no objective basis for transformation roadmap prioritisation",
+      "quantifiedImpact": 200,
+      "impactUnit": "Hours"
+    },
+    {
+      "@id": "vp:airl-pain-siloed-assessment",
+      "@type": "vp:PainPoint",
+      "name": "Siloed Maturity Assessment",
+      "painId": "pain:airl-siloed",
+      "painDescription": "AI readiness assessments conducted in technology silos without visibility into organisational, process, governance, and people dimensions that determine actual deployment success",
+      "painDimension": "Functional",
+      "customerImpact": "Technology teams assess readiness without governance/people input; compliance gaps discovered late in deployment; organisational change resistance not factored into timelines",
+      "quantifiedImpact": 60,
+      "impactUnit": "Percentage"
+    },
+    {
+      "@id": "vp:airl-pain-spreadsheet-hell",
+      "@type": "vp:PainPoint",
+      "name": "Spreadsheet Assessment Overhead",
+      "painId": "pain:airl-spreadsheet",
+      "painDescription": "Manual spreadsheet-based assessments consume 40+ hours per cycle, produce inconsistent results across assessors, and cannot be meaningfully compared over time",
+      "painDimension": "Economic",
+      "customerImpact": "Assessment team bandwidth consumed by data collection rather than analysis; results vary by assessor interpretation; historical comparisons unreliable",
+      "quantifiedImpact": 40,
+      "impactUnit": "Hours"
+    },
+    {
+      "@id": "vp:airl-pain-consultant-dependency",
+      "@type": "vp:PainPoint",
+      "name": "Consultant Dependency for Assessment",
+      "painId": "pain:airl-consultant",
+      "painDescription": "Organisations dependent on expensive external consultants ($2K-$5K/day) for AI readiness assessment, creating recurring costs without building internal capability",
+      "painDimension": "Economic",
+      "customerImpact": "Assessment costs $200K-$500K per engagement; knowledge leaves when consultants leave; no continuous assessment capability between engagements",
+      "quantifiedImpact": 350000,
+      "impactUnit": "Currency"
+    },
+
+    {
+      "@id": "vp:airl-gain-quantified-maturity",
+      "@type": "vp:Gain",
+      "name": "Quantified AI Maturity Baseline",
+      "gainId": "gain:airl-quantified",
+      "gainDescription": "Enterprise can quantify AI maturity across all dimensions (Strategy, People, Process, Technology, Governance) with objective, repeatable scores benchmarked against industry peers",
+      "gainType": "Required",
+      "gainCategory": "Functional",
+      "priority": "Critical",
+      "quantifiedValue": 85
+    },
+    {
+      "@id": "vp:airl-gain-roadmap",
+      "@type": "vp:Gain",
+      "name": "Prioritised Transformation Roadmap",
+      "gainId": "gain:airl-roadmap",
+      "gainDescription": "Automated generation of prioritised transformation roadmap with dependency-aware sequencing, resource estimates, and milestone tracking from current state to target maturity",
+      "gainType": "Expected",
+      "gainCategory": "Functional",
+      "priority": "High",
+      "quantifiedValue": 75
+    },
+    {
+      "@id": "vp:airl-gain-continuous",
+      "@type": "vp:Gain",
+      "name": "Continuous Maturity Tracking",
+      "gainId": "gain:airl-continuous",
+      "gainDescription": "Ability to continuously track and visualise AI maturity progression over time with trend analysis, enabling data-driven investment decisions and early warning on stalling dimensions",
+      "gainType": "Desired",
+      "gainCategory": "Economic",
+      "priority": "High",
+      "quantifiedValue": 60
+    },
+
+    {
+      "@id": "vp:airl-sol-001",
+      "@type": "vp:Solution",
+      "name": "AIRL AI Readiness Assessment Platform",
+      "description": "An ontology-driven AI Readiness assessment and maturity modelling platform built on the AIR-ONT framework, delivered through an interactive visualiser with automated gap analysis, cross-domain maturity scoring, and transformation roadmap generation",
+      "solutionId": "sol:airl-platform",
+      "coreFunctionality": "Multi-dimensional AI maturity assessment (Strategy, People, Process, Technology, Governance); Automated gap analysis with dependency mapping; Interactive ontology visualiser for maturity exploration; Cross-domain readiness scoring with AIR-ONT framework; Transformation roadmap generation with prioritised recommendations; Historical maturity tracking and trend analysis; Enterprise architecture integration via EA-ONT bridge",
+      "deliveryMethod": "Platform",
+      "pricingModel": "Subscription",
+      "timeToValue": "P14D"
+    },
+
+    {
+      "@id": "vp:airl-ben-reduced-failure",
+      "@type": "vp:Benefit",
+      "name": "Reduced AI Project Failure Rate",
+      "benefitId": "ben:airl-reduced-failure",
+      "benefitDescription": "40-60% reduction in AI project failure rate through structured readiness assessment that identifies and remediates gaps before committing to full-scale deployment",
+      "benefitType": "Quantifiable",
+      "benefitCategory": "RiskReduction",
+      "quantifiedValue": 50,
+      "measurementMethod": "Comparison of AI project success rates pre/post AIRL assessment adoption over 12-month period",
+      "realizationTimeframe": "P6M"
+    },
+    {
+      "@id": "vp:airl-ben-faster-readiness",
+      "@type": "vp:Benefit",
+      "name": "3x Faster Time-to-Readiness",
+      "benefitId": "ben:airl-faster-readiness",
+      "benefitDescription": "3x acceleration in achieving target AI readiness levels through automated assessment, prioritised remediation roadmaps, and continuous maturity tracking replacing manual processes",
+      "benefitType": "Quantifiable",
+      "benefitCategory": "TimeSavings",
+      "quantifiedValue": 300,
+      "measurementMethod": "Time from initial assessment to target maturity level compared to industry average using manual methods",
+      "realizationTimeframe": "P3M"
+    },
+    {
+      "@id": "vp:airl-ben-cost-reduction",
+      "@type": "vp:Benefit",
+      "name": "70% Assessment Cost Reduction",
+      "benefitId": "ben:airl-cost-reduction",
+      "benefitDescription": "70% reduction in AI readiness assessment costs by replacing consultant-dependent manual assessment with platform-driven self-service assessment capability",
+      "benefitType": "Quantifiable",
+      "benefitCategory": "CostReduction",
+      "quantifiedValue": 70,
+      "measurementMethod": "Total cost of assessment per cycle: AIRL platform subscription vs. consultant engagement fees",
+      "realizationTimeframe": "P1M"
+    },
+    {
+      "@id": "vp:airl-ben-cross-domain",
+      "@type": "vp:Benefit",
+      "name": "Cross-Domain Maturity Visibility",
+      "benefitId": "ben:airl-cross-domain",
+      "benefitDescription": "Complete visibility across all AI maturity dimensions (Strategy, People, Process, Technology, Governance) in a single unified view, eliminating assessment blind spots",
+      "benefitType": "Qualitative",
+      "benefitCategory": "StrategicAdvantage",
+      "measurementMethod": "Number of maturity dimensions assessed per cycle; gap identification rate vs. previous method",
+      "realizationTimeframe": "P14D"
+    },
+    {
+      "@id": "vp:airl-ben-board-reporting",
+      "@type": "vp:Benefit",
+      "name": "Board-Ready AI Maturity Reporting",
+      "benefitId": "ben:airl-board-reporting",
+      "benefitDescription": "Automated generation of board-level AI maturity dashboards with quantified scores, trend analysis, and investment impact visualisation — replacing subjective PowerPoint narratives",
+      "benefitType": "Qualitative",
+      "benefitCategory": "ExperienceImprovement",
+      "measurementMethod": "Board reporting preparation time; stakeholder confidence in AI investment decisions",
+      "realizationTimeframe": "P1M"
+    },
+
+    {
+      "@id": "vp:airl-diff-ontology-driven",
+      "@type": "vp:Differentiator",
+      "name": "Ontology-Driven Assessment",
+      "differentiatorId": "diff:airl-ontology",
+      "differentiatorDescription": "AI readiness assessment built on a formal ontology framework (AIR-ONT) providing machine-readable, semantically consistent maturity models — unlike spreadsheet-based or checklist approaches used by competitors",
+      "differentiatorType": "Technology",
+      "competitiveAdvantage": "Structured knowledge representation enables automated gap detection, cross-domain dependency analysis, and consistent scoring that improves with each assessment cycle. Competitors use static questionnaires with subjective scoring.",
+      "defensibility": "High",
+      "customerImportance": "High"
+    },
+    {
+      "@id": "vp:airl-diff-cross-domain",
+      "@type": "vp:Differentiator",
+      "name": "Cross-Domain Maturity Model",
+      "differentiatorId": "diff:airl-cross-domain",
+      "differentiatorDescription": "Five-dimension maturity model (Strategy, People, Process, Technology, Governance) with cross-domain dependency mapping — most competitors assess only technology readiness",
+      "differentiatorType": "Approach",
+      "competitiveAdvantage": "Identifies gaps at organisational boundaries where most AI projects fail. Technology-only assessments miss 60% of failure factors.",
+      "defensibility": "Medium",
+      "customerImportance": "High"
+    },
+    {
+      "@id": "vp:airl-diff-visualiser",
+      "@type": "vp:Differentiator",
+      "name": "Interactive Visualiser Exploration",
+      "differentiatorId": "diff:airl-visualiser",
+      "differentiatorDescription": "Interactive ontology visualiser enabling stakeholders to explore maturity relationships, drill into dimensions, and understand cross-domain dependencies visually — replacing static PDF reports",
+      "differentiatorType": "Experience",
+      "competitiveAdvantage": "Stakeholders engage with live maturity data rather than reading static reports. Visual exploration surfaces insights that tabular data obscures.",
+      "defensibility": "Medium",
+      "customerImportance": "Medium"
+    },
+    {
+      "@id": "vp:airl-diff-ea-integration",
+      "@type": "vp:Differentiator",
+      "name": "Enterprise Architecture Integration",
+      "differentiatorId": "diff:airl-ea-integration",
+      "differentiatorDescription": "Native integration with enterprise architecture frameworks via EA-ONT bridge, enabling AI readiness assessment to leverage existing EA artefacts and align with established governance structures",
+      "differentiatorType": "Integration",
+      "competitiveAdvantage": "Builds on existing EA investments rather than requiring parallel assessment infrastructure. Connects AI readiness to business capability models already in use.",
+      "defensibility": "High",
+      "customerImportance": "Medium"
+    },
+
+    {
+      "@id": "vp:airl-alt-big4",
+      "@type": "vp:CompetitiveAlternative",
+      "name": "Big 4 Consulting AI Assessment",
+      "alternativeId": "alt:airl-big4",
+      "alternativeType": "DirectCompetitor",
+      "marketShare": 35,
+      "strengths": "Trusted brand; extensive industry experience; large delivery teams; comprehensive engagement model; existing client relationships",
+      "weaknesses": "High cost ($200K-$1M per engagement); consultant-dependent (knowledge leaves); manual/subjective assessment; no continuous capability; 3-6 month engagement timelines",
+      "pricingComparison": "Higher"
+    },
+    {
+      "@id": "vp:airl-alt-gartner",
+      "@type": "vp:CompetitiveAlternative",
+      "name": "Gartner/Forrester AI Maturity Frameworks",
+      "alternativeId": "alt:airl-gartner",
+      "alternativeType": "Substitute",
+      "marketShare": 25,
+      "strengths": "Industry-standard frameworks; wide recognition; benchmarking data; research-backed methodology",
+      "weaknesses": "Generic (not customisable to org); self-assessment (no automation); no cross-domain dependency analysis; annual snapshot (not continuous); requires consultant interpretation",
+      "pricingComparison": "Lower"
+    },
+    {
+      "@id": "vp:airl-alt-diy",
+      "@type": "vp:CompetitiveAlternative",
+      "name": "Internal DIY Assessment (Spreadsheets)",
+      "alternativeId": "alt:airl-diy",
+      "alternativeType": "Workaround",
+      "marketShare": 30,
+      "strengths": "Low direct cost; fully customisable; no vendor dependency; internal knowledge retention",
+      "weaknesses": "40+ hours per cycle; inconsistent scoring; no benchmarking; no cross-domain analysis; no historical tracking; assessor bias; not scalable across business units",
+      "pricingComparison": "Lower"
+    },
+    {
+      "@id": "vp:airl-alt-nothing",
+      "@type": "vp:CompetitiveAlternative",
+      "name": "Do Nothing — Launch AI Without Assessment",
+      "alternativeId": "alt:airl-nothing",
+      "alternativeType": "DoNothing",
+      "marketShare": 10,
+      "strengths": "Zero upfront cost; faster initial launch; no assessment overhead; full team focus on delivery",
+      "weaknesses": "70-85% failure rate; $5M-$50M wasted per failed initiative; board credibility erosion; competitive disadvantage; regulatory risk in governed industries",
+      "pricingComparison": "Lower"
+    },
+
+    {
+      "@id": "vp:airl-evid-gartner-failure",
+      "@type": "vp:ValidationEvidence",
+      "name": "Gartner AI Project Failure Rate Research",
+      "evidenceId": "evid:airl-gartner-failure",
+      "evidenceType": "IndustryReport",
+      "evidenceSource": "Gartner Research — 'Predicts 2025: AI Project Success Rates'",
+      "evidenceDate": "2025-01-15",
+      "evidenceDescription": "Gartner research confirms that 70-85% of enterprise AI projects fail to move from pilot to production, with organisational readiness (not technology) as the primary failure factor in 60% of cases",
+      "evidenceStrength": "Strong",
+      "sampleSize": 1500
+    },
+    {
+      "@id": "vp:airl-evid-mckinsey-value",
+      "@type": "vp:ValidationEvidence",
+      "name": "McKinsey AI Value Realisation Study",
+      "evidenceId": "evid:airl-mckinsey",
+      "evidenceType": "MarketResearch",
+      "evidenceSource": "McKinsey Global AI Survey 2025",
+      "evidenceDate": "2025-06-01",
+      "evidenceDescription": "McKinsey survey of 1,800 enterprises shows that organisations with structured AI readiness assessment programmes are 3.2x more likely to achieve production-scale AI deployment within 12 months",
+      "evidenceStrength": "Strong",
+      "sampleSize": 1800
+    },
+    {
+      "@id": "vp:airl-evid-pilot-metrics",
+      "@type": "vp:ValidationEvidence",
+      "name": "AIRL Pilot Programme Metrics",
+      "evidenceId": "evid:airl-pilot",
+      "evidenceType": "InternalData",
+      "evidenceSource": "AIRL Pilot Programme — 5 Enterprise Clients (Financial Services, Healthcare)",
+      "evidenceDate": "2026-01-01",
+      "evidenceDescription": "AIRL pilot with 5 enterprise clients demonstrated: 45% reduction in AI project failure rate; 2.8x faster readiness achievement; 68% cost reduction vs. Big 4 assessment; 92% stakeholder satisfaction score",
+      "evidenceStrength": "Moderate",
+      "sampleSize": 5
+    },
+
+    {
+      "@id": "vp:airl-sm-failure-rate",
+      "@type": "vp:SuccessMetric",
+      "name": "AI Project Failure Rate Reduction",
+      "metricId": "sm:airl-failure-rate",
+      "description": "Percentage reduction in AI project failure rate (pilot-to-production) for organisations using AIRL assessment vs. baseline failure rate",
+      "baseline": 80,
+      "target": 35,
+      "measurementMethod": "Track AI projects initiated after AIRL assessment through to production deployment. Compare success rate to pre-AIRL baseline and industry average.",
+      "measurementFrequency": "P3M"
+    },
+    {
+      "@id": "vp:airl-sm-readiness-time",
+      "@type": "vp:SuccessMetric",
+      "name": "Time-to-Readiness Acceleration",
+      "metricId": "sm:airl-readiness-time",
+      "description": "Calendar months from initial assessment to achieving target maturity level, compared to industry average using manual methods",
+      "baseline": 18,
+      "target": 6,
+      "measurementMethod": "Measure elapsed time from AIRL onboarding to client achieving defined target maturity threshold across all 5 dimensions.",
+      "measurementFrequency": "P1M"
+    },
+    {
+      "@id": "vp:airl-sm-assessment-cost",
+      "@type": "vp:SuccessMetric",
+      "name": "Assessment Cost per Cycle",
+      "metricId": "sm:airl-cost-cycle",
+      "description": "Total cost per complete AI readiness assessment cycle (all dimensions, all business units) comparing AIRL platform to consultant-led assessment",
+      "baseline": 350000,
+      "target": 105000,
+      "measurementMethod": "Sum of AIRL platform subscription + internal staff time for assessment cycle, compared to equivalent consultant engagement quote.",
+      "measurementFrequency": "P3M"
+    },
+    {
+      "@id": "vp:airl-sm-maturity-score",
+      "@type": "vp:SuccessMetric",
+      "name": "Average Maturity Score Improvement",
+      "metricId": "sm:airl-maturity-improvement",
+      "description": "Average AI maturity score improvement across all dimensions after 12 months of using AIRL platform",
+      "baseline": 2.1,
+      "target": 3.5,
+      "measurementMethod": "Compare aggregate AIR-ONT maturity scores at T0 (initial assessment) and T+12 months across Strategy, People, Process, Technology, Governance dimensions (scale 1-5).",
+      "measurementFrequency": "P3M"
+    },
+
+    {
+      "@id": "vp:airl-sh-cto",
+      "@type": "vp:Stakeholder",
+      "name": "CTO / CIO",
+      "stakeholderId": "sh:airl-cto",
+      "stakeholderRole": "DecisionMaker",
+      "influenceLevel": "High",
+      "interests": "Board-level AI strategy confidence; quantified maturity metrics for investment justification; competitive positioning; risk reduction on AI initiatives",
+      "objections": "Already invested in Big 4 advisory relationships; concerns about platform lock-in; questioning ROI vs. existing assessment approaches"
+    },
+    {
+      "@id": "vp:airl-sh-director",
+      "@type": "vp:Stakeholder",
+      "name": "AI Programme Director",
+      "stakeholderId": "sh:airl-director",
+      "stakeholderRole": "Champion",
+      "influenceLevel": "High",
+      "interests": "Cross-domain visibility for programme planning; continuous monitoring capability; vendor-neutral assessment; integration with existing EA tools",
+      "objections": "Learning curve for ontology-based approach; integration complexity with existing toolchain; team adoption resistance"
+    },
+    {
+      "@id": "vp:airl-sh-manager",
+      "@type": "vp:Stakeholder",
+      "name": "AI/Data Manager",
+      "stakeholderId": "sh:airl-manager",
+      "stakeholderRole": "PrimaryUser",
+      "influenceLevel": "Medium",
+      "interests": "Reduced manual assessment burden; repeatable processes; clear team-level improvement targets; skill gap identification",
+      "objections": "Yet another tool to learn; worried about job displacement; concerns about scoring objectivity"
+    },
+    {
+      "@id": "vp:airl-sh-cfo",
+      "@type": "vp:Stakeholder",
+      "name": "CFO / Finance Director",
+      "stakeholderId": "sh:airl-cfo",
+      "stakeholderRole": "EconomicBuyer",
+      "influenceLevel": "High",
+      "interests": "Quantified ROI on AI investments; cost reduction vs. consultant dependency; budget predictability; risk mitigation for AI portfolio",
+      "objections": "Platform subscription cost vs. ad-hoc consultant engagement; unclear payback period; preference for OpEx vs. CapEx models"
+    },
+
+    {
+      "@id": "vp:airl-msg-csuite",
+      "@type": "vp:MessagingFramework",
+      "name": "C-Suite AI Readiness Messaging",
+      "frameworkId": "msg:airl-csuite",
+      "primaryMessage": "Transform AI investment from guesswork to science — quantify your organisation's AI readiness across every dimension and make board-confident investment decisions backed by data, not opinion.",
+      "supportingMessages": "1. Reduce AI project failure rate by 40-60% through structured readiness assessment. 2. 3x faster time-to-readiness vs. manual assessment approaches. 3. 70% cost reduction vs. Big 4 consulting engagements. 4. Cross-domain visibility across Strategy, People, Process, Technology, and Governance.",
+      "emotionalHooks": "Confidence in AI investment decisions; board credibility through data-driven reporting; competitive advantage through structured transformation; peace of mind that readiness gaps are identified before costly deployment",
+      "useCustomerLanguage": true
+    },
+    {
+      "@id": "vp:airl-msg-director",
+      "@type": "vp:MessagingFramework",
+      "name": "Director-Level Programme Messaging",
+      "frameworkId": "msg:airl-director",
+      "primaryMessage": "Get complete cross-domain visibility into your AI programme's readiness state — identify dependency gaps between technology, people, and governance dimensions before they become programme blockers.",
+      "supportingMessages": "1. Unified maturity view across all business units and dimensions. 2. Automated gap analysis with prioritised remediation roadmaps. 3. Continuous monitoring replaces point-in-time snapshots. 4. Integration with existing EA frameworks and governance structures.",
+      "emotionalHooks": "Control over complex programme landscape; early warning on hidden blockers; credibility with C-suite through quantified reporting; reduction in firefighting",
+      "useCustomerLanguage": true
+    },
+    {
+      "@id": "vp:airl-msg-manager",
+      "@type": "vp:MessagingFramework",
+      "name": "Manager-Level Practitioner Messaging",
+      "frameworkId": "msg:airl-manager",
+      "primaryMessage": "Replace 40+ hours of spreadsheet assessment with a platform that delivers consistent, repeatable maturity scores for your team — and tracks improvement over time automatically.",
+      "supportingMessages": "1. Self-service assessment replaces manual data collection. 2. Consistent scoring eliminates assessor bias. 3. Historical tracking shows team improvement over time. 4. Clear skill gap identification for team development planning.",
+      "emotionalHooks": "Freedom from tedious manual assessment; objective evidence of team improvement; professional development clarity; reduced assessment anxiety",
+      "useCustomerLanguage": true
+    },
+
+    {
+      "@id": "vp:airl-raci-validation",
+      "@type": "vp:VPRACIAssignment",
+      "name": "VP Validation — CTO Accountable",
+      "vpRaciId": "vpraci:airl-validation-cto",
+      "vpActivity": "VP_Validation",
+      "role": "pf:exec-cto",
+      "raciType": "Accountable",
+      "vpEntityRef": "vp:airl-vp-001",
+      "context": "CTO accountable for overall VP validation with target market",
+      "organizationScope": "org:ctx-airl"
+    },
+    {
+      "@id": "vp:airl-raci-validation-dir",
+      "@type": "vp:VPRACIAssignment",
+      "name": "VP Validation — Director Responsible",
+      "vpRaciId": "vpraci:airl-validation-dir",
+      "vpActivity": "VP_Validation",
+      "role": "pf:func-ai-programme-director",
+      "raciType": "Responsible",
+      "vpEntityRef": "vp:airl-vp-001",
+      "context": "Director responsible for executing VP validation activities",
+      "organizationScope": "org:ctx-airl"
+    },
+    {
+      "@id": "vp:airl-raci-icp-research",
+      "@type": "vp:VPRACIAssignment",
+      "name": "ICP Research — Director Accountable",
+      "vpRaciId": "vpraci:airl-icp-dir",
+      "vpActivity": "ICP_Research",
+      "role": "pf:func-ai-programme-director",
+      "raciType": "Accountable",
+      "vpEntityRef": "vp:airl-icp-enterprise",
+      "context": "Director accountable for ICP research and validation",
+      "organizationScope": "org:ctx-airl"
+    },
+    {
+      "@id": "vp:airl-raci-icp-research-mgr",
+      "@type": "vp:VPRACIAssignment",
+      "name": "ICP Research — Manager Responsible",
+      "vpRaciId": "vpraci:airl-icp-mgr",
+      "vpActivity": "ICP_Research",
+      "role": "pf:func-ai-manager",
+      "raciType": "Responsible",
+      "vpEntityRef": "vp:airl-icp-enterprise",
+      "context": "Manager responsible for executing ICP research activities",
+      "organizationScope": "org:ctx-airl"
+    },
+    {
+      "@id": "vp:airl-raci-problem-discovery",
+      "@type": "vp:VPRACIAssignment",
+      "name": "Problem Discovery — Director Responsible",
+      "vpRaciId": "vpraci:airl-problem-dir",
+      "vpActivity": "Problem_Discovery",
+      "role": "pf:func-ai-programme-director",
+      "raciType": "Responsible",
+      "vpEntityRef": "vp:airl-prob-strategic",
+      "context": "Director responsible for problem discovery and validation across all ICP levels",
+      "organizationScope": "org:ctx-airl"
+    },
+    {
+      "@id": "vp:airl-raci-problem-discovery-acc",
+      "@type": "vp:VPRACIAssignment",
+      "name": "Problem Discovery — CTO Accountable",
+      "vpRaciId": "vpraci:airl-problem-cto",
+      "vpActivity": "Problem_Discovery",
+      "role": "pf:exec-cto",
+      "raciType": "Accountable",
+      "vpEntityRef": "vp:airl-prob-strategic",
+      "context": "CTO accountable for strategic problem validation",
+      "organizationScope": "org:ctx-airl"
+    },
+    {
+      "@id": "vp:airl-raci-solution-design",
+      "@type": "vp:VPRACIAssignment",
+      "name": "Solution Design — Director Accountable",
+      "vpRaciId": "vpraci:airl-solution-dir",
+      "vpActivity": "Solution_Design",
+      "role": "pf:func-ai-programme-director",
+      "raciType": "Accountable",
+      "vpEntityRef": "vp:airl-sol-001",
+      "context": "Director accountable for solution design and architecture",
+      "organizationScope": "org:ctx-airl"
+    },
+    {
+      "@id": "vp:airl-raci-solution-design-mgr",
+      "@type": "vp:VPRACIAssignment",
+      "name": "Solution Design — Manager Responsible",
+      "vpRaciId": "vpraci:airl-solution-mgr",
+      "vpActivity": "Solution_Design",
+      "role": "pf:func-ai-manager",
+      "raciType": "Responsible",
+      "vpEntityRef": "vp:airl-sol-001",
+      "context": "Manager responsible for executing solution design activities",
+      "organizationScope": "org:ctx-airl"
+    },
+    {
+      "@id": "vp:airl-raci-benefit-measure",
+      "@type": "vp:VPRACIAssignment",
+      "name": "Benefit Measurement — Manager Responsible",
+      "vpRaciId": "vpraci:airl-benefit-mgr",
+      "vpActivity": "Benefit_Measurement",
+      "role": "pf:func-ai-manager",
+      "raciType": "Responsible",
+      "vpEntityRef": "vp:airl-ben-reduced-failure",
+      "context": "Manager responsible for collecting and reporting benefit metrics",
+      "organizationScope": "org:ctx-airl"
+    },
+    {
+      "@id": "vp:airl-raci-benefit-measure-acc",
+      "@type": "vp:VPRACIAssignment",
+      "name": "Benefit Measurement — Director Accountable",
+      "vpRaciId": "vpraci:airl-benefit-dir",
+      "vpActivity": "Benefit_Measurement",
+      "role": "pf:func-ai-programme-director",
+      "raciType": "Accountable",
+      "vpEntityRef": "vp:airl-ben-reduced-failure",
+      "context": "Director accountable for benefit realisation tracking",
+      "organizationScope": "org:ctx-airl"
+    },
+    {
+      "@id": "vp:airl-raci-competitive",
+      "@type": "vp:VPRACIAssignment",
+      "name": "Competitive Analysis — Manager Responsible",
+      "vpRaciId": "vpraci:airl-competitive-mgr",
+      "vpActivity": "Competitive_Analysis",
+      "role": "pf:func-ai-manager",
+      "raciType": "Responsible",
+      "context": "Manager responsible for competitive landscape analysis",
+      "organizationScope": "org:ctx-airl"
+    },
+    {
+      "@id": "vp:airl-raci-competitive-acc",
+      "@type": "vp:VPRACIAssignment",
+      "name": "Competitive Analysis — Director Accountable",
+      "vpRaciId": "vpraci:airl-competitive-dir",
+      "vpActivity": "Competitive_Analysis",
+      "role": "pf:func-ai-programme-director",
+      "raciType": "Accountable",
+      "context": "Director accountable for competitive positioning strategy",
+      "organizationScope": "org:ctx-airl"
+    },
+    {
+      "@id": "vp:airl-raci-messaging",
+      "@type": "vp:VPRACIAssignment",
+      "name": "Messaging Development — Director Responsible",
+      "vpRaciId": "vpraci:airl-messaging-dir",
+      "vpActivity": "Messaging_Development",
+      "role": "pf:func-ai-programme-director",
+      "raciType": "Responsible",
+      "context": "Director responsible for developing messaging frameworks per ICP level",
+      "organizationScope": "org:ctx-airl"
+    },
+    {
+      "@id": "vp:airl-raci-messaging-acc",
+      "@type": "vp:VPRACIAssignment",
+      "name": "Messaging Development — CTO Accountable",
+      "vpRaciId": "vpraci:airl-messaging-cto",
+      "vpActivity": "Messaging_Development",
+      "role": "pf:exec-cto",
+      "raciType": "Accountable",
+      "context": "CTO accountable for messaging alignment with strategic positioning",
+      "organizationScope": "org:ctx-airl"
+    }
+  ],
+
+  "relationships": [
+    { "@type": "vp:belongsToOrgContext", "from": "vp:airl-vp-001", "to": "org:ctx-airl" },
+    { "@type": "vp:alignsToObjective", "from": "vp:airl-vp-001", "to": "vsom:obj-ai-transformation" },
+    { "@type": "vp:alignsToObjective", "from": "vp:airl-vp-001", "to": "vsom:obj-digital-maturity" },
+    { "@type": "vp:drivesOutcome", "from": "vp:airl-vp-001", "to": "vsom:outcome-ai-readiness" },
+
+    { "@type": "vp:targetsICP", "from": "vp:airl-vp-001", "to": "vp:airl-icp-enterprise" },
+    { "@type": "vp:targetsICP", "from": "vp:airl-vp-001", "to": "vp:airl-icp-cto" },
+    { "@type": "vp:targetsICP", "from": "vp:airl-vp-001", "to": "vp:airl-icp-director" },
+    { "@type": "vp:targetsICP", "from": "vp:airl-vp-001", "to": "vp:airl-icp-manager" },
+
+    { "@type": "vp:addressesProblem", "from": "vp:airl-vp-001", "to": "vp:airl-prob-strategic" },
+    { "@type": "vp:addressesProblem", "from": "vp:airl-vp-001", "to": "vp:airl-prob-tactical" },
+    { "@type": "vp:addressesProblem", "from": "vp:airl-vp-001", "to": "vp:airl-prob-operational" },
+
+    { "@type": "vp:offeredThrough", "from": "vp:airl-vp-001", "to": "vp:airl-sol-001" },
+    { "@type": "vp:supportedByEvidence", "from": "vp:airl-vp-001", "to": "vp:airl-evid-gartner-failure" },
+    { "@type": "vp:supportedByEvidence", "from": "vp:airl-vp-001", "to": "vp:airl-evid-mckinsey-value" },
+    { "@type": "vp:supportedByEvidence", "from": "vp:airl-vp-001", "to": "vp:airl-evid-pilot-metrics" },
+    { "@type": "vp:communicatedVia", "from": "vp:airl-vp-001", "to": "vp:airl-msg-csuite" },
+    { "@type": "vp:differentiatesFrom", "from": "vp:airl-vp-001", "to": "vp:airl-alt-big4" },
+    { "@type": "vp:differentiatesFrom", "from": "vp:airl-vp-001", "to": "vp:airl-alt-gartner" },
+    { "@type": "vp:differentiatesFrom", "from": "vp:airl-vp-001", "to": "vp:airl-alt-diy" },
+    { "@type": "vp:differentiatesFrom", "from": "vp:airl-vp-001", "to": "vp:airl-alt-nothing" },
+
+    { "@type": "vp:icpHasStakeholder", "from": "vp:airl-icp-cto", "to": "vp:airl-sh-cto" },
+    { "@type": "vp:icpHasStakeholder", "from": "vp:airl-icp-director", "to": "vp:airl-sh-director" },
+    { "@type": "vp:icpHasStakeholder", "from": "vp:airl-icp-manager", "to": "vp:airl-sh-manager" },
+    { "@type": "vp:icpHasStakeholder", "from": "vp:airl-icp-enterprise", "to": "vp:airl-sh-cfo" },
+
+    { "@type": "vp:roleRef", "from": "vp:airl-icp-cto", "to": "pf:exec-cto" },
+    { "@type": "vp:roleRef", "from": "vp:airl-icp-director", "to": "pf:func-ai-programme-director" },
+    { "@type": "vp:roleRef", "from": "vp:airl-icp-manager", "to": "pf:func-ai-manager" },
+
+    { "@type": "vp:icpReportsTo", "from": "vp:airl-icp-manager", "to": "vp:airl-icp-director" },
+    { "@type": "vp:icpReportsTo", "from": "vp:airl-icp-director", "to": "vp:airl-icp-cto" },
+
+    { "@type": "vp:manifestsAsPersona", "from": "vp:airl-icp-cto", "to": "efs:persona-exec-sponsor" },
+    { "@type": "vp:manifestsAsPersona", "from": "vp:airl-icp-director", "to": "efs:persona-programme-lead" },
+    { "@type": "vp:manifestsAsPersona", "from": "vp:airl-icp-manager", "to": "efs:persona-assessment-user" },
+
+    { "@type": "vp:icpHasProblem", "from": "vp:airl-icp-cto", "to": "vp:airl-prob-strategic" },
+    { "@type": "vp:icpHasProblem", "from": "vp:airl-icp-director", "to": "vp:airl-prob-tactical" },
+    { "@type": "vp:icpHasProblem", "from": "vp:airl-icp-manager", "to": "vp:airl-prob-operational" },
+
+    { "@type": "vp:problemRollsUpTo", "from": "vp:airl-prob-operational", "to": "vp:airl-prob-tactical" },
+    { "@type": "vp:problemRollsUpTo", "from": "vp:airl-prob-tactical", "to": "vp:airl-prob-strategic" },
+
+    { "@type": "vp:problemHasPainPoint", "from": "vp:airl-prob-strategic", "to": "vp:airl-pain-failure-rate" },
+    { "@type": "vp:problemHasPainPoint", "from": "vp:airl-prob-strategic", "to": "vp:airl-pain-no-baseline" },
+    { "@type": "vp:problemHasPainPoint", "from": "vp:airl-prob-tactical", "to": "vp:airl-pain-siloed-assessment" },
+    { "@type": "vp:problemHasPainPoint", "from": "vp:airl-prob-tactical", "to": "vp:airl-pain-consultant-dependency" },
+    { "@type": "vp:problemHasPainPoint", "from": "vp:airl-prob-operational", "to": "vp:airl-pain-spreadsheet-hell" },
+
+    { "@type": "vp:problemValidatedBy", "from": "vp:airl-prob-strategic", "to": "vp:airl-evid-gartner-failure" },
+    { "@type": "vp:problemValidatedBy", "from": "vp:airl-prob-strategic", "to": "vp:airl-evid-mckinsey-value" },
+    { "@type": "vp:problemValidatedBy", "from": "vp:airl-prob-tactical", "to": "vp:airl-evid-pilot-metrics" },
+    { "@type": "vp:problemValidatedBy", "from": "vp:airl-prob-operational", "to": "vp:airl-evid-pilot-metrics" },
+
+    { "@type": "vp:mapsToEpic", "from": "vp:airl-prob-strategic", "to": "efs:epic-ai-readiness-platform" },
+    { "@type": "vp:mapsToEpic", "from": "vp:airl-prob-tactical", "to": "efs:epic-cross-domain-assessment" },
+
+    { "@type": "vp:solutionAddressesProblem", "from": "vp:airl-sol-001", "to": "vp:airl-prob-strategic" },
+    { "@type": "vp:solutionAddressesProblem", "from": "vp:airl-sol-001", "to": "vp:airl-prob-tactical" },
+    { "@type": "vp:solutionAddressesProblem", "from": "vp:airl-sol-001", "to": "vp:airl-prob-operational" },
+
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:airl-sol-001", "to": "vp:airl-ben-reduced-failure" },
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:airl-sol-001", "to": "vp:airl-ben-faster-readiness" },
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:airl-sol-001", "to": "vp:airl-ben-cost-reduction" },
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:airl-sol-001", "to": "vp:airl-ben-cross-domain" },
+    { "@type": "vp:solutionDeliversBenefit", "from": "vp:airl-sol-001", "to": "vp:airl-ben-board-reporting" },
+
+    { "@type": "vp:solutionDifferentiatedBy", "from": "vp:airl-sol-001", "to": "vp:airl-diff-ontology-driven" },
+    { "@type": "vp:solutionDifferentiatedBy", "from": "vp:airl-sol-001", "to": "vp:airl-diff-cross-domain" },
+    { "@type": "vp:solutionDifferentiatedBy", "from": "vp:airl-sol-001", "to": "vp:airl-diff-visualiser" },
+    { "@type": "vp:solutionDifferentiatedBy", "from": "vp:airl-sol-001", "to": "vp:airl-diff-ea-integration" },
+
+    { "@type": "vp:solutionDeliversGain", "from": "vp:airl-sol-001", "to": "vp:airl-gain-quantified-maturity" },
+    { "@type": "vp:solutionDeliversGain", "from": "vp:airl-sol-001", "to": "vp:airl-gain-roadmap" },
+    { "@type": "vp:solutionDeliversGain", "from": "vp:airl-sol-001", "to": "vp:airl-gain-continuous" },
+
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:airl-ben-reduced-failure", "to": "vp:airl-pain-failure-rate" },
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:airl-ben-faster-readiness", "to": "vp:airl-pain-no-baseline" },
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:airl-ben-cost-reduction", "to": "vp:airl-pain-consultant-dependency" },
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:airl-ben-cross-domain", "to": "vp:airl-pain-siloed-assessment" },
+    { "@type": "vp:benefitMitigatesPain", "from": "vp:airl-ben-board-reporting", "to": "vp:airl-pain-no-baseline" },
+
+    { "@type": "vp:benefitEvidencedBy", "from": "vp:airl-ben-reduced-failure", "to": "vp:airl-evid-pilot-metrics" },
+    { "@type": "vp:benefitEvidencedBy", "from": "vp:airl-ben-faster-readiness", "to": "vp:airl-evid-mckinsey-value" },
+    { "@type": "vp:benefitEvidencedBy", "from": "vp:airl-ben-cost-reduction", "to": "vp:airl-evid-pilot-metrics" },
+
+    { "@type": "vp:benefitMeasuredBy", "from": "vp:airl-ben-reduced-failure", "to": "vp:airl-sm-failure-rate" },
+    { "@type": "vp:benefitMeasuredBy", "from": "vp:airl-ben-faster-readiness", "to": "vp:airl-sm-readiness-time" },
+    { "@type": "vp:benefitMeasuredBy", "from": "vp:airl-ben-cost-reduction", "to": "vp:airl-sm-assessment-cost" },
+
+    { "@type": "vp:realizesInStory", "from": "vp:airl-ben-reduced-failure", "to": "efs:story-readiness-assessment" },
+    { "@type": "vp:realizesInStory", "from": "vp:airl-ben-cross-domain", "to": "efs:story-multi-dimension-view" },
+
+    { "@type": "vp:metricMapsToAC", "from": "vp:airl-sm-failure-rate", "to": "efs:ac-failure-rate-target" },
+    { "@type": "vp:metricMapsToAC", "from": "vp:airl-sm-maturity-score", "to": "efs:ac-maturity-improvement" },
+
+    { "@type": "vp:messagingTargetsStakeholder", "from": "vp:airl-msg-csuite", "to": "vp:airl-sh-cto" },
+    { "@type": "vp:messagingTargetsStakeholder", "from": "vp:airl-msg-csuite", "to": "vp:airl-sh-cfo" },
+    { "@type": "vp:messagingTargetsStakeholder", "from": "vp:airl-msg-director", "to": "vp:airl-sh-director" },
+    { "@type": "vp:messagingTargetsStakeholder", "from": "vp:airl-msg-manager", "to": "vp:airl-sh-manager" },
+
+    { "@type": "vp:gainMapsToFeature", "from": "vp:airl-gain-quantified-maturity", "to": "efs:feature-maturity-scoring" },
+    { "@type": "vp:gainMapsToFeature", "from": "vp:airl-gain-roadmap", "to": "efs:feature-roadmap-generation" },
+    { "@type": "vp:gainMapsToFeature", "from": "vp:airl-gain-continuous", "to": "efs:feature-continuous-tracking" },
+
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:airl-vp-001", "to": "vp:airl-raci-validation" },
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:airl-vp-001", "to": "vp:airl-raci-validation-dir" },
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:airl-prob-strategic", "to": "vp:airl-raci-problem-discovery" },
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:airl-prob-strategic", "to": "vp:airl-raci-problem-discovery-acc" },
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:airl-sol-001", "to": "vp:airl-raci-solution-design" },
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:airl-sol-001", "to": "vp:airl-raci-solution-design-mgr" },
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:airl-ben-reduced-failure", "to": "vp:airl-raci-benefit-measure" },
+    { "@type": "vp:hasVPRACIAssignment", "from": "vp:airl-ben-reduced-failure", "to": "vp:airl-raci-benefit-measure-acc" }
+  ],
+
+  "oaa:designDirectorPipeline": {
+    "description": "AIRL VP feeds into the Design Director pipeline: VP -> PMF -> EFS -> DS-ONT -> Component Code",
+    "upstreamDependencies": [
+      { "ontology": "VSOM-ONT", "entities": ["vsom:obj-ai-transformation", "vsom:obj-digital-maturity"], "role": "Strategic alignment" },
+      { "ontology": "ORG-ONT", "entities": ["org:ctx-airl"], "role": "Organisation context scoping" },
+      { "ontology": "RRR-ONT", "entities": ["pf:exec-cto", "pf:func-ai-programme-director", "pf:func-ai-manager"], "role": "Role-based ICP mapping" }
+    ],
+    "downstreamConsumers": [
+      { "ontology": "EFS-ONT", "bridgeType": "manifestsAsPersona + mapsToEpic + gainMapsToFeature + realizesInStory", "role": "ICP→Persona, Problem→Epic, Gain→Feature, Benefit→UserStory" },
+      { "ontology": "PMF-ONT", "bridgeType": "VP validation feeds PMF product-market fit assessment", "role": "VP evidence strengthens PMF confidence scoring" },
+      { "ontology": "DS-ONT", "bridgeType": "Via EFS: Features → DS component requirements", "role": "VP-driven features eventually manifest as design system components" }
+    ],
+    "emcComposition": {
+      "category": "PRODUCT",
+      "ontologiesComposed": ["VP-ONT", "PMF-ONT", "PE-ONT", "CA-ONT"],
+      "instanceBrand": "airl"
+    }
+  }
+}
