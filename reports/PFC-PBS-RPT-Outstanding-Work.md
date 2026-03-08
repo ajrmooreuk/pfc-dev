@@ -19,7 +19,7 @@ Open epics at **P1** priority — now governed by **Epic 61 (#947)** as the coll
 
 | Priority | PBS Sub-ID | Epic | Issue | Title | Status |
 |----------|------------|------|-------|-------|--------|
-| P1 | `PBS-PFC-ARCHITECTURE.CICD-DevSecOps.PFC-Triad` | Epic 58 | [#837](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/837) | PFC-Core Own Triad | F58.1 ✅, F58.2 ✅, F58.3 next |
+| P1 | `PBS-PFC-ARCHITECTURE.CICD-DevSecOps.PFC-Triad` | Epic 58 | [#837](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/837) | PFC-Core Own Triad | F58.1 ✅, F58.2 ✅, F58.3 in progress (tag pending) |
 | P1 | `PBS-PFC-ARCHITECTURE.CICD-DevSecOps.Security-MVP` | Epic 10A | [#127](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/127) | Security MVP — Multi-PFI Foundation | Schema written, not deployed |
 | P1 | `PBS-PFC-ARCHITECTURE.CICD-DevSecOps.DB-Cascade` | Epic 59 | [#840](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/840) | Platform Database Architecture | Proposed |
 | P1 | `PBS-PFC-ARCHITECTURE.CICD-DevSecOps.CICD-Pipeline` | Epic 31 | [#394](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/394) | Multi-Instance CI/CD Pipeline | Partially implemented |
@@ -34,7 +34,7 @@ Open epics at **P1** priority — now governed by **Epic 61 (#947)** as the coll
 | F61.2: CC Database Layer | [#970](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/970) | 4 | 0 | Blocked (Epic 59) |
 | F61.3: CC Reporting | [#971](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/971) | 4 | 0 | Pending |
 | F61.4: PBS ID Assignment | [#972](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/972) | 6 | 0 | Pending |
-| F61.5: PAT Governance | [#952](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/952) | 4 | 2 | In progress |
+| F61.5: PAT Governance | [#952](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/952) | 4 | 3 | In progress (S61.5.1 ✅ PFC PAT set 2026-03-08) |
 | F61.6: Naming Enforcement | [#962](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/962) | 5 | 0 | Pending |
 | F60.1: VSOM Master Briefing | [#860](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/860) | 4 | 1 | In progress |
 | F60.2: PFI-CICD Doc Refresh | [#861](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/861) | 6 | 0 | Pending |
