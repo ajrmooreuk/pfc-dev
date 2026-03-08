@@ -97,6 +97,27 @@ jobs:
             copied=$((copied + 1))
           fi
 
+          # Copy ontology-library directory
+          if [[ -d "source/ontology-library" ]]; then
+            cp -r source/ontology-library target/
+            echo "Copied ontology-library/"
+            copied=$((copied + 1))
+          fi
+
+          # Copy sealed-skills directory
+          if [[ -d "source/sealed-skills" ]]; then
+            cp -r source/sealed-skills target/
+            echo "Copied sealed-skills/"
+            copied=$((copied + 1))
+          fi
+
+          # Copy reports directory
+          if [[ -d "source/reports" ]]; then
+            cp -r source/reports target/
+            echo "Copied reports/"
+            copied=$((copied + 1))
+          fi
+
           # Copy promotion config
           if [[ -d "source/promotion" ]]; then
             mkdir -p target/promotion
