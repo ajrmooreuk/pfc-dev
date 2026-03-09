@@ -1,0 +1,716 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "# Pre-ALZ Environment Audit Workbook\n## Snapshot Assessment for Insurance Advisory\n\n**Compliance Frameworks:** MCSB v1 | MCSB v2 | NIST SP 800-53 | UK NCSC 14 Principles | ISO 27001:2022\n\n**Purpose:** Baseline audit of existing Azure environment to inform ALZ target architecture design.\n\n---"
+      },
+      "name": "header"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "sub-param",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscriptions",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": ["value::all"],
+              "includeAll": true
+            },
+            "value": ["value::all"]
+          }
+        ],
+        "style": "pills",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "name": "parameters"
+    },
+    {
+      "type": 11,
+      "content": {
+        "version": "LinkItem/1.0",
+        "style": "tabs",
+        "links": [
+          {"id": "t1", "cellValue": "tab", "linkTarget": "parameter", "linkLabel": "Audit Summary", "subTarget": "summary", "style": "link"},
+          {"id": "t2", "cellValue": "tab", "linkTarget": "parameter", "linkLabel": "Resource Inventory", "subTarget": "inventory", "style": "link"},
+          {"id": "t3", "cellValue": "tab", "linkTarget": "parameter", "linkLabel": "Subscriptions & Governance", "subTarget": "governance", "style": "link"},
+          {"id": "t4", "cellValue": "tab", "linkTarget": "parameter", "linkLabel": "Security Configuration", "subTarget": "security", "style": "link"},
+          {"id": "t5", "cellValue": "tab", "linkTarget": "parameter", "linkLabel": "Network Topology", "subTarget": "network", "style": "link"},
+          {"id": "t6", "cellValue": "tab", "linkTarget": "parameter", "linkLabel": "Identity & RBAC", "subTarget": "identity", "style": "link"},
+          {"id": "t7", "cellValue": "tab", "linkTarget": "parameter", "linkLabel": "Data & AI Resources", "subTarget": "dataai", "style": "link"},
+          {"id": "t8", "cellValue": "tab", "linkTarget": "parameter", "linkLabel": "MCSB v1 Assessment", "subTarget": "mcsbv1", "style": "link"},
+          {"id": "t9", "cellValue": "tab", "linkTarget": "parameter", "linkLabel": "MCSB v2 Assessment", "subTarget": "mcsbv2", "style": "link"},
+          {"id": "t10", "cellValue": "tab", "linkTarget": "parameter", "linkLabel": "NIST/NCSC/ISO Mapping", "subTarget": "compliance", "style": "link"}
+        ]
+      },
+      "name": "tabs"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "## Audit Summary\nHigh-level metrics for executive reporting. Export all grids to CSV for machine-readable output."
+            },
+            "name": "sum-hdr"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| summarize\n    TotalResources = count(),\n    ResourceTypes = dcount(type),\n    Subscriptions = dcount(subscriptionId),\n    ResourceGroups = dcount(resourceGroup),\n    Locations = dcount(location)\n| project\n    ['Total Resources'] = TotalResources,\n    ['Resource Types'] = ResourceTypes,\n    ['Subscriptions'] = Subscriptions,\n    ['Resource Groups'] = ResourceGroups,\n    ['Regions'] = Locations",
+              "size": 3,
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "visualization": "tiles",
+              "tileSettings": {
+                "showBorder": true,
+                "titleContent": {"columnMatch": "Column1", "formatter": 1},
+                "leftContent": {"columnMatch": "Count", "formatter": 12, "numberFormat": {"unit": 17, "options": {"style": "decimal"}}}
+              }
+            },
+            "name": "summary-tiles"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| extend tagCount = array_length(bag_keys(tags))\n| summarize\n    Total = count(),\n    Tagged = countif(tagCount > 0),\n    Untagged = countif(tagCount == 0)\n| extend TaggingCompliance = round(100.0 * Tagged / Total, 1)\n| project\n    ['Total Resources'] = Total,\n    ['Tagged'] = Tagged,\n    ['Untagged (Gap)'] = Untagged,\n    ['Tagging %'] = strcat(TaggingCompliance, '%')",
+              "size": 0,
+              "title": "Tagging Compliance Summary",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "visualization": "table"
+            },
+            "name": "tagging-summary"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| summarize Count = count() by type\n| order by Count desc\n| take 15\n| project ['Resource Type'] = type, Count",
+              "size": 0,
+              "title": "Top 15 Resource Types",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "visualization": "barchart"
+            },
+            "name": "resource-types-chart"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| summarize Count = count() by location\n| order by Count desc\n| project Region = location, Count",
+              "size": 0,
+              "title": "Resources by Region",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "visualization": "piechart"
+            },
+            "name": "region-chart"
+          }
+        ]
+      },
+      "conditionalVisibility": {"parameterName": "tab", "comparison": "isEqualTo", "value": "summary"},
+      "name": "summary-group"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "## Complete Resource Inventory\nExport grid to CSV/JSON for baseline documentation."
+            },
+            "name": "inv-hdr"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| extend tagCount = array_length(bag_keys(tags))\n| project\n    Name = name,\n    Type = type,\n    Location = location,\n    ResourceGroup = resourceGroup,\n    SubscriptionId = subscriptionId,\n    SKU = tostring(sku.name),\n    Kind = kind,\n    TagCount = tagCount,\n    Tags = tostring(tags),\n    ResourceId = id\n| order by Type asc, Name asc",
+              "size": 0,
+              "title": "All Resources (Export for inventory-full.json)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {
+                "formatters": [
+                  {"columnMatch": "ResourceId", "formatter": 13, "formatOptions": {"linkTarget": "Resource"}},
+                  {"columnMatch": "TagCount", "formatter": 4, "formatOptions": {"palette": "blue"}}
+                ],
+                "filter": true,
+                "sortBy": [{"itemKey": "Type", "sortOrder": 1}]
+              }
+            },
+            "name": "all-resources-grid"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| extend tagCount = array_length(bag_keys(tags))\n| where tagCount == 0\n| project Name = name, Type = type, ResourceGroup = resourceGroup, Location = location, SubscriptionId = subscriptionId\n| order by Type asc",
+              "size": 0,
+              "title": "Untagged Resources - Governance Gap (Export for untagged-resources.csv)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "untagged-resources"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| summarize Count = count() by type\n| order by Count desc\n| project ['Resource Type'] = type, Count",
+              "size": 0,
+              "title": "Resources by Type (Export for inventory-by-type.csv)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "resources-by-type"
+          }
+        ]
+      },
+      "conditionalVisibility": {"parameterName": "tab", "comparison": "isEqualTo", "value": "inventory"},
+      "name": "inventory-group"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "## Subscriptions & Governance\nManagement groups, subscriptions, and policy assignments baseline."
+            },
+            "name": "gov-hdr"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resourcecontainers\n| where type == 'microsoft.management/managementgroups'\n| project\n    Name = name,\n    DisplayName = properties.displayName,\n    TenantId = properties.tenantId,\n    ParentId = tostring(properties.details.parent.id)\n| order by Name asc",
+              "size": 0,
+              "title": "Management Groups (Export for management-groups.json)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "management-groups"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resourcecontainers\n| where type == 'microsoft.resources/subscriptions'\n| project\n    SubscriptionName = name,\n    SubscriptionId = subscriptionId,\n    State = properties.state,\n    Tags = tostring(tags)\n| order by SubscriptionName asc",
+              "size": 0,
+              "title": "Subscriptions (Export for subscriptions.json)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "subscriptions-list"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "policyresources\n| where type == 'microsoft.authorization/policyassignments'\n| project\n    AssignmentName = name,\n    DisplayName = properties.displayName,\n    Scope = properties.scope,\n    EnforcementMode = properties.enforcementMode,\n    PolicyDefinitionId = properties.policyDefinitionId\n| order by AssignmentName asc",
+              "size": 0,
+              "title": "Policy Assignments (Export for policy-assignments.json)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "policy-assignments"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "policyresources\n| where type == 'microsoft.authorization/policyassignments'\n| extend enforcementMode = tostring(properties.enforcementMode)\n| summarize Count = count() by enforcementMode\n| project ['Enforcement Mode'] = enforcementMode, Count",
+              "size": 0,
+              "title": "Policy Enforcement Summary",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "visualization": "piechart"
+            },
+            "name": "policy-enforcement"
+          }
+        ]
+      },
+      "conditionalVisibility": {"parameterName": "tab", "comparison": "isEqualTo", "value": "governance"},
+      "name": "governance-group"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "## Security Configuration\nKey Vaults, NSGs, Storage security baseline for gap analysis."
+            },
+            "name": "sec-hdr"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == 'microsoft.keyvault/vaults'\n| extend\n    softDelete = properties.enableSoftDelete,\n    purgeProtection = properties.enablePurgeProtection,\n    rbacAuth = properties.enableRbacAuthorization,\n    publicNetwork = properties.publicNetworkAccess\n| project\n    Name = name,\n    ResourceGroup = resourceGroup,\n    Location = location,\n    SoftDelete = softDelete,\n    PurgeProtection = purgeProtection,\n    RBACAuth = rbacAuth,\n    PublicAccess = publicNetwork\n| order by Name asc",
+              "size": 0,
+              "title": "Key Vault Configuration (Export for keyvaults.csv)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "keyvaults"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == 'microsoft.network/networksecuritygroups'\n| extend ruleCount = array_length(properties.securityRules)\n| project\n    Name = name,\n    ResourceGroup = resourceGroup,\n    Location = location,\n    RuleCount = ruleCount,\n    ResourceId = id\n| order by Name asc",
+              "size": 0,
+              "title": "Network Security Groups (Export for nsgs.json)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "nsgs"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type =~ 'microsoft.storage/storageaccounts'\n| extend\n    httpsOnly = properties.supportsHttpsTrafficOnly,\n    minTLS = properties.minimumTlsVersion,\n    publicAccess = properties.allowBlobPublicAccess,\n    networkDefaultAction = properties.networkAcls.defaultAction\n| project\n    Name = name,\n    ResourceGroup = resourceGroup,\n    HTTPSOnly = httpsOnly,\n    MinTLS = minTLS,\n    PublicBlobAccess = publicAccess,\n    NetworkDefault = networkDefaultAction\n| order by Name asc",
+              "size": 0,
+              "title": "Storage Account Security (Export for storage-security.csv)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "storage-security"
+          }
+        ]
+      },
+      "conditionalVisibility": {"parameterName": "tab", "comparison": "isEqualTo", "value": "security"},
+      "name": "security-group"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "## Network Topology\nVNets, subnets, peerings for ALZ hub-spoke planning."
+            },
+            "name": "net-hdr"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == 'microsoft.network/virtualnetworks'\n| extend\n    addressSpace = tostring(properties.addressSpace.addressPrefixes),\n    subnetCount = array_length(properties.subnets),\n    peeringCount = array_length(properties.virtualNetworkPeerings),\n    dnsServers = tostring(properties.dhcpOptions.dnsServers)\n| project\n    Name = name,\n    ResourceGroup = resourceGroup,\n    Location = location,\n    AddressSpace = addressSpace,\n    SubnetCount = subnetCount,\n    PeeringCount = peeringCount,\n    DNSServers = dnsServers\n| order by Name asc",
+              "size": 0,
+              "title": "Virtual Networks (Export for vnets.json)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "vnets"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == 'microsoft.network/virtualnetworks'\n| mv-expand subnet = properties.subnets\n| extend\n    subnetName = tostring(subnet.name),\n    addressPrefix = tostring(subnet.properties.addressPrefix),\n    nsg = tostring(subnet.properties.networkSecurityGroup.id),\n    routeTable = tostring(subnet.properties.routeTable.id)\n| project\n    VNetName = name,\n    SubnetName = subnetName,\n    AddressPrefix = addressPrefix,\n    NSG = iif(isempty(nsg), 'None', split(nsg, '/')[-1]),\n    RouteTable = iif(isempty(routeTable), 'None', split(routeTable, '/')[-1])\n| order by VNetName asc, SubnetName asc",
+              "size": 0,
+              "title": "Subnet Configuration (Export for subnets.csv)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "subnets"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == 'microsoft.network/virtualnetworks'\n| mv-expand peering = properties.virtualNetworkPeerings\n| extend\n    peeringName = tostring(peering.name),\n    peeringState = tostring(peering.properties.peeringState),\n    remoteVNet = tostring(peering.properties.remoteVirtualNetwork.id),\n    allowForwarding = peering.properties.allowForwardedTraffic,\n    allowGateway = peering.properties.allowGatewayTransit\n| project\n    VNetName = name,\n    PeeringName = peeringName,\n    State = peeringState,\n    RemoteVNet = split(remoteVNet, '/')[-1],\n    AllowForwarding = allowForwarding,\n    AllowGateway = allowGateway\n| order by VNetName asc",
+              "size": 0,
+              "title": "VNet Peerings (Export for peerings.json)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "peerings"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type in~ (\n    'microsoft.network/publicipaddresses',\n    'microsoft.network/loadbalancers',\n    'microsoft.network/applicationgateways',\n    'microsoft.network/azurefirewalls',\n    'microsoft.network/bastionhosts',\n    'microsoft.network/virtualnetworkgateways',\n    'microsoft.network/expressroutecircuits',\n    'microsoft.network/privatednszones',\n    'microsoft.network/privateendpoints'\n)\n| project\n    Name = name,\n    Type = type,\n    ResourceGroup = resourceGroup,\n    Location = location,\n    SKU = tostring(sku.name)\n| order by Type asc, Name asc",
+              "size": 0,
+              "title": "Network Resources (Connectivity)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "network-resources"
+          }
+        ]
+      },
+      "conditionalVisibility": {"parameterName": "tab", "comparison": "isEqualTo", "value": "network"},
+      "name": "network-group"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "## Identity & RBAC\nManaged identities and role assignments baseline."
+            },
+            "name": "iam-hdr"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == 'microsoft.managedidentity/userassignedidentities'\n| project\n    Name = name,\n    ResourceGroup = resourceGroup,\n    Location = location,\n    ClientId = properties.clientId,\n    PrincipalId = properties.principalId\n| order by Name asc",
+              "size": 0,
+              "title": "User Assigned Managed Identities (Export for managed-identities.json)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "managed-identities"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "authorizationresources\n| where type == 'microsoft.authorization/roleassignments'\n| extend principalType = tostring(properties.principalType)\n| summarize Count = count() by principalType\n| project ['Principal Type'] = principalType, Count\n| order by Count desc",
+              "size": 0,
+              "title": "Role Assignments by Principal Type",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "visualization": "piechart"
+            },
+            "name": "rbac-summary"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "authorizationresources\n| where type == 'microsoft.authorization/roleassignments'\n| extend\n    principalId = tostring(properties.principalId),\n    principalType = tostring(properties.principalType),\n    roleDefId = tostring(properties.roleDefinitionId),\n    scope = tostring(properties.scope)\n| extend roleDefName = split(roleDefId, '/')[-1]\n| project\n    PrincipalId = principalId,\n    PrincipalType = principalType,\n    RoleDefinitionId = roleDefName,\n    Scope = scope\n| order by PrincipalType asc",
+              "size": 0,
+              "title": "Role Assignments Detail (Export for rbac-assignments.json)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "rbac-detail"
+          }
+        ]
+      },
+      "conditionalVisibility": {"parameterName": "tab", "comparison": "isEqualTo", "value": "identity"},
+      "name": "identity-group"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "## Data & AI Resources\nResources for Data/BI/Analytics/ML workloads."
+            },
+            "name": "data-hdr"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type in~ (\n    'microsoft.synapse/workspaces',\n    'microsoft.databricks/workspaces',\n    'microsoft.machinelearningservices/workspaces',\n    'microsoft.cognitiveservices/accounts',\n    'microsoft.search/searchservices',\n    'microsoft.datafactory/factories',\n    'microsoft.purview/accounts',\n    'microsoft.eventhub/namespaces',\n    'microsoft.streamanalytics/streamingjobs',\n    'microsoft.kusto/clusters'\n)\n| project\n    Name = name,\n    Type = type,\n    ResourceGroup = resourceGroup,\n    Location = location,\n    SKU = tostring(sku.name),\n    Kind = kind\n| order by Type asc, Name asc",
+              "size": 0,
+              "title": "Analytics & AI Services (Export for data-ai-resources.json)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "analytics-services"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type in~ (\n    'microsoft.sql/servers',\n    'microsoft.sql/servers/databases',\n    'microsoft.documentdb/databaseaccounts',\n    'microsoft.dbforpostgresql/flexibleservers',\n    'microsoft.dbformysql/flexibleservers',\n    'microsoft.cache/redis'\n)\n| project\n    Name = name,\n    Type = type,\n    ResourceGroup = resourceGroup,\n    Location = location,\n    SKU = tostring(sku.name)\n| order by Type asc, Name asc",
+              "size": 0,
+              "title": "Database Services",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {"filter": true}
+            },
+            "name": "database-services"
+          }
+        ]
+      },
+      "conditionalVisibility": {"parameterName": "tab", "comparison": "isEqualTo", "value": "dataai"},
+      "name": "dataai-group"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "## MCSB v1 Assessment\nMicrosoft Cloud Security Benchmark v1 control mapping.\n\n**Note:** For complete MCSB assessment, use Microsoft Defender for Cloud Regulatory Compliance dashboard."
+            },
+            "name": "mcsbv1-hdr"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type =~ 'microsoft.storage/storageaccounts'\n| extend\n    httpsOnly = tostring(properties.supportsHttpsTrafficOnly),\n    minTLS = tostring(properties.minimumTlsVersion),\n    networkDefault = tostring(properties.networkAcls.defaultAction)\n| extend\n    DP3_DataInTransit = iif(httpsOnly == 'true' and minTLS == 'TLS1_2', 'Compliant', 'Non-Compliant'),\n    NS2_NetworkSegmentation = iif(networkDefault == 'Deny', 'Compliant', 'Review')\n| project\n    Name = name,\n    HTTPSOnly = httpsOnly,\n    MinTLS = minTLS,\n    NetworkDefault = networkDefault,\n    ['MCSB-v1 DP-3'] = DP3_DataInTransit,\n    ['MCSB-v1 NS-2'] = NS2_NetworkSegmentation\n| order by Name asc",
+              "size": 0,
+              "title": "Storage: MCSB v1 DP-3 (Data in Transit) & NS-2 (Network Segmentation)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {
+                "formatters": [
+                  {"columnMatch": "MCSB-v1 DP-3", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "red", "text": "{0}"}]}},
+                  {"columnMatch": "MCSB-v1 NS-2", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "orange", "text": "{0}"}]}}
+                ],
+                "filter": true
+              }
+            },
+            "name": "storage-mcsbv1"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == 'microsoft.keyvault/vaults'\n| extend\n    softDelete = tostring(properties.enableSoftDelete),\n    purgeProtection = tostring(properties.enablePurgeProtection),\n    rbacAuth = tostring(properties.enableRbacAuthorization)\n| extend\n    DP5_DataAtRest = iif(softDelete == 'true' and purgeProtection == 'true', 'Compliant', 'Non-Compliant'),\n    IM1_IdentityMgmt = iif(rbacAuth == 'true', 'Compliant', 'Review')\n| project\n    Name = name,\n    SoftDelete = softDelete,\n    PurgeProtection = purgeProtection,\n    RBACAuth = rbacAuth,\n    ['MCSB-v1 DP-5'] = DP5_DataAtRest,\n    ['MCSB-v1 IM-1'] = IM1_IdentityMgmt\n| order by Name asc",
+              "size": 0,
+              "title": "Key Vault: MCSB v1 DP-5 (Data at Rest) & IM-1 (Identity Management)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {
+                "formatters": [
+                  {"columnMatch": "MCSB-v1 DP-5", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "red", "text": "{0}"}]}},
+                  {"columnMatch": "MCSB-v1 IM-1", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "orange", "text": "{0}"}]}}
+                ],
+                "filter": true
+              }
+            },
+            "name": "keyvault-mcsbv1"
+          }
+        ]
+      },
+      "conditionalVisibility": {"parameterName": "tab", "comparison": "isEqualTo", "value": "mcsbv1"},
+      "name": "mcsbv1-group"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "## MCSB v2 Assessment\nMicrosoft Cloud Security Benchmark v2 control mapping.\n\n**Note:** MCSB v2 is the current benchmark. For complete assessment, use Microsoft Defender for Cloud Regulatory Compliance dashboard."
+            },
+            "name": "mcsbv2-hdr"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type =~ 'microsoft.storage/storageaccounts'\n| extend\n    httpsOnly = tostring(properties.supportsHttpsTrafficOnly),\n    minTLS = tostring(properties.minimumTlsVersion),\n    networkDefault = tostring(properties.networkAcls.defaultAction),\n    publicAccess = tostring(properties.allowBlobPublicAccess)\n| extend\n    DP3_v2 = iif(httpsOnly == 'true' and minTLS == 'TLS1_2', 'Compliant', 'Non-Compliant'),\n    NS2_v2 = iif(networkDefault == 'Deny', 'Compliant', 'Review'),\n    DP1_v2 = iif(publicAccess == 'false', 'Compliant', 'Review')\n| project\n    Name = name,\n    HTTPSOnly = httpsOnly,\n    MinTLS = minTLS,\n    NetworkDefault = networkDefault,\n    PublicBlobAccess = publicAccess,\n    ['MCSB-v2 DP-3 (Transit)'] = DP3_v2,\n    ['MCSB-v2 NS-2 (Segment)'] = NS2_v2,\n    ['MCSB-v2 DP-1 (Classify)'] = DP1_v2\n| order by Name asc",
+              "size": 0,
+              "title": "Storage: MCSB v2 Controls (Export for mcsb-v2-storage.csv)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {
+                "formatters": [
+                  {"columnMatch": "MCSB-v2 DP-3", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "red", "text": "{0}"}]}},
+                  {"columnMatch": "MCSB-v2 NS-2", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "orange", "text": "{0}"}]}},
+                  {"columnMatch": "MCSB-v2 DP-1", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "orange", "text": "{0}"}]}}
+                ],
+                "filter": true
+              }
+            },
+            "name": "storage-mcsbv2"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == 'microsoft.keyvault/vaults'\n| extend\n    softDelete = tostring(properties.enableSoftDelete),\n    purgeProtection = tostring(properties.enablePurgeProtection),\n    rbacAuth = tostring(properties.enableRbacAuthorization),\n    publicNetwork = tostring(properties.publicNetworkAccess)\n| extend\n    DP5_v2 = iif(softDelete == 'true' and purgeProtection == 'true', 'Compliant', 'Non-Compliant'),\n    IM1_v2 = iif(rbacAuth == 'true', 'Compliant', 'Review'),\n    NS2_v2 = iif(publicNetwork == 'Disabled', 'Compliant', 'Review')\n| project\n    Name = name,\n    SoftDelete = softDelete,\n    PurgeProtection = purgeProtection,\n    RBACAuth = rbacAuth,\n    PublicNetwork = publicNetwork,\n    ['MCSB-v2 DP-5 (Encrypt)'] = DP5_v2,\n    ['MCSB-v2 IM-1 (Identity)'] = IM1_v2,\n    ['MCSB-v2 NS-2 (Segment)'] = NS2_v2\n| order by Name asc",
+              "size": 0,
+              "title": "Key Vault: MCSB v2 Controls (Export for mcsb-v2-keyvault.csv)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {
+                "formatters": [
+                  {"columnMatch": "MCSB-v2 DP-5", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "red", "text": "{0}"}]}},
+                  {"columnMatch": "MCSB-v2 IM-1", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "orange", "text": "{0}"}]}},
+                  {"columnMatch": "MCSB-v2 NS-2", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "orange", "text": "{0}"}]}}
+                ],
+                "filter": true
+              }
+            },
+            "name": "keyvault-mcsbv2"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == 'microsoft.network/virtualnetworks'\n| mv-expand subnet = properties.subnets\n| extend\n    subnetName = tostring(subnet.name),\n    nsgAssigned = isnotempty(subnet.properties.networkSecurityGroup.id)\n| extend\n    NS1_v2 = iif(nsgAssigned, 'Compliant', 'Non-Compliant')\n| project\n    VNetName = name,\n    SubnetName = subnetName,\n    NSGAssigned = nsgAssigned,\n    ['MCSB-v2 NS-1 (Boundary)'] = NS1_v2",
+              "size": 0,
+              "title": "Network: MCSB v2 NS-1 (Network Boundary)",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {
+                "formatters": [
+                  {"columnMatch": "MCSB-v2 NS-1", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "red", "text": "{0}"}]}}
+                ],
+                "filter": true
+              }
+            },
+            "name": "network-mcsbv2"
+          }
+        ]
+      },
+      "conditionalVisibility": {"parameterName": "tab", "comparison": "isEqualTo", "value": "mcsbv2"},
+      "name": "mcsbv2-group"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "## NIST / NCSC / ISO Compliance Mapping\nResource configuration aligned to regulatory frameworks."
+            },
+            "name": "comp-hdr"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type =~ 'microsoft.storage/storageaccounts'\n| extend\n    httpsOnly = tostring(properties.supportsHttpsTrafficOnly),\n    minTLS = tostring(properties.minimumTlsVersion),\n    networkDefault = tostring(properties.networkAcls.defaultAction)\n| extend\n    NIST_SC8 = iif(httpsOnly == 'true' and minTLS == 'TLS1_2', 'Compliant', 'Non-Compliant'),\n    NCSC_P1 = iif(networkDefault == 'Deny', 'Compliant', 'Review'),\n    ISO_A13 = iif(httpsOnly == 'true', 'Compliant', 'Non-Compliant')\n| project\n    Name = name,\n    ['NIST SC-8 (Transmission)'] = NIST_SC8,\n    ['NCSC P1 (Data in Transit)'] = NCSC_P1,\n    ['ISO A.13 (Comms Security)'] = ISO_A13\n| order by Name asc",
+              "size": 0,
+              "title": "Storage Account: NIST/NCSC/ISO Compliance",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {
+                "formatters": [
+                  {"columnMatch": "NIST SC-8", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "red", "text": "{0}"}]}},
+                  {"columnMatch": "NCSC P1", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "orange", "text": "{0}"}]}},
+                  {"columnMatch": "ISO A.13", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "red", "text": "{0}"}]}}
+                ],
+                "filter": true
+              }
+            },
+            "name": "storage-compliance"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == 'microsoft.keyvault/vaults'\n| extend\n    softDelete = tostring(properties.enableSoftDelete),\n    purgeProtection = tostring(properties.enablePurgeProtection),\n    rbacAuth = tostring(properties.enableRbacAuthorization),\n    publicNetwork = tostring(properties.publicNetworkAccess)\n| extend\n    NIST_SC28 = iif(softDelete == 'true' and purgeProtection == 'true', 'Compliant', 'Non-Compliant'),\n    NCSC_P2 = iif(publicNetwork == 'Disabled', 'Compliant', 'Review'),\n    ISO_A10 = iif(rbacAuth == 'true', 'Compliant', 'Review')\n| project\n    Name = name,\n    ['NIST SC-28 (Data at Rest)'] = NIST_SC28,\n    ['NCSC P2 (Asset Protection)'] = NCSC_P2,\n    ['ISO A.10 (Cryptography)'] = ISO_A10\n| order by Name asc",
+              "size": 0,
+              "title": "Key Vault: NIST/NCSC/ISO Compliance",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": ["{Subscriptions}"],
+              "gridSettings": {
+                "formatters": [
+                  {"columnMatch": "NIST SC-28", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "red", "text": "{0}"}]}},
+                  {"columnMatch": "NCSC P2", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "orange", "text": "{0}"}]}},
+                  {"columnMatch": "ISO A.10", "formatter": 18, "formatOptions": {"thresholdsOptions": "colors", "thresholdsGrid": [{"operator": "==", "thresholdValue": "Compliant", "representation": "green", "text": "{0}"}, {"operator": "Default", "representation": "orange", "text": "{0}"}]}}
+                ],
+                "filter": true
+              }
+            },
+            "name": "keyvault-compliance"
+          }
+        ]
+      },
+      "conditionalVisibility": {"parameterName": "tab", "comparison": "isEqualTo", "value": "compliance"},
+      "name": "compliance-group"
+    }
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}

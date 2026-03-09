@@ -1,0 +1,146 @@
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1F4E79',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1F4E79',
+    'lineColor': '#666666',
+    'secondaryColor': '#2E75B6',
+    'tertiaryColor': '#ffffff',
+    'background': '#ffffff'
+  }
+}}%%
+
+flowchart TB
+    %% =====================================================
+    %% AI STRATEGY PROGRAMME - BSC STRATEGY MAP
+    %% Document: EA-PPM-AIS-2026-001 v3.1
+    %% Programme: Feb 2026 - Feb 2028 (24 months)
+    %% Phase 2: Feb - May 2026
+    %% 16 Strategic Objectives across 4 BSC Perspectives
+    %% =====================================================
+
+    %% STRATEGIC VISION
+    subgraph Vision["STRATEGIC VISION"]
+        V["To become a leading AI-augmented professional services organisation<br/>delivering superior mission outcomes through intelligent automation,<br/>data-driven decision making, and knowledge-enabled advisory services"]
+    end
+
+    %% FINANCIAL PERSPECTIVE - Green (4 Objectives)
+    subgraph Financial["FINANCIAL PERSPECTIVE: Enterprise Value Creation"]
+        direction LR
+        F1["<b>F1: Increase Revenue Growth</b><br/>-------<br/>Conversion rate: +15%<br/>Renewal rate: 95%<br/>Revenue per client: +10%"]
+        F2["<b>F2: Improve Operating Margin</b><br/>-------<br/>Cost per transaction: -25%<br/>Automation rate: 60%<br/>Manual rework: -40%"]
+        F3["<b>F3: Enhance Asset Utilisation</b><br/>-------<br/>Platform adoption: 80%<br/>AI tool utilisation: high<br/>ROI on AI: 3:1 by Year 3"]
+        F4["<b>F4: Reduce Cost-to-Serve</b><br/>-------<br/>Error rate: -50%<br/>Rework: -40%<br/>Manual steps: -60%"]
+    end
+
+    %% CUSTOMER PERSPECTIVE - Blue (4 Objectives)
+    subgraph Customer["CUSTOMER PERSPECTIVE: Client Value Delivery"]
+        direction LR
+        C1["<b>C1: Improve Client Retention</b><br/>-------<br/>Early warning detection: 90%<br/>Renewal prep coverage: 100%<br/>Health check green: 80%"]
+        C2["<b>C2: Enhance Client Experience</b><br/>-------<br/>Virtual AI agents: 5+<br/>First contact resolution: 85%<br/>Response time: &lt;4 hours"]
+        C3["<b>C3: Accelerate Response Times</b><br/>-------<br/>Quote turnaround: -50%<br/>Query response: &lt;4hr<br/>Renewal cycle: -30%"]
+        C4["<b>C4: Deliver Proactive Insights</b><br/>-------<br/>Insights per client: 12/yr<br/>Acceptance rate: 40%<br/>Measurable value"]
+    end
+
+    %% INTERNAL PROCESS PERSPECTIVE - Orange (4 Objectives)
+    subgraph Process["INTERNAL PROCESS PERSPECTIVE: Operational Excellence"]
+        direction LR
+        P1["<b>P1: Automate Processes</b><br/>-------<br/>Processes automated: 15+<br/>Straight-through: 70%<br/>Manual touchpoints: -50%"]
+        P2["<b>P2: Optimise Sales Pipeline</b><br/>-------<br/>Lead conversion: +25%<br/>Pipeline velocity: +30%<br/>Win rate: +15%"]
+        P3["<b>P3: Streamline Compliance</b><br/>-------<br/>Checks automated: 90%<br/>Audit prep time: -70%<br/>Compliance findings: -40%"]
+        P4["<b>P4: Enhance Decision Quality</b><br/>-------<br/>AI-assisted decisions: 50%<br/>Decision accuracy: +20%<br/>Time to decision: -40%"]
+    end
+
+    %% LEARNING & GROWTH PERSPECTIVE - Purple (4 Objectives)
+    subgraph Learning["LEARNING & GROWTH PERSPECTIVE: Capability Foundation"]
+        direction LR
+        L1["<b>L1: AI-Ready Workforce</b><br/>-------<br/>Training complete: 100%<br/>Proficiency score: 80%<br/>Active AI users: 90%"]
+        L2["<b>L2: Data Foundation</b><br/>-------<br/>CRITICAL PATH<br/>Client coverage: 100%<br/>Data quality: 95%<br/>Full governance"]
+        L3["<b>L3: AI Platform</b><br/>-------<br/>AI models deployed: 20+<br/>Platform uptime: 99.5%<br/>API availability: 99%"]
+        L4["<b>L4: Foster Innovation Culture</b><br/>-------<br/>Ideas submitted: 100+<br/>Experiments run: 20<br/>Innovations deployed: 10"]
+    end
+
+    %% RCSG GOVERNANCE LAYER - Cross-Cutting
+    subgraph RCSG["RCSG GOVERNANCE LAYER (Cross-Cutting)"]
+        direction LR
+        RG["Risk Register<br/>Enterprise risk posture"]
+        RC["Compliance Automation<br/>FCA, PRA, DORA, GDPR"]
+        RA["AI Governance<br/>UK AI, EU AI Act, OWASP"]
+        RS["Security Posture<br/>MITRE ATT&CK, STRIDE"]
+    end
+
+    %% CAUSE-EFFECT RELATIONSHIPS
+    %% Vision to Financial (outcome validation)
+    V -.->|"validates"| F1
+    V -.->|"validates"| F2
+
+    %% Learning & Growth enables Internal Process
+    L1 -->|"enables"| P1
+    L1 -->|"enables"| P4
+    L1 -->|"enables"| C2
+    L2 -->|"enables"| P1
+    L2 -->|"enables"| P2
+    L2 -->|"enables"| P3
+    L2 -->|"enables"| C1
+    L2 -->|"enables"| C4
+    L3 -->|"enables"| P1
+    L3 -->|"enables"| P2
+    L3 -->|"enables"| C2
+    L3 -->|"enables"| C3
+    L4 -->|"enables"| P4
+
+    %% Internal Process drives Customer
+    P1 -->|"improves"| C2
+    P1 -->|"improves"| C3
+    P2 -->|"accelerates"| C1
+    P3 -->|"protects"| C1
+    P4 -->|"informs"| C4
+
+    %% Internal Process drives Financial
+    P1 -->|"reduces cost"| F2
+    P1 -->|"reduces cost"| F4
+    P2 -->|"drives growth"| F1
+    P3 -->|"reduces cost"| F2
+    P3 -->|"reduces cost"| F4
+
+    %% Customer drives Financial
+    C1 -->|"increases"| F1
+    C2 -->|"increases"| F1
+    C4 -->|"increases"| F1
+    C3 -->|"improves"| F3
+
+    %% RCSG cross-cuts all perspectives
+    RCSG -.->|"governs"| Process
+    RCSG -.->|"assures"| Learning
+    RCSG -.->|"protects"| Customer
+
+    %% STYLING
+    style Vision fill:#1F4E79,stroke:#1F4E79,color:#fff
+    style Financial fill:#C8E6C9,stroke:#2E7D32,color:#000
+    style Customer fill:#BBDEFB,stroke:#1565C0,color:#000
+    style Process fill:#FFE0B2,stroke:#EF6C00,color:#000
+    style Learning fill:#E1BEE7,stroke:#7B1FA2,color:#000
+    style RCSG fill:#FFF3E0,stroke:#E65100,color:#000
+
+    style V fill:#1F4E79,stroke:#1F4E79,color:#fff
+    style F1 fill:#C8E6C9,stroke:#2E7D32,color:#000
+    style F2 fill:#C8E6C9,stroke:#2E7D32,color:#000
+    style F3 fill:#C8E6C9,stroke:#2E7D32,color:#000
+    style F4 fill:#C8E6C9,stroke:#2E7D32,color:#000
+    style C1 fill:#BBDEFB,stroke:#1565C0,color:#000
+    style C2 fill:#BBDEFB,stroke:#1565C0,color:#000
+    style C3 fill:#BBDEFB,stroke:#1565C0,color:#000
+    style C4 fill:#BBDEFB,stroke:#1565C0,color:#000
+    style P1 fill:#FFE0B2,stroke:#EF6C00,color:#000
+    style P2 fill:#FFE0B2,stroke:#EF6C00,color:#000
+    style P3 fill:#FFE0B2,stroke:#EF6C00,color:#000
+    style P4 fill:#FFE0B2,stroke:#EF6C00,color:#000
+    style L1 fill:#E1BEE7,stroke:#7B1FA2,color:#000
+    style L2 fill:#FFCDD2,stroke:#C62828,color:#000
+    style L3 fill:#E1BEE7,stroke:#7B1FA2,color:#000
+    style L4 fill:#E1BEE7,stroke:#7B1FA2,color:#000
+    style RG fill:#FFF3E0,stroke:#E65100,color:#000
+    style RC fill:#FFF3E0,stroke:#E65100,color:#000
+    style RA fill:#FFF3E0,stroke:#E65100,color:#000
+    style RS fill:#FFF3E0,stroke:#E65100,color:#000

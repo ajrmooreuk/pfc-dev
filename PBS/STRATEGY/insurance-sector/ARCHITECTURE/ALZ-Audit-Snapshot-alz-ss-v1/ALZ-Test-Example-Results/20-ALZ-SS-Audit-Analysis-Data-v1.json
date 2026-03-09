@@ -1,0 +1,429 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "alz": "https://baiv.co.uk/ontology/alz/",
+    "analysis": "https://baiv.co.uk/context/analysis/v1"
+  },
+  "@type": "Dataset",
+  "@id": "alz:analysis:testdata-v1.1.0",
+  "name": "ALZ Compliance Ontology Test Data Analysis",
+  "version": "1.0.0",
+  "sourceDataVersion": "1.1.0",
+  "ontologyVersion": "1.2.0",
+  "dateGenerated": "2026-02-03T00:00:00Z",
+  "description": "Structured analysis of ALZ Compliance Ontology test data including metrics, distributions, and findings",
+  "summary": {
+    "totalEntities": 16,
+    "totalInstances": 96,
+    "instancesPerEntity": 6,
+    "validationStatus": "PASS",
+    "overallCoverage": "100%"
+  },
+  "distribution": {
+    "target": {
+      "typical": 60,
+      "edgeCases": 20,
+      "boundaryCases": 10,
+      "invalidCases": 10
+    },
+    "actual": {
+      "typical": 60.4,
+      "edgeCases": 16.7,
+      "boundaryCases": 11.5,
+      "invalidCases": 11.5
+    },
+    "counts": {
+      "typical": 58,
+      "edgeCases": 16,
+      "boundaryCases": 11,
+      "invalidCases": 11
+    },
+    "variance": {
+      "typical": "+0.4%",
+      "edgeCases": "-3.3%",
+      "boundaryCases": "+1.5%",
+      "invalidCases": "+1.5%"
+    }
+  },
+  "entityAnalysis": {
+    "coreCompliance": {
+      "ComplianceFramework": {
+        "instanceCount": 6,
+        "distribution": {"typical": 3, "edge": 1, "boundary": 1, "invalid": 1},
+        "frameworks": [
+          {"id": "MCSB-v2", "version": "2.0.0", "body": "Microsoft", "status": "active"},
+          {"id": "NIST-800-53-R5", "version": "5.0.0", "body": "NIST", "status": "active"},
+          {"id": "ISO-27001-2022", "version": "2022", "body": "ISO", "status": "active"},
+          {"id": "MCSB-v1", "version": "1.0.0", "body": "Microsoft", "status": "deprecated"}
+        ],
+        "policySetCoverage": "75%"
+      },
+      "ComplianceControl": {
+        "instanceCount": 6,
+        "distribution": {"typical": 3, "edge": 1, "boundary": 1, "invalid": 1},
+        "controlFamilies": ["Network Security", "Data Protection", "Identity Management", "System/Comms Protection", "Custom"],
+        "evidenceTypesRequired": ["VNet diagrams", "NSG exports", "TLS configs", "Entra ID config", "CA policies"]
+      }
+    },
+    "wellArchitectedFramework": {
+      "WAFPillar": {
+        "instanceCount": 6,
+        "distribution": {"typical": 3, "edge": 1, "boundary": 1, "invalid": 1},
+        "pillars": [
+          {"code": "RE", "name": "Reliability", "advisorCategory": "HighAvailability", "mcsbControls": 3},
+          {"code": "SE", "name": "Security", "advisorCategory": "Security", "mcsbControls": 6},
+          {"code": "CO", "name": "Cost Optimization", "advisorCategory": "Cost", "mcsbControls": 0},
+          {"code": "OE", "name": "Operational Excellence", "advisorCategory": "OperationalExcellence", "mcsbControls": 5},
+          {"code": "PE", "name": "Performance Efficiency", "advisorCategory": "Performance", "mcsbControls": 0}
+        ],
+        "totalMCSBAlignment": 14
+      },
+      "CAFPhase": {
+        "instanceCount": 6,
+        "distribution": {"typical": 3, "edge": 1, "boundary": 1, "invalid": 1},
+        "phases": [
+          {"order": 1, "name": "Strategy", "activities": 4, "deliverables": 2},
+          {"order": 2, "name": "Plan", "activities": 1, "deliverables": 0},
+          {"order": 3, "name": "Ready", "activities": 4, "deliverables": 2},
+          {"order": 4, "name": "Adopt", "activities": 3, "deliverables": 0},
+          {"order": 5, "name": "Govern", "activities": 4, "deliverables": 2},
+          {"order": 6, "name": "Manage", "activities": 0, "deliverables": 0}
+        ],
+        "snapshotAuditAlignment": "Ready"
+      }
+    },
+    "auditWorkflow": {
+      "SnapshotAudit": {
+        "instanceCount": 6,
+        "distribution": {"typical": 3, "edge": 1, "boundary": 1, "invalid": 1},
+        "statusDistribution": {"planned": 1, "in-progress": 1, "completed": 3, "failed": 0, "invalid": 1},
+        "sessionTrackingFeatures": {
+          "sessionIdFormat": "UUID",
+          "timestampFields": ["startedAt", "completedAt"],
+          "deltaComparisonField": "previousSessionId",
+          "runSequenceTracking": true
+        },
+        "scopeRange": {"min": 1, "max": 3, "avgSubscriptions": 2}
+      },
+      "AuditQuery": {
+        "instanceCount": 6,
+        "distribution": {"typical": 3, "edge": 1, "boundary": 1, "invalid": 1},
+        "categories": ["inventory", "security", "mcsbCompliance", "wafPillarAssessment", "summary"],
+        "outputFormats": {"json": 4, "csv": 1}
+      },
+      "AuditResult": {
+        "instanceCount": 6,
+        "distribution": {"typical": 3, "edge": 1, "boundary": 1, "invalid": 1},
+        "recordCountRange": {"min": 0, "max": 50000, "typical": 1247},
+        "fileSizeRange": {"minBytes": 2, "maxBytes": 104857600, "typicalBytes": 524288}
+      }
+    },
+    "assessments": {
+      "WAFAssessment": {
+        "instanceCount": 6,
+        "distribution": {"typical": 3, "edge": 1, "boundary": 1, "invalid": 1},
+        "scoreRanges": {
+          "reliability": {"min": 72, "max": 100, "postRemediation": 89},
+          "security": {"min": 85, "max": 100, "postRemediation": 94},
+          "costOptimization": {"min": 65, "max": 100, "postRemediation": 82},
+          "operationalExcellence": {"min": 78, "max": 100, "postRemediation": 91},
+          "performanceEfficiency": {"min": 79, "max": 100, "postRemediation": 87}
+        },
+        "advisorRecommendations": {"initial": 47, "postRemediation": 12, "reduction": "74%"}
+      },
+      "ComplianceAssessment": {
+        "instanceCount": 6,
+        "distribution": {"typical": 3, "edge": 1, "boundary": 1, "invalid": 1},
+        "scoreRange": {"min": 0, "max": 100, "typicalInitial": 72, "typicalPost": 94},
+        "findingsRange": {"min": 0, "max": 999, "typical": 15}
+      }
+    },
+    "findings": {
+      "ComplianceFinding": {
+        "instanceCount": 6,
+        "distribution": {"typical": 3, "edge": 1, "boundary": 1, "invalid": 1},
+        "severityDistribution": {
+          "critical": 1,
+          "high": 2,
+          "medium": 1,
+          "low": 0,
+          "informational": 1
+        },
+        "topViolatedControls": ["DP-3", "NS-1", "IM-1"],
+        "priorityRange": {"min": 1, "max": 5}
+      }
+    },
+    "insuranceSector": {
+      "InsuranceSectorRequirement": {
+        "instanceCount": 6,
+        "distribution": {"typical": 3, "edge": 1, "boundary": 1, "invalid": 1},
+        "regulatoryBodies": ["FCA", "PRA", "ICO", "Lloyd's", "EIOPA"],
+        "activeRequirements": 4,
+        "futureRequirements": 1
+      }
+    }
+  },
+  "wafScoreAnalysis": {
+    "initialAssessment": {
+      "assessmentId": "WAF-INS-2026-001",
+      "date": "2026-02-03",
+      "scores": {
+        "reliability": 72,
+        "security": 85,
+        "costOptimization": 65,
+        "operationalExcellence": 78,
+        "performanceEfficiency": 81
+      },
+      "averageScore": 76.2,
+      "advisorRecommendations": 47
+    },
+    "postRemediationAssessment": {
+      "assessmentId": "WAF-INS-2026-002",
+      "date": "2026-05-01",
+      "scores": {
+        "reliability": 89,
+        "security": 94,
+        "costOptimization": 82,
+        "operationalExcellence": 91,
+        "performanceEfficiency": 87
+      },
+      "averageScore": 88.6,
+      "advisorRecommendations": 12
+    },
+    "improvements": {
+      "reliability": {"delta": 17, "percentage": 23.6},
+      "security": {"delta": 9, "percentage": 10.6},
+      "costOptimization": {"delta": 17, "percentage": 26.2},
+      "operationalExcellence": {"delta": 13, "percentage": 16.7},
+      "performanceEfficiency": {"delta": 6, "percentage": 7.4}
+    },
+    "overallImprovement": {
+      "averageScoreDelta": 12.4,
+      "recommendationReduction": 35,
+      "recommendationReductionPercentage": 74.5
+    }
+  },
+  "complianceScoreAnalysis": {
+    "preALZAssessment": {
+      "assessmentId": "ASS-2026-02-001",
+      "date": "2026-02-03",
+      "frameworks": ["MCSB-v1", "MCSB-v2"],
+      "overallScore": 72,
+      "findingsCount": 15
+    },
+    "quarterlyAssessment": {
+      "assessmentId": "ASS-2026-Q1-001",
+      "date": "2026-03-31",
+      "frameworks": ["MCSB-v2", "ISO-27001-2022", "NIST-800-53-R5"],
+      "overallScore": 85,
+      "findingsCount": 8
+    },
+    "postALZAssessment": {
+      "assessmentId": "ASS-2026-05-001",
+      "date": "2026-05-15",
+      "frameworks": ["MCSB-v2"],
+      "overallScore": 94,
+      "findingsCount": 3
+    },
+    "progression": {
+      "scoreImprovement": 22,
+      "findingsReduction": 12,
+      "findingsReductionPercentage": 80
+    }
+  },
+  "controlMappingAnalysis": {
+    "totalMappings": 6,
+    "strengthDistribution": {
+      "exact": 2,
+      "partial": 2,
+      "related": 1,
+      "noRationale": 1
+    },
+    "crossFrameworkCoverage": {
+      "mcsbToNist": 2,
+      "mcsbToIso": 1,
+      "mcsbToCustom": 1,
+      "internalMappings": 1
+    },
+    "mappings": [
+      {"source": "MCSB NS-1", "target": "NIST SC-7(21)", "strength": "exact"},
+      {"source": "MCSB DP-3", "target": "NIST SC-8", "strength": "exact"},
+      {"source": "MCSB IM-1", "target": "ISO A.9.2.1", "strength": "partial"},
+      {"source": "MCSB NS-1", "target": "Custom INS-NET-001", "strength": "related"}
+    ]
+  },
+  "findingsAnalysis": {
+    "severitySummary": {
+      "critical": {"count": 1, "priority": "P1", "slaHours": 24},
+      "high": {"count": 2, "priority": "P1", "slaDays": 7},
+      "medium": {"count": 1, "priority": "P2", "slaDays": 14},
+      "low": {"count": 0, "priority": "P3", "slaDays": 30},
+      "informational": {"count": 1, "priority": "P5", "action": "none"}
+    },
+    "findings": [
+      {
+        "id": "FND-2026-CRIT-001",
+        "severity": "critical",
+        "resource": "keyvault-001",
+        "control": "DP-3",
+        "issue": "Public network access enabled with no firewall rules",
+        "remediation": "Disable public access and configure private endpoint",
+        "priority": 1
+      },
+      {
+        "id": "FND-2026-001",
+        "severity": "high",
+        "resource": "storage-001",
+        "control": "DP-3",
+        "issue": "TLS 1.0 enabled",
+        "remediation": "Set minimumTlsVersion to TLS1_2",
+        "priority": 1
+      },
+      {
+        "id": "FND-2026-003",
+        "severity": "high",
+        "resource": "vnet-001",
+        "control": "NS-1",
+        "issue": "Subnet without NSG",
+        "remediation": "Create and attach NSG with appropriate rules",
+        "priority": 1
+      },
+      {
+        "id": "FND-2026-002",
+        "severity": "medium",
+        "resource": "keyvault-001",
+        "control": "IM-1",
+        "issue": "Access policy mode enabled",
+        "remediation": "Enable Azure RBAC for data plane access",
+        "priority": 2
+      },
+      {
+        "id": "FND-2026-INFO-001",
+        "severity": "informational",
+        "resource": "storage-001",
+        "control": "MIN-001",
+        "issue": "Configuration present",
+        "remediation": "No action required",
+        "priority": 5
+      }
+    ],
+    "controlViolationFrequency": {
+      "DP-3": 2,
+      "NS-1": 1,
+      "IM-1": 1,
+      "MIN-001": 1
+    }
+  },
+  "insuranceRequirementsAnalysis": {
+    "regulatoryBodyCoverage": {
+      "FCA": {"requirements": 1, "status": "active", "regulation": "SYSC 13.9"},
+      "PRA": {"requirements": 1, "status": "active", "regulation": "SS1/21"},
+      "ICO": {"requirements": 1, "status": "active", "regulation": "GDPR Art.32"},
+      "Lloyds": {"requirements": 1, "status": "active", "regulation": "MS13"},
+      "EIOPA": {"requirements": 1, "status": "future", "regulation": "DORA Extension"}
+    },
+    "timeline": [
+      {"date": "2018-05-25", "requirement": "GDPR Art.32", "body": "ICO"},
+      {"date": "2021-03-31", "requirement": "SS1/21", "body": "PRA"},
+      {"date": "2022-03-31", "requirement": "SYSC 13.9", "body": "FCA"},
+      {"date": "2023-01-01", "requirement": "MS13", "body": "Lloyd's"},
+      {"date": "2027-01-01", "requirement": "DORA Extension", "body": "EIOPA"}
+    ]
+  },
+  "resourceAnalysis": {
+    "totalDiscovered": 1247,
+    "typicalResourceTypes": [
+      {"type": "Microsoft.Storage/storageAccounts", "count": 23},
+      {"type": "Microsoft.KeyVault/vaults", "count": 8},
+      {"type": "Microsoft.Network/virtualNetworks", "count": 5},
+      {"type": "Microsoft.Compute/virtualMachines", "count": 45}
+    ],
+    "taggingCompliance": {
+      "withTags": "85%",
+      "withoutTags": "15%",
+      "commonTags": ["Environment", "CostCenter", "Classification", "NetworkTier"]
+    },
+    "locationDistribution": {
+      "uksouth": "95%",
+      "other": "5%"
+    }
+  },
+  "deliverablesAnalysis": {
+    "deliverableTypes": [
+      {"type": "ExecutiveSummary", "format": "PDF", "audience": "Executive"},
+      {"type": "CurrentStateReport", "format": "PDF", "audience": "Both"},
+      {"type": "ResourceInventory", "format": "Excel", "audience": "Technical"},
+      {"type": "SecurityGapAnalysis", "format": "PDF", "audience": "Technical"},
+      {"type": "MetricsDashboard", "format": "Markdown", "audience": "Both"},
+      {"type": "RawDataExport", "format": "JSON", "audience": "Technical"}
+    ],
+    "formatDistribution": {
+      "PDF": 3,
+      "Excel": 1,
+      "Markdown": 1,
+      "JSON": 1
+    },
+    "audienceDistribution": {
+      "Executive": 1,
+      "Technical": 3,
+      "Both": 2
+    }
+  },
+  "relationshipTestResults": {
+    "auditExecutesQuery": {"tested": true, "status": "pass", "instances": 3},
+    "queryProducesResult": {"tested": true, "status": "pass", "instances": 3},
+    "auditProducesDeliverable": {"tested": true, "status": "pass", "instances": 3},
+    "auditGeneratesAssessment": {"tested": true, "status": "pass", "instances": 2},
+    "wafAssessmentCoversPillar": {"tested": true, "status": "pass", "instances": 5}
+  },
+  "validationResults": {
+    "completenessGates": {
+      "G1_EntityDescriptions": {"status": "pass", "coverage": "100%"},
+      "G2_RelationshipCardinality": {"status": "pass", "coverage": "100%"},
+      "G2B_EntityConnectivity": {"status": "pass", "coverage": "100%"},
+      "G2C_GraphConnectivity": {"status": "pass", "components": 1},
+      "G3_BusinessRulesFormat": {"status": "pass", "coverage": "100%"},
+      "G4_PropertyMappings": {"status": "pass", "coverage": "100%"},
+      "G5_TestDataCoverage": {"status": "pass", "coverage": "100%"},
+      "G6_CrossArtifactConsistency": {"status": "pass", "coverage": "100%"}
+    },
+    "overallStatus": "PASS",
+    "gatesPassed": 8,
+    "gatesFailed": 0
+  },
+  "recommendations": {
+    "immediate": [
+      "Address all Critical severity findings within 24 hours",
+      "Remediate High severity findings within 1 week"
+    ],
+    "shortTerm": [
+      "Implement Azure Policy enforcement for TLS 1.2",
+      "Deploy NSGs to all subnets",
+      "Enable RBAC on Key Vaults"
+    ],
+    "mediumTerm": [
+      "Establish quarterly re-audit cadence",
+      "Implement continuous compliance monitoring",
+      "Expand control mapping coverage"
+    ],
+    "longTerm": [
+      "Integrate with CI/CD for deployment-time compliance validation",
+      "Implement automated remediation workflows",
+      "Prepare for EIOPA DORA requirements (2027)"
+    ]
+  },
+  "metadata": {
+    "generatedBy": "ALZ Audit Analysis Engine",
+    "analysisVersion": "1.0.0",
+    "sourceFiles": [
+      "07-ALZ-SS-Audit-OAA-Ontology-v1.json",
+      "10-ALZ-SS-Audit-OAA-TestData-v1.json"
+    ],
+    "outputFiles": [
+      "18-ALZ-SS-Audit-Executive-Summary-v1.md",
+      "19-ALZ-SS-Audit-Analysis-Report-v1.md",
+      "20-ALZ-SS-Audit-Analysis-Data-v1.json",
+      "21-ALZ-SS-Audit-Mermaid-Diagrams-v1.md"
+    ]
+  }
+}

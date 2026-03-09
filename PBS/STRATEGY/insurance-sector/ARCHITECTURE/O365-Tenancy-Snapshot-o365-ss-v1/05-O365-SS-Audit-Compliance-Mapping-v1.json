@@ -1,0 +1,406 @@
+{
+  "metadata": {
+    "name": "O365 Tenancy Compliance Control Mapping",
+    "version": "1.0.0",
+    "description": "Mapping of M365 controls to MCSB, ISO, GDPR, and insurance regulatory frameworks",
+    "sector": "Insurance Advisory",
+    "applicableRegulations": ["FCA", "PRA", "Solvency II", "GDPR", "Lloyd's MS13", "DORA"],
+    "lastUpdated": "2026-02"
+  },
+  "frameworks": {
+    "MCSB_v2": {
+      "name": "Microsoft Cloud Security Benchmark v2",
+      "description": "Current Microsoft security benchmark — identity and data protection domains most relevant for M365",
+      "status": "Current",
+      "url": "https://learn.microsoft.com/security/benchmark/azure/overview",
+      "m365Relevance": "IM (Identity Management), DP (Data Protection), LT (Logging & Threat Detection), PA (Privileged Access)"
+    },
+    "ISO_27001_2022": {
+      "name": "ISO/IEC 27001:2022",
+      "description": "Information security management systems",
+      "url": "https://www.iso.org/standard/27001",
+      "m365Relevance": "A.9 Access Control, A.10 Cryptography, A.12 Operations Security, A.13 Communications Security, A.18 Compliance"
+    },
+    "GDPR": {
+      "name": "General Data Protection Regulation (UK GDPR)",
+      "description": "Data protection regulation for personal data processing",
+      "url": "https://ico.org.uk/for-organisations/guide-to-data-protection/guide-to-the-general-data-protection-regulation-gdpr/",
+      "m365Relevance": "Art.5 Principles, Art.25 Privacy by Design, Art.30 Records, Art.32 Security, Art.33 Breach Notification"
+    },
+    "NIST_800_53_Rev5": {
+      "name": "NIST SP 800-53 Revision 5",
+      "description": "Security and Privacy Controls for Information Systems",
+      "url": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final",
+      "m365Relevance": "AC (Access Control), IA (Identification/Auth), SC (System/Comms Protection), AU (Audit), IR (Incident Response)"
+    },
+    "UK_NCSC_14": {
+      "name": "UK NCSC 14 Cloud Security Principles",
+      "description": "National Cyber Security Centre guidance for secure cloud adoption",
+      "url": "https://www.ncsc.gov.uk/collection/cloud/the-cloud-security-principles"
+    }
+  },
+  "mcsbDomainsM365": {
+    "identityManagement": {
+      "code": "IM",
+      "name": "Identity Management",
+      "m365Controls": ["IM-1", "IM-2", "IM-3", "IM-4", "IM-5", "IM-6", "IM-7", "IM-8"],
+      "m365Implementation": "Entra ID, MFA, Conditional Access, PIM, SSPR, Authentication Methods",
+      "auditDomain": "Identity & Access"
+    },
+    "privilegedAccess": {
+      "code": "PA",
+      "name": "Privileged Access",
+      "m365Controls": ["PA-1", "PA-2", "PA-3", "PA-4", "PA-7"],
+      "m365Implementation": "PIM, Global Admin limits, Break-glass accounts, CA for admin roles",
+      "auditDomain": "Identity & Access"
+    },
+    "dataProtection": {
+      "code": "DP",
+      "name": "Data Protection",
+      "m365Controls": ["DP-1", "DP-2", "DP-3", "DP-4", "DP-5"],
+      "m365Implementation": "Sensitivity labels, DLP, encryption in transit (TLS), Information Barriers, Rights Management",
+      "auditDomain": "Data Protection"
+    },
+    "loggingThreatDetection": {
+      "code": "LT",
+      "name": "Logging and Threat Detection",
+      "m365Controls": ["LT-1", "LT-2", "LT-3", "LT-4"],
+      "m365Implementation": "Unified Audit Log, Defender for O365, Secure Score, Alert Policies",
+      "auditDomain": "Threat Protection"
+    },
+    "incidentResponse": {
+      "code": "IR",
+      "name": "Incident Response",
+      "m365Controls": ["IR-1", "IR-2", "IR-3", "IR-4"],
+      "m365Implementation": "Alert policies, Automated Investigation, Incident queue, Threat Explorer",
+      "auditDomain": "Threat Protection"
+    },
+    "postureVulnerability": {
+      "code": "PV",
+      "name": "Posture and Vulnerability Management",
+      "m365Controls": ["PV-1", "PV-2"],
+      "m365Implementation": "Secure Score, Secure Score recommendations, Configuration assessment",
+      "auditDomain": "Compliance & Governance"
+    }
+  },
+  "controlMappings": [
+    {
+      "id": "M365-CTL-001",
+      "name": "Multi-Factor Authentication",
+      "description": "Enforce MFA for all users via Conditional Access",
+      "domain": "Identity & Access",
+      "mcsbV2": ["IM-4"],
+      "nist": ["IA-2(1)", "IA-2(2)"],
+      "ncsc": ["P10"],
+      "iso": ["A.9.4.2"],
+      "gdpr": ["Art.32(1)(b)"],
+      "m365Implementation": "Conditional Access policy requiring MFA for all users",
+      "auditQuery": "Get-MgIdentityConditionalAccessPolicy | Where-Object { $_.GrantControls.BuiltInControls -contains 'mfa' }",
+      "benchmark": "≥99% MFA registration for 800 users",
+      "risk": "Critical"
+    },
+    {
+      "id": "M365-CTL-002",
+      "name": "Conditional Access Policies",
+      "description": "Risk-based access controls via Conditional Access",
+      "domain": "Identity & Access",
+      "mcsbV2": ["IM-4", "IM-7"],
+      "nist": ["AC-2", "AC-3", "AC-7"],
+      "ncsc": ["P9", "P10"],
+      "iso": ["A.9.1.2", "A.9.4.1"],
+      "gdpr": ["Art.32(1)(b)"],
+      "m365Implementation": "CA policies for location, device, risk-level, application controls",
+      "auditQuery": "Get-MgIdentityConditionalAccessPolicy -All",
+      "benchmark": "≥5 active CA policies",
+      "risk": "Critical"
+    },
+    {
+      "id": "M365-CTL-003",
+      "name": "Legacy Authentication Block",
+      "description": "Block legacy authentication protocols",
+      "domain": "Identity & Access",
+      "mcsbV2": ["IM-4"],
+      "nist": ["IA-2", "IA-5"],
+      "ncsc": ["P10"],
+      "iso": ["A.9.4.2", "A.14.1.2"],
+      "gdpr": ["Art.32(1)(b)"],
+      "m365Implementation": "Conditional Access policy blocking legacy auth clients",
+      "auditQuery": "Get-MgIdentityConditionalAccessPolicy | Where-Object { $_.Conditions.ClientAppTypes -contains 'exchangeActiveSync' }",
+      "benchmark": "Legacy auth fully blocked",
+      "risk": "Critical"
+    },
+    {
+      "id": "M365-CTL-004",
+      "name": "Privileged Access Management",
+      "description": "Limit and manage Global Admin and privileged role access",
+      "domain": "Identity & Access",
+      "mcsbV2": ["PA-1", "PA-2", "PA-7"],
+      "nist": ["AC-2(7)", "AC-6(1)", "AC-6(2)"],
+      "ncsc": ["P9", "P10"],
+      "iso": ["A.9.2.3", "A.9.4.1"],
+      "gdpr": ["Art.32(1)(b)"],
+      "m365Implementation": "PIM for admin roles, Global Admin count ≤5, break-glass accounts",
+      "auditQuery": "Get-MgDirectoryRole | Where-Object { $_.DisplayName -eq 'Global Administrator' } | ForEach-Object { Get-MgDirectoryRoleMember -DirectoryRoleId $_.Id }",
+      "benchmark": "≤5 Global Admins, PIM enabled",
+      "risk": "Critical"
+    },
+    {
+      "id": "M365-CTL-005",
+      "name": "Guest Access Governance",
+      "description": "Control and review external/guest user access",
+      "domain": "Identity & Access",
+      "mcsbV2": ["IM-1", "IM-8"],
+      "nist": ["AC-2", "AC-14"],
+      "ncsc": ["P9"],
+      "iso": ["A.9.2.1", "A.9.2.5"],
+      "gdpr": ["Art.32(1)(b)", "Art.5(1)(f)"],
+      "m365Implementation": "Guest access policies, quarterly access reviews, guest expiry",
+      "auditQuery": "Get-MgUser -All -Filter \"userType eq 'Guest'\"",
+      "benchmark": "Quarterly guest review, ≤150 guests for 800-user tenant",
+      "risk": "Medium"
+    },
+    {
+      "id": "M365-CTL-006",
+      "name": "Email Authentication (DKIM/DMARC/SPF)",
+      "description": "Configure email authentication to prevent spoofing",
+      "domain": "Email Security",
+      "mcsbV2": ["DP-3"],
+      "nist": ["SC-7", "SI-3"],
+      "ncsc": ["P11"],
+      "iso": ["A.13.2.1"],
+      "gdpr": [],
+      "m365Implementation": "DKIM enabled, DMARC policy set (reject/quarantine), SPF configured for all verified domains",
+      "auditQuery": "Get-DkimSigningConfig | Select Domain, Enabled, Status",
+      "benchmark": "DKIM enabled, DMARC = reject/quarantine on all domains",
+      "risk": "Medium"
+    },
+    {
+      "id": "M365-CTL-007",
+      "name": "Mail Flow Forwarding Controls",
+      "description": "Prevent unauthorised external email forwarding",
+      "domain": "Email Security",
+      "mcsbV2": ["DP-2"],
+      "nist": ["SC-7", "AC-4"],
+      "ncsc": ["P11", "P13"],
+      "iso": ["A.13.2.1"],
+      "gdpr": ["Art.32(1)(b)"],
+      "m365Implementation": "Block auto-forwarding to external domains, monitor transport rules",
+      "auditQuery": "Get-TransportRule | Where-Object { $_.RedirectMessageTo -ne $null -or $_.BlindCopyTo -ne $null }",
+      "benchmark": "External auto-forwarding blocked",
+      "risk": "Critical"
+    },
+    {
+      "id": "M365-CTL-008",
+      "name": "Anti-Phishing Protection",
+      "description": "Configure anti-phishing policies with impersonation protection",
+      "domain": "Threat Protection",
+      "mcsbV2": ["LT-1"],
+      "nist": ["SI-3", "SI-8"],
+      "ncsc": ["P13"],
+      "iso": ["A.12.2.1"],
+      "gdpr": [],
+      "m365Implementation": "Anti-phishing policy with strict threshold, mailbox intelligence, domain/user impersonation protection",
+      "auditQuery": "Get-AntiPhishPolicy | Select Name, Enabled, PhishThresholdLevel, EnableMailboxIntelligenceProtection",
+      "benchmark": "PhishThresholdLevel ≥3 (Strict)",
+      "risk": "High"
+    },
+    {
+      "id": "M365-CTL-009",
+      "name": "Defender for Office 365",
+      "description": "Enable Defender for Office 365 Safe Attachments and Safe Links",
+      "domain": "Threat Protection",
+      "mcsbV2": ["LT-1", "LT-2"],
+      "nist": ["SI-3", "SI-4"],
+      "ncsc": ["P13"],
+      "iso": ["A.12.2.1", "A.12.4.1"],
+      "gdpr": ["Art.32(1)(b)"],
+      "m365Implementation": "Defender for O365 P1/P2, Safe Attachments = Dynamic Delivery, Safe Links = On with tracking",
+      "auditQuery": "Get-SafeAttachmentPolicy; Get-SafeLinksPolicy",
+      "benchmark": "Safe Attachments + Safe Links enabled",
+      "risk": "High"
+    },
+    {
+      "id": "M365-CTL-010",
+      "name": "Data Loss Prevention (DLP)",
+      "description": "DLP policies for sensitive data in Exchange, SharePoint, OneDrive, Teams",
+      "domain": "Data Protection",
+      "mcsbV2": ["DP-1", "DP-2"],
+      "nist": ["SC-28", "AC-4"],
+      "ncsc": ["P2"],
+      "iso": ["A.8.2.3", "A.13.2.1"],
+      "gdpr": ["Art.25", "Art.32(1)(a)"],
+      "m365Implementation": "DLP policies for UK PII (NINO, passport), financial data, insurance claims data",
+      "auditQuery": "Get-DlpCompliancePolicy | Select Name, Mode, Enabled, Workload",
+      "benchmark": "≥3 active DLP policies covering Exchange + SharePoint",
+      "risk": "Medium"
+    },
+    {
+      "id": "M365-CTL-011",
+      "name": "Sensitivity Labels",
+      "description": "Information protection labels for classification and encryption",
+      "domain": "Data Protection",
+      "mcsbV2": ["DP-1"],
+      "nist": ["AC-16", "MP-4"],
+      "ncsc": ["P2"],
+      "iso": ["A.8.2.1", "A.8.2.2"],
+      "gdpr": ["Art.25", "Art.32(1)(a)"],
+      "m365Implementation": "Sensitivity labels published and applied to Exchange, SharePoint, Teams",
+      "auditQuery": "Get-Label | Select DisplayName, Enabled, ContentType",
+      "benchmark": "Labels published, auto-labelling where possible",
+      "risk": "Medium"
+    },
+    {
+      "id": "M365-CTL-012",
+      "name": "SharePoint External Sharing",
+      "description": "Control external sharing from SharePoint and OneDrive",
+      "domain": "Data Protection",
+      "mcsbV2": ["DP-2"],
+      "nist": ["AC-3", "AC-4"],
+      "ncsc": ["P2"],
+      "iso": ["A.9.4.1", "A.13.2.1"],
+      "gdpr": ["Art.5(1)(f)", "Art.32(1)(b)"],
+      "m365Implementation": "SharePoint sharing restricted to authenticated guests, link expiry enforced",
+      "auditQuery": "Get-SPOTenant | Select SharingCapability, ExternalUserExpirationRequired",
+      "benchmark": "Sharing = ExistingExternalUserSharingOnly or more restrictive",
+      "risk": "High"
+    },
+    {
+      "id": "M365-CTL-013",
+      "name": "Unified Audit Logging",
+      "description": "Enable and retain unified audit logs for security and compliance",
+      "domain": "Compliance & Governance",
+      "mcsbV2": ["LT-1", "LT-3"],
+      "nist": ["AU-2", "AU-3", "AU-6", "AU-11"],
+      "ncsc": ["P13"],
+      "iso": ["A.12.4.1", "A.12.4.3"],
+      "gdpr": ["Art.5(2)", "Art.30"],
+      "m365Implementation": "Unified audit log enabled, retention ≥1 year (regulatory: 7 years for insurance)",
+      "auditQuery": "Get-AdminAuditLogConfig | Select UnifiedAuditLogIngestionEnabled",
+      "benchmark": "Audit log enabled, retention ≥365 days",
+      "risk": "Critical"
+    },
+    {
+      "id": "M365-CTL-014",
+      "name": "Retention Policies",
+      "description": "Data retention policies for Exchange, SharePoint, Teams",
+      "domain": "Compliance & Governance",
+      "mcsbV2": ["DP-8"],
+      "nist": ["AU-11", "SI-12"],
+      "ncsc": ["P2"],
+      "iso": ["A.18.1.3"],
+      "gdpr": ["Art.5(1)(e)", "Art.17"],
+      "m365Implementation": "Retention policies for regulatory retention periods (FCA: 5-7 years)",
+      "auditQuery": "Get-RetentionCompliancePolicy | Select Name, Enabled, Workload, RetentionDuration",
+      "benchmark": "Retention policies covering Exchange, SharePoint, Teams",
+      "risk": "Medium"
+    },
+    {
+      "id": "M365-CTL-015",
+      "name": "Teams External & Guest Controls",
+      "description": "Restrict Teams external access and guest capabilities",
+      "domain": "Collaboration Security",
+      "mcsbV2": ["IM-8"],
+      "nist": ["AC-2", "AC-3"],
+      "ncsc": ["P9"],
+      "iso": ["A.9.1.2", "A.13.1.1"],
+      "gdpr": ["Art.32(1)(b)"],
+      "m365Implementation": "External access restricted to specific domains, guest access reviewed, meeting policies controlled",
+      "auditQuery": "Get-CsExternalAccessPolicy; Get-CsTeamsClientConfiguration | Select AllowGuestUser",
+      "benchmark": "External access restricted, guest access governed",
+      "risk": "Medium"
+    }
+  ],
+  "insuranceSectorAdditions": {
+    "description": "Additional controls specific to insurance/financial services M365 requirements",
+    "controls": [
+      {
+        "id": "INS-M365-001",
+        "name": "Client Communication Segregation",
+        "description": "Ensure policyholder communications are appropriately handled and classified",
+        "regulatoryBasis": ["FCA", "GDPR"],
+        "m365Implementation": "Sensitivity labels on client emails, DLP for policyholder PII, information barriers if required"
+      },
+      {
+        "id": "INS-M365-002",
+        "name": "Email Continuity (Operational Resilience)",
+        "description": "Ensure email service meets FCA operational resilience requirements",
+        "regulatoryBasis": ["FCA SYSC 13.9", "PRA SS1/21"],
+        "m365Implementation": "M365 SLA review, DR plan alignment, alternative communication channels"
+      },
+      {
+        "id": "INS-M365-003",
+        "name": "Claims Document Protection",
+        "description": "Protect insurance claims documents containing special category data (health, injury)",
+        "regulatoryBasis": ["GDPR Art.9", "ICO"],
+        "m365Implementation": "Sensitivity labels on claims folders, DLP for health/injury data, restricted SharePoint sharing"
+      },
+      {
+        "id": "INS-M365-004",
+        "name": "Cyber Security Controls (Lloyd's)",
+        "description": "Meet Lloyd's MS13 cyber security requirements for M365",
+        "regulatoryBasis": ["Lloyd's MS13"],
+        "m365Implementation": "MFA enforced, anti-phishing strict, Safe Attachments/Links, audit logging"
+      },
+      {
+        "id": "INS-M365-005",
+        "name": "Immutable Audit Trail",
+        "description": "Maintain immutable M365 audit logs for regulatory retention",
+        "regulatoryBasis": ["FCA", "PRA"],
+        "m365Implementation": "Unified audit log + export to immutable storage (Azure Blob immutability / Sentinel), 7-year retention"
+      },
+      {
+        "id": "INS-M365-006",
+        "name": "DORA ICT Service Classification",
+        "description": "Classify M365 as critical ICT service under DORA (effective 2027)",
+        "regulatoryBasis": ["EIOPA DORA"],
+        "m365Implementation": "M365 registered in ICT service register, Microsoft contractual review, exit strategy documented"
+      }
+    ]
+  },
+  "assessmentDomains": {
+    "identityAccess": {
+      "name": "Identity & Access",
+      "weight": "30%",
+      "controls": ["M365-CTL-001", "M365-CTL-002", "M365-CTL-003", "M365-CTL-004", "M365-CTL-005"],
+      "keyMetrics": ["MFA Registration %", "Global Admin Count", "CA Policy Count", "Legacy Auth Status", "PIM Status"]
+    },
+    "emailSecurity": {
+      "name": "Email Security",
+      "weight": "20%",
+      "controls": ["M365-CTL-006", "M365-CTL-007", "M365-CTL-008"],
+      "keyMetrics": ["DKIM/DMARC Status", "External Forwarding Rules", "Anti-Phishing Threshold"]
+    },
+    "dataProtection": {
+      "name": "Data Protection",
+      "weight": "20%",
+      "controls": ["M365-CTL-010", "M365-CTL-011", "M365-CTL-012"],
+      "keyMetrics": ["DLP Policy Count", "Sensitivity Labels Published", "External Sharing Level"]
+    },
+    "threatProtection": {
+      "name": "Threat Protection",
+      "weight": "15%",
+      "controls": ["M365-CTL-008", "M365-CTL-009"],
+      "keyMetrics": ["Defender Plan", "Safe Attachments", "Safe Links", "Secure Score"]
+    },
+    "complianceGovernance": {
+      "name": "Compliance & Governance",
+      "weight": "15%",
+      "controls": ["M365-CTL-013", "M365-CTL-014", "M365-CTL-015"],
+      "keyMetrics": ["Audit Log Enabled", "Retention Policy Coverage", "Guest Access Governance"]
+    }
+  },
+  "scoringMethodology": {
+    "statuses": [
+      {"status": "Compliant", "score": 100, "definition": "Control fully implemented and verified"},
+      {"status": "Partial", "score": 50, "definition": "Control partially implemented or not fully verified"},
+      {"status": "Non-Compliant", "score": 0, "definition": "Control not implemented"},
+      {"status": "Not Applicable", "score": null, "definition": "Feature not available (licensing)"}
+    ],
+    "riskRatings": [
+      {"rating": "Critical", "response": "Immediate action required", "timeline": "Within 7 days"},
+      {"rating": "High", "response": "Urgent action required", "timeline": "Within 30 days"},
+      {"rating": "Medium", "response": "Planned remediation", "timeline": "Within 90 days"},
+      {"rating": "Low", "response": "Best practice improvement", "timeline": "As convenient"}
+    ]
+  }
+}

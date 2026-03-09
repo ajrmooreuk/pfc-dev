@@ -1,0 +1,462 @@
+{
+  "metadata": {
+    "name": "O365 Tenancy Snapshot Graph API & PowerShell Query Library",
+    "version": "1.0.0",
+    "description": "Automated discovery queries for M365 tenancy snapshot audit - Insurance Advisory sector",
+    "complianceFrameworks": ["MCSB v2", "ISO 27001:2022", "GDPR", "FCA", "PRA", "Lloyd's MS13"],
+    "purpose": "Phase 1 M365 Audit - Automated configuration discovery via Microsoft Graph API and PowerShell",
+    "usage": "Run via Microsoft Graph PowerShell SDK, Exchange Online PowerShell, and SharePoint Online PowerShell",
+    "prerequisites": [
+      "Microsoft.Graph PowerShell module",
+      "ExchangeOnlineManagement module",
+      "Microsoft.Online.SharePoint.PowerShell module",
+      "MicrosoftTeams module",
+      "Global Reader role (minimum)"
+    ]
+  },
+  "queries": {
+    "identity": {
+      "mfaStatus": {
+        "name": "MFA Registration Status",
+        "description": "Per-user MFA registration and method inventory",
+        "domain": "Identity & Access",
+        "risk": "Critical",
+        "outputFile": "identity-mfa-status.csv",
+        "method": "Graph PowerShell",
+        "query": "$users = Get-MgUser -All -Property Id,DisplayName,UserPrincipalName,AccountEnabled\n$mfaReport = foreach ($user in $users) {\n    $methods = Get-MgUserAuthenticationMethod -UserId $user.Id\n    [PSCustomObject]@{\n        UserPrincipalName = $user.UserPrincipalName\n        Enabled = $user.AccountEnabled\n        MethodCount = $methods.Count\n        Methods = ($methods | ForEach-Object { $_.AdditionalProperties.'@odata.type' }) -join ','\n    }\n}\n$mfaReport | Export-Csv exports/identity-mfa-status.csv -NoTypeInformation",
+        "scopes": ["UserAuthenticationMethod.Read.All", "User.Read.All"]
+      },
+      "conditionalAccessPolicies": {
+        "name": "Conditional Access Policies",
+        "description": "All Conditional Access policies with conditions and grants",
+        "domain": "Identity & Access",
+        "risk": "Critical",
+        "outputFile": "identity-conditional-access.json",
+        "method": "Graph PowerShell",
+        "query": "Get-MgIdentityConditionalAccessPolicy -All | ConvertTo-Json -Depth 10 > exports/identity-conditional-access.json",
+        "scopes": ["Policy.Read.All"]
+      },
+      "directoryRoles": {
+        "name": "Directory Role Assignments",
+        "description": "All directory roles and their members",
+        "domain": "Identity & Access",
+        "risk": "High",
+        "outputFile": "identity-role-assignments.csv",
+        "method": "Graph PowerShell",
+        "query": "$roles = Get-MgDirectoryRole -All\n$roleMembers = foreach ($role in $roles) {\n    $members = Get-MgDirectoryRoleMember -DirectoryRoleId $role.Id\n    [PSCustomObject]@{\n        RoleName = $role.DisplayName\n        RoleId = $role.Id\n        MemberCount = $members.Count\n        Members = ($members | ForEach-Object { $_.AdditionalProperties.userPrincipalName }) -join ','\n    }\n}\n$roleMembers | Export-Csv exports/identity-role-assignments.csv -NoTypeInformation",
+        "scopes": ["Directory.Read.All", "RoleManagement.Read.All"]
+      },
+      "globalAdminCount": {
+        "name": "Global Administrator Count",
+        "description": "Critical check - number of Global Administrators (benchmark: ≤5)",
+        "domain": "Identity & Access",
+        "risk": "Critical",
+        "outputFile": "identity-global-admins.json",
+        "method": "Graph PowerShell",
+        "query": "$globalAdminRole = Get-MgDirectoryRole | Where-Object { $_.DisplayName -eq 'Global Administrator' }\n$globalAdmins = Get-MgDirectoryRoleMember -DirectoryRoleId $globalAdminRole.Id\n$globalAdmins | Select AdditionalProperties | ConvertTo-Json > exports/identity-global-admins.json\nWrite-Host \"Global Admins: $($globalAdmins.Count)\" -ForegroundColor $(if($globalAdmins.Count -gt 5){'Red'}else{'Green'})",
+        "scopes": ["Directory.Read.All", "RoleManagement.Read.All"]
+      },
+      "guestUsers": {
+        "name": "Guest User Inventory",
+        "description": "All external/guest users in the tenant",
+        "domain": "Identity & Access",
+        "risk": "Medium",
+        "outputFile": "identity-guest-users.csv",
+        "method": "Graph PowerShell",
+        "query": "Get-MgUser -All -Filter \"userType eq 'Guest'\" | Select DisplayName, UserPrincipalName, CreatedDateTime, AccountEnabled, ExternalUserState | Export-Csv exports/identity-guest-users.csv -NoTypeInformation",
+        "scopes": ["User.Read.All"]
+      },
+      "pimStatus": {
+        "name": "Privileged Identity Management Status",
+        "description": "Check if PIM is enabled and configured (requires P2 licensing)",
+        "domain": "Identity & Access",
+        "risk": "High",
+        "outputFile": "identity-pim-status.json",
+        "method": "Graph PowerShell",
+        "query": "try {\n    $pimRoles = Get-MgPrivilegedAccessResource -PrivilegedAccessId 'aadRoles' -ErrorAction Stop\n    $pimRoles | ConvertTo-Json > exports/identity-pim-status.json\n    Write-Host 'PIM: Enabled' -ForegroundColor Green\n} catch {\n    Write-Host 'PIM: Not available (licensing)' -ForegroundColor Yellow\n    @{status='NotAvailable';reason='Licensing'} | ConvertTo-Json > exports/identity-pim-status.json\n}",
+        "scopes": ["PrivilegedAccess.Read.AzureAD"]
+      },
+      "servicePrincipals": {
+        "name": "Service Principal Inventory",
+        "description": "All registered service principals / app registrations",
+        "domain": "Identity & Access",
+        "risk": "Medium",
+        "outputFile": "identity-service-principals.csv",
+        "method": "Graph PowerShell",
+        "query": "Get-MgServicePrincipal -All | Select DisplayName, AppId, ServicePrincipalType, AccountEnabled, SignInAudience | Export-Csv exports/identity-service-principals.csv -NoTypeInformation",
+        "scopes": ["Application.Read.All"]
+      },
+      "signInRiskPolicies": {
+        "name": "Sign-In Risk Conditional Access Policies",
+        "description": "Conditional Access policies configured with sign-in risk conditions",
+        "domain": "Identity & Access",
+        "risk": "High",
+        "outputFile": "identity-risk-policies.json",
+        "method": "Graph PowerShell",
+        "query": "Get-MgIdentityConditionalAccessPolicy -All | Where-Object { $_.Conditions.SignInRiskLevels -ne $null } | ConvertTo-Json -Depth 10 > exports/identity-risk-policies.json",
+        "scopes": ["Policy.Read.All"]
+      },
+      "namedLocations": {
+        "name": "Named Locations",
+        "description": "Trusted/named locations configured for Conditional Access",
+        "domain": "Identity & Access",
+        "risk": "Low",
+        "outputFile": "identity-named-locations.json",
+        "method": "Graph PowerShell",
+        "query": "Get-MgIdentityConditionalAccessNamedLocation -All | ConvertTo-Json -Depth 5 > exports/identity-named-locations.json",
+        "scopes": ["Policy.Read.All"]
+      },
+      "passwordPolicies": {
+        "name": "Password and Authentication Policies",
+        "description": "Tenant password policies and authentication method settings",
+        "domain": "Identity & Access",
+        "risk": "Medium",
+        "outputFile": "identity-password-policies.json",
+        "method": "Graph PowerShell",
+        "query": "Get-MgPolicyAuthorizationPolicy | ConvertTo-Json -Depth 5 > exports/identity-password-policies.json\nGet-MgPolicyAuthenticationMethodPolicy | ConvertTo-Json -Depth 5 >> exports/identity-auth-method-policy.json",
+        "scopes": ["Policy.Read.All"]
+      }
+    },
+    "exchangeOnline": {
+      "transportRules": {
+        "name": "Transport / Mail Flow Rules",
+        "description": "All mail flow rules including forwarding, redirect, and modification rules",
+        "domain": "Email Security",
+        "risk": "High",
+        "outputFile": "exchange-transport-rules.csv",
+        "method": "Exchange Online PowerShell",
+        "query": "Get-TransportRule | Select Name, State, Priority, SentToScope, FromScope, Mode, Description | Export-Csv exports/exchange-transport-rules.csv -NoTypeInformation"
+      },
+      "forwardingRules": {
+        "name": "External Forwarding Rules (HIGH RISK)",
+        "description": "Mail flow rules that redirect, BCC, or copy mail externally",
+        "domain": "Email Security",
+        "risk": "Critical",
+        "outputFile": "exchange-forwarding-rules.csv",
+        "method": "Exchange Online PowerShell",
+        "query": "Get-TransportRule | Where-Object { $_.RedirectMessageTo -ne $null -or $_.BlindCopyTo -ne $null -or $_.CopyTo -ne $null } | Select Name, State, RedirectMessageTo, BlindCopyTo, CopyTo | Export-Csv exports/exchange-forwarding-rules.csv -NoTypeInformation"
+      },
+      "mailboxForwarding": {
+        "name": "Mailbox-Level Forwarding",
+        "description": "Individual mailboxes with forwarding configured (external exposure check)",
+        "domain": "Email Security",
+        "risk": "High",
+        "outputFile": "exchange-mailbox-forwarding.csv",
+        "method": "Exchange Online PowerShell",
+        "query": "Get-Mailbox -ResultSize Unlimited | Where-Object { $_.ForwardingSmtpAddress -ne $null -or $_.ForwardingAddress -ne $null } | Select DisplayName, PrimarySmtpAddress, ForwardingSmtpAddress, ForwardingAddress, DeliverToMailboxAndForward | Export-Csv exports/exchange-mailbox-forwarding.csv -NoTypeInformation"
+      },
+      "antiPhishPolicies": {
+        "name": "Anti-Phishing Policies",
+        "description": "Anti-phishing policy configuration including impersonation protection",
+        "domain": "Threat Protection",
+        "risk": "High",
+        "outputFile": "exchange-antiphish-policies.csv",
+        "method": "Exchange Online PowerShell",
+        "query": "Get-AntiPhishPolicy | Select Name, Enabled, PhishThresholdLevel, EnableMailboxIntelligenceProtection, EnableOrganizationDomainsProtection, EnableTargetedDomainsProtection, EnableTargetedUserProtection | Export-Csv exports/exchange-antiphish-policies.csv -NoTypeInformation"
+      },
+      "antiSpamPolicies": {
+        "name": "Anti-Spam Policies",
+        "description": "Hosted content filter and connection filter policies",
+        "domain": "Threat Protection",
+        "risk": "Medium",
+        "outputFile": "exchange-antispam-policies.csv",
+        "method": "Exchange Online PowerShell",
+        "query": "Get-HostedContentFilterPolicy | Select Name, SpamAction, HighConfidenceSpamAction, BulkSpamAction, BulkThreshold, QuarantineRetentionPeriod | Export-Csv exports/exchange-antispam-policies.csv -NoTypeInformation"
+      },
+      "dkimConfig": {
+        "name": "DKIM Signing Configuration",
+        "description": "DKIM status per verified domain",
+        "domain": "Email Security",
+        "risk": "Medium",
+        "outputFile": "exchange-dkim-status.csv",
+        "method": "Exchange Online PowerShell",
+        "query": "Get-DkimSigningConfig | Select Domain, Enabled, Status | Export-Csv exports/exchange-dkim-status.csv -NoTypeInformation"
+      },
+      "dmarcSpfRecords": {
+        "name": "DMARC and SPF DNS Records",
+        "description": "DNS record checks for all verified domains (DMARC, SPF)",
+        "domain": "Email Security",
+        "risk": "Medium",
+        "outputFile": "exchange-dns-records.csv",
+        "method": "Exchange Online PowerShell + DNS",
+        "query": "$domains = Get-AcceptedDomain\n$dnsChecks = foreach ($domain in $domains) {\n    $spf = try { Resolve-DnsName -Name $domain.DomainName -Type TXT -ErrorAction Stop | Where-Object { $_.Strings -match 'v=spf1' } } catch { $null }\n    $dmarc = try { Resolve-DnsName -Name \"_dmarc.$($domain.DomainName)\" -Type TXT -ErrorAction Stop } catch { $null }\n    [PSCustomObject]@{\n        Domain = $domain.DomainName\n        DomainType = $domain.DomainType\n        SPFRecord = if($spf) { $spf.Strings -join '' } else { 'MISSING' }\n        DMARCRecord = if($dmarc) { $dmarc.Strings -join '' } else { 'MISSING' }\n    }\n}\n$dnsChecks | Export-Csv exports/exchange-dns-records.csv -NoTypeInformation"
+      },
+      "safeAttachments": {
+        "name": "Safe Attachments Policies",
+        "description": "Defender for Office 365 Safe Attachments configuration (requires P1/P2)",
+        "domain": "Threat Protection",
+        "risk": "High",
+        "outputFile": "exchange-safe-attachments.csv",
+        "method": "Exchange Online PowerShell",
+        "query": "try {\n    Get-SafeAttachmentPolicy | Select Name, Enable, Action, ActionOnError, Redirect, RedirectAddress | Export-Csv exports/exchange-safe-attachments.csv -NoTypeInformation\n} catch {\n    @{Status='NotAvailable';Reason='Licensing - Defender P1/P2 required'} | ConvertTo-Json > exports/exchange-safe-attachments.json\n}"
+      },
+      "safeLinks": {
+        "name": "Safe Links Policies",
+        "description": "Defender for Office 365 Safe Links configuration (requires P1/P2)",
+        "domain": "Threat Protection",
+        "risk": "Medium",
+        "outputFile": "exchange-safe-links.csv",
+        "method": "Exchange Online PowerShell",
+        "query": "try {\n    Get-SafeLinksPolicy | Select Name, EnableSafeLinksForEmail, EnableSafeLinksForTeams, EnableSafeLinksForOffice, TrackClicks, AllowClickThrough, ScanUrls | Export-Csv exports/exchange-safe-links.csv -NoTypeInformation\n} catch {\n    @{Status='NotAvailable';Reason='Licensing - Defender P1/P2 required'} | ConvertTo-Json > exports/exchange-safe-links.json\n}"
+      },
+      "auditLogConfig": {
+        "name": "Unified Audit Log Configuration",
+        "description": "Check if unified audit log ingestion is enabled (critical for compliance)",
+        "domain": "Compliance & Governance",
+        "risk": "Critical",
+        "outputFile": "exchange-audit-log-config.json",
+        "method": "Exchange Online PowerShell",
+        "query": "Get-AdminAuditLogConfig | Select UnifiedAuditLogIngestionEnabled, AdminAuditLogEnabled, AdminAuditLogCmdlets, AdminAuditLogParameters | ConvertTo-Json > exports/exchange-audit-log-config.json"
+      },
+      "organizationConfig": {
+        "name": "Exchange Organization Configuration",
+        "description": "Tenant-level Exchange Online settings",
+        "domain": "Email Security",
+        "risk": "Medium",
+        "outputFile": "exchange-org-config.json",
+        "method": "Exchange Online PowerShell",
+        "query": "Get-OrganizationConfig | Select Name, IsDehydrated, OAuth2ClientProfileEnabled, DefaultGroupAccessType, MailTipsAllTipsEnabled, MailTipsExternalRecipientsTipsEnabled, MailTipsGroupMetricsEnabled | ConvertTo-Json > exports/exchange-org-config.json"
+      }
+    },
+    "sharepointOneDrive": {
+      "tenantSettings": {
+        "name": "SharePoint Tenant Settings",
+        "description": "Tenant-level SharePoint Online sharing and configuration",
+        "domain": "Data Protection",
+        "risk": "High",
+        "outputFile": "sharepoint-tenant-settings.json",
+        "method": "SharePoint Online PowerShell",
+        "query": "Connect-SPOService -Url https://<tenant>-admin.sharepoint.com\nGet-SPOTenant | Select SharingCapability, DefaultSharingLinkType, DefaultLinkPermission, RequireAcceptingAccountMatchInvitedAccount, ExternalUserExpirationRequired, ExternalUserExpireInDays, OneDriveSharingCapability, PreventExternalUsersFromResharing, FileAnonymousLinkType, FolderAnonymousLinkType | ConvertTo-Json > exports/sharepoint-tenant-settings.json"
+      },
+      "siteInventory": {
+        "name": "Site Collection Inventory",
+        "description": "All SharePoint site collections with sharing and storage details",
+        "domain": "Data Protection",
+        "risk": "Medium",
+        "outputFile": "sharepoint-sites.csv",
+        "method": "SharePoint Online PowerShell",
+        "query": "Get-SPOSite -Limit All | Select Title, Url, Template, StorageQuota, StorageUsageCurrent, SharingCapability, Owner, LastContentModifiedDate, ConditionalAccessPolicy | Export-Csv exports/sharepoint-sites.csv -NoTypeInformation"
+      },
+      "externalSharingSummary": {
+        "name": "External Sharing Summary",
+        "description": "Site collections grouped by sharing capability",
+        "domain": "Data Protection",
+        "risk": "High",
+        "outputFile": "sharepoint-sharing-summary.csv",
+        "method": "SharePoint Online PowerShell",
+        "query": "$sites = Get-SPOSite -Limit All\n$sharingSummary = $sites | Group-Object SharingCapability | Select Name, Count | Sort-Object Count -Descending\n$sharingSummary | Export-Csv exports/sharepoint-sharing-summary.csv -NoTypeInformation"
+      },
+      "oneDriveSettings": {
+        "name": "OneDrive Settings",
+        "description": "OneDrive sharing and storage configuration",
+        "domain": "Data Protection",
+        "risk": "Medium",
+        "outputFile": "onedrive-settings.json",
+        "method": "SharePoint Online PowerShell",
+        "query": "Get-SPOTenant | Select OneDriveSharingCapability, OneDriveStorageQuota, OrphanedPersonalSitesRetentionPeriod, BlockDownloadLinksFileType, DisablePersonalListCreation | ConvertTo-Json > exports/onedrive-settings.json"
+      }
+    },
+    "teams": {
+      "externalAccess": {
+        "name": "Teams External Access Policies",
+        "description": "Federation and consumer access settings",
+        "domain": "Collaboration Security",
+        "risk": "Medium",
+        "outputFile": "teams-external-access.csv",
+        "method": "Teams PowerShell",
+        "query": "Get-CsExternalAccessPolicy | Select Identity, EnableFederationAccess, EnableTeamsConsumerAccess, EnableTeamsConsumerInbound | Export-Csv exports/teams-external-access.csv -NoTypeInformation"
+      },
+      "guestConfig": {
+        "name": "Teams Guest Access Configuration",
+        "description": "Guest user access settings for Teams",
+        "domain": "Collaboration Security",
+        "risk": "Medium",
+        "outputFile": "teams-guest-config.json",
+        "method": "Teams PowerShell",
+        "query": "Get-CsTeamsClientConfiguration | Select AllowGuestUser, AllowDropBox, AllowBox, AllowGoogleDrive, AllowShareFile, AllowEgnyte | ConvertTo-Json > exports/teams-guest-config.json"
+      },
+      "meetingPolicies": {
+        "name": "Teams Meeting Policies",
+        "description": "Meeting policies including anonymous access and recording",
+        "domain": "Collaboration Security",
+        "risk": "Low",
+        "outputFile": "teams-meeting-policies.csv",
+        "method": "Teams PowerShell",
+        "query": "Get-CsTeamsMeetingPolicy | Select Identity, AllowAnonymousUsersToJoinMeeting, AllowExternalParticipantGiveRequestControl, AutoAdmittedUsers, AllowCloudRecording, AllowOutlookAddIn, AllowPrivateMeetNow | Export-Csv exports/teams-meeting-policies.csv -NoTypeInformation"
+      },
+      "messagingPolicies": {
+        "name": "Teams Messaging Policies",
+        "description": "Messaging policies including URL previews and external communication",
+        "domain": "Collaboration Security",
+        "risk": "Low",
+        "outputFile": "teams-messaging-policies.csv",
+        "method": "Teams PowerShell",
+        "query": "Get-CsTeamsMessagingPolicy | Select Identity, AllowUrlPreviews, AllowGiphy, AllowMemes, ReadReceiptsEnabledType, ChannelsInChatListEnabledType, AllowUserEditMessage, AllowUserDeleteMessage | Export-Csv exports/teams-messaging-policies.csv -NoTypeInformation"
+      },
+      "appPermissionPolicies": {
+        "name": "Teams App Permission Policies",
+        "description": "App installation and permission policies",
+        "domain": "Collaboration Security",
+        "risk": "Medium",
+        "outputFile": "teams-app-policies.csv",
+        "method": "Teams PowerShell",
+        "query": "Get-CsTeamsAppPermissionPolicy | Select Identity, DefaultCatalogAppsType, GlobalCatalogAppsType, PrivateCatalogAppsType | Export-Csv exports/teams-app-policies.csv -NoTypeInformation"
+      }
+    },
+    "compliance": {
+      "dlpPolicies": {
+        "name": "DLP Policies",
+        "description": "Data Loss Prevention policies and their configuration",
+        "domain": "Data Protection",
+        "risk": "Medium",
+        "outputFile": "compliance-dlp-policies.csv",
+        "method": "Security & Compliance PowerShell",
+        "query": "Get-DlpCompliancePolicy | Select Name, Mode, Enabled, Priority, Workload, CreatedBy, WhenCreated | Export-Csv exports/compliance-dlp-policies.csv -NoTypeInformation"
+      },
+      "dlpRules": {
+        "name": "DLP Rules",
+        "description": "DLP rule definitions with sensitive information types",
+        "domain": "Data Protection",
+        "risk": "Medium",
+        "outputFile": "compliance-dlp-rules.csv",
+        "method": "Security & Compliance PowerShell",
+        "query": "Get-DlpComplianceRule | Select Name, Policy, Disabled, ContentContainsSensitiveInformation, BlockAccess, NotifyUser | Export-Csv exports/compliance-dlp-rules.csv -NoTypeInformation"
+      },
+      "sensitivityLabels": {
+        "name": "Sensitivity Labels",
+        "description": "Information protection sensitivity labels",
+        "domain": "Data Protection",
+        "risk": "Medium",
+        "outputFile": "compliance-sensitivity-labels.csv",
+        "method": "Security & Compliance PowerShell",
+        "query": "Get-Label | Select DisplayName, Name, Priority, ContentType, Enabled, ParentLabelDisplayName | Export-Csv exports/compliance-sensitivity-labels.csv -NoTypeInformation"
+      },
+      "retentionPolicies": {
+        "name": "Retention Policies",
+        "description": "Data retention and lifecycle policies",
+        "domain": "Compliance & Governance",
+        "risk": "Medium",
+        "outputFile": "compliance-retention-policies.csv",
+        "method": "Security & Compliance PowerShell",
+        "query": "Get-RetentionCompliancePolicy | Select Name, Enabled, Mode, Workload, RetentionDuration, RetentionAction | Export-Csv exports/compliance-retention-policies.csv -NoTypeInformation"
+      },
+      "alertPolicies": {
+        "name": "Alert Policies",
+        "description": "Security and compliance alert policies",
+        "domain": "Compliance & Governance",
+        "risk": "Low",
+        "outputFile": "compliance-alert-policies.csv",
+        "method": "Security & Compliance PowerShell",
+        "query": "Get-ProtectionAlert | Select Name, Category, Severity, IsEnabled, NotifyUser, Operation | Export-Csv exports/compliance-alert-policies.csv -NoTypeInformation"
+      }
+    },
+    "security": {
+      "secureScore": {
+        "name": "Microsoft Secure Score",
+        "description": "Overall M365 security posture score",
+        "domain": "Compliance & Governance",
+        "risk": "Info",
+        "outputFile": "security-secure-score.json",
+        "method": "Graph PowerShell",
+        "query": "$secureScore = Get-MgSecuritySecureScore -Top 1\n$secureScore | ConvertTo-Json -Depth 5 > exports/security-secure-score.json\nWrite-Host \"Secure Score: $($secureScore.CurrentScore) / $($secureScore.MaxScore) ($([math]::Round($secureScore.CurrentScore/$secureScore.MaxScore*100,1))%)\"",
+        "scopes": ["SecurityEvents.Read.All"]
+      },
+      "secureScoreControls": {
+        "name": "Secure Score Control Profiles",
+        "description": "Individual secure score controls and their implementation status",
+        "domain": "Compliance & Governance",
+        "risk": "Info",
+        "outputFile": "security-score-controls.csv",
+        "method": "Graph PowerShell",
+        "query": "Get-MgSecuritySecureScoreControlProfile -All | Select Id, Title, ImplementationStatus, Score, MaxScore, Service, Category, ActionType | Export-Csv exports/security-score-controls.csv -NoTypeInformation",
+        "scopes": ["SecurityEvents.Read.All"]
+      },
+      "licensing": {
+        "name": "Licensing Inventory",
+        "description": "Subscribed SKUs to determine available security features",
+        "domain": "Compliance & Governance",
+        "risk": "Info",
+        "outputFile": "security-licensing.csv",
+        "method": "Graph PowerShell",
+        "query": "Get-MgSubscribedSku | Select SkuPartNumber, CapabilityStatus, ConsumedUnits, @{N='TotalUnits';E={$_.PrepaidUnits.Enabled}}, @{N='AvailableUnits';E={$_.PrepaidUnits.Enabled - $_.ConsumedUnits}} | Export-Csv exports/security-licensing.csv -NoTypeInformation",
+        "scopes": ["Directory.Read.All"]
+      },
+      "securityDefaults": {
+        "name": "Security Defaults Status",
+        "description": "Check if security defaults are enabled or disabled (CA should replace)",
+        "domain": "Identity & Access",
+        "risk": "Medium",
+        "outputFile": "security-defaults.json",
+        "method": "Graph PowerShell",
+        "query": "Get-MgPolicyIdentitySecurityDefaultEnforcementPolicy | ConvertTo-Json > exports/security-defaults.json",
+        "scopes": ["Policy.Read.All"]
+      }
+    }
+  },
+  "connectionScripts": {
+    "graphConnect": {
+      "name": "Connect to Microsoft Graph",
+      "description": "Establish Graph API session with required scopes",
+      "script": "Connect-MgGraph -Scopes 'Directory.Read.All','Policy.Read.All','SecurityEvents.Read.All','User.Read.All','RoleManagement.Read.All','Application.Read.All','UserAuthenticationMethod.Read.All','Reports.Read.All'"
+    },
+    "exchangeConnect": {
+      "name": "Connect to Exchange Online",
+      "description": "Establish Exchange Online PowerShell session",
+      "script": "Connect-ExchangeOnline -UserPrincipalName auditor@domain.com"
+    },
+    "complianceConnect": {
+      "name": "Connect to Security & Compliance",
+      "description": "Establish Security & Compliance Centre session",
+      "script": "Connect-IPPSSession -UserPrincipalName auditor@domain.com"
+    },
+    "sharepointConnect": {
+      "name": "Connect to SharePoint Online",
+      "description": "Establish SharePoint Online admin session",
+      "script": "Connect-SPOService -Url https://<tenant>-admin.sharepoint.com"
+    },
+    "teamsConnect": {
+      "name": "Connect to Microsoft Teams",
+      "description": "Establish Teams PowerShell session",
+      "script": "Connect-MicrosoftTeams"
+    }
+  },
+  "collectionPhases": {
+    "phase1": {
+      "name": "Identity & Access",
+      "duration": "1 hour",
+      "queries": ["mfaStatus", "conditionalAccessPolicies", "directoryRoles", "globalAdminCount", "guestUsers", "pimStatus", "servicePrincipals", "signInRiskPolicies", "namedLocations", "passwordPolicies"],
+      "connection": "graphConnect"
+    },
+    "phase2": {
+      "name": "Exchange Online",
+      "duration": "1 hour",
+      "queries": ["transportRules", "forwardingRules", "mailboxForwarding", "antiPhishPolicies", "antiSpamPolicies", "dkimConfig", "dmarcSpfRecords", "safeAttachments", "safeLinks", "auditLogConfig", "organizationConfig"],
+      "connection": "exchangeConnect"
+    },
+    "phase3": {
+      "name": "SharePoint / OneDrive",
+      "duration": "45 mins",
+      "queries": ["tenantSettings", "siteInventory", "externalSharingSummary", "oneDriveSettings"],
+      "connection": "sharepointConnect"
+    },
+    "phase4": {
+      "name": "Teams",
+      "duration": "30 mins",
+      "queries": ["externalAccess", "guestConfig", "meetingPolicies", "messagingPolicies", "appPermissionPolicies"],
+      "connection": "teamsConnect"
+    },
+    "phase5": {
+      "name": "Compliance & DLP",
+      "duration": "45 mins",
+      "queries": ["dlpPolicies", "dlpRules", "sensitivityLabels", "retentionPolicies", "alertPolicies"],
+      "connection": "complianceConnect"
+    },
+    "phase6": {
+      "name": "Security / Defender",
+      "duration": "30 mins",
+      "queries": ["secureScore", "secureScoreControls", "licensing", "securityDefaults"],
+      "connection": "graphConnect"
+    }
+  },
+  "disconnectScript": "Disconnect-MgGraph\nDisconnect-ExchangeOnline -Confirm:$false\nDisconnect-SPOService\nDisconnect-MicrosoftTeams"
+}

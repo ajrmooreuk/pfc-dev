@@ -1,0 +1,751 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "vsem": "https://wings4mind.ai/ontology/vsem/",
+    "bsc": "https://wings4mind.ai/ontology/bsc/",
+    "okr": "https://wings4mind.ai/ontology/okr/"
+  },
+  "@type": "vsem:VSEMEntity",
+  "@id": "vsem:vsom-ai-strategy-programme-2026",
+  "vsem:entityType": "programme",
+  "vsem:platformInstance": "PF-Core-AIR",
+  "vsem:validFrom": "2026-02-01",
+  "vsem:validTo": "2028-02-01",
+  "name": "AI Strategy Programme Portfolio",
+  "description": "Enterprise Architecture PPM Portfolio for AI-augmented professional services transformation",
+  "@graph": [
+    {
+      "@type": ["Mission", "vsem:StrategicVision"],
+      "@id": "vsem:vision-ai-strategy-2026",
+      "name": "AI-Augmented Professional Services Excellence",
+      "description": "To become a leading AI-augmented professional services organisation that delivers superior mission outcomes, operational excellence, and sustainable competitive advantage through intelligent automation, data-driven decision making, and knowledge-enabled advisory services.",
+      "vsem:timeHorizon": "P2Y",
+      "vsem:competitivePositioning": {
+        "@type": "vsem:CompetitivePositioning",
+        "vsem:strategy": "Differentiation",
+        "vsem:basis": "AI-augmented expertise, faster time-to-value, proactive client intelligence",
+        "vsem:targetMarket": "Professional services clients in regulated environments",
+        "vsem:valueProposition": "Intelligent automation, AI-augmented advisory excellence, predictive client insights"
+      },
+      "vsem:informs": [
+        {"@id": "vsem:strategy-s1-client-excellence"},
+        {"@id": "vsem:strategy-s2-sales-growth"},
+        {"@id": "vsem:strategy-s3-operational-efficiency"},
+        {"@id": "vsem:strategy-s4-knowledge-advisory"},
+        {"@id": "vsem:strategy-s5-data-foundation"}
+      ]
+    },
+    {
+      "@type": ["Plan", "vsem:StrategicInitiative"],
+      "@id": "vsem:strategy-s1-client-excellence",
+      "name": "S1: Client Excellence",
+      "description": "Deliver superior client understanding and retention through AI-powered intelligence",
+      "vsem:strategicPriority": 1,
+      "vsem:investmentLevel": {
+        "@type": "MonetaryAmount",
+        "value": 25,
+        "unitCode": "P1"
+      },
+      "vsem:achieves": [{"@id": "vsem:vision-ai-strategy-2026"}],
+      "vsem:bscAlignment": ["Customer"],
+      "vsem:requires": [
+        {"@id": "vsem:capability-client-intelligence"},
+        {"@id": "vsem:capability-renewal-automation"}
+      ]
+    },
+    {
+      "@type": ["Plan", "vsem:StrategicInitiative"],
+      "@id": "vsem:strategy-s2-sales-growth",
+      "name": "S2: Sales & Growth",
+      "description": "Accelerate revenue through intelligent prospecting and sales enablement",
+      "vsem:strategicPriority": 2,
+      "vsem:investmentLevel": {
+        "@type": "MonetaryAmount",
+        "value": 20,
+        "unitCode": "P1"
+      },
+      "vsem:achieves": [{"@id": "vsem:vision-ai-strategy-2026"}],
+      "vsem:bscAlignment": ["Financial", "Customer"],
+      "vsem:requires": [
+        {"@id": "vsem:capability-lead-prediction"},
+        {"@id": "vsem:capability-mass-prospecting"}
+      ]
+    },
+    {
+      "@type": ["Plan", "vsem:StrategicInitiative"],
+      "@id": "vsem:strategy-s3-operational-efficiency",
+      "name": "S3: Operational Efficiency",
+      "description": "Automate high-volume processes to reduce costs and free capacity",
+      "vsem:strategicPriority": 3,
+      "vsem:investmentLevel": {
+        "@type": "MonetaryAmount",
+        "value": 15,
+        "unitCode": "P1"
+      },
+      "vsem:achieves": [{"@id": "vsem:vision-ai-strategy-2026"}],
+      "vsem:bscAlignment": ["InternalProcess", "Financial"],
+      "vsem:requires": [
+        {"@id": "vsem:capability-process-automation"},
+        {"@id": "vsem:capability-compliance-checking"}
+      ]
+    },
+    {
+      "@type": ["Plan", "vsem:StrategicInitiative"],
+      "@id": "vsem:strategy-s4-knowledge-advisory",
+      "name": "S4: Knowledge & Advisory",
+      "description": "Augment workforce with AI assistants and decision support",
+      "vsem:strategicPriority": 4,
+      "vsem:investmentLevel": {
+        "@type": "MonetaryAmount",
+        "value": 15,
+        "unitCode": "P1"
+      },
+      "vsem:achieves": [{"@id": "vsem:vision-ai-strategy-2026"}],
+      "vsem:bscAlignment": ["LearningGrowth", "InternalProcess"],
+      "vsem:requires": [
+        {"@id": "vsem:capability-virtual-agents"},
+        {"@id": "vsem:capability-decision-support"}
+      ]
+    },
+    {
+      "@type": ["Plan", "vsem:StrategicInitiative"],
+      "@id": "vsem:strategy-s5-data-foundation",
+      "name": "S5: Data Foundation",
+      "description": "Establish robust data infrastructure enabling all AI initiatives",
+      "vsem:strategicPriority": 5,
+      "vsem:investmentLevel": {
+        "@type": "MonetaryAmount",
+        "value": 25,
+        "unitCode": "P1"
+      },
+      "vsem:achieves": [{"@id": "vsem:vision-ai-strategy-2026"}],
+      "vsem:bscAlignment": ["LearningGrowth"],
+      "vsem:requires": [
+        {"@id": "vsem:capability-data-platform"},
+        {"@id": "vsem:capability-data-governance"}
+      ]
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective", "okr:Objective"],
+      "@id": "vsem:objective-f1",
+      "name": "F1: Increase Revenue Growth through AI-Enabled Sales & Retention",
+      "description": "Drive revenue growth through AI-assisted prospecting and proactive retention intelligence",
+      "vsem:objectiveType": "Growth",
+      "vsem:targetDate": "2028-02-01",
+      "vsem:supports": [{"@id": "vsem:strategy-s1-client-excellence"}, {"@id": "vsem:strategy-s2-sales-growth"}],
+      "vsem:bscPerspective": "Financial",
+      "okr:keyResults": [
+        {"@id": "vsem:kr-f1-1"},
+        {"@id": "vsem:kr-f1-2"},
+        {"@id": "vsem:kr-f1-3"}
+      ]
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-f1-1",
+      "name": "KR1.1: Increase new business conversion rate through AI-assisted prospecting",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 5,
+      "vsem:targetValue": 15,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-f1-2",
+      "name": "KR1.2: Improve client renewal rate through proactive retention intelligence",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 88,
+      "vsem:phase2Target": 92,
+      "vsem:targetValue": 95,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Quarterly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-f1-3",
+      "name": "KR1.3: Increase revenue per client through AI-driven upsell prompts",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 0,
+      "vsem:targetValue": 10,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Quarterly"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective", "okr:Objective"],
+      "@id": "vsem:objective-f2",
+      "name": "F2: Improve Operating Margin through Intelligent Automation",
+      "description": "Reduce cost per transaction and manual rework through AI-assisted automation",
+      "vsem:objectiveType": "Efficiency",
+      "vsem:targetDate": "2028-02-01",
+      "vsem:supports": [{"@id": "vsem:strategy-s3-operational-efficiency"}],
+      "vsem:bscPerspective": "Financial",
+      "okr:keyResults": [
+        {"@id": "vsem:kr-f2-1"},
+        {"@id": "vsem:kr-f2-2"},
+        {"@id": "vsem:kr-f2-3"}
+      ]
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-f2-1",
+      "name": "KR2.1: Reduce cost per transaction through process automation",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": -10,
+      "vsem:targetValue": -25,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-f2-2",
+      "name": "KR2.2: Achieve target automation rate for high-volume processes",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 25,
+      "vsem:targetValue": 60,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-f2-3",
+      "name": "KR2.3: Reduce manual rework through AI-assisted quality checks",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": -15,
+      "vsem:targetValue": -40,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective", "okr:Objective"],
+      "@id": "vsem:objective-c1",
+      "name": "C1: Improve Client Retention through Proactive Intelligence",
+      "description": "Deploy health check scoring and early warning systems for at-risk client identification",
+      "vsem:objectiveType": "Retention",
+      "vsem:targetDate": "2028-02-01",
+      "vsem:supports": [{"@id": "vsem:strategy-s1-client-excellence"}],
+      "vsem:bscPerspective": "Customer",
+      "okr:keyResults": [
+        {"@id": "vsem:kr-c1-1"},
+        {"@id": "vsem:kr-c1-2"},
+        {"@id": "vsem:kr-c1-3"}
+      ]
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-c1-1",
+      "name": "KR1.1: Deploy Health Check (RAG) scoring for all key clients",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": "Design complete",
+      "vsem:targetValue": 80,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-c1-2",
+      "name": "KR1.2: Achieve early warning identification rate for at-risk clients",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 60,
+      "vsem:targetValue": 90,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-c1-3",
+      "name": "KR1.3: Automate renewal preparation with client history and recommendations",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 50,
+      "vsem:targetValue": 100,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective", "okr:Objective"],
+      "@id": "vsem:objective-c2",
+      "name": "C2: Enhance Client Experience through AI-Augmented Service",
+      "description": "Deploy virtual AI assistants and improve first-contact resolution",
+      "vsem:objectiveType": "Experience",
+      "vsem:targetDate": "2028-02-01",
+      "vsem:supports": [{"@id": "vsem:strategy-s4-knowledge-advisory"}],
+      "vsem:bscPerspective": "Customer",
+      "okr:keyResults": [
+        {"@id": "vsem:kr-c2-1"},
+        {"@id": "vsem:kr-c2-2"},
+        {"@id": "vsem:kr-c2-3"}
+      ]
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-c2-1",
+      "name": "KR2.1: Deploy Virtual AI Assistants (Emma, Matt, Science/Tech) for support",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 3,
+      "vsem:targetValue": 5,
+      "unitCode": "C62",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-c2-2",
+      "name": "KR2.2: Improve first-contact resolution through AI-assisted responses",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": "Baseline set",
+      "vsem:targetValue": 85,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-c2-3",
+      "name": "KR2.3: Reduce query response time with AI-assisted triage",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 8,
+      "vsem:targetValue": 4,
+      "unitCode": "HUR",
+      "vsem:measurementFrequency": "Weekly"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective", "okr:Objective"],
+      "@id": "vsem:objective-p1",
+      "name": "P1: Automate High-Volume Processes for Efficiency Gains",
+      "description": "Deploy AI automation across core processes to achieve straight-through processing",
+      "vsem:objectiveType": "Efficiency",
+      "vsem:targetDate": "2028-02-01",
+      "vsem:supports": [{"@id": "vsem:strategy-s3-operational-efficiency"}],
+      "vsem:bscPerspective": "InternalProcess",
+      "okr:keyResults": [
+        {"@id": "vsem:kr-p1-1"},
+        {"@id": "vsem:kr-p1-2"},
+        {"@id": "vsem:kr-p1-3"}
+      ]
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-p1-1",
+      "name": "KR1.1: Number of processes with AI automation deployed",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 5,
+      "vsem:targetValue": 15,
+      "unitCode": "C62",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-p1-2",
+      "name": "KR1.2: Achieve straight-through processing rate for automated workflows",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 40,
+      "vsem:targetValue": 70,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-p1-3",
+      "name": "KR1.3: Reduce manual touchpoints in core processes",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": -20,
+      "vsem:targetValue": -50,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective", "okr:Objective"],
+      "@id": "vsem:objective-p2",
+      "name": "P2: Optimise Sales Pipeline through AI-Driven Intelligence",
+      "description": "Deploy lead prediction and pipeline acceleration capabilities",
+      "vsem:objectiveType": "Growth",
+      "vsem:targetDate": "2028-02-01",
+      "vsem:supports": [{"@id": "vsem:strategy-s2-sales-growth"}],
+      "vsem:bscPerspective": "InternalProcess",
+      "okr:keyResults": [
+        {"@id": "vsem:kr-p2-1"},
+        {"@id": "vsem:kr-p2-2"},
+        {"@id": "vsem:kr-p2-3"}
+      ]
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-p2-1",
+      "name": "KR2.1: Deploy lead prediction scoring for all prospects",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": "Model live",
+      "vsem:targetValue": 25,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-p2-2",
+      "name": "KR2.2: Improve pipeline velocity through AI-assisted prioritisation",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 10,
+      "vsem:targetValue": 30,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-p2-3",
+      "name": "KR2.3: Deploy mass prospecting and introducer identification",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 2,
+      "vsem:targetValue": 15,
+      "unitCode": "C62",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective", "okr:Objective"],
+      "@id": "vsem:objective-p3",
+      "name": "P3: Streamline Compliance through Automated Checking",
+      "description": "Deploy policy comparison and audit automation capabilities",
+      "vsem:objectiveType": "Risk",
+      "vsem:targetDate": "2028-02-01",
+      "vsem:supports": [{"@id": "vsem:strategy-s3-operational-efficiency"}],
+      "vsem:bscPerspective": "InternalProcess",
+      "okr:keyResults": [
+        {"@id": "vsem:kr-p3-1"},
+        {"@id": "vsem:kr-p3-2"},
+        {"@id": "vsem:kr-p3-3"}
+      ]
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-p3-1",
+      "name": "KR3.1: Deploy policy comparison tool for compliance checking",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": "Tool live",
+      "vsem:targetValue": 90,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-p3-2",
+      "name": "KR3.2: Reduce audit preparation time through AI-assisted documentation",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": -25,
+      "vsem:targetValue": -70,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Quarterly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-p3-3",
+      "name": "KR3.3: Implement MGA risk analysis for proactive compliance",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": "Pilot complete",
+      "vsem:targetValue": -40,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Quarterly"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective", "okr:Objective"],
+      "@id": "vsem:objective-l1",
+      "name": "L1: Build AI-Ready Workforce through Training & Enablement",
+      "description": "Rollout AI training programme and achieve target proficiency",
+      "vsem:objectiveType": "Capability",
+      "vsem:targetDate": "2028-02-01",
+      "vsem:supports": [{"@id": "vsem:strategy-s4-knowledge-advisory"}],
+      "vsem:bscPerspective": "LearningGrowth",
+      "okr:keyResults": [
+        {"@id": "vsem:kr-l1-1"},
+        {"@id": "vsem:kr-l1-2"},
+        {"@id": "vsem:kr-l1-3"}
+      ]
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-l1-1",
+      "name": "KR1.1: Complete AI training programme rollout to target audiences",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 50,
+      "vsem:targetValue": 100,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-l1-2",
+      "name": "KR1.2: Achieve AI tool proficiency score across workforce",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 60,
+      "vsem:targetValue": 80,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-l1-3",
+      "name": "KR1.3: Active daily users of AI tools and assistants",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 40,
+      "vsem:targetValue": 90,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Weekly"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective", "okr:Objective"],
+      "@id": "vsem:objective-l2",
+      "name": "L2: Establish Data Foundation for AI Enablement [CRITICAL PATH]",
+      "description": "Deploy Single View of Client, Graph Database, and data governance",
+      "vsem:objectiveType": "Foundation",
+      "vsem:targetDate": "2028-02-01",
+      "vsem:supports": [{"@id": "vsem:strategy-s5-data-foundation"}],
+      "vsem:bscPerspective": "LearningGrowth",
+      "vsem:criticalPath": true,
+      "okr:keyResults": [
+        {"@id": "vsem:kr-l2-1"},
+        {"@id": "vsem:kr-l2-2"},
+        {"@id": "vsem:kr-l2-3"},
+        {"@id": "vsem:kr-l2-4"}
+      ]
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-l2-1",
+      "name": "KR2.1: Deploy Single View of Client platform with data integration",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": "Platform live",
+      "vsem:targetValue": 100,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-l2-2",
+      "name": "KR2.2: Complete Acturis data extraction and integration",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": "Extraction live",
+      "vsem:targetValue": 100,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-l2-3",
+      "name": "KR2.3: Deploy Graph Database for relationship mapping",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": "Graph live",
+      "vsem:targetValue": 95,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-l2-4",
+      "name": "KR2.4: Implement Microsoft Purview for data governance",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": "Purview deployed",
+      "vsem:targetValue": "Full governance",
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["Action", "vsem:StrategicObjective", "okr:Objective"],
+      "@id": "vsem:objective-l3",
+      "name": "L3: Deploy AI Platform Infrastructure",
+      "description": "Deploy dashboards, AI models, and API integrations",
+      "vsem:objectiveType": "Infrastructure",
+      "vsem:targetDate": "2028-02-01",
+      "vsem:supports": [{"@id": "vsem:strategy-s5-data-foundation"}],
+      "vsem:bscPerspective": "LearningGrowth",
+      "okr:keyResults": [
+        {"@id": "vsem:kr-l3-1"},
+        {"@id": "vsem:kr-l3-2"},
+        {"@id": "vsem:kr-l3-3"}
+      ]
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-l3-1",
+      "name": "KR3.1: Deploy Client/Sector/Product/Markets View dashboards",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": 4,
+      "vsem:targetValue": 99.5,
+      "unitCode": "C62",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-l3-2",
+      "name": "KR3.2: Number of AI models/tools deployed on platform",
+      "vsem:metricType": "Leading",
+      "vsem:baselineValue": 2,
+      "vsem:phase2Target": 8,
+      "vsem:targetValue": 20,
+      "unitCode": "C62",
+      "vsem:measurementFrequency": "Monthly"
+    },
+    {
+      "@type": ["QuantitativeValue", "okr:KeyResult"],
+      "@id": "vsem:kr-l3-3",
+      "name": "KR3.3: API integration availability for external services",
+      "vsem:metricType": "Lagging",
+      "vsem:baselineValue": 0,
+      "vsem:phase2Target": "Perudio live",
+      "vsem:targetValue": 99,
+      "unitCode": "P1",
+      "vsem:measurementFrequency": "Weekly"
+    },
+    {
+      "@type": "vsem:BalancedScorecard",
+      "@id": "vsem:bsc-ai-strategy-2026",
+      "name": "AI Strategy Programme Balanced Scorecard",
+      "vsem:scorecardPeriod": "FY2026-FY2028",
+      "vsem:perspectives": [
+        {
+          "@type": "bsc:FinancialPerspective",
+          "@id": "bsc:financial-ai-strategy",
+          "name": "Financial Perspective: Enterprise Value Creation",
+          "bsc:objectives": [
+            {"@id": "vsem:objective-f1"},
+            {"@id": "vsem:objective-f2"}
+          ]
+        },
+        {
+          "@type": "bsc:CustomerPerspective",
+          "@id": "bsc:customer-ai-strategy",
+          "name": "Customer Perspective: Client Value Delivery",
+          "bsc:objectives": [
+            {"@id": "vsem:objective-c1"},
+            {"@id": "vsem:objective-c2"}
+          ]
+        },
+        {
+          "@type": "bsc:InternalProcessPerspective",
+          "@id": "bsc:process-ai-strategy",
+          "name": "Internal Process Perspective: Operational Excellence",
+          "bsc:objectives": [
+            {"@id": "vsem:objective-p1"},
+            {"@id": "vsem:objective-p2"},
+            {"@id": "vsem:objective-p3"}
+          ]
+        },
+        {
+          "@type": "bsc:LearningGrowthPerspective",
+          "@id": "bsc:learning-ai-strategy",
+          "name": "Learning & Growth Perspective: Capability Foundation",
+          "bsc:objectives": [
+            {"@id": "vsem:objective-l1"},
+            {"@id": "vsem:objective-l2"},
+            {"@id": "vsem:objective-l3"}
+          ]
+        }
+      ],
+      "vsem:causeEffectChains": [
+        {"@id": "vsem:chain-1"},
+        {"@id": "vsem:chain-2"},
+        {"@id": "vsem:chain-3"},
+        {"@id": "vsem:chain-4"}
+      ]
+    },
+    {
+      "@type": "vsem:CauseEffectChain",
+      "@id": "vsem:chain-1",
+      "name": "Data Foundation → Process Automation → Client Experience → Revenue Growth",
+      "vsem:cause": {"@id": "vsem:objective-l2"},
+      "vsem:effect": {"@id": "vsem:objective-p1"},
+      "vsem:hypothesis": "Robust data foundation enables effective process automation"
+    },
+    {
+      "@type": "vsem:CauseEffectChain",
+      "@id": "vsem:chain-2",
+      "name": "AI Workforce → Client Experience → Client Retention → Revenue",
+      "vsem:cause": {"@id": "vsem:objective-l1"},
+      "vsem:effect": {"@id": "vsem:objective-c2"},
+      "vsem:hypothesis": "AI-trained workforce delivers superior client experiences"
+    },
+    {
+      "@type": "vsem:CauseEffectChain",
+      "@id": "vsem:chain-3",
+      "name": "AI Platform → Sales Pipeline → Revenue Growth",
+      "vsem:cause": {"@id": "vsem:objective-l3"},
+      "vsem:effect": {"@id": "vsem:objective-p2"},
+      "vsem:hypothesis": "AI platform enables intelligent sales pipeline optimisation"
+    },
+    {
+      "@type": "vsem:CauseEffectChain",
+      "@id": "vsem:chain-4",
+      "name": "Compliance Automation → Operating Margin",
+      "vsem:cause": {"@id": "vsem:objective-p3"},
+      "vsem:effect": {"@id": "vsem:objective-f2"},
+      "vsem:hypothesis": "Automated compliance reduces operating costs"
+    },
+    {
+      "@type": "vsem:ExecutionMilestone",
+      "@id": "vsem:milestone-m1",
+      "name": "M1: Infrastructure & Governance",
+      "description": "Infrastructure planned, resources selected, governance established",
+      "vsem:targetDate": "2026-02-28",
+      "vsem:validates": [
+        {"@id": "vsem:objective-l2"},
+        {"@id": "vsem:objective-l3"}
+      ]
+    },
+    {
+      "@type": "vsem:ExecutionMilestone",
+      "@id": "vsem:milestone-m2",
+      "name": "M2: Initial Projects Live",
+      "description": "Virtual Agents, Client View, Renewals automation operational",
+      "vsem:targetDate": "2026-03-31",
+      "vsem:validates": [
+        {"@id": "vsem:objective-c1"},
+        {"@id": "vsem:objective-c2"},
+        {"@id": "vsem:objective-l1"}
+      ]
+    },
+    {
+      "@type": "vsem:ExecutionMilestone",
+      "@id": "vsem:milestone-m3",
+      "name": "M3: Phase 2 Operational",
+      "description": "All Phase 2 business projects operational",
+      "vsem:targetDate": "2026-04-30",
+      "vsem:validates": [
+        {"@id": "vsem:objective-p2"},
+        {"@id": "vsem:objective-p3"}
+      ]
+    },
+    {
+      "@type": "vsem:ExecutionMilestone",
+      "@id": "vsem:milestone-m4",
+      "name": "M4: Material AI Benefits",
+      "description": "Core processes delivering material AI benefits",
+      "vsem:targetDate": "2026-05-31",
+      "vsem:validates": [
+        {"@id": "vsem:objective-f1"},
+        {"@id": "vsem:objective-f2"}
+      ]
+    }
+  ]
+}

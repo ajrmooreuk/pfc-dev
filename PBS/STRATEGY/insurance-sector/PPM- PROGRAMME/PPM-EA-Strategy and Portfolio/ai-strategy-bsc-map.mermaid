@@ -1,0 +1,86 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#1F4E79', 'primaryTextColor': '#fff', 'primaryBorderColor': '#1F4E79', 'lineColor': '#666', 'secondaryColor': '#E1BEE7', 'tertiaryColor': '#fff'}}}%%
+
+flowchart TB
+    subgraph Vision["Strategic Vision"]
+        V["AI-Augmented Professional Services Excellence<br/>24-month horizon to Feb 2028"]
+    end
+
+    subgraph Strategy["Strategic Pillars"]
+        S1["S1: Client Excellence<br/>25%"]
+        S2["S2: Sales & Growth<br/>20%"]
+        S3["S3: Operational Efficiency<br/>15%"]
+        S4["S4: Knowledge & Advisory<br/>15%"]
+        S5["S5: Data Foundation<br/>25%"]
+    end
+
+    subgraph Financial["Financial Perspective"]
+        direction LR
+        F1["F1: Revenue Growth<br/>+15% conversion, 95% renewal"]
+        F2["F2: Operating Margin<br/>-25% cost, 60% automation"]
+        F3["F3: Asset Utilisation<br/>80% adoption, 3:1 ROI"]
+        F4["F4: Cost-to-Serve<br/>-50% errors, -60% manual"]
+    end
+
+    subgraph Customer["Customer Perspective"]
+        direction LR
+        C1["C1: Client Retention<br/>90% early warning, 100% prep"]
+        C2["C2: Client Experience<br/>5+ agents, 85% FCR"]
+        C3["C3: Response Times<br/>-50% quote, &lt;4hr query"]
+        C4["C4: Proactive Insights<br/>12/yr per client, 40% acted"]
+    end
+
+    subgraph Process["Internal Process Perspective"]
+        direction LR
+        P1["P1: Process Automation<br/>15+ processes, 70% STP"]
+        P2["P2: Sales Pipeline<br/>+25% conversion, +30% velocity"]
+        P3["P3: Compliance<br/>90% automated, -70% prep"]
+        P4["P4: Decision Quality<br/>50% AI-assisted, +20% accuracy"]
+    end
+
+    subgraph Learning["Learning & Growth Perspective"]
+        direction LR
+        L1["L1: AI Workforce<br/>100% trained, 80% proficient"]
+        L2["L2: Data Foundation<br/>CRITICAL PATH"]
+        L3["L3: AI Platform<br/>20+ models, 99% availability"]
+        L4["L4: Innovation Culture<br/>100+ ideas, 20 experiments"]
+    end
+
+    subgraph RCSG["RCSG Governance (Cross-Cutting)"]
+        direction LR
+        RG["Risk | Compliance | AI Governance | Security"]
+    end
+
+    V --> S1 & S2 & S3 & S4 & S5
+
+    S1 --> C1 & C2 & C4
+    S2 --> F1 & P2
+    S3 --> P1 & P3 & F2
+    S4 --> L1 & P4 & C2
+    S5 --> L2 & L3
+
+    L1 -->|"enables"| C2
+    L2 -->|"enables"| P1 & P2 & P3 & C4
+    L3 -->|"enables"| P1 & P2 & C3
+    L4 -->|"enables"| P4
+
+    P1 -->|"drives"| F2 & F4
+    P2 -->|"drives"| F1
+    P3 -->|"drives"| F2 & F4
+    P4 -->|"informs"| C4
+
+    C1 -->|"increases"| F1
+    C2 -->|"increases"| F1
+    C3 -->|"improves"| F3
+
+    RCSG -.->|"governs"| Process
+    RCSG -.->|"assures"| Learning
+
+    style Vision fill:#1F4E79,color:#fff
+    style Strategy fill:#2E75B6,color:#fff
+    style Financial fill:#C8E6C9,color:#000
+    style Customer fill:#BBDEFB,color:#000
+    style Process fill:#FFE0B2,color:#000
+    style Learning fill:#E1BEE7,color:#000
+    style RCSG fill:#FFF3E0,stroke:#E65100,color:#000
+    style L2 fill:#C00000,color:#fff
+    style RG fill:#FFF3E0,stroke:#E65100,color:#000

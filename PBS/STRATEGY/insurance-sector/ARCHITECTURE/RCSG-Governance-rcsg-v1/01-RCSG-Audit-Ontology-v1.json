@@ -1,0 +1,303 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "rcsg": "urn:rcsg:ontology:",
+    "oaa": "urn:oaa:ontology:",
+    "alz": "urn:alz:ontology:",
+    "o365": "urn:o365:ontology:",
+    "pp": "urn:powerplatform:ontology:",
+    "tp": "urn:thirdparty:ontology:"
+  },
+  "@type": "oaa:OntologyDefinition",
+  "@id": "rcsg:ontology-v1",
+  "name": "RCSG Governance Ontology",
+  "version": "1.0.0",
+  "description": "Risk, Compliance, Security & Governance ontology following OAA v6 patterns. Provides a cross-cutting governance layer that aggregates findings from ALZ, O365, PP, and TP audit workstreams into a unified risk and compliance posture.",
+  "dateCreated": "2026-02-04",
+  "oaa:ontologyPattern": "OAA-v6-UniRegistryEntry",
+  "oaa:entities": [
+    {
+      "@type": ["oaa:UniRegistryEntry", "rcsg:RiskRegister"],
+      "@id": "rcsg:entity:risk-register",
+      "name": "RiskRegister",
+      "description": "Enterprise risk register aggregating risks across all platforms and audit workstreams",
+      "oaa:schemaOrgType": "schema:ItemList",
+      "oaa:properties": [
+        {"name": "registerId", "type": "Text", "description": "Unique risk register identifier"},
+        {"name": "scope", "type": "Text", "description": "Platform scope (ALZ, O365, PP, TP, Cross-Platform)"},
+        {"name": "riskAppetite", "type": "Text", "description": "Defined risk appetite level (Low, Medium, High)"},
+        {"name": "lastReviewDate", "type": "Date", "description": "Date of last risk register review"},
+        {"name": "owner", "type": "Text", "description": "Risk register owner (CISO, CRO, Board)"},
+        {"name": "regulatoryContext", "type": "Text", "description": "Applicable regulatory framework (FCA, PRA, DORA)"}
+      ]
+    },
+    {
+      "@type": ["oaa:UniRegistryEntry", "rcsg:RiskFinding"],
+      "@id": "rcsg:entity:risk-finding",
+      "name": "RiskFinding",
+      "description": "Individual risk finding from an audit workstream, linked to compliance controls and threat scenarios",
+      "oaa:schemaOrgType": "schema:Report",
+      "oaa:properties": [
+        {"name": "findingId", "type": "Text", "description": "Unique finding identifier"},
+        {"name": "sourceAudit", "type": "Text", "description": "Source audit workstream (alz-ss-v1, o365-ss-v1, pp-ds-v1, tp-as-v1)"},
+        {"name": "severity", "type": "Text", "description": "Severity rating (Critical, High, Medium, Low, Info)"},
+        {"name": "status", "type": "Text", "description": "Finding status (Open, In Progress, Mitigated, Accepted, Closed)"},
+        {"name": "wafPillar", "type": "Text", "description": "WAF pillar alignment (Security, Reliability, Cost, Performance, Operations)"},
+        {"name": "evidenceRef", "type": "URL", "description": "Reference to supporting evidence (KQL query, Graph API result)"},
+        {"name": "complianceControlRef", "type": "Text", "description": "Linked compliance control ID (MCSB, NIST, ISO)"},
+        {"name": "remediationPlanRef", "type": "Text", "description": "Linked remediation plan ID"}
+      ]
+    },
+    {
+      "@type": ["oaa:UniRegistryEntry", "rcsg:ThreatScenario"],
+      "@id": "rcsg:entity:threat-scenario",
+      "name": "ThreatScenario",
+      "description": "Threat scenario modelled using STRIDE/DREAD methodology aligned to MITRE ATT&CK",
+      "oaa:schemaOrgType": "schema:Action",
+      "oaa:properties": [
+        {"name": "scenarioId", "type": "Text", "description": "Unique threat scenario identifier"},
+        {"name": "strideCategory", "type": "Text", "description": "STRIDE classification (Spoofing, Tampering, Repudiation, Info Disclosure, DoS, Elevation)"},
+        {"name": "dreadScore", "type": "Number", "description": "Composite DREAD risk score (0-50)"},
+        {"name": "mitreAttackId", "type": "Text", "description": "MITRE ATT&CK technique ID"},
+        {"name": "mitreTactic", "type": "Text", "description": "MITRE ATT&CK tactic (Initial Access, Execution, Persistence, etc.)"},
+        {"name": "d3fendCountermeasure", "type": "Text", "description": "MITRE D3FEND defensive technique"},
+        {"name": "affectedPlatforms", "type": "Text", "description": "Comma-separated list of affected platforms"}
+      ]
+    },
+    {
+      "@type": ["oaa:UniRegistryEntry", "rcsg:ComplianceObligation"],
+      "@id": "rcsg:entity:compliance-obligation",
+      "name": "ComplianceObligation",
+      "description": "Regulatory or framework compliance obligation with control mapping",
+      "oaa:schemaOrgType": "schema:Legislation",
+      "oaa:properties": [
+        {"name": "obligationId", "type": "Text", "description": "Unique obligation identifier"},
+        {"name": "framework", "type": "Text", "description": "Source framework (MCSB, NIST, ISO, FCA, PRA, DORA, GDPR, Lloyd's)"},
+        {"name": "controlId", "type": "Text", "description": "Control identifier within framework"},
+        {"name": "controlTitle", "type": "Text", "description": "Human-readable control title"},
+        {"name": "complianceStatus", "type": "Text", "description": "Current status (Compliant, Partial, Non-Compliant, Not Assessed)"},
+        {"name": "assessmentDate", "type": "Date", "description": "Date of last assessment"},
+        {"name": "evidenceRef", "type": "URL", "description": "Link to compliance evidence"},
+        {"name": "applicablePlatforms", "type": "Text", "description": "Platforms where this obligation applies"}
+      ]
+    },
+    {
+      "@type": ["oaa:UniRegistryEntry", "rcsg:GovernancePolicy"],
+      "@id": "rcsg:entity:governance-policy",
+      "name": "GovernancePolicy",
+      "description": "Internal governance policy with lifecycle management and compliance linkage",
+      "oaa:schemaOrgType": "schema:DigitalDocument",
+      "oaa:properties": [
+        {"name": "policyId", "type": "Text", "description": "Unique policy identifier"},
+        {"name": "policyTitle", "type": "Text", "description": "Policy title"},
+        {"name": "policyType", "type": "Text", "description": "Type (Security, Compliance, Operational, Data, AI)"},
+        {"name": "version", "type": "Text", "description": "Current policy version"},
+        {"name": "status", "type": "Text", "description": "Lifecycle status (Draft, Active, Under Review, Superseded, Retired)"},
+        {"name": "owner", "type": "Text", "description": "Policy owner"},
+        {"name": "reviewDate", "type": "Date", "description": "Next review date"},
+        {"name": "linkedObligations", "type": "Text", "description": "Comma-separated compliance obligation IDs"}
+      ]
+    },
+    {
+      "@type": ["oaa:UniRegistryEntry", "rcsg:AIGovernanceControl"],
+      "@id": "rcsg:entity:ai-governance-control",
+      "name": "AIGovernanceControl",
+      "description": "AI-specific governance control for UK AI, EU AI Act, USA AI, and OWASP LLM Top 10 compliance",
+      "oaa:schemaOrgType": "schema:DefinedTerm",
+      "oaa:properties": [
+        {"name": "controlId", "type": "Text", "description": "Unique AI governance control ID"},
+        {"name": "regulatorySource", "type": "Text", "description": "Source regulation (UK AI Regulation, EU AI Act, OWASP LLM Top 10)"},
+        {"name": "riskClassification", "type": "Text", "description": "AI Act risk classification (Unacceptable, High, Limited, Minimal)"},
+        {"name": "applicableInitiative", "type": "Text", "description": "AI Strategy initiative this applies to (e.g., Virtual Emma, Lead Prediction)"},
+        {"name": "complianceStatus", "type": "Text", "description": "Assessment status (Compliant, Partial, Non-Compliant, Not Assessed)"},
+        {"name": "mitigationMeasures", "type": "Text", "description": "Applied mitigation measures"}
+      ]
+    },
+    {
+      "@type": ["oaa:UniRegistryEntry", "rcsg:RegulatoryBody"],
+      "@id": "rcsg:entity:regulatory-body",
+      "name": "RegulatoryBody",
+      "description": "Regulatory body or standards organisation relevant to the insurance sector",
+      "oaa:schemaOrgType": "schema:Organization",
+      "oaa:properties": [
+        {"name": "regulatorId", "type": "Text", "description": "Unique regulator identifier"},
+        {"name": "name", "type": "Text", "description": "Regulatory body name (FCA, PRA, ICO, Lloyd's, EIOPA)"},
+        {"name": "jurisdiction", "type": "Text", "description": "Jurisdictional scope (UK, EU, USA, International)"},
+        {"name": "frameworks", "type": "Text", "description": "Frameworks published (SYSC 13.9, SS1/21, MS13, etc.)"},
+        {"name": "reportingRequirements", "type": "Text", "description": "Mandatory reporting obligations"}
+      ]
+    },
+    {
+      "@type": ["oaa:UniRegistryEntry", "rcsg:AssuranceLevel"],
+      "@id": "rcsg:entity:assurance-level",
+      "name": "AssuranceLevel",
+      "description": "Assurance level assessment for a platform or domain, tracking posture over time",
+      "oaa:schemaOrgType": "schema:Rating",
+      "oaa:properties": [
+        {"name": "assessmentId", "type": "Text", "description": "Unique assessment identifier"},
+        {"name": "platform", "type": "Text", "description": "Assessed platform (ALZ, O365, PP, TP)"},
+        {"name": "domain", "type": "Text", "description": "Assessment domain (Identity, Network, Data, Application, Operations)"},
+        {"name": "maturityLevel", "type": "Number", "description": "Maturity rating (1-5: Initial, Managed, Defined, Measured, Optimising)"},
+        {"name": "assessmentDate", "type": "Date", "description": "Assessment date"},
+        {"name": "previousLevel", "type": "Number", "description": "Previous maturity rating for trend analysis"},
+        {"name": "targetLevel", "type": "Number", "description": "Target maturity level"},
+        {"name": "gapAnalysis", "type": "Text", "description": "Summary of gaps to target level"}
+      ]
+    },
+    {
+      "@type": ["oaa:UniRegistryEntry", "rcsg:RemediationPlan"],
+      "@id": "rcsg:entity:remediation-plan",
+      "name": "RemediationPlan",
+      "description": "Remediation plan linked to risk findings, with tracking and prioritisation",
+      "oaa:schemaOrgType": "schema:HowTo",
+      "oaa:properties": [
+        {"name": "planId", "type": "Text", "description": "Unique remediation plan identifier"},
+        {"name": "title", "type": "Text", "description": "Remediation plan title"},
+        {"name": "priority", "type": "Text", "description": "Priority (P1-Critical, P2-High, P3-Medium, P4-Low)"},
+        {"name": "status", "type": "Text", "description": "Status (Planned, In Progress, Completed, Deferred, Risk Accepted)"},
+        {"name": "owner", "type": "Text", "description": "Remediation owner"},
+        {"name": "targetDate", "type": "Date", "description": "Target completion date"},
+        {"name": "linkedFindings", "type": "Text", "description": "Comma-separated finding IDs"},
+        {"name": "estimatedEffort", "type": "Text", "description": "Estimated effort (hours/days)"},
+        {"name": "strategicObjective", "type": "Text", "description": "BSC strategic objective this supports (P3, F4, etc.)"}
+      ]
+    },
+    {
+      "@type": ["oaa:UniRegistryEntry", "rcsg:InsuranceComplianceRequirement"],
+      "@id": "rcsg:entity:insurance-compliance-requirement",
+      "name": "InsuranceComplianceRequirement",
+      "description": "Insurance sector-specific compliance requirement from FCA, PRA, Lloyd's, and DORA",
+      "oaa:schemaOrgType": "schema:Legislation",
+      "oaa:properties": [
+        {"name": "requirementId", "type": "Text", "description": "Unique requirement identifier"},
+        {"name": "regulator", "type": "Text", "description": "Source regulator (FCA, PRA, Lloyd's, EIOPA)"},
+        {"name": "regulation", "type": "Text", "description": "Specific regulation (SYSC 13.9, SS1/21, MS13, DORA, Consumer Duty)"},
+        {"name": "requirement", "type": "Text", "description": "Requirement description"},
+        {"name": "complianceDeadline", "type": "Date", "description": "Compliance deadline (e.g., DORA Jan 2027)"},
+        {"name": "applicability", "type": "Text", "description": "Applicability to organisation (Direct, Indirect, Informational)"},
+        {"name": "mappedControls", "type": "Text", "description": "Cross-mapped controls from MCSB, NIST, ISO"},
+        {"name": "assessmentStatus", "type": "Text", "description": "Assessment status"}
+      ]
+    }
+  ],
+  "oaa:relationships": [
+    {
+      "@type": "oaa:Relationship",
+      "name": "riskRegister_contains_riskFinding",
+      "from": "rcsg:RiskRegister",
+      "to": "rcsg:RiskFinding",
+      "cardinality": "1:N",
+      "description": "A risk register contains multiple risk findings"
+    },
+    {
+      "@type": "oaa:Relationship",
+      "name": "riskFinding_mappedTo_complianceObligation",
+      "from": "rcsg:RiskFinding",
+      "to": "rcsg:ComplianceObligation",
+      "cardinality": "N:M",
+      "description": "Risk findings map to one or more compliance obligations"
+    },
+    {
+      "@type": "oaa:Relationship",
+      "name": "riskFinding_addressedBy_remediationPlan",
+      "from": "rcsg:RiskFinding",
+      "to": "rcsg:RemediationPlan",
+      "cardinality": "N:1",
+      "description": "Risk findings are addressed by remediation plans"
+    },
+    {
+      "@type": "oaa:Relationship",
+      "name": "threatScenario_generates_riskFinding",
+      "from": "rcsg:ThreatScenario",
+      "to": "rcsg:RiskFinding",
+      "cardinality": "1:N",
+      "description": "Threat scenarios generate risk findings when assessed"
+    },
+    {
+      "@type": "oaa:Relationship",
+      "name": "complianceObligation_issuedBy_regulatoryBody",
+      "from": "rcsg:ComplianceObligation",
+      "to": "rcsg:RegulatoryBody",
+      "cardinality": "N:1",
+      "description": "Compliance obligations are issued by regulatory bodies"
+    },
+    {
+      "@type": "oaa:Relationship",
+      "name": "governancePolicy_implements_complianceObligation",
+      "from": "rcsg:GovernancePolicy",
+      "to": "rcsg:ComplianceObligation",
+      "cardinality": "N:M",
+      "description": "Governance policies implement compliance obligations"
+    },
+    {
+      "@type": "oaa:Relationship",
+      "name": "aiGovernanceControl_extends_complianceObligation",
+      "from": "rcsg:AIGovernanceControl",
+      "to": "rcsg:ComplianceObligation",
+      "cardinality": "N:M",
+      "description": "AI governance controls extend general compliance obligations for AI-specific requirements"
+    },
+    {
+      "@type": "oaa:Relationship",
+      "name": "assuranceLevel_assessedFor_riskRegister",
+      "from": "rcsg:AssuranceLevel",
+      "to": "rcsg:RiskRegister",
+      "cardinality": "N:1",
+      "description": "Assurance levels are assessed within the context of a risk register"
+    },
+    {
+      "@type": "oaa:Relationship",
+      "name": "insuranceRequirement_specialises_complianceObligation",
+      "from": "rcsg:InsuranceComplianceRequirement",
+      "to": "rcsg:ComplianceObligation",
+      "cardinality": "1:N",
+      "description": "Insurance requirements specialise general compliance obligations for the insurance sector"
+    },
+    {
+      "@type": "oaa:Relationship",
+      "name": "remediationPlan_improves_assuranceLevel",
+      "from": "rcsg:RemediationPlan",
+      "to": "rcsg:AssuranceLevel",
+      "cardinality": "N:1",
+      "description": "Completed remediation plans improve the assurance level for a platform/domain"
+    }
+  ],
+  "oaa:businessRules": [
+    {
+      "@type": "oaa:BusinessRule",
+      "name": "BR-RCSG-001",
+      "description": "All Critical and High severity findings must have an associated remediation plan within 5 business days",
+      "scope": "RiskFinding, RemediationPlan"
+    },
+    {
+      "@type": "oaa:BusinessRule",
+      "name": "BR-RCSG-002",
+      "description": "Compliance obligations from FCA, PRA, and Lloyd's must be reassessed at least quarterly",
+      "scope": "ComplianceObligation, InsuranceComplianceRequirement"
+    },
+    {
+      "@type": "oaa:BusinessRule",
+      "name": "BR-RCSG-003",
+      "description": "AI initiatives classified as High Risk under EU AI Act must have documented AI governance controls before deployment",
+      "scope": "AIGovernanceControl"
+    },
+    {
+      "@type": "oaa:BusinessRule",
+      "name": "BR-RCSG-004",
+      "description": "Governance policies must be reviewed at least annually; security policies at least bi-annually",
+      "scope": "GovernancePolicy"
+    },
+    {
+      "@type": "oaa:BusinessRule",
+      "name": "BR-RCSG-005",
+      "description": "Risk acceptance decisions for findings above Medium severity require CISO or CRO approval",
+      "scope": "RiskFinding, RemediationPlan"
+    },
+    {
+      "@type": "oaa:BusinessRule",
+      "name": "BR-RCSG-006",
+      "description": "Cross-platform risk findings must be aggregated into the enterprise risk register within 48 hours of discovery",
+      "scope": "RiskRegister, RiskFinding"
+    }
+  ]
+}

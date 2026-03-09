@@ -1,0 +1,1337 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "alz": "https://baiv.co.uk/ontology/alz/",
+    "waf": "https://learn.microsoft.com/azure/well-architected/",
+    "caf": "https://learn.microsoft.com/azure/cloud-adoption-framework/"
+  },
+  "@type": "Dataset",
+  "@id": "alz:testdata:alz-compliance-v1.1.0",
+  "name": "ALZ Compliance Ontology Test Data",
+  "version": "1.1.0",
+  "ontologyVersion": "1.2.0",
+  "dateCreated": "2026-02-03",
+  "dateModified": "2026-02-03",
+  "description": "Test data following 60-20-10-10 distribution for OAA v5.0.0 compliance, covering all 16 entities including WAF, CAF, and E2E audit workflow entities",
+  "distribution": {
+    "typical": "60%",
+    "edgeCases": "20%",
+    "boundaryCases": "10%",
+    "invalidCases": "10%"
+  },
+  "totalInstances": 96,
+  "instancesPerEntity": 6,
+  "entitiesCovered": 16,
+  "testData": {
+    "ComplianceFramework": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:framework:mcsb-v2",
+          "@type": "alz:ComplianceFramework",
+          "frameworkId": "MCSB-v2",
+          "frameworkName": "Microsoft Cloud Security Benchmark v2",
+          "frameworkVersion": "2.0.0",
+          "regulatoryBody": "Microsoft",
+          "applicableSectors": ["all"],
+          "policySetDefinitionId": "https://portal.azure.com/#blade/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicySetDefinitions%2F1f3afdf9-d0c9-4c3d-847f-89da613e70a8",
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:framework:nist-800-53-r5",
+          "@type": "alz:ComplianceFramework",
+          "frameworkId": "NIST-800-53-R5",
+          "frameworkName": "NIST SP 800-53 Revision 5",
+          "frameworkVersion": "5.0.0",
+          "regulatoryBody": "NIST",
+          "applicableSectors": ["government", "critical-infrastructure"],
+          "policySetDefinitionId": "https://portal.azure.com/#blade/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicySetDefinitions%2F179d1daa-458f-4e47-8086-2a68d0d6c38f",
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:framework:iso-27001",
+          "@type": "alz:ComplianceFramework",
+          "frameworkId": "ISO-27001-2022",
+          "frameworkName": "ISO/IEC 27001:2022",
+          "frameworkVersion": "2022",
+          "regulatoryBody": "ISO",
+          "applicableSectors": ["all"],
+          "policySetDefinitionId": "https://portal.azure.com/#blade/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicySetDefinitions%2F89c6cddc-1c73-4ac1-b19c-54d1a15a42f2",
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:framework:mcsb-v1",
+          "@type": "alz:ComplianceFramework",
+          "frameworkId": "MCSB-v1",
+          "frameworkName": "Microsoft Cloud Security Benchmark v1 (Legacy)",
+          "frameworkVersion": "1.0.0",
+          "regulatoryBody": "Microsoft",
+          "applicableSectors": ["all"],
+          "policySetDefinitionId": null,
+          "testCategory": "edge",
+          "note": "Legacy framework with deprecated policy set"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:framework:custom-insurance",
+          "@type": "alz:ComplianceFramework",
+          "frameworkId": "CUSTOM-INS-001",
+          "frameworkName": "Custom Insurance Advisory Framework",
+          "frameworkVersion": "0.1.0-alpha",
+          "regulatoryBody": "Internal",
+          "applicableSectors": ["insurance"],
+          "policySetDefinitionId": null,
+          "testCategory": "boundary",
+          "note": "Pre-release version, minimum viable framework"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:framework:invalid-001",
+          "@type": "alz:ComplianceFramework",
+          "frameworkId": "",
+          "frameworkName": "",
+          "frameworkVersion": "not-semver",
+          "regulatoryBody": null,
+          "testCategory": "invalid",
+          "expectedError": "frameworkId required, frameworkName required, version must be semver"
+        }
+      ]
+    },
+    "ComplianceControl": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:control:mcsb-ns-1",
+          "@type": "alz:ComplianceControl",
+          "controlId": "NS-1",
+          "controlName": "Establish network segmentation boundaries",
+          "controlFamily": "Network Security",
+          "description": "Ensure that your virtual network deployment aligns to your enterprise segmentation strategy defined in the GS-2 security control",
+          "implementationGuidance": "Use Azure Virtual Networks, NSGs, and Azure Firewall to segment traffic",
+          "auditEvidence": ["VNet topology diagram", "NSG rule exports", "Firewall logs"],
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:control:mcsb-dp-3",
+          "@type": "alz:ComplianceControl",
+          "controlId": "DP-3",
+          "controlName": "Encrypt sensitive data in transit",
+          "controlFamily": "Data Protection",
+          "description": "Protect data in transit against out-of-band attacks using encryption",
+          "implementationGuidance": "Enable TLS 1.2 or higher on all services, use HTTPS, configure minimum TLS version",
+          "auditEvidence": ["TLS configuration exports", "Certificate inventory"],
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:control:mcsb-im-1",
+          "@type": "alz:ComplianceControl",
+          "controlId": "IM-1",
+          "controlName": "Use centralized identity and authentication system",
+          "controlFamily": "Identity Management",
+          "description": "Use Azure AD as the default identity and authentication method",
+          "implementationGuidance": "Configure Entra ID, disable local authentication, implement Conditional Access",
+          "auditEvidence": ["Entra ID configuration", "Conditional Access policies", "Sign-in logs"],
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:control:nist-sc-7-21",
+          "@type": "alz:ComplianceControl",
+          "controlId": "SC-7(21)",
+          "controlName": "Boundary Protection | Isolation of System Components",
+          "controlFamily": "System and Communications Protection",
+          "description": "Implement subnetworks for publicly accessible system components that are physically and logically separated from internal networks",
+          "implementationGuidance": "Use DMZ patterns with Azure Firewall and private endpoints",
+          "auditEvidence": ["Network topology", "Firewall rules", "Private endpoint configuration"],
+          "testCategory": "edge",
+          "note": "Nested control ID format (enhancement)"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:control:minimum-viable",
+          "@type": "alz:ComplianceControl",
+          "controlId": "MIN-001",
+          "controlName": "Minimum Control",
+          "controlFamily": "Custom",
+          "description": "Exactly 20 characters",
+          "implementationGuidance": null,
+          "auditEvidence": [],
+          "testCategory": "boundary",
+          "note": "Minimum description length (20 chars)"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:control:invalid-001",
+          "@type": "alz:ComplianceControl",
+          "controlId": "INV-001",
+          "controlName": "Invalid Control",
+          "controlFamily": "Invalid",
+          "description": "Too short",
+          "testCategory": "invalid",
+          "expectedError": "description must be >=20 characters (current: 9)"
+        }
+      ]
+    },
+    "WAFPillar": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:waf:pillar:reliability",
+          "@type": "alz:WAFPillar",
+          "pillarCode": "RE",
+          "pillarName": "Reliability",
+          "description": "The ability of a workload to perform its intended function correctly and consistently",
+          "mcsbAlignment": ["BR-1", "BR-2", "BR-3"],
+          "focusAreas": ["Resiliency", "Availability", "Recovery", "Data Integrity"],
+          "advisorCategory": "HighAvailability",
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:waf:pillar:security",
+          "@type": "alz:WAFPillar",
+          "pillarCode": "SE",
+          "pillarName": "Security",
+          "description": "Protecting applications and data from threats through defense in depth strategy",
+          "mcsbAlignment": ["IM-1", "IM-2", "NS-1", "NS-2", "DP-1", "DP-3"],
+          "focusAreas": ["Identity", "Network", "Data Protection", "Security Operations"],
+          "advisorCategory": "Security",
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:waf:pillar:cost-optimization",
+          "@type": "alz:WAFPillar",
+          "pillarCode": "CO",
+          "pillarName": "Cost Optimization",
+          "description": "Managing costs to maximize the value delivered while achieving business objectives",
+          "mcsbAlignment": [],
+          "focusAreas": ["Cost Management", "Rightsizing", "Reserved Capacity", "Spot Instances"],
+          "advisorCategory": "Cost",
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:waf:pillar:operational-excellence",
+          "@type": "alz:WAFPillar",
+          "pillarCode": "OE",
+          "pillarName": "Operational Excellence",
+          "description": "Operations processes that keep a workload running in production with efficient deployment and development practices",
+          "mcsbAlignment": ["LT-1", "LT-2", "LT-3", "AM-1", "AM-2"],
+          "focusAreas": ["DevOps", "Monitoring", "Automation", "Safe Deployment"],
+          "advisorCategory": "OperationalExcellence",
+          "testCategory": "edge",
+          "note": "Has significant overlap with DevOps practices"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:waf:pillar:performance-efficiency",
+          "@type": "alz:WAFPillar",
+          "pillarCode": "PE",
+          "pillarName": "Performance Efficiency",
+          "description": "Efficiently meeting demands through proper resource selection and scaling approaches",
+          "mcsbAlignment": [],
+          "focusAreas": ["Scaling"],
+          "advisorCategory": "Performance",
+          "testCategory": "boundary",
+          "note": "Minimum focusAreas (1 item)"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:waf:pillar:invalid",
+          "@type": "alz:WAFPillar",
+          "pillarCode": "XX",
+          "pillarName": "",
+          "description": "Short",
+          "mcsbAlignment": null,
+          "focusAreas": [],
+          "advisorCategory": "",
+          "testCategory": "invalid",
+          "expectedError": "pillarCode must be enum [RE,SE,CO,OE,PE], pillarName required, description >=20 chars, focusAreas 1..*, advisorCategory required"
+        }
+      ]
+    },
+    "CAFPhase": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:caf:phase:strategy",
+          "@type": "alz:CAFPhase",
+          "phaseName": "Strategy",
+          "phaseOrder": 1,
+          "description": "Define business justification and expected outcomes for cloud adoption initiatives",
+          "keyActivities": ["Define motivations", "Document business outcomes", "Evaluate financial considerations", "Understand technical considerations"],
+          "deliverables": ["Cloud Strategy Document", "Business Case"],
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:caf:phase:ready",
+          "@type": "alz:CAFPhase",
+          "phaseName": "Ready",
+          "phaseOrder": 3,
+          "description": "Prepare the cloud environment for planned adoption including landing zone deployment",
+          "keyActivities": ["Operating model alignment", "Azure landing zone selection", "Landing zone deployment", "Extend landing zone"],
+          "deliverables": ["Azure Landing Zone", "Environment Configuration"],
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:caf:phase:govern",
+          "@type": "alz:CAFPhase",
+          "phaseName": "Govern",
+          "phaseOrder": 5,
+          "description": "Implement governance controls to ensure consistent management of cloud environments",
+          "keyActivities": ["Benchmark assessment", "Governance foundation", "Governance maturity", "Policy compliance"],
+          "deliverables": ["Governance Policies", "Compliance Reports"],
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:caf:phase:adopt",
+          "@type": "alz:CAFPhase",
+          "phaseName": "Adopt",
+          "phaseOrder": 4,
+          "description": "Execute the migration or innovation plan to move workloads to the cloud and realize business value",
+          "keyActivities": ["Migrate workloads", "Innovate with cloud", "Modernize applications"],
+          "deliverables": [],
+          "testCategory": "edge",
+          "note": "Deliverables may vary significantly by project"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:caf:phase:plan",
+          "@type": "alz:CAFPhase",
+          "phaseName": "Plan",
+          "phaseOrder": 2,
+          "description": "Convert cloud adoption aspirations into an actionable plan with prioritized workloads",
+          "keyActivities": ["Digital estate rationalization"],
+          "deliverables": [],
+          "testCategory": "boundary",
+          "note": "Minimum keyActivities (1 item)"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:caf:phase:invalid",
+          "@type": "alz:CAFPhase",
+          "phaseName": "",
+          "phaseOrder": 0,
+          "description": "Short",
+          "keyActivities": [],
+          "testCategory": "invalid",
+          "expectedError": "phaseName required, phaseOrder must be 1-6, description >=20 chars, keyActivities 1..*"
+        }
+      ]
+    },
+    "SnapshotAudit": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:audit:ins-alz-2026-001",
+          "@type": "alz:SnapshotAudit",
+          "auditId": "AUD-INS-2026-001",
+          "sessionId": "550e8400-e29b-41d4-a716-446655440001",
+          "auditName": "Insurance Client Pre-ALZ Assessment",
+          "auditDate": "2026-02-03",
+          "startedAt": "2026-02-03T09:00:00Z",
+          "completedAt": "2026-02-03T11:30:00Z",
+          "tenantId": "12345678-1234-1234-1234-123456789012",
+          "subscriptionScope": ["sub-production-001", "sub-production-002"],
+          "auditDurationDays": 5,
+          "automationScript": "15-ALZ-SS-Audit-Full-Auto-v1.sh",
+          "status": "completed",
+          "runSequence": 1,
+          "previousSessionId": null,
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:audit:ins-alz-2026-002",
+          "@type": "alz:SnapshotAudit",
+          "auditId": "AUD-INS-2026-001",
+          "sessionId": "550e8400-e29b-41d4-a716-446655440002",
+          "auditName": "Insurance Client Post-Remediation Re-Audit",
+          "auditDate": "2026-03-15",
+          "startedAt": "2026-03-15T10:00:00Z",
+          "completedAt": "2026-03-15T12:45:00Z",
+          "tenantId": "12345678-1234-1234-1234-123456789012",
+          "subscriptionScope": ["sub-production-001", "sub-production-002"],
+          "auditDurationDays": 3,
+          "automationScript": "15-ALZ-SS-Audit-Full-Auto-v1.sh",
+          "status": "completed",
+          "runSequence": 2,
+          "previousSessionId": "550e8400-e29b-41d4-a716-446655440001",
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:audit:fin-alz-2026-001",
+          "@type": "alz:SnapshotAudit",
+          "auditId": "AUD-FIN-2026-001",
+          "sessionId": "660e8400-e29b-41d4-a716-446655440003",
+          "auditName": "Financial Services Quarterly Assessment",
+          "auditDate": "2026-04-01",
+          "startedAt": "2026-04-01T08:00:00Z",
+          "completedAt": null,
+          "tenantId": "87654321-4321-4321-4321-210987654321",
+          "subscriptionScope": ["sub-prod", "sub-dev", "sub-test"],
+          "auditDurationDays": 5,
+          "automationScript": "15-ALZ-SS-Audit-Full-Auto-v1.sh",
+          "status": "in-progress",
+          "runSequence": 1,
+          "previousSessionId": null,
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:audit:planned-001",
+          "@type": "alz:SnapshotAudit",
+          "auditId": "AUD-PLN-2026-001",
+          "sessionId": "770e8400-e29b-41d4-a716-446655440004",
+          "auditName": "Future Scheduled Audit",
+          "auditDate": "2026-06-01",
+          "startedAt": null,
+          "completedAt": null,
+          "tenantId": "11111111-1111-1111-1111-111111111111",
+          "subscriptionScope": ["sub-all"],
+          "auditDurationDays": 5,
+          "automationScript": null,
+          "status": "planned",
+          "runSequence": 1,
+          "previousSessionId": null,
+          "testCategory": "edge",
+          "note": "Planned audit not yet started"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:audit:single-sub",
+          "@type": "alz:SnapshotAudit",
+          "auditId": "AUD-MIN-2026-001",
+          "sessionId": "880e8400-e29b-41d4-a716-446655440005",
+          "auditName": "Single Subscription Audit",
+          "auditDate": "2026-02-01",
+          "startedAt": "2026-02-01T14:00:00Z",
+          "completedAt": "2026-02-01T14:30:00Z",
+          "tenantId": "22222222-2222-2222-2222-222222222222",
+          "subscriptionScope": ["sub-only"],
+          "auditDurationDays": 1,
+          "automationScript": "15-ALZ-SS-Audit-Full-Auto-v1.sh",
+          "status": "completed",
+          "runSequence": 1,
+          "previousSessionId": null,
+          "testCategory": "boundary",
+          "note": "Minimum scope - single subscription, 1 day duration"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:audit:invalid-001",
+          "@type": "alz:SnapshotAudit",
+          "auditId": "",
+          "sessionId": "not-a-uuid",
+          "auditName": "",
+          "auditDate": "invalid-date",
+          "startedAt": null,
+          "completedAt": "2026-01-01T00:00:00Z",
+          "tenantId": "",
+          "subscriptionScope": [],
+          "auditDurationDays": 0,
+          "status": "unknown",
+          "testCategory": "invalid",
+          "expectedError": "auditId required, sessionId must be UUID, auditName required, auditDate must be valid date, tenantId required, subscriptionScope 1..*, status must be enum, completedAt without startedAt invalid"
+        }
+      ]
+    },
+    "AuditQuery": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:query:resource-inventory",
+          "@type": "alz:AuditQuery",
+          "queryId": "QRY-INV-001",
+          "queryName": "Full Resource Inventory",
+          "description": "Extracts complete inventory of all Azure resources across subscriptions in scope",
+          "queryText": "Resources | project id, name, type, location, resourceGroup, subscriptionId, tags | order by type asc",
+          "queryCategory": "inventory",
+          "outputFile": "inventory-full.json",
+          "outputFormat": "json",
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:query:storage-security",
+          "@type": "alz:AuditQuery",
+          "queryId": "QRY-SEC-001",
+          "queryName": "Storage Account Security Configuration",
+          "description": "Assesses storage account security settings including TLS, public access, and encryption",
+          "queryText": "Resources | where type == 'microsoft.storage/storageaccounts' | extend tlsVersion = properties.minimumTlsVersion, publicAccess = properties.allowBlobPublicAccess | project name, resourceGroup, tlsVersion, publicAccess",
+          "queryCategory": "security",
+          "outputFile": "storage-security.csv",
+          "outputFormat": "csv",
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:query:mcsb-compliance",
+          "@type": "alz:AuditQuery",
+          "queryId": "QRY-CMP-001",
+          "queryName": "MCSB v2 Compliance Summary",
+          "description": "Retrieves Microsoft Cloud Security Benchmark v2 compliance status from Defender for Cloud",
+          "queryText": "SecurityResources | where type == 'microsoft.security/regulatorycompliancestandards' | where name contains 'MCSB'",
+          "queryCategory": "mcsbCompliance",
+          "outputFile": "mcsb-v2-compliance.json",
+          "outputFormat": "json",
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:query:waf-reliability",
+          "@type": "alz:AuditQuery",
+          "queryId": "QRY-WAF-001",
+          "queryName": "WAF Reliability Assessment Query",
+          "description": "Queries resources for reliability pillar assessment including backup status and availability zones",
+          "queryText": "Resources | where type in ('microsoft.compute/virtualmachines', 'microsoft.sql/servers/databases') | extend hasBackup = isnotnull(properties.backupRetentionPeriod)",
+          "queryCategory": "wafPillarAssessment",
+          "outputFile": "waf-reliability.json",
+          "outputFormat": "json",
+          "testCategory": "edge",
+          "note": "WAF pillar-specific query"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:query:summary-count",
+          "@type": "alz:AuditQuery",
+          "queryId": "QRY-SUM-001",
+          "queryName": "Resource Count Summary",
+          "description": "Minimal query for resource count",
+          "queryText": "Resources | summarize count() by type",
+          "queryCategory": "summary",
+          "outputFile": "summary.json",
+          "outputFormat": "json",
+          "testCategory": "boundary",
+          "note": "Minimal query complexity"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:query:invalid-001",
+          "@type": "alz:AuditQuery",
+          "queryId": "",
+          "queryName": "",
+          "description": "Short",
+          "queryText": "",
+          "queryCategory": "invalidCategory",
+          "outputFile": "",
+          "outputFormat": "xml",
+          "testCategory": "invalid",
+          "expectedError": "queryId required, queryName required, description >=20 chars, queryText required, queryCategory must be enum, outputFile required, outputFormat must be json/csv"
+        }
+      ]
+    },
+    "AuditResult": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:result:inv-001-run1",
+          "@type": "alz:AuditResult",
+          "resultId": "RES-INV-2026-001",
+          "queryRef": "alz:query:resource-inventory",
+          "captureTimestamp": "2026-02-03T09:15:32Z",
+          "outputFilePath": "./audit-results/550e8400-e29b-41d4-a716-446655440001/inventory-full.json",
+          "recordCount": 1247,
+          "resultFormat": "json",
+          "fileSizeBytes": 524288,
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:result:sec-001-run1",
+          "@type": "alz:AuditResult",
+          "resultId": "RES-SEC-2026-001",
+          "queryRef": "alz:query:storage-security",
+          "captureTimestamp": "2026-02-03T09:18:45Z",
+          "outputFilePath": "./audit-results/550e8400-e29b-41d4-a716-446655440001/storage-security.csv",
+          "recordCount": 23,
+          "resultFormat": "csv",
+          "fileSizeBytes": 8192,
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:result:cmp-001-run1",
+          "@type": "alz:AuditResult",
+          "resultId": "RES-CMP-2026-001",
+          "queryRef": "alz:query:mcsb-compliance",
+          "captureTimestamp": "2026-02-03T09:22:18Z",
+          "outputFilePath": "./audit-results/550e8400-e29b-41d4-a716-446655440001/mcsb-v2-compliance.json",
+          "recordCount": 156,
+          "resultFormat": "json",
+          "fileSizeBytes": 131072,
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:result:empty-001",
+          "@type": "alz:AuditResult",
+          "resultId": "RES-EMPTY-2026-001",
+          "queryRef": "alz:query:waf-reliability",
+          "captureTimestamp": "2026-02-03T09:25:00Z",
+          "outputFilePath": "./audit-results/test/waf-reliability.json",
+          "recordCount": 0,
+          "resultFormat": "json",
+          "fileSizeBytes": 2,
+          "testCategory": "edge",
+          "note": "Query returned zero results (empty JSON array)"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:result:large-001",
+          "@type": "alz:AuditResult",
+          "resultId": "RES-LARGE-2026-001",
+          "queryRef": "alz:query:resource-inventory",
+          "captureTimestamp": "2026-02-03T10:00:00Z",
+          "outputFilePath": "./audit-results/large/inventory-full.json",
+          "recordCount": 50000,
+          "resultFormat": "json",
+          "fileSizeBytes": 104857600,
+          "testCategory": "boundary",
+          "note": "Large enterprise with 50k resources, 100MB file"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:result:invalid-001",
+          "@type": "alz:AuditResult",
+          "resultId": "",
+          "queryRef": null,
+          "captureTimestamp": "not-a-timestamp",
+          "outputFilePath": "",
+          "recordCount": -1,
+          "resultFormat": "xml",
+          "testCategory": "invalid",
+          "expectedError": "resultId required, queryRef required, captureTimestamp must be ISO8601, outputFilePath required, recordCount non-negative, resultFormat must be json/csv"
+        }
+      ]
+    },
+    "WAFAssessment": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:wafassessment:ins-2026-001",
+          "@type": "alz:WAFAssessment",
+          "assessmentId": "WAF-INS-2026-001",
+          "assessmentDate": "2026-02-03T12:00:00Z",
+          "workloadScope": ["sub-production-001", "sub-production-002"],
+          "reliabilityScore": 72,
+          "securityScore": 85,
+          "costOptimizationScore": 65,
+          "operationalExcellenceScore": 78,
+          "performanceEfficiencyScore": 81,
+          "advisorRecommendationCount": 47,
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:wafassessment:fin-2026-001",
+          "@type": "alz:WAFAssessment",
+          "assessmentId": "WAF-FIN-2026-001",
+          "assessmentDate": "2026-03-15T14:30:00Z",
+          "workloadScope": ["sub-prod"],
+          "reliabilityScore": 88,
+          "securityScore": 92,
+          "costOptimizationScore": 71,
+          "operationalExcellenceScore": 85,
+          "performanceEfficiencyScore": 79,
+          "advisorRecommendationCount": 23,
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:wafassessment:post-remediation",
+          "@type": "alz:WAFAssessment",
+          "assessmentId": "WAF-INS-2026-002",
+          "assessmentDate": "2026-05-01T10:00:00Z",
+          "workloadScope": ["sub-production-001", "sub-production-002"],
+          "reliabilityScore": 89,
+          "securityScore": 94,
+          "costOptimizationScore": 82,
+          "operationalExcellenceScore": 91,
+          "performanceEfficiencyScore": 87,
+          "advisorRecommendationCount": 12,
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:wafassessment:security-only",
+          "@type": "alz:WAFAssessment",
+          "assessmentId": "WAF-SEC-2026-001",
+          "assessmentDate": "2026-02-15T09:00:00Z",
+          "workloadScope": ["sub-security"],
+          "reliabilityScore": null,
+          "securityScore": 95,
+          "costOptimizationScore": null,
+          "operationalExcellenceScore": null,
+          "performanceEfficiencyScore": null,
+          "advisorRecommendationCount": 5,
+          "testCategory": "edge",
+          "note": "Security-focused assessment only (partial pillar coverage)"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:wafassessment:perfect-score",
+          "@type": "alz:WAFAssessment",
+          "assessmentId": "WAF-PERF-2026-001",
+          "assessmentDate": "2026-06-01T00:00:00Z",
+          "workloadScope": ["sub-demo"],
+          "reliabilityScore": 100,
+          "securityScore": 100,
+          "costOptimizationScore": 100,
+          "operationalExcellenceScore": 100,
+          "performanceEfficiencyScore": 100,
+          "advisorRecommendationCount": 0,
+          "testCategory": "boundary",
+          "note": "Perfect scores across all pillars (rare)"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:wafassessment:invalid-001",
+          "@type": "alz:WAFAssessment",
+          "assessmentId": "",
+          "assessmentDate": "invalid",
+          "workloadScope": [],
+          "reliabilityScore": 150,
+          "securityScore": -10,
+          "advisorRecommendationCount": -5,
+          "testCategory": "invalid",
+          "expectedError": "assessmentId required, assessmentDate ISO8601, workloadScope 1..*, scores 0-100, recommendationCount non-negative"
+        }
+      ]
+    },
+    "AuditDeliverable": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:deliverable:exec-summary",
+          "@type": "alz:AuditDeliverable",
+          "deliverableId": "DEL-EXEC-001",
+          "deliverableName": "Executive Summary",
+          "deliverableType": "ExecutiveSummary",
+          "format": "PDF",
+          "targetAudience": "Executive",
+          "description": "1-2 page summary of key findings, risk summary, and prioritized recommendations for executive stakeholders",
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:deliverable:current-state",
+          "@type": "alz:AuditDeliverable",
+          "deliverableId": "DEL-CSR-001",
+          "deliverableName": "Current State Report",
+          "deliverableType": "CurrentStateReport",
+          "format": "PDF",
+          "targetAudience": "Both",
+          "description": "Comprehensive documentation of current Azure environment state including architecture, security posture, and governance maturity",
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:deliverable:resource-inventory",
+          "@type": "alz:AuditDeliverable",
+          "deliverableId": "DEL-INV-001",
+          "deliverableName": "Resource Inventory Export",
+          "deliverableType": "ResourceInventory",
+          "format": "Excel",
+          "targetAudience": "Technical",
+          "description": "Complete listing of all Azure resources with metadata, tags, and configuration details for technical review",
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:deliverable:raw-json",
+          "@type": "alz:AuditDeliverable",
+          "deliverableId": "DEL-RAW-001",
+          "deliverableName": "Raw Query Data Export",
+          "deliverableType": "RawDataExport",
+          "format": "JSON",
+          "targetAudience": "Technical",
+          "description": "Unprocessed JSON exports from all audit queries for technical teams requiring raw data access",
+          "testCategory": "edge",
+          "note": "JSON format for technical consumption"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:deliverable:markdown-dashboard",
+          "@type": "alz:AuditDeliverable",
+          "deliverableId": "DEL-MD-001",
+          "deliverableName": "Metrics Dashboard",
+          "deliverableType": "MetricsDashboard",
+          "format": "Markdown",
+          "targetAudience": "Both",
+          "description": "Metrics dashboard in Markdown format for embedding in documentation repositories",
+          "testCategory": "boundary",
+          "note": "Markdown format (less common)"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:deliverable:invalid-001",
+          "@type": "alz:AuditDeliverable",
+          "deliverableId": "",
+          "deliverableName": "",
+          "deliverableType": "InvalidType",
+          "format": "DOC",
+          "targetAudience": "Unknown",
+          "description": "Short",
+          "testCategory": "invalid",
+          "expectedError": "deliverableId required, deliverableName required, deliverableType must be enum, format must be enum, targetAudience must be enum, description >=20 chars"
+        }
+      ]
+    },
+    "AzureResource": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:resource:storage-001",
+          "@type": "alz:AzureResource",
+          "resourceId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg-data/providers/Microsoft.Storage/storageAccounts/stdata001",
+          "resourceType": "Microsoft.Storage/storageAccounts",
+          "resourceProvider": "Microsoft.Storage",
+          "subscriptionId": "12345678-1234-1234-1234-123456789012",
+          "resourceGroup": "rg-data",
+          "location": "uksouth",
+          "tags": {"Environment": "Production", "CostCenter": "IT-001"},
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:resource:keyvault-001",
+          "@type": "alz:AzureResource",
+          "resourceId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg-security/providers/Microsoft.KeyVault/vaults/kv-secrets-001",
+          "resourceType": "Microsoft.KeyVault/vaults",
+          "resourceProvider": "Microsoft.KeyVault",
+          "subscriptionId": "12345678-1234-1234-1234-123456789012",
+          "resourceGroup": "rg-security",
+          "location": "uksouth",
+          "tags": {"Environment": "Production", "Classification": "Confidential"},
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:resource:vnet-001",
+          "@type": "alz:AzureResource",
+          "resourceId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg-network/providers/Microsoft.Network/virtualNetworks/vnet-hub-001",
+          "resourceType": "Microsoft.Network/virtualNetworks",
+          "resourceProvider": "Microsoft.Network",
+          "subscriptionId": "12345678-1234-1234-1234-123456789012",
+          "resourceGroup": "rg-network",
+          "location": "uksouth",
+          "tags": {"Environment": "Production", "NetworkTier": "Hub"},
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:resource:nested-child",
+          "@type": "alz:AzureResource",
+          "resourceId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg-network/providers/Microsoft.Network/virtualNetworks/vnet-hub-001/subnets/snet-web",
+          "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+          "resourceProvider": "Microsoft.Network",
+          "subscriptionId": "12345678-1234-1234-1234-123456789012",
+          "resourceGroup": "rg-network",
+          "location": "uksouth",
+          "tags": {},
+          "testCategory": "edge",
+          "note": "Child resource (subnet of VNet)"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:resource:no-tags",
+          "@type": "alz:AzureResource",
+          "resourceId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg-sandbox/providers/Microsoft.Compute/virtualMachines/vm-test-001",
+          "resourceType": "Microsoft.Compute/virtualMachines",
+          "resourceProvider": "Microsoft.Compute",
+          "subscriptionId": "12345678-1234-1234-1234-123456789012",
+          "resourceGroup": "rg-sandbox",
+          "location": "uksouth",
+          "tags": {},
+          "testCategory": "boundary",
+          "note": "Resource with no tags (governance gap)"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:resource:invalid-001",
+          "@type": "alz:AzureResource",
+          "resourceId": "not-a-valid-arm-id",
+          "resourceType": "Invalid.Provider/invalidType",
+          "resourceProvider": "Invalid.Provider",
+          "subscriptionId": "not-a-guid",
+          "testCategory": "invalid",
+          "expectedError": "resourceId must be valid ARM format, subscriptionId must be GUID"
+        }
+      ]
+    },
+    "ControlMapping": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:mapping:mcsb-ns1-to-nist-sc7",
+          "@type": "alz:ControlMapping",
+          "sourceControl": "alz:control:mcsb-ns-1",
+          "targetControl": "alz:control:nist-sc-7-21",
+          "mappingStrength": "exact",
+          "mappingRationale": "Both controls require network segmentation and boundary protection for publicly accessible systems",
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:mapping:mcsb-dp3-to-nist-sc8",
+          "@type": "alz:ControlMapping",
+          "sourceControl": "alz:control:mcsb-dp-3",
+          "targetControl": "alz:control:nist-sc-8",
+          "mappingStrength": "exact",
+          "mappingRationale": "Both controls mandate encryption of data in transit using cryptographic mechanisms",
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:mapping:mcsb-im1-to-iso-a9",
+          "@type": "alz:ControlMapping",
+          "sourceControl": "alz:control:mcsb-im-1",
+          "targetControl": "alz:control:iso-a9-2-1",
+          "mappingStrength": "partial",
+          "mappingRationale": "MCSB IM-1 covers centralized identity which partially addresses ISO A.9.2.1 user registration",
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:mapping:related-only",
+          "@type": "alz:ControlMapping",
+          "sourceControl": "alz:control:mcsb-ns-1",
+          "targetControl": "alz:control:custom-ins-net-001",
+          "mappingStrength": "related",
+          "mappingRationale": "Custom insurance network control is thematically related but not technically equivalent",
+          "testCategory": "edge",
+          "note": "Weakest mapping strength"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:mapping:no-rationale",
+          "@type": "alz:ControlMapping",
+          "sourceControl": "alz:control:minimum-viable",
+          "targetControl": "alz:control:mcsb-ns-1",
+          "mappingStrength": "partial",
+          "mappingRationale": null,
+          "testCategory": "boundary",
+          "note": "Valid mapping without rationale (optional field)"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:mapping:invalid-001",
+          "@type": "alz:ControlMapping",
+          "sourceControl": null,
+          "targetControl": null,
+          "mappingStrength": "strong",
+          "testCategory": "invalid",
+          "expectedError": "sourceControl required, targetControl required, mappingStrength must be enum [exact,partial,related]"
+        }
+      ]
+    },
+    "ControlImplementation": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:impl:storage-tls",
+          "@type": "alz:ControlImplementation",
+          "implementationId": "IMPL-STOR-TLS-001",
+          "implementationName": "Storage Account TLS 1.2 Enforcement",
+          "azurePolicyId": "https://portal.azure.com/#blade/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2Ffe83a0eb-a853-422d-aac2-1bffd182c5d0",
+          "configurationProperty": "properties.minimumTlsVersion",
+          "expectedValue": "TLS1_2",
+          "remediationAction": "Set minimumTlsVersion to TLS1_2 in ARM template or portal",
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:impl:keyvault-rbac",
+          "@type": "alz:ControlImplementation",
+          "implementationId": "IMPL-KV-RBAC-001",
+          "implementationName": "Key Vault Azure RBAC Mode",
+          "azurePolicyId": "https://portal.azure.com/#blade/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F12d4fa5e-1f9f-4c21-97a9-b99b3c6611b5",
+          "configurationProperty": "properties.enableRbacAuthorization",
+          "expectedValue": "true",
+          "remediationAction": "Enable Azure RBAC authorization in Key Vault properties",
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:impl:nsg-subnet",
+          "@type": "alz:ControlImplementation",
+          "implementationId": "IMPL-NSG-SUBNET-001",
+          "implementationName": "NSG Association to Subnets",
+          "azurePolicyId": "https://portal.azure.com/#blade/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2Fe71308d3-144b-4262-b144-efdc3cc90517",
+          "configurationProperty": "properties.networkSecurityGroup.id",
+          "expectedValue": "not null",
+          "remediationAction": "Associate NSG with subnet via ARM or portal",
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:impl:no-policy",
+          "@type": "alz:ControlImplementation",
+          "implementationId": "IMPL-MANUAL-001",
+          "implementationName": "Manual Configuration Review",
+          "azurePolicyId": null,
+          "configurationProperty": "multiple",
+          "expectedValue": "varies",
+          "remediationAction": "Manual review and configuration required - no automated policy available",
+          "testCategory": "edge",
+          "note": "Implementation without Azure Policy (manual)"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:impl:minimal",
+          "@type": "alz:ControlImplementation",
+          "implementationId": "IMPL-MIN-001",
+          "implementationName": "Minimal Implementation",
+          "azurePolicyId": null,
+          "configurationProperty": null,
+          "expectedValue": null,
+          "remediationAction": null,
+          "testCategory": "boundary",
+          "note": "Implementation with only required fields"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:impl:invalid-001",
+          "@type": "alz:ControlImplementation",
+          "implementationId": "",
+          "implementationName": "",
+          "testCategory": "invalid",
+          "expectedError": "implementationId required, implementationName required"
+        }
+      ]
+    },
+    "ComplianceAssessment": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:assessment:pre-alz-001",
+          "@type": "alz:ComplianceAssessment",
+          "assessmentId": "ASS-2026-02-001",
+          "assessmentDate": "2026-02-03T09:00:00Z",
+          "assessmentScope": ["12345678-1234-1234-1234-123456789012"],
+          "frameworksAssessed": ["MCSB-v1", "MCSB-v2"],
+          "overallScore": 72,
+          "findingsCount": 15,
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:assessment:quarterly-001",
+          "@type": "alz:ComplianceAssessment",
+          "assessmentId": "ASS-2026-Q1-001",
+          "assessmentDate": "2026-03-31T23:59:59Z",
+          "assessmentScope": ["12345678-1234-1234-1234-123456789012", "87654321-4321-4321-4321-210987654321"],
+          "frameworksAssessed": ["MCSB-v2", "ISO-27001-2022", "NIST-800-53-R5"],
+          "overallScore": 85,
+          "findingsCount": 8,
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:assessment:post-alz-001",
+          "@type": "alz:ComplianceAssessment",
+          "assessmentId": "ASS-2026-05-001",
+          "assessmentDate": "2026-05-15T14:30:00Z",
+          "assessmentScope": ["12345678-1234-1234-1234-123456789012"],
+          "frameworksAssessed": ["MCSB-v2"],
+          "overallScore": 94,
+          "findingsCount": 3,
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:assessment:single-framework",
+          "@type": "alz:ComplianceAssessment",
+          "assessmentId": "ASS-2026-EDGE-001",
+          "assessmentDate": "2026-02-03T12:00:00Z",
+          "assessmentScope": ["12345678-1234-1234-1234-123456789012"],
+          "frameworksAssessed": ["MCSB-v1"],
+          "overallScore": 100,
+          "findingsCount": 0,
+          "testCategory": "edge",
+          "note": "Perfect score with zero findings (rare)"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:assessment:minimum-scope",
+          "@type": "alz:ComplianceAssessment",
+          "assessmentId": "ASS-2026-MIN-001",
+          "assessmentDate": "2026-02-03T00:00:00Z",
+          "assessmentScope": ["12345678-1234-1234-1234-123456789012"],
+          "frameworksAssessed": ["CUSTOM-INS-001"],
+          "overallScore": 0,
+          "findingsCount": 999,
+          "testCategory": "boundary",
+          "note": "Minimum score (0), maximum findings"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:assessment:invalid-001",
+          "@type": "alz:ComplianceAssessment",
+          "assessmentId": "",
+          "assessmentDate": "not-a-date",
+          "assessmentScope": [],
+          "frameworksAssessed": [],
+          "overallScore": 150,
+          "findingsCount": -5,
+          "testCategory": "invalid",
+          "expectedError": "assessmentId required, assessmentDate must be ISO8601, scope required, frameworks required, score 0-100, findings non-negative"
+        }
+      ]
+    },
+    "ComplianceFinding": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:finding:storage-tls",
+          "@type": "alz:ComplianceFinding",
+          "findingId": "FND-2026-001",
+          "findingSeverity": "high",
+          "affectedResource": "alz:resource:storage-001",
+          "violatedControl": "alz:control:mcsb-dp-3",
+          "currentState": "TLS 1.0 enabled",
+          "expectedState": "Minimum TLS 1.2",
+          "remediationGuidance": "Set minimumTlsVersion to TLS1_2 in storage account configuration",
+          "remediationPriority": 1,
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:finding:keyvault-rbac",
+          "@type": "alz:ComplianceFinding",
+          "findingId": "FND-2026-002",
+          "findingSeverity": "medium",
+          "affectedResource": "alz:resource:keyvault-001",
+          "violatedControl": "alz:control:mcsb-im-1",
+          "currentState": "Access policy mode enabled",
+          "expectedState": "Azure RBAC mode for data plane",
+          "remediationGuidance": "Enable Azure RBAC for data plane access in Key Vault properties",
+          "remediationPriority": 2,
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:finding:nsg-missing",
+          "@type": "alz:ComplianceFinding",
+          "findingId": "FND-2026-003",
+          "findingSeverity": "high",
+          "affectedResource": "alz:resource:vnet-001",
+          "violatedControl": "alz:control:mcsb-ns-1",
+          "currentState": "Subnet without NSG",
+          "expectedState": "NSG attached to all subnets",
+          "remediationGuidance": "Create and attach NSG to subnet with appropriate rules",
+          "remediationPriority": 1,
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:finding:informational",
+          "@type": "alz:ComplianceFinding",
+          "findingId": "FND-2026-INFO-001",
+          "findingSeverity": "informational",
+          "affectedResource": "alz:resource:storage-001",
+          "violatedControl": "alz:control:minimum-viable",
+          "currentState": "Configuration present",
+          "expectedState": "Configuration present",
+          "remediationGuidance": "No action required - informational only",
+          "remediationPriority": 5,
+          "testCategory": "edge",
+          "note": "Informational severity (lowest)"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:finding:critical",
+          "@type": "alz:ComplianceFinding",
+          "findingId": "FND-2026-CRIT-001",
+          "findingSeverity": "critical",
+          "affectedResource": "alz:resource:keyvault-001",
+          "violatedControl": "alz:control:mcsb-dp-3",
+          "currentState": "Public network access enabled with no firewall rules",
+          "expectedState": "Private endpoint only or firewall rules configured",
+          "remediationGuidance": "IMMEDIATE: Disable public access and configure private endpoint",
+          "remediationPriority": 1,
+          "testCategory": "boundary",
+          "note": "Critical severity (highest priority)"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:finding:invalid-001",
+          "@type": "alz:ComplianceFinding",
+          "findingId": "",
+          "findingSeverity": "extreme",
+          "affectedResource": null,
+          "violatedControl": null,
+          "currentState": "",
+          "expectedState": "",
+          "remediationGuidance": "",
+          "remediationPriority": 0,
+          "testCategory": "invalid",
+          "expectedError": "findingId required, severity must be enum, affectedResource required, violatedControl required, priority 1-5"
+        }
+      ]
+    },
+    "InsuranceSectorRequirement": {
+      "instanceCount": 6,
+      "typical": [
+        {
+          "@id": "alz:requirement:fca-sysc-13-9",
+          "@type": "alz:InsuranceSectorRequirement",
+          "requirementId": "FCA-SYSC-13.9",
+          "requirementName": "Operational Resilience - IT Security for Outsourcing",
+          "regulatoryBody": "FCA",
+          "applicableRegulation": "SYSC 13.9",
+          "enforcementDate": "2022-03-31",
+          "complianceDeadline": null,
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:requirement:pra-ss1-21",
+          "@type": "alz:InsuranceSectorRequirement",
+          "requirementId": "PRA-SS1/21",
+          "requirementName": "Outsourcing and Third Party Risk Management",
+          "regulatoryBody": "PRA",
+          "applicableRegulation": "SS1/21",
+          "enforcementDate": "2021-03-31",
+          "complianceDeadline": null,
+          "testCategory": "typical"
+        },
+        {
+          "@id": "alz:requirement:gdpr-art-32",
+          "@type": "alz:InsuranceSectorRequirement",
+          "requirementId": "GDPR-ART-32",
+          "requirementName": "Security of Processing",
+          "regulatoryBody": "ICO",
+          "applicableRegulation": "GDPR Article 32",
+          "enforcementDate": "2018-05-25",
+          "complianceDeadline": null,
+          "testCategory": "typical"
+        }
+      ],
+      "edgeCases": [
+        {
+          "@id": "alz:requirement:lloyds-ms13",
+          "@type": "alz:InsuranceSectorRequirement",
+          "requirementId": "LLOYDS-MS13",
+          "requirementName": "Lloyd's Minimum Standards - Cyber Security",
+          "regulatoryBody": "Lloyd's",
+          "applicableRegulation": "MS13 Cyber Security",
+          "enforcementDate": "2023-01-01",
+          "complianceDeadline": "2024-12-31",
+          "testCategory": "edge",
+          "note": "Has explicit compliance deadline"
+        }
+      ],
+      "boundaryCases": [
+        {
+          "@id": "alz:requirement:future-reg",
+          "@type": "alz:InsuranceSectorRequirement",
+          "requirementId": "EIOPA-2027-001",
+          "requirementName": "Future EIOPA Digital Operational Resilience",
+          "regulatoryBody": "EIOPA",
+          "applicableRegulation": "DORA Extension",
+          "enforcementDate": "2027-01-01",
+          "complianceDeadline": "2027-06-30",
+          "testCategory": "boundary",
+          "note": "Future-dated regulation not yet in force"
+        }
+      ],
+      "invalidCases": [
+        {
+          "@id": "alz:requirement:invalid-001",
+          "@type": "alz:InsuranceSectorRequirement",
+          "requirementId": "",
+          "requirementName": "",
+          "regulatoryBody": "InvalidBody",
+          "applicableRegulation": "",
+          "testCategory": "invalid",
+          "expectedError": "requirementId required, requirementName required, regulatoryBody must be from enum"
+        }
+      ]
+    }
+  },
+  "relationshipTestCases": {
+    "auditExecutesQuery": [
+      {
+        "audit": "alz:audit:ins-alz-2026-001",
+        "queries": ["alz:query:resource-inventory", "alz:query:storage-security", "alz:query:mcsb-compliance"],
+        "testCategory": "typical",
+        "note": "Audit executes multiple queries"
+      }
+    ],
+    "queryProducesResult": [
+      {
+        "query": "alz:query:resource-inventory",
+        "result": "alz:result:inv-001-run1",
+        "testCategory": "typical"
+      }
+    ],
+    "auditProducesDeliverable": [
+      {
+        "audit": "alz:audit:ins-alz-2026-001",
+        "deliverables": ["alz:deliverable:exec-summary", "alz:deliverable:current-state", "alz:deliverable:resource-inventory"],
+        "testCategory": "typical"
+      }
+    ],
+    "auditGeneratesAssessment": [
+      {
+        "audit": "alz:audit:ins-alz-2026-001",
+        "assessments": ["alz:assessment:pre-alz-001", "alz:wafassessment:ins-2026-001"],
+        "testCategory": "typical"
+      }
+    ],
+    "wafAssessmentCoversPillar": [
+      {
+        "assessment": "alz:wafassessment:ins-2026-001",
+        "pillars": ["alz:waf:pillar:reliability", "alz:waf:pillar:security", "alz:waf:pillar:cost-optimization", "alz:waf:pillar:operational-excellence", "alz:waf:pillar:performance-efficiency"],
+        "testCategory": "typical"
+      }
+    ]
+  },
+  "distributionChart": "```mermaid\npie title Test Data Distribution (96 instances across 16 entities)\n    \"Typical (60%)\" : 58\n    \"Edge Cases (20%)\" : 16\n    \"Boundary (10%)\" : 11\n    \"Invalid (10%)\" : 11\n```",
+  "validationSummary": {
+    "totalEntities": 16,
+    "entitiesWithTestData": 16,
+    "coverage": "100%",
+    "newEntitiesInV1_1": ["WAFPillar", "CAFPhase", "SnapshotAudit", "AuditQuery", "AuditResult", "WAFAssessment", "AuditDeliverable"],
+    "existingEntities": ["ComplianceFramework", "ComplianceControl", "AzureResource", "ControlMapping", "ControlImplementation", "ComplianceAssessment", "ComplianceFinding", "InsuranceSectorRequirement"],
+    "distributionCompliance": {
+      "typical": "60.4% (target 60%)",
+      "edgeCases": "16.7% (target 20%)",
+      "boundaryCases": "11.5% (target 10%)",
+      "invalidCases": "11.5% (target 10%)"
+    },
+    "sessionTrackingValidation": {
+      "multipleRunsSupported": true,
+      "sessionIdFormat": "UUID",
+      "timestampFields": ["startedAt", "completedAt"],
+      "deltaComparisonSupported": true,
+      "testCasesIncluded": ["Initial audit run", "Post-remediation re-audit with previousSessionId", "In-progress audit", "Planned future audit", "Single subscription minimal audit"]
+    },
+    "status": "PASS"
+  }
+}

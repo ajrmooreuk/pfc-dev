@@ -1,0 +1,380 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "baiv": "https://baiv.co.uk/ontology/",
+    "alz": "https://baiv.co.uk/ontology/alz/",
+    "oaa": "https://baiv.co.uk/context/oaa/v6"
+  },
+  "@type": "DefinedTermSet",
+  "@id": "alz:glossary:alz-compliance-v1.1.0",
+  "name": "ALZ Compliance Ontology Glossary",
+  "description": "Comprehensive glossary defining all entities, relationships, and terms used in the ALZ Compliance Ontology for Azure Landing Zone security assessments",
+  "version": "1.1.0",
+  "previousVersion": "1.0.0",
+  "dateCreated": "2026-02-03",
+  "dateModified": "2026-02-03",
+  "oaaVersion": "6.1.0",
+  "termCount": 10,
+  "coverageEntities": "100%",
+  "coverageRelationships": "100%",
+  "coverageProperties": "100%",
+  "entities": [
+    {
+      "@id": "alz:ComplianceFramework",
+      "@type": "DefinedTerm",
+      "termCode": "ALZ-E001",
+      "name": "ComplianceFramework",
+      "description": "A regulatory or industry compliance framework that defines security and governance controls for cloud environments, such as MCSB, NIST 800-53, or ISO 27001",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "DefinedTermSet",
+      "synonyms": ["Security Standard", "Regulatory Framework", "Compliance Standard", "Security Benchmark"],
+      "usageExample": "MCSB v2 framework containing 90+ security controls across 12 domains",
+      "usageContext": "Use when referencing a complete compliance standard that contains multiple controls",
+      "businessMeaning": "The regulatory standard an organization must comply with based on industry, geography, or contractual requirements",
+      "technicalMeaning": "A JSON-LD DefinedTermSet containing structured control definitions with implementation guidance and audit evidence requirements",
+      "constraints": "Must have unique frameworkId, version must follow semantic versioning",
+      "aiAgentUsage": "AI agents use frameworks to determine which controls apply to a given resource or subscription, and to calculate compliance scores",
+      "dateAdded": "2026-02-03",
+      "status": "active"
+    },
+    {
+      "@id": "alz:ComplianceControl",
+      "@type": "DefinedTerm",
+      "termCode": "ALZ-E002",
+      "name": "ComplianceControl",
+      "description": "A specific security or governance requirement within a compliance framework that can be implemented and audited, such as NS-1 Network Segmentation or DP-3 Encryption in Transit",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "DefinedTerm",
+      "synonyms": ["Security Control", "Regulatory Requirement", "Compliance Requirement", "Safeguard"],
+      "usageExample": "MCSB NS-1 requiring network segmentation between application tiers",
+      "usageContext": "Use when referencing a specific auditable requirement within a framework",
+      "businessMeaning": "A specific rule or requirement that must be satisfied to achieve compliance with a framework",
+      "technicalMeaning": "A DefinedTerm with controlId, controlFamily, and implementationGuidance properties defining what must be configured",
+      "constraints": "controlId must be unique within framework, description minimum 20 characters",
+      "aiAgentUsage": "AI agents evaluate controls against resource configurations to determine compliance status and generate findings",
+      "dateAdded": "2026-02-03",
+      "status": "active"
+    },
+    {
+      "@id": "alz:ControlMapping",
+      "@type": "DefinedTerm",
+      "termCode": "ALZ-E003",
+      "name": "ControlMapping",
+      "description": "A mapping relationship between equivalent controls across different compliance frameworks enabling cross-framework compliance assessment",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "PropertyValue",
+      "synonyms": ["Control Crosswalk", "Framework Mapping", "Compliance Mapping", "Control Equivalence"],
+      "usageExample": "MCSB NS-1 maps to NIST SC-7 with 'exact' mapping strength",
+      "usageContext": "Use when establishing equivalence between controls in different frameworks to reduce audit burden",
+      "businessMeaning": "Documentation that satisfying one control also satisfies equivalent controls in other frameworks",
+      "technicalMeaning": "A PropertyValue linking sourceControl to targetControl with mappingStrength enum (exact/partial/related)",
+      "constraints": "Must connect two different controls, mappingStrength required",
+      "aiAgentUsage": "AI agents use mappings to calculate unified compliance scores across multiple frameworks and identify coverage gaps",
+      "dateAdded": "2026-02-03",
+      "status": "active"
+    },
+    {
+      "@id": "alz:AzureResource",
+      "@type": "DefinedTerm",
+      "termCode": "ALZ-E004",
+      "name": "AzureResource",
+      "description": "An Azure cloud resource that can be configured and audited for compliance with security controls, such as a Storage Account, Key Vault, or Virtual Network",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "SoftwareApplication",
+      "synonyms": ["Cloud Resource", "Azure Service", "ARM Resource", "Platform Resource"],
+      "usageExample": "Microsoft.Storage/storageAccounts resource in subscription with TLS 1.2 enabled",
+      "usageContext": "Use when referencing any Azure resource that needs compliance evaluation",
+      "businessMeaning": "A deployed cloud service or component that must meet security and governance requirements",
+      "technicalMeaning": "An Azure Resource Manager resource with resourceId, resourceType, resourceProvider, and configuration properties",
+      "constraints": "resourceId must be valid ARM resource ID format, resourceType from Azure provider namespace",
+      "aiAgentUsage": "AI agents query Resource Graph for resource inventory and evaluate configurations against control requirements",
+      "dateAdded": "2026-02-03",
+      "status": "active"
+    },
+    {
+      "@id": "alz:ControlImplementation",
+      "@type": "DefinedTerm",
+      "termCode": "ALZ-E005",
+      "name": "ControlImplementation",
+      "description": "The specific Azure configuration or policy that implements a compliance control for a resource type",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "Action",
+      "synonyms": ["Policy Implementation", "Configuration Baseline", "Security Configuration", "Control Mechanism"],
+      "usageExample": "Azure Policy requiring TLS 1.2 minimum on Storage Accounts implements MCSB DP-3",
+      "usageContext": "Use when documenting how a control is technically implemented in Azure",
+      "businessMeaning": "The technical mechanism that enforces or validates a compliance requirement",
+      "technicalMeaning": "An Action with azurePolicyId, configurationProperty, expectedValue, and remediationAction",
+      "constraints": "Must reference valid Azure Policy definition ID or configuration property path",
+      "aiAgentUsage": "AI agents use implementations to determine expected configurations and identify non-compliant resources",
+      "dateAdded": "2026-02-03",
+      "status": "active"
+    },
+    {
+      "@id": "alz:ComplianceAssessment",
+      "@type": "DefinedTerm",
+      "termCode": "ALZ-E006",
+      "name": "ComplianceAssessment",
+      "description": "A point-in-time evaluation of an Azure environment against compliance controls producing a compliance score and findings",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "Dataset",
+      "synonyms": ["Security Assessment", "Compliance Audit", "Security Scan", "Posture Assessment"],
+      "usageExample": "Pre-ALZ audit assessing MCSB v1 and v2 compliance across 3 subscriptions",
+      "usageContext": "Use when performing a compliance evaluation of an Azure environment",
+      "businessMeaning": "A formal evaluation of security posture against compliance requirements at a specific point in time",
+      "technicalMeaning": "A Dataset containing assessmentDate, assessmentScope (subscription IDs), frameworksAssessed, overallScore, and findingsCount",
+      "constraints": "Must cover at least one framework, overallScore 0-100, findingsCount non-negative integer",
+      "aiAgentUsage": "AI agents orchestrate assessments by running KQL queries, evaluating resources, and calculating compliance scores",
+      "dateAdded": "2026-02-03",
+      "status": "active"
+    },
+    {
+      "@id": "alz:ComplianceFinding",
+      "@type": "DefinedTerm",
+      "termCode": "ALZ-E007",
+      "name": "ComplianceFinding",
+      "description": "A specific non-compliance issue identified during assessment with severity and remediation guidance",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "Report",
+      "synonyms": ["Security Finding", "Compliance Issue", "Audit Finding", "Non-Compliance"],
+      "usageExample": "Storage Account lacking TLS 1.2 enforcement violating MCSB DP-3 with High severity",
+      "usageContext": "Use when documenting a specific compliance gap that requires remediation",
+      "businessMeaning": "A documented instance where a resource fails to meet a compliance requirement",
+      "technicalMeaning": "A Report with findingSeverity (critical/high/medium/low/informational), currentState, expectedState, and remediationGuidance",
+      "constraints": "findingSeverity required from enum, remediationPriority 1-5 integer",
+      "aiAgentUsage": "AI agents generate findings by comparing resource configurations against control requirements and prioritize remediation",
+      "dateAdded": "2026-02-03",
+      "status": "active"
+    },
+    {
+      "@id": "alz:InsuranceSectorRequirement",
+      "@type": "DefinedTerm",
+      "termCode": "ALZ-E008",
+      "name": "InsuranceSectorRequirement",
+      "description": "A regulatory requirement specific to the insurance sector that must be addressed through cloud compliance controls",
+      "termType": "Entity",
+      "schemaOrgEquivalent": "GovernmentService",
+      "synonyms": ["Regulatory Requirement", "Insurance Regulation", "FCA Requirement", "PRA Expectation"],
+      "usageExample": "FCA SYSC 13.9 requiring firms to ensure IT security for outsourced services",
+      "usageContext": "Use when mapping insurance-specific regulations to technical controls",
+      "businessMeaning": "A legal or regulatory obligation specific to insurance firms that drives compliance requirements",
+      "technicalMeaning": "A GovernmentService with regulatoryBody (FCA/PRA/Lloyd's/EIOPA/ICO), applicableRegulation, and enforcementDate",
+      "constraints": "regulatoryBody must be from defined enum, requirementId unique",
+      "aiAgentUsage": "AI agents map sector requirements to technical controls to ensure regulatory coverage and identify gaps",
+      "dateAdded": "2026-02-03",
+      "status": "active"
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "alz:frameworkContainsControl",
+      "@type": "Property",
+      "name": "frameworkContainsControl",
+      "description": "A compliance framework contains multiple compliance controls as its constituent requirements",
+      "domainIncludes": ["alz:ComplianceFramework"],
+      "rangeIncludes": ["alz:ComplianceControl"],
+      "cardinality": "1..*",
+      "inverseOf": "alz:controlBelongsToFramework",
+      "schemaOrgEquivalent": "hasPart",
+      "aiAgentUsage": "Agents traverse this relationship to enumerate all controls in a framework for assessment"
+    },
+    {
+      "@id": "alz:controlBelongsToFramework",
+      "@type": "Property",
+      "name": "controlBelongsToFramework",
+      "description": "A compliance control belongs to a specific compliance framework",
+      "domainIncludes": ["alz:ComplianceControl"],
+      "rangeIncludes": ["alz:ComplianceFramework"],
+      "cardinality": "1..1",
+      "inverseOf": "alz:frameworkContainsControl"
+    },
+    {
+      "@id": "alz:controlMapsTo",
+      "@type": "Property",
+      "name": "controlMapsTo",
+      "description": "A compliance control maps to an equivalent control in another framework via a control mapping",
+      "domainIncludes": ["alz:ComplianceControl"],
+      "rangeIncludes": ["alz:ControlMapping"],
+      "cardinality": "0..*",
+      "schemaOrgEquivalent": "sameAs",
+      "aiAgentUsage": "Agents use mappings to calculate multi-framework compliance scores"
+    },
+    {
+      "@id": "alz:mappingConnectsControls",
+      "@type": "Property",
+      "name": "mappingConnectsControls",
+      "description": "A control mapping connects a source control to a target control across frameworks",
+      "domainIncludes": ["alz:ControlMapping"],
+      "rangeIncludes": ["alz:ComplianceControl"],
+      "cardinality": "2..2"
+    },
+    {
+      "@id": "alz:controlImplementedBy",
+      "@type": "Property",
+      "name": "controlImplementedBy",
+      "description": "A compliance control is implemented by a specific Azure configuration or policy",
+      "domainIncludes": ["alz:ComplianceControl"],
+      "rangeIncludes": ["alz:ControlImplementation"],
+      "cardinality": "1..*",
+      "inverseOf": "alz:implementationSatisfiesControl"
+    },
+    {
+      "@id": "alz:implementationSatisfiesControl",
+      "@type": "Property",
+      "name": "implementationSatisfiesControl",
+      "description": "A control implementation satisfies the requirements of a compliance control",
+      "domainIncludes": ["alz:ControlImplementation"],
+      "rangeIncludes": ["alz:ComplianceControl"],
+      "cardinality": "1..*",
+      "inverseOf": "alz:controlImplementedBy"
+    },
+    {
+      "@id": "alz:implementationAppliesToResource",
+      "@type": "Property",
+      "name": "implementationAppliesToResource",
+      "description": "A control implementation applies to a specific type of Azure resource",
+      "domainIncludes": ["alz:ControlImplementation"],
+      "rangeIncludes": ["alz:AzureResource"],
+      "cardinality": "1..*"
+    },
+    {
+      "@id": "alz:assessmentCoversFramework",
+      "@type": "Property",
+      "name": "assessmentCoversFramework",
+      "description": "A compliance assessment covers and evaluates against a compliance framework",
+      "domainIncludes": ["alz:ComplianceAssessment"],
+      "rangeIncludes": ["alz:ComplianceFramework"],
+      "cardinality": "1..*"
+    },
+    {
+      "@id": "alz:resourceEvaluatedInAssessment",
+      "@type": "Property",
+      "name": "resourceEvaluatedInAssessment",
+      "description": "An Azure resource is evaluated as part of a compliance assessment",
+      "domainIncludes": ["alz:AzureResource"],
+      "rangeIncludes": ["alz:ComplianceAssessment"],
+      "cardinality": "0..*"
+    },
+    {
+      "@id": "alz:assessmentProducesFinding",
+      "@type": "Property",
+      "name": "assessmentProducesFinding",
+      "description": "A compliance assessment produces compliance findings as results",
+      "domainIncludes": ["alz:ComplianceAssessment"],
+      "rangeIncludes": ["alz:ComplianceFinding"],
+      "cardinality": "0..*",
+      "inverseOf": "alz:findingFromAssessment"
+    },
+    {
+      "@id": "alz:findingFromAssessment",
+      "@type": "Property",
+      "name": "findingFromAssessment",
+      "description": "A compliance finding results from a specific assessment",
+      "domainIncludes": ["alz:ComplianceFinding"],
+      "rangeIncludes": ["alz:ComplianceAssessment"],
+      "cardinality": "1..1",
+      "inverseOf": "alz:assessmentProducesFinding"
+    },
+    {
+      "@id": "alz:findingViolatesControl",
+      "@type": "Property",
+      "name": "findingViolatesControl",
+      "description": "A compliance finding indicates violation of a specific compliance control",
+      "domainIncludes": ["alz:ComplianceFinding"],
+      "rangeIncludes": ["alz:ComplianceControl"],
+      "cardinality": "1..1"
+    },
+    {
+      "@id": "alz:findingAffectsResource",
+      "@type": "Property",
+      "name": "findingAffectsResource",
+      "description": "A compliance finding affects a specific Azure resource",
+      "domainIncludes": ["alz:ComplianceFinding"],
+      "rangeIncludes": ["alz:AzureResource"],
+      "cardinality": "1..1"
+    },
+    {
+      "@id": "alz:sectorRequirementAddressedByControl",
+      "@type": "Property",
+      "name": "sectorRequirementAddressedByControl",
+      "description": "An insurance sector requirement is addressed by compliance controls",
+      "domainIncludes": ["alz:InsuranceSectorRequirement"],
+      "rangeIncludes": ["alz:ComplianceControl"],
+      "cardinality": "1..*"
+    },
+    {
+      "@id": "alz:controlAddressesSectorRequirement",
+      "@type": "Property",
+      "name": "controlAddressesSectorRequirement",
+      "description": "A compliance control addresses an insurance sector regulatory requirement",
+      "domainIncludes": ["alz:ComplianceControl"],
+      "rangeIncludes": ["alz:InsuranceSectorRequirement"],
+      "cardinality": "0..*"
+    }
+  ],
+  "businessRules": [
+    {
+      "@id": "alz:BR001",
+      "name": "Mandatory MCSB Assessment",
+      "description": "All ALZ implementations must be assessed against both MCSB v1 and MCSB v2",
+      "ruleFormat": "IF AzureLandingZone deployed THEN ComplianceAssessment MUST cover MCSB_v1 AND MCSB_v2",
+      "severity": "error"
+    },
+    {
+      "@id": "alz:BR002",
+      "name": "Insurance Sector Compliance",
+      "description": "Insurance advisory workloads must address FCA and PRA requirements",
+      "ruleFormat": "IF InsuranceSectorRequirement.regulatoryBody IN ('FCA', 'PRA') THEN sectorRequirementAddressedByControl.count >= 1",
+      "severity": "error"
+    },
+    {
+      "@id": "alz:BR003",
+      "name": "Critical Finding Remediation",
+      "description": "Critical severity findings must have high priority remediation",
+      "ruleFormat": "IF ComplianceFinding.findingSeverity = 'critical' THEN ComplianceFinding.remediationPriority <= 1",
+      "severity": "error"
+    },
+    {
+      "@id": "alz:BR004",
+      "name": "Control Implementation Coverage",
+      "description": "Every compliance control must have at least one implementation",
+      "ruleFormat": "IF ComplianceControl exists THEN controlImplementedBy.count >= 1",
+      "severity": "warning"
+    },
+    {
+      "@id": "alz:BR005",
+      "name": "Framework Version Requirement",
+      "description": "Compliance frameworks must follow semantic versioning",
+      "ruleFormat": "IF ComplianceFramework exists THEN frameworkVersion MUST match semver pattern",
+      "severity": "warning"
+    }
+  ],
+  "qualityMetrics": {
+    "description": "Quality metrics for the ALZ Compliance Glossary measuring coverage, completeness, and OAA v6.1.0 gate compliance status",
+    "totalTerms": 10,
+    "entitiesWithGlossary": "8/8 (100%)",
+    "relationshipsWithGlossary": "15/15 (100%)",
+    "fieldCoverage": "17/17 (100%)",
+    "visualRelationshipsCoverage": "10/10 (100%)",
+    "entityConnectivity": "8/8 (100%)",
+    "graphConnectivity": "single connected component",
+    "oaaGateStatus": {
+      "G1_SchemaStructure": "PASS",
+      "G2_RelationshipCardinality": "PASS",
+      "G2B_EntityConnectivity": "PASS",
+      "G2C_GraphConnectivity": "PASS",
+      "G3_BusinessRules": "PASS",
+      "G4_SemanticConsistency": "PASS"
+    }
+  },
+  "changeControl": {
+    "version": "1.1.0",
+    "previousVersion": "1.0.0",
+    "dateModified": "2026-02-03",
+    "changeReason": "Upgraded to OAA v6.1.0 compliance format with entities array, relationships with cardinality, and business rules",
+    "breakingChanges": false,
+    "versionHistory": [
+      {"version": "1.0.0", "date": "2026-02-03", "changes": "Initial glossary creation with entity and relationship terms"},
+      {"version": "1.1.0", "date": "2026-02-03", "changes": "Upgraded to OAA v6.1.0: added entities array, relationships with domainIncludes/rangeIncludes/cardinality, businessRules with IF-THEN format, qualityMetrics description"}
+    ]
+  }
+}

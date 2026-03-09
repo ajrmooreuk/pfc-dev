@@ -1,0 +1,379 @@
+{
+  "metadata": {
+    "name": "ALZ Compliance Control Mapping",
+    "version": "1.1.0",
+    "description": "Mapping of Azure controls to MCSB v1, MCSB v2, NIST 800-53, UK NCSC 14 Principles, and ISO 27001",
+    "sector": "Insurance Advisory",
+    "applicableRegulations": ["FCA", "PRA", "Solvency II", "GDPR"],
+    "lastUpdated": "2026-02"
+  },
+  "frameworks": {
+    "MCSB_v1": {
+      "name": "Microsoft Cloud Security Benchmark v1",
+      "description": "Legacy Azure security benchmark (superseded by v2)",
+      "status": "Deprecated but still referenced",
+      "url": "https://learn.microsoft.com/security/benchmark/azure/overview-v1",
+      "policySetDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/1f3afdf9-d0c9-4c3d-847f-89da613e70a8"
+    },
+    "MCSB_v2": {
+      "name": "Microsoft Cloud Security Benchmark v2",
+      "description": "Current Azure security benchmark",
+      "status": "Current",
+      "url": "https://learn.microsoft.com/security/benchmark/azure/overview",
+      "policySetDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/1f3afdf9-d0c9-4c3d-847f-89da613e70a8"
+    },
+    "NIST_800_53_Rev5": {
+      "name": "NIST SP 800-53 Revision 5",
+      "description": "Security and Privacy Controls for Information Systems and Organizations",
+      "url": "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final",
+      "policySetDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/179d1daa-458f-4e47-8086-2a68d0d6c38f"
+    },
+    "UK_NCSC_14": {
+      "name": "UK NCSC 14 Cloud Security Principles",
+      "description": "National Cyber Security Centre guidance for secure cloud adoption",
+      "url": "https://www.ncsc.gov.uk/collection/cloud/the-cloud-security-principles"
+    },
+    "ISO_27001_2022": {
+      "name": "ISO/IEC 27001:2022",
+      "description": "Information security management systems",
+      "url": "https://www.iso.org/standard/27001",
+      "policySetDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/89c6cddc-1c73-4ac1-b19c-54d1a15a42f2"
+    }
+  },
+  "mcsbDomains": {
+    "identityManagement": {
+      "code": "IM",
+      "name": "Identity Management",
+      "v1Controls": ["IM-1", "IM-2", "IM-3", "IM-4", "IM-5", "IM-6", "IM-7", "IM-8", "IM-9"],
+      "v2Controls": ["IM-1", "IM-2", "IM-3", "IM-4", "IM-5", "IM-6", "IM-7", "IM-8", "IM-9"],
+      "alzImplementation": "Entra ID, PIM, Conditional Access, MFA"
+    },
+    "privilegedAccess": {
+      "code": "PA",
+      "name": "Privileged Access",
+      "v1Controls": ["PA-1", "PA-2", "PA-3", "PA-4", "PA-5", "PA-6", "PA-7", "PA-8"],
+      "v2Controls": ["PA-1", "PA-2", "PA-3", "PA-4", "PA-5", "PA-6", "PA-7", "PA-8"],
+      "alzImplementation": "PIM, RBAC, Break-glass accounts, JIT access"
+    },
+    "networkSecurity": {
+      "code": "NS",
+      "name": "Network Security",
+      "v1Controls": ["NS-1", "NS-2", "NS-3", "NS-4", "NS-5", "NS-6", "NS-7", "NS-8", "NS-9", "NS-10"],
+      "v2Controls": ["NS-1", "NS-2", "NS-3", "NS-4", "NS-5", "NS-6", "NS-7", "NS-8", "NS-9", "NS-10"],
+      "alzImplementation": "Hub-Spoke, Azure Firewall, NSGs, Private Endpoints"
+    },
+    "dataProtection": {
+      "code": "DP",
+      "name": "Data Protection",
+      "v1Controls": ["DP-1", "DP-2", "DP-3", "DP-4", "DP-5", "DP-6", "DP-7", "DP-8"],
+      "v2Controls": ["DP-1", "DP-2", "DP-3", "DP-4", "DP-5", "DP-6", "DP-7", "DP-8"],
+      "alzImplementation": "Encryption at rest/transit, Key Vault, Classification"
+    },
+    "assetManagement": {
+      "code": "AM",
+      "name": "Asset Management",
+      "v1Controls": ["AM-1", "AM-2", "AM-3", "AM-4", "AM-5", "AM-6"],
+      "v2Controls": ["AM-1", "AM-2", "AM-3", "AM-4", "AM-5", "AM-6"],
+      "alzImplementation": "Resource tagging, Inventory, Azure Policy"
+    },
+    "loggingThreatDetection": {
+      "code": "LT",
+      "name": "Logging and Threat Detection",
+      "v1Controls": ["LT-1", "LT-2", "LT-3", "LT-4", "LT-5", "LT-6", "LT-7"],
+      "v2Controls": ["LT-1", "LT-2", "LT-3", "LT-4", "LT-5", "LT-6", "LT-7"],
+      "alzImplementation": "Log Analytics, Defender for Cloud, Sentinel"
+    },
+    "incidentResponse": {
+      "code": "IR",
+      "name": "Incident Response",
+      "v1Controls": ["IR-1", "IR-2", "IR-3", "IR-4", "IR-5", "IR-6"],
+      "v2Controls": ["IR-1", "IR-2", "IR-3", "IR-4", "IR-5", "IR-6", "IR-7", "IR-8"],
+      "alzImplementation": "Incident playbooks, Automation, Sentinel"
+    },
+    "postureVulnerability": {
+      "code": "PV",
+      "name": "Posture and Vulnerability Management",
+      "v1Controls": ["PV-1", "PV-2", "PV-3", "PV-4", "PV-5", "PV-6", "PV-7", "PV-8"],
+      "v2Controls": ["PV-1", "PV-2", "PV-3", "PV-4", "PV-5", "PV-6", "PV-7", "PV-8"],
+      "alzImplementation": "Defender for Cloud, Vulnerability assessment"
+    },
+    "endpointSecurity": {
+      "code": "ES",
+      "name": "Endpoint Security",
+      "v1Controls": ["ES-1", "ES-2", "ES-3"],
+      "v2Controls": ["ES-1", "ES-2", "ES-3"],
+      "alzImplementation": "Defender for Endpoint, EDR"
+    },
+    "backupRecovery": {
+      "code": "BR",
+      "name": "Backup and Recovery",
+      "v1Controls": ["BR-1", "BR-2", "BR-3", "BR-4"],
+      "v2Controls": ["BR-1", "BR-2", "BR-3", "BR-4"],
+      "alzImplementation": "Azure Backup, Geo-redundancy, Recovery Services"
+    },
+    "devOpsSecurity": {
+      "code": "DS",
+      "name": "DevOps Security",
+      "v1Controls": ["DS-1", "DS-2", "DS-3", "DS-4", "DS-5", "DS-6", "DS-7"],
+      "v2Controls": ["DS-1", "DS-2", "DS-3", "DS-4", "DS-5", "DS-6", "DS-7"],
+      "alzImplementation": "Secure pipelines, Code scanning, IaC security"
+    },
+    "governanceStrategy": {
+      "code": "GS",
+      "name": "Governance and Strategy",
+      "v1Controls": ["GS-1", "GS-2", "GS-3", "GS-4", "GS-5", "GS-6", "GS-7", "GS-8", "GS-9", "GS-10"],
+      "v2Controls": ["GS-1", "GS-2", "GS-3", "GS-4", "GS-5", "GS-6", "GS-7", "GS-8", "GS-9", "GS-10"],
+      "alzImplementation": "Management groups, Azure Policy, CAF alignment"
+    }
+  },
+  "controlMappings": [
+    {
+      "id": "CTL-001",
+      "name": "Centralised Identity Provider",
+      "description": "Use Entra ID as centralised identity provider",
+      "mcsbV1": ["IM-1"],
+      "mcsbV2": ["IM-1"],
+      "nist": ["AC-2", "IA-2", "IA-5"],
+      "ncsc": ["P9"],
+      "iso": ["A.9.2.1", "A.9.2.3"],
+      "alzImplementation": "Entra ID tenant connected to Azure subscriptions",
+      "auditQuery": "authorizationresources | where type == 'microsoft.authorization/roleassignments'"
+    },
+    {
+      "id": "CTL-002",
+      "name": "Privileged Access Management",
+      "description": "Implement just-in-time privileged access using PIM",
+      "mcsbV1": ["PA-1", "PA-2"],
+      "mcsbV2": ["PA-1", "PA-2"],
+      "nist": ["AC-2(7)", "AC-6(1)", "AC-6(2)"],
+      "ncsc": ["P9", "P10"],
+      "iso": ["A.9.2.3", "A.9.4.1"],
+      "alzImplementation": "PIM enabled for all administrative roles",
+      "auditQuery": "Check Entra ID PIM configuration via Graph API"
+    },
+    {
+      "id": "CTL-003",
+      "name": "Multi-Factor Authentication",
+      "description": "Require MFA for all administrative access",
+      "mcsbV1": ["IM-4"],
+      "mcsbV2": ["IM-4"],
+      "nist": ["IA-2(1)", "IA-2(2)"],
+      "ncsc": ["P10"],
+      "iso": ["A.9.4.2"],
+      "alzImplementation": "Conditional Access requiring MFA for Azure management",
+      "auditQuery": "Check Conditional Access policies via Graph API"
+    },
+    {
+      "id": "CTL-004",
+      "name": "Network Segmentation",
+      "description": "Implement hub-spoke topology with network segmentation",
+      "mcsbV1": ["NS-1", "NS-2"],
+      "mcsbV2": ["NS-1", "NS-2"],
+      "nist": ["SC-7", "SC-7(5)"],
+      "ncsc": ["P11"],
+      "iso": ["A.13.1.1", "A.13.1.3"],
+      "alzImplementation": "Hub VNet with Azure Firewall, spoke VNets for workloads",
+      "auditQuery": "resources | where type == 'microsoft.network/virtualnetworks'"
+    },
+    {
+      "id": "CTL-005",
+      "name": "NSG on Subnets",
+      "description": "Network Security Groups on all subnets",
+      "mcsbV1": ["NS-1"],
+      "mcsbV2": ["NS-1"],
+      "nist": ["SC-7"],
+      "ncsc": ["P11"],
+      "iso": ["A.13.1.1"],
+      "alzImplementation": "NSG assigned to every subnet via policy",
+      "auditQuery": "resources | where type == 'microsoft.network/virtualnetworks' | mv-expand subnet = properties.subnets | extend nsgAssigned = isnotempty(subnet.properties.networkSecurityGroup.id)"
+    },
+    {
+      "id": "CTL-006",
+      "name": "Private Connectivity for PaaS",
+      "description": "Use private endpoints for PaaS services",
+      "mcsbV1": ["NS-2", "NS-3"],
+      "mcsbV2": ["NS-2", "NS-3"],
+      "nist": ["SC-7", "SC-8"],
+      "ncsc": ["P1", "P11"],
+      "iso": ["A.13.1.1", "A.13.2.1"],
+      "alzImplementation": "Private endpoints for storage, Key Vault, databases",
+      "auditQuery": "resources | where type == 'microsoft.network/privateendpoints'"
+    },
+    {
+      "id": "CTL-007",
+      "name": "Encryption in Transit",
+      "description": "Enforce TLS 1.2+ for all data in transit",
+      "mcsbV1": ["DP-3"],
+      "mcsbV2": ["DP-3"],
+      "nist": ["SC-8", "SC-8(1)"],
+      "ncsc": ["P1"],
+      "iso": ["A.13.2.1", "A.14.1.2"],
+      "alzImplementation": "Minimum TLS 1.2 on all services, HTTPS only",
+      "auditQuery": "resources | where type =~ 'microsoft.storage/storageaccounts' | extend httpsOnly = properties.supportsHttpsTrafficOnly, minTLS = properties.minimumTlsVersion"
+    },
+    {
+      "id": "CTL-008",
+      "name": "Encryption at Rest",
+      "description": "Encrypt all data at rest",
+      "mcsbV1": ["DP-4", "DP-5"],
+      "mcsbV2": ["DP-4", "DP-5"],
+      "nist": ["SC-28", "SC-28(1)"],
+      "ncsc": ["P2"],
+      "iso": ["A.10.1.1", "A.18.1.5"],
+      "alzImplementation": "Storage encryption, disk encryption, Key Vault for CMK",
+      "auditQuery": "resources | where type == 'microsoft.keyvault/vaults'"
+    },
+    {
+      "id": "CTL-009",
+      "name": "Key Management",
+      "description": "Centralised key management with soft delete and purge protection",
+      "mcsbV1": ["DP-6", "DP-7"],
+      "mcsbV2": ["DP-6", "DP-7"],
+      "nist": ["SC-12", "SC-12(1)"],
+      "ncsc": ["P2"],
+      "iso": ["A.10.1.2"],
+      "alzImplementation": "Key Vault with soft delete, purge protection, RBAC",
+      "auditQuery": "resources | where type == 'microsoft.keyvault/vaults' | extend softDelete = properties.enableSoftDelete, purgeProtection = properties.enablePurgeProtection"
+    },
+    {
+      "id": "CTL-010",
+      "name": "Centralised Logging",
+      "description": "Aggregate all logs to central Log Analytics workspace",
+      "mcsbV1": ["LT-1", "LT-3"],
+      "mcsbV2": ["LT-1", "LT-3"],
+      "nist": ["AU-2", "AU-3", "AU-6"],
+      "ncsc": ["P13"],
+      "iso": ["A.12.4.1", "A.12.4.3"],
+      "alzImplementation": "Platform Log Analytics in management subscription",
+      "auditQuery": "resources | where type == 'microsoft.operationalinsights/workspaces'"
+    },
+    {
+      "id": "CTL-011",
+      "name": "Security Monitoring",
+      "description": "Enable Defender for Cloud across all subscriptions",
+      "mcsbV1": ["LT-1"],
+      "mcsbV2": ["LT-1"],
+      "nist": ["SI-4", "SI-4(2)"],
+      "ncsc": ["P13"],
+      "iso": ["A.12.4.1"],
+      "alzImplementation": "Defender for Cloud enabled via policy",
+      "auditQuery": "securityresources | where type == 'microsoft.security/assessments'"
+    },
+    {
+      "id": "CTL-012",
+      "name": "Resource Tagging",
+      "description": "Enforce consistent resource tagging",
+      "mcsbV1": ["AM-1"],
+      "mcsbV2": ["AM-1"],
+      "nist": ["CM-8"],
+      "ncsc": ["P5"],
+      "iso": ["A.8.1.1"],
+      "alzImplementation": "Required tags policy, tag inheritance",
+      "auditQuery": "resources | extend tagCount = array_length(bag_keys(tags)) | where tagCount == 0"
+    },
+    {
+      "id": "CTL-013",
+      "name": "Policy-Driven Governance",
+      "description": "Enforce configuration standards via Azure Policy",
+      "mcsbV1": ["GS-1", "GS-2"],
+      "mcsbV2": ["GS-1", "GS-2"],
+      "nist": ["CM-2", "CM-6", "CM-7"],
+      "ncsc": ["P5"],
+      "iso": ["A.12.1.1", "A.12.5.1"],
+      "alzImplementation": "Policy initiatives at management group level",
+      "auditQuery": "policyresources | where type == 'microsoft.authorization/policyassignments'"
+    }
+  ],
+  "insuranceSectorAdditions": {
+    "description": "Additional controls specific to insurance/financial services requirements",
+    "controls": [
+      {
+        "id": "INS-001",
+        "name": "Client Data Segregation",
+        "description": "Segregate client data at subscription or resource group level",
+        "regulatoryBasis": ["FCA", "GDPR"],
+        "alzImplementation": "Dedicated subscriptions or resource groups per client engagement"
+      },
+      {
+        "id": "INS-002",
+        "name": "Data Residency",
+        "description": "Ensure data remains in approved regions",
+        "regulatoryBasis": ["GDPR", "Solvency II"],
+        "alzImplementation": "Allowed locations policy restricting to UK regions"
+      },
+      {
+        "id": "INS-003",
+        "name": "Immutable Audit Trail",
+        "description": "Maintain immutable audit logs for regulatory retention periods",
+        "regulatoryBasis": ["FCA", "PRA"],
+        "alzImplementation": "Log Analytics with immutable storage, 7-year retention"
+      },
+      {
+        "id": "INS-004",
+        "name": "Access Reviews",
+        "description": "Periodic access reviews for privileged accounts",
+        "regulatoryBasis": ["FCA SYSC"],
+        "alzImplementation": "Entra ID Access Reviews, quarterly review cycle"
+      },
+      {
+        "id": "INS-005",
+        "name": "Business Continuity",
+        "description": "Ensure business continuity and disaster recovery capabilities",
+        "regulatoryBasis": ["PRA", "Solvency II"],
+        "alzImplementation": "Azure Backup, geo-redundant storage, recovery runbooks"
+      }
+    ]
+  },
+  "policyInitiatives": {
+    "recommended": [
+      {
+        "name": "Microsoft Cloud Security Benchmark",
+        "description": "MCSB v2 controls",
+        "policySetDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/1f3afdf9-d0c9-4c3d-847f-89da613e70a8"
+      },
+      {
+        "name": "NIST SP 800-53 Rev 5",
+        "description": "NIST security controls",
+        "policySetDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/179d1daa-458f-4e47-8086-2a68d0d6c38f"
+      },
+      {
+        "name": "ISO 27001:2013",
+        "description": "ISO information security controls",
+        "policySetDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/89c6cddc-1c73-4ac1-b19c-54d1a15a42f2"
+      },
+      {
+        "name": "UK OFFICIAL and UK NHS",
+        "description": "UK government security controls",
+        "policySetDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/3937f550-eedd-4639-9c5e-294358be442e"
+      },
+      {
+        "name": "CIS Microsoft Azure Foundations Benchmark",
+        "description": "CIS hardening controls",
+        "policySetDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/06f19060-9e68-4070-92ca-f15cc126059e"
+      }
+    ]
+  },
+  "auditChecklist": {
+    "phase1Deliverables": [
+      {"file": "inventory-full.json", "description": "Complete resource inventory"},
+      {"file": "inventory-by-type.csv", "description": "Resource counts by type"},
+      {"file": "untagged-resources.csv", "description": "Untagged resources list"},
+      {"file": "subscriptions.json", "description": "Subscription inventory"},
+      {"file": "management-groups.json", "description": "Management group hierarchy"},
+      {"file": "policy-assignments.json", "description": "Policy assignments"},
+      {"file": "policy-compliance.json", "description": "Policy compliance state"},
+      {"file": "vnets.json", "description": "Virtual network topology"},
+      {"file": "subnets.csv", "description": "Subnet configuration"},
+      {"file": "peerings.json", "description": "VNet peerings"},
+      {"file": "nsgs.json", "description": "NSG inventory"},
+      {"file": "storage-security.csv", "description": "Storage account security"},
+      {"file": "keyvaults.csv", "description": "Key Vault configuration"},
+      {"file": "rbac-assignments.json", "description": "RBAC assignments"},
+      {"file": "managed-identities.json", "description": "Managed identities"},
+      {"file": "data-ai-resources.json", "description": "Data/AI resources"},
+      {"file": "mcsb-v1-compliance.json", "description": "MCSB v1 compliance status"},
+      {"file": "mcsb-v2-compliance.json", "description": "MCSB v2 compliance status"},
+      {"file": "secure-score.json", "description": "Defender Secure Score"}
+    ]
+  }
+}
