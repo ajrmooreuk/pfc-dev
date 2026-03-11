@@ -70,6 +70,7 @@ All registry-related epics and features are aligned under this PBS ID:
 | `PFC-STRAT-BRIEF-PFC-PFI-VE-PE-DELTA-Discovery-Led-Process-v1.0.0.md` | BRIEF | STRAT | [Epic 63 (#969)](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/969) | Active |
 | `BRIEFING-DW-FinServices-Discussion-Paper-VE-Skill-Chain-v1.0.md` | BRIEF | STRAT | PBS-PFI-W4M-DW-FINSERVICES (epic TBD) | Draft |
 | `PFC-VE-BRIEF-Quantitative-Value-Finance-Skills-v1.0.0.md` | BRIEF | VE | [Epic 34 (#518)](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/518), [Epic 40 (#577)](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/577), [Epic 49 (#747)](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/747) | Draft |
+| `PFC-PPM-BRIEF-Team-Programme-Management-Process-v1.0.0.md` | BRIEF | PPM | [Epic 61 (#947)](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/947), [F61.14 (#1000)](https://github.com/ajrmooreuk/Azlan-EA-AAA/issues/1000) | Active — Team exec summary: Portfolio/Programme/Project process |
 
 ### CI/CD Artefacts (created 2026-03-08 — F61.5, F61.6)
 
