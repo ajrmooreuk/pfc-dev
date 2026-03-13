@@ -840,12 +840,12 @@ export function buildSubSeriesData(seriesRegistry, loadedOntologies) {
     if (!seriesInfo.subSeries) continue;
     for (const [subKey, subInfo] of Object.entries(seriesInfo.subSeries)) {
       const compositeKey = `${seriesKey}::${subKey}`;
-      const parentOntologyShort = subKey.split('-')[0]; // VSOM-SA → VSOM
+      const parentOntologyShort = subInfo.parentOntology || subKey.split('-')[0]; // Explicit hub or inferred (VSOM-SA → VSOM)
 
-      // Find parent ontology namespace
+      // Find parent ontology namespace — check explicit parentOntology first, then fallback to name match
       let parentOntologyNs = null;
       for (const [ns, record] of loadedOntologies) {
-        if (record.series === seriesKey && !record.subSeries) {
+        if (record.series === seriesKey) {
           const sn = extractShortName(record.name);
           if (sn.toUpperCase() === parentOntologyShort.toUpperCase()) {
             parentOntologyNs = ns;

@@ -762,6 +762,60 @@ describe('buildSubSeriesData', () => {
     const loaded = createLoadedOntologies([]);
     expect(buildSubSeriesData(reg, loaded)).toEqual({});
   });
+
+  it('resolves explicit parentOntology for hub-spoke pattern (EA)', () => {
+    const reg = {
+      'PE-Series': {
+        name: 'Process Engineering',
+        ontologies: ['PPM', 'EA'],
+        subSeries: {
+          'EA': { name: 'Enterprise Architecture', parentOntology: 'EA-CORE', ontologies: ['EA-CORE', 'EA-TOGAF', 'EA-MSFT', 'EA-AI'] }
+        }
+      }
+    };
+    const loaded = createLoadedOntologies([
+      { namespace: 'ea-core:', name: 'EA-CORE Ontology (Enterprise Architecture Core)', series: 'PE-Series' },
+      { namespace: 'ea-togaf:', name: 'EA-TOGAF Ontology', series: 'PE-Series' },
+      { namespace: 'ea-msft:', name: 'EA-MSFT Ontology', series: 'PE-Series' },
+      { namespace: 'ea-ai:', name: 'EA-AI Ontology', series: 'PE-Series' }
+    ]);
+    loaded.get('ea-core:').subSeries = 'EA';
+    loaded.get('ea-togaf:').subSeries = 'EA';
+    loaded.get('ea-msft:').subSeries = 'EA';
+    loaded.get('ea-ai:').subSeries = 'EA';
+
+    const result = buildSubSeriesData(reg, loaded);
+    expect(result['PE-Series::EA'].parentOntologyNs).toBe('ea-core:');
+    expect(result['PE-Series::EA'].parentOntologyShort).toBe('EA-CORE');
+    expect(result['PE-Series::EA'].count).toBe(4);
+  });
+
+  it('still resolves inferred parent for parent-child pattern (VSOM-SA)', () => {
+    const loaded = createLoadedOntologies([
+      { namespace: 'vsom:', name: 'VSOM Ontology', series: 'VE-Series' },
+      { namespace: 'bsc:', name: 'BSC Ontology', series: 'VE-Series' }
+    ]);
+    loaded.get('bsc:').subSeries = 'VSOM-SA';
+
+    const result = buildSubSeriesData(seriesRegistry, loaded);
+    // VSOM-SA infers parent from key split: "VSOM-SA".split('-')[0] = "VSOM"
+    expect(result['VE-Series::VSOM-SA'].parentOntologyNs).toBe('vsom:');
+  });
+
+  it('returns null parentOntologyNs when explicit parent not loaded', () => {
+    const reg = {
+      'PE-Series': {
+        name: 'Process Engineering',
+        ontologies: [],
+        subSeries: {
+          'EA': { name: 'Enterprise Architecture', parentOntology: 'EA-CORE', ontologies: ['EA-CORE'] }
+        }
+      }
+    };
+    const loaded = createLoadedOntologies([]);
+    const result = buildSubSeriesData(reg, loaded);
+    expect(result['PE-Series::EA'].parentOntologyNs).toBeNull();
+  });
 });
 
 // ========================================

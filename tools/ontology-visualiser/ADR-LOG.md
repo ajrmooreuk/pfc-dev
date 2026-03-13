@@ -665,7 +665,7 @@ Each `_switchTo*Mode()` must call `switchToOntologyMode()` first (hides mermaid/
 | Date | 2026-03-05 |
 | Decision Maker | Solution Architect (AI-assisted) |
 | VSOM Alignment | L3 (Technology Platform) |
-| Source | F10.7 (#885), BRIEFING-EA-Sub-Series-Restructure-VE-Skill-Chain.md |
+| Source | F10.7 (#885), PFC-ONTL-BRIEF-EA-Sub-Series-Restructure-v1.0.0.md |
 
 **Context:** The EA cluster was restructured from 4 flat PE-Series siblings into a hub-spoke sub-series (EA-CORE hub + EA-TOGAF/EA-MSFT/EA-AI spokes), mirroring the GRC-FW pattern. Phase 1 (commit 8cbc64f) moved directories and updated registry entries but did not wire the visualiser's lineage classification or sub-series nesting.
 

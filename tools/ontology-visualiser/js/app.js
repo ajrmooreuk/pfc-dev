@@ -192,6 +192,12 @@ import {
 } from './app-skeleton-editor.js';
 import { openGlobalSearch, closeGlobalSearch, buildSearchIndex } from './global-search.js';
 import { renderRegistryBrowser } from './registry-browser.js';
+import {
+  initTrackerPanel, refreshTrackerPanel, reloadTrackerData, setFilter, getFilter,
+  toggleEpicExpansion,
+  initDocumentRegisterPanel, refreshDocumentRegisterPanel,
+  setDocTypeFilter, setDocStatusFilter, toggleDocGroupExpansion,
+} from './panel-renderer.js';
 
 // Safe DOM helpers — prevent "Cannot read properties of null" when elements are absent
 function _show(id, display = 'block') { const el = document.getElementById(id); if (el) el.style.display = display; }
@@ -3711,6 +3717,66 @@ function showBindingsTab() {
 
 window.togglePFILifecyclePanel = togglePFILifecyclePanel;
 window.showSnapshotManager = showSnapshotManager;
+
+// ========================================
+// PROGRAMME TRACKER PANEL (S.URG.4)
+// ========================================
+
+function toggleProgrammeTrackerPanel() {
+  const panel = document.getElementById('programme-tracker-panel');
+  if (!panel) return;
+  const isVisible = panel.style.display !== 'none';
+  panel.style.display = isVisible ? 'none' : 'block';
+  if (!isVisible) initTrackerPanel();
+}
+
+function setTrackerFilter(filter) {
+  setFilter(filter);
+  refreshTrackerPanel();
+}
+
+function toggleTrackerEpic(epicId) {
+  toggleEpicExpansion(epicId);
+  refreshTrackerPanel();
+}
+
+window.toggleProgrammeTrackerPanel = toggleProgrammeTrackerPanel;
+window.setTrackerFilter = setTrackerFilter;
+window.toggleTrackerEpic = toggleTrackerEpic;
+window.reloadTrackerData = reloadTrackerData;
+
+// ========================================
+// DOCUMENT REGISTER PANEL (S.URG.5)
+// ========================================
+
+function toggleDocumentRegisterPanel() {
+  const panel = document.getElementById('document-register-panel');
+  if (!panel) return;
+  const isVisible = panel.style.display !== 'none';
+  panel.style.display = isVisible ? 'none' : 'block';
+  if (!isVisible) initDocumentRegisterPanel();
+}
+
+function setDocRegTypeFilter(type) {
+  setDocTypeFilter(type);
+  refreshDocumentRegisterPanel();
+}
+
+function setDocRegStatusFilter(status) {
+  setDocStatusFilter(status);
+  refreshDocumentRegisterPanel();
+}
+
+function toggleDocGroup(code) {
+  toggleDocGroupExpansion(code);
+  refreshDocumentRegisterPanel();
+}
+
+window.toggleDocumentRegisterPanel = toggleDocumentRegisterPanel;
+window.setDocRegTypeFilter = setDocRegTypeFilter;
+window.setDocRegStatusFilter = setDocRegStatusFilter;
+window.toggleDocGroup = toggleDocGroup;
+
 window.closeSnapshotModal = closeSnapshotModal;
 window.composeBAIVGraph = composeBAIVGraph;
 window.freezeBAIVSnapshot = freezeBAIVSnapshot;

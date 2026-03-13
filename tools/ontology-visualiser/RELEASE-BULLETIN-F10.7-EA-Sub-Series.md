@@ -83,4 +83,4 @@ Phase 1 (commit 8cbc64f) restructured the directory layout and registry entries.
 
 ---
 
-*Ref: BRIEFING-EA-Sub-Series-Restructure-VE-Skill-Chain.md (Phase 2), Epic 10 (#84), F10.7 (#885)*
+*Ref: PFC-ONTL-BRIEF-EA-Sub-Series-Restructure-v1.0.0.md (Phase 2), Epic 10 (#84), F10.7 (#885)*

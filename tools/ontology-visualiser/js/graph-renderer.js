@@ -1523,7 +1523,9 @@ export function renderTier1SubSeries(seriesKey, subSeriesKey, loadedOntologies, 
   }
 
   // Context node: faded parent ontology (e.g. VSOM)
-  if (ssInfo.parentOntologyNs) {
+  // Skip if parent is already a primary member of this sub-series (hub-spoke pattern like EA-CORE in EA)
+  const parentAlreadyPrimary = ssInfo.parentOntologyNs && visNodes.some(n => n.id === ssInfo.parentOntologyNs);
+  if (ssInfo.parentOntologyNs && !parentAlreadyPrimary) {
     const parentRecord = loadedOntologies.get(ssInfo.parentOntologyNs);
     if (parentRecord) {
       const parentShort = parentRecord.name.replace(/\s+Ontology.*$/i, '').replace(/\s*\(.*\)$/, '');

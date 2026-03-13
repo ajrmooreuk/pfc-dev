@@ -74,8 +74,8 @@ Adds the Kano Model (Noriaki Kano, 1984) as a structured ontology and analysis s
 | `tests/emc-composer.test.js` | Modified (+7 tests) |
 | `skills/pfc-kano/SKILL.md` | New (377 lines) |
 | `skills/pfc-oaa-v7/SKILL.md` | New (290 lines) |
-| `BRIEFING-KANO-ONT-Satisfaction-Classification-Strategy.md` | New (645 lines) |
-| `BRIEFING-Kano-Analysis-Strategy.md` | New (526 lines) |
+| `PFC-ONTL-BRIEF-KANO-ONT-Satisfaction-Classification-v1.0.0.md` | New (645 lines) |
+| `PFC-STRAT-BRIEF-Kano-Analysis-Strategy-v1.0.0.md` | New (526 lines) |
 
 ## Known Limitations
 

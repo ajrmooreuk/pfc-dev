@@ -23,8 +23,8 @@ Verify that KANO-ONT v1.0.0 integrates correctly with the EMC composition engine
 | `VE-Series/VSOM-SA/KANO-ONT/instance-data/kano-wwg-instance-v1.0.0.json` | New — 510 lines, W4M-WWG instance |
 | `azlan-github-workflow/skills/pfc-kano/SKILL.md` | New — 8-section skill pipeline |
 | `azlan-github-workflow/skills/pfc-oaa-v7/SKILL.md` | New — OAA v7.1 skill wrapper |
-| `PBS/STRATEGY/BRIEFING-KANO-ONT-Satisfaction-Classification-Strategy.md` | New — ontology & skill architecture briefing |
-| `PBS/STRATEGY/BRIEFING-Kano-Analysis-Strategy.md` | New — methodology & practitioner guide |
+| `PBS/STRATEGY/PFC-ONTL-BRIEF-KANO-ONT-Satisfaction-Classification-v1.0.0.md` | New — ontology & skill architecture briefing |
+| `PBS/STRATEGY/PFC-STRAT-BRIEF-Kano-Analysis-Strategy-v1.0.0.md` | New — methodology & practitioner guide |
 
 ## Test Categories
 

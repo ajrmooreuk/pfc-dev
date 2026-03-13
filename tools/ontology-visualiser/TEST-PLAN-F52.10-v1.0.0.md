@@ -203,6 +203,6 @@ Validates the PE-ONT DELTA process template structural integrity, gate enforceme
 
 ## Notes
 
-- 104 new tests in `delta-e2e.test.js` cover all 6 stories (S52.10.1–S52.10.6) and all 12 integration tests from DELTA-TEST-PLAN-v1.0.0.md section 9.
+- 104 new tests in `delta-e2e.test.js` cover all 6 stories (S52.10.1–S52.10.6) and all 12 integration tests from TEST-PLAN-PFC-DELTA-v1.0.0.md section 9.
 - `product-bindings.test.js` EMC-ONT reference fixed from v5.1.0 to v5.2.0 (stale from F41.5 work).
 - The test validates the PE-ONT process template as structured data. Runtime behaviour of DELTA skills is validated by the skill-level acceptance tests in each SKILL.md.

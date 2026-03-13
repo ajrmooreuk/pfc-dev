@@ -1,7 +1,7 @@
 # OAA Ontology Visualiser — Architecture & Deployment
 
-**Version:** 5.7.0
-**Last Updated:** 2026-02-24
+**Version:** 5.8.0
+**Last Updated:** 2026-03-06
 
 ---
 
@@ -973,6 +973,110 @@ The original Python tools (`demo.py`, `graph_builder.py`, `visualiser.py`, etc.)
 
 ---
 
+## Design System Maturity — Token Gap Remediation & Slide Generation (Epic 61)
+
+Epic 61 (#876) extends the Design System Integration architecture with three new capabilities:
+
+### Token Gap Auto-Fill Engine (F61.1–F61.2)
+
+```mermaid
+flowchart LR
+    subgraph Input["Brand Instance Data"]
+        DS["*-ds-instance-v1.0.0.jsonld\n(5 brands)"]
+        SCHEMA["DS-ONT v3.2.0\nSchema + Rules"]
+    end
+
+    subgraph Engine["Token Gap Engine"]
+        GAP["Gap Analyser\n(scan vs schema)"]
+        DR["DR-* Design Rules\n(9 rules)"]
+        DIFF["Diff Preview\nGenerator"]
+    end
+
+    subgraph Approval["HITL Gate"]
+        DD["Design Director\nApprove / Override"]
+    end
+
+    subgraph Output["Updated Instances"]
+        INST["Updated ds-instance\nJSON-LD files"]
+        LOG["Extraction Log\n+ Audit Trail"]
+    end
+
+    DS --> GAP
+    SCHEMA --> GAP
+    GAP --> DR
+    DR --> DIFF
+    DIFF --> DD
+    DD --> INST
+    DD --> LOG
+```
+
+**9 Design Rules (DR-*):**
+
+| Rule | Purpose | Tokens Generated |
+| ------ | --------- | ----------------- |
+| DR-BADGE-001 | Status badge bg/text/border from intent palette | 12 per brand |
+| DR-BADGE-002 | Priority badge bg/text from severity scale | 10 per brand |
+| DR-SERIES-001 | Series indicator colours from accent palette | 5 per brand |
+| DR-TOOLBAR-001 | Toolbar tints from brand primary at 10%/15% opacity | 10 per brand |
+| DR-SHADOW-001 | Shadow scale (xs-xl) from brand neutral | 5 per brand |
+| DR-OPACITY-001 | Opacity scale (disabled/hover/overlay/focus) | 4 universal |
+| DR-MOTION-001 | Duration + easing tokens | 5 universal |
+| DR-ICON-001 | Icon colours from text tokens, sizing from spacing | 8 per brand |
+| DR-COMPONENT-001 | Component tokens (Button/Input/Card/Badge/Panel) from semantics | 25 per brand |
+
+**Gap closure target:** 48 hardcoded colour values → 0. 4 universal gap categories (shadow, opacity, motion, icon) → fully populated across all 5 brands.
+
+### Token-Branded PPTX Slide Engine (F61.7–F61.8)
+
+```mermaid
+flowchart LR
+    subgraph Data["Strategy Data"]
+        VSOM["VSOM/BSC/VP/RRR\nOntology Graphs"]
+    end
+
+    subgraph Pattern["SC-DP Selection"]
+        DP["SC-DP-002 Ask\nSC-DP-003 Strategy\nSC-DP-004 Roadmap"]
+    end
+
+    subgraph AI["AI Content Gen"]
+        PROMPT["SC-Content-Generator\nPrompt Template"]
+        LLM["Claude / Gemini\nAPI"]
+    end
+
+    subgraph Render["PPTX Rendering"]
+        TPL["Brand-Aware\nTemplate Engine"]
+        MAP["Token-to-PPTX\nMapping Layer"]
+        GEN["pptxgenjs ^4.0.1"]
+    end
+
+    subgraph Tokens["DS Brand Tokens"]
+        DSI["ds-instance\nJSON-LD"]
+    end
+
+    VSOM --> DP
+    DP --> PROMPT
+    PROMPT --> LLM
+    LLM --> TPL
+    DSI --> MAP
+    MAP --> TPL
+    TPL --> GEN
+    GEN --> PPTX["Branded .pptx"]
+```
+
+**Pipeline:** PE-SC-GEN-001 process orchestrates: VSOM data selection → SC-DP pattern matching → AI content generation → brand token application → pptxgenjs rendering → HITL approval → export.
+
+### Token Storage & Agentic Skills (F61.5–F61.6, blocked by Epic 59)
+
+Rolled forward from Epic 8 F8.2 + F8.5. Supabase JSONB storage with `resolve_token()` cascade function, runtime brand switching, and agent skills for Figma MCP extraction, layout management, and React/CSS codegen. Blocked until Epic 59 (#840) delivers per-stage Supabase projects.
+
+**Epic 61 Issue Map:**
+
+- Features: F61.1 (#933), F61.2 (#934), F61.3 (#935), F61.4 (#936), F61.5 (#937), F61.6 (#938), F61.7 (#939), F61.8 (#940)
+- Stories: 46 total (38 new + 8 rolled from Epic 8)
+- Briefing: `PBS/STRATEGY/PFC-DSY-BRIEF-Design-System-Maturity-Token-Gap-v1.0.0.md`
+
+---
+
 ## Related Documentation
 
 | Document | Description |
@@ -985,4 +1089,4 @@ The original Python tools (`demo.py`, `graph_builder.py`, `visualiser.py`, etc.)
 
 ---
 
-*OAA Ontology Visualiser v5.7.0 — Architecture & Deployment*
+*OAA Ontology Visualiser v5.8.0 — Architecture & Deployment*

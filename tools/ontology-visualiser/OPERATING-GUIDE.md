@@ -1,7 +1,7 @@
 # OAA Ontology Visualiser — Operating Guide
 
-**Version:** 5.9.0
-**Date:** 2026-03-05
+**Version:** 5.10.0
+**Date:** 2026-03-06
 **OAA Version:** 7.0.0 | **Registry:** v11.2.0
 **Audience:** Team members, stakeholders, and contributors
 
@@ -353,7 +353,7 @@ Click "Load Registry" ──► Batch Load (45 ontologies) ──► Tier 0: Ser
 
 | Series | Colour | Ontologies (41 active) |
 |--------|--------|------------|
-| VE-Series (Value Engineering) | Blue | VSOM, OKR, VP, RRR, PMF, KPI, CRT + VSOM-SA (BSC, IND, RSN, MAC, PFL) + VSOM-SC (NAR, CSC, CUL, VIZ) |
+| VE-Series (Value Engineering) | Blue | VSOM, OKR, VP, RRR, PMF, KPI, CRT, QVF + VSOM-SA (BSC, IND, RSN, MAC, PFL) + VSOM-SC (NAR, CSC, CUL, VIZ) |
 | PE-Series (Process Engineering) | Green | PPM, PE, EFS, DS, CICD, LSC, OFM + EA (EA-CORE hub, EA-TOGAF, EA-MSFT, EA-AI) |
 | RCSG-Series (Risk, Compliance, Security & Governance) | Purple | GRC-FW (hub), ERM, ALZ, GDPR, PII, NCSC-CAF, DSPT, RMF |
 | Foundation | Orange | ORG, ORG-CONTEXT, ORG-MAT, CTX, GA |
@@ -1020,7 +1020,7 @@ Load Registry ──► Multi-graph renders ──► Bridge edges show per-patt
 | **Categories** | Toggle category composition panel |
 | **Layers** | Toggle layer filter panel |
 | **Load from GitHub** | Fetch from private GitHub repo |
-| **Load Registry** | Load all 52 ontologies with tiered navigation |
+| **Load Registry** | Load all 53 ontologies with tiered navigation |
 | **Graph** (chip) | Switch to graph view mode |
 | **DS Cascade** (chip) | Switch to design system cascade view |
 | **Mermaid** (chip) | Switch to Mermaid diagram view |
@@ -1189,6 +1189,55 @@ Click the badge to jump directly to the compliance report.
 
 ---
 
+## Design System Token Gap Remediation (Epic 61)
+
+Epic 61 (#876) introduces automated token gap detection and remediation across all 5 brand instances. The following workflows are planned and will become operational as features are delivered.
+
+### Workflow 20: Token Gap Analysis (F61.1)
+
+```text
+Run Gap Analyser ──► Scan 5 brand instances ──► Report missing categories vs DS-ONT schema
+```
+
+1. The token gap analyser scans each brand's `*-ds-instance-v1.0.0.jsonld` file
+2. Compares against DS-ONT v3.2.0 schema to identify missing token categories
+3. Outputs a structured gap report per brand covering: badge, series, toolbar, shadow, opacity, motion, icon, and component tokens
+4. Currently **48 of 80 colour values are hardcoded** (60% gap) — target is 0
+
+### Workflow 21: Token Auto-Fill & HITL Approval (F61.2)
+
+```text
+DR-* Rules ──► Generate proposals ──► Diff preview ──► Design Director review ──► Update ds-instance files
+```
+
+1. 9 design rules (DR-BADGE-001/002, DR-SERIES-001, DR-TOOLBAR-001, DR-SHADOW-001, DR-OPACITY-001, DR-MOTION-001, DR-ICON-001, DR-COMPONENT-001) auto-generate ~80% of missing tokens
+2. Each rule derives values from existing brand primitives using encoded design principles (e.g., "status badge background = intent surface at 15% opacity")
+3. Diff previews are generated per brand showing current vs proposed tokens
+4. Design Director (HITL) reviews and approves/overrides the remaining ~20% requiring brand judgement
+5. Approved tokens are written to all 5 `*-ds-instance-v1.0.0.jsonld` files
+6. Extraction logs are updated with auto-fill audit trail (source rule, auto/override flag, approver)
+
+### Workflow 22: Token-Branded Slide Deck Generation (F61.7–F61.8)
+
+```text
+VSOM data ──► SC-DP pattern ──► AI content gen ──► Brand tokens applied ──► pptxgenjs ──► .pptx export
+```
+
+1. Select strategy data from VSOM/BSC/VP/RRR ontology graphs
+2. Choose an SC-DP deck pattern:
+   - SC-DP-002 (Ask Deck) — decision/approval requests
+   - SC-DP-003 (Strategy Deck) — comprehensive narrative with BSC map
+   - SC-DP-004 (Roadmap Deck) — Now/Next/Later phases
+3. AI content generator (Claude/Gemini) populates slide content from strategy data
+4. Brand-aware template engine applies DS instance tokens (colours, fonts, spacing)
+5. Token-to-PPTX mapping converts CSS custom properties to pptxgenjs style objects
+6. pptxgenjs renders the final `.pptx` file
+7. Design Director reviews and approves before export
+
+> **Note:** Workflows 20–22 are planned under Epic 61. Token storage (F61.5) and agentic skills (F61.6) are blocked by Epic 59 (#840) and will be documented when unblocked.
+
+---
+
 ## Deployment
 
 The visualiser is deployed automatically via GitHub Pages when changes are pushed to `main`:
@@ -1226,7 +1275,8 @@ Ontology files for the registry are in `PBS/ONTOLOGIES/ontology-library/` (co-lo
 - [DESIGN-SYSTEM-SPEC.md](./DESIGN-SYSTEM-SPEC.md) — Design System Specification — 24 design rules, token cascade, brand integration
 - [GRAPH-CANVAS-OPERATING-GUIDE.md](./GRAPH-CANVAS-OPERATING-GUIDE.md) — Normative reference for graph tiers, entity archetypes, edge semantics, same-name entity handling, and cross-ontology navigation
 - [unified-glossary-v3.0.0.json](../../ONTOLOGIES/ontology-library/unified-glossary-v3.0.0.json) — Unified glossary with entity archetypes, edge semantics, and graph concepts
+- [PBS/STRATEGY/PFC-SUPP-TDG-Claude-Code-Tech-Dev-Guide-v1.0.0.md](../../STRATEGY/PFC-SUPP-TDG-Claude-Code-Tech-Dev-Guide-v1.0.0.md) — Tech Dev Guide: Claude Code + VS Code workspace setup, CLAUDE.md standard, CI/CD integration
 
 ---
 
-*OAA Ontology Visualiser v5.7.0 — Operating Guide*
+*OAA Ontology Visualiser v5.8.0 — Operating Guide*

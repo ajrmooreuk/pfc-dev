@@ -125,6 +125,9 @@ const NAME_TO_PREFIX = {
   'NCSC-CAF': 'ncsc-caf:', DSPT: 'dspt:', 'RMF-IS27005': 'rmf:',
   LSC: 'lsc:', OFM: 'ofm:', BSC: 'bsc:', KANO: 'kano:',
   'K-DMAIC': 'kdmaic:', DMAIC: 'dmaic:',
+  ANTIQUES: 'antq:', DACS: 'dacs:', NUT: 'nut:',
+  CRT: 'crt:', IND: 'ind:', INDT: 'indt:',
+  CICD: 'cicd:', ERM: 'erm:', DT: 'dt:', FAIRSLICE: 'fairslice:',
 };
 
 const PREFIX_TO_NAME = Object.fromEntries(
@@ -173,6 +176,7 @@ const DEPENDENCY_MAP = {
   KANO: ['VP', 'PMF'],
   'K-DMAIC': ['PE'],
   DMAIC: ['PE'],
+  DACS: ['ANTIQUES'],
 };
 
 // Advanced ontologies excluded at low maturity (Rule 5)

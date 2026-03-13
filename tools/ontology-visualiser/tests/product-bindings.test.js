@@ -482,8 +482,8 @@ describe('ProductEntityBinding ontology model', () => {
     emcOntology = JSON.parse(readFileSync(filePath, 'utf-8'));
   });
 
-  it('should have version 5.2.0', () => {
-    expect(emcOntology.version).toBe('5.2.0');
+  it('should have version 5.3.0', () => {
+    expect(emcOntology.version).toBe('5.3.0');
   });
 
   it('should define ProductEntityBinding entity type', () => {
