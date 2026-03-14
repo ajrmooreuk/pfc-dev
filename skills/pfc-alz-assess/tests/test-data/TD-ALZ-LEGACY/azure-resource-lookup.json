@@ -1,0 +1,37 @@
+{
+  "toolName": "azure-resource-lookup",
+  "executedAt": "2026-03-14T10:35:00Z",
+  "subscriptionId": "d4e5f6a7-b8c9-0123-defa-234567890123",
+  "totalResources": 83,
+  "resourceGroups": [
+    { "name": "rg-network-hub", "location": "uksouth", "resourceCount": 10 },
+    { "name": "rg-workload-01", "location": "uksouth", "resourceCount": 22 },
+    { "name": "rg-workload-02", "location": "uksouth", "resourceCount": 18 },
+    { "name": "rg-workload-03", "location": "uksouth", "resourceCount": 14 },
+    { "name": "rg-dmz", "location": "uksouth", "resourceCount": 8 },
+    { "name": "rg-management", "location": "uksouth", "resourceCount": 3 },
+    { "name": "rg-classic", "location": "uksouth", "resourceCount": 4 },
+    { "name": "rg-misc", "location": "uksouth", "resourceCount": 4 }
+  ],
+  "resources": [
+    { "resourceId": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-network-hub/providers/Microsoft.Network/virtualNetworks/vnet-hub-legacy", "type": "Microsoft.Network/virtualNetworks", "location": "uksouth", "tags": { "environment": "production" } },
+    { "resourceId": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-01/providers/Microsoft.Compute/virtualMachines/vm-web-01", "type": "Microsoft.Compute/virtualMachines", "location": "uksouth", "tags": { "environment": "production", "role": "web" } },
+    { "resourceId": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-01/providers/Microsoft.Compute/virtualMachines/vm-app-01", "type": "Microsoft.Compute/virtualMachines", "location": "uksouth", "tags": {} },
+    { "resourceId": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-01/providers/Microsoft.ClassicCompute/virtualMachines/vm-classic-web01", "type": "Microsoft.ClassicCompute/virtualMachines", "location": "uksouth", "tags": {} },
+    { "resourceId": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-01/providers/Microsoft.ClassicStorage/storageAccounts/stclassiclegacy01", "type": "Microsoft.ClassicStorage/storageAccounts", "location": "uksouth", "tags": {} },
+    { "resourceId": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-dmz/providers/Microsoft.Network/publicIPAddresses/pip-dmz-web-01", "type": "Microsoft.Network/publicIPAddresses", "location": "uksouth", "tags": {} },
+    { "resourceId": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-dmz/providers/Microsoft.Network/publicIPAddresses/pip-dmz-web-02", "type": "Microsoft.Network/publicIPAddresses", "location": "uksouth", "tags": {} },
+    { "resourceId": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-02/providers/Microsoft.Sql/servers/sql-legacy-uksouth-01", "type": "Microsoft.Sql/servers", "location": "uksouth", "tags": { "environment": "production" } },
+    { "resourceId": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-02/providers/Microsoft.Storage/storageAccounts/stlegacydata01", "type": "Microsoft.Storage/storageAccounts", "location": "uksouth", "tags": {} },
+    { "resourceId": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-03/providers/Microsoft.Network/loadBalancers/lb-workload-03", "type": "Microsoft.Network/loadBalancers", "location": "uksouth", "tags": { "environment": "production" } }
+  ],
+  "tagging": {
+    "totalResources": 83,
+    "fullyTagged": 50,
+    "missingTags": 33,
+    "requiredTags": ["environment", "costCentre", "owner"],
+    "compliance": 60.2,
+    "summary": "33 resources missing one or more required tags — classic resources, DMZ public IPs, and misc RG resources predominantly untagged"
+  },
+  "resourceLookupResult": "FAIL"
+}

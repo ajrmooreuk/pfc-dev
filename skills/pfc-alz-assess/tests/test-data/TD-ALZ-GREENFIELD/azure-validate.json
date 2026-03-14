@@ -1,0 +1,45 @@
+{
+  "toolName": "azure-validate",
+  "executedAt": "2026-03-14T10:21:00Z",
+  "subscriptionId": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+  "landingZone": {
+    "detected": false,
+    "pattern": "None",
+    "managementGroupHierarchy": [],
+    "policyAssignments": 0,
+    "policyInitiatives": 0,
+    "customPolicyDefinitions": 0
+  },
+  "networking": {
+    "topology": "none",
+    "hubVnet": null,
+    "spokeVnets": [],
+    "firewall": { "enabled": false },
+    "bastion": { "enabled": false },
+    "dnsZones": 0,
+    "privateEndpoints": 0,
+    "publicIpAddresses": 0
+  },
+  "identity": {
+    "azureADConnect": false,
+    "conditionalAccessPolicies": 0,
+    "mfaEnforced": false,
+    "breakGlassAccounts": 0
+  },
+  "governance": {
+    "resourceLocks": false,
+    "tagEnforcement": false,
+    "budgetAlerts": false,
+    "activityLogAlerts": false
+  },
+  "validationResult": "FAIL",
+  "issues": [
+    "No landing zone detected",
+    "No management group hierarchy",
+    "No policy assignments",
+    "No network topology — no hub, no spokes, no firewall, no bastion",
+    "No identity governance — no MFA, no conditional access",
+    "No resource locks, no tag enforcement, no budget alerts",
+    "No break-glass accounts configured"
+  ]
+}

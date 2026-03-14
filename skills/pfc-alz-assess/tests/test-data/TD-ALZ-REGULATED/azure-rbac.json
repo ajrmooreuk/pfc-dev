@@ -1,0 +1,66 @@
+{
+  "toolName": "azure-rbac",
+  "executedAt": "2026-03-14T10:53:00Z",
+  "subscriptionId": "12345678-abcd-ef01-2345-678901234567",
+  "summary": {
+    "totalAssignments": 30,
+    "ownerCount": 2,
+    "contributorCount": 8,
+    "readerCount": 12,
+    "customRoleCount": 6,
+    "serviceAccountCount": 2,
+    "pimEnabled": true,
+    "jitEnabled": true,
+    "classicAdmins": 0
+  },
+  "owners": [
+    {
+      "principalId": "reg-11111111-2222-3333-4444-555566667777",
+      "principalName": "admin-breakglass-01@contosofinancial.onmicrosoft.com",
+      "principalType": "User",
+      "assignmentType": "Eligible",
+      "pimActivation": true,
+      "scope": "/subscriptions/12345678-abcd-ef01-2345-678901234567"
+    },
+    {
+      "principalId": "reg-22222222-3333-4444-5555-666677778888",
+      "principalName": "admin-breakglass-02@contosofinancial.onmicrosoft.com",
+      "principalType": "User",
+      "assignmentType": "Eligible",
+      "pimActivation": true,
+      "scope": "/subscriptions/12345678-abcd-ef01-2345-678901234567"
+    }
+  ],
+  "highPrivilegeAssignments": [
+    { "roleDefinitionName": "Contributor", "principalCount": 8, "allPimEligible": true, "scopedToResourceGroup": true },
+    { "roleDefinitionName": "User Access Administrator", "principalCount": 1, "allPimEligible": true, "scopedToResourceGroup": true }
+  ],
+  "customRoles": [
+    { "name": "FinServ-InfraOperator", "assignableScopes": ["/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-connectivity"], "assignmentCount": 3 },
+    { "name": "FinServ-SecurityAnalyst", "assignableScopes": ["/subscriptions/12345678-abcd-ef01-2345-678901234567"], "assignmentCount": 4 },
+    { "name": "FinServ-AppDeployer", "assignableScopes": ["/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-finserv-app"], "assignmentCount": 3 },
+    { "name": "FinServ-DataOperator", "assignableScopes": ["/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-finserv-data"], "assignmentCount": 2 },
+    { "name": "FinServ-CostReader", "assignableScopes": ["/subscriptions/12345678-abcd-ef01-2345-678901234567"], "assignmentCount": 3 },
+    { "name": "FinServ-AuditReader", "assignableScopes": ["/subscriptions/12345678-abcd-ef01-2345-678901234567"], "assignmentCount": 2 }
+  ],
+  "separationOfDuties": {
+    "configured": true,
+    "gaps": [
+      {
+        "finding": "FinServ-InfraOperator and FinServ-SecurityAnalyst roles both assigned to sg-platform-team group",
+        "risk": "Infrastructure operators can also acknowledge security alerts — violates FCA SYSC 13 separation of duties",
+        "severity": "High"
+      }
+    ]
+  },
+  "accessReviews": {
+    "configured": true,
+    "frequency": "quarterly",
+    "lastCompleted": "2026-01-15T00:00:00Z",
+    "nextDue": "2026-04-15T00:00:00Z"
+  },
+  "issues": [
+    "Separation of duties gap: infrastructure and security roles overlap on sg-platform-team"
+  ],
+  "rbacResult": "WARN"
+}

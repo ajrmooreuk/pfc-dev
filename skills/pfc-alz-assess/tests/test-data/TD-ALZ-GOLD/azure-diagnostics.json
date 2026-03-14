@@ -1,0 +1,85 @@
+{
+  "toolName": "azure-diagnostics",
+  "executedAt": "2026-03-14T10:04:00Z",
+  "subscriptionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "summary": {
+    "totalResources": 47,
+    "diagnosticsConfigured": 47,
+    "diagnosticsMissing": 0,
+    "logAnalyticsWorkspaces": 2,
+    "retentionDays": 90
+  },
+  "workspaces": [
+    {
+      "resourceId": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-management/providers/Microsoft.OperationalInsights/workspaces/log-platform-uksouth",
+      "retentionInDays": 90,
+      "sku": "PerGB2018",
+      "dailyCapGb": 10,
+      "connectedResources": 35
+    },
+    {
+      "resourceId": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-management/providers/Microsoft.OperationalInsights/workspaces/log-security-uksouth",
+      "retentionInDays": 365,
+      "sku": "PerGB2018",
+      "dailyCapGb": 5,
+      "connectedResources": 12
+    }
+  ],
+  "diagnosticSettings": [
+    {
+      "resourceType": "Microsoft.Compute/virtualMachines",
+      "count": 8,
+      "configured": 8,
+      "categories": ["AllMetrics", "AuditEvent"]
+    },
+    {
+      "resourceType": "Microsoft.Network/virtualNetworks",
+      "count": 3,
+      "configured": 3,
+      "categories": ["AllMetrics", "VMProtectionAlerts"]
+    },
+    {
+      "resourceType": "Microsoft.Network/networkSecurityGroups",
+      "count": 6,
+      "configured": 6,
+      "categories": ["NetworkSecurityGroupEvent", "NetworkSecurityGroupRuleCounter"]
+    },
+    {
+      "resourceType": "Microsoft.Storage/storageAccounts",
+      "count": 5,
+      "configured": 5,
+      "categories": ["StorageRead", "StorageWrite", "StorageDelete"]
+    },
+    {
+      "resourceType": "Microsoft.Sql/servers",
+      "count": 2,
+      "configured": 2,
+      "categories": ["SQLSecurityAuditEvents", "AllMetrics"]
+    },
+    {
+      "resourceType": "Microsoft.KeyVault/vaults",
+      "count": 3,
+      "configured": 3,
+      "categories": ["AuditEvent", "AllMetrics"]
+    },
+    {
+      "resourceType": "Microsoft.Network/azureFirewalls",
+      "count": 1,
+      "configured": 1,
+      "categories": ["AzureFirewallApplicationRule", "AzureFirewallNetworkRule", "AzureFirewallDnsProxy"]
+    },
+    {
+      "resourceType": "Microsoft.Web/sites",
+      "count": 4,
+      "configured": 4,
+      "categories": ["AppServiceHTTPLogs", "AppServiceConsoleLogs", "AllMetrics"]
+    }
+  ],
+  "activityLog": {
+    "configured": true,
+    "sentToWorkspace": "log-security-uksouth",
+    "categories": ["Administrative", "Security", "Alert", "Policy"]
+  },
+  "issues": [],
+  "diagnosticsResult": "PASS"
+}

@@ -1,0 +1,73 @@
+{
+  "toolName": "azure-rbac",
+  "executedAt": "2026-03-14T10:43:00Z",
+  "subscriptions": [
+    {
+      "subscriptionId": "e5f6a7b8-c9d0-1234-efab-345678901234",
+      "displayName": "Multi-Production",
+      "summary": {
+        "totalAssignments": 20,
+        "ownerCount": 2,
+        "contributorCount": 5,
+        "readerCount": 8,
+        "customRoleCount": 4,
+        "pimEnabled": true,
+        "classicAdmins": 0
+      },
+      "owners": [
+        { "principalId": "11112222-3333-4444-5555-666677778888", "principalName": "admin-bg-01@contosomulti.onmicrosoft.com", "principalType": "User", "assignmentType": "Eligible", "pimActivation": true },
+        { "principalId": "22223333-4444-5555-6666-777788889999", "principalName": "admin-bg-02@contosomulti.onmicrosoft.com", "principalType": "User", "assignmentType": "Eligible", "pimActivation": true }
+      ],
+      "rbacResult": "PASS"
+    },
+    {
+      "subscriptionId": "f6a7b8c9-d0e1-2345-fabc-456789012345",
+      "displayName": "Multi-Development",
+      "summary": {
+        "totalAssignments": 34,
+        "ownerCount": 8,
+        "contributorCount": 15,
+        "readerCount": 6,
+        "customRoleCount": 1,
+        "pimEnabled": false,
+        "classicAdmins": 0
+      },
+      "owners": [
+        { "principalId": "11112222-3333-4444-5555-666677778888", "principalName": "admin-bg-01@contosomulti.onmicrosoft.com", "principalType": "User", "assignmentType": "Direct", "pimActivation": false },
+        { "principalId": "33334444-5555-6666-7777-888899990000", "principalName": "dev-lead-01@contosomulti.onmicrosoft.com", "principalType": "User", "assignmentType": "Direct", "pimActivation": false },
+        { "principalId": "44445555-6666-7777-8888-999900001111", "principalName": "dev-lead-02@contosomulti.onmicrosoft.com", "principalType": "User", "assignmentType": "Direct", "pimActivation": false },
+        { "principalId": "55556666-7777-8888-9999-000011112222", "principalName": "devops@contosomulti.onmicrosoft.com", "principalType": "Group", "assignmentType": "Direct", "pimActivation": false }
+      ],
+      "issues": [
+        "8 Owner assignments in dev — developers given Owner for convenience",
+        "PIM not enabled in dev subscription",
+        "15 Contributor assignments at subscription scope",
+        "No custom roles — everyone uses built-in Contributor"
+      ],
+      "rbacResult": "FAIL"
+    },
+    {
+      "subscriptionId": "a7b8c9d0-e1f2-3456-abcf-567890123456",
+      "displayName": "Multi-Staging",
+      "summary": {
+        "totalAssignments": 18,
+        "ownerCount": 3,
+        "contributorCount": 8,
+        "readerCount": 5,
+        "customRoleCount": 2,
+        "pimEnabled": false,
+        "classicAdmins": 0
+      },
+      "owners": [
+        { "principalId": "11112222-3333-4444-5555-666677778888", "principalName": "admin-bg-01@contosomulti.onmicrosoft.com", "principalType": "User", "assignmentType": "Direct", "pimActivation": false },
+        { "principalId": "22223333-4444-5555-6666-777788889999", "principalName": "admin-bg-02@contosomulti.onmicrosoft.com", "principalType": "User", "assignmentType": "Direct", "pimActivation": false },
+        { "principalId": "66667777-8888-9999-0000-111122223333", "principalName": "release-manager@contosomulti.onmicrosoft.com", "principalType": "User", "assignmentType": "Direct", "pimActivation": false }
+      ],
+      "issues": [
+        "PIM not enabled in staging subscription",
+        "3 Owners — acceptable count but all standing access"
+      ],
+      "rbacResult": "WARN"
+    }
+  ]
+}

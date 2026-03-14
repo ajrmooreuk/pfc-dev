@@ -1,0 +1,28 @@
+{
+  "useCase": "UC-15",
+  "name": "End-to-End Pipeline",
+  "description": "Full pipeline execution: extract → assess → analyse → strategise → document on legacy tenant with VE goals",
+  "testData": "TD-ALZ-LEGACY",
+  "veProfile": { "topPriority": "security", "secondPriority": "reliability", "budget": "medium", "desiredMaturity": 85 },
+  "skill": "pfc-alz-pipeline",
+  "feature": "F74.7",
+  "pipelinePhases": ["EXTRACT", "ASSESS", "ANALYSE", "STRATEGISE", "DOCUMENT"],
+  "assertions": [
+    { "type": "evidence", "target": "output/extract/extraction-manifest.json", "required": true },
+    { "type": "evidence", "target": "output/assess/waf-findings.jsonld", "required": true },
+    { "type": "evidence", "target": "output/assess/caf-findings.jsonld", "required": true },
+    { "type": "evidence", "target": "output/assess/cyber-findings.jsonld", "required": true },
+    { "type": "evidence", "target": "output/assess/health-findings.jsonld", "required": true },
+    { "type": "evidence", "target": "output/analyse/cross-domain-correlation.jsonld", "required": true },
+    { "type": "evidence", "target": "output/analyse/cyber-economics.jsonld", "required": true },
+    { "type": "evidence", "target": "output/strategise/roadmap.jsonld", "required": true },
+    { "type": "evidence", "target": "output/strategise/business-case.jsonld", "required": true },
+    { "type": "evidence", "target": "output/document/health-check-report.md", "required": true },
+    { "type": "evidence", "target": "output/document/executive-dashboard.html", "required": true },
+    { "type": "roadmap-structure", "target": "output/strategise/roadmap", "minPhases": 4 },
+    { "type": "score-range", "target": "output/strategise/roadmap.phases[-1].projectedScore", "min": 80, "max": 95 },
+    { "type": "ontology-mapping", "target": "output/assess/**.findings.*", "ontology": "GRC-FW-ONT" },
+    { "type": "cross-ref", "target": "output/analyse/cross-domain-correlation.clusters.*", "minFrameworks": 2 }
+  ],
+  "expectedOutcome": "Complete pipeline output: all 5 phase directories populated, HCR document generated, backcasted roadmap to 85% maturity, cross-framework correlations, business case with ROI"
+}

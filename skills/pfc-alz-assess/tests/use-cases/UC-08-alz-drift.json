@@ -1,0 +1,17 @@
+{
+  "useCase": "UC-08",
+  "name": "ALZ Healthcheck — Drift",
+  "description": "ALZ healthcheck on drifted LZ — drift detected, remediation tasks generated",
+  "testData": "TD-ALZ-DRIFT",
+  "skill": "pfc-alz-assess-health",
+  "feature": "F74.5",
+  "assertions": [
+    { "type": "score-range", "target": "health.overall", "min": 55, "max": 80 },
+    { "type": "finding-count", "target": "findings.drift", "min": 3 },
+    { "type": "finding-count", "target": "findings.orphanedResource", "min": 2 },
+    { "type": "finding-count", "target": "remediation.tasks", "min": 5 },
+    { "type": "ontology-mapping", "target": "findings.*", "ontology": "AZALZ-ONT" },
+    { "type": "evidence", "target": "evidence.resourceInventory", "required": true }
+  ],
+  "expectedOutcome": "Drift detected with 3+ findings, orphaned resources flagged, 5+ remediation tasks generated, evidence pack includes resource inventory"
+}

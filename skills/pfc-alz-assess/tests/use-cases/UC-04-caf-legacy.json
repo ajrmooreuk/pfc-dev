@@ -1,0 +1,17 @@
+{
+  "useCase": "UC-04",
+  "name": "CAF Legacy Migration",
+  "description": "CAF readiness on classic hub-spoke — moderate readiness with migration-focused roadmap",
+  "testData": "TD-ALZ-LEGACY",
+  "skill": "pfc-alz-assess-caf",
+  "feature": "F74.3",
+  "assertions": [
+    { "type": "score-range", "target": "caf.readiness.overall", "min": 40, "max": 60 },
+    { "type": "score-range", "target": "caf.readiness.adopt", "min": 50, "max": 70 },
+    { "type": "score-range", "target": "caf.readiness.govern", "min": 30, "max": 50 },
+    { "type": "roadmap-structure", "target": "roadmap", "minPhases": 3 },
+    { "type": "finding-count", "target": "findings.migration-required", "min": 5 },
+    { "type": "ontology-mapping", "target": "findings.*", "ontology": "NCSC-CAF-ONT" }
+  ],
+  "expectedOutcome": "Readiness 40-60%, migration-focused roadmap, azure-cloud-migrate recommendations integrated"
+}

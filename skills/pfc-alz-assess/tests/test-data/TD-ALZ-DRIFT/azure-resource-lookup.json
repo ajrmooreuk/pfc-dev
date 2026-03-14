@@ -1,0 +1,40 @@
+{
+  "toolName": "azure-resource-lookup",
+  "executedAt": "2026-03-14T10:15:00Z",
+  "subscriptionId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+  "totalResources": 47,
+  "resourceGroups": [
+    { "name": "rg-hub-network", "location": "uksouth", "resourceCount": 8 },
+    { "name": "rg-spoke-prod", "location": "uksouth", "resourceCount": 20 },
+    { "name": "rg-spoke-shared", "location": "uksouth", "resourceCount": 7 },
+    { "name": "rg-management", "location": "uksouth", "resourceCount": 6 },
+    { "name": "rg-identity", "location": "uksouth", "resourceCount": 3 },
+    { "name": "rg-temp-testing", "location": "uksouth", "resourceCount": 3 }
+  ],
+  "resources": [
+    { "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-hub-network/providers/Microsoft.Network/virtualNetworks/vnet-hub-uksouth", "type": "Microsoft.Network/virtualNetworks", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-1001", "owner": "platform-team" } },
+    { "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-app-prod-001", "type": "Microsoft.Compute/virtualMachines", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-2001", "owner": "app-team" } },
+    { "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-idle-001", "type": "Microsoft.Compute/virtualMachines", "location": "uksouth", "tags": { "environment": "production" }, "powerState": "VM deallocated", "lastUsed": "2025-12-01T00:00:00Z" },
+    { "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-idle-002", "type": "Microsoft.Compute/virtualMachines", "location": "uksouth", "tags": {}, "powerState": "VM deallocated", "lastUsed": "2025-11-15T00:00:00Z" },
+    { "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-idle-003", "type": "Microsoft.Compute/virtualMachines", "location": "uksouth", "tags": {}, "powerState": "VM stopped", "lastUsed": "2025-10-20T00:00:00Z" },
+    { "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Sql/servers/sql-prod-uksouth", "type": "Microsoft.Sql/servers", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-2001", "owner": "data-team" } },
+    { "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-temp-testing/providers/Microsoft.Compute/virtualMachines/vm-test-throwaway", "type": "Microsoft.Compute/virtualMachines", "location": "uksouth", "tags": {} },
+    { "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Network/publicIPAddresses/pip-unattached-001", "type": "Microsoft.Network/publicIPAddresses", "location": "uksouth", "tags": {}, "attached": false },
+    { "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Network/publicIPAddresses/pip-unattached-002", "type": "Microsoft.Network/publicIPAddresses", "location": "uksouth", "tags": {}, "attached": false }
+  ],
+  "tagging": {
+    "totalResources": 47,
+    "fullyTagged": 42,
+    "missingTags": 5,
+    "requiredTags": ["environment", "costCentre", "owner"],
+    "compliance": 89.4,
+    "untaggedResources": [
+      "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-idle-002",
+      "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-idle-003",
+      "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-temp-testing/providers/Microsoft.Compute/virtualMachines/vm-test-throwaway",
+      "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Network/publicIPAddresses/pip-unattached-001",
+      "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Network/publicIPAddresses/pip-unattached-002"
+    ]
+  },
+  "resourceLookupResult": "FAIL"
+}

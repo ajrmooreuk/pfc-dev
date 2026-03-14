@@ -1,0 +1,86 @@
+{
+  "toolName": "azure-compliance",
+  "executedAt": "2026-03-14T11:02:00Z",
+  "subscriptionId": "87654321-dcba-10fe-5432-109876543210",
+  "framework": "Microsoft Cloud Security Benchmark v1",
+  "overallScore": 82,
+  "pillars": {
+    "networkSecurity": {
+      "score": 85,
+      "controls": [
+        { "id": "NS-1", "name": "Establish network segmentation boundaries", "status": "Compliant" },
+        { "id": "NS-2", "name": "Secure cloud services with network controls", "status": "NonCompliant", "reason": "TextAnalytics and experiment ML workspace on public endpoints" },
+        { "id": "NS-3", "name": "Deploy firewall at the edge of enterprise network", "status": "Compliant" },
+        { "id": "NS-4", "name": "Filter network traffic", "status": "Compliant" },
+        { "id": "NS-5", "name": "Deploy DDOS protection", "status": "Compliant" },
+        { "id": "NS-6", "name": "Deploy web application firewall", "status": "Compliant" },
+        { "id": "NS-7", "name": "Simplify network security configuration", "status": "Compliant" },
+        { "id": "NS-8", "name": "Detect and disable insecure services and protocols", "status": "Compliant" }
+      ]
+    },
+    "identityManagement": {
+      "score": 78,
+      "controls": [
+        { "id": "IM-1", "name": "Use centralized identity and authentication system", "status": "Compliant" },
+        { "id": "IM-2", "name": "Protect identity and authentication system", "status": "Compliant" },
+        { "id": "IM-3", "name": "Manage application identities securely", "status": "NonCompliant", "reason": "3 data scientist service principals with broad Contributor access to ML workspaces" },
+        { "id": "IM-4", "name": "Authenticate server and services", "status": "Compliant" },
+        { "id": "IM-5", "name": "Use single sign-on for application access", "status": "Compliant" },
+        { "id": "IM-6", "name": "Use strong authentication controls", "status": "Compliant" },
+        { "id": "IM-7", "name": "Restrict resource access based on conditions", "status": "NonCompliant", "reason": "No conditional access for AI API endpoints" }
+      ]
+    },
+    "dataProtection": {
+      "score": 80,
+      "controls": [
+        { "id": "DP-1", "name": "Discover classify and label sensitive data", "status": "NonCompliant", "reason": "Training data in storage accounts not classified" },
+        { "id": "DP-2", "name": "Monitor anomalies and threats targeting sensitive data", "status": "Compliant" },
+        { "id": "DP-3", "name": "Encrypt sensitive data in transit", "status": "Compliant" },
+        { "id": "DP-4", "name": "Enable data at rest encryption by default", "status": "Compliant" },
+        { "id": "DP-5", "name": "Use customer-managed key option in data at rest encryption", "status": "NonCompliant", "reason": "ML workspace storage accounts using platform-managed keys" },
+        { "id": "DP-6", "name": "Use a secure key management process", "status": "Compliant" }
+      ]
+    },
+    "privilegedAccess": {
+      "score": 75,
+      "controls": [
+        { "id": "PA-1", "name": "Separate and limit highly privileged users", "status": "Compliant" },
+        { "id": "PA-2", "name": "Avoid standing access for user accounts and permissions", "status": "Compliant" },
+        { "id": "PA-3", "name": "Manage lifecycle of identities and entitlements", "status": "NonCompliant", "reason": "Data scientist team members have standing Contributor on ML compute" },
+        { "id": "PA-4", "name": "Review and reconcile user access regularly", "status": "Compliant" },
+        { "id": "PA-5", "name": "Set up emergency access", "status": "Compliant" },
+        { "id": "PA-6", "name": "Use privileged access workstations", "status": "Compliant" },
+        { "id": "PA-7", "name": "Follow just enough administration principle", "status": "NonCompliant", "reason": "Data scientists have Contributor instead of ML-scoped custom role" }
+      ]
+    }
+  },
+  "aiSpecificFindings": [
+    {
+      "category": "Responsible AI",
+      "finding": "No Responsible AI policy initiative applied",
+      "severity": "Medium"
+    },
+    {
+      "category": "Data Governance",
+      "finding": "Training data storage accounts lack data classification labels",
+      "severity": "Medium"
+    },
+    {
+      "category": "Model Security",
+      "finding": "ML experiment workspace allows public model registry access",
+      "severity": "High"
+    },
+    {
+      "category": "API Security",
+      "finding": "OpenAI content filtering enabled — good, but no custom content filter policies",
+      "severity": "Low"
+    }
+  ],
+  "nonCompliantResources": [
+    "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.CognitiveServices/accounts/cog-language-uksouth",
+    "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.MachineLearningServices/workspaces/mlw-contoso-experiment-uksouth",
+    "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-data/providers/Microsoft.Storage/storageAccounts/staitrainingdata001"
+  ],
+  "exemptions": 1,
+  "lastEvaluated": "2026-03-14T09:55:00Z"
+}

@@ -1,0 +1,45 @@
+{
+  "testDataId": "TD-ALZ-AI",
+  "description": "AI workload tenant — Azure OpenAI, ML workspace, Cognitive Services, AI Search",
+  "generatedAt": "2026-03-14T11:00:00Z",
+  "generatedBy": "pfc-alz-assess/test-data-generator",
+  "tenant": {
+    "tenantId": "td-ai-tenant-001",
+    "displayName": "Contoso AI Labs Ltd",
+    "domain": "contosoai.onmicrosoft.com"
+  },
+  "subscriptions": [
+    {
+      "subscriptionId": "87654321-dcba-10fe-5432-109876543210",
+      "displayName": "AI-Production",
+      "state": "Enabled",
+      "managementGroup": "mg-ai-workloads"
+    }
+  ],
+  "resourceCounts": {
+    "total": 58,
+    "byType": {
+      "Microsoft.Compute/virtualMachines": 6,
+      "Microsoft.Network/virtualNetworks": 3,
+      "Microsoft.Network/networkSecurityGroups": 5,
+      "Microsoft.Storage/storageAccounts": 6,
+      "Microsoft.KeyVault/vaults": 3,
+      "Microsoft.Network/azureFirewalls": 1,
+      "Microsoft.Network/bastionHosts": 1,
+      "Microsoft.Network/privateEndpoints": 10,
+      "Microsoft.CognitiveServices/accounts": 3,
+      "Microsoft.MachineLearningServices/workspaces": 2,
+      "Microsoft.Search/searchServices": 1,
+      "Microsoft.ContainerRegistry/registries": 1,
+      "Microsoft.Web/sites": 4,
+      "Microsoft.OperationalInsights/workspaces": 2,
+      "Microsoft.Sql/servers": 2,
+      "Microsoft.Network/publicIPAddresses": 2,
+      "Microsoft.Compute/virtualMachineScaleSets": 1
+    }
+  },
+  "location": "uksouth",
+  "landingZonePattern": "Azure Landing Zone — CAF aligned (AI workloads)",
+  "mcsbScore": 82,
+  "expectedOutcome": "MOSTLY PASS — base ALZ solid but AI-specific governance gaps"
+}

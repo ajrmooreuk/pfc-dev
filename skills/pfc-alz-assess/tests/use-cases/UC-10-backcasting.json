@@ -1,0 +1,20 @@
+{
+  "useCase": "UC-10",
+  "name": "Three-State Backcasting",
+  "description": "Backcasted 4-phase roadmap from legacy tenant with VE-driven prioritisation",
+  "testData": "TD-ALZ-LEGACY",
+  "veProfile": { "topPriority": "security", "secondPriority": "operationalExcellence", "budget": "medium" },
+  "skills": ["pfc-alz-assess-waf", "pfc-alz-assess-caf", "pfc-alz-assess-cyber", "pfc-alz-strategy"],
+  "feature": "F74.14",
+  "pipelinePhase": "STRATEGISE",
+  "assertions": [
+    { "type": "roadmap-structure", "target": "roadmap", "minPhases": 4 },
+    { "type": "roadmap-structure", "target": "roadmap.threeState.current", "required": true },
+    { "type": "roadmap-structure", "target": "roadmap.threeState.desired", "required": true },
+    { "type": "roadmap-structure", "target": "roadmap.threeState.bestPractice", "required": true },
+    { "type": "score-range", "target": "roadmap.phases[-1].projectedScore", "min": 80, "max": 95, "description": "Final phase projects 80-95% maturity" },
+    { "type": "roadmap-structure", "target": "roadmap.phases.*.okrs", "required": true },
+    { "type": "roadmap-structure", "target": "roadmap.phases.*.investmentModel", "required": true }
+  ],
+  "expectedOutcome": "4-phase backcasted roadmap with three-state model, VE-driven phase prioritisation (security first), OKRs and investment per phase, final phase projects 80-95%"
+}

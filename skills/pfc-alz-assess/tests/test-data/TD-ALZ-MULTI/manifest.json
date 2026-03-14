@@ -1,0 +1,47 @@
+{
+  "testDataId": "TD-ALZ-MULTI",
+  "description": "Multi-subscription tenant — prod, dev, staging with varying quality",
+  "generatedAt": "2026-03-14T10:40:00Z",
+  "generatedBy": "pfc-alz-assess/test-data-generator",
+  "tenant": {
+    "tenantId": "td-multi-tenant-001",
+    "displayName": "Contoso Multi-Sub Corp",
+    "domain": "contosomulti.onmicrosoft.com"
+  },
+  "subscriptions": [
+    {
+      "subscriptionId": "e5f6a7b8-c9d0-1234-efab-345678901234",
+      "displayName": "Multi-Production",
+      "state": "Enabled",
+      "managementGroup": "mg-production"
+    },
+    {
+      "subscriptionId": "f6a7b8c9-d0e1-2345-fabc-456789012345",
+      "displayName": "Multi-Development",
+      "state": "Enabled",
+      "managementGroup": "mg-development"
+    },
+    {
+      "subscriptionId": "a7b8c9d0-e1f2-3456-abcf-567890123456",
+      "displayName": "Multi-Staging",
+      "state": "Enabled",
+      "managementGroup": "mg-staging"
+    }
+  ],
+  "resourceCounts": {
+    "total": 120,
+    "bySubscription": {
+      "Multi-Production": 52,
+      "Multi-Development": 38,
+      "Multi-Staging": 30
+    }
+  },
+  "location": "uksouth",
+  "landingZonePattern": "Azure Landing Zone — CAF aligned (multi-sub)",
+  "mcsbScores": {
+    "Multi-Production": 80,
+    "Multi-Development": 40,
+    "Multi-Staging": 60
+  },
+  "expectedOutcome": "MIXED — prod decent, dev poor, staging middling"
+}

@@ -1,0 +1,34 @@
+{
+  "toolName": "azure-resource-lookup",
+  "executedAt": "2026-03-14T10:05:00Z",
+  "subscriptionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "totalResources": 47,
+  "resourceGroups": [
+    { "name": "rg-hub-network", "location": "uksouth", "resourceCount": 8 },
+    { "name": "rg-spoke-prod", "location": "uksouth", "resourceCount": 16 },
+    { "name": "rg-spoke-shared", "location": "uksouth", "resourceCount": 9 },
+    { "name": "rg-management", "location": "uksouth", "resourceCount": 6 },
+    { "name": "rg-identity", "location": "uksouth", "resourceCount": 4 },
+    { "name": "rg-security", "location": "uksouth", "resourceCount": 4 }
+  ],
+  "resources": [
+    { "resourceId": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-hub-network/providers/Microsoft.Network/virtualNetworks/vnet-hub-uksouth", "type": "Microsoft.Network/virtualNetworks", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-1001", "owner": "platform-team" } },
+    { "resourceId": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-hub-network/providers/Microsoft.Network/azureFirewalls/afw-hub-uksouth", "type": "Microsoft.Network/azureFirewalls", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-1001", "owner": "platform-team" } },
+    { "resourceId": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-hub-network/providers/Microsoft.Network/bastionHosts/bas-hub-uksouth", "type": "Microsoft.Network/bastionHosts", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-1001", "owner": "platform-team" } },
+    { "resourceId": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-app-prod-001", "type": "Microsoft.Compute/virtualMachines", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-2001", "owner": "app-team", "application": "crm" } },
+    { "resourceId": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-app-prod-002", "type": "Microsoft.Compute/virtualMachines", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-2001", "owner": "app-team", "application": "crm" } },
+    { "resourceId": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-spoke-prod/providers/Microsoft.Sql/servers/sql-prod-uksouth", "type": "Microsoft.Sql/servers", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-2001", "owner": "data-team" } },
+    { "resourceId": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-spoke-prod/providers/Microsoft.KeyVault/vaults/kv-prod-uksouth", "type": "Microsoft.KeyVault/vaults", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-2001", "owner": "security-team" } },
+    { "resourceId": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-spoke-prod/providers/Microsoft.Storage/storageAccounts/stproduksouth001", "type": "Microsoft.Storage/storageAccounts", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-2001", "owner": "app-team" } },
+    { "resourceId": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-spoke-prod/providers/Microsoft.Web/sites/app-api-prod-uksouth", "type": "Microsoft.Web/sites", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-2001", "owner": "app-team" } },
+    { "resourceId": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-management/providers/Microsoft.OperationalInsights/workspaces/log-platform-uksouth", "type": "Microsoft.OperationalInsights/workspaces", "location": "uksouth", "tags": { "environment": "management", "costCentre": "CC-1001", "owner": "platform-team" } }
+  ],
+  "tagging": {
+    "totalResources": 47,
+    "fullyTagged": 47,
+    "missingTags": 0,
+    "requiredTags": ["environment", "costCentre", "owner"],
+    "compliance": 100
+  },
+  "resourceLookupResult": "PASS"
+}

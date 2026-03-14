@@ -1,0 +1,78 @@
+{
+  "toolName": "azure-validate",
+  "executedAt": "2026-03-14T10:41:00Z",
+  "subscriptions": [
+    {
+      "subscriptionId": "e5f6a7b8-c9d0-1234-efab-345678901234",
+      "displayName": "Multi-Production",
+      "landingZone": {
+        "detected": true,
+        "pattern": "CAF Enterprise-Scale",
+        "policyAssignments": 28,
+        "policyInitiatives": 4
+      },
+      "networking": {
+        "topology": "hub-spoke",
+        "hubVnet": "/subscriptions/e5f6a7b8-c9d0-1234-efab-345678901234/resourceGroups/rg-prod-hub/providers/Microsoft.Network/virtualNetworks/vnet-prod-hub",
+        "firewall": { "enabled": true, "sku": "Premium", "threatIntelMode": "Deny" },
+        "bastion": { "enabled": true, "sku": "Standard" },
+        "privateEndpoints": 12,
+        "publicIpAddresses": 2
+      },
+      "governance": { "resourceLocks": true, "tagEnforcement": true, "budgetAlerts": true },
+      "validationResult": "PASS"
+    },
+    {
+      "subscriptionId": "f6a7b8c9-d0e1-2345-fabc-456789012345",
+      "displayName": "Multi-Development",
+      "landingZone": {
+        "detected": true,
+        "pattern": "CAF Enterprise-Scale",
+        "policyAssignments": 8,
+        "policyInitiatives": 1
+      },
+      "networking": {
+        "topology": "flat",
+        "hubVnet": null,
+        "firewall": { "enabled": false },
+        "bastion": { "enabled": false },
+        "privateEndpoints": 0,
+        "publicIpAddresses": 12
+      },
+      "governance": { "resourceLocks": false, "tagEnforcement": false, "budgetAlerts": false },
+      "validationResult": "FAIL",
+      "issues": [
+        "Flat network topology — no hub-spoke",
+        "No firewall, no bastion — dev VMs exposed via public IPs",
+        "12 public IPs — 8 directly on VMs",
+        "No tag enforcement, no locks, no budget alerts",
+        "Only 8 policy assignments vs 28 in production"
+      ]
+    },
+    {
+      "subscriptionId": "a7b8c9d0-e1f2-3456-abcf-567890123456",
+      "displayName": "Multi-Staging",
+      "landingZone": {
+        "detected": true,
+        "pattern": "CAF Enterprise-Scale",
+        "policyAssignments": 18,
+        "policyInitiatives": 3
+      },
+      "networking": {
+        "topology": "hub-spoke",
+        "hubVnet": "/subscriptions/a7b8c9d0-e1f2-3456-abcf-567890123456/resourceGroups/rg-stg-hub/providers/Microsoft.Network/virtualNetworks/vnet-stg-hub",
+        "firewall": { "enabled": true, "sku": "Standard", "threatIntelMode": "Alert" },
+        "bastion": { "enabled": false },
+        "privateEndpoints": 4,
+        "publicIpAddresses": 5
+      },
+      "governance": { "resourceLocks": false, "tagEnforcement": true, "budgetAlerts": true },
+      "validationResult": "WARN",
+      "issues": [
+        "Firewall threat intel mode set to Alert instead of Deny",
+        "No Bastion — using public IPs for management",
+        "No resource locks on staging resource groups"
+      ]
+    }
+  ]
+}

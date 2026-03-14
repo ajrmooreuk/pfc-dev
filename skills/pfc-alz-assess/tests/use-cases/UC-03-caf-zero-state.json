@@ -1,0 +1,17 @@
+{
+  "useCase": "UC-03",
+  "name": "CAF Zero State",
+  "description": "CAF readiness assessment on an empty greenfield tenant — near-zero readiness, full adoption roadmap",
+  "testData": "TD-ALZ-GREENFIELD",
+  "skill": "pfc-alz-assess-caf",
+  "feature": "F74.3",
+  "assertions": [
+    { "type": "score-range", "target": "caf.readiness.overall", "min": 0, "max": 20 },
+    { "type": "score-range", "target": "caf.readiness.govern", "min": 0, "max": 15 },
+    { "type": "score-range", "target": "caf.readiness.manage", "min": 0, "max": 10 },
+    { "type": "roadmap-structure", "target": "roadmap", "minPhases": 4 },
+    { "type": "roadmap-structure", "target": "roadmap.phases.*.projectedScore", "required": true },
+    { "type": "ontology-mapping", "target": "findings.*", "ontology": "NCSC-CAF-ONT" }
+  ],
+  "expectedOutcome": "Readiness below 20%, 4+ phase adoption roadmap generated with projected scores per phase, all findings mapped to NCSC-CAF-ONT"
+}

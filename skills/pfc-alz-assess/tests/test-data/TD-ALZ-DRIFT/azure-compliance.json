@@ -1,0 +1,64 @@
+{
+  "toolName": "azure-compliance",
+  "executedAt": "2026-03-14T10:12:00Z",
+  "subscriptionId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+  "framework": "Microsoft Cloud Security Benchmark v1",
+  "overallScore": 72,
+  "pillars": {
+    "networkSecurity": {
+      "score": 60,
+      "controls": [
+        { "id": "NS-1", "name": "Establish network segmentation boundaries", "status": "Compliant" },
+        { "id": "NS-2", "name": "Secure cloud services with network controls", "status": "NonCompliant", "reason": "4 services missing private endpoints" },
+        { "id": "NS-3", "name": "Deploy firewall at the edge of enterprise network", "status": "Compliant" },
+        { "id": "NS-4", "name": "Filter network traffic", "status": "NonCompliant", "reason": "3 firewall rules overly broad — any-to-any on 8000-9999" },
+        { "id": "NS-5", "name": "Deploy DDOS protection", "status": "Compliant" },
+        { "id": "NS-6", "name": "Deploy web application firewall", "status": "Compliant" },
+        { "id": "NS-7", "name": "Simplify network security configuration", "status": "NonCompliant", "reason": "NSG rules duplicated and inconsistent" },
+        { "id": "NS-8", "name": "Detect and disable insecure services and protocols", "status": "NonCompliant", "reason": "TLS 1.0 enabled on 2 storage accounts" }
+      ]
+    },
+    "identityManagement": {
+      "score": 65,
+      "controls": [
+        { "id": "IM-1", "name": "Use centralized identity and authentication system", "status": "Compliant" },
+        { "id": "IM-2", "name": "Protect identity and authentication system", "status": "Compliant" },
+        { "id": "IM-3", "name": "Manage application identities securely", "status": "NonCompliant", "reason": "2 service principals with expiring credentials" },
+        { "id": "IM-4", "name": "Authenticate server and services", "status": "Compliant" },
+        { "id": "IM-5", "name": "Use single sign-on for application access", "status": "Compliant" },
+        { "id": "IM-6", "name": "Use strong authentication controls", "status": "Compliant" },
+        { "id": "IM-7", "name": "Restrict resource access based on conditions", "status": "NonCompliant", "reason": "Conditional access bypass for legacy auth not blocked" }
+      ]
+    },
+    "dataProtection": {
+      "score": 70,
+      "controls": [
+        { "id": "DP-1", "name": "Discover classify and label sensitive data", "status": "NonCompliant", "reason": "Data classification not applied to 2 SQL databases" },
+        { "id": "DP-2", "name": "Monitor anomalies and threats targeting sensitive data", "status": "Compliant" },
+        { "id": "DP-3", "name": "Encrypt sensitive data in transit", "status": "NonCompliant", "reason": "TLS 1.0 enabled on 2 storage accounts" },
+        { "id": "DP-4", "name": "Enable data at rest encryption by default", "status": "Compliant" },
+        { "id": "DP-5", "name": "Use customer-managed key option in data at rest encryption", "status": "Compliant" },
+        { "id": "DP-6", "name": "Use a secure key management process", "status": "Compliant" }
+      ]
+    },
+    "privilegedAccess": {
+      "score": 55,
+      "controls": [
+        { "id": "PA-1", "name": "Separate and limit highly privileged users", "status": "NonCompliant", "reason": "7 Owner role assignments — exceeds maximum of 3" },
+        { "id": "PA-2", "name": "Avoid standing access for user accounts and permissions", "status": "NonCompliant", "reason": "PIM not enabled — all assignments are permanent" },
+        { "id": "PA-3", "name": "Manage lifecycle of identities and entitlements", "status": "NonCompliant", "reason": "No access reviews configured" },
+        { "id": "PA-4", "name": "Review and reconcile user access regularly", "status": "NonCompliant", "reason": "Last access review was 14 months ago" },
+        { "id": "PA-5", "name": "Set up emergency access", "status": "Compliant" },
+        { "id": "PA-6", "name": "Use privileged access workstations", "status": "NonCompliant", "reason": "No PAW requirement enforced" },
+        { "id": "PA-7", "name": "Follow just enough administration principle", "status": "NonCompliant", "reason": "5 Contributor assignments at subscription scope" }
+      ]
+    }
+  },
+  "nonCompliantResources": [
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Storage/storageAccounts/stproduksouth001",
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Storage/storageAccounts/stproduksouth002",
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Sql/servers/sql-prod-uksouth"
+  ],
+  "exemptions": 0,
+  "lastEvaluated": "2026-03-14T09:55:00Z"
+}

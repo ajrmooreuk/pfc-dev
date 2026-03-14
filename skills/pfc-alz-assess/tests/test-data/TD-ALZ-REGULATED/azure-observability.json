@@ -1,0 +1,71 @@
+{
+  "toolName": "azure-observability",
+  "executedAt": "2026-03-14T10:56:00Z",
+  "subscriptionId": "12345678-abcd-ef01-2345-678901234567",
+  "monitoring": {
+    "azureMonitorEnabled": true,
+    "insightsEnabled": true,
+    "applicationInsights": {
+      "configured": 4,
+      "resourceIds": [
+        "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-finserv-app/providers/Microsoft.Insights/components/appi-finserv-api-uksouth",
+        "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-finserv-app/providers/Microsoft.Insights/components/appi-finserv-web-uksouth"
+      ]
+    },
+    "vmInsights": { "enabled": true, "coveredVms": 12, "totalVms": 12 },
+    "containerInsights": { "enabled": false, "reason": "No AKS clusters deployed" }
+  },
+  "alerting": {
+    "actionGroups": 5,
+    "alertRules": 38,
+    "metricAlerts": 20,
+    "logAlerts": 12,
+    "activityLogAlerts": 4,
+    "serviceHealthAlerts": true,
+    "resourceHealthAlerts": true,
+    "escalationPath": ["L1-SOC", "L2-Platform", "L3-Security", "CISO"]
+  },
+  "dashboards": {
+    "azureDashboards": 4,
+    "workbooks": 8
+  },
+  "logRetention": {
+    "platformLogs": 365,
+    "securityLogs": 730,
+    "activityLogs": 365,
+    "ncscCompliant": true,
+    "fcaCompliant": false,
+    "fcaGap": "FCA requires 7-year audit trail — current max retention 730 days"
+  },
+  "defenderForCloud": {
+    "enabled": true,
+    "tier": "Standard",
+    "secureScore": 88,
+    "coveragePlans": [
+      "Servers", "AppService", "SqlServers", "Storage", "KeyVaults",
+      "Dns", "Arm", "OpenSourceRelationalDatabases"
+    ]
+  },
+  "sentinel": {
+    "enabled": true,
+    "workspaceId": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-security/providers/Microsoft.OperationalInsights/workspaces/log-finserv-security-uksouth",
+    "dataConnectors": [
+      "AzureActiveDirectory", "AzureActivity", "MicrosoftDefenderAdvancedThreatProtection",
+      "Office365", "AzureSecurityCenter", "AzureFirewall"
+    ],
+    "analyticsRules": 24,
+    "huntingQueries": 12,
+    "soarPlaybooks": 0,
+    "incidents": { "open": 3, "avgResolutionHours": 4.2 },
+    "issues": [
+      "No SOAR playbooks configured — all triage is manual",
+      "Missing Threat Intelligence data connector"
+    ]
+  },
+  "issues": [
+    "Sentinel SOAR playbooks not configured — manual triage only",
+    "Missing Threat Intelligence data connector in Sentinel",
+    "FCA 7-year audit trail requirement not met with current retention"
+  ],
+  "observabilityResult": "WARN"
+}

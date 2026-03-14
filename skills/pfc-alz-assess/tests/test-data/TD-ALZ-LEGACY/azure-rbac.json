@@ -1,0 +1,46 @@
+{
+  "toolName": "azure-rbac",
+  "executedAt": "2026-03-14T10:33:00Z",
+  "subscriptionId": "d4e5f6a7-b8c9-0123-defa-234567890123",
+  "summary": {
+    "totalAssignments": 52,
+    "ownerCount": 12,
+    "contributorCount": 18,
+    "readerCount": 15,
+    "customRoleCount": 1,
+    "serviceAccountCount": 6,
+    "pimEnabled": false,
+    "classicAdmins": 3
+  },
+  "owners": [
+    { "principalId": "a1a1a1a1-b2b2-c3c3-d4d4-e5e5e5e5e5e5", "principalName": "admin@contosolegacy.onmicrosoft.com", "principalType": "User", "assignmentType": "Direct", "pimActivation": false, "scope": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123" },
+    { "principalId": "b2b2b2b2-c3c3-d4d4-e5e5-f6f6f6f6f6f6", "principalName": "it-manager@contosolegacy.onmicrosoft.com", "principalType": "User", "assignmentType": "Direct", "pimActivation": false, "scope": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123" },
+    { "principalId": "c3c3c3c3-d4d4-e5e5-f6f6-a7a7a7a7a7a7", "principalName": "developer1@contosolegacy.onmicrosoft.com", "principalType": "User", "assignmentType": "Direct", "pimActivation": false, "scope": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123" },
+    { "principalId": "d4d4d4d4-e5e5-f6f6-a7a7-b8b8b8b8b8b8", "principalName": "developer2@contosolegacy.onmicrosoft.com", "principalType": "User", "assignmentType": "Direct", "pimActivation": false, "scope": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123" },
+    { "principalId": "e5e5e5e5-f6f6-a7a7-b8b8-c9c9c9c9c9c9", "principalName": "ops-lead@contosolegacy.onmicrosoft.com", "principalType": "User", "assignmentType": "Direct", "pimActivation": false, "scope": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123" },
+    { "principalId": "f6f6f6f6-a7a7-b8b8-c9c9-d0d0d0d0d0d0", "principalName": "infrastructure@contosolegacy.onmicrosoft.com", "principalType": "Group", "assignmentType": "Direct", "pimActivation": false, "scope": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123" }
+  ],
+  "classicAdministrators": [
+    { "name": "admin@contosolegacy.onmicrosoft.com", "role": "CoAdministrator" },
+    { "name": "it-manager@contosolegacy.onmicrosoft.com", "role": "CoAdministrator" },
+    { "name": "ops-lead@contosolegacy.onmicrosoft.com", "role": "ServiceAdministrator" }
+  ],
+  "highPrivilegeAssignments": [
+    { "roleDefinitionName": "Contributor", "principalCount": 18, "allPimEligible": false, "scopedToResourceGroup": false },
+    { "roleDefinitionName": "User Access Administrator", "principalCount": 4, "allPimEligible": false, "scopedToResourceGroup": false }
+  ],
+  "customRoles": [
+    { "name": "Legacy-FullAdmin", "assignableScopes": ["/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123"], "assignmentCount": 6 }
+  ],
+  "issues": [
+    "12 Owner assignments — far exceeds recommended maximum of 3",
+    "PIM not enabled — all role assignments are permanent",
+    "3 classic co-administrators still active",
+    "18 Contributor assignments at subscription scope",
+    "Custom role Legacy-FullAdmin grants wildcard permissions",
+    "6 service accounts with standing Contributor access",
+    "No access reviews configured",
+    "Developers have Owner role at subscription scope"
+  ],
+  "rbacResult": "FAIL"
+}

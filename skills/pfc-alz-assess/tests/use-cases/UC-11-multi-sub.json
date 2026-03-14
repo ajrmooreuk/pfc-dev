@@ -1,0 +1,18 @@
+{
+  "useCase": "UC-11",
+  "name": "Multi-Subscription Aggregation",
+  "description": "Per-subscription and aggregated scores across 3 subscriptions with mixed maturity",
+  "testData": "TD-ALZ-MULTI",
+  "skill": "pfc-alz-assess-health",
+  "feature": "F74.5",
+  "assertions": [
+    { "type": "score-range", "target": "subscriptions.prod.health", "min": 75, "max": 90 },
+    { "type": "score-range", "target": "subscriptions.dev.health", "min": 30, "max": 50 },
+    { "type": "score-range", "target": "subscriptions.staging.health", "min": 50, "max": 70 },
+    { "type": "score-range", "target": "aggregate.health", "min": 50, "max": 70 },
+    { "type": "finding-count", "target": "subscriptions.dev.findings.critical", "min": 3 },
+    { "type": "finding-count", "target": "subscriptions.prod.findings.critical", "max": 1 },
+    { "type": "evidence", "target": "evidence.perSubscription", "count": 3 }
+  ],
+  "expectedOutcome": "Per-subscription scores reflect maturity variance, aggregate score weighted, dev has most critical findings, evidence pack per subscription"
+}

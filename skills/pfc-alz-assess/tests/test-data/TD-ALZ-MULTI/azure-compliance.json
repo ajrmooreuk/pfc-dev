@@ -1,0 +1,76 @@
+{
+  "toolName": "azure-compliance",
+  "executedAt": "2026-03-14T10:42:00Z",
+  "framework": "Microsoft Cloud Security Benchmark v1",
+  "subscriptions": [
+    {
+      "subscriptionId": "e5f6a7b8-c9d0-1234-efab-345678901234",
+      "displayName": "Multi-Production",
+      "overallScore": 80,
+      "pillars": {
+        "networkSecurity": { "score": 85, "nonCompliant": ["NS-7"] },
+        "identityManagement": { "score": 82, "nonCompliant": ["IM-3"] },
+        "dataProtection": { "score": 78, "nonCompliant": ["DP-1", "DP-5"] },
+        "privilegedAccess": { "score": 75, "nonCompliant": ["PA-4", "PA-6"] }
+      },
+      "nonCompliantResources": 4
+    },
+    {
+      "subscriptionId": "f6a7b8c9-d0e1-2345-fabc-456789012345",
+      "displayName": "Multi-Development",
+      "overallScore": 40,
+      "pillars": {
+        "networkSecurity": {
+          "score": 25,
+          "nonCompliant": ["NS-2", "NS-3", "NS-4", "NS-5", "NS-6", "NS-7", "NS-8"],
+          "details": [
+            { "id": "NS-2", "reason": "No private endpoints — all services on public endpoints" },
+            { "id": "NS-3", "reason": "No firewall deployed" },
+            { "id": "NS-8", "reason": "RDP/SSH open to internet on 8 VMs" }
+          ]
+        },
+        "identityManagement": {
+          "score": 45,
+          "nonCompliant": ["IM-2", "IM-3", "IM-6", "IM-7"],
+          "details": [
+            { "id": "IM-6", "reason": "MFA not enforced for dev subscription" }
+          ]
+        },
+        "dataProtection": {
+          "score": 50,
+          "nonCompliant": ["DP-1", "DP-3", "DP-5"],
+          "details": [
+            { "id": "DP-3", "reason": "HTTP allowed on 3 App Services" }
+          ]
+        },
+        "privilegedAccess": {
+          "score": 35,
+          "nonCompliant": ["PA-1", "PA-2", "PA-3", "PA-4", "PA-6", "PA-7"],
+          "details": [
+            { "id": "PA-1", "reason": "8 Owner assignments in dev subscription" },
+            { "id": "PA-7", "reason": "All developers have Contributor at subscription scope" }
+          ]
+        }
+      },
+      "nonCompliantResources": 22
+    },
+    {
+      "subscriptionId": "a7b8c9d0-e1f2-3456-abcf-567890123456",
+      "displayName": "Multi-Staging",
+      "overallScore": 60,
+      "pillars": {
+        "networkSecurity": { "score": 65, "nonCompliant": ["NS-2", "NS-5", "NS-7"] },
+        "identityManagement": { "score": 62, "nonCompliant": ["IM-3", "IM-7"] },
+        "dataProtection": { "score": 60, "nonCompliant": ["DP-1", "DP-5"] },
+        "privilegedAccess": { "score": 52, "nonCompliant": ["PA-2", "PA-4", "PA-6"] }
+      },
+      "nonCompliantResources": 10
+    }
+  ],
+  "crossSubscriptionIssues": [
+    "Policy assignment drift between environments — prod has 28, staging 18, dev only 8",
+    "Network security posture inconsistent — dev has no firewall or bastion",
+    "RBAC standards not applied uniformly across subscriptions",
+    "No centralised compliance dashboard across subscriptions"
+  ]
+}

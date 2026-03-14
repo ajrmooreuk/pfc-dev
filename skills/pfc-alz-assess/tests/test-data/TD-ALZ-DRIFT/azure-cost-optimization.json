@@ -1,0 +1,46 @@
+{
+  "toolName": "azure-cost-optimization",
+  "executedAt": "2026-03-14T10:16:00Z",
+  "subscriptionId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+  "currency": "GBP",
+  "currentMonthSpend": 18700,
+  "forecastMonthEnd": 19200,
+  "previousMonthSpend": 17900,
+  "budgetConfigured": true,
+  "budgetAmount": 15000,
+  "budgetUtilization": 124.7,
+  "costByService": [
+    { "service": "Virtual Machines", "cost": 8200, "percentage": 43.9 },
+    { "service": "Azure SQL Database", "cost": 2400, "percentage": 12.8 },
+    { "service": "Azure Firewall", "cost": 1800, "percentage": 9.6 },
+    { "service": "Storage Accounts", "cost": 1400, "percentage": 7.5 },
+    { "service": "App Service", "cost": 1200, "percentage": 6.4 },
+    { "service": "Log Analytics", "cost": 850, "percentage": 4.5 },
+    { "service": "Public IP Addresses", "cost": 180, "percentage": 1.0 },
+    { "service": "Key Vault", "cost": 120, "percentage": 0.6 },
+    { "service": "Other", "cost": 2550, "percentage": 13.6 }
+  ],
+  "recommendations": [
+    { "type": "ShutdownOrDelete", "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-idle-001", "reason": "VM deallocated since 2025-12-01", "monthlySavings": 420 },
+    { "type": "ShutdownOrDelete", "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-idle-002", "reason": "VM deallocated since 2025-11-15", "monthlySavings": 420 },
+    { "type": "ShutdownOrDelete", "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-idle-003", "reason": "VM stopped since 2025-10-20 — still incurring compute charges", "monthlySavings": 680 },
+    { "type": "DeleteOrphan", "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Network/publicIPAddresses/pip-unattached-001", "reason": "Unattached public IP", "monthlySavings": 8 },
+    { "type": "DeleteOrphan", "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Network/publicIPAddresses/pip-unattached-002", "reason": "Unattached public IP", "monthlySavings": 8 },
+    { "type": "Rightsize", "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-app-prod-003", "reason": "Average CPU 4% over 30 days — D4s_v5 to D2s_v5", "monthlySavings": 210 },
+    { "type": "Rightsize", "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-app-prod-004", "reason": "Average CPU 8% over 30 days — D4s_v5 to D2s_v5", "monthlySavings": 210 },
+    { "type": "DeleteResourceGroup", "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-temp-testing", "reason": "Temporary resource group with test resources — no locks, no tags", "monthlySavings": 340 }
+  ],
+  "waste": {
+    "idleResources": 3,
+    "orphanedDisks": 2,
+    "unattachedPublicIps": 2,
+    "oversizedResources": 2,
+    "estimatedMonthlySavings": 6300
+  },
+  "reservations": {
+    "active": 1,
+    "utilization": 62,
+    "savingsToDate": 1800
+  },
+  "costResult": "FAIL"
+}

@@ -1,0 +1,16 @@
+{
+  "useCase": "UC-07",
+  "name": "ALZ Healthcheck — Pass",
+  "description": "ALZ healthcheck on compliant LZ — no drift, all checks pass",
+  "testData": "TD-ALZ-GOLD",
+  "skill": "pfc-alz-assess-health",
+  "feature": "F74.5",
+  "assertions": [
+    { "type": "score-range", "target": "health.overall", "min": 95, "max": 100 },
+    { "type": "finding-count", "target": "findings.drift", "expected": 0 },
+    { "type": "finding-count", "target": "findings.missingResource", "expected": 0 },
+    { "type": "finding-count", "target": "findings.policyViolation", "expected": 0 },
+    { "type": "ontology-mapping", "target": "resources.*", "ontology": "AZALZ-ONT" }
+  ],
+  "expectedOutcome": "Clean healthcheck — no drift, no missing resources, no policy violations, all resources mapped to AZALZ-ONT"
+}

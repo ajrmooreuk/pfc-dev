@@ -1,0 +1,65 @@
+{
+  "toolName": "azure-validate",
+  "executedAt": "2026-03-14T10:11:00Z",
+  "subscriptionId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+  "landingZone": {
+    "detected": true,
+    "pattern": "CAF Enterprise-Scale",
+    "managementGroupHierarchy": [
+      "mg-root",
+      "mg-platform",
+      "mg-platform-production",
+      "mg-platform-identity",
+      "mg-platform-management",
+      "mg-landing-zones",
+      "mg-decommissioned"
+    ],
+    "policyAssignments": 34,
+    "policyInitiatives": 6,
+    "customPolicyDefinitions": 12
+  },
+  "networking": {
+    "topology": "hub-spoke",
+    "hubVnet": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-hub-network/providers/Microsoft.Network/virtualNetworks/vnet-hub-uksouth",
+    "spokeVnets": [
+      "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Network/virtualNetworks/vnet-spoke-prod",
+      "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-shared/providers/Microsoft.Network/virtualNetworks/vnet-spoke-shared"
+    ],
+    "firewall": {
+      "enabled": true,
+      "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-hub-network/providers/Microsoft.Network/azureFirewalls/afw-hub-uksouth",
+      "sku": "Premium",
+      "threatIntelMode": "Alert",
+      "issues": ["Threat intel set to Alert instead of Deny", "3 rules allow any-to-any on high ports"]
+    },
+    "bastion": {
+      "enabled": true,
+      "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-hub-network/providers/Microsoft.Network/bastionHosts/bas-hub-uksouth",
+      "sku": "Standard"
+    },
+    "dnsZones": 4,
+    "privateEndpoints": 4,
+    "publicIpAddresses": 4
+  },
+  "identity": {
+    "azureADConnect": true,
+    "conditionalAccessPolicies": 14,
+    "mfaEnforced": true,
+    "breakGlassAccounts": 2
+  },
+  "governance": {
+    "resourceLocks": false,
+    "tagEnforcement": false,
+    "budgetAlerts": true,
+    "activityLogAlerts": true
+  },
+  "validationResult": "FAIL",
+  "issues": [
+    "Firewall threat intel mode degraded from Deny to Alert",
+    "3 overly broad firewall rules detected (any-to-any on ports 8000-9999)",
+    "Resource locks removed from production resource groups",
+    "Tag enforcement policy set to Audit instead of Deny",
+    "4 public IP addresses detected — 2 unattached",
+    "4 private endpoints missing (SQL, KeyVault, Storage should all use PE)"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "toolName": "azure-resource-lookup",
+  "executedAt": "2026-03-14T10:45:00Z",
+  "subscriptions": [
+    {
+      "subscriptionId": "e5f6a7b8-c9d0-1234-efab-345678901234",
+      "displayName": "Multi-Production",
+      "totalResources": 52,
+      "resourceGroups": [
+        { "name": "rg-prod-hub", "location": "uksouth", "resourceCount": 10 },
+        { "name": "rg-prod-apps", "location": "uksouth", "resourceCount": 22 },
+        { "name": "rg-prod-data", "location": "uksouth", "resourceCount": 12 },
+        { "name": "rg-prod-mgmt", "location": "uksouth", "resourceCount": 8 }
+      ],
+      "tagging": { "totalResources": 52, "fullyTagged": 48, "missingTags": 4, "compliance": 92.3 }
+    },
+    {
+      "subscriptionId": "f6a7b8c9-d0e1-2345-fabc-456789012345",
+      "displayName": "Multi-Development",
+      "totalResources": 38,
+      "resourceGroups": [
+        { "name": "rg-dev-apps", "location": "uksouth", "resourceCount": 18 },
+        { "name": "rg-dev-data", "location": "uksouth", "resourceCount": 8 },
+        { "name": "rg-dev-mgmt", "location": "uksouth", "resourceCount": 4 },
+        { "name": "rg-dev-sandbox-01", "location": "uksouth", "resourceCount": 4 },
+        { "name": "rg-dev-sandbox-02", "location": "uksouth", "resourceCount": 4 }
+      ],
+      "tagging": { "totalResources": 38, "fullyTagged": 12, "missingTags": 26, "compliance": 31.6 },
+      "resources": [
+        { "resourceId": "/subscriptions/f6a7b8c9-d0e1-2345-fabc-456789012345/resourceGroups/rg-dev-apps/providers/Microsoft.Compute/virtualMachines/vm-dev-001", "type": "Microsoft.Compute/virtualMachines", "location": "uksouth", "tags": {} },
+        { "resourceId": "/subscriptions/f6a7b8c9-d0e1-2345-fabc-456789012345/resourceGroups/rg-dev-apps/providers/Microsoft.Compute/virtualMachines/vm-dev-002", "type": "Microsoft.Compute/virtualMachines", "location": "uksouth", "tags": { "developer": "john" } },
+        { "resourceId": "/subscriptions/f6a7b8c9-d0e1-2345-fabc-456789012345/resourceGroups/rg-dev-apps/providers/Microsoft.Network/publicIPAddresses/pip-dev-vm-001", "type": "Microsoft.Network/publicIPAddresses", "location": "uksouth", "tags": {} },
+        { "resourceId": "/subscriptions/f6a7b8c9-d0e1-2345-fabc-456789012345/resourceGroups/rg-dev-sandbox-01/providers/Microsoft.Compute/virtualMachines/vm-sandbox-test", "type": "Microsoft.Compute/virtualMachines", "location": "uksouth", "tags": {} }
+      ]
+    },
+    {
+      "subscriptionId": "a7b8c9d0-e1f2-3456-abcf-567890123456",
+      "displayName": "Multi-Staging",
+      "totalResources": 30,
+      "resourceGroups": [
+        { "name": "rg-stg-hub", "location": "uksouth", "resourceCount": 6 },
+        { "name": "rg-stg-apps", "location": "uksouth", "resourceCount": 14 },
+        { "name": "rg-stg-data", "location": "uksouth", "resourceCount": 6 },
+        { "name": "rg-stg-mgmt", "location": "uksouth", "resourceCount": 4 }
+      ],
+      "tagging": { "totalResources": 30, "fullyTagged": 22, "missingTags": 8, "compliance": 73.3 }
+    }
+  ],
+  "crossSubscriptionSummary": {
+    "totalResources": 120,
+    "overallTagCompliance": 68.3,
+    "worstSubscription": "Multi-Development (31.6%)"
+  }
+}

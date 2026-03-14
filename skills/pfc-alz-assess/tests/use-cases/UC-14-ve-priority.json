@@ -1,0 +1,21 @@
+{
+  "useCase": "UC-14",
+  "name": "VE Priority Differentiation",
+  "description": "Same findings, different prioritisation based on two VE profiles",
+  "testData": "TD-ALZ-DRIFT",
+  "veProfiles": [
+    { "name": "security-first", "topPriority": "security", "secondPriority": "compliance", "budget": "high" },
+    { "name": "cost-first", "topPriority": "costOptimization", "secondPriority": "operationalExcellence", "budget": "low" }
+  ],
+  "skills": ["pfc-alz-assess-waf", "pfc-alz-assess-cyber", "pfc-alz-strategy"],
+  "feature": "F74.14",
+  "pipelinePhase": "STRATEGISE",
+  "assertions": [
+    { "type": "roadmap-structure", "target": "securityFirst.roadmap.phases[0].focus", "contains": "security" },
+    { "type": "roadmap-structure", "target": "costFirst.roadmap.phases[0].focus", "contains": "cost" },
+    { "type": "score-range", "target": "securityFirst.roadmap.investmentTotal", "min": "costFirst.roadmap.investmentTotal", "description": "Security-first costs more" },
+    { "type": "finding-count", "target": "securityFirst.remediation.phase1", "description": "Security findings prioritised to phase 1" },
+    { "type": "finding-count", "target": "costFirst.remediation.phase1", "description": "Cost findings prioritised to phase 1" }
+  ],
+  "expectedOutcome": "Same drift findings produce different roadmaps — security-first prioritises RBAC/NSG fixes, cost-first prioritises idle VM cleanup. Investment models differ."
+}

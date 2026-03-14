@@ -1,0 +1,108 @@
+{
+  "toolName": "azure-validate",
+  "executedAt": "2026-03-14T11:01:00Z",
+  "subscriptionId": "87654321-dcba-10fe-5432-109876543210",
+  "landingZone": {
+    "detected": true,
+    "pattern": "CAF Enterprise-Scale",
+    "managementGroupHierarchy": [
+      "mg-root",
+      "mg-platform",
+      "mg-ai-workloads",
+      "mg-platform-identity",
+      "mg-platform-management",
+      "mg-decommissioned"
+    ],
+    "policyAssignments": 30,
+    "policyInitiatives": 5,
+    "customPolicyDefinitions": 14
+  },
+  "networking": {
+    "topology": "hub-spoke",
+    "hubVnet": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-hub/providers/Microsoft.Network/virtualNetworks/vnet-ai-hub-uksouth",
+    "spokeVnets": [
+      "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.Network/virtualNetworks/vnet-ai-compute",
+      "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-data/providers/Microsoft.Network/virtualNetworks/vnet-ai-data"
+    ],
+    "firewall": {
+      "enabled": true,
+      "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-hub/providers/Microsoft.Network/azureFirewalls/afw-ai-hub-uksouth",
+      "sku": "Premium",
+      "threatIntelMode": "Deny"
+    },
+    "bastion": {
+      "enabled": true,
+      "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-hub/providers/Microsoft.Network/bastionHosts/bas-ai-hub-uksouth",
+      "sku": "Standard"
+    },
+    "dnsZones": 5,
+    "privateEndpoints": 10,
+    "publicIpAddresses": 2
+  },
+  "identity": {
+    "azureADConnect": true,
+    "conditionalAccessPolicies": 16,
+    "mfaEnforced": true,
+    "breakGlassAccounts": 2
+  },
+  "governance": {
+    "resourceLocks": true,
+    "tagEnforcement": true,
+    "budgetAlerts": true,
+    "activityLogAlerts": true
+  },
+  "aiSpecific": {
+    "cognitiveServicesAccounts": [
+      {
+        "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.CognitiveServices/accounts/oai-contoso-uksouth",
+        "kind": "OpenAI",
+        "sku": "S0",
+        "privateEndpoint": true,
+        "contentFiltering": true,
+        "networkRestriction": "private"
+      },
+      {
+        "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.CognitiveServices/accounts/cog-vision-uksouth",
+        "kind": "ComputerVision",
+        "sku": "S1",
+        "privateEndpoint": true,
+        "networkRestriction": "private"
+      },
+      {
+        "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.CognitiveServices/accounts/cog-language-uksouth",
+        "kind": "TextAnalytics",
+        "sku": "S",
+        "privateEndpoint": false,
+        "networkRestriction": "public",
+        "issue": "Public network access enabled — should use private endpoint"
+      }
+    ],
+    "mlWorkspaces": [
+      {
+        "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.MachineLearningServices/workspaces/mlw-contoso-prod-uksouth",
+        "sku": "Enterprise",
+        "privateEndpoint": true,
+        "managedNetwork": true
+      },
+      {
+        "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.MachineLearningServices/workspaces/mlw-contoso-experiment-uksouth",
+        "sku": "Basic",
+        "privateEndpoint": false,
+        "managedNetwork": false,
+        "issue": "Experiment workspace has no network isolation"
+      }
+    ],
+    "searchService": {
+      "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-data/providers/Microsoft.Search/searchServices/srch-contoso-uksouth",
+      "sku": "Standard",
+      "privateEndpoint": true,
+      "semanticSearch": true
+    }
+  },
+  "validationResult": "WARN",
+  "issues": [
+    "1 Cognitive Services account (TextAnalytics) has public network access enabled",
+    "Experiment ML workspace has no network isolation",
+    "AI-specific policy set not applied (Responsible AI policies)"
+  ]
+}

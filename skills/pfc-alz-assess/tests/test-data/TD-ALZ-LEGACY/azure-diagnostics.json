@@ -1,0 +1,47 @@
+{
+  "toolName": "azure-diagnostics",
+  "executedAt": "2026-03-14T10:34:00Z",
+  "subscriptionId": "d4e5f6a7-b8c9-0123-defa-234567890123",
+  "summary": {
+    "totalResources": 83,
+    "diagnosticsConfigured": 28,
+    "diagnosticsMissing": 55,
+    "logAnalyticsWorkspaces": 1,
+    "retentionDays": 30
+  },
+  "workspaces": [
+    {
+      "resourceId": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-management/providers/Microsoft.OperationalInsights/workspaces/log-legacy-uksouth",
+      "retentionInDays": 30,
+      "sku": "Free",
+      "dailyCapGb": 0.5,
+      "connectedResources": 28
+    }
+  ],
+  "diagnosticSettings": [
+    { "resourceType": "Microsoft.Compute/virtualMachines", "count": 22, "configured": 8, "missing": 14, "categories": ["AllMetrics"] },
+    { "resourceType": "Microsoft.Network/virtualNetworks", "count": 5, "configured": 2, "missing": 3, "categories": ["AllMetrics"] },
+    { "resourceType": "Microsoft.Network/networkSecurityGroups", "count": 18, "configured": 4, "missing": 14, "categories": ["NetworkSecurityGroupEvent"] },
+    { "resourceType": "Microsoft.Storage/storageAccounts", "count": 10, "configured": 3, "missing": 7, "categories": ["StorageRead"] },
+    { "resourceType": "Microsoft.Sql/servers", "count": 4, "configured": 4, "missing": 0, "categories": ["SQLSecurityAuditEvents"] },
+    { "resourceType": "Microsoft.KeyVault/vaults", "count": 2, "configured": 1, "missing": 1, "categories": ["AuditEvent"] },
+    { "resourceType": "Microsoft.Web/sites", "count": 6, "configured": 4, "missing": 2, "categories": ["AppServiceHTTPLogs"] },
+    { "resourceType": "Microsoft.Network/loadBalancers", "count": 3, "configured": 2, "missing": 1, "categories": ["AllMetrics"] },
+    { "resourceType": "Microsoft.ClassicCompute/virtualMachines", "count": 2, "configured": 0, "missing": 2, "categories": [] },
+    { "resourceType": "Microsoft.ClassicStorage/storageAccounts", "count": 2, "configured": 0, "missing": 2, "categories": [] }
+  ],
+  "activityLog": {
+    "configured": true,
+    "sentToWorkspace": "log-legacy-uksouth",
+    "categories": ["Administrative"]
+  },
+  "issues": [
+    "55 resources missing diagnostic settings (66%)",
+    "Log Analytics workspace on Free tier — 500MB/day cap",
+    "Only 30 day retention",
+    "Classic resources cannot be monitored via diagnostic settings",
+    "Activity log only captures Administrative category",
+    "14 of 18 NSGs have no flow logging"
+  ],
+  "diagnosticsResult": "FAIL"
+}

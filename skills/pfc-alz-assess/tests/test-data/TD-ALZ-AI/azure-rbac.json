@@ -1,0 +1,67 @@
+{
+  "toolName": "azure-rbac",
+  "executedAt": "2026-03-14T11:03:00Z",
+  "subscriptionId": "87654321-dcba-10fe-5432-109876543210",
+  "summary": {
+    "totalAssignments": 28,
+    "ownerCount": 2,
+    "contributorCount": 10,
+    "readerCount": 8,
+    "customRoleCount": 3,
+    "serviceAccountCount": 5,
+    "pimEnabled": true,
+    "classicAdmins": 0
+  },
+  "owners": [
+    {
+      "principalId": "ai-11111111-2222-3333-4444-555566667777",
+      "principalName": "admin-breakglass-01@contosoai.onmicrosoft.com",
+      "principalType": "User",
+      "assignmentType": "Eligible",
+      "pimActivation": true,
+      "scope": "/subscriptions/87654321-dcba-10fe-5432-109876543210"
+    },
+    {
+      "principalId": "ai-22222222-3333-4444-5555-666677778888",
+      "principalName": "admin-breakglass-02@contosoai.onmicrosoft.com",
+      "principalType": "User",
+      "assignmentType": "Eligible",
+      "pimActivation": true,
+      "scope": "/subscriptions/87654321-dcba-10fe-5432-109876543210"
+    }
+  ],
+  "highPrivilegeAssignments": [
+    { "roleDefinitionName": "Contributor", "principalCount": 10, "allPimEligible": false, "scopedToResourceGroup": false },
+    { "roleDefinitionName": "User Access Administrator", "principalCount": 1, "allPimEligible": true, "scopedToResourceGroup": true }
+  ],
+  "customRoles": [
+    { "name": "AI-PlatformOperator", "assignableScopes": ["/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-hub"], "assignmentCount": 2 },
+    { "name": "AI-AppDeployer", "assignableScopes": ["/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute"], "assignmentCount": 3 },
+    { "name": "AI-DataReader", "assignableScopes": ["/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-data"], "assignmentCount": 4 }
+  ],
+  "aiAccessIssues": [
+    {
+      "finding": "Data science team (sg-data-scientists, 6 members) has Contributor role at subscription scope instead of scoped custom ML role",
+      "principals": [
+        { "principalId": "ai-ds-111111-2222-3333-4444-555566667777", "principalName": "sg-data-scientists@contosoai.onmicrosoft.com", "principalType": "Group", "memberCount": 6 }
+      ],
+      "recommendation": "Create AI-DataScientist custom role scoped to rg-ai-compute with ML workspace permissions only",
+      "severity": "High"
+    },
+    {
+      "finding": "3 service principals for ML pipelines have standing Contributor access — should use managed identity with JIT",
+      "principals": [
+        { "principalId": "ai-sp-111111-aaaa-bbbb-cccc-ddddeeee0001", "principalName": "sp-ml-pipeline-training", "principalType": "ServicePrincipal" },
+        { "principalId": "ai-sp-111111-aaaa-bbbb-cccc-ddddeeee0002", "principalName": "sp-ml-pipeline-inference", "principalType": "ServicePrincipal" },
+        { "principalId": "ai-sp-111111-aaaa-bbbb-cccc-ddddeeee0003", "principalName": "sp-ml-pipeline-data-prep", "principalType": "ServicePrincipal" }
+      ],
+      "severity": "Medium"
+    }
+  ],
+  "issues": [
+    "Data scientist group has over-broad Contributor access at subscription scope",
+    "3 ML pipeline service principals with standing Contributor — should use managed identities",
+    "No AI-specific custom role for data scientists"
+  ],
+  "rbacResult": "WARN"
+}

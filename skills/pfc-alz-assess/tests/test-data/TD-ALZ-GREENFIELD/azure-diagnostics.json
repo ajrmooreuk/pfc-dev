@@ -1,0 +1,33 @@
+{
+  "toolName": "azure-diagnostics",
+  "executedAt": "2026-03-14T10:24:00Z",
+  "subscriptionId": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+  "summary": {
+    "totalResources": 2,
+    "diagnosticsConfigured": 0,
+    "diagnosticsMissing": 2,
+    "logAnalyticsWorkspaces": 0,
+    "retentionDays": 0
+  },
+  "workspaces": [],
+  "diagnosticSettings": [
+    { "resourceType": "Microsoft.Network/networkSecurityGroups", "count": 1, "configured": 0, "missing": 1, "categories": [] },
+    { "resourceType": "Microsoft.Storage/storageAccounts", "count": 1, "configured": 0, "missing": 1, "categories": [] }
+  ],
+  "missingDiagnostics": [
+    "/subscriptions/c3d4e5f6-a7b8-9012-cdef-123456789012/resourceGroups/rg-default/providers/Microsoft.Network/networkSecurityGroups/nsg-default-uksouth",
+    "/subscriptions/c3d4e5f6-a7b8-9012-cdef-123456789012/resourceGroups/rg-default/providers/Microsoft.Storage/storageAccounts/stdefaultuksouth001"
+  ],
+  "activityLog": {
+    "configured": false,
+    "sentToWorkspace": null,
+    "categories": []
+  },
+  "issues": [
+    "No Log Analytics workspace deployed",
+    "No diagnostic settings on any resource",
+    "Activity log not configured for export",
+    "No monitoring infrastructure exists"
+  ],
+  "diagnosticsResult": "FAIL"
+}

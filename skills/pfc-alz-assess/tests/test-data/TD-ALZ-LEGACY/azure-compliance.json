@@ -1,0 +1,65 @@
+{
+  "toolName": "azure-compliance",
+  "executedAt": "2026-03-14T10:32:00Z",
+  "subscriptionId": "d4e5f6a7-b8c9-0123-defa-234567890123",
+  "framework": "Microsoft Cloud Security Benchmark v1",
+  "overallScore": 45,
+  "pillars": {
+    "networkSecurity": {
+      "score": 30,
+      "controls": [
+        { "id": "NS-1", "name": "Establish network segmentation boundaries", "status": "Compliant", "reason": "Hub-spoke topology exists" },
+        { "id": "NS-2", "name": "Secure cloud services with network controls", "status": "NonCompliant", "reason": "No private endpoints — all PaaS on public endpoints" },
+        { "id": "NS-3", "name": "Deploy firewall at the edge of enterprise network", "status": "NonCompliant", "reason": "No Azure Firewall deployed" },
+        { "id": "NS-4", "name": "Filter network traffic", "status": "NonCompliant", "reason": "NSGs only — no application-layer filtering" },
+        { "id": "NS-5", "name": "Deploy DDOS protection", "status": "NonCompliant", "reason": "No DDoS Protection Plan" },
+        { "id": "NS-6", "name": "Deploy web application firewall", "status": "NonCompliant", "reason": "No WAF deployed" },
+        { "id": "NS-7", "name": "Simplify network security configuration", "status": "NonCompliant", "reason": "18 NSGs with inconsistent rules" },
+        { "id": "NS-8", "name": "Detect and disable insecure services and protocols", "status": "NonCompliant", "reason": "RDP open on 6 NSGs, TLS 1.0 on classic storage" }
+      ]
+    },
+    "identityManagement": {
+      "score": 40,
+      "controls": [
+        { "id": "IM-1", "name": "Use centralized identity and authentication system", "status": "Compliant" },
+        { "id": "IM-2", "name": "Protect identity and authentication system", "status": "NonCompliant", "reason": "MFA not enforced" },
+        { "id": "IM-3", "name": "Manage application identities securely", "status": "NonCompliant", "reason": "Service principals with long-lived secrets" },
+        { "id": "IM-4", "name": "Authenticate server and services", "status": "NonCompliant", "reason": "No managed identities — using shared keys" },
+        { "id": "IM-5", "name": "Use single sign-on for application access", "status": "NonCompliant" },
+        { "id": "IM-6", "name": "Use strong authentication controls", "status": "NonCompliant", "reason": "MFA not enforced" },
+        { "id": "IM-7", "name": "Restrict resource access based on conditions", "status": "NonCompliant", "reason": "Only 3 conditional access policies" }
+      ]
+    },
+    "dataProtection": {
+      "score": 50,
+      "controls": [
+        { "id": "DP-1", "name": "Discover classify and label sensitive data", "status": "NonCompliant" },
+        { "id": "DP-2", "name": "Monitor anomalies and threats targeting sensitive data", "status": "NonCompliant" },
+        { "id": "DP-3", "name": "Encrypt sensitive data in transit", "status": "NonCompliant", "reason": "TLS 1.0 on classic storage and 3 ARM storage accounts" },
+        { "id": "DP-4", "name": "Enable data at rest encryption by default", "status": "Compliant" },
+        { "id": "DP-5", "name": "Use customer-managed key option in data at rest encryption", "status": "NonCompliant" },
+        { "id": "DP-6", "name": "Use a secure key management process", "status": "NonCompliant", "reason": "Secrets stored in app settings, not Key Vault" }
+      ]
+    },
+    "privilegedAccess": {
+      "score": 25,
+      "controls": [
+        { "id": "PA-1", "name": "Separate and limit highly privileged users", "status": "NonCompliant", "reason": "12 Owner role assignments" },
+        { "id": "PA-2", "name": "Avoid standing access for user accounts and permissions", "status": "NonCompliant", "reason": "No PIM — all standing access" },
+        { "id": "PA-3", "name": "Manage lifecycle of identities and entitlements", "status": "NonCompliant" },
+        { "id": "PA-4", "name": "Review and reconcile user access regularly", "status": "NonCompliant", "reason": "No access reviews ever conducted" },
+        { "id": "PA-5", "name": "Set up emergency access", "status": "NonCompliant", "reason": "Only 1 break-glass account" },
+        { "id": "PA-6", "name": "Use privileged access workstations", "status": "NonCompliant" },
+        { "id": "PA-7", "name": "Follow just enough administration principle", "status": "NonCompliant", "reason": "Classic co-admin role still active" }
+      ]
+    }
+  },
+  "nonCompliantResources": [
+    "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-01/providers/Microsoft.ClassicCompute/virtualMachines/vm-classic-web01",
+    "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-01/providers/Microsoft.ClassicCompute/virtualMachines/vm-classic-app01",
+    "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-01/providers/Microsoft.ClassicStorage/storageAccounts/stclassiclegacy01",
+    "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-01/providers/Microsoft.ClassicStorage/storageAccounts/stclassiclegacy02"
+  ],
+  "exemptions": 0,
+  "lastEvaluated": "2026-03-14T09:55:00Z"
+}

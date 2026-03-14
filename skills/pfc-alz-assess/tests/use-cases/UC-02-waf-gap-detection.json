@@ -1,0 +1,18 @@
+{
+  "useCase": "UC-02",
+  "name": "WAF Gap Detection",
+  "description": "Security and Operational Excellence pillars flag gaps on a drifted landing zone",
+  "testData": "TD-ALZ-DRIFT",
+  "skill": "pfc-alz-assess-waf",
+  "feature": "F74.2",
+  "assertions": [
+    { "type": "score-range", "target": "waf.security", "min": 40, "max": 70 },
+    { "type": "score-range", "target": "waf.operationalExcellence", "min": 50, "max": 75 },
+    { "type": "score-range", "target": "waf.reliability", "min": 75, "max": 95 },
+    { "type": "finding-count", "target": "findings.critical", "min": 1 },
+    { "type": "finding-count", "target": "findings.high", "min": 3 },
+    { "type": "cross-ref", "target": "findings.critical.*", "requires": ["MCSB", "NCSC-CAF"] },
+    { "type": "rmf-rating", "target": "findings.critical.*", "requires": true }
+  ],
+  "expectedOutcome": "Security and OpEx pillars score below 75%, critical findings have MCSB and NCSC cross-references plus RMF risk statements"
+}

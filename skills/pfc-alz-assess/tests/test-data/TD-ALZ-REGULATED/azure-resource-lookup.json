@@ -1,0 +1,38 @@
+{
+  "toolName": "azure-resource-lookup",
+  "executedAt": "2026-03-14T10:55:00Z",
+  "subscriptionId": "12345678-abcd-ef01-2345-678901234567",
+  "totalResources": 65,
+  "resourceGroups": [
+    { "name": "rg-connectivity", "location": "uksouth", "resourceCount": 12 },
+    { "name": "rg-finserv-app", "location": "uksouth", "resourceCount": 18 },
+    { "name": "rg-finserv-data", "location": "uksouth", "resourceCount": 14 },
+    { "name": "rg-finserv-dmz", "location": "uksouth", "resourceCount": 6 },
+    { "name": "rg-management", "location": "uksouth", "resourceCount": 8 },
+    { "name": "rg-identity", "location": "uksouth", "resourceCount": 4 },
+    { "name": "rg-security", "location": "uksouth", "resourceCount": 3 }
+  ],
+  "resources": [
+    { "resourceId": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-connectivity/providers/Microsoft.Network/virtualNetworks/vnet-hub-regulated-uksouth", "type": "Microsoft.Network/virtualNetworks", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-FIN-001", "owner": "platform-team", "dataClassification": "confidential", "regulatory": "fca-pra" } },
+    { "resourceId": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-connectivity/providers/Microsoft.Network/azureFirewalls/afw-regulated-uksouth", "type": "Microsoft.Network/azureFirewalls", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-FIN-001", "owner": "platform-team", "dataClassification": "confidential", "regulatory": "fca-pra" } },
+    { "resourceId": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-finserv-app/providers/Microsoft.Compute/virtualMachines/vm-finserv-app-001", "type": "Microsoft.Compute/virtualMachines", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-FIN-002", "owner": "finserv-app-team", "dataClassification": "restricted", "regulatory": "fca-pra" } },
+    { "resourceId": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-finserv-data/providers/Microsoft.Sql/servers/sql-finserv-uksouth", "type": "Microsoft.Sql/servers", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-FIN-003", "owner": "data-team", "dataClassification": "restricted", "regulatory": "fca-pra" } },
+    { "resourceId": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-finserv-data/providers/Microsoft.KeyVault/vaults/kv-finserv-cmk-uksouth", "type": "Microsoft.KeyVault/vaults", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-FIN-003", "owner": "security-team", "dataClassification": "restricted", "regulatory": "fca-pra" } },
+    { "resourceId": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-finserv-data/providers/Microsoft.Network/privateEndpoints/pe-sql-finserv", "type": "Microsoft.Network/privateEndpoints", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-FIN-003", "owner": "platform-team" } },
+    { "resourceId": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-finserv-data/providers/Microsoft.Network/privateEndpoints/pe-kv-finserv-cmk", "type": "Microsoft.Network/privateEndpoints", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-FIN-003", "owner": "platform-team" } },
+    { "resourceId": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-finserv-app/providers/Microsoft.Web/sites/app-finserv-api-uksouth", "type": "Microsoft.Web/sites", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-FIN-002", "owner": "finserv-app-team", "dataClassification": "confidential", "regulatory": "fca-pra" } }
+  ],
+  "tagging": {
+    "totalResources": 65,
+    "fullyTagged": 65,
+    "missingTags": 0,
+    "requiredTags": ["environment", "costCentre", "owner", "dataClassification", "regulatory"],
+    "compliance": 100
+  },
+  "locationCompliance": {
+    "allowed": ["uksouth"],
+    "allResourcesCompliant": true,
+    "nonCompliantLocations": []
+  },
+  "resourceLookupResult": "PASS"
+}

@@ -1,0 +1,57 @@
+{
+  "toolName": "azure-observability",
+  "executedAt": "2026-03-14T10:17:00Z",
+  "subscriptionId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+  "monitoring": {
+    "azureMonitorEnabled": true,
+    "insightsEnabled": true,
+    "applicationInsights": {
+      "configured": 2,
+      "total": 4,
+      "missing": [
+        "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Web/sites/app-internal-prod-uksouth",
+        "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-shared/providers/Microsoft.Web/sites/app-shared-uksouth"
+      ]
+    },
+    "vmInsights": { "enabled": true, "coveredVms": 6, "totalVms": 10, "missing": 4 },
+    "containerInsights": { "enabled": false, "reason": "No AKS clusters deployed" }
+  },
+  "alerting": {
+    "actionGroups": 1,
+    "alertRules": 8,
+    "metricAlerts": 6,
+    "logAlerts": 2,
+    "activityLogAlerts": 0,
+    "serviceHealthAlerts": false,
+    "resourceHealthAlerts": false
+  },
+  "dashboards": {
+    "azureDashboards": 1,
+    "workbooks": 0
+  },
+  "logRetention": {
+    "platformLogs": 30,
+    "securityLogs": 90,
+    "activityLogs": 30
+  },
+  "defenderForCloud": {
+    "enabled": true,
+    "tier": "Standard",
+    "secureScore": 58,
+    "coveragePlans": ["Servers", "SqlServers"]
+  },
+  "sentinel": {
+    "enabled": false,
+    "reason": "Not deployed"
+  },
+  "issues": [
+    "4 VMs missing VM Insights agent",
+    "2 App Services missing Application Insights",
+    "No service health or resource health alerts configured",
+    "No activity log alerts",
+    "Platform log retention only 30 days",
+    "Defender for Cloud missing coverage for AppService, Storage, KeyVaults, Dns",
+    "Only 1 action group — no escalation path"
+  ],
+  "observabilityResult": "FAIL"
+}

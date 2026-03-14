@@ -1,0 +1,41 @@
+{
+  "testDataId": "TD-ALZ-DRIFT",
+  "description": "Drifted gold standard — was compliant, now degraded with injected problems",
+  "generatedAt": "2026-03-14T10:10:00Z",
+  "generatedBy": "pfc-alz-assess/test-data-generator",
+  "tenant": {
+    "tenantId": "td-drift-tenant-001",
+    "displayName": "Contoso Drift Corp",
+    "domain": "contosodrift.onmicrosoft.com"
+  },
+  "subscriptions": [
+    {
+      "subscriptionId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+      "displayName": "Drift-Production",
+      "state": "Enabled",
+      "managementGroup": "mg-platform-production"
+    }
+  ],
+  "resourceCounts": {
+    "total": 47,
+    "byType": {
+      "Microsoft.Compute/virtualMachines": 10,
+      "Microsoft.Network/virtualNetworks": 3,
+      "Microsoft.Network/networkSecurityGroups": 6,
+      "Microsoft.Storage/storageAccounts": 5,
+      "Microsoft.Sql/servers": 2,
+      "Microsoft.KeyVault/vaults": 3,
+      "Microsoft.Network/azureFirewalls": 1,
+      "Microsoft.Network/bastionHosts": 1,
+      "Microsoft.Network/publicIPAddresses": 4,
+      "Microsoft.Network/privateEndpoints": 4,
+      "Microsoft.Web/sites": 4,
+      "Microsoft.OperationalInsights/workspaces": 2,
+      "Microsoft.Insights/activityLogAlerts": 2
+    }
+  },
+  "location": "uksouth",
+  "landingZonePattern": "Azure Landing Zone — CAF aligned (drifted)",
+  "mcsbScore": 72,
+  "expectedOutcome": "FAIL — multiple drift issues detected"
+}

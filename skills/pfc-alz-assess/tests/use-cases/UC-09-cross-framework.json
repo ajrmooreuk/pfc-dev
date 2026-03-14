@@ -1,0 +1,16 @@
+{
+  "useCase": "UC-09",
+  "name": "Cross-Framework Correlation",
+  "description": "Single finding maps across WAF + CAF + NCSC + MCSB frameworks",
+  "testData": "TD-ALZ-DRIFT",
+  "skills": ["pfc-alz-assess-waf", "pfc-alz-assess-caf", "pfc-alz-assess-cyber", "pfc-alz-assess-health"],
+  "feature": "F74.7",
+  "pipelinePhase": "ANALYSE",
+  "assertions": [
+    { "type": "cross-ref", "target": "findings.*.crossFrameworkRefs", "minFrameworks": 2 },
+    { "type": "cross-ref", "target": "findings.critical.*.crossFrameworkRefs", "requires": ["WAF", "CAF", "NCSC-CAF", "MCSB"] },
+    { "type": "finding-count", "target": "findings.correlatedClusters", "min": 1, "description": "At least one systemic pattern identified" },
+    { "type": "ontology-mapping", "target": "correlations.*", "ontology": "GRC-FW-ONT", "entity": "CrossFrameworkMapping" }
+  ],
+  "expectedOutcome": "Critical findings have 4-way cross-references, at least one systemic pattern cluster identified, correlations mapped to GRC-FW-ONT"
+}

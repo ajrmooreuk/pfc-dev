@@ -1,0 +1,40 @@
+{
+  "testDataId": "TD-ALZ-LEGACY",
+  "description": "Classic hub-spoke with legacy patterns — no firewall, no bastion, classic co-admin",
+  "generatedAt": "2026-03-14T10:30:00Z",
+  "generatedBy": "pfc-alz-assess/test-data-generator",
+  "tenant": {
+    "tenantId": "td-legacy-tenant-001",
+    "displayName": "Contoso Legacy Systems Ltd",
+    "domain": "contosolegacy.onmicrosoft.com"
+  },
+  "subscriptions": [
+    {
+      "subscriptionId": "d4e5f6a7-b8c9-0123-defa-234567890123",
+      "displayName": "Legacy-Production",
+      "state": "Enabled",
+      "managementGroup": "mg-legacy-workloads"
+    }
+  ],
+  "resourceCounts": {
+    "total": 83,
+    "byType": {
+      "Microsoft.Compute/virtualMachines": 22,
+      "Microsoft.Network/virtualNetworks": 5,
+      "Microsoft.Network/networkSecurityGroups": 18,
+      "Microsoft.Storage/storageAccounts": 10,
+      "Microsoft.Sql/servers": 4,
+      "Microsoft.KeyVault/vaults": 2,
+      "Microsoft.Network/publicIPAddresses": 8,
+      "Microsoft.Network/loadBalancers": 3,
+      "Microsoft.Web/sites": 6,
+      "Microsoft.OperationalInsights/workspaces": 1,
+      "Microsoft.ClassicCompute/virtualMachines": 2,
+      "Microsoft.ClassicStorage/storageAccounts": 2
+    }
+  },
+  "location": "uksouth",
+  "landingZonePattern": "Classic hub-spoke (pre-CAF)",
+  "mcsbScore": 45,
+  "expectedOutcome": "FAIL — legacy patterns, poor governance, classic resources"
+}

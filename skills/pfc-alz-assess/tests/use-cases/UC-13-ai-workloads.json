@@ -1,0 +1,17 @@
+{
+  "useCase": "UC-13",
+  "name": "AI Workload Assessment",
+  "description": "EA-AI-ONT aligned findings for Azure AI workloads with Responsible AI controls",
+  "testData": "TD-ALZ-AI",
+  "skill": "pfc-alz-assess-cyber",
+  "feature": "F74.4",
+  "assertions": [
+    { "type": "score-range", "target": "mcsb.overall", "min": 75, "max": 90 },
+    { "type": "ontology-mapping", "target": "findings.ai.*", "ontology": "EA-AI-ONT" },
+    { "type": "finding-count", "target": "findings.category.responsibleAI", "min": 1 },
+    { "type": "finding-count", "target": "findings.category.aiAccess", "min": 1, "description": "Data scientist over-permission" },
+    { "type": "cross-ref", "target": "findings.ai.*", "requires": ["MCSB", "EA-AI-ONT"] },
+    { "type": "evidence", "target": "evidence.aiGovernance", "required": true }
+  ],
+  "expectedOutcome": "Standard MCSB assessment plus AI-specific findings mapped to EA-AI-ONT, Responsible AI control gaps flagged, AI governance evidence collected"
+}

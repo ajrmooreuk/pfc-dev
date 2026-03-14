@@ -1,0 +1,55 @@
+{
+  "toolName": "azure-diagnostics",
+  "executedAt": "2026-03-14T10:54:00Z",
+  "subscriptionId": "12345678-abcd-ef01-2345-678901234567",
+  "summary": {
+    "totalResources": 65,
+    "diagnosticsConfigured": 65,
+    "diagnosticsMissing": 0,
+    "logAnalyticsWorkspaces": 2,
+    "retentionDays": 365
+  },
+  "workspaces": [
+    {
+      "resourceId": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-management/providers/Microsoft.OperationalInsights/workspaces/log-finserv-platform-uksouth",
+      "retentionInDays": 365,
+      "sku": "PerGB2018",
+      "dailyCapGb": 20,
+      "connectedResources": 50
+    },
+    {
+      "resourceId": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-management/providers/Microsoft.OperationalInsights/workspaces/log-finserv-security-uksouth",
+      "retentionInDays": 730,
+      "sku": "PerGB2018",
+      "dailyCapGb": 10,
+      "connectedResources": 15
+    }
+  ],
+  "diagnosticSettings": [
+    { "resourceType": "Microsoft.Compute/virtualMachines", "count": 12, "configured": 12, "categories": ["AllMetrics", "AuditEvent"] },
+    { "resourceType": "Microsoft.Network/virtualNetworks", "count": 4, "configured": 4, "categories": ["AllMetrics", "VMProtectionAlerts"] },
+    { "resourceType": "Microsoft.Network/networkSecurityGroups", "count": 8, "configured": 8, "categories": ["NetworkSecurityGroupEvent", "NetworkSecurityGroupRuleCounter"] },
+    { "resourceType": "Microsoft.Storage/storageAccounts", "count": 6, "configured": 6, "categories": ["StorageRead", "StorageWrite", "StorageDelete"] },
+    { "resourceType": "Microsoft.Sql/servers", "count": 3, "configured": 3, "categories": ["SQLSecurityAuditEvents", "AllMetrics", "DevOpsOperationsAudit"] },
+    { "resourceType": "Microsoft.KeyVault/vaults", "count": 4, "configured": 4, "categories": ["AuditEvent", "AllMetrics"] },
+    { "resourceType": "Microsoft.Network/azureFirewalls", "count": 1, "configured": 1, "categories": ["AzureFirewallApplicationRule", "AzureFirewallNetworkRule", "AzureFirewallDnsProxy", "AzureFirewallThreatIntel"] },
+    { "resourceType": "Microsoft.Network/applicationGateways", "count": 1, "configured": 1, "categories": ["ApplicationGatewayAccessLog", "ApplicationGatewayFirewallLog"] },
+    { "resourceType": "Microsoft.Web/sites", "count": 4, "configured": 4, "categories": ["AppServiceHTTPLogs", "AppServiceConsoleLogs", "AppServiceAuditLogs", "AllMetrics"] }
+  ],
+  "activityLog": {
+    "configured": true,
+    "sentToWorkspace": "log-finserv-security-uksouth",
+    "categories": ["Administrative", "Security", "Alert", "Policy", "Autoscale", "Recommendation"]
+  },
+  "ncscGaps": [
+    {
+      "finding": "Platform workspace retention 365 days — NCSC CAF recommends minimum 12 months (compliant) but FCA audit trail requires 7 years",
+      "recommendation": "Configure archive tier or Data Explorer for long-term retention",
+      "severity": "Medium"
+    }
+  ],
+  "issues": [
+    "FCA audit trail requirement (7 years) not met — maximum retention is 730 days on security workspace"
+  ],
+  "diagnosticsResult": "WARN"
+}

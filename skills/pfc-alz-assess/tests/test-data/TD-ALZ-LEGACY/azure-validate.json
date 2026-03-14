@@ -1,0 +1,53 @@
+{
+  "toolName": "azure-validate",
+  "executedAt": "2026-03-14T10:31:00Z",
+  "subscriptionId": "d4e5f6a7-b8c9-0123-defa-234567890123",
+  "landingZone": {
+    "detected": false,
+    "pattern": "Classic hub-spoke (pre-CAF)",
+    "managementGroupHierarchy": ["mg-root", "mg-legacy-workloads"],
+    "policyAssignments": 3,
+    "policyInitiatives": 0,
+    "customPolicyDefinitions": 1
+  },
+  "networking": {
+    "topology": "hub-spoke",
+    "hubVnet": "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-network-hub/providers/Microsoft.Network/virtualNetworks/vnet-hub-legacy",
+    "spokeVnets": [
+      "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-01/providers/Microsoft.Network/virtualNetworks/vnet-workload-01",
+      "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-02/providers/Microsoft.Network/virtualNetworks/vnet-workload-02",
+      "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-workload-03/providers/Microsoft.Network/virtualNetworks/vnet-workload-03",
+      "/subscriptions/d4e5f6a7-b8c9-0123-defa-234567890123/resourceGroups/rg-dmz/providers/Microsoft.Network/virtualNetworks/vnet-dmz"
+    ],
+    "firewall": { "enabled": false },
+    "bastion": { "enabled": false },
+    "dnsZones": 1,
+    "privateEndpoints": 0,
+    "publicIpAddresses": 8
+  },
+  "identity": {
+    "azureADConnect": true,
+    "conditionalAccessPolicies": 3,
+    "mfaEnforced": false,
+    "breakGlassAccounts": 1
+  },
+  "governance": {
+    "resourceLocks": false,
+    "tagEnforcement": false,
+    "budgetAlerts": false,
+    "activityLogAlerts": false
+  },
+  "validationResult": "FAIL",
+  "issues": [
+    "No Azure Firewall — relying on NSGs only for network filtering",
+    "No Bastion host — VMs exposed via public IPs with RDP/SSH",
+    "8 public IP addresses — many directly attached to VMs",
+    "No private endpoints — all PaaS services on public endpoints",
+    "MFA not enforced tenant-wide",
+    "Only 3 conditional access policies (minimum 10 recommended)",
+    "2 classic VMs and 2 classic storage accounts still deployed",
+    "No budget alerts configured",
+    "Only 1 break-glass account (minimum 2 recommended)",
+    "Minimal management group structure"
+  ]
+}

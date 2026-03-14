@@ -1,0 +1,66 @@
+{
+  "toolName": "azure-diagnostics",
+  "executedAt": "2026-03-14T11:04:00Z",
+  "subscriptionId": "87654321-dcba-10fe-5432-109876543210",
+  "summary": {
+    "totalResources": 58,
+    "diagnosticsConfigured": 52,
+    "diagnosticsMissing": 6,
+    "logAnalyticsWorkspaces": 2,
+    "retentionDays": 90
+  },
+  "workspaces": [
+    {
+      "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-mgmt/providers/Microsoft.OperationalInsights/workspaces/log-ai-platform-uksouth",
+      "retentionInDays": 90,
+      "sku": "PerGB2018",
+      "dailyCapGb": 15,
+      "connectedResources": 40
+    },
+    {
+      "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-mgmt/providers/Microsoft.OperationalInsights/workspaces/log-ai-security-uksouth",
+      "retentionInDays": 365,
+      "sku": "PerGB2018",
+      "dailyCapGb": 5,
+      "connectedResources": 12
+    }
+  ],
+  "diagnosticSettings": [
+    { "resourceType": "Microsoft.Compute/virtualMachines", "count": 6, "configured": 6, "missing": 0, "categories": ["AllMetrics", "AuditEvent"] },
+    { "resourceType": "Microsoft.Network/virtualNetworks", "count": 3, "configured": 3, "missing": 0, "categories": ["AllMetrics"] },
+    { "resourceType": "Microsoft.Storage/storageAccounts", "count": 6, "configured": 4, "missing": 2, "categories": ["StorageRead", "StorageWrite", "StorageDelete"] },
+    { "resourceType": "Microsoft.KeyVault/vaults", "count": 3, "configured": 3, "missing": 0, "categories": ["AuditEvent", "AllMetrics"] },
+    { "resourceType": "Microsoft.CognitiveServices/accounts", "count": 3, "configured": 1, "missing": 2, "categories": ["RequestResponse"] },
+    { "resourceType": "Microsoft.MachineLearningServices/workspaces", "count": 2, "configured": 1, "missing": 1, "categories": ["AmlComputeClusterEvent", "AmlRunStatusChangedEvent"] },
+    { "resourceType": "Microsoft.Search/searchServices", "count": 1, "configured": 1, "missing": 0, "categories": ["OperationLogs", "AllMetrics"] },
+    { "resourceType": "Microsoft.Sql/servers", "count": 2, "configured": 2, "missing": 0, "categories": ["SQLSecurityAuditEvents", "AllMetrics"] },
+    { "resourceType": "Microsoft.Web/sites", "count": 4, "configured": 4, "missing": 0, "categories": ["AppServiceHTTPLogs", "AllMetrics"] },
+    { "resourceType": "Microsoft.Network/azureFirewalls", "count": 1, "configured": 1, "missing": 0, "categories": ["AzureFirewallApplicationRule", "AzureFirewallNetworkRule"] }
+  ],
+  "missingDiagnostics": [
+    "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-data/providers/Microsoft.Storage/storageAccounts/staitrainingdata001",
+    "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-data/providers/Microsoft.Storage/storageAccounts/staitrainingdata002",
+    "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.CognitiveServices/accounts/cog-vision-uksouth",
+    "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.CognitiveServices/accounts/cog-language-uksouth",
+    "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.MachineLearningServices/workspaces/mlw-contoso-experiment-uksouth",
+    "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.Compute/virtualMachineScaleSets/vmss-ml-compute"
+  ],
+  "activityLog": {
+    "configured": true,
+    "sentToWorkspace": "log-ai-security-uksouth",
+    "categories": ["Administrative", "Security", "Alert", "Policy"]
+  },
+  "aiMonitoringGaps": [
+    "2 of 3 Cognitive Services accounts missing diagnostic settings — no request/response logging",
+    "Experiment ML workspace has no diagnostics — training runs unmonitored",
+    "Training data storage accounts have no access logging",
+    "No custom AI metrics or model drift monitoring configured"
+  ],
+  "issues": [
+    "6 AI-related resources missing diagnostic settings",
+    "Cognitive Services request/response logging not configured for 2 accounts",
+    "ML experiment workspace unmonitored",
+    "No AI-specific monitoring (model drift, prompt injection, token usage)"
+  ],
+  "diagnosticsResult": "WARN"
+}

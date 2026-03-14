@@ -1,0 +1,18 @@
+{
+  "useCase": "UC-12",
+  "name": "Regulatory Assessment",
+  "description": "NCSC CAF outcome mapping and regulatory evidence collection for financial services",
+  "testData": "TD-ALZ-REGULATED",
+  "skill": "pfc-alz-assess-cyber",
+  "feature": "F74.4",
+  "assertions": [
+    { "type": "score-range", "target": "mcsb.overall", "min": 80, "max": 95 },
+    { "type": "ontology-mapping", "target": "findings.*", "ontology": "NCSC-CAF-ONT", "entity": "CyberOutcome" },
+    { "type": "finding-count", "target": "findings.category.dataResidency", "min": 0 },
+    { "type": "finding-count", "target": "findings.category.logRetention", "min": 1, "description": "NCSC requires 12-month retention" },
+    { "type": "evidence", "target": "evidence.regulatoryPack", "required": true },
+    { "type": "evidence", "target": "evidence.regulatoryPack.ncscMapping", "required": true },
+    { "type": "cross-ref", "target": "findings.*.regulatoryFramework", "requires": ["NCSC-CAF", "MCSB"] }
+  ],
+  "expectedOutcome": "High MCSB score but NCSC-specific gaps found (log retention), regulatory evidence pack with NCSC outcome mapping, dual framework cross-references"
+}

@@ -1,0 +1,55 @@
+{
+  "toolName": "azure-rbac",
+  "executedAt": "2026-03-14T10:03:00Z",
+  "subscriptionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "summary": {
+    "totalAssignments": 24,
+    "ownerCount": 2,
+    "contributorCount": 6,
+    "readerCount": 10,
+    "customRoleCount": 4,
+    "serviceAccountCount": 2,
+    "pimEnabled": true,
+    "classicAdmins": 0
+  },
+  "owners": [
+    {
+      "principalId": "9a1b2c3d-4e5f-6789-0abc-def123456789",
+      "principalName": "admin-breakglass-01@contosogold.onmicrosoft.com",
+      "principalType": "User",
+      "assignmentType": "Eligible",
+      "pimActivation": true,
+      "scope": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    {
+      "principalId": "0b2c3d4e-5f6a-7890-1bcd-ef2345678901",
+      "principalName": "admin-breakglass-02@contosogold.onmicrosoft.com",
+      "principalType": "User",
+      "assignmentType": "Eligible",
+      "pimActivation": true,
+      "scope": "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    }
+  ],
+  "highPrivilegeAssignments": [
+    {
+      "roleDefinitionName": "Contributor",
+      "principalCount": 6,
+      "allPimEligible": true,
+      "scopedToResourceGroup": true
+    },
+    {
+      "roleDefinitionName": "User Access Administrator",
+      "principalCount": 1,
+      "allPimEligible": true,
+      "scopedToResourceGroup": true
+    }
+  ],
+  "customRoles": [
+    { "name": "ALZ-NetworkOperator", "assignableScopes": ["/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-hub-network"], "assignmentCount": 2 },
+    { "name": "ALZ-SecurityReader", "assignableScopes": ["/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890"], "assignmentCount": 3 },
+    { "name": "ALZ-AppDeployer", "assignableScopes": ["/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-spoke-prod"], "assignmentCount": 4 },
+    { "name": "ALZ-CostReader", "assignableScopes": ["/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890"], "assignmentCount": 2 }
+  ],
+  "issues": [],
+  "rbacResult": "PASS"
+}

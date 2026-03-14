@@ -1,0 +1,18 @@
+{
+  "useCase": "UC-05",
+  "name": "Cyber Posture — Compliant",
+  "description": "Security posture assessment on compliant LZ — MCSB above 85%, no critical findings",
+  "testData": "TD-ALZ-GOLD",
+  "skill": "pfc-alz-assess-cyber",
+  "feature": "F74.4",
+  "assertions": [
+    { "type": "score-range", "target": "mcsb.overall", "min": 85, "max": 100 },
+    { "type": "score-range", "target": "mcsb.domains.networkSecurity", "min": 85, "max": 100 },
+    { "type": "score-range", "target": "mcsb.domains.identityManagement", "min": 90, "max": 100 },
+    { "type": "score-range", "target": "mcsb.domains.dataProtection", "min": 85, "max": 100 },
+    { "type": "finding-count", "target": "findings.critical", "expected": 0 },
+    { "type": "ontology-mapping", "target": "findings.*", "ontology": "MCSB-ONT" },
+    { "type": "ontology-mapping", "target": "findings.*", "ontology": "GRC-FW-ONT" }
+  ],
+  "expectedOutcome": "MCSB 85%+, no critical findings, all findings dual-mapped to MCSB-ONT and GRC-FW-ONT"
+}

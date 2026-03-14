@@ -1,0 +1,43 @@
+{
+  "testDataId": "TD-ALZ-REGULATED",
+  "description": "Regulated financial services tenant — high compliance, NCSC gaps, Sentinel deployed",
+  "generatedAt": "2026-03-14T10:50:00Z",
+  "generatedBy": "pfc-alz-assess/test-data-generator",
+  "tenant": {
+    "tenantId": "td-reg-tenant-001",
+    "displayName": "Contoso Financial Services Plc",
+    "domain": "contosofinancial.onmicrosoft.com"
+  },
+  "subscriptions": [
+    {
+      "subscriptionId": "12345678-abcd-ef01-2345-678901234567",
+      "displayName": "FinServ-Production",
+      "state": "Enabled",
+      "managementGroup": "mg-regulated-production"
+    }
+  ],
+  "resourceCounts": {
+    "total": 65,
+    "byType": {
+      "Microsoft.Compute/virtualMachines": 12,
+      "Microsoft.Network/virtualNetworks": 4,
+      "Microsoft.Network/networkSecurityGroups": 8,
+      "Microsoft.Storage/storageAccounts": 6,
+      "Microsoft.Sql/servers": 3,
+      "Microsoft.KeyVault/vaults": 4,
+      "Microsoft.Network/azureFirewalls": 1,
+      "Microsoft.Network/bastionHosts": 1,
+      "Microsoft.Network/privateEndpoints": 14,
+      "Microsoft.Network/applicationGateways": 1,
+      "Microsoft.Web/sites": 4,
+      "Microsoft.OperationalInsights/workspaces": 2,
+      "Microsoft.SecurityInsights/alertRules": 3,
+      "Microsoft.Insights/activityLogAlerts": 2
+    }
+  },
+  "location": "uksouth",
+  "regulatoryFrameworks": ["FCA", "PRA", "NCSC CAF"],
+  "landingZonePattern": "Azure Landing Zone — CAF aligned (regulated)",
+  "mcsbScore": 88,
+  "expectedOutcome": "MOSTLY PASS — strong posture but NCSC log retention and SoD gaps"
+}

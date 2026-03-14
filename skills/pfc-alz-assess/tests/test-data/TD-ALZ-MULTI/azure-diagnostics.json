@@ -1,0 +1,53 @@
+{
+  "toolName": "azure-diagnostics",
+  "executedAt": "2026-03-14T10:44:00Z",
+  "subscriptions": [
+    {
+      "subscriptionId": "e5f6a7b8-c9d0-1234-efab-345678901234",
+      "displayName": "Multi-Production",
+      "summary": { "totalResources": 52, "diagnosticsConfigured": 50, "diagnosticsMissing": 2 },
+      "workspaces": [
+        { "resourceId": "/subscriptions/e5f6a7b8-c9d0-1234-efab-345678901234/resourceGroups/rg-prod-mgmt/providers/Microsoft.OperationalInsights/workspaces/log-prod-uksouth", "retentionInDays": 90, "sku": "PerGB2018" }
+      ],
+      "activityLog": { "configured": true, "categories": ["Administrative", "Security", "Alert", "Policy"] },
+      "diagnosticsResult": "PASS"
+    },
+    {
+      "subscriptionId": "f6a7b8c9-d0e1-2345-fabc-456789012345",
+      "displayName": "Multi-Development",
+      "summary": { "totalResources": 38, "diagnosticsConfigured": 8, "diagnosticsMissing": 30 },
+      "workspaces": [
+        { "resourceId": "/subscriptions/f6a7b8c9-d0e1-2345-fabc-456789012345/resourceGroups/rg-dev-mgmt/providers/Microsoft.OperationalInsights/workspaces/log-dev-uksouth", "retentionInDays": 30, "sku": "Free" }
+      ],
+      "activityLog": { "configured": false },
+      "missingDiagnostics": [
+        "/subscriptions/f6a7b8c9-d0e1-2345-fabc-456789012345/resourceGroups/rg-dev-apps/providers/Microsoft.Compute/virtualMachines/vm-dev-001",
+        "/subscriptions/f6a7b8c9-d0e1-2345-fabc-456789012345/resourceGroups/rg-dev-apps/providers/Microsoft.Compute/virtualMachines/vm-dev-002",
+        "/subscriptions/f6a7b8c9-d0e1-2345-fabc-456789012345/resourceGroups/rg-dev-apps/providers/Microsoft.Compute/virtualMachines/vm-dev-003",
+        "/subscriptions/f6a7b8c9-d0e1-2345-fabc-456789012345/resourceGroups/rg-dev-apps/providers/Microsoft.Network/networkSecurityGroups/nsg-dev-open-all"
+      ],
+      "issues": [
+        "30 of 38 resources missing diagnostics",
+        "Free tier workspace — 500MB/day cap, 7-day retention",
+        "Activity log not exported",
+        "NSG flow logs not configured"
+      ],
+      "diagnosticsResult": "FAIL"
+    },
+    {
+      "subscriptionId": "a7b8c9d0-e1f2-3456-abcf-567890123456",
+      "displayName": "Multi-Staging",
+      "summary": { "totalResources": 30, "diagnosticsConfigured": 20, "diagnosticsMissing": 10 },
+      "workspaces": [
+        { "resourceId": "/subscriptions/a7b8c9d0-e1f2-3456-abcf-567890123456/resourceGroups/rg-stg-mgmt/providers/Microsoft.OperationalInsights/workspaces/log-stg-uksouth", "retentionInDays": 30, "sku": "PerGB2018" }
+      ],
+      "activityLog": { "configured": true, "categories": ["Administrative", "Security"] },
+      "issues": [
+        "10 resources missing diagnostics",
+        "Only 30-day retention",
+        "Activity log missing Alert and Policy categories"
+      ],
+      "diagnosticsResult": "WARN"
+    }
+  ]
+}

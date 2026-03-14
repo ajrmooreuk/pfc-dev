@@ -1,0 +1,64 @@
+{
+  "toolName": "azure-diagnostics",
+  "executedAt": "2026-03-14T10:14:00Z",
+  "subscriptionId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+  "summary": {
+    "totalResources": 47,
+    "diagnosticsConfigured": 35,
+    "diagnosticsMissing": 12,
+    "logAnalyticsWorkspaces": 2,
+    "retentionDays": 30
+  },
+  "workspaces": [
+    {
+      "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-management/providers/Microsoft.OperationalInsights/workspaces/log-platform-uksouth",
+      "retentionInDays": 30,
+      "sku": "PerGB2018",
+      "dailyCapGb": 5,
+      "connectedResources": 25
+    },
+    {
+      "resourceId": "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-management/providers/Microsoft.OperationalInsights/workspaces/log-security-uksouth",
+      "retentionInDays": 90,
+      "sku": "PerGB2018",
+      "dailyCapGb": 2,
+      "connectedResources": 10
+    }
+  ],
+  "diagnosticSettings": [
+    { "resourceType": "Microsoft.Compute/virtualMachines", "count": 10, "configured": 6, "missing": 4, "categories": ["AllMetrics"] },
+    { "resourceType": "Microsoft.Network/virtualNetworks", "count": 3, "configured": 2, "missing": 1, "categories": ["AllMetrics"] },
+    { "resourceType": "Microsoft.Network/networkSecurityGroups", "count": 6, "configured": 3, "missing": 3, "categories": ["NetworkSecurityGroupEvent"] },
+    { "resourceType": "Microsoft.Storage/storageAccounts", "count": 5, "configured": 3, "missing": 2, "categories": ["StorageRead", "StorageWrite"] },
+    { "resourceType": "Microsoft.Sql/servers", "count": 2, "configured": 2, "missing": 0, "categories": ["SQLSecurityAuditEvents", "AllMetrics"] },
+    { "resourceType": "Microsoft.KeyVault/vaults", "count": 3, "configured": 1, "missing": 2, "categories": ["AuditEvent"] },
+    { "resourceType": "Microsoft.Network/azureFirewalls", "count": 1, "configured": 1, "missing": 0, "categories": ["AzureFirewallApplicationRule", "AzureFirewallNetworkRule"] },
+    { "resourceType": "Microsoft.Web/sites", "count": 4, "configured": 4, "missing": 0, "categories": ["AppServiceHTTPLogs"] }
+  ],
+  "missingDiagnostics": [
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-app-prod-007",
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-app-prod-008",
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-app-prod-009",
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Compute/virtualMachines/vm-app-prod-010",
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-shared/providers/Microsoft.Network/virtualNetworks/vnet-spoke-shared",
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Network/networkSecurityGroups/nsg-app-tier-001",
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Network/networkSecurityGroups/nsg-app-tier-002",
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Network/networkSecurityGroups/nsg-data-tier",
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Storage/storageAccounts/stproduksouth004",
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.Storage/storageAccounts/stproduksouth005",
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-prod/providers/Microsoft.KeyVault/vaults/kv-app-prod-uksouth",
+    "/subscriptions/b2c3d4e5-f6a7-8901-bcde-f12345678901/resourceGroups/rg-spoke-shared/providers/Microsoft.KeyVault/vaults/kv-shared-uksouth"
+  ],
+  "activityLog": {
+    "configured": true,
+    "sentToWorkspace": "log-security-uksouth",
+    "categories": ["Administrative", "Security"]
+  },
+  "issues": [
+    "12 resources missing diagnostic settings",
+    "Platform workspace retention reduced from 90 to 30 days",
+    "Activity log not capturing Alert and Policy categories",
+    "2 Key Vaults have no audit logging"
+  ],
+  "diagnosticsResult": "FAIL"
+}

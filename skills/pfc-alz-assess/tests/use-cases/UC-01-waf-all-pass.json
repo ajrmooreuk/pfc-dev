@@ -1,0 +1,19 @@
+{
+  "useCase": "UC-01",
+  "name": "WAF All Pass",
+  "description": "All 5 WAF pillars score above 90% on a gold-standard compliant landing zone",
+  "testData": "TD-ALZ-GOLD",
+  "skill": "pfc-alz-assess-waf",
+  "feature": "F74.2",
+  "assertions": [
+    { "type": "score-range", "target": "waf.reliability", "min": 90, "max": 100 },
+    { "type": "score-range", "target": "waf.security", "min": 90, "max": 100 },
+    { "type": "score-range", "target": "waf.costOptimization", "min": 90, "max": 100 },
+    { "type": "score-range", "target": "waf.operationalExcellence", "min": 90, "max": 100 },
+    { "type": "score-range", "target": "waf.performanceEfficiency", "min": 90, "max": 100 },
+    { "type": "finding-count", "target": "findings.critical", "expected": 0 },
+    { "type": "finding-count", "target": "findings.high", "expected": 0 },
+    { "type": "ontology-mapping", "target": "findings.*", "ontology": "EA-MSFT-ONT", "entity": "WAFPillar" }
+  ],
+  "expectedOutcome": "Clean WAF assessment — all pillars green, no critical or high findings, every finding mapped to EA-MSFT-ONT:WAFPillar"
+}

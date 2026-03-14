@@ -1,0 +1,49 @@
+{
+  "toolName": "azure-observability",
+  "executedAt": "2026-03-14T10:07:00Z",
+  "subscriptionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "monitoring": {
+    "azureMonitorEnabled": true,
+    "insightsEnabled": true,
+    "applicationInsights": {
+      "configured": 4,
+      "resourceIds": [
+        "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-spoke-prod/providers/Microsoft.Insights/components/appi-api-prod-uksouth",
+        "/subscriptions/a1b2c3d4-e5f6-7890-abcd-ef1234567890/resourceGroups/rg-spoke-prod/providers/Microsoft.Insights/components/appi-web-prod-uksouth"
+      ]
+    },
+    "vmInsights": { "enabled": true, "coveredVms": 8, "totalVms": 8 },
+    "containerInsights": { "enabled": false, "reason": "No AKS clusters deployed" }
+  },
+  "alerting": {
+    "actionGroups": 3,
+    "alertRules": 22,
+    "metricAlerts": 14,
+    "logAlerts": 6,
+    "activityLogAlerts": 2,
+    "serviceHealthAlerts": true,
+    "resourceHealthAlerts": true
+  },
+  "dashboards": {
+    "azureDashboards": 2,
+    "workbooks": 4
+  },
+  "logRetention": {
+    "platformLogs": 90,
+    "securityLogs": 365,
+    "activityLogs": 90
+  },
+  "defenderForCloud": {
+    "enabled": true,
+    "tier": "Standard",
+    "secureScore": 92,
+    "coveragePlans": [
+      "Servers", "AppService", "SqlServers", "Storage", "KeyVaults", "Dns"
+    ]
+  },
+  "sentinel": {
+    "enabled": false,
+    "reason": "Not required — non-regulated workload"
+  },
+  "observabilityResult": "PASS"
+}

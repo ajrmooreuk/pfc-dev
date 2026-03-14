@@ -1,0 +1,40 @@
+{
+  "toolName": "azure-resource-lookup",
+  "executedAt": "2026-03-14T11:05:00Z",
+  "subscriptionId": "87654321-dcba-10fe-5432-109876543210",
+  "totalResources": 58,
+  "resourceGroups": [
+    { "name": "rg-ai-hub", "location": "uksouth", "resourceCount": 8 },
+    { "name": "rg-ai-compute", "location": "uksouth", "resourceCount": 20 },
+    { "name": "rg-ai-data", "location": "uksouth", "resourceCount": 14 },
+    { "name": "rg-ai-apps", "location": "uksouth", "resourceCount": 8 },
+    { "name": "rg-ai-mgmt", "location": "uksouth", "resourceCount": 5 },
+    { "name": "rg-ai-identity", "location": "uksouth", "resourceCount": 3 }
+  ],
+  "resources": [
+    { "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-hub/providers/Microsoft.Network/virtualNetworks/vnet-ai-hub-uksouth", "type": "Microsoft.Network/virtualNetworks", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-AI-001", "owner": "platform-team", "workload": "ai-platform" } },
+    { "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-hub/providers/Microsoft.Network/azureFirewalls/afw-ai-hub-uksouth", "type": "Microsoft.Network/azureFirewalls", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-AI-001", "owner": "platform-team", "workload": "ai-platform" } },
+    { "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.CognitiveServices/accounts/oai-contoso-uksouth", "type": "Microsoft.CognitiveServices/accounts", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-AI-002", "owner": "ai-team", "workload": "openai", "aiService": "gpt-4" } },
+    { "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.CognitiveServices/accounts/cog-vision-uksouth", "type": "Microsoft.CognitiveServices/accounts", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-AI-002", "owner": "ai-team", "workload": "computer-vision" } },
+    { "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.CognitiveServices/accounts/cog-language-uksouth", "type": "Microsoft.CognitiveServices/accounts", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-AI-002", "owner": "ai-team", "workload": "text-analytics" } },
+    { "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.MachineLearningServices/workspaces/mlw-contoso-prod-uksouth", "type": "Microsoft.MachineLearningServices/workspaces", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-AI-002", "owner": "data-science-team", "workload": "ml-training" } },
+    { "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.MachineLearningServices/workspaces/mlw-contoso-experiment-uksouth", "type": "Microsoft.MachineLearningServices/workspaces", "location": "uksouth", "tags": { "environment": "development", "costCentre": "CC-AI-002", "owner": "data-science-team", "workload": "ml-experiment" } },
+    { "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-data/providers/Microsoft.Search/searchServices/srch-contoso-uksouth", "type": "Microsoft.Search/searchServices", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-AI-003", "owner": "ai-team", "workload": "ai-search" } },
+    { "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.ContainerRegistry/registries/crcontosoaiuksouth", "type": "Microsoft.ContainerRegistry/registries", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-AI-002", "owner": "ai-team", "workload": "ml-models" } },
+    { "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-data/providers/Microsoft.Storage/storageAccounts/staitrainingdata001", "type": "Microsoft.Storage/storageAccounts", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-AI-003", "owner": "data-science-team", "workload": "training-data" } },
+    { "resourceId": "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-apps/providers/Microsoft.Web/sites/app-ai-api-uksouth", "type": "Microsoft.Web/sites", "location": "uksouth", "tags": { "environment": "production", "costCentre": "CC-AI-004", "owner": "app-team", "workload": "ai-api" } }
+  ],
+  "tagging": {
+    "totalResources": 58,
+    "fullyTagged": 55,
+    "missingTags": 3,
+    "requiredTags": ["environment", "costCentre", "owner", "workload"],
+    "compliance": 94.8,
+    "untaggedResources": [
+      "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.Network/privateEndpoints/pe-oai-contoso",
+      "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.Network/privateEndpoints/pe-mlw-prod",
+      "/subscriptions/87654321-dcba-10fe-5432-109876543210/resourceGroups/rg-ai-compute/providers/Microsoft.Compute/virtualMachineScaleSets/vmss-ml-compute"
+    ]
+  },
+  "resourceLookupResult": "PASS"
+}

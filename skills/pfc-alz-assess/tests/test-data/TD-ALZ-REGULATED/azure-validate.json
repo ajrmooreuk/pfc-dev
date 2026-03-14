@@ -1,0 +1,70 @@
+{
+  "toolName": "azure-validate",
+  "executedAt": "2026-03-14T10:51:00Z",
+  "subscriptionId": "12345678-abcd-ef01-2345-678901234567",
+  "landingZone": {
+    "detected": true,
+    "pattern": "CAF Enterprise-Scale (Regulated)",
+    "managementGroupHierarchy": [
+      "mg-root",
+      "mg-platform",
+      "mg-regulated-production",
+      "mg-platform-identity",
+      "mg-platform-management",
+      "mg-regulated-landing-zones",
+      "mg-sandbox",
+      "mg-decommissioned"
+    ],
+    "policyAssignments": 48,
+    "policyInitiatives": 9,
+    "customPolicyDefinitions": 22
+  },
+  "networking": {
+    "topology": "hub-spoke",
+    "hubVnet": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-connectivity/providers/Microsoft.Network/virtualNetworks/vnet-hub-regulated-uksouth",
+    "spokeVnets": [
+      "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-finserv-app/providers/Microsoft.Network/virtualNetworks/vnet-finserv-app",
+      "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-finserv-data/providers/Microsoft.Network/virtualNetworks/vnet-finserv-data",
+      "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-finserv-dmz/providers/Microsoft.Network/virtualNetworks/vnet-finserv-dmz"
+    ],
+    "firewall": {
+      "enabled": true,
+      "resourceId": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-connectivity/providers/Microsoft.Network/azureFirewalls/afw-regulated-uksouth",
+      "sku": "Premium",
+      "threatIntelMode": "Deny",
+      "idpsMode": "Alert"
+    },
+    "bastion": {
+      "enabled": true,
+      "resourceId": "/subscriptions/12345678-abcd-ef01-2345-678901234567/resourceGroups/rg-connectivity/providers/Microsoft.Network/bastionHosts/bas-regulated-uksouth",
+      "sku": "Standard"
+    },
+    "applicationGateway": {
+      "enabled": true,
+      "wafEnabled": true,
+      "wafMode": "Prevention"
+    },
+    "dnsZones": 6,
+    "privateEndpoints": 14,
+    "publicIpAddresses": 3
+  },
+  "identity": {
+    "azureADConnect": true,
+    "conditionalAccessPolicies": 22,
+    "mfaEnforced": true,
+    "breakGlassAccounts": 2,
+    "passwordlessEnabled": true
+  },
+  "governance": {
+    "resourceLocks": true,
+    "tagEnforcement": true,
+    "budgetAlerts": true,
+    "activityLogAlerts": true,
+    "locationRestriction": "uksouth only",
+    "complianceManager": true
+  },
+  "validationResult": "PASS",
+  "issues": [
+    "Firewall IDPS in Alert mode — should be Deny for regulated workloads"
+  ]
+}

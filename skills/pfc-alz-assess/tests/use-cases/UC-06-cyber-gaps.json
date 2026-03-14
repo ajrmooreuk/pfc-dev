@@ -1,0 +1,19 @@
+{
+  "useCase": "UC-06",
+  "name": "Cyber Posture — Gaps",
+  "description": "Security posture on drifted LZ — critical RBAC and NSG findings, RMF risk-rated",
+  "testData": "TD-ALZ-DRIFT",
+  "skill": "pfc-alz-assess-cyber",
+  "feature": "F74.4",
+  "assertions": [
+    { "type": "score-range", "target": "mcsb.overall", "min": 60, "max": 80 },
+    { "type": "score-range", "target": "mcsb.domains.privilegedAccess", "min": 40, "max": 60 },
+    { "type": "score-range", "target": "mcsb.domains.networkSecurity", "min": 50, "max": 70 },
+    { "type": "finding-count", "target": "findings.critical", "min": 3 },
+    { "type": "finding-count", "target": "findings.category.rbac", "min": 2 },
+    { "type": "finding-count", "target": "findings.category.nsg", "min": 1 },
+    { "type": "rmf-rating", "target": "findings.critical.*", "requires": true },
+    { "type": "cross-ref", "target": "findings.critical.*", "requires": ["WAF", "NCSC-CAF"] }
+  ],
+  "expectedOutcome": "MCSB 60-80%, critical RBAC and NSG findings with RMF risk statements and WAF/NCSC cross-references"
+}

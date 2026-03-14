@@ -1,0 +1,41 @@
+{
+  "testDataId": "TD-ALZ-GOLD",
+  "description": "Gold standard Azure Landing Zone — fully compliant, well-governed",
+  "generatedAt": "2026-03-14T10:00:00Z",
+  "generatedBy": "pfc-alz-assess/test-data-generator",
+  "tenant": {
+    "tenantId": "td-gold-tenant-001",
+    "displayName": "Contoso Gold Corp",
+    "domain": "contosogold.onmicrosoft.com"
+  },
+  "subscriptions": [
+    {
+      "subscriptionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "displayName": "Gold-Production",
+      "state": "Enabled",
+      "managementGroup": "mg-platform-production"
+    }
+  ],
+  "resourceCounts": {
+    "total": 47,
+    "byType": {
+      "Microsoft.Compute/virtualMachines": 8,
+      "Microsoft.Network/virtualNetworks": 3,
+      "Microsoft.Network/networkSecurityGroups": 6,
+      "Microsoft.Storage/storageAccounts": 5,
+      "Microsoft.Sql/servers": 2,
+      "Microsoft.KeyVault/vaults": 3,
+      "Microsoft.Network/azureFirewalls": 1,
+      "Microsoft.Network/bastionHosts": 1,
+      "Microsoft.Network/publicIPAddresses": 2,
+      "Microsoft.Network/privateEndpoints": 8,
+      "Microsoft.Web/sites": 4,
+      "Microsoft.OperationalInsights/workspaces": 2,
+      "Microsoft.Insights/activityLogAlerts": 2
+    }
+  },
+  "location": "uksouth",
+  "landingZonePattern": "Azure Landing Zone — CAF aligned",
+  "mcsbScore": 95,
+  "expectedOutcome": "PASS — all assessments clean"
+}
