@@ -1,0 +1,77 @@
+{
+  "@context": "https://baiv.co.uk/context/uniregistry/v1",
+  "@type": "UniRegistryEntry",
+  "@id": "baiv:uniregistry:skill:pfc-hcr-compose",
+  "registryMetadata": {
+    "entryType": "skill",
+    "entryId": "Entry-SKL-107",
+    "name": "PFC-HCR-COMPOSE: Health Check Report Composer",
+    "version": "0.1.0",
+    "status": "scaffold",
+    "domain": "pf-core",
+    "tier": "tier1",
+    "dateCreated": "2026-03-14T00:00:00Z",
+    "lastModified": "2026-03-14T00:00:00Z",
+    "createdBy": "claude-opus-4.6",
+    "description": "Compose complete Health Check Report from all upstream skill chain outputs following HCR-ONT structure for structured deliverable assembly.",
+    "tags": [
+      "hcr",
+      "reporting",
+      "composition",
+      "deliverable",
+      "assembly"
+    ]
+  },
+  "artifactDefinition": {
+    "skillType": "AGENT_SUPERVISED",
+    "technology": {
+      "runtime": "claude-code-cli",
+      "format": "SKILL.md",
+      "allowedTools": [
+        "Bash(gh *)",
+        "Read",
+        "Grep",
+        "Glob",
+        "Write"
+      ]
+    },
+    "capabilities": [],
+    "invocation": "/pfc-dev:pfc-hcr-compose",
+    "source": "skills/pfc-hcr/compose/SKILL.md"
+  },
+  "crossArtifactRelationships": {
+    "consumes": [
+      {
+        "@ref": "baiv:uniregistry:ontology:grc-fw-ont",
+        "relationshipType": "governance",
+        "namespace": "grc:"
+      }
+    ],
+    "produces": [],
+    "distributedVia": [
+      {
+        "@ref": "baiv:uniregistry:workflow:pfc-release",
+        "relationshipType": "ci-cd-distribution"
+      },
+      {
+        "@ref": "baiv:uniregistry:workflow:promote",
+        "relationshipType": "triad-promotion"
+      }
+    ]
+  },
+  "qualityMetrics": {
+    "overallScore": 0,
+    "completenessScore": 0,
+    "validationStatus": "scaffold"
+  },
+  "changeControl": {
+    "changeReason": "Initial scaffold registration \u2014 Epic 74 (F74.25)",
+    "approvalStatus": "draft",
+    "breakingChanges": false
+  },
+  "versionHistory": [],
+  "artifacts": {
+    "implementation": "skills/pfc-hcr/compose/SKILL.md",
+    "registryEntry": "skills/pfc-hcr/compose/registry-entry-v1.0.0.jsonld"
+  }
+}

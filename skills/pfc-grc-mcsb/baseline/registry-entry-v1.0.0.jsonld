@@ -1,0 +1,77 @@
+{
+  "@context": "https://baiv.co.uk/context/uniregistry/v1",
+  "@type": "UniRegistryEntry",
+  "@id": "baiv:uniregistry:skill:pfc-grc-baseline",
+  "registryMetadata": {
+    "entryType": "skill",
+    "entryId": "Entry-SKL-092",
+    "name": "PFC-GRC-BASELINE: Compliance Baseline & SPC Control Limits",
+    "version": "0.1.0",
+    "status": "scaffold",
+    "domain": "pf-core",
+    "tier": "tier1",
+    "dateCreated": "2026-03-14T00:00:00Z",
+    "lastModified": "2026-03-14T00:00:00Z",
+    "createdBy": "claude-opus-4.6",
+    "description": "Establish compliance baseline and calculate SPC control limits for ongoing compliance monitoring and drift detection using MCSB-ONT domain scoring.",
+    "tags": [
+      "baseline",
+      "spc",
+      "compliance",
+      "monitoring",
+      "control"
+    ]
+  },
+  "artifactDefinition": {
+    "skillType": "AGENT_AUTONOMOUS",
+    "technology": {
+      "runtime": "claude-code-cli",
+      "format": "SKILL.md",
+      "allowedTools": [
+        "Bash(gh *)",
+        "Read",
+        "Grep",
+        "Glob",
+        "Write"
+      ]
+    },
+    "capabilities": [],
+    "invocation": "/pfc-dev:pfc-grc-baseline",
+    "source": "skills/pfc-grc-mcsb/baseline/SKILL.md"
+  },
+  "crossArtifactRelationships": {
+    "consumes": [
+      {
+        "@ref": "baiv:uniregistry:ontology:mcsb-ont",
+        "relationshipType": "core-schema",
+        "namespace": "mcsb:"
+      }
+    ],
+    "produces": [],
+    "distributedVia": [
+      {
+        "@ref": "baiv:uniregistry:workflow:pfc-release",
+        "relationshipType": "ci-cd-distribution"
+      },
+      {
+        "@ref": "baiv:uniregistry:workflow:promote",
+        "relationshipType": "triad-promotion"
+      }
+    ]
+  },
+  "qualityMetrics": {
+    "overallScore": 0,
+    "completenessScore": 0,
+    "validationStatus": "scaffold"
+  },
+  "changeControl": {
+    "changeReason": "Initial scaffold registration \u2014 Epic 74 (F74.20)",
+    "approvalStatus": "draft",
+    "breakingChanges": false
+  },
+  "versionHistory": [],
+  "artifacts": {
+    "implementation": "skills/pfc-grc-mcsb/baseline/SKILL.md",
+    "registryEntry": "skills/pfc-grc-mcsb/baseline/registry-entry-v1.0.0.jsonld"
+  }
+}

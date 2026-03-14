@@ -1,0 +1,77 @@
+{
+  "@context": "https://baiv.co.uk/context/uniregistry/v1",
+  "@type": "UniRegistryEntry",
+  "@id": "baiv:uniregistry:skill:pfc-grc-mcsb-policy",
+  "registryMetadata": {
+    "entryType": "skill",
+    "entryId": "Entry-SKL-097",
+    "name": "PFC-GRC-MCSB-POLICY: Azure Policy Audit & Remediation",
+    "version": "0.1.0",
+    "status": "scaffold",
+    "domain": "pf-core",
+    "tier": "tier1",
+    "dateCreated": "2026-03-14T00:00:00Z",
+    "lastModified": "2026-03-14T00:00:00Z",
+    "createdBy": "claude-opus-4.6",
+    "description": "Audit Azure Policy assignments, map to MCSB domains, identify gaps, detect conflicts, and generate remediation plan using azure-compliance MCP.",
+    "tags": [
+      "policy",
+      "audit",
+      "remediation",
+      "compliance",
+      "azure"
+    ]
+  },
+  "artifactDefinition": {
+    "skillType": "AGENT_AUTONOMOUS",
+    "technology": {
+      "runtime": "claude-code-cli",
+      "format": "SKILL.md",
+      "allowedTools": [
+        "Bash(gh *)",
+        "Read",
+        "Grep",
+        "Glob",
+        "Write"
+      ]
+    },
+    "capabilities": [],
+    "invocation": "/pfc-dev:pfc-grc-mcsb-policy",
+    "source": "skills/pfc-grc-mcsb/policy/SKILL.md"
+  },
+  "crossArtifactRelationships": {
+    "consumes": [
+      {
+        "@ref": "baiv:uniregistry:ontology:mcsb-ont",
+        "relationshipType": "core-schema",
+        "namespace": "mcsb:"
+      }
+    ],
+    "produces": [],
+    "distributedVia": [
+      {
+        "@ref": "baiv:uniregistry:workflow:pfc-release",
+        "relationshipType": "ci-cd-distribution"
+      },
+      {
+        "@ref": "baiv:uniregistry:workflow:promote",
+        "relationshipType": "triad-promotion"
+      }
+    ]
+  },
+  "qualityMetrics": {
+    "overallScore": 0,
+    "completenessScore": 0,
+    "validationStatus": "scaffold"
+  },
+  "changeControl": {
+    "changeReason": "Initial scaffold registration \u2014 Epic 74 (F74.20)",
+    "approvalStatus": "draft",
+    "breakingChanges": false
+  },
+  "versionHistory": [],
+  "artifacts": {
+    "implementation": "skills/pfc-grc-mcsb/policy/SKILL.md",
+    "registryEntry": "skills/pfc-grc-mcsb/policy/registry-entry-v1.0.0.jsonld"
+  }
+}

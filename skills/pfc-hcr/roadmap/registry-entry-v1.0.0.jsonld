@@ -1,0 +1,82 @@
+{
+  "@context": "https://baiv.co.uk/context/uniregistry/v1",
+  "@type": "UniRegistryEntry",
+  "@id": "baiv:uniregistry:skill:pfc-hcr-roadmap",
+  "registryMetadata": {
+    "entryType": "skill",
+    "entryId": "Entry-SKL-111",
+    "name": "PFC-HCR-ROADMAP: Backcast-Driven Roadmap Generation",
+    "version": "0.1.0",
+    "status": "scaffold",
+    "domain": "pf-core",
+    "tier": "tier1",
+    "dateCreated": "2026-03-14T00:00:00Z",
+    "lastModified": "2026-03-14T00:00:00Z",
+    "createdBy": "claude-opus-4.6",
+    "description": "Generate strategic roadmap working backwards from customer desired destination to current state, with phased delivery, OKRs, and investment model.",
+    "tags": [
+      "roadmap",
+      "backcast",
+      "strategy",
+      "okr",
+      "planning"
+    ]
+  },
+  "artifactDefinition": {
+    "skillType": "AGENT_SUPERVISED",
+    "technology": {
+      "runtime": "claude-code-cli",
+      "format": "SKILL.md",
+      "allowedTools": [
+        "Bash(gh *)",
+        "Read",
+        "Grep",
+        "Glob",
+        "Write"
+      ]
+    },
+    "capabilities": [],
+    "invocation": "/pfc-dev:pfc-hcr-roadmap",
+    "source": "skills/pfc-hcr/roadmap/SKILL.md"
+  },
+  "crossArtifactRelationships": {
+    "consumes": [
+      {
+        "@ref": "baiv:uniregistry:ontology:grc-fw-ont",
+        "relationshipType": "governance",
+        "namespace": "grc:"
+      },
+      {
+        "@ref": "baiv:uniregistry:ontology:vp-ont",
+        "relationshipType": "value-proposition",
+        "namespace": "vp:"
+      }
+    ],
+    "produces": [],
+    "distributedVia": [
+      {
+        "@ref": "baiv:uniregistry:workflow:pfc-release",
+        "relationshipType": "ci-cd-distribution"
+      },
+      {
+        "@ref": "baiv:uniregistry:workflow:promote",
+        "relationshipType": "triad-promotion"
+      }
+    ]
+  },
+  "qualityMetrics": {
+    "overallScore": 0,
+    "completenessScore": 0,
+    "validationStatus": "scaffold"
+  },
+  "changeControl": {
+    "changeReason": "Initial scaffold registration \u2014 Epic 74 (F74.25)",
+    "approvalStatus": "draft",
+    "breakingChanges": false
+  },
+  "versionHistory": [],
+  "artifacts": {
+    "implementation": "skills/pfc-hcr/roadmap/SKILL.md",
+    "registryEntry": "skills/pfc-hcr/roadmap/registry-entry-v1.0.0.jsonld"
+  }
+}

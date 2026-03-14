@@ -1,0 +1,77 @@
+{
+  "@context": "https://baiv.co.uk/context/uniregistry/v1",
+  "@type": "UniRegistryEntry",
+  "@id": "baiv:uniregistry:skill:pfc-qvf-threat-econ",
+  "registryMetadata": {
+    "entryType": "skill",
+    "entryId": "Entry-SKL-102",
+    "name": "PFC-QVF-THREAT-ECON: Threat Model Financial Overlay (FAIR)",
+    "version": "0.1.0",
+    "status": "scaffold",
+    "domain": "pf-core",
+    "tier": "tier1",
+    "dateCreated": "2026-03-14T00:00:00Z",
+    "lastModified": "2026-03-14T00:00:00Z",
+    "createdBy": "claude-opus-4.6",
+    "description": "Apply FAIR financial overlay to threat model outputs, transforming qualitative threat scenarios into quantified risk economics.",
+    "tags": [
+      "fair",
+      "threat-model",
+      "economics",
+      "quantification",
+      "overlay"
+    ]
+  },
+  "artifactDefinition": {
+    "skillType": "AGENT_SUPERVISED",
+    "technology": {
+      "runtime": "claude-code-cli",
+      "format": "SKILL.md",
+      "allowedTools": [
+        "Bash(gh *)",
+        "Read",
+        "Grep",
+        "Glob",
+        "Write"
+      ]
+    },
+    "capabilities": [],
+    "invocation": "/pfc-dev:pfc-qvf-threat-econ",
+    "source": "skills/pfc-qvf-cyber/threat-econ/SKILL.md"
+  },
+  "crossArtifactRelationships": {
+    "consumes": [
+      {
+        "@ref": "baiv:uniregistry:ontology:rmf-is27005-ont",
+        "relationshipType": "risk-framework",
+        "namespace": "rmf:"
+      }
+    ],
+    "produces": [],
+    "distributedVia": [
+      {
+        "@ref": "baiv:uniregistry:workflow:pfc-release",
+        "relationshipType": "ci-cd-distribution"
+      },
+      {
+        "@ref": "baiv:uniregistry:workflow:promote",
+        "relationshipType": "triad-promotion"
+      }
+    ]
+  },
+  "qualityMetrics": {
+    "overallScore": 0,
+    "completenessScore": 0,
+    "validationStatus": "scaffold"
+  },
+  "changeControl": {
+    "changeReason": "Initial scaffold registration \u2014 Epic 74 (F74.22)",
+    "approvalStatus": "draft",
+    "breakingChanges": false
+  },
+  "versionHistory": [],
+  "artifacts": {
+    "implementation": "skills/pfc-qvf-cyber/threat-econ/SKILL.md",
+    "registryEntry": "skills/pfc-qvf-cyber/threat-econ/registry-entry-v1.0.0.jsonld"
+  }
+}

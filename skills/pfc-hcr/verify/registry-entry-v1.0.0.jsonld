@@ -1,0 +1,82 @@
+{
+  "@context": "https://baiv.co.uk/context/uniregistry/v1",
+  "@type": "UniRegistryEntry",
+  "@id": "baiv:uniregistry:skill:pfc-hcr-verify",
+  "registryMetadata": {
+    "entryType": "skill",
+    "entryId": "Entry-SKL-109",
+    "name": "PFC-HCR-VERIFY: Independent Verification & Assurance",
+    "version": "0.1.0",
+    "status": "scaffold",
+    "domain": "pf-core",
+    "tier": "tier1",
+    "dateCreated": "2026-03-14T00:00:00Z",
+    "lastModified": "2026-03-14T00:00:00Z",
+    "createdBy": "claude-opus-4.6",
+    "description": "Independent verification and assurance: evidence integrity audit, methodology audit, sample re-execution, and formal attestation.",
+    "tags": [
+      "verification",
+      "assurance",
+      "attestation",
+      "audit",
+      "evidence"
+    ]
+  },
+  "artifactDefinition": {
+    "skillType": "AGENT_SUPERVISED",
+    "technology": {
+      "runtime": "claude-code-cli",
+      "format": "SKILL.md",
+      "allowedTools": [
+        "Bash(gh *)",
+        "Read",
+        "Grep",
+        "Glob",
+        "Write"
+      ]
+    },
+    "capabilities": [],
+    "invocation": "/pfc-dev:pfc-hcr-verify",
+    "source": "skills/pfc-hcr/verify/SKILL.md"
+  },
+  "crossArtifactRelationships": {
+    "consumes": [
+      {
+        "@ref": "baiv:uniregistry:ontology:grc-fw-ont",
+        "relationshipType": "governance",
+        "namespace": "grc:"
+      },
+      {
+        "@ref": "baiv:uniregistry:ontology:rmf-is27005-ont",
+        "relationshipType": "risk-framework",
+        "namespace": "rmf:"
+      }
+    ],
+    "produces": [],
+    "distributedVia": [
+      {
+        "@ref": "baiv:uniregistry:workflow:pfc-release",
+        "relationshipType": "ci-cd-distribution"
+      },
+      {
+        "@ref": "baiv:uniregistry:workflow:promote",
+        "relationshipType": "triad-promotion"
+      }
+    ]
+  },
+  "qualityMetrics": {
+    "overallScore": 0,
+    "completenessScore": 0,
+    "validationStatus": "scaffold"
+  },
+  "changeControl": {
+    "changeReason": "Initial scaffold registration \u2014 Epic 74 (F74.25)",
+    "approvalStatus": "draft",
+    "breakingChanges": false
+  },
+  "versionHistory": [],
+  "artifacts": {
+    "implementation": "skills/pfc-hcr/verify/SKILL.md",
+    "registryEntry": "skills/pfc-hcr/verify/registry-entry-v1.0.0.jsonld"
+  }
+}

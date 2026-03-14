@@ -1,0 +1,77 @@
+{
+  "@context": "https://baiv.co.uk/context/uniregistry/v1",
+  "@type": "UniRegistryEntry",
+  "@id": "baiv:uniregistry:skill:pfc-hcr-dashboard",
+  "registryMetadata": {
+    "entryType": "skill",
+    "entryId": "Entry-SKL-110",
+    "name": "PFC-HCR-DASHBOARD: Interactive Dashboard & Drill-Down",
+    "version": "0.1.0",
+    "status": "scaffold",
+    "domain": "pf-core",
+    "tier": "tier1",
+    "dateCreated": "2026-03-14T00:00:00Z",
+    "lastModified": "2026-03-14T00:00:00Z",
+    "createdBy": "claude-opus-4.6",
+    "description": "Generate interactive dashboard views with 4-level drill-down: Executive \u2192 Domain \u2192 Finding \u2192 Evidence.",
+    "tags": [
+      "dashboard",
+      "visualisation",
+      "drill-down",
+      "reporting",
+      "interactive"
+    ]
+  },
+  "artifactDefinition": {
+    "skillType": "AGENT_AUTONOMOUS",
+    "technology": {
+      "runtime": "claude-code-cli",
+      "format": "SKILL.md",
+      "allowedTools": [
+        "Bash(gh *)",
+        "Read",
+        "Grep",
+        "Glob",
+        "Write"
+      ]
+    },
+    "capabilities": [],
+    "invocation": "/pfc-dev:pfc-hcr-dashboard",
+    "source": "skills/pfc-hcr/dashboard/SKILL.md"
+  },
+  "crossArtifactRelationships": {
+    "consumes": [
+      {
+        "@ref": "baiv:uniregistry:ontology:grc-fw-ont",
+        "relationshipType": "governance",
+        "namespace": "grc:"
+      }
+    ],
+    "produces": [],
+    "distributedVia": [
+      {
+        "@ref": "baiv:uniregistry:workflow:pfc-release",
+        "relationshipType": "ci-cd-distribution"
+      },
+      {
+        "@ref": "baiv:uniregistry:workflow:promote",
+        "relationshipType": "triad-promotion"
+      }
+    ]
+  },
+  "qualityMetrics": {
+    "overallScore": 0,
+    "completenessScore": 0,
+    "validationStatus": "scaffold"
+  },
+  "changeControl": {
+    "changeReason": "Initial scaffold registration \u2014 Epic 74 (F74.25)",
+    "approvalStatus": "draft",
+    "breakingChanges": false
+  },
+  "versionHistory": [],
+  "artifacts": {
+    "implementation": "skills/pfc-hcr/dashboard/SKILL.md",
+    "registryEntry": "skills/pfc-hcr/dashboard/registry-entry-v1.0.0.jsonld"
+  }
+}

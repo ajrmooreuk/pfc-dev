@@ -1,0 +1,77 @@
+{
+  "@context": "https://baiv.co.uk/context/uniregistry/v1",
+  "@type": "UniRegistryEntry",
+  "@id": "baiv:uniregistry:skill:pfc-grc-drift",
+  "registryMetadata": {
+    "entryType": "skill",
+    "entryId": "Entry-SKL-094",
+    "name": "PFC-GRC-DRIFT: Continuous Compliance Drift Detection",
+    "version": "0.1.0",
+    "status": "scaffold",
+    "domain": "pf-core",
+    "tier": "tier1",
+    "dateCreated": "2026-03-14T00:00:00Z",
+    "lastModified": "2026-03-14T00:00:00Z",
+    "createdBy": "claude-opus-4.6",
+    "description": "Monitor MCSB compliance for drift from established baseline, detect SPC breaches and policy assignment changes for continuous assurance.",
+    "tags": [
+      "drift",
+      "monitoring",
+      "spc",
+      "compliance",
+      "continuous"
+    ]
+  },
+  "artifactDefinition": {
+    "skillType": "AGENT_AUTONOMOUS",
+    "technology": {
+      "runtime": "claude-code-cli",
+      "format": "SKILL.md",
+      "allowedTools": [
+        "Bash(gh *)",
+        "Read",
+        "Grep",
+        "Glob",
+        "Write"
+      ]
+    },
+    "capabilities": [],
+    "invocation": "/pfc-dev:pfc-grc-drift",
+    "source": "skills/pfc-grc-mcsb/drift/SKILL.md"
+  },
+  "crossArtifactRelationships": {
+    "consumes": [
+      {
+        "@ref": "baiv:uniregistry:ontology:mcsb-ont",
+        "relationshipType": "core-schema",
+        "namespace": "mcsb:"
+      }
+    ],
+    "produces": [],
+    "distributedVia": [
+      {
+        "@ref": "baiv:uniregistry:workflow:pfc-release",
+        "relationshipType": "ci-cd-distribution"
+      },
+      {
+        "@ref": "baiv:uniregistry:workflow:promote",
+        "relationshipType": "triad-promotion"
+      }
+    ]
+  },
+  "qualityMetrics": {
+    "overallScore": 0,
+    "completenessScore": 0,
+    "validationStatus": "scaffold"
+  },
+  "changeControl": {
+    "changeReason": "Initial scaffold registration \u2014 Epic 74 (F74.20)",
+    "approvalStatus": "draft",
+    "breakingChanges": false
+  },
+  "versionHistory": [],
+  "artifacts": {
+    "implementation": "skills/pfc-grc-mcsb/drift/SKILL.md",
+    "registryEntry": "skills/pfc-grc-mcsb/drift/registry-entry-v1.0.0.jsonld"
+  }
+}

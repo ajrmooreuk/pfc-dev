@@ -1,0 +1,77 @@
+{
+  "@context": "https://baiv.co.uk/context/uniregistry/v1",
+  "@type": "UniRegistryEntry",
+  "@id": "baiv:uniregistry:skill:pfc-qvf-cyber-insure",
+  "registryMetadata": {
+    "entryType": "skill",
+    "entryId": "Entry-SKL-104",
+    "name": "PFC-QVF-CYBER-INSURE: Cyber Insurance Premium Optimisation",
+    "version": "0.1.0",
+    "status": "scaffold",
+    "domain": "pf-core",
+    "tier": "tier1",
+    "dateCreated": "2026-03-14T00:00:00Z",
+    "lastModified": "2026-03-14T00:00:00Z",
+    "createdBy": "claude-opus-4.6",
+    "description": "Quantify cyber insurance economics: premium optimisation via GRC posture improvement, coverage gap analysis, and evidence packaging for underwriters.",
+    "tags": [
+      "insurance",
+      "optimisation",
+      "premium",
+      "risk-transfer",
+      "evidence"
+    ]
+  },
+  "artifactDefinition": {
+    "skillType": "AGENT_SUPERVISED",
+    "technology": {
+      "runtime": "claude-code-cli",
+      "format": "SKILL.md",
+      "allowedTools": [
+        "Bash(gh *)",
+        "Read",
+        "Grep",
+        "Glob",
+        "Write"
+      ]
+    },
+    "capabilities": [],
+    "invocation": "/pfc-dev:pfc-qvf-cyber-insure",
+    "source": "skills/pfc-qvf-cyber/cyber-insure/SKILL.md"
+  },
+  "crossArtifactRelationships": {
+    "consumes": [
+      {
+        "@ref": "baiv:uniregistry:ontology:rmf-is27005-ont",
+        "relationshipType": "risk-framework",
+        "namespace": "rmf:"
+      }
+    ],
+    "produces": [],
+    "distributedVia": [
+      {
+        "@ref": "baiv:uniregistry:workflow:pfc-release",
+        "relationshipType": "ci-cd-distribution"
+      },
+      {
+        "@ref": "baiv:uniregistry:workflow:promote",
+        "relationshipType": "triad-promotion"
+      }
+    ]
+  },
+  "qualityMetrics": {
+    "overallScore": 0,
+    "completenessScore": 0,
+    "validationStatus": "scaffold"
+  },
+  "changeControl": {
+    "changeReason": "Initial scaffold registration \u2014 Epic 74 (F74.23)",
+    "approvalStatus": "draft",
+    "breakingChanges": false
+  },
+  "versionHistory": [],
+  "artifacts": {
+    "implementation": "skills/pfc-qvf-cyber/cyber-insure/SKILL.md",
+    "registryEntry": "skills/pfc-qvf-cyber/cyber-insure/registry-entry-v1.0.0.jsonld"
+  }
+}

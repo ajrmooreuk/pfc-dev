@@ -1,0 +1,82 @@
+{
+  "@context": "https://baiv.co.uk/context/uniregistry/v1",
+  "@type": "UniRegistryEntry",
+  "@id": "baiv:uniregistry:skill:pfc-alz-assess-caf",
+  "registryMetadata": {
+    "entryType": "skill",
+    "entryId": "Entry-SKL-087",
+    "name": "PFC-ALZ-ASSESS-CAF: CAF Readiness Assessment",
+    "version": "0.1.0",
+    "status": "scaffold",
+    "domain": "pf-core",
+    "tier": "tier1",
+    "dateCreated": "2026-03-14T00:00:00Z",
+    "lastModified": "2026-03-14T00:00:00Z",
+    "createdBy": "claude-opus-4.6",
+    "description": "Assess Cloud Adoption Framework readiness using NCSC-CAF-ONT outcome mapping, azure-prepare/compliance MCP integration, and readiness scoring model.",
+    "tags": [
+      "azure",
+      "caf",
+      "readiness",
+      "assessment",
+      "ncsc"
+    ]
+  },
+  "artifactDefinition": {
+    "skillType": "AGENT_SUPERVISED",
+    "technology": {
+      "runtime": "claude-code-cli",
+      "format": "SKILL.md",
+      "allowedTools": [
+        "Bash(gh *)",
+        "Read",
+        "Grep",
+        "Glob",
+        "Write"
+      ]
+    },
+    "capabilities": [],
+    "invocation": "/pfc-dev:pfc-alz-assess-caf",
+    "source": "skills/pfc-alz-assess/caf/SKILL.md"
+  },
+  "crossArtifactRelationships": {
+    "consumes": [
+      {
+        "@ref": "baiv:uniregistry:ontology:ncsc-caf-ont",
+        "relationshipType": "core-schema",
+        "namespace": "ncsc-caf:"
+      },
+      {
+        "@ref": "baiv:uniregistry:ontology:ea-msft-ont",
+        "relationshipType": "azure-resource",
+        "namespace": "ea-msft:"
+      }
+    ],
+    "produces": [],
+    "distributedVia": [
+      {
+        "@ref": "baiv:uniregistry:workflow:pfc-release",
+        "relationshipType": "ci-cd-distribution"
+      },
+      {
+        "@ref": "baiv:uniregistry:workflow:promote",
+        "relationshipType": "triad-promotion"
+      }
+    ]
+  },
+  "qualityMetrics": {
+    "overallScore": 0,
+    "completenessScore": 0,
+    "validationStatus": "scaffold"
+  },
+  "changeControl": {
+    "changeReason": "Initial scaffold registration \u2014 Epic 74 (F74.3)",
+    "approvalStatus": "draft",
+    "breakingChanges": false
+  },
+  "versionHistory": [],
+  "artifacts": {
+    "implementation": "skills/pfc-alz-assess/caf/SKILL.md",
+    "registryEntry": "skills/pfc-alz-assess/caf/registry-entry-v1.0.0.jsonld"
+  }
+}
