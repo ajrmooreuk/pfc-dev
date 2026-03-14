@@ -1,0 +1,113 @@
+{
+  "@context": "https://baiv.co.uk/context/uniregistry/v1",
+  "@type": "UniRegistryEntry",
+  "@id": "baiv:uniregistry:agent:pfc-alz-pipeline",
+  "registryMetadata": {
+    "entryType": "agent",
+    "entryId": "Entry-SKL-112",
+    "name": "PFC-ALZ-PIPELINE: ALZ Assessment Orchestrator",
+    "version": "0.1.0",
+    "status": "scaffold",
+    "domain": "pf-core",
+    "tier": "tier1",
+    "dateCreated": "2026-03-14T00:00:00Z",
+    "lastModified": "2026-03-14T00:00:00Z",
+    "createdBy": "claude-opus-4.6",
+    "description": "7-phase master orchestrator for Azure Landing Zone assessment pipeline. Chains 57 skills across ENGAGE → EXTRACT → ASSESS → ANALYSE → STRATEGISE → DOCUMENT → ASSURE with 4 human checkpoints. Supports mid-pipeline entry, phase-level stop, and resumable state.",
+    "tags": ["orchestrator", "pipeline", "azure", "assessment", "alz", "7-phase", "mcp", "healthcheck"]
+  },
+  "artifactDefinition": {
+    "skillType": "AGENT_ORCHESTRATOR",
+    "dtreeClassification": {
+      "path": ["HG-01", "HG-02", "HG-03"],
+      "scores": {
+        "HG-01": { "criteria": [9, 9, 9, 9], "normalized": 9.0, "outcome": "PASS" },
+        "HG-02": { "criteria": [9, 9, 9, 8], "normalized": 8.7, "outcome": "PASS" },
+        "HG-03": { "criteria": [9, 9, 8, 8], "normalized": 8.5, "outcome": "PASS" }
+      },
+      "recommendation": "AGENT_ORCHESTRATOR",
+      "rationale": "Maximum autonomy (7-phase pipeline with 4 human checkpoints), multi-skill orchestration (57 skill invocations across 7 phases), formal skill chains, MCP integration, resumable state management"
+    },
+    "technology": {
+      "runtime": "claude-code-cli",
+      "format": "SKILL.md",
+      "allowedTools": ["Bash(gh *)", "Read", "Grep", "Glob", "Write"],
+      "mcpServers": ["azure-skills", "foundry-mcp"]
+    },
+    "capabilities": [
+      { "name": "7-Phase Pipeline", "description": "ENGAGE → EXTRACT → ASSESS → ANALYSE → STRATEGISE → DOCUMENT → ASSURE" },
+      { "name": "Human Checkpoints", "description": "4 gates: Scope Approval, Findings Review, Roadmap Approval, Report Sign-off" },
+      { "name": "Mid-Pipeline Entry", "description": "--start-from and --stop-after flags for partial execution" },
+      { "name": "Resumable State", "description": "pipeline-state.json enables resume after interruption or checkpoint pause" },
+      { "name": "MCP Integration", "description": "12 azure-skills MCP tools in EXTRACT phase for live Azure data" },
+      { "name": "Methodology Alignment", "description": "Maps to DELTA, DMAIC, INS, and Backcasting methodologies" }
+    ],
+    "subSkills": [
+      { "@ref": "baiv:uniregistry:skill:pfc-org-context", "phase": "ENGAGE", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-vsom", "phase": "ENGAGE", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-okr", "phase": "ENGAGE", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-kpi", "phase": "ENGAGE", "mandatory": true, "mode": "baseline" },
+      { "@ref": "baiv:uniregistry:skill:pfc-vp", "phase": "ENGAGE", "mandatory": true, "scope": "problems" },
+      { "@ref": "baiv:uniregistry:skill:pfc-alz-assess-waf", "phase": "ASSESS", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-alz-assess-caf", "phase": "ASSESS", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-alz-assess-cyber", "phase": "ASSESS", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-alz-assess-health", "phase": "ASSESS", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-hcr-analyse", "phase": "ANALYSE", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-grc-mcsb-assess", "phase": "ANALYSE", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-grc-posture", "phase": "ANALYSE", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-qvf-cyber-impact", "phase": "ANALYSE", "mandatory": false },
+      { "@ref": "baiv:uniregistry:skill:pfc-alz-strategy", "phase": "STRATEGISE", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-grc-plan", "phase": "STRATEGISE", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-grc-remediate", "phase": "STRATEGISE", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-qvf-grc-value", "phase": "STRATEGISE", "mandatory": false },
+      { "@ref": "baiv:uniregistry:skill:pfc-hcr-compose", "phase": "DOCUMENT", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-hcr-verify", "phase": "DOCUMENT", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-hcr-dashboard", "phase": "DOCUMENT", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-hcr-roadmap", "phase": "DOCUMENT", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-grc-mcsb-report", "phase": "DOCUMENT", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-grc-drift", "phase": "ASSURE", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-grc-baseline", "phase": "ASSURE", "mandatory": true },
+      { "@ref": "baiv:uniregistry:skill:pfc-kpi", "phase": "ASSURE", "mandatory": true, "mode": "monitor" },
+      { "@ref": "baiv:uniregistry:skill:pfc-vp", "phase": "ASSURE", "mandatory": true, "scope": "full" }
+    ],
+    "invocation": "/pfc-dev:pfc-alz-pipeline",
+    "source": "skills/pfc-alz-pipeline/SKILL.md"
+  },
+  "crossArtifactRelationships": {
+    "consumes": [
+      { "@ref": "baiv:uniregistry:ontology:ea-msft-ont", "relationshipType": "core-schema", "namespace": "ea-msft:" },
+      { "@ref": "baiv:uniregistry:ontology:ncsc-caf-ont", "relationshipType": "core-schema", "namespace": "ncsc-caf:" },
+      { "@ref": "baiv:uniregistry:ontology:mcsb-ont", "relationshipType": "core-schema", "namespace": "mcsb:" },
+      { "@ref": "baiv:uniregistry:ontology:grc-fw-ont", "relationshipType": "governance", "namespace": "grc:" },
+      { "@ref": "baiv:uniregistry:ontology:azalz-ont", "relationshipType": "core-schema", "namespace": "azalz:" },
+      { "@ref": "baiv:uniregistry:ontology:rmf-is27005-ont", "relationshipType": "risk-framework", "namespace": "rmf:" },
+      { "@ref": "baiv:uniregistry:ontology:pe-ont", "relationshipType": "process-template", "namespace": "pe:" },
+      { "@ref": "baiv:uniregistry:ontology:vp-ont", "relationshipType": "value-proposition", "namespace": "vp:" },
+      { "@ref": "baiv:uniregistry:ontology:vsom-ont", "relationshipType": "core-schema", "namespace": "vsom:" },
+      { "@ref": "baiv:uniregistry:ontology:okr-ont", "relationshipType": "objectives", "namespace": "okr:" },
+      { "@ref": "baiv:uniregistry:ontology:kpi-ont", "relationshipType": "measurement", "namespace": "kpi:" },
+      { "@ref": "baiv:uniregistry:ontology:emc-ont", "relationshipType": "composition-engine", "namespace": "emc:" }
+    ],
+    "produces": [
+      { "@ref": "baiv:uniregistry:artifact:alz-pipeline-output", "relationshipType": "directory-output", "format": "json-ld + markdown + html", "description": "7-phase output directory: engage/, extract/, assess/, analyse/, strategise/, document/, assure/ + pipeline-manifest.json" }
+    ],
+    "orchestrates": [
+      { "@ref": "baiv:uniregistry:skill:pfc-alz-assess-waf", "relationshipType": "phase-3", "description": "WAF pillar assessment" },
+      { "@ref": "baiv:uniregistry:skill:pfc-alz-assess-caf", "relationshipType": "phase-3", "description": "CAF readiness assessment" },
+      { "@ref": "baiv:uniregistry:skill:pfc-alz-assess-cyber", "relationshipType": "phase-3", "description": "Cyber posture assessment" },
+      { "@ref": "baiv:uniregistry:skill:pfc-alz-assess-health", "relationshipType": "phase-3", "description": "ALZ healthcheck" },
+      { "@ref": "baiv:uniregistry:skill:pfc-hcr-compose", "relationshipType": "phase-6", "description": "Health check report composition" }
+    ],
+    "distributedVia": [
+      { "@ref": "baiv:uniregistry:workflow:pfc-release", "relationshipType": "ci-cd-distribution" },
+      { "@ref": "baiv:uniregistry:workflow:promote", "relationshipType": "triad-promotion" }
+    ]
+  },
+  "qualityMetrics": { "overallScore": 0, "completenessScore": 0, "validationStatus": "scaffold" },
+  "changeControl": { "changeReason": "Initial scaffold — ALZ Assessment master orchestrator (Epic 74, F74.7 + F74.18)", "approvalStatus": "draft", "breakingChanges": false },
+  "versionHistory": [],
+  "artifacts": {
+    "implementation": "skills/pfc-alz-pipeline/SKILL.md",
+    "registryEntry": "skills/pfc-alz-pipeline/registry-entry-v1.0.0.jsonld"
+  }
+}
