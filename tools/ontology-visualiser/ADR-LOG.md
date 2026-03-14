@@ -82,6 +82,8 @@ Decisions that cross enterprise architecture boundaries (e.g., ADR-001 storage a
 | [ADR-014](#adr-014) | Skeleton-Driven Navigation (No Hardcoded Toolbar) | Accepted | 2026-02-20 |
 | [ADR-015](#adr-015) | Two-Layer PFI Instance Filtering | Accepted | 2026-02-22 |
 | [ADR-016](#adr-016) | View Mode Extensibility Pattern | Accepted | 2026-03-02 |
+| [ADR-017](#adr-017) | EA Hub-Spoke Sub-Series Lineage Chain | Accepted | 2026-03-05 |
+| [ADR-018](#adr-018) | Daily Backup to pfc-dev with Automated Recovery | Accepted | 2026-03-13 |
 
 ---
 
@@ -682,6 +684,46 @@ Each `_switchTo*Mode()` must call `switchToOntologyMode()` first (hides mermaid/
 - (-) Lineage classification now checks 3 chains instead of 2 — negligible performance impact
 
 **Revisit trigger:** If more PE sub-series emerge (e.g., L6S), consider generalising the sub-series lineage pattern into a configuration-driven approach rather than per-chain constants.
+
+---
+
+## ADR-018
+
+### Daily Backup to pfc-dev with Automated Recovery
+
+| Property | Value |
+|----------|-------|
+| Status | **Accepted** |
+| Date | 2026-03-13 |
+| Decision Maker | EA |
+| Approval Required | Cross-cutting (EA approves) |
+| VSOM Alignment | BSC: Risk & Compliance, Operational Excellence |
+| Source | [PFC-CICD-RECOVERY-OAA-Visualiser-Pre-Migration-Backup-v1.0.0.md](../../STRATEGY/PFC-CICD-RECOVERY-OAA-Visualiser-Pre-Migration-Backup-v1.0.0.md) |
+
+**Context:** The OAA Visualiser is the primary platform tool (45 ES modules, 2081 tests, 52 ontologies). Before Epic 59 database migration, the visualiser and ontology library need a reliable backup and recovery mechanism. The current deployment relies solely on GitHub Pages + git history, with no cross-repo redundancy. Loss or corruption during migration would halt all PFI instance work.
+
+**Decision:** Implement a daily automated backup of `PBS/TOOLS/ontology-visualiser/` to `ajrmooreuk/pfc-dev/tools/ontology-visualiser/` via GitHub Actions workflow (`visualiser-backup.yml`). The workflow runs at 06:30 UTC, syncs changed files (excluding `node_modules`), commits only when differences are detected, and auto-creates a GitHub issue on failure. The repo is secured via private visibility (3 collaborators only). A formal recovery plan documents three restore paths: full rsync restore, quick local deployment, and snapshot tag rollback.
+
+**Alternatives Considered:**
+
+| Option | Why Not |
+|--------|---------|
+| Git tags only (no cross-repo backup) | Single repo = single point of failure; tag rollback insufficient if repo itself is corrupted |
+| Manual periodic backups | Human-dependent = unreliable; no alerting on missed backups |
+| S3/cloud storage backup | Over-engineered for pre-migration interim; adds cloud dependency |
+| GitHub release artifacts | Size limits; no incremental sync; harder to restore from |
+
+**Rationale:** Cross-repo git backup provides immutable history, incremental sync (only changed files), zero cloud dependencies, and automatic failure alerting — all critical for the pre-migration risk window. The `pfc-dev` repo already exists as the PFC development workspace (Epic 58), making it a natural backup target.
+
+**Consequences:**
+- (+) Daily automated redundancy — no human intervention required
+- (+) GitHub issue raised on failure — immediate visibility
+- (+) Three documented recovery paths with decision tree
+- (+) Ontology library backed up alongside visualiser
+- (-) `PROMOTION_PAT` must remain valid for cross-repo push
+- (-) `pfc-dev` is public — backup is visible (but contains no secrets)
+
+**Revisit trigger:** When Epic 59 database migration completes and the visualiser moves to Supabase-backed hosting, this backup strategy should be reassessed — the backup target may shift from git to database snapshots.
 
 ---
 

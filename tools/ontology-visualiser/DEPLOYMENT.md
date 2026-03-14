@@ -195,6 +195,60 @@ To use a custom domain like `visualiser.baiv.io`:
 
 ---
 
+## Backup & Recovery
+
+### Daily Automated Backup
+
+The visualiser is backed up daily to `ajrmooreuk/pfc-dev` via `.github/workflows/visualiser-backup.yml`:
+
+- **Schedule:** 06:30 UTC daily + manual trigger
+- **Target:** `pfc-dev/tools/ontology-visualiser/`
+- **Scope:** All files except `node_modules`, `playwright-report`, `test-results`
+- **Alerting:** GitHub issue auto-created on failure
+
+### Recovery Runbook
+
+**Option 1 — Rollback to deployment snapshot:**
+```bash
+# List available snapshots
+git tag -l 'deploy/*' | sort -r | head -15
+# Trigger rollback
+gh workflow run rollback.yml -f tag=deploy/YYYY-MM-DD-HHMM
+```
+
+**Option 2 — Restore from pfc-dev backup:**
+```bash
+git clone https://github.com/ajrmooreuk/pfc-dev.git
+rsync -av --delete --exclude='node_modules' \
+  pfc-dev/tools/ontology-visualiser/ \
+  PBS/TOOLS/ontology-visualiser/
+npm ci && npx vitest run    # Verify 2081/2081 pass
+git add PBS/TOOLS/ontology-visualiser/ && git commit -m "restore: from pfc-dev backup"
+git push origin main        # Triggers GitHub Pages redeploy
+```
+
+**Option 3 — Quick local access (no push needed):**
+```bash
+git clone https://github.com/ajrmooreuk/pfc-dev.git
+cd pfc-dev/tools/ontology-visualiser
+python3 -m http.server 8080
+# Open http://localhost:8080/browser-viewer.html
+```
+
+### Post-Recovery Verification
+
+- [ ] `npx vitest run` — 2081/2081 pass
+- [ ] Load Registry works on hosted version
+- [ ] PFI instance context switching functional
+- [ ] EMC composition engine loads correctly
+- [ ] All 6 series visible in tiered navigation
+
+### Full Recovery Plan
+
+See [PFC-CICD-RECOVERY-OAA-Visualiser-Pre-Migration-Backup-v1.0.0.md](../../STRATEGY/PFC-CICD-RECOVERY-OAA-Visualiser-Pre-Migration-Backup-v1.0.0.md) for complete procedures, decision tree, and pre-migration checklist.
+
+---
+
 ## Version Management
 
 | Component | Location | Versioning |

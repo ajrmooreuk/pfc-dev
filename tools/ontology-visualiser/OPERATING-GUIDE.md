@@ -1238,6 +1238,49 @@ VSOM data ──► SC-DP pattern ──► AI content gen ──► Brand token
 
 ---
 
+## Backup & Recovery
+
+The visualiser is protected by automated daily backups and multiple recovery paths.
+
+### Backup Status
+
+| Mechanism | Schedule | Target |
+|-----------|----------|--------|
+| Daily cross-repo sync | 06:30 UTC | `ajrmooreuk/pfc-dev/tools/ontology-visualiser/` |
+| Deployment snapshot tags | Every push to Pages | `deploy/YYYY-MM-DD-HHMM` tags in Azlan-EA-AAA |
+| Git history | Every commit | Permanent in Azlan-EA-AAA |
+
+### If Something Goes Wrong
+
+1. **Recent deployment broke the visualiser** — use the rollback workflow:
+   ```bash
+   gh workflow run rollback.yml -f tag=deploy/YYYY-MM-DD-HHMM
+   ```
+
+2. **Need to restore from backup** — sync from pfc-dev:
+   ```bash
+   git clone https://github.com/ajrmooreuk/pfc-dev.git
+   rsync -av --delete --exclude='node_modules' \
+     pfc-dev/tools/ontology-visualiser/ PBS/TOOLS/ontology-visualiser/
+   ```
+
+3. **Need immediate local access** — no GitHub needed:
+   ```bash
+   cd pfc-dev/tools/ontology-visualiser && python3 -m http.server 8080
+   ```
+
+### Backup Failure Alerting
+
+If the daily backup fails, a GitHub issue is automatically created with diagnostics. Check:
+- `PROMOTION_PAT` secret validity
+- `pfc-dev` repo accessibility
+- Workflow run logs
+
+See [DEPLOYMENT.md § Backup & Recovery](./DEPLOYMENT.md#backup--recovery) for full runbook.
+See [Recovery Plan](../../STRATEGY/PFC-CICD-RECOVERY-OAA-Visualiser-Pre-Migration-Backup-v1.0.0.md) for decision tree and pre-migration checklist.
+
+---
+
 ## Deployment
 
 The visualiser is deployed automatically via GitHub Pages when changes are pushed to `main`:

@@ -1077,6 +1077,71 @@ Rolled forward from Epic 8 F8.2 + F8.5. Supabase JSONB storage with `resolve_tok
 
 ---
 
+## Backup & Recovery Architecture
+
+### Backup Strategy
+
+The visualiser and ontology library are protected by a three-layer backup strategy:
+
+| Layer | Mechanism | Frequency | Retention |
+|-------|-----------|-----------|-----------|
+| **L1: Git history** | Immutable commit history in `Azlan-EA-AAA` | Every push | Permanent |
+| **L2: Deployment snapshots** | `deploy/YYYY-MM-DD-HHMM` tags created by `pages.yml` before each deployment | Every deployment | 15 most recent |
+| **L3: Cross-repo backup** | `visualiser-backup.yml` syncs to `ajrmooreuk/pfc-dev/tools/ontology-visualiser/` | Daily 06:30 UTC | Full history in pfc-dev |
+
+### Backup Scope
+
+| Component | Backed up | Location in pfc-dev |
+|-----------|-----------|---------------------|
+| Visualiser (45 ES modules) | Yes | `tools/ontology-visualiser/js/` |
+| HTML entry point | Yes | `tools/ontology-visualiser/browser-viewer.html` |
+| CSS | Yes | `tools/ontology-visualiser/css/` |
+| Tests (2081) | Yes | `tools/ontology-visualiser/tests/` |
+| Documentation | Yes | `tools/ontology-visualiser/*.md` |
+| Ontology library (52 ontologies) | Yes | `ontology-library/` (existing in pfc-dev) |
+| `node_modules` | No | Regenerate with `npm ci` |
+
+### Recovery Paths
+
+```
+Recovery Decision Tree
+│
+├─ Minor rollback needed (last few deploys)?
+│  └─ Use deployment snapshot tag → rollback.yml
+│
+├─ Visualiser code corrupted or lost?
+│  └─ Restore from pfc-dev backup → rsync + push
+│
+├─ Need immediate local access?
+│  └─ Clone pfc-dev → python3 -m http.server 8080
+│
+└─ Full repo loss?
+   └─ pfc-dev contains complete visualiser + ontology library
+```
+
+### Failure Alerting
+
+The `visualiser-backup.yml` workflow auto-creates a GitHub issue (labelled `type:bug` + `cicd`) on any backup failure, including:
+- Diagnostic link to the failed workflow run
+- Likely causes (PAT expiry, repo rename, transient failure)
+- Link to the recovery plan document
+
+### Risks to be Mitigated (R-RAID)
+
+| Risk ID | Risk | Impact | Mitigation | Status |
+|---------|------|--------|------------|--------|
+| RISK-BKP-001 | OAA Visualiser lost or corrupted during Epic 59 database migration | P0 — all PFI work halts | Daily backup to pfc-dev + 3 recovery paths + rollback workflow | Mitigated |
+| RISK-BKP-002 | Ontology library (52 ontologies, 6 series) lost or corrupted | P0 — no ontologies available for composition or validation | Ontology library already synced to pfc-dev; git history permanent | Mitigated |
+| RISK-BKP-003 | PFI instance-specific ontology libraries lost | P1 — instance-specific graphs unavailable | Instance configs in PFI triad repos (15 repos); pfc-release.yml distributes from sealed core | Mitigated |
+| RISK-BKP-004 | PROMOTION_PAT expires silently, backup stops | P1 — no backup without PAT | `pat-drift-detection.yml` runs weekly; backup failure creates issue | Mitigated |
+| RISK-BKP-005 | pfc-dev is public — IP exposure | P2 — in-progress work visible | pfc-dev contains only released/promoted content; no secrets in visualiser code | Accepted |
+| RISK-BKP-006 | SSO/auth migration blocks access during cutover | P1 — users locked out during transition | GitHub Pages (private repo gate) remains as fallback until SSO confirmed working | Mitigated |
+
+See [ADR-018](./ADR-LOG.md#adr-018) for the architecture decision record.
+See [PFC-CICD-RECOVERY-OAA-Visualiser-Pre-Migration-Backup-v1.0.0.md](../../STRATEGY/PFC-CICD-RECOVERY-OAA-Visualiser-Pre-Migration-Backup-v1.0.0.md) for full recovery procedures.
+
+---
+
 ## Related Documentation
 
 | Document | Description |
